@@ -19,7 +19,7 @@
   "environment": "*",
   "entrypoints": {
     "stationapi:event_bus": [
-      "net.kozibrodka.wolves.events.mod_betterthanwolves"
+      "net.kozibrodka.wolves.events.mod_FCBetterThanWolves"
     ],
     "stationapi:event_bus_client": [
 
@@ -28,11 +28,11 @@
 
     ],
     "gcapi": [
-      "net.kozibrodka.wolves.events.mod_betterthanwolves"
+      "net.kozibrodka.wolves.events.mod_FCBetterThanWolves"
     ]
   },
   "mixins": [
-    "battletower.mixins.json"
+    "wolves.mixins.json"
   ],
   "depends": {
     "minecraft": "1.0.0-beta.7.3"
