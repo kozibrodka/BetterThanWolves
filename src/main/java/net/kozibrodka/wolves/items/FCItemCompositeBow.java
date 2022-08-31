@@ -1,6 +1,7 @@
 
 package net.kozibrodka.wolves.items;
 
+import net.kozibrodka.wolves.entity.FCEntityBroadheadArrow;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.entity.projectile.Arrow;
@@ -26,14 +27,11 @@ public class FCItemCompositeBow extends TemplateItemBase
             world.playSound(entityplayer, "random.bow", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
             if(!world.isServerSide)
             {
-                /**
-                 * Entity later
-                 */
-//                FCEntityBroadheadArrow arrow = new FCEntityBroadheadArrow(world, entityplayer);
-//                arrow.velocityX *= 1.5D;
-//                arrow.velocityY *= 1.5D;
-//                arrow.velocityZ *= 1.5D;
-//                world.spawnEntity(arrow);
+                FCEntityBroadheadArrow arrow = new FCEntityBroadheadArrow(world, entityplayer);
+                arrow.velocityX *= 1.5D;
+                arrow.velocityY *= 1.5D;
+                arrow.velocityZ *= 1.5D;
+                world.spawnEntity(arrow);
             }
         } else
         if(entityplayer.inventory.decreaseAmountOfItem(ItemBase.arrow.id))

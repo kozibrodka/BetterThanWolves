@@ -1,22 +1,30 @@
 package net.kozibrodka.wolves.events;
 
 import net.glasslauncher.mods.api.gcapi.api.GConfig;
+import net.kozibrodka.wolves.blocks.FCBlockAxle;
+import net.kozibrodka.wolves.blocks.FCBlockGearBox;
+import net.kozibrodka.wolves.entity.FCEntityBroadheadArrow;
+import net.kozibrodka.wolves.entity.FCEntityWaterWheel;
 import net.kozibrodka.wolves.glasscfg.BetterThanWolvesCFG;
 import net.kozibrodka.wolves.items.*;
+import net.kozibrodka.wolves.render.FCRenderBroadheadArrow;
+import net.kozibrodka.wolves.render.FCRenderWaterWheel;
 import net.mine_diver.unsafeevents.listener.EventListener;
-import net.minecraft.block.BlockBase;
-import net.minecraft.block.PressurePlateTrigger;
-import net.minecraft.block.material.Material;
+import net.minecraft.client.render.entity.PigRenderer;
+import net.minecraft.client.render.entity.model.Pig;
 import net.minecraft.item.tool.ToolMaterial;
-import net.modificationstation.stationapi.api.client.render.material.MaterialFinder;
+import net.modificationstation.stationapi.api.client.event.render.entity.EntityRendererRegisterEvent;
+import net.modificationstation.stationapi.api.event.entity.EntityRegister;
 import net.modificationstation.stationapi.api.event.registry.BlockRegistryEvent;
+import net.modificationstation.stationapi.api.event.registry.EntityHandlerRegistryEvent;
 import net.modificationstation.stationapi.api.event.registry.ItemRegistryEvent;
+import net.modificationstation.stationapi.api.event.registry.MobHandlerRegistryEvent;
 import net.modificationstation.stationapi.api.item.tool.ToolMaterialFactory;
 import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
 import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.registry.ModID;
+import net.modificationstation.stationapi.api.registry.Registry;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockBase;
-import net.modificationstation.stationapi.api.template.block.TemplateMaterialBlock;
 import net.modificationstation.stationapi.api.template.block.TemplatePressurePlate;
 import net.modificationstation.stationapi.api.template.item.TemplateItemBase;
 import net.modificationstation.stationapi.api.template.item.TemplateSeeds;
@@ -120,8 +128,8 @@ public class mod_FCBetterThanWolves {
 //        fcAnchor = new FCBlockAnchor(Identifier.of(MOD_ID, "fcAnchor")).setTranslationKey(MOD_ID, "fcAnchor");
 //        fcRopeBlock = new FCBlockRope(Identifier.of(MOD_ID, "fcRopeBlock")).setTranslationKey(MOD_ID, "fcRopeBlock");
 //        fcOmniSlab = new FCBlockOmniSlab(Identifier.of(MOD_ID, "fcOmniSlab")).setTranslationKey(MOD_ID, "fcOmniSlab");
-//        fcAxleBlock = new FCBlockAxle(Identifier.of(MOD_ID, "fcAxleBlock")).setTranslationKey(MOD_ID, "fcAxleBlock");
-//        fcGearBox = new FCBlockGearBox(Identifier.of(MOD_ID, "fcGearBox")).setTranslationKey(MOD_ID, "fcGearBox");
+        fcAxleBlock = new FCBlockAxle(Identifier.of(MOD_ID, "fcAxleBlock")).setTranslationKey(MOD_ID, "fcAxleBlock");
+        fcGearBox = new FCBlockGearBox(Identifier.of(MOD_ID, "fcGearBox")).setTranslationKey(MOD_ID, "fcGearBox");
 //        fcTurntable = new FCBlockTurntable(Identifier.of(MOD_ID, "fcTurntable")).setTranslationKey(MOD_ID, "fcTurntable");
 //        fcBellows = new FCBlockBellows(Identifier.of(MOD_ID, "fcBellows")).setTranslationKey(MOD_ID, "fcBellows");
 //        fcStokedFire = new FCBlockStokedFire(Identifier.of(MOD_ID, "fcStokedFire")).setTranslationKey(MOD_ID, "fcStokedFire");
@@ -129,6 +137,24 @@ public class mod_FCBetterThanWolves {
 //        fcCrucible = new FCBlockCrucible(Identifier.of(MOD_ID, "fcCrucible")).setTranslationKey(MOD_ID, "fcCrucible");
 //        fcPlanter = new FCBlockPlanter(Identifier.of(MOD_ID, "fcPlanter")).setTranslationKey(MOD_ID, "fcPlanter");
 //        fcVase = new FCBlockVase(Identifier.of(MOD_ID, "fcVase")).setTranslationKey(MOD_ID, "fcVase");
+    }
+
+    @EventListener
+    private static void registerEntities(EntityRegister event) {
+        event.register(FCEntityWaterWheel.class, String.valueOf(Identifier.of(MOD_ID, "WaterWheel")));
+        event.register(FCEntityBroadheadArrow.class, String.valueOf(Identifier.of(MOD_ID, "BroadheadArrow")));
+    }
+
+    @EventListener
+    private static void registerMobHandlers(EntityHandlerRegistryEvent event) {
+        Registry.register(event.registry, MOD_ID.id("WaterWheel") , FCEntityWaterWheel::new);
+        Registry.register(event.registry, MOD_ID.id("BroadheadArrow") , FCEntityBroadheadArrow::new);
+    }
+
+    @EventListener
+    private static void registerEntityRenderers(EntityRendererRegisterEvent event) {
+        event.renderers.put(FCEntityWaterWheel.class, new FCRenderWaterWheel());
+        event.renderers.put(FCEntityBroadheadArrow.class, new FCRenderBroadheadArrow());
     }
 
     public static boolean fcDisableAxeChanges = false;
