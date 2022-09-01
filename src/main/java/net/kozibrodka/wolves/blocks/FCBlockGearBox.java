@@ -10,8 +10,11 @@ import net.kozibrodka.wolves.utils.FCUtilsMisc;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Item;
 import net.minecraft.entity.Living;
+import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.item.ItemBase;
+import net.minecraft.item.ItemInstance;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.modificationstation.stationapi.api.block.BlockState;
@@ -35,11 +38,12 @@ public class FCBlockGearBox extends TemplateBlockBase
         setSounds(WOOD_SOUNDS);
         texture = 38;
         setDefaultState(getDefaultState()
-                .with(UP, false)
-                .with(DOWN, false)
-                .with(RIGHT, false)
-                .with(LEFT, false)
-                .with(OPPOSIDE, false)
+                .with(iFace0, false)
+                .with(iFace1, false)
+                .with(iFace2, false)
+                .with(iFace3, false)
+                .with(iFace4, false)
+                .with(iFace5, false)
         );
     }
 
@@ -96,6 +100,78 @@ public class FCBlockGearBox extends TemplateBlockBase
             return texture;
         }
     }
+
+    //DEBUG
+    public boolean canUse(Level world, int i, int j, int k, PlayerBase entityplayer)
+    {
+        for(int iSide = 0; iSide < 6; iSide++) {
+            int iFacing = GetFacing(world, i, j, k);
+            if (iSide == iFacing) {
+//                return iGearBoxFrontTextureIndex;
+                System.out.println("iSide: " + iSide + " texture: FRONT");
+            } else {
+                FCBlockPos sideBlockPos = new FCBlockPos(i, j, k);
+                sideBlockPos.AddFacingAsOffset(iSide);
+                if (world.getTileId(sideBlockPos.i, sideBlockPos.j, sideBlockPos.k) == mod_FCBetterThanWolves.fcAxleBlock.id && ((FCBlockAxle) mod_FCBetterThanWolves.fcAxleBlock).IsAxleOrientedTowardsFacing(world, sideBlockPos.i, sideBlockPos.j, sideBlockPos.k, iSide)) {
+                    System.out.println("iSide: " + iSide + " texture: OUTPUT");
+                    BlockState currentState = world.getBlockState(i, j, k);
+                    switch (iSide) {
+                        case 0:
+                            world.setBlockStateWithNotify(i, j, k, currentState.with(iFace0, true));
+                            break;
+                        case 1:
+//                            System.out.println("TEST KURWA 1");
+                            world.setBlockStateWithNotify(i, j, k, currentState.with(iFace1, true));
+                            break;
+                        case 2:
+                            world.setBlockStateWithNotify(i, j, k, currentState.with(iFace2, true));
+                            break;
+                        case 3:
+                            world.setBlockStateWithNotify(i, j, k, currentState.with(iFace3, true));
+                            break;
+                        case 4:
+                            world.setBlockStateWithNotify(i, j, k, currentState.with(iFace4, true));
+                            break;
+                        case 5:
+//                            System.out.println("TEST KURWA 5");
+                            world.setBlockStateWithNotify(i, j, k, currentState.with(iFace5, true));
+                            break;
+                        default:
+                            break;
+                    }
+//                return iGearBoxOutputTextureIndex;
+                } else {
+                    BlockState currentState = world.getBlockState(i, j, k);
+                    switch (iSide) {
+                        case 0:
+                            world.setBlockStateWithNotify(i, j, k, currentState.with(iFace0, false));
+                            break;
+                        case 1:
+                            world.setBlockStateWithNotify(i, j, k, currentState.with(iFace1, false));
+                            break;
+                        case 2:
+                            world.setBlockStateWithNotify(i, j, k, currentState.with(iFace2, false));
+                            break;
+                        case 3:
+                            world.setBlockStateWithNotify(i, j, k, currentState.with(iFace3, false));
+                            break;
+                        case 4:
+                            world.setBlockStateWithNotify(i, j, k, currentState.with(iFace4, false));
+                            break;
+                        case 5:
+                            world.setBlockStateWithNotify(i, j, k, currentState.with(iFace5, false));
+                            break;
+                        default:
+                            break;
+                    }
+                    System.out.println("iSide: " + iSide + " texture: PLANKS");
+//                return texture;
+                }
+            }
+        }
+        return true; //zeby bylo
+    }
+    //DEBUG
 
     public int getTextureForSide(int iSide)
     {
@@ -329,19 +405,21 @@ public class FCBlockGearBox extends TemplateBlockBase
      * STATES
      */
     public static final IntProperty FACING = IntProperty.of("facing", 0, 5);
-    public static final BooleanProperty OPPOSIDE = BooleanProperty.of("opposide");
-    public static final BooleanProperty UP = BooleanProperty.of("up");
-    public static final BooleanProperty DOWN = BooleanProperty.of("down");
-    public static final BooleanProperty LEFT = BooleanProperty.of("left");
-    public static final BooleanProperty RIGHT = BooleanProperty.of("right");
+    public static final BooleanProperty iFace0 = BooleanProperty.of("iface0");
+    public static final BooleanProperty iFace1 = BooleanProperty.of("iface1");
+    public static final BooleanProperty iFace2 = BooleanProperty.of("iface2");
+    public static final BooleanProperty iFace3 = BooleanProperty.of("iface3");
+    public static final BooleanProperty iFace4 = BooleanProperty.of("iface4");
+    public static final BooleanProperty iFace5 = BooleanProperty.of("iface5");
 
     public void appendProperties(StateManager.Builder<BlockBase, BlockState> builder){
         builder.add(FACING);
-        builder.add(OPPOSIDE);
-        builder.add(UP);
-        builder.add(DOWN);
-        builder.add(LEFT);
-        builder.add(RIGHT);
+        builder.add(iFace0);
+        builder.add(iFace1);
+        builder.add(iFace2);
+        builder.add(iFace3);
+        builder.add(iFace4);
+        builder.add(iFace5);
     }
 
 }

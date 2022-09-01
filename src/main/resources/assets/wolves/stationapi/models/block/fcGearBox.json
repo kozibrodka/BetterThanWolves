@@ -1,24 +1,20 @@
 {
   "parent": "block/block",
   "textures": {
-    "down": "block/oak_planks",
     "up": "wolves:block/fcBlockGearBox_in",
-    "north": "block/oak_planks",
-    "south": "block/oak_planks",
-    "west": "block/oak_planks",
-    "east": "block/oak_planks",
+    "other": "wolves:block/fcBlockEmpty",
     "particle": "wolves:block/fcBlockGearBox_in"
   },
   "elements": [
     {   "from": [ 0, 0, 0 ],
       "to": [ 16, 16, 16 ],
       "faces": {
-        "down":  { "texture": "#down", "cullface": "down" },
+        "down":  { "texture": "#other", "cullface": "down" },
         "up":    { "texture": "#up", "cullface": "up" },
-        "north": { "texture": "#north", "cullface": "north" },
-        "south": { "texture": "#south", "cullface": "south" },
-        "west":  { "texture": "#west", "cullface": "west" },
-        "east":  { "texture": "#east", "cullface": "east" }
+        "north": { "texture": "#other", "cullface": "north" },
+        "south": { "texture": "#other", "cullface": "south" },
+        "west":  { "texture": "#other", "cullface": "west" },
+        "east":  { "texture": "#other", "cullface": "east" }
       }
     }
   ]

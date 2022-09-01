@@ -1,10 +1,59 @@
 {
-  "variants": {
-    "facing=0": { "model": "wolves:block/fcGearBox","x": 180, "y": 0},
-    "facing=1": { "model": "wolves:block/fcGearBox","x": 0, "y": 0},
-    "facing=2": { "model": "wolves:block/fcGearBox","x": 90, "y": 0},
-    "facing=3": { "model": "wolves:block/fcGearBox","x": 90, "y": 180},
-    "facing=4": { "model": "wolves:block/fcGearBox","x": 90, "y": -90},
-    "facing=5": { "model": "wolves:block/fcGearBox","x": 90, "y": 90}
-  }
+  "multipart": [
+    {   "when": { "facing": 0 },
+      "apply": { "model": "wolves:block/fcGearBox","x": 180, "y": 0}
+    },
+    {   "when": { "facing": 1 },
+      "apply": { "model": "wolves:block/fcGearBox","x": 0, "y": 0}
+    },
+    {   "when": { "facing": 2 },
+      "apply": { "model": "wolves:block/fcGearBox","x": 90, "y": 0}
+    },
+    {   "when": { "facing": 3 },
+      "apply": { "model": "wolves:block/fcGearBox","x": 90, "y": 180}
+    },
+    {   "when": { "facing": 4 },
+      "apply": { "model": "wolves:block/fcGearBox","x": 90, "y": -90}
+    },
+    {   "when": { "facing": 5 },
+      "apply": { "model": "wolves:block/fcGearBox","x": 90, "y": 90}
+    },
+    {   "when": { "iface0": true },
+      "apply": { "model": "wolves:block/fcGearBoxPanel_out","x": 180}
+    },
+    {   "when": { "iface1": true },
+      "apply": { "model": "wolves:block/fcGearBoxPanel_out","x": 0, "y": 0}
+    },
+    {   "when": { "iface2": true },
+      "apply": { "model": "wolves:block/fcGearBoxPanel_out", "x": 90, "y": 0 }
+    },
+    {   "when": { "iface3": true },
+      "apply": { "model": "wolves:block/fcGearBoxPanel_out", "x": 90, "y": 180 }
+    },
+    {   "when": { "iface4": true },
+      "apply": { "model": "wolves:block/fcGearBoxPanel_out", "x": 90, "y": 90 }
+    },
+    {   "when": { "iface5": true },
+      "apply": { "model": "wolves:block/fcGearBoxPanel_out", "x": 90, "y": 270 }
+    },
+    {   "when": { "iface0": false },
+      "apply": { "model": "wolves:block/fcGearBoxPanel_planks","x": 180}
+    },
+    {   "when": { "iface1": false },
+      "apply": { "model": "wolves:block/fcGearBoxPanel_planks","x": 0, "y": 0}
+    },
+    {   "when": { "iface2": false },
+      "apply": { "model": "wolves:block/fcGearBoxPanel_planks", "x": 90, "y": 0 }
+    },
+    {   "when": { "iface3": false },
+      "apply": { "model": "wolves:block/fcGearBoxPanel_planks", "x": 90, "y": 180 }
+    },
+    {   "when": { "iface4": false },
+      "apply": { "model": "wolves:block/fcGearBoxPanel_planks", "x": 90, "y": 90 }
+    },
+    {   "when": { "iface5": false },
+      "apply": { "model": "wolves:block/fcGearBoxPanel_planks", "x": 90, "y": 270 }
+    }
+  ]
 }
+

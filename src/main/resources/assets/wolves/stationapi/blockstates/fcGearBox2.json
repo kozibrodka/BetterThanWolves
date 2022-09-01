@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=0": { "model": "wolves:block/fcGearBox","x": 180, "y": 0},
+    "facing=1": { "model": "wolves:block/fcGearBox","x": 0, "y": 0},
+    "facing=2": { "model": "wolves:block/fcGearBox","x": 90, "y": 0},
+    "facing=3": { "model": "wolves:block/fcGearBox","x": 90, "y": 180},
+    "facing=4": { "model": "wolves:block/fcGearBox","x": 90, "y": -90},
+    "facing=5": { "model": "wolves:block/fcGearBox","x": 90, "y": 90}
+  },
+  "multipart": [
+    {   "when": { "iface0": true },
+      "apply": { "model": "wolves:block/testBIG" }
+    },
+    {   "when": { "iface1": true },
+      "apply": { "model": "wolves:block/testBIG","x": 0, "y": 0}
+    },
+    {   "when": { "iface2": true },
+      "apply": { "model": "wolves:block/fcGearBoxPanel" }
+    },
+    {   "when": { "iface3": true },
+      "apply": { "model": "wolves:block/fcGearBoxPanel", "y": 90 }
+    },
+    {   "when": { "iface4": true },
+      "apply": { "model": "wolves:block/fcGearBoxPanel", "y": 90 }
+    },
+    {   "when": { "iface5": true },
+      "apply": { "model": "wolves:block/fcGearBoxPanel", "y": 90 }
+    }
+  ]
+}
