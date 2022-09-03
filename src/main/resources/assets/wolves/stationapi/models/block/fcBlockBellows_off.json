@@ -1,0 +1,22 @@
+{
+  "parent": "block/block",
+  "textures": {
+    "up": "block/chest_top",
+    "face": "wolves:block/fcBlockBellows_front",
+    "side": "wolves:block/fcBlockBellows_side",
+    "particle": "wolves:block/fcBlockBellows_side"
+  },
+  "elements": [
+    {   "from": [ 0, 0, 0 ],
+      "to": [ 16, 16, 16 ],
+      "faces": {
+        "down":  { "texture": "#up", "cullface": "down" },
+        "up":    { "texture": "#up", "cullface": "up" },
+        "north": { "texture": "#face", "cullface": "north" },
+        "south": { "texture": "#side", "cullface": "south" },
+        "west":  { "texture": "#side", "cullface": "west" },
+        "east":  { "texture": "#side", "cullface": "east" }
+      }
+    }
+  ]
+}

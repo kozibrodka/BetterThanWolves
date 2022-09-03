@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "growth=0": { "model": "wolves:block/fcBlockHempCrop_0"},
+    "growth=1": { "model": "wolves:block/fcBlockHempCrop_1"},
+    "growth=2": { "model": "wolves:block/fcBlockHempCrop_2"},
+    "growth=3": { "model": "wolves:block/fcBlockHempCrop_3"},
+    "growth=4": { "model": "wolves:block/fcBlockHempCrop_4"},
+    "growth=5": { "model": "wolves:block/fcBlockHempCrop_5"},
+    "growth=6": { "model": "wolves:block/fcBlockHempCrop_6"},
+    "growth=7": { "model": "wolves:block/fcBlockHempCrop_7"}
+  }
+}

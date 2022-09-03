@@ -143,7 +143,7 @@ public class FCUtilsMisc
         return iFacing;
     }
 
-    static boolean IsBlockBeingPrecipitatedOn(Level world, int i, int j, int k)
+    public static boolean IsBlockBeingPrecipitatedOn(Level world, int i, int j, int k)
     {
         if(!world.isRaining())
         {

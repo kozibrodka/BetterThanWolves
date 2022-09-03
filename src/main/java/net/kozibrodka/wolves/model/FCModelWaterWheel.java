@@ -38,7 +38,7 @@ public class FCModelWaterWheel extends EntityModelBase
 
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5)
+    public void setAngles(float f, float f1, float f2, float f3, float f4, float f5)
     {
     }
 

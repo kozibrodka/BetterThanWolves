@@ -18,41 +18,41 @@
     {   "when": { "facing": 5 },
       "apply": { "model": "wolves:block/fcGearBox","x": 90, "y": 90}
     },
-    {   "when": { "iface0": true },
+    {   "when": { "iface0": 1 },
       "apply": { "model": "wolves:block/fcGearBoxPanel_out","x": 180}
     },
-    {   "when": { "iface1": true },
+    {   "when": { "iface1": 1 },
       "apply": { "model": "wolves:block/fcGearBoxPanel_out","x": 0, "y": 0}
     },
-    {   "when": { "iface2": true },
+    {   "when": { "iface2": 1 },
       "apply": { "model": "wolves:block/fcGearBoxPanel_out", "x": 90, "y": 0 }
     },
-    {   "when": { "iface3": true },
+    {   "when": { "iface3": 1 },
       "apply": { "model": "wolves:block/fcGearBoxPanel_out", "x": 90, "y": 180 }
     },
-    {   "when": { "iface4": true },
+    {   "when": { "iface4": 1 },
+      "apply": { "model": "wolves:block/fcGearBoxPanel_out", "x": 90, "y": -90 }
+    },
+    {   "when": { "iface5": 1 },
       "apply": { "model": "wolves:block/fcGearBoxPanel_out", "x": 90, "y": 90 }
     },
-    {   "when": { "iface5": true },
-      "apply": { "model": "wolves:block/fcGearBoxPanel_out", "x": 90, "y": 270 }
+    {   "when": { "iface0": 0 },
+      "apply": { "model": "wolves:block/fcGearBoxPanel_planks_top","x": 180}
     },
-    {   "when": { "iface0": false },
-      "apply": { "model": "wolves:block/fcGearBoxPanel_planks","x": 180}
+    {   "when": { "iface1": 0 },
+      "apply": { "model": "wolves:block/fcGearBoxPanel_planks_top","x": 0, "y": 0}
     },
-    {   "when": { "iface1": false },
-      "apply": { "model": "wolves:block/fcGearBoxPanel_planks","x": 0, "y": 0}
+    {   "when": { "iface2": 0 },
+      "apply": { "model": "wolves:block/fcGearBoxPanel_planks", "x": 90, "y": 0}
     },
-    {   "when": { "iface2": false },
-      "apply": { "model": "wolves:block/fcGearBoxPanel_planks", "x": 90, "y": 0 }
+    {   "when": { "iface3": 0 },
+      "apply": { "model": "wolves:block/fcGearBoxPanel_planks", "x": 90, "y": 180}
     },
-    {   "when": { "iface3": false },
-      "apply": { "model": "wolves:block/fcGearBoxPanel_planks", "x": 90, "y": 180 }
+    {   "when": { "iface4": 0 },
+      "apply": { "model": "wolves:block/fcGearBoxPanel_planks", "x": 90, "y": -90}
     },
-    {   "when": { "iface4": false },
-      "apply": { "model": "wolves:block/fcGearBoxPanel_planks", "x": 90, "y": 90 }
-    },
-    {   "when": { "iface5": false },
-      "apply": { "model": "wolves:block/fcGearBoxPanel_planks", "x": 90, "y": 270 }
+    {   "when": { "iface5": 0 },
+      "apply": { "model": "wolves:block/fcGearBoxPanel_planks", "x": 90, "y": 90}
     }
   ]
 }

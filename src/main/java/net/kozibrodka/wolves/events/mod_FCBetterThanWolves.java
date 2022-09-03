@@ -1,14 +1,15 @@
 package net.kozibrodka.wolves.events;
 
 import net.glasslauncher.mods.api.gcapi.api.GConfig;
-import net.kozibrodka.wolves.blocks.FCBlockAxle;
-import net.kozibrodka.wolves.blocks.FCBlockGearBox;
+import net.kozibrodka.wolves.blocks.*;
 import net.kozibrodka.wolves.entity.FCEntityBroadheadArrow;
 import net.kozibrodka.wolves.entity.FCEntityWaterWheel;
+import net.kozibrodka.wolves.entity.FCEntityWindMill;
 import net.kozibrodka.wolves.glasscfg.BetterThanWolvesCFG;
 import net.kozibrodka.wolves.items.*;
 import net.kozibrodka.wolves.render.FCRenderBroadheadArrow;
 import net.kozibrodka.wolves.render.FCRenderWaterWheel;
+import net.kozibrodka.wolves.render.FCRenderWindMill;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.minecraft.client.render.entity.PigRenderer;
 import net.minecraft.client.render.entity.model.Pig;
@@ -25,6 +26,8 @@ import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.registry.ModID;
 import net.modificationstation.stationapi.api.registry.Registry;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockBase;
+import net.modificationstation.stationapi.api.template.block.TemplateFire;
+import net.modificationstation.stationapi.api.template.block.TemplatePlant;
 import net.modificationstation.stationapi.api.template.block.TemplatePressurePlate;
 import net.modificationstation.stationapi.api.template.item.TemplateItemBase;
 import net.modificationstation.stationapi.api.template.item.TemplateSeeds;
@@ -50,7 +53,7 @@ public class mod_FCBetterThanWolves {
         fcWolfRaw = new TemplateFoodBase(Identifier.of(MOD_ID, "fcWolfRaw"),3,false).setTranslationKey(MOD_ID, "fcWolfRaw");
         fcWolfCooked = new TemplateFoodBase(Identifier.of(MOD_ID, "fcWolfCooked"),8,false).setTranslationKey(MOD_ID, "fcWolfCooked");
         fcNethercoal = new TemplateItemBase(Identifier.of(MOD_ID, "fcNethercoal")).setTranslationKey(MOD_ID, "fcNethercoal");
-//        fcHempSeeds = new TemplateSeeds(Identifier.of(MOD_ID, "fcHempSeeds"), fcHempCrop.id).setTranslationKey(MOD_ID, "fcHempSeeds");
+        fcHempSeeds = new TemplateSeeds(Identifier.of(MOD_ID, "fcHempSeeds"), fcHempCrop.id).setTranslationKey(MOD_ID, "fcHempSeeds");
         fcHemp = new TemplateItemBase(Identifier.of(MOD_ID, "fcHemp")).setTranslationKey(MOD_ID, "fcHemp");
         fcGear = new TemplateItemBase(Identifier.of(MOD_ID, "fcGear")).setTranslationKey(MOD_ID, "fcGear");
         fcFlour = new TemplateItemBase(Identifier.of(MOD_ID, "fcFlour")).setTranslationKey(MOD_ID, "fcFlour");
@@ -102,9 +105,9 @@ public class mod_FCBetterThanWolves {
     @EventListener
     public void registerBlocks(BlockRegistryEvent event) {
 //        fcAnvil = new FCBlockAnvil(Identifier.of(MOD_ID, "fcAnvil")).setTranslationKey(MOD_ID, "fcAnvil");
-//        fcLightBulbOff = new FCBlockLightBulb(Identifier.of(MOD_ID, "fcLightBulbOff")).setTranslationKey(MOD_ID, "fcLightBulbOff");
-//        fcLightBulbOn = new FCBlockLightBulb(Identifier.of(MOD_ID, "fcLightBulbOn")).setTranslationKey(MOD_ID, "fcLightBulbOn").setLightEmittance(1.0F);
-//        fcBBQ = new FCBlockBBQ(Identifier.of(MOD_ID, "fcBBQ")).setTranslationKey(MOD_ID, "fcBBQ");
+        fcLightBulbOff = new FCBlockLightBulb(Identifier.of(MOD_ID, "fcLightBulbOff")).setTranslationKey(MOD_ID, "fcLightBulbOff");
+        fcLightBulbOn = new FCBlockLightBulb(Identifier.of(MOD_ID, "fcLightBulbOn")).setTranslationKey(MOD_ID, "fcLightBulbOn").setLightEmittance(1.0F);
+        fcBBQ = new FCBlockBBQ(Identifier.of(MOD_ID, "fcBBQ")).setTranslationKey(MOD_ID, "fcBBQ");
 //        fcHopper = new FCBlockHopper(Identifier.of(MOD_ID, "fcHopper")).setTranslationKey(MOD_ID, "fcHopper");
 //        fcSaw = new FCBlockSaw(Identifier.of(MOD_ID, "fcSaw")).setTranslationKey(MOD_ID, "fcSaw");
 //        fcPlatform = new FCBlockPlatform(Identifier.of(MOD_ID, "fcPlatform")).setTranslationKey(MOD_ID, "fcPlatform");
@@ -122,7 +125,7 @@ public class mod_FCBetterThanWolves {
 //        fcBlockDetector = new FCBlockDetectorBlock(Identifier.of(MOD_ID, "fcBlockDetector")).setTranslationKey(MOD_ID, "fcBlockDetector").setHardness(3.5F).setSounds(BlockBase.STONE_SOUNDS).setBlockName("fcBlockDetector");
 //        fcBlockDetectorLogic = new FCBlockDetectorLogic(Identifier.of(MOD_ID, "fcBlockDetectorLogic")).setTranslationKey(MOD_ID, "fcBlockDetectorLogic");
 //        fcBlockLens = new FCBlockLens(Identifier.of(MOD_ID, "fcBlockLens")).setTranslationKey(MOD_ID, "fcBlockLens");
-//        fcHempCrop = new FCBlockHempCrop(Identifier.of(MOD_ID, "fcHempCrop")).setTranslationKey(MOD_ID, "fcHempCrop");
+        fcHempCrop = new FCBlockHempCrop(Identifier.of(MOD_ID, "fcHempCrop")).setTranslationKey(MOD_ID, "fcHempCrop");
 //        fcHandCrank = new FCBlockHandCrank(Identifier.of(MOD_ID, "fcHandCrank")).setTranslationKey(MOD_ID, "fcHandCrank");
 //        fcMillStone = new FCBlockMillStone(Identifier.of(MOD_ID, "fcMillStone")).setTranslationKey(MOD_ID, "fcMillStone");
 //        fcAnchor = new FCBlockAnchor(Identifier.of(MOD_ID, "fcAnchor")).setTranslationKey(MOD_ID, "fcAnchor");
@@ -131,8 +134,8 @@ public class mod_FCBetterThanWolves {
         fcAxleBlock = new FCBlockAxle(Identifier.of(MOD_ID, "fcAxleBlock")).setTranslationKey(MOD_ID, "fcAxleBlock");
         fcGearBox = new FCBlockGearBox(Identifier.of(MOD_ID, "fcGearBox")).setTranslationKey(MOD_ID, "fcGearBox");
 //        fcTurntable = new FCBlockTurntable(Identifier.of(MOD_ID, "fcTurntable")).setTranslationKey(MOD_ID, "fcTurntable");
-//        fcBellows = new FCBlockBellows(Identifier.of(MOD_ID, "fcBellows")).setTranslationKey(MOD_ID, "fcBellows");
-//        fcStokedFire = new FCBlockStokedFire(Identifier.of(MOD_ID, "fcStokedFire")).setTranslationKey(MOD_ID, "fcStokedFire");
+        fcBellows = new FCBlockBellows(Identifier.of(MOD_ID, "fcBellows")).setTranslationKey(MOD_ID, "fcBellows");
+        fcStokedFire = new FCBlockStokedFire(Identifier.of(MOD_ID, "fcStokedFire")).setTranslationKey(MOD_ID, "fcStokedFire");
 //        fcUnfiredPottery = new FCBlockUnfiredPottery(Identifier.of(MOD_ID, "fcUnfiredPottery")).setTranslationKey(MOD_ID, "fcUnfiredPottery");
 //        fcCrucible = new FCBlockCrucible(Identifier.of(MOD_ID, "fcCrucible")).setTranslationKey(MOD_ID, "fcCrucible");
 //        fcPlanter = new FCBlockPlanter(Identifier.of(MOD_ID, "fcPlanter")).setTranslationKey(MOD_ID, "fcPlanter");
@@ -142,18 +145,21 @@ public class mod_FCBetterThanWolves {
     @EventListener
     private static void registerEntities(EntityRegister event) {
         event.register(FCEntityWaterWheel.class, String.valueOf(Identifier.of(MOD_ID, "WaterWheel")));
+        event.register(FCEntityWindMill.class, String.valueOf(Identifier.of(MOD_ID, "WindMill")));
         event.register(FCEntityBroadheadArrow.class, String.valueOf(Identifier.of(MOD_ID, "BroadheadArrow")));
     }
 
     @EventListener
     private static void registerMobHandlers(EntityHandlerRegistryEvent event) {
         Registry.register(event.registry, MOD_ID.id("WaterWheel") , FCEntityWaterWheel::new);
+        Registry.register(event.registry, MOD_ID.id("WindMill") , FCEntityWindMill::new);
         Registry.register(event.registry, MOD_ID.id("BroadheadArrow") , FCEntityBroadheadArrow::new);
     }
 
     @EventListener
     private static void registerEntityRenderers(EntityRendererRegisterEvent event) {
         event.renderers.put(FCEntityWaterWheel.class, new FCRenderWaterWheel());
+        event.renderers.put(FCEntityWindMill.class, new FCRenderWindMill());
         event.renderers.put(FCEntityBroadheadArrow.class, new FCRenderBroadheadArrow());
     }
 
@@ -181,7 +187,7 @@ public class mod_FCBetterThanWolves {
     public static TemplateBlockBase fcBlockDetector;
     public static TemplateBlockBase fcBlockDetectorLogic;
     public static TemplateBlockBase fcBlockLens;
-    public static TemplateBlockBase fcHempCrop;
+    public static TemplatePlant fcHempCrop;
     public static TemplateBlockBase fcHandCrank;
     public static TemplateBlockBase fcMillStone;
     public static TemplateBlockBase fcAnchor;
@@ -191,7 +197,7 @@ public class mod_FCBetterThanWolves {
     public static TemplateBlockBase fcGearBox;
     public static TemplateBlockBase fcTurntable;
     public static TemplateBlockBase fcBellows;
-    public static TemplateBlockBase fcStokedFire;
+    public static TemplateFire fcStokedFire;
     public static TemplateBlockBase fcUnfiredPottery;
     public static TemplateBlockBase fcCrucible;
     public static TemplateBlockBase fcPlanter;

@@ -27,7 +27,6 @@ public class FCBlockAxle extends TemplateBlockBase
         super(iid, Material.WOOD);
         setHardness(2.0F);
         setSounds(WOOD_SOUNDS);
-        texture = 35;
     }
 
     public int getTickrate() //tickRate
@@ -174,7 +173,7 @@ public class FCBlockAxle extends TemplateBlockBase
         /**
          * logic change
          */
-        System.out.println("SET {PWER LEVEL: " + iPowerLevel);
+//        System.out.println("SET {PWER LEVEL: " + iPowerLevel);
 //        iPowerLevel &= 3;
 //        int iMetaData = world.getTileMeta(i, j, k) & 0xc;
 //        iMetaData |= iPowerLevel;
@@ -370,7 +369,7 @@ public class FCBlockAxle extends TemplateBlockBase
             }
             if(iNewPower != iCurrentPower)
             {
-                System.out.println("ZNIAMIA");
+//                System.out.println("ZNIAMIA");
                 SetPowerLevel(world, i, j, k, iNewPower);
             }
         }
@@ -431,8 +430,7 @@ public class FCBlockAxle extends TemplateBlockBase
             }
             if(iTempid == mod_FCBetterThanWolves.fcGearBox.id)
             {
-                // TODO:
-//                ((FCBlockGearBox)mod_FCBetterThanWolves.fcGearBox).Overpower(world, potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
+                ((FCBlockGearBox)mod_FCBetterThanWolves.fcGearBox).Overpower(world, potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
             }
         }
 
