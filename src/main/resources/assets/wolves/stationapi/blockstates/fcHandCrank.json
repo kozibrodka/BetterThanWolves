@@ -1,0 +1,58 @@
+{
+  "multipart": [
+    {   "when": { "facing": 0 },
+      "apply": { "model": "wolves:block/fcBlockHandCrank", "y": 0}
+    },
+    {   "when": { "facing": 1 },
+      "apply": { "model": "wolves:block/fcBlockHandCrank", "y": -90}
+    },
+    {   "when": { "facing": 0, "ticks": 0},
+      "apply": { "model": "wolves:block/fcBlockHandCrank_lever", "y": 0}
+    },
+    {   "when": { "facing": 0, "ticks": 1},
+      "apply": { "model": "wolves:block/fcBlockHandCrank_lever", "y": 180}
+    },
+    {   "when": { "facing": 0, "ticks": 2},
+      "apply": { "model": "wolves:block/fcBlockHandCrank_lever", "y": 180}
+    },
+    {   "when": { "facing": 0, "ticks": 3},
+      "apply": { "model": "wolves:block/fcBlockHandCrank_lever", "y": 180}
+    },
+    {   "when": { "facing": 0, "ticks": 4},
+      "apply": { "model": "wolves:block/fcBlockHandCrank_lever", "y": 180}
+    },
+    {   "when": { "facing": 0, "ticks": 5},
+      "apply": { "model": "wolves:block/fcBlockHandCrank_lever", "y": 180}
+    },
+    {   "when": { "facing": 0, "ticks": 6},
+      "apply": { "model": "wolves:block/fcBlockHandCrank_lever", "y": 180}
+    },
+    {   "when": { "facing": 0, "ticks": 7},
+      "apply": { "model": "wolves:block/fcBlockHandCrank_lever", "y": 180}
+    },
+    {   "when": { "facing": 1, "ticks": 0 },
+      "apply": { "model": "wolves:block/fcBlockHandCrank_lever", "y": -90}
+    },
+    {   "when": { "facing": 1, "ticks": 1 },
+      "apply": { "model": "wolves:block/fcBlockHandCrank_lever", "y": 90}
+    },
+    {   "when": { "facing": 1, "ticks": 2 },
+      "apply": { "model": "wolves:block/fcBlockHandCrank_lever", "y": 90}
+    },
+    {   "when": { "facing": 1, "ticks": 3 },
+      "apply": { "model": "wolves:block/fcBlockHandCrank_lever", "y": 90}
+    },
+    {   "when": { "facing": 1, "ticks": 4 },
+      "apply": { "model": "wolves:block/fcBlockHandCrank_lever", "y": 90}
+    },
+    {   "when": { "facing": 1, "ticks": 5 },
+      "apply": { "model": "wolves:block/fcBlockHandCrank_lever", "y": 90}
+    },
+    {   "when": { "facing": 1, "ticks": 6 },
+      "apply": { "model": "wolves:block/fcBlockHandCrank_lever", "y": 90}
+    },
+    {   "when": { "facing": 1, "ticks": 7 },
+      "apply": { "model": "wolves:block/fcBlockHandCrank_lever", "y": 90}
+    }
+  ]
+}

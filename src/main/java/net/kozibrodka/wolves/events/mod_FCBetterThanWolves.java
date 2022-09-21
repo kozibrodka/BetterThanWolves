@@ -10,7 +10,9 @@ import net.kozibrodka.wolves.items.*;
 import net.kozibrodka.wolves.render.FCRenderBroadheadArrow;
 import net.kozibrodka.wolves.render.FCRenderWaterWheel;
 import net.kozibrodka.wolves.render.FCRenderWindMill;
+import net.kozibrodka.wolves.tileentity.FCTileEntityMillStone;
 import net.mine_diver.unsafeevents.listener.EventListener;
+import net.minecraft.block.BlockBase;
 import net.minecraft.client.render.entity.PigRenderer;
 import net.minecraft.client.render.entity.model.Pig;
 import net.minecraft.item.tool.ToolMaterial;
@@ -20,15 +22,13 @@ import net.modificationstation.stationapi.api.event.registry.BlockRegistryEvent;
 import net.modificationstation.stationapi.api.event.registry.EntityHandlerRegistryEvent;
 import net.modificationstation.stationapi.api.event.registry.ItemRegistryEvent;
 import net.modificationstation.stationapi.api.event.registry.MobHandlerRegistryEvent;
+import net.modificationstation.stationapi.api.event.tileentity.TileEntityRegisterEvent;
 import net.modificationstation.stationapi.api.item.tool.ToolMaterialFactory;
 import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
 import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.registry.ModID;
 import net.modificationstation.stationapi.api.registry.Registry;
-import net.modificationstation.stationapi.api.template.block.TemplateBlockBase;
-import net.modificationstation.stationapi.api.template.block.TemplateFire;
-import net.modificationstation.stationapi.api.template.block.TemplatePlant;
-import net.modificationstation.stationapi.api.template.block.TemplatePressurePlate;
+import net.modificationstation.stationapi.api.template.block.*;
 import net.modificationstation.stationapi.api.template.item.TemplateItemBase;
 import net.modificationstation.stationapi.api.template.item.TemplateSeeds;
 import net.modificationstation.stationapi.api.template.item.armour.TemplateArmour;
@@ -113,7 +113,7 @@ public class mod_FCBetterThanWolves {
 //        fcPlatform = new FCBlockPlatform(Identifier.of(MOD_ID, "fcPlatform")).setTranslationKey(MOD_ID, "fcPlatform");
 //        fcBlockOfWicker = new TemplateBlockBase(Identifier.of(MOD_ID, "fcBlockOfWicker"), Material.ORGANIC).setTranslationKey(MOD_ID, "fcBlockOfWicker");
 //        fcCement = new FCBlockCement(Identifier.of(MOD_ID, "fcCement")).setTranslationKey(MOD_ID, "fcCement");
-//        fcPulley = new FCBlockPulley(Identifier.of(MOD_ID, "fcPulley")).setTranslationKey(MOD_ID, "fcPulley");
+        fcPulley = new FCBlockPulley(Identifier.of(MOD_ID, "fcPulley")).setTranslationKey(MOD_ID, "fcPulley");
 //        fcPressurePlateObsidian = new TemplatePressurePlate(Identifier.of(MOD_ID, "fcPressurePlateObsidian"), 37, PressurePlateTrigger.field_1507, Material.STONE).setTranslationKey(MOD_ID, "fcPressurePlateObsidian").setHardness(0.5F).setBlastResistance(2000F).setSounds(BlockBase.STONE_SOUNDS);
 //        fcMoulding = new FCBlockMoulding(Identifier.of(MOD_ID, "fcMoulding")).setTranslationKey(MOD_ID, "fcMoulding");
 //        fcCorner = new FCBlockCorner(Identifier.of(MOD_ID, "fcCorner")).setTranslationKey(MOD_ID, "fcCorner");
@@ -121,15 +121,15 @@ public class mod_FCBetterThanWolves {
 //        fcCauldron = new FCBlockCauldron(Identifier.of(MOD_ID, "fcCauldron")).setTranslationKey(MOD_ID, "fcCauldron").setHardness(3.5F).setBlastResistance(10F).setSounds(BlockBase.METAL_SOUNDS).setBlockName("fcCauldron");
 //        fcDetectorRailWood = new FCBlockDetectorRail(Identifier.of(MOD_ID, "fcDetectorRailWood"), 23).setTranslationKey(MOD_ID, "fcDetectorRailWood");
 //        fcDetectorRailObsidian = new FCBlockDetectorRail(Identifier.of(MOD_ID, "fcDetectorRailObsidian"), 24).setTranslationKey(MOD_ID, "fcDetectorRailObsidian");
-//        fcCompanionCube = new FCBlockCompanionCube(Identifier.of(MOD_ID, "fcCompanionCube")).setTranslationKey(MOD_ID, "fcCompanionCube").setHardness(0.4F).setSounds(BlockBase.WOOL_SOUNDS);
+        fcCompanionCube = new FCBlockCompanionCube(Identifier.of(MOD_ID, "fcCompanionCube")).setTranslationKey(MOD_ID, "fcCompanionCube").setHardness(0.4F).setSounds(BlockBase.WOOL_SOUNDS); //wkurwilo mnie na razie
 //        fcBlockDetector = new FCBlockDetectorBlock(Identifier.of(MOD_ID, "fcBlockDetector")).setTranslationKey(MOD_ID, "fcBlockDetector").setHardness(3.5F).setSounds(BlockBase.STONE_SOUNDS).setBlockName("fcBlockDetector");
 //        fcBlockDetectorLogic = new FCBlockDetectorLogic(Identifier.of(MOD_ID, "fcBlockDetectorLogic")).setTranslationKey(MOD_ID, "fcBlockDetectorLogic");
 //        fcBlockLens = new FCBlockLens(Identifier.of(MOD_ID, "fcBlockLens")).setTranslationKey(MOD_ID, "fcBlockLens");
         fcHempCrop = new FCBlockHempCrop(Identifier.of(MOD_ID, "fcHempCrop")).setTranslationKey(MOD_ID, "fcHempCrop");
-//        fcHandCrank = new FCBlockHandCrank(Identifier.of(MOD_ID, "fcHandCrank")).setTranslationKey(MOD_ID, "fcHandCrank");
-//        fcMillStone = new FCBlockMillStone(Identifier.of(MOD_ID, "fcMillStone")).setTranslationKey(MOD_ID, "fcMillStone");
-//        fcAnchor = new FCBlockAnchor(Identifier.of(MOD_ID, "fcAnchor")).setTranslationKey(MOD_ID, "fcAnchor");
-//        fcRopeBlock = new FCBlockRope(Identifier.of(MOD_ID, "fcRopeBlock")).setTranslationKey(MOD_ID, "fcRopeBlock");
+        fcHandCrank = new FCBlockHandCrank(Identifier.of(MOD_ID, "fcHandCrank")).setTranslationKey(MOD_ID, "fcHandCrank");
+        fcMillStone = new FCBlockMillStone(Identifier.of(MOD_ID, "fcMillStone")).setTranslationKey(MOD_ID, "fcMillStone");
+        fcAnchor = new FCBlockAnchor(Identifier.of(MOD_ID, "fcAnchor")).setTranslationKey(MOD_ID, "fcAnchor");
+        fcRopeBlock = new FCBlockRope(Identifier.of(MOD_ID, "fcRopeBlock")).setTranslationKey(MOD_ID, "fcRopeBlock");
 //        fcOmniSlab = new FCBlockOmniSlab(Identifier.of(MOD_ID, "fcOmniSlab")).setTranslationKey(MOD_ID, "fcOmniSlab");
         fcAxleBlock = new FCBlockAxle(Identifier.of(MOD_ID, "fcAxleBlock")).setTranslationKey(MOD_ID, "fcAxleBlock");
         fcGearBox = new FCBlockGearBox(Identifier.of(MOD_ID, "fcGearBox")).setTranslationKey(MOD_ID, "fcGearBox");
@@ -163,6 +163,11 @@ public class mod_FCBetterThanWolves {
         event.renderers.put(FCEntityBroadheadArrow.class, new FCRenderBroadheadArrow());
     }
 
+    @EventListener
+    private static void registerTileEntities(TileEntityRegisterEvent event) {
+        event.register(FCTileEntityMillStone.class, String.valueOf(Identifier.of(MOD_ID, "TileMillStone")));
+    }
+
     public static boolean fcDisableAxeChanges = false;
     public static boolean fcFaceGearBoxAwayFromPlayer = false;
     public static boolean fcDisableMinecartChanges = false;
@@ -175,7 +180,7 @@ public class mod_FCBetterThanWolves {
     public static TemplateBlockBase fcSaw;
     public static TemplateBlockBase fcPlatform;
     public static TemplateBlockBase fcCement;
-    public static TemplateBlockBase fcPulley;
+    public static TemplateBlockWithEntity fcPulley;
     public static TemplatePressurePlate fcPressurePlateObsidian;
     public static TemplateBlockBase fcMoulding;
     public static TemplateBlockBase fcCorner;
@@ -189,7 +194,7 @@ public class mod_FCBetterThanWolves {
     public static TemplateBlockBase fcBlockLens;
     public static TemplatePlant fcHempCrop;
     public static TemplateBlockBase fcHandCrank;
-    public static TemplateBlockBase fcMillStone;
+    public static TemplateBlockWithEntity fcMillStone;
     public static TemplateBlockBase fcAnchor;
     public static TemplateBlockBase fcRopeBlock;
     public static TemplateBlockBase fcOmniSlab;

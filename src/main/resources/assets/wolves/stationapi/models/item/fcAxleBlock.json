@@ -1,11 +1,3 @@
 {
-  "parent": "wolves:block/fcAxleBlock",
-  "display":{
-          "thirdperson": {
-              "rotation": [ 0, 0, 90 ]
-          },
-          "firstperson": {
-              "rotation": [ 0, 0, 90 ]
-              }
-  }
+  "parent": "wolves:block/fcAxleBlock"
 }

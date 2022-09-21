@@ -153,7 +153,7 @@ public class FCUtilsMisc
         {
             return false;
         }
-        if(world.method_233(i, k) > j)
+        if(world.method_228(i, k) > j)
         {
             return false;
         }

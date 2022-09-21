@@ -37,7 +37,7 @@ public class FCBlockBellows extends TemplateBlockBase
         setHardness(2.0F);
         setSounds(WOOD_SOUNDS);
         setDefaultState(getDefaultState()
-                .with(FACING, 2)
+                .with(FACING, 0)
                 .with(POWER, false)
         );
     }
@@ -49,6 +49,7 @@ public class FCBlockBellows extends TemplateBlockBase
 
     public void onBlockPlaced(Level world, int i, int j, int k, int iFacing)
     {
+//        System.out.println("BELLOW PLACE 1");
         if(iFacing < 2)
         {
             iFacing = 2;
@@ -58,6 +59,7 @@ public class FCBlockBellows extends TemplateBlockBase
 
     public void afterPlaced(Level world, int i, int j, int k, Living entityLiving)
     {
+//        System.out.println("BELLOW PLACE 2");
         int iFacing = FCUtilsMisc.ConvertPlacingEntityOrientationToFlatBlockFacing(entityLiving);
         SetFacing(world, i, j, k, iFacing);
     }
@@ -198,11 +200,8 @@ public class FCBlockBellows extends TemplateBlockBase
             FCBlockPos targetPos = new FCBlockPos(i, j, k);
             targetPos.AddFacingAsOffset(iFacing);
             int iTargetid = world.getTileId(targetPos.i, targetPos.j, targetPos.k);
-//            if(iTargetid != mod_FCBetterThanWolves.fcHandCrank.id) //TODO DZWIGNIA HANDCRANK
-//            {
-//                continue;
-//            }
-            if(true) { //TODO KOD ZASTĘPCZY
+            if(iTargetid != mod_FCBetterThanWolves.fcHandCrank.id) //TODO DZWIGNIA HANDCRANK
+            {
                 continue;
             }
             BlockBase targetBlock = BlockBase.BY_ID[iTargetid];

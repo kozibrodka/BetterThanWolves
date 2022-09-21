@@ -1,0 +1,11 @@
+{
+  "variants": {
+    "slab=false,facing=0": { "model": "wolves:block/fcCompanion", "x": 90, "z": 0, "y": 0},
+    "slab=false,facing=1": { "model": "wolves:block/fcCompanion", "x": -90, "z": 0, "y": 0},
+    "slab=false,facing=2": { "model": "wolves:block/fcCompanion", "y": -90},
+    "slab=false,facing=3": { "model": "wolves:block/fcCompanion", "y": 90},
+    "slab=false,facing=4": { "model": "wolves:block/fcCompanion", "y": 180},
+    "slab=false,facing=5": { "model": "wolves:block/fcCompanion", "y": 0},
+    "slab=true": { "model": "wolves:block/fcCompanion_slab", "y": 90}
+  }
+}
