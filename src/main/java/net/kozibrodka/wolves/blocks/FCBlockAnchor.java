@@ -6,6 +6,7 @@
 package net.kozibrodka.wolves.blocks;
 
 import net.fabricmc.loader.api.FabricLoader;
+import net.kozibrodka.wolves.entity.FCEntityMovingAnchor;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.tileentity.FCTileEntityPulley;
 import net.kozibrodka.wolves.utils.FCBlockPos;

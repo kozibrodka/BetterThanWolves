@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "facing=0": { "model": "wolves:block/fcBlockAnchor" ,"x": 180},
+    "facing=1": { "model": "wolves:block/fcBlockAnchor" ,"x": 0},
+    "facing=2": { "model": "wolves:block/fcBlockAnchor" ,"x": 90, "y": 0},
+    "facing=3": { "model": "wolves:block/fcBlockAnchor" ,"x": 90, "y": 180},
+    "facing=4": { "model": "wolves:block/fcBlockAnchor" ,"x": 90, "y": -90},
+    "facing=5": { "model": "wolves:block/fcBlockAnchor" ,"x": 90, "y": 90}
+  }
+}

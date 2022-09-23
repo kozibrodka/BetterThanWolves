@@ -4,9 +4,7 @@
 
 package net.kozibrodka.wolves.gui;
 
-import net.kozibrodka.wolves.container.FCContainerMillStone;
 import net.kozibrodka.wolves.container.FCContainerPulley;
-import net.kozibrodka.wolves.tileentity.FCTileEntityMillStone;
 import net.kozibrodka.wolves.tileentity.FCTileEntityPulley;
 import net.minecraft.client.gui.screen.container.ContainerBase;
 import net.minecraft.entity.player.PlayerInventory;

@@ -16,7 +16,7 @@ public class FCUtilsWorld
     {
         int l = world.getTileId(i, j, k);
         BlockBase block = BlockBase.BY_ID[l];
-        return l <= 0 || l == Blocks.FLOWING_WATER.id || l == Blocks.WATER.id || l == Blocks.FLOWING_LAVA.id || l == Blocks.LAVA.id || l == Blocks.FIRE.id || l == Blocks.SNOW.id;
+        return l <= 0 || l == BlockBase.FLOWING_WATER.id || l == BlockBase.STILL_WATER.id || l == BlockBase.FLOWING_LAVA.id || l == BlockBase.STILL_LAVA.id || l == BlockBase.FIRE.id || l == BlockBase.SNOW.id;
 //                || block.isBlockReplaceable(world, i, j, k);
         /**
          * isBlockReplaceable is forge method?
