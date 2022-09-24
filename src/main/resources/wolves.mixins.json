@@ -4,6 +4,8 @@
   "package": "net.kozibrodka.wolves.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "BlockRendererAccessor",
+    "EntityBaseAccessor",
     "FireAccessor",
     "LevelAccessor"
   ],

@@ -1,6 +1,6 @@
 package net.kozibrodka.wolves.container;
 
-import net.kozibrodka.wolves.tileentity.FCTileEntityCauldron;
+import net.kozibrodka.wolves.tileentity.FCTileEntityHopper;
 import net.minecraft.container.ContainerBase;
 import net.minecraft.container.slot.Slot;
 import net.minecraft.entity.player.PlayerBase;
@@ -8,21 +8,22 @@ import net.minecraft.inventory.InventoryBase;
 import net.minecraft.item.ItemInstance;
 
 
-public class FCContainerCauldron extends ContainerBase
+public class FCContainerHopper extends ContainerBase
 {
 
-    public FCContainerCauldron(InventoryBase playerinventory, FCTileEntityCauldron tileentitycauldron)
+    public FCContainerHopper(InventoryBase playerinventory, FCTileEntityHopper tileentityHopper)
     {
-        localTileEntityCauldron = tileentitycauldron;
-        for(int iRow = 0; iRow < 3; iRow++)
+        localTileEntityHopper = tileentityHopper;
+        for(int iRow = 0; iRow < 2; iRow++)
         {
             for(int iColumn = 0; iColumn < 9; iColumn++)
             {
-                addSlot(new Slot(tileentitycauldron, iColumn + iRow * 9, 8 + iColumn * 18, 43 + iRow * 18));
+                addSlot(new Slot(tileentityHopper, iColumn + iRow * 9, 8 + iColumn * 18, 60 + iRow * 18));
             }
 
         }
 
+        addSlot(new Slot(tileentityHopper, 18, 80, 37));
         for(int iRow = 0; iRow < 3; iRow++)
         {
             for(int iColumn = 0; iColumn < 9; iColumn++)
@@ -41,9 +42,9 @@ public class FCContainerCauldron extends ContainerBase
 
     public boolean canUse(PlayerBase entityplayer)
     {
-        return localTileEntityCauldron.canPlayerUse(entityplayer);
+        return localTileEntityHopper.canPlayerUse(entityplayer);
     }
-    
+
     public ItemInstance transferSlot(int iSlotIndex)
     {
         ItemInstance ItemInstance = null;
@@ -52,12 +53,12 @@ public class FCContainerCauldron extends ContainerBase
         {
             ItemInstance ItemInstance1 = slot.getItem();
             ItemInstance = ItemInstance1.copy();
-            if(iSlotIndex < 27)
+            if(iSlotIndex < 19)
             {
-                AttemptToPutStackInInventorySlotRange(ItemInstance1, 27, slots.size());
+                AttemptToPutStackInInventorySlotRange(ItemInstance1, 19, slots.size());
             } else
             {
-                AttemptToPutStackInInventorySlotRange(ItemInstance1, 0, 27);
+                AttemptToPutStackInInventorySlotRange(ItemInstance1, 0, 18);
             }
             if(ItemInstance1.count == 0)
             {
@@ -70,37 +71,37 @@ public class FCContainerCauldron extends ContainerBase
         return ItemInstance;
     }
 
-    private void AttemptToPutStackInInventorySlotRange(ItemInstance iteminstance, int i, int j)
+    private void AttemptToPutStackInInventorySlotRange(ItemInstance ItemInstance, int i, int j)
     {
         int k = i;
-        if(iteminstance.isStackable())
+        if(ItemInstance.isStackable())
         {
-            for(; iteminstance.count > 0 && k < j; k++)
+            for(; ItemInstance.count > 0 && k < j; k++)
             {
                 Slot slot = (Slot)slots.get(k);
                 ItemInstance ItemInstance1 = slot.getItem();
-                if(ItemInstance1 == null || ItemInstance1.itemId != iteminstance.itemId || iteminstance.usesMeta() && iteminstance.getDamage() != ItemInstance1.getDamage())
+                if(ItemInstance1 == null || ItemInstance1.itemId != ItemInstance.itemId || ItemInstance.usesMeta() && ItemInstance.getDamage() != ItemInstance1.getDamage())
                 {
                     continue;
                 }
-                int i1 = ItemInstance1.count + iteminstance.count;
-                if(i1 <= iteminstance.getMaxStackSize())
+                int i1 = ItemInstance1.count + ItemInstance.count;
+                if(i1 <= ItemInstance.getMaxStackSize())
                 {
-                    iteminstance.count = 0;
+                    ItemInstance.count = 0;
                     ItemInstance1.count = i1;
                     slot.markDirty();
                     continue;
                 }
-                if(ItemInstance1.count < iteminstance.getMaxStackSize())
+                if(ItemInstance1.count < ItemInstance.getMaxStackSize())
                 {
-                    iteminstance.count -= iteminstance.getMaxStackSize() - ItemInstance1.count;
-                    ItemInstance1.count = iteminstance.getMaxStackSize();
+                    ItemInstance.count -= ItemInstance.getMaxStackSize() - ItemInstance1.count;
+                    ItemInstance1.count = ItemInstance.getMaxStackSize();
                     slot.markDirty();
                 }
             }
 
         }
-        if(iteminstance.count > 0)
+        if(ItemInstance.count > 0)
         {
             int l = i;
             do
@@ -113,9 +114,9 @@ public class FCContainerCauldron extends ContainerBase
                 ItemInstance ItemInstance2 = slot1.getItem();
                 if(ItemInstance2 == null)
                 {
-                    slot1.setStack(iteminstance.copy());
+                    slot1.setStack(ItemInstance.copy());
                     slot1.markDirty();
-                    iteminstance.count = 0;
+                    ItemInstance.count = 0;
                     break;
                 }
                 l++;
@@ -123,8 +124,8 @@ public class FCContainerCauldron extends ContainerBase
         }
     }
 
-    private final int iNumCauldronSlotRows = 3;
-    private final int iNumCauldronSlotColumns = 9;
-    private final int iNumCauldronSlots = 27;
-    private FCTileEntityCauldron localTileEntityCauldron;
+    private final int iNumHopperSlotRows = 2;
+    private final int iNumHopperSlotColumns = 9;
+    private final int iNumHopperSlots = 18;
+    private FCTileEntityHopper localTileEntityHopper;
 }

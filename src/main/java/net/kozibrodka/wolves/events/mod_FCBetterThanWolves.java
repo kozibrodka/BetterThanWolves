@@ -5,13 +5,8 @@ import net.kozibrodka.wolves.blocks.*;
 import net.kozibrodka.wolves.entity.*;
 import net.kozibrodka.wolves.glasscfg.BetterThanWolvesCFG;
 import net.kozibrodka.wolves.items.*;
-import net.kozibrodka.wolves.render.FCRenderBroadheadArrow;
-import net.kozibrodka.wolves.render.FCRenderWaterWheel;
-import net.kozibrodka.wolves.render.FCRenderWindMill;
-import net.kozibrodka.wolves.tileentity.FCTileEntityCauldron;
-import net.kozibrodka.wolves.tileentity.FCTileEntityCrucible;
-import net.kozibrodka.wolves.tileentity.FCTileEntityMillStone;
-import net.kozibrodka.wolves.tileentity.FCTileEntityPulley;
+import net.kozibrodka.wolves.render.*;
+import net.kozibrodka.wolves.tileentity.*;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.minecraft.block.BlockBase;
 import net.minecraft.client.render.entity.PigRenderer;
@@ -105,11 +100,11 @@ public class mod_FCBetterThanWolves {
 
     @EventListener
     public void registerBlocks(BlockRegistryEvent event) {
-//        fcAnvil = new FCBlockAnvil(Identifier.of(MOD_ID, "fcAnvil")).setTranslationKey(MOD_ID, "fcAnvil");
+        fcAnvil = new FCBlockAnvil(Identifier.of(MOD_ID, "fcAnvil")).setTranslationKey(MOD_ID, "fcAnvil");
         fcLightBulbOff = new FCBlockLightBulb(Identifier.of(MOD_ID, "fcLightBulbOff")).setTranslationKey(MOD_ID, "fcLightBulbOff");
         fcLightBulbOn = new FCBlockLightBulb(Identifier.of(MOD_ID, "fcLightBulbOn")).setTranslationKey(MOD_ID, "fcLightBulbOn").setLightEmittance(1.0F);
         fcBBQ = new FCBlockBBQ(Identifier.of(MOD_ID, "fcBBQ")).setTranslationKey(MOD_ID, "fcBBQ");
-//        fcHopper = new FCBlockHopper(Identifier.of(MOD_ID, "fcHopper")).setTranslationKey(MOD_ID, "fcHopper");
+        fcHopper = new FCBlockHopper(Identifier.of(MOD_ID, "fcHopper")).setTranslationKey(MOD_ID, "fcHopper");
 //        fcSaw = new FCBlockSaw(Identifier.of(MOD_ID, "fcSaw")).setTranslationKey(MOD_ID, "fcSaw");
         fcPlatform = new FCBlockPlatform(Identifier.of(MOD_ID, "fcPlatform")).setTranslationKey(MOD_ID, "fcPlatform");
 //        fcBlockOfWicker = new TemplateBlockBase(Identifier.of(MOD_ID, "fcBlockOfWicker"), Material.ORGANIC).setTranslationKey(MOD_ID, "fcBlockOfWicker");
@@ -158,6 +153,9 @@ public class mod_FCBetterThanWolves {
         Registry.register(event.registry, MOD_ID.id("WaterWheel") , FCEntityWaterWheel::new);
         Registry.register(event.registry, MOD_ID.id("WindMill") , FCEntityWindMill::new);
         Registry.register(event.registry, MOD_ID.id("BroadheadArrow") , FCEntityBroadheadArrow::new);
+        Registry.register(event.registry, MOD_ID.id("BlockLiftedByPlatform") , FCEntityBlockLiftedByPlatform::new);
+        Registry.register(event.registry, MOD_ID.id("MovingPlatform") , FCEntityMovingPlatform::new);
+        Registry.register(event.registry, MOD_ID.id("MovingAnchor") , FCEntityMovingAnchor::new);
     }
 
     @EventListener
@@ -165,6 +163,9 @@ public class mod_FCBetterThanWolves {
         event.renderers.put(FCEntityWaterWheel.class, new FCRenderWaterWheel());
         event.renderers.put(FCEntityWindMill.class, new FCRenderWindMill());
         event.renderers.put(FCEntityBroadheadArrow.class, new FCRenderBroadheadArrow());
+        event.renderers.put(FCEntityBlockLiftedByPlatform.class, new FCRenderBlockLiftedByPlatform());
+        event.renderers.put(FCEntityMovingPlatform.class, new FCRenderMovingPlatform());
+        event.renderers.put(FCEntityMovingAnchor.class, new FCRenderMovingAnchor());
     }
 
     @EventListener
@@ -173,9 +174,11 @@ public class mod_FCBetterThanWolves {
         event.register(FCTileEntityCrucible.class, String.valueOf(Identifier.of(MOD_ID, "TileCrucible")));
         event.register(FCTileEntityCauldron.class, String.valueOf(Identifier.of(MOD_ID, "TileCauldron")));
         event.register(FCTileEntityPulley.class, String.valueOf(Identifier.of(MOD_ID, "TilePulley")));
+        event.register(FCTileEntityTurntable.class, String.valueOf(Identifier.of(MOD_ID, "TileTurntable")));
+        event.register(FCTileEntityHopper.class, String.valueOf(Identifier.of(MOD_ID, "TileHooper")));
     }
 
-    //TODO: Crucible MODEL, Companion Cube model, Platform Renderers and Models, Platform render,
+    //TODO: Crucible MODEL, Companion Cube model, Platform Renderers and Models, Platform render, pulley wyrzuca rope, turntable click, recipes, Wiatrak kolory
 
     public static boolean fcDisableAxeChanges = false;
     public static boolean fcFaceGearBoxAwayFromPlayer = false;
@@ -185,7 +188,7 @@ public class mod_FCBetterThanWolves {
     public static TemplateBlockBase fcLightBulbOff;
     public static TemplateBlockBase fcLightBulbOn;
     public static TemplateBlockBase fcBBQ;
-    public static TemplateBlockBase fcHopper;
+    public static TemplateBlockWithEntity fcHopper;
     public static TemplateBlockBase fcSaw;
     public static TemplateBlockBase fcPlatform;
     public static TemplateBlockBase fcCement;

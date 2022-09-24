@@ -114,11 +114,6 @@ public class FCBlockPulley extends TemplateBlockWithEntity
         }
     }
 
-    public String getTextureFile()
-    {
-        return "/btwmodtex/btwterrain01.png";
-    }
-
     public int GetFacing(BlockView iBlockAccess, int i, int j, int l)
     {
         return 0;
@@ -191,35 +186,51 @@ public class FCBlockPulley extends TemplateBlockWithEntity
 
     public boolean IsBlockOn(BlockView iBlockAccess, int i, int j, int k)
     {
-        return (iBlockAccess.getTileMeta(i, j, k) & 1) > 0;
+        Level level = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).level;
+        if(level.getTileId(i,j,k) == mod_FCBetterThanWolves.fcPulley.id) {
+            return (level.getBlockState(i, j, k).get(POWER));
+        }else{
+            return false;
+        }
+//        return (iBlockAccess.getTileMeta(i, j, k) & 1) > 0;
     }
 
     public void SetBlockOn(Level world, int i, int j, int k, boolean bOn)
     {
-        int iMetaData = world.getTileMeta(i, j, k);
-        if(bOn)
-        {
-            iMetaData |= 1;
-        } else
-        {
-            iMetaData &= -2;
-        }
-        world.setTileMeta(i, j, k, iMetaData);
+        BlockState currentState = world.getBlockState(i, j, k);
+        world.setBlockStateWithNotify(i,j,k,currentState.with(POWER, bOn));
+//        int iMetaData = world.getTileMeta(i, j, k);
+//        if(bOn)
+//        {
+//            iMetaData |= 1;
+//        } else
+//        {
+//            iMetaData &= -2;
+//        }
+//        world.setTileMeta(i, j, k, iMetaData);
     }
 
     public boolean IsRedstoneOn(BlockView iBlockAccess, int i, int j, int k)
     {
-        return (iBlockAccess.getTileMeta(i, j, k) & 2) > 0;
+        Level level = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).level;
+        if(level.getTileId(i,j,k) == mod_FCBetterThanWolves.fcPulley.id) {
+            return (level.getBlockState(i, j, k).get(REDSTONE));
+        }else{
+            return false;
+        }
+//        return (iBlockAccess.getTileMeta(i, j, k) & 2) > 0;
     }
 
     public void SetRedstoneOn(Level world, int i, int j, int k, boolean bOn)
     {
-        int iMetaData = world.getTileMeta(i, j, k) & -3;
-        if(bOn)
-        {
-            iMetaData |= 2;
-        }
-        world.setTileMeta(i, j, k, iMetaData);
+        BlockState currentState = world.getBlockState(i, j, k);
+        world.setBlockStateWithNotify(i,j,k,currentState.with(REDSTONE, bOn));
+//        int iMetaData = world.getTileMeta(i, j, k) & -3;
+//        if(bOn)
+//        {
+//            iMetaData |= 2;
+//        }
+//        world.setTileMeta(i, j, k, iMetaData);
     }
 
     void EmitPulleyParticles(Level world, int i, int j, int k, Random random)

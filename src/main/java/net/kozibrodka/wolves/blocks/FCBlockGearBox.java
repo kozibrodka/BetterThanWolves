@@ -69,7 +69,7 @@ public class FCBlockGearBox extends TemplateBlockBase
         updateTextureSides(world, i, j, k);
     }
 
-    public void onBlockAdded(Level world, int i, int j, int k)
+    public void onBlockPlaced(Level world, int i, int j, int k)  //TODO był błąd LOL czy coś to zmieni?
     {
         super.onBlockPlaced(world, i, j, k);
         world.method_216(i, j, k, id, getTickrate());
@@ -109,14 +109,14 @@ TA METODA ODPALA SIE W ZLYM MOMENCIE + mine_diver ask
         {
             if(bOn)
             {
-                System.out.println("ustawiam false: " + bReceivingPower + bOn);
+//                System.out.println("ustawiam false: " + bReceivingPower + bOn);
                 SetGearBoxOnState(world, i, j, k, false);
                 ValidateOutputs(world, i, j, k, false);
             } else
             {
                 world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.explode", 0.05F, 1.0F);
                 EmitGearBoxParticles(world, i, j, k, random);
-                System.out.println("ustawiam true: " + bReceivingPower + bOn);
+//                System.out.println("ustawiam true: " + bReceivingPower + bOn);
                 SetGearBoxOnState(world, i, j, k, true);
                 ValidateOutputs(world, i, j, k, true);
             }
@@ -201,7 +201,7 @@ TA METODA ODPALA SIE W ZLYM MOMENCIE + mine_diver ask
 
     public void SetGearBoxOnState(Level world, int i, int j, int k, boolean bOn)
     {
-        System.out.println("USTAWIAM MOC: " + bOn);
+//        System.out.println("USTAWIAM MOC: " + bOn);
         BlockState currentState = world.getBlockState(i, j, k);
         world.setBlockStateWithNotify(i,j,k, currentState.with(POWER, bOn));
 

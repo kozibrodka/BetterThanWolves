@@ -50,6 +50,11 @@ public class FCEntityBlockLiftedByPlatform extends EntityBase
         world.setTile(i, j, k, 0);
     }
 
+    public FCEntityBlockLiftedByPlatform(Level level, Double aDouble, Double aDouble1, Double aDouble2) {
+        this(level);
+    }
+
+
     protected void initDataTracker()
     {
     }

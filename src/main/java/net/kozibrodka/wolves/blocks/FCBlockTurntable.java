@@ -1,5 +1,6 @@
 package net.kozibrodka.wolves.blocks;
 
+import net.fabricmc.loader.api.FabricLoader;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.tileentity.FCTileEntityTurntable;
 import net.kozibrodka.wolves.utils.FCBlockPos;
@@ -7,6 +8,7 @@ import net.kozibrodka.wolves.utils.FCIBlock;
 import net.kozibrodka.wolves.utils.FCMechanicalDevice;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.item.ItemInstance;
 import net.minecraft.level.BlockView;
@@ -37,16 +39,6 @@ public class FCBlockTurntable extends TemplateBlockWithEntity
                 .with(CLICK, 0)
         );
     }
-
-    public int getTextureForSide(int iSide)
-    {
-        if(iSide == 0)
-        {
-            return 67;
-        }
-        return iSide != 1 ? 66 : 65;
-    }
-
 
     public int getTickrate()
     {
@@ -109,14 +101,24 @@ public class FCBlockTurntable extends TemplateBlockWithEntity
             {
                 iSwitchSetting = 0;
             }
+            System.out.println(tileEntityTurntable.m_iSwitchSetting + " RAZ");
             tileEntityTurntable.m_iSwitchSetting = iSwitchSetting;
+            System.out.println(tileEntityTurntable.m_iSwitchSetting + " DWA");
+
+            clickState(world,i,j,k,iSwitchSetting);
+
             world.method_202(i, j, k, i, j, k);
-            world.method_243(i, j, k);
             return true;
         } else
         {
             return false;
         }
+    }
+
+    public void clickState(Level world,  int i, int j, int k, int click){
+        BlockState currentState = world.getBlockState(i, j, k);
+        //TODO maybe use only state and remove m_switchsetting
+        world.setBlockStateWithNotify(i,j,k,currentState.with(CLICK, click));
     }
 
     public int GetFacing(BlockView iBlockAccess, int i, int j, int l)
@@ -144,34 +146,50 @@ public class FCBlockTurntable extends TemplateBlockWithEntity
 
     public boolean IsBlockMechanicalOn(BlockView iBlockAccess, int i, int j, int k)
     {
-        return (iBlockAccess.getTileMeta(i, j, k) & 1) > 0;
+        Level level = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).level;
+        if(level.getTileId(i,j,k) == mod_FCBetterThanWolves.fcTurntable.id) {
+            return (level.getBlockState(i, j, k).get(POWER));
+        }else{
+            return false;
+        }
+//        return (iBlockAccess.getTileMeta(i, j, k) & 1) > 0;
     }
 
     public void SetBlockMechanicalOn(Level world, int i, int j, int k, boolean bOn)
     {
-        int iMetaData = world.getTileMeta(i, j, k) & -2;
-        if(bOn)
-        {
-            iMetaData |= 1;
-        }
-        world.setTileMeta(i, j, k, iMetaData);
-        world.method_243(i, j, k);
+        BlockState currentState = world.getBlockState(i, j, k);
+        world.setBlockStateWithNotify(i,j,k,currentState.with(POWER, bOn));
+//        int iMetaData = world.getTileMeta(i, j, k) & -2;
+//        if(bOn)
+//        {
+//            iMetaData |= 1;
+//        }
+//        world.setTileMeta(i, j, k, iMetaData);
+//        world.method_243(i, j, k);
     }
 
     public boolean IsBlockRedstoneOn(BlockView iBlockAccess, int i, int j, int k)
     {
-        return (iBlockAccess.getTileMeta(i, j, k) & 2) > 0;
+        Level level = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).level;
+        if(level.getTileId(i,j,k) == mod_FCBetterThanWolves.fcTurntable.id) {
+            return (level.getBlockState(i, j, k).get(REDSTONE));
+        }else{
+            return false;
+        }
+//        return (iBlockAccess.getTileMeta(i, j, k) & 2) > 0;
     }
 
     public void SetBlockRedstoneOn(Level world, int i, int j, int k, boolean bOn)
     {
-        int iMetaData = world.getTileMeta(i, j, k) & -3;
-        if(bOn)
-        {
-            iMetaData |= 2;
-        }
-        world.setTileMeta(i, j, k, iMetaData);
-        world.method_243(i, j, k);
+        BlockState currentState = world.getBlockState(i, j, k);
+        world.setBlockStateWithNotify(i,j,k,currentState.with(REDSTONE, bOn));
+//        int iMetaData = world.getTileMeta(i, j, k) & -3;
+//        if(bOn)
+//        {
+//            iMetaData |= 2;
+//        }
+//        world.setTileMeta(i, j, k, iMetaData);
+//        world.method_243(i, j, k);
     }
 
     void EmitTurntableParticles(Level world, int i, int j, int k, Random random)
