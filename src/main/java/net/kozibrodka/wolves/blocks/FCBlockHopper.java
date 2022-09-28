@@ -235,17 +235,17 @@ public class FCBlockHopper extends TemplateBlockWithEntity
         }
     }
 
-    public boolean isPoweringTo(BlockView iBlockAccess, int i, int j, int k, int l)
+    public boolean isPowered(BlockView iBlockAccess, int i, int j, int k, int l)
     {
         return IsRedstoneOutputOn(iBlockAccess, i, j, k);
     }
 
-    public boolean isIndirectlyPoweringTo(Level world, int i, int j, int i1, int j1)
+    public boolean indirectlyPowered(Level world, int i, int j, int i1, int j1)
     {
         return false;
     }
 
-    public boolean canProvidePower()
+    public boolean getEmitsRedstonePower()
     {
         return true;
     }
@@ -344,7 +344,7 @@ public class FCBlockHopper extends TemplateBlockWithEntity
     {
         for(int iTemp = 0; iTemp < 2; iTemp++)
         {
-            FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcOmniSlab.id, 1);
+            FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcPanel_wood.id, 1); //TODO meta?
         }
 
         for(int iTemp = 0; iTemp < 1; iTemp++)

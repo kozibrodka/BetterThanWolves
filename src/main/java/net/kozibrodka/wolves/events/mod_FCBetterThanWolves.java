@@ -7,8 +7,11 @@ import net.kozibrodka.wolves.glasscfg.BetterThanWolvesCFG;
 import net.kozibrodka.wolves.items.*;
 import net.kozibrodka.wolves.render.*;
 import net.kozibrodka.wolves.tileentity.*;
+import net.kozibrodka.wolves.utils.FCMaterialCement;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.minecraft.block.BlockBase;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.material.MaterialColour;
 import net.minecraft.client.render.entity.PigRenderer;
 import net.minecraft.client.render.entity.model.Pig;
 import net.minecraft.item.tool.ToolMaterial;
@@ -45,7 +48,7 @@ public class mod_FCBetterThanWolves {
     public void registerItems(ItemRegistryEvent event) {
         ToolMaterialFactory.create("STEEL",3,2250,12F,8);
 
-//        fcBucketCement = new FCItemBucketCement(Identifier.of(MOD_ID, "fcBucketCement"), fcCement.id).setTranslationKey(MOD_ID, "fcBucketCement");
+        fcBucketCement = new FCItemBucketCement(Identifier.of(MOD_ID, "fcBucketCement"), fcCement.id).setTranslationKey(MOD_ID, "fcBucketCement");
         fcWolfRaw = new TemplateFoodBase(Identifier.of(MOD_ID, "fcWolfRaw"),3,false).setTranslationKey(MOD_ID, "fcWolfRaw");
         fcWolfCooked = new TemplateFoodBase(Identifier.of(MOD_ID, "fcWolfCooked"),8,false).setTranslationKey(MOD_ID, "fcWolfCooked");
         fcNethercoal = new TemplateItemBase(Identifier.of(MOD_ID, "fcNethercoal")).setTranslationKey(MOD_ID, "fcNethercoal");
@@ -108,34 +111,55 @@ public class mod_FCBetterThanWolves {
 //        fcSaw = new FCBlockSaw(Identifier.of(MOD_ID, "fcSaw")).setTranslationKey(MOD_ID, "fcSaw");
         fcPlatform = new FCBlockPlatform(Identifier.of(MOD_ID, "fcPlatform")).setTranslationKey(MOD_ID, "fcPlatform");
 //        fcBlockOfWicker = new TemplateBlockBase(Identifier.of(MOD_ID, "fcBlockOfWicker"), Material.ORGANIC).setTranslationKey(MOD_ID, "fcBlockOfWicker");
-//        fcCement = new FCBlockCement(Identifier.of(MOD_ID, "fcCement")).setTranslationKey(MOD_ID, "fcCement");
+        fcCement = new FCBlockCement(Identifier.of(MOD_ID, "fcCement")).setTranslationKey(MOD_ID, "fcCement");
         fcPulley = new FCBlockPulley(Identifier.of(MOD_ID, "fcPulley")).setTranslationKey(MOD_ID, "fcPulley");
 //        fcPressurePlateObsidian = new TemplatePressurePlate(Identifier.of(MOD_ID, "fcPressurePlateObsidian"), 37, PressurePlateTrigger.field_1507, Material.STONE).setTranslationKey(MOD_ID, "fcPressurePlateObsidian").setHardness(0.5F).setBlastResistance(2000F).setSounds(BlockBase.STONE_SOUNDS);
 //        fcMoulding = new FCBlockMoulding(Identifier.of(MOD_ID, "fcMoulding")).setTranslationKey(MOD_ID, "fcMoulding");
+        fcMoulding_wood = new FCBlockMoulding(Identifier.of(MOD_ID, "fcMoulding_wood")).setTranslationKey(MOD_ID, "fcMoulding_wood");
 //        fcCorner = new FCBlockCorner(Identifier.of(MOD_ID, "fcCorner")).setTranslationKey(MOD_ID, "fcCorner");
-//        fcBlockDispenser = new FCBlockBlockDispenser(Identifier.of(MOD_ID, "fcBlockDispenser")).setTranslationKey(MOD_ID, "fcBlockDispenser").setHardness(3.5F).setSounds(BlockBase.STONE_SOUNDS).setBlockName("fcBlockDispenser");
+        fcCorner_wood = new FCBlockCorner(Identifier.of(MOD_ID, "fcCorner_wood")).setTranslationKey(MOD_ID, "fcCorner_wood");
+        fcBlockDispenser = new FCBlockBlockDispenser(Identifier.of(MOD_ID, "fcBlockDispenser")).setTranslationKey(MOD_ID, "fcBlockDispenser").setHardness(3.5F).setSounds(BlockBase.STONE_SOUNDS).setTranslationKey(MOD_ID,"fcBlockDispenser");
         fcCauldron = new FCBlockCauldron(Identifier.of(MOD_ID, "fcCauldron")).setTranslationKey(MOD_ID, "fcCauldron").setHardness(3.5F).setBlastResistance(10F).setSounds(BlockBase.METAL_SOUNDS).setTranslationKey(MOD_ID,"fcCauldron");
 //        fcDetectorRailWood = new FCBlockDetectorRail(Identifier.of(MOD_ID, "fcDetectorRailWood"), 23).setTranslationKey(MOD_ID, "fcDetectorRailWood");
 //        fcDetectorRailObsidian = new FCBlockDetectorRail(Identifier.of(MOD_ID, "fcDetectorRailObsidian"), 24).setTranslationKey(MOD_ID, "fcDetectorRailObsidian");
         fcCompanionCube = new FCBlockCompanionCube(Identifier.of(MOD_ID, "fcCompanionCube")).setTranslationKey(MOD_ID, "fcCompanionCube").setHardness(0.4F).setSounds(BlockBase.WOOL_SOUNDS); //wkurwilo mnie na razie
-//        fcBlockDetector = new FCBlockDetectorBlock(Identifier.of(MOD_ID, "fcBlockDetector")).setTranslationKey(MOD_ID, "fcBlockDetector").setHardness(3.5F).setSounds(BlockBase.STONE_SOUNDS).setBlockName("fcBlockDetector");
-//        fcBlockDetectorLogic = new FCBlockDetectorLogic(Identifier.of(MOD_ID, "fcBlockDetectorLogic")).setTranslationKey(MOD_ID, "fcBlockDetectorLogic");
-//        fcBlockLens = new FCBlockLens(Identifier.of(MOD_ID, "fcBlockLens")).setTranslationKey(MOD_ID, "fcBlockLens");
+        fcBlockDetector = new FCBlockDetectorBlock(Identifier.of(MOD_ID, "fcBlockDetector")).setTranslationKey(MOD_ID, "fcBlockDetector").setHardness(3.5F).setSounds(BlockBase.STONE_SOUNDS).setTranslationKey(MOD_ID,"fcBlockDetector");
+        fcBlockDetectorLogic = new FCBlockDetectorLogic(Identifier.of(MOD_ID, "fcBlockDetectorLogic")).setTranslationKey(MOD_ID, "fcBlockDetectorLogic");
+//        fcBlockLens = new FCBlockLens(Identifier.of(MOD_ID, "fcBlockLens")).setTranslationKey(MOD_ID, "fcBlockLens"); //TODO chyba tego nie ma
         fcHempCrop = new FCBlockHempCrop(Identifier.of(MOD_ID, "fcHempCrop")).setTranslationKey(MOD_ID, "fcHempCrop");
         fcHandCrank = new FCBlockHandCrank(Identifier.of(MOD_ID, "fcHandCrank")).setTranslationKey(MOD_ID, "fcHandCrank");
         fcMillStone = new FCBlockMillStone(Identifier.of(MOD_ID, "fcMillStone")).setTranslationKey(MOD_ID, "fcMillStone");
         fcAnchor = new FCBlockAnchor(Identifier.of(MOD_ID, "fcAnchor")).setTranslationKey(MOD_ID, "fcAnchor");
         fcRopeBlock = new FCBlockRope(Identifier.of(MOD_ID, "fcRopeBlock")).setTranslationKey(MOD_ID, "fcRopeBlock");
 //        fcOmniSlab = new FCBlockOmniSlab(Identifier.of(MOD_ID, "fcOmniSlab")).setTranslationKey(MOD_ID, "fcOmniSlab");
+        fcPanel_wood = new FCBlockOmniSlab(Identifier.of(MOD_ID, "fcPanel_wood")).setTranslationKey(MOD_ID, "fcPanel_wood");
         fcAxleBlock = new FCBlockAxle(Identifier.of(MOD_ID, "fcAxleBlock")).setTranslationKey(MOD_ID, "fcAxleBlock");
         fcGearBox = new FCBlockGearBox(Identifier.of(MOD_ID, "fcGearBox")).setTranslationKey(MOD_ID, "fcGearBox");
         fcTurntable = new FCBlockTurntable(Identifier.of(MOD_ID, "fcTurntable")).setTranslationKey(MOD_ID, "fcTurntable");
         fcBellows = new FCBlockBellows(Identifier.of(MOD_ID, "fcBellows")).setTranslationKey(MOD_ID, "fcBellows");
         fcStokedFire = new FCBlockStokedFire(Identifier.of(MOD_ID, "fcStokedFire")).setTranslationKey(MOD_ID, "fcStokedFire");
-//        fcUnfiredPottery = new FCBlockUnfiredPottery(Identifier.of(MOD_ID, "fcUnfiredPottery")).setTranslationKey(MOD_ID, "fcUnfiredPottery");
+        fcUnfiredPottery_crucible = new FCBlockUnfiredPottery(Identifier.of(MOD_ID, "fcUnfiredPottery_crucible")).setTranslationKey(MOD_ID, "fcUnfiredPottery_crucible");
+        fcUnfiredPottery_planter = new FCBlockUnfiredPottery(Identifier.of(MOD_ID, "fcUnfiredPottery_planter")).setTranslationKey(MOD_ID, "fcUnfiredPottery_planter");
+        fcUnfiredPottery_vase = new FCBlockUnfiredPottery(Identifier.of(MOD_ID, "fcUnfiredPottery_vase")).setTranslationKey(MOD_ID, "fcUnfiredPottery_vase");
         fcCrucible = new FCBlockCrucible(Identifier.of(MOD_ID, "fcCrucible")).setTranslationKey(MOD_ID, "fcCrucible");
-//        fcPlanter = new FCBlockPlanter(Identifier.of(MOD_ID, "fcPlanter")).setTranslationKey(MOD_ID, "fcPlanter");
-//        fcVase = new FCBlockVase(Identifier.of(MOD_ID, "fcVase")).setTranslationKey(MOD_ID, "fcVase");
+        fcPlanter_empty = new FCBlockPlanter_empty(Identifier.of(MOD_ID, "fcPlanter_empty")).setTranslationKey(MOD_ID, "fcPlanter_empty");
+        fcPlanter = new FCBlockPlanter(Identifier.of(MOD_ID, "fcPlanter")).setTranslationKey(MOD_ID, "fcPlanter");
+        fcVase_white = new FCBlockVase(Identifier.of(MOD_ID, "fcVase_white")).setTranslationKey(MOD_ID, "fcVase_white");
+        fcVase_orange = new FCBlockVase(Identifier.of(MOD_ID, "fcVase_orange")).setTranslationKey(MOD_ID, "fcVase_orange");
+        fcVase_magenta = new FCBlockVase(Identifier.of(MOD_ID, "fcVase_magenta")).setTranslationKey(MOD_ID, "fcVase_magenta");
+        fcVase_light_blue = new FCBlockVase(Identifier.of(MOD_ID, "fcVase_light_blue")).setTranslationKey(MOD_ID, "fcVase_light_blue");
+        fcVase_yellow = new FCBlockVase(Identifier.of(MOD_ID, "fcVase_yellow")).setTranslationKey(MOD_ID, "fcVase_yellow");
+        fcVase_lime = new FCBlockVase(Identifier.of(MOD_ID, "fcVase_lime")).setTranslationKey(MOD_ID, "fcVase_lime");
+        fcVase_pink = new FCBlockVase(Identifier.of(MOD_ID, "fcVase_pink")).setTranslationKey(MOD_ID, "fcVase_pink");
+        fcVase_gray = new FCBlockVase(Identifier.of(MOD_ID, "fcVase_gray")).setTranslationKey(MOD_ID, "fcVase_gray");
+        fcVase_light_gray = new FCBlockVase(Identifier.of(MOD_ID, "fcVase_light_gray")).setTranslationKey(MOD_ID, "fcVase_light_gray");
+        fcVase_cyan = new FCBlockVase(Identifier.of(MOD_ID, "fcVase_cyan")).setTranslationKey(MOD_ID, "fcVase_cyan");
+        fcVase_purple = new FCBlockVase(Identifier.of(MOD_ID, "fcVase_purple")).setTranslationKey(MOD_ID, "fcVase_purple");
+        fcVase_blue = new FCBlockVase(Identifier.of(MOD_ID, "fcVase_blue")).setTranslationKey(MOD_ID, "fcVase_blue");
+        fcVase_brown = new FCBlockVase(Identifier.of(MOD_ID, "fcVase_brown")).setTranslationKey(MOD_ID, "fcVase_brown");
+        fcVase_green = new FCBlockVase(Identifier.of(MOD_ID, "fcVase_green")).setTranslationKey(MOD_ID, "fcVase_green");
+        fcVase_red = new FCBlockVase(Identifier.of(MOD_ID, "fcVase_red")).setTranslationKey(MOD_ID, "fcVase_red");
+        fcVase_black = new FCBlockVase(Identifier.of(MOD_ID, "fcVase_black")).setTranslationKey(MOD_ID, "fcVase_black");
     }
 
     @EventListener
@@ -176,14 +200,20 @@ public class mod_FCBetterThanWolves {
         event.register(FCTileEntityPulley.class, String.valueOf(Identifier.of(MOD_ID, "TilePulley")));
         event.register(FCTileEntityTurntable.class, String.valueOf(Identifier.of(MOD_ID, "TileTurntable")));
         event.register(FCTileEntityHopper.class, String.valueOf(Identifier.of(MOD_ID, "TileHooper")));
+        event.register(FCTileEntityBlockDispenser.class, String.valueOf(Identifier.of(MOD_ID, "TileDispenser")));
+        event.register(FCTileEntityUnfiredPottery.class, String.valueOf(Identifier.of(MOD_ID, "TilePottery")));
+        event.register(FCTileEntityVase.class, String.valueOf(Identifier.of(MOD_ID, "TileVase")));
+        event.register(FCTileEntityCement.class, String.valueOf(Identifier.of(MOD_ID, "TileCement")));
     }
 
     //TODO: Crucible MODEL, Companion Cube model, Platform Renderers and Models, Platform render, pulley wyrzuca rope, turntable click, recipes, Wiatrak kolory
+    //TODO: Hoopoer logic, Detector Logic airblock&replacable and arrow detection, Dispenset logic, Planter functionality, Fire on hibachi na sekunde gasnie
+    //TODO: poprawić placement anvil i bellows na podstawie omniSLab, gear box texure side plank rotation (models are mess)
 
     public static boolean fcDisableAxeChanges = false;
     public static boolean fcFaceGearBoxAwayFromPlayer = false;
     public static boolean fcDisableMinecartChanges = false;
-//    public static final Material fcCementMaterial;
+    public static final Material fcCementMaterial = new FCMaterialCement(MaterialColour.STONE);;
     public static TemplateBlockBase fcAnvil;
     public static TemplateBlockBase fcLightBulbOff;
     public static TemplateBlockBase fcLightBulbOn;
@@ -191,12 +221,14 @@ public class mod_FCBetterThanWolves {
     public static TemplateBlockWithEntity fcHopper;
     public static TemplateBlockBase fcSaw;
     public static TemplateBlockBase fcPlatform;
-    public static TemplateBlockBase fcCement;
+    public static TemplateBlockWithEntity fcCement;
     public static TemplateBlockWithEntity fcPulley;
     public static TemplatePressurePlate fcPressurePlateObsidian;
-    public static TemplateBlockBase fcMoulding;
-    public static TemplateBlockBase fcCorner;
-    public static TemplateBlockBase fcBlockDispenser;
+//    public static TemplateBlockBase fcMoulding;
+    public static TemplateBlockBase fcMoulding_wood;
+//    public static TemplateBlockBase fcCorner;
+    public static TemplateBlockBase fcCorner_wood;
+    public static TemplateBlockWithEntity fcBlockDispenser;
     public static TemplateBlockWithEntity fcCauldron;
     public static TemplateBlockBase fcDetectorRailWood;
     public static TemplateBlockBase fcDetectorRailObsidian;
@@ -209,16 +241,38 @@ public class mod_FCBetterThanWolves {
     public static TemplateBlockWithEntity fcMillStone;
     public static TemplateBlockBase fcAnchor;
     public static TemplateBlockBase fcRopeBlock;
-    public static TemplateBlockBase fcOmniSlab;
+//    public static TemplateBlockBase fcOmniSlab;
+    public static TemplateBlockBase fcPanel_wood;
     public static TemplateBlockBase fcAxleBlock;
     public static TemplateBlockBase fcGearBox;
     public static TemplateBlockWithEntity fcTurntable;
     public static TemplateBlockBase fcBellows;
     public static TemplateFire fcStokedFire;
-    public static TemplateBlockBase fcUnfiredPottery;
+//    public static TemplateBlockWithEntity fcUnfiredPottery;
+    public static TemplateBlockWithEntity fcUnfiredPottery_crucible;
+    public static TemplateBlockWithEntity fcUnfiredPottery_planter;
+    public static TemplateBlockWithEntity fcUnfiredPottery_vase;
     public static TemplateBlockWithEntity fcCrucible;
+    public static TemplateBlockBase fcPlanter_empty;
     public static TemplateBlockBase fcPlanter;
-    public static TemplateBlockBase fcVase;
+    public static TemplateBlockWithEntity fcVase_white;
+    public static TemplateBlockWithEntity fcVase_orange;
+    public static TemplateBlockWithEntity fcVase_magenta;
+    public static TemplateBlockWithEntity fcVase_light_blue;
+    public static TemplateBlockWithEntity fcVase_yellow;
+    public static TemplateBlockWithEntity fcVase_lime;
+    public static TemplateBlockWithEntity fcVase_pink;
+    public static TemplateBlockWithEntity fcVase_gray;
+    public static TemplateBlockWithEntity fcVase_light_gray;
+    public static TemplateBlockWithEntity fcVase_cyan;
+    public static TemplateBlockWithEntity fcVase_purple;
+    public static TemplateBlockWithEntity fcVase_blue;
+    public static TemplateBlockWithEntity fcVase_brown;
+    public static TemplateBlockWithEntity fcVase_green;
+    public static TemplateBlockWithEntity fcVase_red;
+    public static TemplateBlockWithEntity fcVase_black;
+
+
     public static TemplateBlockBase fcBlockOfWicker; //Mango Pack Addon
     public static TemplateBucket fcBucketCement;
     public static TemplateFoodBase fcWolfRaw;

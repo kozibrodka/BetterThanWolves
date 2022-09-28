@@ -1,0 +1,23 @@
+{
+  "parent": "block/block",
+  "textures": {
+    "up": "block/furnace_top",
+    "down": "wolves:block/fcBlockDetector_down",
+    "face": "wolves:block/fcBlockDetector_off",
+    "side": "block/furnace_side",
+    "particle": "block/fcBlockBellows_side"
+  },
+  "elements": [
+    {   "from": [ 0, 0, 0 ],
+      "to": [ 16, 16, 16 ],
+      "faces": {
+        "down":  { "texture": "#down", "cullface": "down" },
+        "up":    { "texture": "#up", "cullface": "up" },
+        "north": { "texture": "#side", "cullface": "north" },
+        "south": { "texture": "#face", "cullface": "south" },
+        "west":  { "texture": "#side", "cullface": "west" },
+        "east":  { "texture": "#side", "cullface": "east" }
+      }
+    }
+  ]
+}

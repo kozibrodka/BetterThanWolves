@@ -43,16 +43,16 @@
       "apply": { "model": "wolves:block/fcGearBoxPanel_planks_top","x": 0, "y": 0}
     },
     {   "when": { "iface2": 0 },
-      "apply": { "model": "wolves:block/fcGearBoxPanel_planks", "x": 90, "y": 0}
+      "apply": { "model": "wolves:block/fcGearBoxPanel_planks", "x": 90, "y": 0, "z": 0}
     },
     {   "when": { "iface3": 0 },
-      "apply": { "model": "wolves:block/fcGearBoxPanel_planks", "x": 90, "y": 180}
+      "apply": { "model": "wolves:block/fcGearBoxPanel_planks", "x": 90, "y": 180, "z": 0}
     },
     {   "when": { "iface4": 0 },
-      "apply": { "model": "wolves:block/fcGearBoxPanel_planks", "x": 90, "y": -90}
+      "apply": { "model": "wolves:block/fcGearBoxPanel_planks", "x": 90, "y": -90, "z": 0}
     },
     {   "when": { "iface5": 0 },
-      "apply": { "model": "wolves:block/fcGearBoxPanel_planks", "x": 90, "y": 90}
+      "apply": { "model": "wolves:block/fcGearBoxPanel_planks", "x": 90, "y": 90, "z": 0}
     }
   ]
 }

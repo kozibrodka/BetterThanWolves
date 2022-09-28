@@ -95,19 +95,25 @@ public class FCBlockTurntable extends TemplateBlockWithEntity
         ItemInstance playerEquippedItem = entityPlayer.getHeldItem();
         if(playerEquippedItem == null)
         {
-            FCTileEntityTurntable tileEntityTurntable = (FCTileEntityTurntable)world.getTileEntity(i, j, k);
-            int iSwitchSetting = tileEntityTurntable.m_iSwitchSetting;
-            if(++iSwitchSetting > 3)
+            BlockState currentState = world.getBlockState(i, j, k);
+            int iClick = currentState.get(CLICK);
+            if(++iClick > 3)
             {
-                iSwitchSetting = 0;
+                iClick = 0;
             }
-            System.out.println(tileEntityTurntable.m_iSwitchSetting + " RAZ");
-            tileEntityTurntable.m_iSwitchSetting = iSwitchSetting;
-            System.out.println(tileEntityTurntable.m_iSwitchSetting + " DWA");
+            world.setBlockStateWithNotify(i,j,k,currentState.with(CLICK, iClick));
+            canUseTile(world,i,j,k,iClick);
 
-            clickState(world,i,j,k,iSwitchSetting);
-
-            world.method_202(i, j, k, i, j, k);
+//            FCTileEntityTurntable tileEntityTurntable = (FCTileEntityTurntable)world.getTileEntity(i, j, k);
+//            int iSwitchSetting = tileEntityTurntable.m_iSwitchSetting;
+//            if(++iSwitchSetting > 3)
+//            {
+//                iSwitchSetting = 0;
+//            }
+//            System.out.println(tileEntityTurntable.m_iSwitchSetting + " RAZ");
+//            tileEntityTurntable.m_iSwitchSetting = iSwitchSetting;
+//            System.out.println(tileEntityTurntable.m_iSwitchSetting + " DWA");
+//            world.method_202(i, j, k, i, j, k);
             return true;
         } else
         {
@@ -115,11 +121,19 @@ public class FCBlockTurntable extends TemplateBlockWithEntity
         }
     }
 
-    public void clickState(Level world,  int i, int j, int k, int click){
-        BlockState currentState = world.getBlockState(i, j, k);
-        //TODO maybe use only state and remove m_switchsetting
-        world.setBlockStateWithNotify(i,j,k,currentState.with(CLICK, click));
+    public boolean canUseTile(Level world, int i, int j, int k, int click)
+    {
+        FCTileEntityTurntable tileEntityTurntable = (FCTileEntityTurntable)world.getTileEntity(i, j, k);
+        tileEntityTurntable.m_iSwitchSetting = click;
+        world.method_202(i, j, k, i, j, k);
+        return true;
     }
+
+//    public void clickState(Level world,  int i, int j, int k, int click){
+//        BlockState currentState = world.getBlockState(i, j, k);
+//        //TODO maybe use only state and remove m_switchsetting
+//        world.setBlockStateWithNotify(i,j,k,currentState.with(CLICK, click));
+//    }
 
     public int GetFacing(BlockView iBlockAccess, int i, int j, int l)
     {

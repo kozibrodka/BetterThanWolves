@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "facing=0": { "model": "wolves:panel/fcCorner_wood_0"},
+    "facing=1": { "model": "wolves:panel/fcCorner_wood_1"},
+    "facing=2": { "model": "wolves:panel/fcCorner_wood_2"},
+    "facing=3": { "model": "wolves:panel/fcCorner_wood_3"},
+    "facing=4": { "model": "wolves:panel/fcCorner_wood_4"},
+    "facing=5": { "model": "wolves:panel/fcCorner_wood_5"},
+    "facing=6": { "model": "wolves:panel/fcCorner_wood_6"},
+    "facing=7": { "model": "wolves:panel/fcCorner_wood_7"}
+  }
+}

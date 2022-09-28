@@ -7,6 +7,7 @@ package net.kozibrodka.wolves.tileentity;
 
 import net.fabricmc.loader.api.FabricLoader;
 import net.kozibrodka.wolves.blocks.FCBlockTurntable;
+import net.kozibrodka.wolves.blocks.FCBlockUnfiredPottery;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.utils.FCBlockPos;
 import net.kozibrodka.wolves.utils.FCIBlock;
@@ -125,7 +126,7 @@ public class FCTileEntityTurntable extends TileEntityBase
             m_bPotteryRotated = true;
             return;
         }
-        if(iTargetid == mod_FCBetterThanWolves.fcUnfiredPottery.id)
+        if(targetBlock instanceof FCBlockUnfiredPottery) //if(iTargetid == mod_FCBetterThanWolves.fcUnfiredPottery.id)
         {
             RotateUnfiredPottery(i, j, k, bReverseDirection);
             m_bPotteryRotated = true;
@@ -483,7 +484,7 @@ public class FCTileEntityTurntable extends TileEntityBase
         m_iPotteryRotationCount++;
         if(m_iPotteryRotationCount >= 8)
         {
-            level.setTile(i, j, k, mod_FCBetterThanWolves.fcUnfiredPottery.id);
+            level.setTile(i, j, k, mod_FCBetterThanWolves.fcUnfiredPottery_crucible.id);
             level.method_202(i, j, k, i, j, k);
             FCUtilsMisc.EjectSingleItemWithRandomOffset(level, i, j + 1, k, ItemBase.clay.id, 0);
             m_iPotteryRotationCount = 0;
@@ -492,20 +493,44 @@ public class FCTileEntityTurntable extends TileEntityBase
 
     private void RotateUnfiredPottery(int i, int j, int k, boolean bReverseDirection)
     {
-        BlockBase targetBlock = mod_FCBetterThanWolves.fcUnfiredPottery;
+//        BlockBase targetBlock = mod_FCBetterThanWolves.fcUnfiredPottery_crucible;
+        BlockBase targetBlock = BlockBase.CLAY;
         Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).soundHelper.playSound(targetBlock.sounds.getWalkSound(), (float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F, (targetBlock.sounds.getVolume() + 1.0F) / 2.0F, targetBlock.sounds.getPitch() * 0.8F);
         m_iPotteryRotationCount++;
+//        if(m_iPotteryRotationCount >= 8)
+//        {
+//            //TODO: Logic change get rid of meta
+//            int iMetaData = level.getTileMeta(i, j, k);
+//            if(iMetaData < 2)
+//            {
+//                if(iMetaData == 1)
+//                {
+//                    FCUtilsMisc.EjectSingleItemWithRandomOffset(level, i, j + 1, k, ItemBase.clay.id, 0);
+//                }
+//                iMetaData++;
+//                level.setTileMeta(i, j, k, iMetaData);
+//                level.method_202(i, j, k, i, j, k);
+//            } else
+//            {
+//                level.setTile(i, j, k, 0);
+//                for(int iTemp = 0; iTemp < 2; iTemp++)
+//                {
+//                    FCUtilsMisc.EjectSingleItemWithRandomOffset(level, i, j, k, ItemBase.clay.id, 0);
+//                }
+//
+//            }
+//            m_iPotteryRotationCount = 0;
+//        }
         if(m_iPotteryRotationCount >= 8)
-        {
-            int iMetaData = level.getTileMeta(i, j, k);
-            if(iMetaData < 2)
+        {int iTileId = level.getTileId(i, j, k);
+            if(iTileId == mod_FCBetterThanWolves.fcUnfiredPottery_crucible.id || iTileId == mod_FCBetterThanWolves.fcUnfiredPottery_planter.id)
             {
-                if(iMetaData == 1)
+                if(iTileId == mod_FCBetterThanWolves.fcUnfiredPottery_planter.id )
                 {
                     FCUtilsMisc.EjectSingleItemWithRandomOffset(level, i, j + 1, k, ItemBase.clay.id, 0);
                 }
-                iMetaData++;
-                level.setTileMeta(i, j, k, iMetaData);
+                iTileId++;
+                level.setTile(i, j, k, iTileId); //???
                 level.method_202(i, j, k, i, j, k);
             } else
             {
