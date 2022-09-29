@@ -108,7 +108,7 @@ public class mod_FCBetterThanWolves {
         fcLightBulbOn = new FCBlockLightBulb(Identifier.of(MOD_ID, "fcLightBulbOn")).setTranslationKey(MOD_ID, "fcLightBulbOn").setLightEmittance(1.0F);
         fcBBQ = new FCBlockBBQ(Identifier.of(MOD_ID, "fcBBQ")).setTranslationKey(MOD_ID, "fcBBQ");
         fcHopper = new FCBlockHopper(Identifier.of(MOD_ID, "fcHopper")).setTranslationKey(MOD_ID, "fcHopper");
-//        fcSaw = new FCBlockSaw(Identifier.of(MOD_ID, "fcSaw")).setTranslationKey(MOD_ID, "fcSaw");
+        fcSaw = new FCBlockSaw(Identifier.of(MOD_ID, "fcSaw")).setTranslationKey(MOD_ID, "fcSaw");
         fcPlatform = new FCBlockPlatform(Identifier.of(MOD_ID, "fcPlatform")).setTranslationKey(MOD_ID, "fcPlatform");
 //        fcBlockOfWicker = new TemplateBlockBase(Identifier.of(MOD_ID, "fcBlockOfWicker"), Material.ORGANIC).setTranslationKey(MOD_ID, "fcBlockOfWicker");
         fcCement = new FCBlockCement(Identifier.of(MOD_ID, "fcCement")).setTranslationKey(MOD_ID, "fcCement");
@@ -122,7 +122,8 @@ public class mod_FCBetterThanWolves {
         fcCauldron = new FCBlockCauldron(Identifier.of(MOD_ID, "fcCauldron")).setTranslationKey(MOD_ID, "fcCauldron").setHardness(3.5F).setBlastResistance(10F).setSounds(BlockBase.METAL_SOUNDS).setTranslationKey(MOD_ID,"fcCauldron");
 //        fcDetectorRailWood = new FCBlockDetectorRail(Identifier.of(MOD_ID, "fcDetectorRailWood"), 23).setTranslationKey(MOD_ID, "fcDetectorRailWood");
 //        fcDetectorRailObsidian = new FCBlockDetectorRail(Identifier.of(MOD_ID, "fcDetectorRailObsidian"), 24).setTranslationKey(MOD_ID, "fcDetectorRailObsidian");
-        fcCompanionCube = new FCBlockCompanionCube(Identifier.of(MOD_ID, "fcCompanionCube")).setTranslationKey(MOD_ID, "fcCompanionCube").setHardness(0.4F).setSounds(BlockBase.WOOL_SOUNDS); //wkurwilo mnie na razie
+        fcCompanionCube = new FCBlockCompanionCube(Identifier.of(MOD_ID, "fcCompanionCube")).setTranslationKey(MOD_ID, "fcCompanionCube").setHardness(0.4F).setSounds(BlockBase.WOOL_SOUNDS);
+        fcCompanionCube_slab = new FCBlockCompanionSlab(Identifier.of(MOD_ID, "fcCompanionCube_slab")).setTranslationKey(MOD_ID, "fcCompanionCube_slab").setHardness(0.4F).setSounds(BlockBase.WOOL_SOUNDS);
         fcBlockDetector = new FCBlockDetectorBlock(Identifier.of(MOD_ID, "fcBlockDetector")).setTranslationKey(MOD_ID, "fcBlockDetector").setHardness(3.5F).setSounds(BlockBase.STONE_SOUNDS).setTranslationKey(MOD_ID,"fcBlockDetector");
         fcBlockDetectorLogic = new FCBlockDetectorLogic(Identifier.of(MOD_ID, "fcBlockDetectorLogic")).setTranslationKey(MOD_ID, "fcBlockDetectorLogic");
 //        fcBlockLens = new FCBlockLens(Identifier.of(MOD_ID, "fcBlockLens")).setTranslationKey(MOD_ID, "fcBlockLens"); //TODO chyba tego nie ma
@@ -209,6 +210,9 @@ public class mod_FCBetterThanWolves {
     //TODO: Crucible MODEL, Companion Cube model, Platform Renderers and Models, Platform render, pulley wyrzuca rope, turntable click, recipes, Wiatrak kolory
     //TODO: Hoopoer logic, Detector Logic airblock&replacable and arrow detection, Dispenset logic, Planter functionality, Fire on hibachi na sekunde gasnie
     //TODO: poprawić placement anvil i bellows na podstawie omniSLab, gear box texure side plank rotation (models are mess)
+    //TODO: Panel make use corners to build model, Axle item render
+
+    //TODO EXTRA: Saw animated, Anvil gravity,
 
     public static boolean fcDisableAxeChanges = false;
     public static boolean fcFaceGearBoxAwayFromPlayer = false;
@@ -233,6 +237,7 @@ public class mod_FCBetterThanWolves {
     public static TemplateBlockBase fcDetectorRailWood;
     public static TemplateBlockBase fcDetectorRailObsidian;
     public static TemplateBlockBase fcCompanionCube;
+    public static TemplateBlockBase fcCompanionCube_slab;
     public static TemplateBlockBase fcBlockDetector;
     public static TemplateBlockBase fcBlockDetectorLogic;
     public static TemplateBlockBase fcBlockLens;

@@ -151,6 +151,7 @@ public class FCBlockOmniSlab extends TemplateBlockBase
 //        world.setTileMeta(i, j, k, iMetaData);
     }
 
+    //TODO: logic change unnecessary method
     public boolean IsSlabWood(BlockView iBlockAccess, int i, int j, int k)
     {
         return (iBlockAccess.getTileMeta(i, j, k) & 1) > 0;

@@ -1,0 +1,53 @@
+{
+  "credit": "Made with Blockbench",
+  "parent": "block/block",
+  "textures": {
+    "0": "block/oak_planks",
+    "1": "wolves:block/fcBlockEmpty",
+    "2": "wolves:block/fcBlockSaw_face",
+    "3": "wolves:block/fcBlockSaw_saw",
+    "particle": "block/oak_planks"
+  },
+  "elements": [
+    {
+      "name": "FACE",
+      "from": [0, 0, 12],
+      "to": [16, 16, 12],
+      "rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+      "faces": {
+        "north": {"uv": [0, 0, 16, 16], "texture": "#missing"},
+        "east": {"uv": [0, 0, 0, 16], "texture": "#missing"},
+        "south": {"uv": [0, 0, 16, 16], "texture": "#2"},
+        "west": {"uv": [0, 0, 0, 16], "texture": "#missing"},
+        "up": {"uv": [0, 0, 0, 16], "rotation": 90, "texture": "#missing"},
+        "down": {"uv": [0, 0, 0, 16], "rotation": 270, "texture": "#missing"}
+      }
+    },
+    {
+      "name": "PILA",
+      "from": [3, 7.875, 12],
+      "to": [13, 8.125, 16],
+      "rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+      "faces": {
+        "north": {"uv": [0, 0, 10, 0.25], "texture": "#missing"},
+        "east": {"uv": [1, 0, 5, 0.25], "texture": "#3"},
+        "south": {"uv": [0, 0, 10, 0.25], "texture": "#3"},
+        "west": {"uv": [1, 0, 5, 0.25], "texture": "#3"},
+        "up": {"uv": [12, 3, 16, 13], "rotation": 90, "texture": "#3"},
+        "down": {"uv": [12, 3, 16, 13], "rotation": 270, "texture": "#3"}
+      }
+    },
+    {
+      "from": [0, 0, 0],
+      "to": [16, 16, 12],
+      "faces": {
+        "north": {"uv": [0, 0, 16, 16], "texture": "#0"},
+        "east": {"uv": [4, 0, 16, 16], "texture": "#0"},
+        "south": {"uv": [0, 0, 16, 16], "texture": "#1"},
+        "west": {"uv": [0, 0, 12, 16], "texture": "#0"},
+        "up": {"uv": [0, 0, 16, 12], "texture": "#0"},
+        "down": {"uv": [0, 4, 16, 16], "texture": "#0"}
+      }
+    }
+  ]
+}

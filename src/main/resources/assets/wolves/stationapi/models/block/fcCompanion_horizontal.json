@@ -1,16 +1,17 @@
 {
   "parent": "block/block",
   "textures": {
-    "meat": "wolves:block/fcBlockCompanionCube_meat",
+    "face": "wolves:block/fcBlockCompanionCube_face",
     "side": "block/white_wool",
     "particle": "wolves:block/fcBlockCompanionCube_face"
   },
   "elements": [
     {   "from": [ 0, 0, 0 ],
-      "to": [ 16, 8, 16 ],
+      "to": [ 16, 16, 16 ],
+      "rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
       "faces": {
-        "down":  { "texture": "#meat", "cullface": "down" },
-        "up":    { "texture": "#meat", "cullface": "up" },
+        "down":  { "texture": "#side", "cullface": "down" },
+        "up":    { "texture": "#face", "cullface": "up" },
         "north": { "texture": "#side", "cullface": "north" },
         "south": { "texture": "#side", "cullface": "south" },
         "west":  { "texture": "#side", "cullface": "west" },

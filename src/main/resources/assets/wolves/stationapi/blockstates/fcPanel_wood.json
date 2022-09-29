@@ -1,8 +1,52 @@
 {
-  "variants": {
-    "facing=2": { "model": "wolves:panel/fcPanel_wood_w"},
-    "facing=3": { "model": "wolves:panel/fcPanel_wood_e"},
-    "facing=4": { "model": "wolves:panel/fcPanel_wood_s"},
-    "facing=5": { "model": "wolves:panel/fcPanel_wood_n"}
-  }
+  "multipart": [
+    {   "when": { "facing": 2 },
+      "apply": { "model": "wolves:panel/fcCorner_wood_1"}
+    },
+    {   "when": { "facing": 2 },
+      "apply": { "model": "wolves:panel/fcCorner_wood_5"}
+    },
+    {   "when": { "facing": 2 },
+      "apply": { "model": "wolves:panel/fcCorner_wood_3"}
+    },
+    {   "when": { "facing": 2 },
+      "apply": { "model": "wolves:panel/fcCorner_wood_7"}
+    },
+    {   "when": { "facing": 3 },
+      "apply": { "model": "wolves:panel/fcCorner_wood_0"}
+    },
+    {   "when": { "facing": 3 },
+      "apply": { "model": "wolves:panel/fcCorner_wood_4"}
+    },
+    {   "when": { "facing": 3 },
+      "apply": { "model": "wolves:panel/fcCorner_wood_2"}
+    },
+    {   "when": { "facing": 3 },
+      "apply": { "model": "wolves:panel/fcCorner_wood_6"}
+    },
+    {   "when": { "facing": 4 },
+      "apply": { "model": "wolves:panel/fcCorner_wood_4"}
+    },
+    {   "when": { "facing": 4 },
+      "apply": { "model": "wolves:panel/fcCorner_wood_5"}
+    },
+    {   "when": { "facing": 4 },
+      "apply": { "model": "wolves:panel/fcCorner_wood_6"}
+    },
+    {   "when": { "facing": 4 },
+      "apply": { "model": "wolves:panel/fcCorner_wood_7"}
+    },
+    {   "when": { "facing": 5 },
+      "apply": { "model": "wolves:panel/fcCorner_wood_0"}
+    },
+    {   "when": { "facing": 5 },
+      "apply": { "model": "wolves:panel/fcCorner_wood_1"}
+    },
+    {   "when": { "facing": 5 },
+      "apply": { "model": "wolves:panel/fcCorner_wood_2"}
+    },
+    {   "when": { "facing": 5 },
+      "apply": { "model": "wolves:panel/fcCorner_wood_3"}
+    }
+  ]
 }

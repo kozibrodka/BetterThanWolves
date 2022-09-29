@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "facing=0": { "model": "wolves:block/fcSaw_0"},
+    "facing=1": { "model": "wolves:block/fcSaw_1"},
+    "facing=2": { "model": "wolves:block/fcSaw_2"},
+    "facing=3": { "model": "wolves:block/fcSaw_3"},
+    "facing=4": { "model": "wolves:block/fcSaw_4"},
+    "facing=5": { "model": "wolves:block/fcSaw_5"}
+  }
+}

@@ -24,17 +24,42 @@ import net.modificationstation.stationapi.api.state.property.IntProperty;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockBase;
 
 
-public class FCBlockCompanionCube extends TemplateBlockBase
+public class FCBlockCompanionSlab extends TemplateBlockBase
     implements FCIBlock
 {
 
-    public FCBlockCompanionCube(Identifier iid)
+    public FCBlockCompanionSlab(Identifier iid)
     {
         super(iid, Material.WOOL);
         texture = 20;
         setDefaultState(getDefaultState()
                 .with(FACING, 0)
         );
+    }
+
+    public boolean isFullOpaque()
+    {
+        return false;
+    }
+
+    public boolean isFullCube()
+    {
+        return false;
+    }
+
+    public Box getCollisionShape(Level world, int i, int j, int k)
+    {
+        return Box.createButWasteMemory(i, j, k, (float)(i + 1), (float)j + 0.5F, (float)(k + 1));
+    }
+
+    public Box getOutlineShape(Level world, int i, int j, int k)
+    {
+        return Box.createButWasteMemory(i, j, k, (float)(i + 1), (float)j + 0.5F, (float)(k + 1));
+    }
+
+    public void updateBoundingBox(BlockView iblockaccess, int i, int j, int k)
+    {
+        setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
     }
 
     public void onBlockPlaced(Level world, int i, int j, int k, int iFacing)
@@ -44,25 +69,55 @@ public class FCBlockCompanionCube extends TemplateBlockBase
 
     public void afterPlaced(Level world, int i, int j, int k, Living entityliving)
     {
-        SpawnHearts(world, i, j, k);
+//        if(!GetHalfCubeState(world, i, j, k))
+//        {
+//            SpawnHearts(world, i, j, k);
+//        }
         int iFacing = FCUtilsMisc.ConvertPlacingEntityOrientationToBlockFacing(entityliving);
         SetFacing(world, i, j, k, iFacing);
     }
 
-    public void onBlockRemoved(Level world, int i, int j, int k)
+    public void onBlockPlaced(Level world, int i, int j, int k)
     {
-        world.playSound((float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F, "mob.wolf.whine", 0.5F, 2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
+        int iBlockBelowID = world.getTileId(i, j - 1, k);
+        if(iBlockBelowID == id)
+        {
+//            int iSlab = world.getTileId(i, j, k);
+//            BlockBase targetBlock = BlockBase.BY_ID[iBlockBelowID];
+//            ((FCBlockCompanionCube)targetBlock).GetFacing(world,i,j,k);
+
+//            BlockState currentState = world.getBlockState(i, j - 1, k);
+
+            int iFacing = world.getBlockState(i,j - 1,k).get(FACING);
+            world.setTile(i,j - 1,k, mod_FCBetterThanWolves.fcCompanionCube.id);
+            int iCube = world.getTileId(i, j - 1, k);
+            BlockBase targetBlock = BlockBase.BY_ID[iCube];
+//            System.out.println(targetBlock);
+            ((FCBlockCompanionCube)targetBlock).SetFacing(world,i,j-1,k, iFacing);
+
+//            world.setTile(i, j, k, 0);
+            world.setTile(i, j, k, 0);
+            SpawnHearts(world, i, j - 1, k);
+//            world.setBlockStateWithNotify(i,j,k, currentState.with(POWER, iPowerLevel));
+//                SetHalfCubeState(world, i, j - 1, k, false);
+//                world.setTile(i, j, k, 0);
+//                SpawnHearts(world, i, j - 1, k);
+
+        } else
+        {
+            super.onBlockPlaced(world, i, j, k);
+        }
     }
 
-//    public boolean canSuffocate(Level world, int i, int j, int k)
-//    {
-//        return !GetHalfCubeState(world, i, j, k);
-//    }
+    public boolean canSuffocate(Level world, int i, int j, int k)
+    {
+        return false;
+    }
 
     public int GetFacing(BlockView iBlockAccess, int i, int j, int k)
     {
         Level level = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).level;
-        if(level.getTileId(i,j,k) == mod_FCBetterThanWolves.fcCompanionCube.id) {
+        if(level.getTileId(i,j,k) == mod_FCBetterThanWolves.fcCompanionCube_slab.id) {
             return level.getBlockState(i, j, k).get(FACING);
         }else{
             return 0;
@@ -75,9 +130,11 @@ public class FCBlockCompanionCube extends TemplateBlockBase
 //        int iMetaData = world.getTileMeta(i, j, k) & 8;
 //        iMetaData |= iFacing;
 //        world.setTileMeta(i, j, k, iMetaData);
-        BlockState currentState = world.getBlockState(i, j, k);
-//        System.out.println(iFacing + "KOMPANIA KOSTKA");
-        world.setBlockStateWithNotify(i,j,k,currentState.with(FACING, iFacing));
+        if(world.getTileId(i,j,k) == id)
+        {
+            BlockState currentState = world.getBlockState(i, j, k);
+            world.setBlockStateWithNotify(i,j,k,currentState.with(FACING, iFacing));
+        }
     }
 
     public boolean CanRotate(BlockView iBlockAccess, int i, int j, int l)
