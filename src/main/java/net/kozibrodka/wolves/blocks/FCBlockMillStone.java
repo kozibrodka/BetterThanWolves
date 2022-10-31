@@ -113,11 +113,14 @@ public class FCBlockMillStone extends TemplateBlockWithEntity
         }
     }
 
-    public void onBlockRemoved(Level world, int i, int j, int k)
-    {
-        FCUtilsInventory.EjectInventoryContents(world, i, j, k, (InventoryBase)world.getTileEntity(i, j, k));
-        super.onBlockRemoved(world, i, j, k);
-    }
+//    public void onBlockRemoved(Level world, int i, int j, int k)
+//    {
+//        /**
+//         * DZIWNA KWESTIA chyba destroy na zmianie stanu
+//         */
+//        FCUtilsInventory.EjectInventoryContents(world, i, j, k, (InventoryBase)world.getTileEntity(i, j, k));
+//        super.onBlockRemoved(world, i, j, k);
+//    }
 
     public boolean IsBlockOn(Level world, int i, int j, int k)
     {

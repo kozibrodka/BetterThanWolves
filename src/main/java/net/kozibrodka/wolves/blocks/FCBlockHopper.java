@@ -252,80 +252,113 @@ public class FCBlockHopper extends TemplateBlockWithEntity
 
     public boolean IsBlockOn(BlockView iBlockAccess, int i, int j, int k)
     {
-        return (iBlockAccess.getTileMeta(i, j, k) & 1) > 0;
+        Level level = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).level;
+        if(level.getTileId(i,j,k) == mod_FCBetterThanWolves.fcHopper.id) {
+            return level.getBlockState(i, j, k).get(POWER);
+        }else{
+            return false;
+        }
+//        return (iBlockAccess.getTileMeta(i, j, k) & 1) > 0;
     }
 
     public void SetBlockOn(Level world, int i, int j, int k, boolean bOn)
     {
-        int iMetaData = world.getTileMeta(i, j, k);
-        if(bOn)
-        {
-            iMetaData |= 1;
-        } else
-        {
-            iMetaData &= -2;
-        }
-        world.setTileMeta(i, j, k, iMetaData);
+        BlockState currentState = world.getBlockState(i, j, k);
+        world.setBlockStateWithNotify(i,j,k, currentState.with(POWER, bOn));
+//        int iMetaData = world.getTileMeta(i, j, k);
+//        if(bOn)
+//        {
+//            iMetaData |= 1;
+//        } else
+//        {
+//            iMetaData &= -2;
+//        }
+//        world.setTileMeta(i, j, k, iMetaData);
     }
 
     public boolean IsHopperFull(BlockView iBlockAccess, int i, int j, int k)
     {
-        return (iBlockAccess.getTileMeta(i, j, k) & 2) > 0;
+        Level level = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).level;
+        if(level.getTileId(i,j,k) == mod_FCBetterThanWolves.fcHopper.id) {
+            return level.getBlockState(i, j, k).get(FULL) == 18;
+        }else{
+            return false;
+        }
+
+//        return (iBlockAccess.getTileMeta(i, j, k) & 2) > 0;
     }
 
-    public void SetHopperFull(Level world, int i, int j, int k, boolean bOn)
+    public void SetHopperFull(Level world, int i, int j, int k, int fullness)
     {
-        boolean bOldOn = IsHopperFull(world, i, j, k);
-        if(bOldOn != bOn)
-        {
-            int iMetaData = world.getTileMeta(i, j, k);
-            if(bOn)
-            {
-                iMetaData |= 2;
-            } else
-            {
-                iMetaData &= -3;
-            }
-            world.setTileMeta(i, j, k, iMetaData);
-            world.method_216(i, j, k, id, getTickrate());
-        }
+        BlockState currentState = world.getBlockState(i, j, k);
+        world.setBlockStateWithNotify(i,j,k, currentState.with(FULL, fullness));
+//        boolean bOldOn = IsHopperFull(world, i, j, k);
+//        if(bOldOn != bOn)
+//        {
+//            int iMetaData = world.getTileMeta(i, j, k);
+//            if(bOn)
+//            {
+//                iMetaData |= 2;
+//            } else
+//            {
+//                iMetaData &= -3;
+//            }
+//            world.setTileMeta(i, j, k, iMetaData);
+//            world.method_216(i, j, k, id, getTickrate());
+//        }
     }
 
     public boolean IsRedstoneOutputOn(BlockView iBlockAccess, int i, int j, int k)
     {
-        return (iBlockAccess.getTileMeta(i, j, k) & 4) > 0;
+        Level level = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).level;
+        if(level.getTileId(i,j,k) == mod_FCBetterThanWolves.fcHopper.id) {
+            return level.getBlockState(i, j, k).get(REDOUTPUT);
+        }else{
+            return false;
+        }
+//        return (iBlockAccess.getTileMeta(i, j, k) & 4) > 0;
     }
 
     public void SetRedstoneOutputOn(Level world, int i, int j, int k, boolean bOn)
     {
-        int iMetaData = world.getTileMeta(i, j, k);
-        if(bOn)
-        {
-            iMetaData |= 4;
-        } else
-        {
-            iMetaData &= -5;
-        }
-        world.setTileMeta(i, j, k, iMetaData);
+        BlockState currentState = world.getBlockState(i, j, k);
+        world.setBlockStateWithNotify(i,j,k, currentState.with(REDOUTPUT, bOn));
+//        int iMetaData = world.getTileMeta(i, j, k);
+//        if(bOn)
+//        {
+//            iMetaData |= 4;
+//        } else
+//        {
+//            iMetaData &= -5;
+//        }
+//        world.setTileMeta(i, j, k, iMetaData);
     }
 
     public boolean HasFilter(BlockView iBlockAccess, int i, int j, int k)
     {
-        return (iBlockAccess.getTileMeta(i, j, k) & 8) > 0;
+        Level level = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).level;
+        if(level.getTileId(i,j,k) == mod_FCBetterThanWolves.fcHopper.id) {
+            return level.getBlockState(i, j, k).get(FILTER) > 0;
+        }else{
+            return false;
+        }
+//        return (iBlockAccess.getTileMeta(i, j, k) & 8) > 0;
     }
 
     //TODO logic change
-    public void SetHasFilter(Level world, int i, int j, int k, boolean bOn)
+    public void SetHasFilter(Level world, int i, int j, int k, int filterInt)
     {
-        int iMetaData = world.getTileMeta(i, j, k);
-        if(bOn)
-        {
-            iMetaData |= 8;
-        } else
-        {
-            iMetaData &= -9;
-        }
-        world.setTileMeta(i, j, k, iMetaData);
+        BlockState currentState = world.getBlockState(i, j, k);
+        world.setBlockStateWithNotify(i,j,k, currentState.with(FILTER, filterInt));
+//        int iMetaData = world.getTileMeta(i, j, k);
+//        if(bOn)
+//        {
+//            iMetaData |= 8;
+//        } else
+//        {
+//            iMetaData &= -9;
+//        }
+//        world.setTileMeta(i, j, k, iMetaData);
     }
 
     void EmitHopperParticles(Level world, int i, int j, int k, Random random)

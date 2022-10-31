@@ -102,6 +102,7 @@ public class FCRenderBlockLiftedByPlatform extends EntityRenderer
     {
         GL11.glPushMatrix();
         GL11.glDisable(2896 /*GL_LIGHTING*/);
+        //TODO tutaj może być kompletny rewrite renderu
         if(blockrail instanceof FCFakeTextureProvider) //UWAGA
         {
             bindTexture("/assets/wolves/stationapi/textures/entity/btwterrain01.png");

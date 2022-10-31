@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "wolves:block/fcBlockPlatform_top"
+  }
+}

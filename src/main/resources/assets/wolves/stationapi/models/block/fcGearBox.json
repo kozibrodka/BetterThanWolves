@@ -1,20 +1,22 @@
 {
+  "credit": "Made with Blockbench",
   "parent": "block/block",
   "textures": {
-    "up": "wolves:block/fcBlockGearBox_in",
-    "other": "wolves:block/fcBlockEmpty",
+    "0": "wolves:block/fcBlockGearBox_in",
     "particle": "wolves:block/fcBlockGearBox_in"
   },
   "elements": [
-    {   "from": [ 0, 0, 0 ],
-      "to": [ 16, 16, 16 ],
+    {
+      "from": [0, 16, 0],
+      "to": [16, 16, 16],
+      "rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
       "faces": {
-        "down":  { "texture": "#other", "cullface": "down" },
-        "up":    { "texture": "#up", "cullface": "up" },
-        "north": { "texture": "#other", "cullface": "north" },
-        "south": { "texture": "#other", "cullface": "south" },
-        "west":  { "texture": "#other", "cullface": "west" },
-        "east":  { "texture": "#other", "cullface": "east" }
+        "north": {"uv": [0, 0, 16, 0], "texture": "#missing"},
+        "east": {"uv": [0, 0, 16, 0], "texture": "#missing"},
+        "south": {"uv": [0, 0, 16, 0], "texture": "#missing"},
+        "west": {"uv": [0, 0, 16, 0], "texture": "#missing"},
+        "up": {"uv": [0, 0, 16, 16], "texture": "#0"},
+        "down": {"uv": [0, 0, 16, 16], "texture": "#missing"}
       }
     }
   ]

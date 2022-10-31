@@ -5,10 +5,6 @@
 
 package net.kozibrodka.wolves.recipe;
 
-
-// Referenced classes of package net.minecraft.src:
-//            FCCraftingManagerBulk
-
 public class FCCraftingManagerCauldronStoked extends FCCraftingManagerBulk
 {
 

@@ -6,6 +6,7 @@ import net.kozibrodka.wolves.entity.FCEntityMovingPlatform;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.utils.FCBlockPos;
 import net.kozibrodka.wolves.utils.FCIBlock;
+import net.minecraft.block.BlockBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
@@ -35,10 +36,10 @@ public class FCBlockPlatform extends TemplateBlockBase
 
     public boolean isFullCube()
     {
-        return false;
+        return true;
     }
 
-    public boolean canSuffocate(Level world, int i, int j, int l)
+    public boolean canSuffocate(int i, int j, int l)
     {
         return true;
     }

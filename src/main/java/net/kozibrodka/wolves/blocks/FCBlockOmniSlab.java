@@ -114,7 +114,7 @@ public class FCBlockOmniSlab extends TemplateBlockBase
         return false;
     }
 
-        public void onBlockPlaced(Level world, int i, int j, int k, int iFacing)
+    public void onBlockPlaced(Level world, int i, int j, int k, int iFacing)
     {
         int iSlabFacing = iFacing;
         SetSlabFacing(world, i, j, k, iSlabFacing);

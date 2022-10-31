@@ -13,6 +13,8 @@ import net.minecraft.item.ItemInstance;
 import net.minecraft.level.Level;
 import net.minecraft.util.io.CompoundTag;
 import net.minecraft.util.maths.Box;
+import net.minecraft.util.maths.MathHelper;
+import net.modificationstation.stationapi.api.vanillafix.item.Items;
 
 public class FCEntityWindMill extends EntityBase
 {
@@ -265,12 +267,12 @@ public class FCEntityWindMill extends EntityBase
     {
         //TODO ItemBase to Items and possibly there will be now get.damage()
         ItemInstance ItemInstance = entityplayer.inventory.getHeldItem();
-        if(ItemInstance != null && (ItemInstance.itemId == ItemBase.dyePowder.id || ItemInstance.itemId == mod_FCBetterThanWolves.fcDung.id))
+        if(ItemInstance != null && ((ItemInstance.itemId > 359 && ItemInstance.itemId < 376) || ItemInstance.itemId == mod_FCBetterThanWolves.fcDung.id))
         {
             int iColor = 0;
-            if(ItemInstance.itemId == ItemBase.dyePowder.id)
+            if(ItemInstance.itemId > 359 && ItemInstance.itemId < 376)
             {
-                iColor = Wool.getColour(ItemInstance.getDamage());
+                iColor = Wool.getColour((int) MathHelper.abs(360 - ItemInstance.itemId));
             } else
             {
                 iColor = 12;

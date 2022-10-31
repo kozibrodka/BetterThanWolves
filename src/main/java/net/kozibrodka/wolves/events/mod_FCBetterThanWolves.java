@@ -10,6 +10,7 @@ import net.kozibrodka.wolves.tileentity.*;
 import net.kozibrodka.wolves.utils.FCMaterialCement;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.minecraft.block.BlockBase;
+import net.minecraft.block.PressurePlateTrigger;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColour;
 import net.minecraft.client.render.entity.PigRenderer;
@@ -110,17 +111,17 @@ public class mod_FCBetterThanWolves {
         fcHopper = new FCBlockHopper(Identifier.of(MOD_ID, "fcHopper")).setTranslationKey(MOD_ID, "fcHopper");
         fcSaw = new FCBlockSaw(Identifier.of(MOD_ID, "fcSaw")).setTranslationKey(MOD_ID, "fcSaw");
         fcPlatform = new FCBlockPlatform(Identifier.of(MOD_ID, "fcPlatform")).setTranslationKey(MOD_ID, "fcPlatform");
-//        fcBlockOfWicker = new TemplateBlockBase(Identifier.of(MOD_ID, "fcBlockOfWicker"), Material.ORGANIC).setTranslationKey(MOD_ID, "fcBlockOfWicker");
+        fcBlockOfWicker = new TemplateBlockBase(Identifier.of(MOD_ID, "fcBlockOfWicker"), Material.ORGANIC).setHardness(0.5F).setTranslationKey(MOD_ID, "fcBlockOfWicker").setSounds(BlockBase.GRASS_SOUNDS); //Mango-Pack Addon
         fcCement = new FCBlockCement(Identifier.of(MOD_ID, "fcCement")).setTranslationKey(MOD_ID, "fcCement");
         fcPulley = new FCBlockPulley(Identifier.of(MOD_ID, "fcPulley")).setTranslationKey(MOD_ID, "fcPulley");
-//        fcPressurePlateObsidian = new TemplatePressurePlate(Identifier.of(MOD_ID, "fcPressurePlateObsidian"), 37, PressurePlateTrigger.field_1507, Material.STONE).setTranslationKey(MOD_ID, "fcPressurePlateObsidian").setHardness(0.5F).setBlastResistance(2000F).setSounds(BlockBase.STONE_SOUNDS);
+        fcPressurePlateObsidian = new TemplatePressurePlate(Identifier.of(MOD_ID, "fcPressurePlateObsidian"), 37, PressurePlateTrigger.field_1507, Material.STONE).setTranslationKey(MOD_ID, "fcPressurePlateObsidian").setHardness(0.5F).setBlastResistance(2000F).setSounds(BlockBase.STONE_SOUNDS);
 //        fcMoulding = new FCBlockMoulding(Identifier.of(MOD_ID, "fcMoulding")).setTranslationKey(MOD_ID, "fcMoulding");
         fcMoulding_wood = new FCBlockMoulding(Identifier.of(MOD_ID, "fcMoulding_wood")).setTranslationKey(MOD_ID, "fcMoulding_wood");
 //        fcCorner = new FCBlockCorner(Identifier.of(MOD_ID, "fcCorner")).setTranslationKey(MOD_ID, "fcCorner");
         fcCorner_wood = new FCBlockCorner(Identifier.of(MOD_ID, "fcCorner_wood")).setTranslationKey(MOD_ID, "fcCorner_wood");
         fcBlockDispenser = new FCBlockBlockDispenser(Identifier.of(MOD_ID, "fcBlockDispenser")).setTranslationKey(MOD_ID, "fcBlockDispenser").setHardness(3.5F).setSounds(BlockBase.STONE_SOUNDS).setTranslationKey(MOD_ID,"fcBlockDispenser");
         fcCauldron = new FCBlockCauldron(Identifier.of(MOD_ID, "fcCauldron")).setTranslationKey(MOD_ID, "fcCauldron").setHardness(3.5F).setBlastResistance(10F).setSounds(BlockBase.METAL_SOUNDS).setTranslationKey(MOD_ID,"fcCauldron");
-//        fcDetectorRailWood = new FCBlockDetectorRail(Identifier.of(MOD_ID, "fcDetectorRailWood"), 23).setTranslationKey(MOD_ID, "fcDetectorRailWood");
+        fcDetectorRailWood = new FCBlockDetectorRail(Identifier.of(MOD_ID, "fcDetectorRailWood"), 23).setTranslationKey(MOD_ID, "fcDetectorRailWood");
 //        fcDetectorRailObsidian = new FCBlockDetectorRail(Identifier.of(MOD_ID, "fcDetectorRailObsidian"), 24).setTranslationKey(MOD_ID, "fcDetectorRailObsidian");
         fcCompanionCube = new FCBlockCompanionCube(Identifier.of(MOD_ID, "fcCompanionCube")).setTranslationKey(MOD_ID, "fcCompanionCube").setHardness(0.4F).setSounds(BlockBase.WOOL_SOUNDS);
         fcCompanionCube_slab = new FCBlockCompanionSlab(Identifier.of(MOD_ID, "fcCompanionCube_slab")).setTranslationKey(MOD_ID, "fcCompanionCube_slab").setHardness(0.4F).setSounds(BlockBase.WOOL_SOUNDS);
@@ -207,10 +208,13 @@ public class mod_FCBetterThanWolves {
         event.register(FCTileEntityCement.class, String.valueOf(Identifier.of(MOD_ID, "TileCement")));
     }
 
-    //TODO: Crucible MODEL, Companion Cube model, Platform Renderers and Models, Platform render, pulley wyrzuca rope, turntable click, recipes, Wiatrak kolory
-    //TODO: Hoopoer logic, Detector Logic airblock&replacable and arrow detection, Dispenset logic, Planter functionality, Fire on hibachi na sekunde gasnie
-    //TODO: poprawić placement anvil i bellows na podstawie omniSLab, gear box texure side plank rotation (models are mess)
-    //TODO: Panel make use corners to build model, Axle item render
+    //TODO: recipes, anvilrecipes + hmi,
+    //TODO: Detector Logic airblock&replacable and arrow detection, Dispenset logic, Planter functionality, Fire (meta use mess) on hibachi na sekunde gasnie
+    //TODO: Companion cube sound on place.
+    //TODO: ZNIKAJĄCE ITEMY ROPE ITD. JEST TO WINA STAPI onBlockRemoved na zmianie stanu sie odpala, HOOPER przez to jest useless, Hoopoer logic wstrzymane
+    //TODO: MOving blocks render need rewrite
+    //TODO: Obsidian Plate wait for preessure plate vanilla states with UP-DOWN animation
+
 
     //TODO EXTRA: Saw animated, Anvil gravity,
 
@@ -234,8 +238,8 @@ public class mod_FCBetterThanWolves {
     public static TemplateBlockBase fcCorner_wood;
     public static TemplateBlockWithEntity fcBlockDispenser;
     public static TemplateBlockWithEntity fcCauldron;
-    public static TemplateBlockBase fcDetectorRailWood;
-    public static TemplateBlockBase fcDetectorRailObsidian;
+    public static TemplateRail fcDetectorRailWood;
+    public static TemplateRail fcDetectorRailObsidian;
     public static TemplateBlockBase fcCompanionCube;
     public static TemplateBlockBase fcCompanionCube_slab;
     public static TemplateBlockBase fcBlockDetector;

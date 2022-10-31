@@ -39,7 +39,10 @@ public class FCRenderMovingAnchor extends EntityRenderer
         int i = MathHelper.floor(entity.x);
         int j = MathHelper.floor(entity.y);
         int k = MathHelper.floor(entity.z);
-        bindTexture("/assets/wolves/stationapi/textures/entity/btwterrain01.png");
+//        bindTexture("/assets/wolves/stationapi/textures/entity/btwterrain01.png");
+//        bindTexture("/assets/wolves/stationapi/textures/entity/terrain_btw.png");
+//        this.bindTexture("/terrain.png");
+        bindTexture("/assets/wolves/stationapi/textures/entity/terrain_og.png");
         BlockBase block = mod_FCBetterThanWolves.fcAnchor;
         float f3 = 0.5F;
         float f5 = 0.5F;
@@ -51,7 +54,7 @@ public class FCRenderMovingAnchor extends EntityRenderer
         f7 = 0.25F;
         block.setBoundingBox(0.5F - f5, FCBlockAnchor.fAnchorBaseHeight, 0.5F - f3, 0.5F + f5, FCBlockAnchor.fAnchorBaseHeight + f7, 0.5F + f3);
         ((FCBlockAnchor)mod_FCBetterThanWolves.fcAnchor).getClass();
-        FCUtilsRender.RenderMovingBlockWithTexture(localRenderBlocks, block, world, i, j, k, 39);
+        FCUtilsRender.RenderMovingBlockWithTexture(localRenderBlocks, block, world, i, j, k, 0);
         if(world.getTileId(i, j, k) != mod_FCBetterThanWolves.fcRopeBlock.id)
         {
             float f4 = 0.062375F;
@@ -59,7 +62,7 @@ public class FCRenderMovingAnchor extends EntityRenderer
             float f8 = 1.0F;
             block.setBoundingBox(0.5F - f6, FCBlockAnchor.fAnchorBaseHeight, 0.5F - f4, 0.5F + f6, 1.99F, 0.5F + f4);
             ((FCBlockAnchor)mod_FCBetterThanWolves.fcAnchor).getClass();
-            FCUtilsRender.RenderMovingBlockWithTexture(localRenderBlocks, block, world, i, j, k, 32);
+            FCUtilsRender.RenderMovingBlockWithTexture(localRenderBlocks, block, world, i, j, k, 3);
         }
         GL11.glEnable(2896 /*GL_LIGHTING*/);
         GL11.glPopMatrix();

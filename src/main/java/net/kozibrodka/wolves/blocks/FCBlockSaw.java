@@ -427,41 +427,37 @@ public class FCBlockSaw extends TemplateBlockBase
 
                 bSawedBlock = true;
             } else
-            if(iTargetid == mod_FCBetterThanWolves.fcCompanionCube.id)
-            {
-                FCBlockCompanionCube cubeBlock = (FCBlockCompanionCube)mod_FCBetterThanWolves.fcCompanionCube;
-                if(!cubeBlock.GetHalfCubeState(world, i, j, k))
-                {
-                    if(iSawFacing == 0 || iSawFacing == 1)
-                    {
-                        for(int iTempCount = 0; iTempCount < 2; iTempCount++)
-                        {
-                            FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcCompanionCube.id, 1);
-                        }
-
-                    } else
-                    {
-                        FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcCompanionCube.id, 1);
-                        cubeBlock.SetHalfCubeState(world, i, j, k, true);
-                        world.method_202(i, j, k, i, j, k);
-                        bRemoveOriginalBlockIfSawed = false;
-                    }
-                    FCBlockPos bloodPos = new FCBlockPos(i, j, k);
-                    bloodPos.AddFacingAsOffset(FCUtilsMisc.GetOppositeFacing(iSawFacing));
-                    EmitBloodParticles(world, bloodPos.i, bloodPos.j, bloodPos.k, world.rand);
-                     world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "mob.wolf.hurt", 5F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
-                    bSawedBlock = true;
-                } else
+            if(iTargetid == mod_FCBetterThanWolves.fcCompanionCube_slab.id){
                 if(iSawFacing == 0 || iSawFacing == 1)
                 {
-                    FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcCompanionCube.id, 1);
+                    FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcCompanionCube_slab.id, 1);
                     bSawedBlock = true;
                 }
             } else
-            if(iTargetid == Blocks.OAK_LEAVES.id ||iTargetid == Blocks.BIRCH_LEAVES.id ||iTargetid == Blocks.SPRUCE_LEAVES.id || iTargetid == BlockBase.SUGAR_CANES.id || iTargetid == BlockBase.CROPS.id || iTargetid == mod_FCBetterThanWolves.fcHempCrop.id)
-            {
-                targetBlock.drop(world, i, j, k, world.getTileMeta(i, j, k));
-                bSawedBlock = true;
+            if(iTargetid == mod_FCBetterThanWolves.fcCompanionCube.id){
+                FCBlockCompanionCube cubeBlock = (FCBlockCompanionCube)mod_FCBetterThanWolves.fcCompanionCube;
+                if(iSawFacing == 0 || iSawFacing == 1)
+                {
+                    for(int iTempCount = 0; iTempCount < 2; iTempCount++)
+                    {
+                        FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcCompanionCube_slab.id, 1);
+                    }
+                }else {
+                    int faceOLd = cubeBlock.GetFacing(world,i,j,k);
+                    world.setTile(i,j,k, mod_FCBetterThanWolves.fcCompanionCube_slab.id);
+                    FCBlockCompanionSlab slabBlock = (FCBlockCompanionSlab)mod_FCBetterThanWolves.fcCompanionCube_slab;
+                    slabBlock.SetFacing(world,i,j,k, faceOLd);
+
+                    FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcCompanionCube_slab.id, 1);
+                    world.method_202(i, j, k, i, j, k);
+                    bRemoveOriginalBlockIfSawed = false;
+                }
+                    FCBlockPos bloodPos = new FCBlockPos(i, j, k);
+                    bloodPos.AddFacingAsOffset(FCUtilsMisc.GetOppositeFacing(iSawFacing));
+                    EmitBloodParticles(world, bloodPos.i, bloodPos.j, bloodPos.k, world.rand);
+                    world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "mob.wolf.hurt", 5F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
+                    bSawedBlock = true;
+
             } else
 //            if(iTargetid == BlockBase.SUGAR_CANES.id) //TODO debug code?? cyhba useless
 //            {

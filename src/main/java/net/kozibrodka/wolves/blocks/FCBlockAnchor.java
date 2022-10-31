@@ -92,6 +92,18 @@ public class FCBlockAnchor extends TemplateBlockBase
         }
     }
 
+    public int getTextureForSide(int i, int j)
+    {
+//        int k = j;
+//        return i != k && i != FCUtilsMisc.GetOppositeFacing(k) ? 41 : 40;
+        if(i == 0 || i == 1)
+        {
+            return 1;
+        }else{
+            return 2;
+        }
+    }
+
     public boolean isFullOpaque()
     {
         return false;

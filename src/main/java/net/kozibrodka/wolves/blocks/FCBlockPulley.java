@@ -69,12 +69,14 @@ public class FCBlockPulley extends TemplateBlockWithEntity
 
     public void onBlockRemoved(Level world, int i, int j, int k)
     {
-        TileEntityBase tileEntity = world.getTileEntity(i, j, k);
-        if(tileEntity != null)
-        {
-            FCUtilsInventory.EjectInventoryContents(world, i, j, k, (InventoryBase)tileEntity);
-        }
-        super.onBlockRemoved(world, i, j, k);
+        /**
+         * DZIWNA KWESTIA chyba destroy na zmianie stanu
+         */
+            TileEntityBase tileEntity = world.getTileEntity(i, j, k);
+            if (tileEntity != null) {
+                FCUtilsInventory.EjectInventoryContents(world, i, j, k, (InventoryBase) tileEntity);
+            }
+            super.onBlockRemoved(world, i, j, k);
     }
 
     public void onAdjacentBlockUpdate(Level world, int i, int j, int k, int iid)
