@@ -2,6 +2,7 @@
 package net.kozibrodka.wolves.blocks;
 
 import net.fabricmc.loader.api.FabricLoader;
+import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.mixin.LevelAccessor;
 import net.kozibrodka.wolves.utils.FCBlockPos;
@@ -37,15 +38,35 @@ public class FCBlockGearBox extends TemplateBlockBase
         super(iid, Material.WOOD);
         setHardness(2.0F);
         setSounds(WOOD_SOUNDS);
-        setDefaultState(getDefaultState()
-                .with(iFace0, 2)
-                .with(iFace1, 2)
-                .with(iFace2, 2)
-                .with(iFace3, 2)
-                .with(iFace4, 2)
-                .with(iFace5, 2)
-                .with(POWER, false)
-        );
+    }
+
+    public int getTextureForSide(BlockView iblockaccess, int i, int j, int k, int iSide)
+    {
+        int iFacing = GetFacing(iblockaccess, i, j, k);
+        if(iSide == iFacing)
+        {
+            return TextureListener.gearbox_front;
+        }
+        FCBlockPos sideBlockPos = new FCBlockPos(i, j, k);
+        sideBlockPos.AddFacingAsOffset(iSide);
+        if(iblockaccess.getTileId(sideBlockPos.i, sideBlockPos.j, sideBlockPos.k) == mod_FCBetterThanWolves.fcAxleBlock.id && ((FCBlockAxle)mod_FCBetterThanWolves.fcAxleBlock).IsAxleOrientedTowardsFacing(iblockaccess, sideBlockPos.i, sideBlockPos.j, sideBlockPos.k, iSide))
+        {
+            return TextureListener.gearbox_output;
+        } else
+        {
+            return TextureListener.gearbox_side;
+        }
+    }
+
+    public int getTextureForSide(int iSide)
+    {
+        if(iSide == 3)
+        {
+            return TextureListener.gearbox_front;
+        } else
+        {
+            return TextureListener.gearbox_side;
+        }
     }
 
     public int getTickrate()
@@ -66,7 +87,6 @@ public class FCBlockGearBox extends TemplateBlockBase
             iFacing = FCUtilsMisc.GetOppositeFacing(iFacing);
         }
         SetFacing(world, i, j, k, iFacing);
-        updateTextureSides(world, i, j, k);
     }
 
     public void onBlockPlaced(Level world, int i, int j, int k)  //TODO był błąd LOL czy coś to zmieni?
@@ -75,25 +95,19 @@ public class FCBlockGearBox extends TemplateBlockBase
         world.method_216(i, j, k, id, getTickrate());
     }
 
-    /**
-TA METODA ODPALA SIE W ZLYM MOMENCIE + mine_diver ask
-     */
-//    public void onBlockRemoved(Level world, int i, int j, int k)
-//    {
-//        System.out.println("NISZCZE SIE");
-//        if(IsGearBoxOn(world, i, j, k))
-//        {
-//            System.out.println("ustawiam destryoed");
-//            SetGearBoxOnState(world, i, j, k, false);
-//            ValidateOutputs(world, i, j, k, false);
-//        }
-//        super.onBlockRemoved(world, i, j, k);
-//    }
+    public void onBlockRemoved(Level world, int i, int j, int k)
+    {
+        if(IsGearBoxOn(world, i, j, k))
+        {
+            SetGearBoxOnState(world, i, j, k, false);
+            ValidateOutputs(world, i, j, k, false);
+        }
+        super.onBlockRemoved(world, i, j, k);
+    }
 
     public void onAdjacentBlockUpdate(Level world, int i, int j, int k, int iid)
     {
         world.method_216(i, j, k, id, getTickrate());
-        updateTextureSides(world, i, j, k);
     }
 
     public void onScheduledTick(Level world, int i, int j, int k, Random random)
@@ -136,28 +150,14 @@ TA METODA ODPALA SIE W ZLYM MOMENCIE + mine_diver ask
 
     public int GetFacing(BlockView iBlockAccess, int i, int j, int k)
     {
-        /**
-         * logic change
-         */
-//        return iBlockAccess.getTileMeta(i, j, k) & 7;
-        Level level = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).level;
-        if(level.getTileId(i,j,k) == mod_FCBetterThanWolves.fcGearBox.id) {
-            return level.getBlockState(i, j, k).get(FACING);
-        }else{
-            return 0;
-        }
+        return iBlockAccess.getTileMeta(i, j, k) & 7;
     }
 
     public void SetFacing(Level world, int i, int j, int k, int iFacing)
     {
-        /**
-         * logic change
-         */
-//        int iMetaData = world.getTileMeta(i, j, k) & 8;
-//        iMetaData |= iFacing;
-//        world.setTileMeta(i, j, k, iMetaData);
-        BlockState currentState = world.getBlockState(i, j, k);
-        world.setBlockStateWithNotify(i,j,k, currentState.with(FACING, iFacing));
+        int iMetaData = world.getTileMeta(i, j, k) & 8;
+        iMetaData |= iFacing;
+        world.setTileMeta(i, j, k, iMetaData);
     }
 
     public boolean CanRotate(BlockView iBlockAccess, int i, int j, int l)
@@ -170,9 +170,6 @@ TA METODA ODPALA SIE W ZLYM MOMENCIE + mine_diver ask
         return true;
     }
 
-    /**
-     gdzie ta metoda jest odpalana?
-     */
     public void Rotate(Level world, int i, int j, int k, boolean bReverse)
     {
         System.out.println("METODA ROTATE W GEARBOX");
@@ -190,29 +187,18 @@ TA METODA ODPALA SIE W ZLYM MOMENCIE + mine_diver ask
 
     public boolean IsGearBoxOn(BlockView iBlockAccess, int i, int j, int k)
     {
-//        return (iBlockAccess.getTileMeta(i, j, k) & 8) > 0;
-
-        Level level = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).level;
-        if(level.getTileId(i,j,k) == mod_FCBetterThanWolves.fcGearBox.id) {
-            return level.getBlockState(i, j, k).get(POWER);
-        }
-        return false;
+        return (iBlockAccess.getTileMeta(i, j, k) & 8) > 0;
     }
 
     public void SetGearBoxOnState(Level world, int i, int j, int k, boolean bOn)
     {
-//        System.out.println("USTAWIAM MOC: " + bOn);
-        BlockState currentState = world.getBlockState(i, j, k);
-        world.setBlockStateWithNotify(i,j,k, currentState.with(POWER, bOn));
-
-//        int iMetaData = world.getTileMeta(i, j, k) & 7;
-//        if(bOn)
-//        {
-//            iMetaData |= 8;
-//        }
-//        world.setTileMeta(i, j, k, iMetaData);
-//        world.method_243(i, j, k);
-
+        int iMetaData = world.getTileMeta(i, j, k) & 7;
+        if(bOn)
+        {
+            iMetaData |= 8;
+        }
+        world.setTileMeta(i, j, k, iMetaData);
+        world.method_243(i, j, k);
     }
 
     void EmitGearBoxParticles(Level world, int i, int j, int k, Random random)
@@ -318,92 +304,6 @@ TA METODA ODPALA SIE W ZLYM MOMENCIE + mine_diver ask
     public boolean IsOutputtingMechanicalPower(Level world, int i, int j, int k)
     {
         return IsGearBoxOn(world, i, j, k);
-    }
-
-    public boolean updateTextureSides(Level world, int i, int j, int k)
-    {
-        for(int iSide = 0; iSide < 6; iSide++) {
-            int iFacing = GetFacing(world, i, j, k);
-            if (iSide == iFacing) {
-//                return iGearBoxFrontTextureIndex;
-            } else {
-                FCBlockPos sideBlockPos = new FCBlockPos(i, j, k);
-                sideBlockPos.AddFacingAsOffset(iSide);
-                if (world.getTileId(sideBlockPos.i, sideBlockPos.j, sideBlockPos.k) == mod_FCBetterThanWolves.fcAxleBlock.id && ((FCBlockAxle) mod_FCBetterThanWolves.fcAxleBlock).IsAxleOrientedTowardsFacing(world, sideBlockPos.i, sideBlockPos.j, sideBlockPos.k, iSide)) {
-                    BlockState currentState = world.getBlockState(i, j, k);
-                    switch (iSide) {
-                        case 0:
-                            world.setBlockStateWithNotify(i, j, k, currentState.with(iFace0, 1));
-                            break;
-                        case 1:
-                            world.setBlockStateWithNotify(i, j, k, currentState.with(iFace1, 1));
-                            break;
-                        case 2:
-                            world.setBlockStateWithNotify(i, j, k, currentState.with(iFace2, 1));
-                            break;
-                        case 3:
-                            world.setBlockStateWithNotify(i, j, k, currentState.with(iFace3, 1));
-                            break;
-                        case 4:
-                            world.setBlockStateWithNotify(i, j, k, currentState.with(iFace4, 1));
-                            break;
-                        case 5:
-                            world.setBlockStateWithNotify(i, j, k, currentState.with(iFace5, 1));
-                            break;
-                        default:
-                            break;
-                    }
-                } else {
-                    BlockState currentState = world.getBlockState(i, j, k);
-                    switch (iSide) {
-                        case 0:
-                            world.setBlockStateWithNotify(i, j, k, currentState.with(iFace0, 0));
-                            break;
-                        case 1:
-                            world.setBlockStateWithNotify(i, j, k, currentState.with(iFace1, 0));
-                            break;
-                        case 2:
-                            world.setBlockStateWithNotify(i, j, k, currentState.with(iFace2, 0));
-                            break;
-                        case 3:
-                            world.setBlockStateWithNotify(i, j, k, currentState.with(iFace3, 0));
-                            break;
-                        case 4:
-                            world.setBlockStateWithNotify(i, j, k, currentState.with(iFace4, 0));
-                            break;
-                        case 5:
-                            world.setBlockStateWithNotify(i, j, k, currentState.with(iFace5, 0));
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }
-        }
-        return true;
-    }
-
-    /**
-     * STATES
-     */
-    public static final IntProperty FACING = IntProperty.of("facing", 0, 5);
-    public static final IntProperty iFace0 = IntProperty.of("iface0", 0,  2);
-    public static final IntProperty iFace1 = IntProperty.of("iface1", 0,  2);
-    public static final IntProperty iFace2 = IntProperty.of("iface2", 0,  2);
-    public static final IntProperty iFace3 = IntProperty.of("iface3", 0,  2);
-    public static final IntProperty iFace4 = IntProperty.of("iface4", 0,  2);
-    public static final IntProperty iFace5 = IntProperty.of("iface5", 0,  2);
-    public static final BooleanProperty POWER = BooleanProperty.of("power");
-
-    public void appendProperties(StateManager.Builder<BlockBase, BlockState> builder){
-        builder.add(FACING);
-        builder.add(iFace0);
-        builder.add(iFace1);
-        builder.add(iFace2);
-        builder.add(iFace3);
-        builder.add(iFace4);
-        builder.add(iFace5);
-        builder.add(POWER);
     }
 
 }

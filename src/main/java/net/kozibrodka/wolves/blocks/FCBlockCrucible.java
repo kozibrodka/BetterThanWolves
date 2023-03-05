@@ -6,14 +6,17 @@
 package net.kozibrodka.wolves.blocks;
 
 import net.fabricmc.loader.api.FabricLoader;
+import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.gui.FCGuiCrucible;
 import net.kozibrodka.wolves.gui.FCGuiMillStone;
 import net.kozibrodka.wolves.tileentity.FCTileEntityCrucible;
 import net.kozibrodka.wolves.utils.FCIBlock;
 import net.kozibrodka.wolves.utils.FCUtilsInventory;
+import net.kozibrodka.wolves.utils.FCUtilsRender;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.render.block.BlockRenderer;
 import net.minecraft.entity.EntityBase;
 import net.minecraft.entity.Item;
 import net.minecraft.entity.player.PlayerBase;
@@ -22,19 +25,20 @@ import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.minecraft.tileentity.TileEntityBase;
 import net.minecraft.util.maths.Box;
+import net.modificationstation.stationapi.api.client.model.block.BlockWithInventoryRenderer;
+import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
 import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockWithEntity;
 
 import java.util.List;
 
 public class FCBlockCrucible extends TemplateBlockWithEntity
-    implements FCIBlock/*, ITextureProvider*/
+    implements FCIBlock, BlockWithWorldRenderer, BlockWithInventoryRenderer
 {
 
     public FCBlockCrucible(Identifier iid)
     {
         super(iid, Material.GLASS);
-        texture = 42;
         setHardness(0.6F);
         setSounds(GLASS_SOUNDS);
     }
@@ -47,6 +51,15 @@ public class FCBlockCrucible extends TemplateBlockWithEntity
     public boolean isFullCube()
     {
         return false;
+    }
+
+    public int getTextureForSide(int i)
+    {
+        if(i == 0)
+        {
+            return TextureListener.crucible_bottom;
+        }
+        return i != 1 ? TextureListener.crucible_side : TextureListener.crucible_top;
     }
 
     public boolean canUse(Level world, int i, int j, int k, PlayerBase entityPlayer)
@@ -148,4 +161,69 @@ public class FCBlockCrucible extends TemplateBlockWithEntity
     private final int m_iCrucibleBottomTextureID = 44;
     private final int m_iCrucibleContentsTextureID = 45;
     public static final double m_dCrucibleCollisionBoxHeight = 0.99000000953674316D;
+
+    @Override
+    public boolean renderWorld(BlockRenderer tileRenderer, BlockView tileView, int x, int y, int z) {
+        this.setBoundingBox(0.0625F, 0.0F, 0.0625F, 0.1875F, 1.0F, 0.8125F);
+        tileRenderer.renderStandardBlock(this, x, y, z);
+        this.setBoundingBox(0.0625F, 0.0F, 0.8125F, 0.8125F, 1.0F, 0.9375F);
+        tileRenderer.renderStandardBlock(this, x, y, z);
+        this.setBoundingBox(0.8125F, 0.0F, 0.1875F, 0.9375F, 1.0F, 0.9375F);
+        tileRenderer.renderStandardBlock(this, x, y, z);
+        this.setBoundingBox(0.1875F, 0.0F, 0.0625F, 0.9375F, 1.0F, 0.1875F);
+        tileRenderer.renderStandardBlock(this, x, y, z);
+        this.setBoundingBox(0.1875F, 0.0F, 0.1875F, 0.8125F, 0.125F, 0.8125F);
+        tileRenderer.renderStandardBlock(this, x, y, z);
+        this.setBoundingBox(0.0F, 0.125F, 0.0F, 0.125F, 0.875F, 0.875F);
+        tileRenderer.renderStandardBlock(this, x, y, z);
+        this.setBoundingBox(0.0F, 0.125F, 0.875F, 0.875F, 0.875F, 1.0F);
+        tileRenderer.renderStandardBlock(this, x, y, z);
+        this.setBoundingBox(0.875F, 0.125F, 0.125F, 1.0F, 0.875F, 1.0F);
+        tileRenderer.renderStandardBlock(this, x, y, z);
+        this.setBoundingBox(0.125F, 0.125F, 0.0F, 1.0F, 0.875F, 0.125F);
+        tileRenderer.renderStandardBlock(this, x, y, z);
+        FCTileEntityCrucible fctileentitycrucible = (FCTileEntityCrucible)tileView.getTileEntity(x, y, z);
+        int l = FCUtilsInventory.GetNumOccupiedStacks(fctileentitycrucible);
+        if(l > 0)
+        {
+            float f = (float)l / 27F;
+            float f1 = 0.125F;
+            float f2 = f1 + 0.0625F + (0.875F - (f1 + 0.0625F)) * f;
+            this.setBoundingBox(0.125F, f1, 0.125F, 0.875F, f2, 0.875F);
+            if(fctileentitycrucible.m_bOverStokedFire)
+            {
+//                MinecraftForgeClient.unbindTexture();
+                FCUtilsRender.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, 237);
+//                MinecraftForgeClient.bindTexture(getTextureFile());
+            } else
+            {
+                FCUtilsRender.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, TextureListener.filler);
+            }
+        }
+        setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 0.99F, 1.0F);
+        return true;
+    }
+
+    @Override
+    public void renderInventory(BlockRenderer tileRenderer, int meta) {
+        this.setBoundingBox(0.0625F, 0.0F, 0.0625F, 0.1875F, 1.0F, 0.8125F);
+        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
+        this.setBoundingBox(0.0625F, 0.0F, 0.8125F, 0.8125F, 1.0F, 0.9375F);
+        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
+        this.setBoundingBox(0.8125F, 0.0F, 0.1875F, 0.9375F, 1.0F, 0.9375F);
+        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
+        this.setBoundingBox(0.1875F, 0.0F, 0.0625F, 0.9375F, 1.0F, 0.1875F);
+        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
+        this.setBoundingBox(0.1875F, 0.0F, 0.1875F, 0.8125F, 0.125F, 0.8125F);
+        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
+        this.setBoundingBox(0.0F, 0.125F, 0.0F, 0.125F, 0.875F, 0.875F);
+        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
+        this.setBoundingBox(0.0F, 0.125F, 0.875F, 0.875F, 0.875F, 1.0F);
+        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
+        this.setBoundingBox(0.875F, 0.125F, 0.125F, 1.0F, 0.875F, 1.0F);
+        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
+        this.setBoundingBox(0.125F, 0.125F, 0.0F, 1.0F, 0.875F, 0.125F);
+        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
+        setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+    }
 }

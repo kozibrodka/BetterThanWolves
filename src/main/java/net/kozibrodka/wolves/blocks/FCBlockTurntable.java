@@ -1,20 +1,24 @@
 package net.kozibrodka.wolves.blocks;
 
 import net.fabricmc.loader.api.FabricLoader;
+import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.tileentity.FCTileEntityTurntable;
 import net.kozibrodka.wolves.utils.FCBlockPos;
 import net.kozibrodka.wolves.utils.FCIBlock;
 import net.kozibrodka.wolves.utils.FCMechanicalDevice;
+import net.kozibrodka.wolves.utils.FCUtilsRender;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.render.block.BlockRenderer;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.item.ItemInstance;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.minecraft.tileentity.TileEntityBase;
 import net.modificationstation.stationapi.api.block.BlockState;
+import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
 import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.state.StateManager;
 import net.modificationstation.stationapi.api.state.property.BooleanProperty;
@@ -24,7 +28,7 @@ import net.modificationstation.stationapi.api.template.block.TemplateBlockWithEn
 import java.util.Random;
 
 public class FCBlockTurntable extends TemplateBlockWithEntity
-    implements FCMechanicalDevice, FCIBlock
+    implements FCMechanicalDevice, FCIBlock, BlockWithWorldRenderer
 {
 
     public FCBlockTurntable(Identifier iid)
@@ -32,12 +36,15 @@ public class FCBlockTurntable extends TemplateBlockWithEntity
         super(iid, Material.STONE);
         setHardness(2.0F);
         setSounds(STONE_SOUNDS);
-        texture = 0;
-        setDefaultState(getDefaultState()
-                .with(REDSTONE, false)
-                .with(POWER, false)
-                .with(CLICK, 0)
-        );
+    }
+
+    public int getTextureForSide(int iSide)
+    {
+        if(iSide == 0)
+        {
+            return TextureListener.turntable_bottom;
+        }
+        return iSide != 1 ? TextureListener.turntable_side : TextureListener.turntable_top;
     }
 
     public int getTickrate()
@@ -95,45 +102,22 @@ public class FCBlockTurntable extends TemplateBlockWithEntity
         ItemInstance playerEquippedItem = entityPlayer.getHeldItem();
         if(playerEquippedItem == null)
         {
-            BlockState currentState = world.getBlockState(i, j, k);
-            int iClick = currentState.get(CLICK);
-            if(++iClick > 3)
+            FCTileEntityTurntable tileEntityTurntable = (FCTileEntityTurntable)world.getTileEntity(i, j, k);
+            int iSwitchSetting = tileEntityTurntable.m_iSwitchSetting;
+            if(++iSwitchSetting > 3)
             {
-                iClick = 0;
+                iSwitchSetting = 0;
             }
-            world.setBlockStateWithNotify(i,j,k,currentState.with(CLICK, iClick));
-            canUseTile(world,i,j,k,iClick);
-
-//            FCTileEntityTurntable tileEntityTurntable = (FCTileEntityTurntable)world.getTileEntity(i, j, k);
-//            int iSwitchSetting = tileEntityTurntable.m_iSwitchSetting;
-//            if(++iSwitchSetting > 3)
-//            {
-//                iSwitchSetting = 0;
-//            }
-//            System.out.println(tileEntityTurntable.m_iSwitchSetting + " RAZ");
-//            tileEntityTurntable.m_iSwitchSetting = iSwitchSetting;
-//            System.out.println(tileEntityTurntable.m_iSwitchSetting + " DWA");
-//            world.method_202(i, j, k, i, j, k);
+            tileEntityTurntable.m_iSwitchSetting = iSwitchSetting;
+            world.method_202(i, j, k, i, j, k);
+            world.method_243(i, j, k);
+//            mod_FCBetterThanWolves.sendData(this, world, i, j, k);
             return true;
         } else
         {
             return false;
         }
     }
-
-    public boolean canUseTile(Level world, int i, int j, int k, int click)
-    {
-        FCTileEntityTurntable tileEntityTurntable = (FCTileEntityTurntable)world.getTileEntity(i, j, k);
-        tileEntityTurntable.m_iSwitchSetting = click;
-        world.method_202(i, j, k, i, j, k);
-        return true;
-    }
-
-//    public void clickState(Level world,  int i, int j, int k, int click){
-//        BlockState currentState = world.getBlockState(i, j, k);
-//        //TODO maybe use only state and remove m_switchsetting
-//        world.setBlockStateWithNotify(i,j,k,currentState.with(CLICK, click));
-//    }
 
     public int GetFacing(BlockView iBlockAccess, int i, int j, int l)
     {
@@ -160,50 +144,34 @@ public class FCBlockTurntable extends TemplateBlockWithEntity
 
     public boolean IsBlockMechanicalOn(BlockView iBlockAccess, int i, int j, int k)
     {
-        Level level = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).level;
-        if(level.getTileId(i,j,k) == mod_FCBetterThanWolves.fcTurntable.id) {
-            return (level.getBlockState(i, j, k).get(POWER));
-        }else{
-            return false;
-        }
-//        return (iBlockAccess.getTileMeta(i, j, k) & 1) > 0;
+        return (iBlockAccess.getTileMeta(i, j, k) & 1) > 0;
     }
 
     public void SetBlockMechanicalOn(Level world, int i, int j, int k, boolean bOn)
     {
-        BlockState currentState = world.getBlockState(i, j, k);
-        world.setBlockStateWithNotify(i,j,k,currentState.with(POWER, bOn));
-//        int iMetaData = world.getTileMeta(i, j, k) & -2;
-//        if(bOn)
-//        {
-//            iMetaData |= 1;
-//        }
-//        world.setTileMeta(i, j, k, iMetaData);
-//        world.method_243(i, j, k);
+        int iMetaData = world.getTileMeta(i, j, k) & -2;
+        if(bOn)
+        {
+            iMetaData |= 1;
+        }
+        world.setTileMeta(i, j, k, iMetaData);
+        world.method_243(i, j, k);
     }
 
     public boolean IsBlockRedstoneOn(BlockView iBlockAccess, int i, int j, int k)
     {
-        Level level = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).level;
-        if(level.getTileId(i,j,k) == mod_FCBetterThanWolves.fcTurntable.id) {
-            return (level.getBlockState(i, j, k).get(REDSTONE));
-        }else{
-            return false;
-        }
-//        return (iBlockAccess.getTileMeta(i, j, k) & 2) > 0;
+        return (iBlockAccess.getTileMeta(i, j, k) & 2) > 0;
     }
 
     public void SetBlockRedstoneOn(Level world, int i, int j, int k, boolean bOn)
     {
-        BlockState currentState = world.getBlockState(i, j, k);
-        world.setBlockStateWithNotify(i,j,k,currentState.with(REDSTONE, bOn));
-//        int iMetaData = world.getTileMeta(i, j, k) & -3;
-//        if(bOn)
-//        {
-//            iMetaData |= 2;
-//        }
-//        world.setTileMeta(i, j, k, iMetaData);
-//        world.method_243(i, j, k);
+        int iMetaData = world.getTileMeta(i, j, k) & -3;
+        if(bOn)
+        {
+            iMetaData |= 2;
+        }
+        world.setTileMeta(i, j, k, iMetaData);
+        world.method_243(i, j, k);
     }
 
     void EmitTurntableParticles(Level world, int i, int j, int k, Random random)
@@ -255,16 +223,21 @@ public class FCBlockTurntable extends TemplateBlockWithEntity
     private final int iTurntableSwitchTextureIndex = 1;
     private static final int iTurntableTickRate = 10;
 
-    /**
-     * STATES
-     */
-    public static final IntProperty CLICK = IntProperty.of("click", 0, 3);
-    public static final BooleanProperty POWER = BooleanProperty.of("power");
-    public static final BooleanProperty REDSTONE = BooleanProperty.of("redstone");
-
-    public void appendProperties(StateManager.Builder<BlockBase, BlockState> builder){
-        builder.add(CLICK);
-        builder.add(REDSTONE);
-        builder.add(POWER);
+    @Override
+    public boolean renderWorld(BlockRenderer tileRenderer, BlockView tileView, int x, int y, int z) {
+        tileRenderer.renderStandardBlock(this, x, y, z);
+        FCTileEntityTurntable fctileentityturntable = (FCTileEntityTurntable)tileView.getTileEntity(x, y, z);
+        int l = fctileentityturntable.m_iSwitchSetting;
+        float f = 0.25F + (float)l * 0.125F;
+        this.setBoundingBox(f, 0.3125F, 0.0625F, f + 0.125F, 0.4375F, 1.0625F);
+        FCUtilsRender.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, 1);
+        this.setBoundingBox(1.0F - (f + 0.125F), 0.3125F, -0.0625F, 1.0F - f, 0.4375F, 0.9375F);
+        FCUtilsRender.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, 1);
+        this.setBoundingBox(0.0625F, 0.3125F, 1.0F - (f + 0.125F), 1.0625F, 0.4375F, 1.0F - f);
+        FCUtilsRender.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, 1);
+        this.setBoundingBox(-0.0625F, 0.3125F, f, 0.9375F, 0.4375F, f + 0.125F);
+        FCUtilsRender.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, 1);
+        setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+        return true;
     }
 }

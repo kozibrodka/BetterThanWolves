@@ -5,6 +5,8 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "BlockBaseAccessor",
+    "BlockDetectorRailMixin",
+    "BlockRailMixin",
     "BlockRendererAccessor",
     "EntityBaseAccessor",
     "FireAccessor",

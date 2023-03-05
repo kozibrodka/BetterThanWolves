@@ -26,7 +26,7 @@ public class FCCraftingManagerAnvil
         recipes = new ArrayList();
     }
 
-    void addRecipe(ItemInstance ItemInstance, Object aobj[])
+    public void addRecipe(ItemInstance ItemInstance, Object aobj[])
     {
         String s = "";
         int i = 0;
@@ -89,7 +89,7 @@ public class FCCraftingManagerAnvil
         recipes.add(new ShapedRecipe(j, k, aItemInstance, ItemInstance));
     }
 
-    void addShapelessRecipe(ItemInstance ItemInstance, Object aobj[])
+    public void addShapelessRecipe(ItemInstance ItemInstance, Object aobj[])
     {
         ArrayList arraylist = new ArrayList();
         Object aobj1[] = aobj;

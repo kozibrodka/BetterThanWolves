@@ -5,14 +5,21 @@
 
 package net.kozibrodka.wolves.blocks;
 
+import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.tileentity.FCTileEntityCement;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.render.Tessellator;
+import net.minecraft.client.render.block.BlockRenderer;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.minecraft.tileentity.TileEntityBase;
 import net.minecraft.util.maths.Box;
+import net.modificationstation.stationapi.api.client.model.block.BlockWithInventoryRenderer;
+import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
+import net.modificationstation.stationapi.api.client.texture.atlas.Atlas;
+import net.modificationstation.stationapi.api.client.texture.atlas.Atlases;
 import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockWithEntity;
 
@@ -20,6 +27,7 @@ import java.util.Random;
 
 
 public class FCBlockCement extends TemplateBlockWithEntity
+    implements BlockWithWorldRenderer, BlockWithInventoryRenderer
 {
 
     public FCBlockCement(Identifier iid)
@@ -33,6 +41,22 @@ public class FCBlockCement extends TemplateBlockWithEntity
         tempSpreadToSideFlags = new boolean[4];
         tempClosestDownslopeToSideDist = new int[4];
         setTicksRandomly(true);
+    }
+
+//    public int getRenderType()
+//    {
+//        return -1;
+//    }
+
+    public int getTextureForSide(BlockView iblockaccess, int i, int j, int k, int l)
+    {
+        if(IsCementPartiallyDry(iblockaccess, i, j, k))
+        {
+            return TextureListener.cement_dry;
+        } else
+        {
+            return TextureListener.cement;
+        }
     }
 
     protected TileEntityBase createTileEntity()
@@ -52,8 +76,7 @@ public class FCBlockCement extends TemplateBlockWithEntity
 
     public boolean isCollidable(int i, boolean flag)
     {
-        return true;
-//        return flag && i == 0;
+        return flag && i == 0;
     }
 
     public boolean isSolid(BlockView iblockaccess, int i, int j, int k, int l)
@@ -559,4 +582,225 @@ public class FCBlockCement extends TemplateBlockWithEntity
     public static final int iCementTicksToPartiallyDry = 8;
     boolean tempSpreadToSideFlags[];
     int tempClosestDownslopeToSideDist[];
+
+    @Override
+    public boolean renderWorld(BlockRenderer tileRenderer, BlockView tileView, int x, int y, int z) {
+        boolean flag = false;
+        Tessellator tessellator = Tessellator.INSTANCE;
+        boolean flag1 = this.isSideRendered(tileView, x, y + 1, z, 1);
+        boolean flag2 = this.isSideRendered(tileView, x, y - 1, z, 0);
+        boolean aflag[] = new boolean[4];
+        aflag[0] = this.isSideRendered(tileView, x, y, z - 1, 2);
+        aflag[1] = this.isSideRendered(tileView, x, y, z + 1, 3);
+        aflag[2] = this.isSideRendered(tileView, x - 1, y, z, 4);
+        aflag[3] = this.isSideRendered(tileView, x + 1, y, z, 5);
+        if(!flag1 && !flag2 && !aflag[0] && !aflag[1] && !aflag[2] && !aflag[3])
+        {
+            return false;
+        }
+        boolean flag3 = false;
+        float f = 0.5F;
+        float f1 = 1.0F;
+        float f2 = 0.8F;
+        float f3 = 0.6F;
+        double d = 0.0D;
+        double d1 = 1.0D;
+        float f4 = RenderCementGetCornerHeightFromNeighbours(tileView, x, y, z);
+        float f5 = RenderCementGetCornerHeightFromNeighbours(tileView, x, y, z + 1);
+        float f6 = RenderCementGetCornerHeightFromNeighbours(tileView, x + 1, y, z + 1);
+        float f7 = RenderCementGetCornerHeightFromNeighbours(tileView, x + 1, y, z);
+        if(flag || flag1)
+        {
+            flag3 = true;
+            int l = this.getTextureForSide(tileView, x, y, z, 1);
+//            int j1 = (l & 0xf) << 4;
+//            int l1 = l & 0xf0;
+//            double d2 = (double)j1 / 256D;
+//            double d3 = ((double)j1 + 15.99D) / 256D;
+//            double d4 = (double)l1 / 256D;
+//            double d5 = ((double)l1 + 15.99D) / 256D;
+            Atlas.Sprite atlasTX =  Atlases.getTerrain().getTexture(l);
+            double d2 = atlasTX.getStartU();
+            double d3 = atlasTX.getEndU();
+            double d4 = atlasTX.getStartV();
+            double d5 = atlasTX.getEndV();
+            float f13 = this.getBrightness(tileView, x, y, z);
+            tessellator.colour(f1 * f13, f1 * f13, f1 * f13);
+            tessellator.vertex(x + 0, (float)y + f4, z + 0, d2, d4);
+            tessellator.vertex(x + 0, (float)y + f5, z + 1, d2, d5);
+            tessellator.vertex(x + 1, (float)y + f6, z + 1, d3, d5);
+            tessellator.vertex(x + 1, (float)y + f7, z + 0, d3, d4);
+        }
+        if(flag || flag2)
+        {
+            float f8 = this.getBrightness(tileView, x, y - 1, z);
+            tessellator.colour(f * f8, f * f8, f * f8);
+            tileRenderer.renderBottomFace(this, x, y, z, this.getTextureForSide(tileView, x, y, z, 0));
+            flag3 = true;
+        }
+        for(int i1 = 0; i1 < 4; i1++)
+        {
+            int k1 = x;
+            int i2 = y;
+            int j2 = z;
+            if(i1 == 0)
+            {
+                j2--;
+            } else
+            if(i1 == 1)
+            {
+                j2++;
+            } else
+            if(i1 == 2)
+            {
+                k1--;
+            } else
+            if(i1 == 3)
+            {
+                k1++;
+            }
+            int k2 = this.getTextureForSide(tileView, x, y, z, i1 + 2);
+//            int l2 = (k2 & 0xf) << 4;
+//            int i3 = k2 & 0xf0;
+            Atlas.Sprite atlasTX2 =  Atlases.getTerrain().getTexture(k2);
+            if(!flag && !aflag[i1])
+            {
+                continue;
+            }
+            float f9;
+            float f10;
+            float f11;
+            float f12;
+            float f14;
+            float f15;
+            if(i1 == 0)
+            {
+                f9 = f4;
+                f10 = f7;
+                f11 = x;
+                f14 = x + 1;
+                f12 = z;
+                f15 = z;
+            } else
+            if(i1 == 1)
+            {
+                f9 = f6;
+                f10 = f5;
+                f11 = x + 1;
+                f14 = x;
+                f12 = z + 1;
+                f15 = z + 1;
+            } else
+            if(i1 == 2)
+            {
+                f9 = f5;
+                f10 = f4;
+                f11 = x;
+                f14 = x;
+                f12 = z + 1;
+                f15 = z;
+            } else
+            {
+                f9 = f7;
+                f10 = f6;
+                f11 = x + 1;
+                f14 = x + 1;
+                f12 = z;
+                f15 = z + 1;
+            }
+            flag3 = true;
+
+//            double d6 = (float)(l2 + 0) / 256F;
+//            double d7 = ((double)(l2 + 16) - 0.01D) / 256D;
+//            double d8 = ((float)i3 + (1.0F - f9) * 16F) / 256F;
+//            double d9 = ((float)i3 + (1.0F - f10) * 16F) / 256F;
+//            double d10 = ((double)(i3 + 16) - 0.01D) / 256D;
+
+            double d6 = atlasTX2.getStartU();
+            double d7 = atlasTX2.getEndU();
+            double d8 = atlasTX2.getStartV() + ((1.0F - f9) * 16F)/512F;
+            double d9 = atlasTX2.getStartV() + ((1.0F - f10) * 16F)/512F;
+            double d10 = atlasTX2.getEndV();
+
+            float f16 = this.getBrightness(tileView, k1, i2, j2);
+            if(i1 < 2)
+            {
+                f16 *= f2;
+            } else
+            {
+                f16 *= f3;
+            }
+            tessellator.colour(f1 * f16, f1 * f16, f1 * f16);
+            tessellator.vertex(f11, (float)y + f9, f12, d6, d8);
+            tessellator.vertex(f14, (float)y + f10, f15, d7, d9);
+            tessellator.vertex(f14, y + 0, f15, d7, d10);
+            tessellator.vertex(f11, y + 0, f12, d6, d10);
+        }
+
+        this.minY = d;
+        this.maxY = d1;
+        return flag3;
+    }
+
+    public float RenderCementGetCornerHeightFromNeighbours(BlockView iblockaccess, int i, int j, int k)
+    {
+        int l = 0;
+        float f = 0.0F;
+        for(int i1 = 0; i1 < 4; i1++)
+        {
+            int j1 = i - (i1 & 1);
+            int k1 = j;
+            int l1 = k - (i1 >> 1 & 1);
+            if(iblockaccess.getMaterial(j1, k1 + 1, l1) == mod_FCBetterThanWolves.fcCementMaterial)
+            {
+                return 1.0F;
+            }
+            Material material = iblockaccess.getMaterial(j1, k1, l1);
+            if(material == mod_FCBetterThanWolves.fcCementMaterial)
+            {
+                if(iblockaccess.isFullOpaque(j1, k1 + 1, l1))
+                {
+                    return 1.0F;
+                }
+                if(IsCementSourceBlock(iblockaccess, j1, k1, l1))
+                {
+                    f += GetRenderHeight(iblockaccess, j1, k1, l1) * 10F;
+                    l += 10;
+                }
+                f += GetRenderHeight(iblockaccess, j1, k1, l1);
+                l++;
+                continue;
+            }
+            if(!material.isSolid())
+            {
+                f += 0.6F;
+                l++;
+            }
+        }
+
+        if(l > 0)
+        {
+            return 1.0F - f / (float)l;
+        } else
+        {
+            return 1.0F;
+        }
+    }
+
+    @Override
+    public void renderInventory(BlockRenderer tileRenderer, int meta) {
+        Tessellator tessellator = Tessellator.INSTANCE;
+//        tessellator.start();
+//        tessellator.setNormal(0.0F, -1F, 0.0F);
+//        tileRenderer.method_47(this, meta, -0.5D, -0.5D, -0.5D);
+//        tessellator.draw();
+
+
+        tessellator.start();
+        tessellator.setNormal(0.0F, 0.0F, 0.0F);
+        tileRenderer.renderTorchTilted(this, 0, 0, 0, 0.0D, 0.0D);
+//        tileRenderer.method_56(this, meta, -0.5D, -0.5D, -0.5D);
+        tessellator.draw();
+//        tileRenderer.method_48();
+    }
 }

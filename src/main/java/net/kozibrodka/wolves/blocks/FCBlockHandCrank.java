@@ -1,19 +1,29 @@
 
 package net.kozibrodka.wolves.blocks;
 
+import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.utils.FCBlockPos;
 import net.kozibrodka.wolves.utils.FCMechanicalDevice;
 import net.kozibrodka.wolves.utils.FCUtilsMisc;
+import net.kozibrodka.wolves.utils.FCUtilsRender;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.render.Tessellator;
+import net.minecraft.client.render.block.BlockRenderer;
 import net.minecraft.entity.Living;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.item.ItemBase;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.minecraft.util.maths.Box;
+import net.minecraft.util.maths.Vec3f;
 import net.modificationstation.stationapi.api.block.BlockState;
+import net.modificationstation.stationapi.api.client.model.block.BlockWithInventoryRenderer;
+import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
+import net.modificationstation.stationapi.api.client.texture.Sprite;
+import net.modificationstation.stationapi.api.client.texture.atlas.Atlas;
+import net.modificationstation.stationapi.api.client.texture.atlas.Atlases;
 import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.state.StateManager;
 import net.modificationstation.stationapi.api.state.property.IntProperty;
@@ -23,7 +33,7 @@ import java.util.Random;
 
 
 public class FCBlockHandCrank extends TemplateBlockBase
-    implements FCMechanicalDevice
+    implements FCMechanicalDevice, BlockWithWorldRenderer, BlockWithInventoryRenderer
 {
 
     public FCBlockHandCrank(Identifier iid)
@@ -31,13 +41,27 @@ public class FCBlockHandCrank extends TemplateBlockBase
         super(iid, Material.DOODADS);
         setHardness(0.5F);
         setSounds(WOOD_SOUNDS);
-        texture = 31;
         setTicksRandomly(true);
     }
 
     public int getTickrate()
     {
         return iHandCrankTickRate;
+    }
+
+    public int getTextureForSide(int iSide)
+    {
+        if(iSide == 1)
+        {
+            return TextureListener.handcrack_top;
+        }
+        if(iSide == 0)
+        {
+            return TextureListener.handcrack_bottom;
+        } else
+        {
+            return TextureListener.handcrack_side;
+        }
     }
 
     public Box getCollisionShape(Level world, int i, int j, int k)
@@ -54,46 +78,6 @@ public class FCBlockHandCrank extends TemplateBlockBase
     {
         return false;
     }
-
-    public void afterPlaced(Level world, int i, int j, int k, Living entityLiving)
-    {
-        int iFacing = FCUtilsMisc.ConvertPlacingEntityOrientationToFlatBlockFacing(entityLiving);
-        SetFacing(world, i, j, k, iFacing);
-    }
-
-    public void SetFacing(Level world, int i, int j, int k, int iFacing)
-    {
-        if(iFacing >= 2)
-        {
-            iFacing -= 2;
-        } else
-        {
-            iFacing = 0;
-        }
-        switch (iFacing)
-        {
-            case 0: // '\0'
-            case 1: // '\001'
-                iFacing = 0;
-                break;
-
-            case 2: // '\002'
-            case 3: // '\003'
-                iFacing = 1;
-                break;
-
-        }
-        BlockState currentState = world.getBlockState(i, j, k);
-        world.setBlockStateWithNotify(i,j,k, currentState.with(FACING, iFacing));
-    }
-
-    /**
-     getRenderType  ??
-     */
-//    public int getRenderType()
-//    {
-//        return mod_FCBetterThanWolves.iCustomHandCrankRenderID;
-//    }
 
     public void updateBoundingBox(BlockView iBlockAccess, int i, int j, int k)
     {
@@ -116,15 +100,12 @@ public class FCBlockHandCrank extends TemplateBlockBase
         {
             return true;
         }
-//        int iMetaData = world.getTileMeta(i, j, k);
-        int iMetaData = world.getBlockState(i,j,k).get(TICKS);
+        int iMetaData = world.getTileMeta(i, j, k);
         if(iMetaData == 0)
         {
             if(!CheckForOverpower(world, i, j, k))
             {
-                BlockState currentState = world.getBlockState(i, j, k);
-                world.setBlockStateWithNotify(i,j,k,currentState.with(TICKS, 1));
-//                world.setTileMeta(i, j, k, 1);
+                world.setTileMeta(i, j, k, 1);
                 world.method_202(i, j, k, i, j, k);
                 world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.click", 1.0F, 2.0F);
                 world.updateAdjacentBlocks(i, j, k, id);
@@ -139,16 +120,14 @@ public class FCBlockHandCrank extends TemplateBlockBase
 
     public void onScheduledTick(Level world, int i, int j, int k, Random random)
     {
-//        int iMetaData = world.getTileMeta(i, j, k);
-        int iMetaData = world.getBlockState(i,j,k).get(TICKS);
+        int iMetaData = world.getTileMeta(i, j, k);
         if(iMetaData > 0)
         {
-            BlockState currentState = world.getBlockState(i, j, k);
             if(iMetaData < 7)
             {
                 if(iMetaData <= 6)
                 {
-                     world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.click", 1.0F, 2.0F);
+                    world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.click", 1.0F, 2.0F);
                 }
                 if(iMetaData <= 5)
                 {
@@ -157,14 +136,12 @@ public class FCBlockHandCrank extends TemplateBlockBase
                 {
                     world.method_216(i, j, k, id, iHandCrankDelayBeforeReset);
                 }
-                world.setBlockStateWithNotify(i,j,k,currentState.with(TICKS, iMetaData + 1));
-//                world.setTileMeta(i, j, k, iMetaData + 1);
+                world.setTileMeta(i, j, k, iMetaData + 1);
             } else
             {
-                world.setBlockStateWithNotify(i,j,k,currentState.with(TICKS, 0));
-//                world.setTileMeta(i, j, k, 0);
+                world.setTileMeta(i, j, k, 0);
                 world.method_202(i, j, k, i, j, k);
-                 world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.click", 0.3F, 0.7F);
+                world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.click", 0.3F, 0.7F);
             }
         }
     }
@@ -195,8 +172,7 @@ public class FCBlockHandCrank extends TemplateBlockBase
 
     public boolean IsOutputtingMechanicalPower(Level world, int i, int j, int k)
     {
-        return world.getBlockState(i,j,k).get(TICKS) > 0;
-//        return world.getTileMeta(i, j, k) > 0;
+        return world.getTileMeta(i, j, k) > 0;
     }
 
     public boolean CheckForOverpower(Level world, int i, int j, int k)
@@ -232,15 +208,148 @@ public class FCBlockHandCrank extends TemplateBlockBase
         world.setTile(i, j, k, 0);
     }
 
-    /**
-     * STATES
-     */
-    public static final IntProperty TICKS = IntProperty.of("ticks", 0, 7);
-    public static final IntProperty FACING = IntProperty.of("facing", 0, 1);
 
-    public void appendProperties(StateManager.Builder<BlockBase, BlockState> builder){
-        builder.add(TICKS);
-        builder.add(FACING);
+    //TODO: render this correctly
+    @Override
+    public boolean renderWorld(BlockRenderer tileRenderer, BlockView tileView, int x, int y, int z) {
+        Tessellator tessellator = Tessellator.INSTANCE;
+        float f = 0.5F;
+        float f1 = 0.5F;
+        float f2 = fHandCrankBaseHeight;
+        this.setBoundingBox(0.5F - f1, 0.0F, 0.5F - f, 0.5F + f1, f2, 0.5F + f);
+        tileRenderer.renderStandardBlock(this, x, y, z);
+        float f3 = this.getBrightness(tileView, x, y, z);
+        if(BlockBase.EMITTANCE[this.id] > 0)
+        {
+            f3 = 1.0F;
+        }
+        tessellator.colour(f3, f3, f3);
+        int l = TextureListener.handcrack_lever;
+//        if(FCUtilsRender.GetOverrideBlockTexture(tileRenderer) >= 0)
+//        {
+//            l = FCUtilsRender.GetOverrideBlockTexture(tileRenderer);
+//        }
+//        int i1 = (l & 0xf) << 4;
+//        int j1 = l & 0xf0;
+        Atlas.Sprite testTex =  Atlases.getTerrain().getTexture(l);
+//        float f4 = (float)i1 / 256F;
+//        float f5 = ((float)i1 + 15.99F) / 256F;
+//        float f6 = (float)j1 / 256F;
+//        float f7 = ((float)j1 + 15.99F) / 256F;
+        float f4 = (float)(testTex.getStartU());
+        float f5 = (float)(testTex.getEndU());
+        float f6 = (float)(testTex.getStartV());
+        float f7 = (float)(testTex.getEndV());
+
+        Vec3f avec3d[] = new Vec3f[8];
+        float f8 = 0.0625F;
+        float f9 = 0.0625F;
+        float f10 = 0.9F;
+        avec3d[0] = Vec3f.from(-f8, 0.0D, -f9);
+        avec3d[1] = Vec3f.from(f8, 0.0D, -f9);
+        avec3d[2] = Vec3f.from(f8, 0.0D, f9);
+        avec3d[3] = Vec3f.from(-f8, 0.0D, f9);
+        avec3d[4] = Vec3f.from(-f8, f10, -f9);
+        avec3d[5] = Vec3f.from(f8, f10, -f9);
+        avec3d[6] = Vec3f.from(f8, f10, f9);
+        avec3d[7] = Vec3f.from(-f8, f10, f9);
+        boolean flag = tileView.getTileMeta(x, y, z) > 0;
+        for(int k1 = 0; k1 < 8; k1++)
+        {
+            if(flag)
+            {
+                avec3d[k1].z -= 0.0625D;
+                avec3d[k1].method_1306(0.35F);
+            } else
+            {
+                avec3d[k1].z += 0.0625D;
+                avec3d[k1].method_1306(-0.35F);
+            }
+            avec3d[k1].method_1308(1.570796F);
+            avec3d[k1].x += (double)x + 0.5D;
+            avec3d[k1].y += (float)y + 0.125F;
+            avec3d[k1].z += (double)z + 0.5D;
+        }
+
+        Vec3f vec3d = null;
+        Vec3f vec3d1 = null;
+        Vec3f vec3d2 = null;
+        Vec3f vec3d3 = null;
+        for(int l1 = 0; l1 < 6; l1++)
+        {
+            if(l1 == 0)
+            {
+//                f4 = (float)(i1 + 7) / 256F;
+//                f5 = ((float)(i1 + 9) - 0.01F) / 256F;
+//                f6 = (float)(j1 + 0) / 256F;
+//                f7 = ((float)(j1 + 2) - 0.01F) / 256F;
+                f4 = (float)(testTex.getStartU() + (7/512F));
+                f5 = (float)(testTex.getEndU() - (7/512F));
+                f6 = (float)(testTex.getStartV());
+                f7 = (float)(testTex.getEndV() - (14/512F));
+
+            } else
+            if(l1 == 2)
+            {
+//                f4 = (float)(i1 + 7) / 256F;
+//                f5 = ((float)(i1 + 9) - 0.01F) / 256F;
+//                f6 = (float)(j1 + 0) / 256F;
+//                f7 = ((float)(j1 + 16) - 0.01F) / 256F;
+                f4 = (float)(testTex.getStartU() + (7/512F));
+                f5 = (float)(testTex.getEndU() - (7/512F));
+                f6 = (float)(testTex.getStartV());
+                f7 = (float)(testTex.getEndV());
+            }
+            if(l1 == 0)
+            {
+                vec3d = avec3d[0];
+                vec3d1 = avec3d[1];
+                vec3d2 = avec3d[2];
+                vec3d3 = avec3d[3];
+            } else
+            if(l1 == 1)
+            {
+                vec3d = avec3d[7];
+                vec3d1 = avec3d[6];
+                vec3d2 = avec3d[5];
+                vec3d3 = avec3d[4];
+            } else
+            if(l1 == 2)
+            {
+                vec3d = avec3d[1];
+                vec3d1 = avec3d[0];
+                vec3d2 = avec3d[4];
+                vec3d3 = avec3d[5];
+            } else
+            if(l1 == 3)
+            {
+                vec3d = avec3d[2];
+                vec3d1 = avec3d[1];
+                vec3d2 = avec3d[5];
+                vec3d3 = avec3d[6];
+            } else
+            if(l1 == 4)
+            {
+                vec3d = avec3d[3];
+                vec3d1 = avec3d[2];
+                vec3d2 = avec3d[6];
+                vec3d3 = avec3d[7];
+            } else
+            if(l1 == 5)
+            {
+                vec3d = avec3d[0];
+                vec3d1 = avec3d[3];
+                vec3d2 = avec3d[7];
+                vec3d3 = avec3d[4];
+            }
+            tessellator.vertex(vec3d.x, vec3d.y, vec3d.z, f4, f7);
+            tessellator.vertex(vec3d1.x, vec3d1.y, vec3d1.z, f5, f7);
+            tessellator.vertex(vec3d2.x, vec3d2.y, vec3d2.z, f5, f6);
+            tessellator.vertex(vec3d3.x, vec3d3.y, vec3d3.z, f4, f6);
+
+        }
+
+        return true;
     }
 
     private static int iHandCrankTickRate = 3;
@@ -251,4 +360,17 @@ public class FCBlockHandCrank extends TemplateBlockBase
     private final int iHandCrankBaseSideTextureIndex = 30;
     private final int iHandCrankBaseBottomTextureIndex = 31;
 
+    @Override
+    public void renderInventory(BlockRenderer tileRenderer, int meta) {
+        float f = 0.5F;
+        float f1 = 0.5F;
+        float f2 = fHandCrankBaseHeight;
+        this.setBoundingBox(0.5F - f1, 0.0F, 0.5F - f, 0.5F + f1, f2, 0.5F + f);
+        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
+        f = 0.0625F;
+        f1 = 0.0625F;
+        f2 = 1.0F;
+        this.setBoundingBox(0.5F - f1, 0.0F, 0.5F - f, 0.5F + f1, f2, 0.5F + f);
+        FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.handcrack_lever);
+    }
 }

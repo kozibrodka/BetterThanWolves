@@ -1,6 +1,7 @@
 package net.kozibrodka.wolves.blocks;
 
 import net.fabricmc.loader.api.FabricLoader;
+import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.utils.FCBlockPos;
 import net.kozibrodka.wolves.utils.FCUtilsMisc;
@@ -29,15 +30,66 @@ public class FCBlockAxle extends TemplateBlockBase
         setSounds(WOOD_SOUNDS);
     }
 
+    public int getTextureForSide(int iSide)
+    {
+        if(iSide == 2 || iSide == 3)
+        {
+            return TextureListener.axle_side;
+        }
+        if(iSide == 0 || iSide == 1)
+        {
+            return TextureListener.axle_vertical;
+        } else
+        {
+            return TextureListener.axle_horizontal;
+        }
+    }
+
+    public int getTextureForSide(BlockView iblockaccess, int i, int j, int k, int iSide) //getBlockTexture
+    {
+        int iAxis = GetAxisAlignment(iblockaccess, i, j, k);
+        if(iAxis == 0)
+        {
+            if(iSide == 0 || iSide == 1)
+            {
+                return TextureListener.axle_side;
+            } else
+            {
+                return TextureListener.axle_vertical;
+            }
+        }
+        if(iAxis == 1)
+        {
+            if(iSide == 2 || iSide == 3)
+            {
+                return TextureListener.axle_side;
+            }
+            if(iSide == 0 || iSide == 1)
+            {
+                return TextureListener.axle_vertical;
+            } else
+            {
+                return TextureListener.axle_horizontal;
+            }
+        }
+        if(iSide == 4 || iSide == 5)
+        {
+            return TextureListener.axle_side;
+        } else
+        {
+            return TextureListener.axle_horizontal;
+        }
+    }
+
     public int getTickrate() //tickRate
     {
         return 1;
     }
 
-    public boolean isFullOpaque()
+    public boolean isFullOpaque() //isOpaqueCube
     {
         return false;
-    } //isOpaqueCube
+    }
 
     public boolean isFullCube()
     {
@@ -52,7 +104,7 @@ public class FCBlockAxle extends TemplateBlockBase
     public void onBlockPlaced(Level world, int i, int j, int k) //onBlockAdded
     {
         super.onBlockPlaced(world, i, j, k);
-//        SetPowerLevel(world, i, j, k, 0);
+        SetPowerLevel(world, i, j, k, 0);
         world.method_216(i, j, k, id, getTickrate());
     }
 
@@ -95,9 +147,9 @@ public class FCBlockAxle extends TemplateBlockBase
     }
 
     /**
-     * raczej do usuniecia
+     * chyba render w inventory
      */
-    public void setBlockBoundsForItemRender()
+    public void method_1605() //setBlockBoundsForItemRender
     {
         setBoundingBox(0.375F, 0.375F, 0.0F, 0.625F, 0.625F, 1.0F);
     }
@@ -117,16 +169,7 @@ public class FCBlockAxle extends TemplateBlockBase
 
     public int GetAxisAlignment(BlockView iBlockAccess, int i, int j, int k)
     {
-        /**
-         * logic change
-         */
-//        return iBlockAccess.getTileMeta(i, j, k) >> 2;
-        Level level = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).level;
-        if(level.getTileId(i,j,k) == mod_FCBetterThanWolves.fcAxleBlock.id) {
-            return level.getBlockState(i, j, k).get(FACING);
-        }else{
-            return 0;
-        }
+        return iBlockAccess.getTileMeta(i, j, k) >> 2;
     }
 
     public void SetAxisAlignmentBasedOnFacing(Level world, int i, int j, int k, int iFacing)
@@ -134,53 +177,37 @@ public class FCBlockAxle extends TemplateBlockBase
         int iAxis;
         switch(iFacing)
         {
-        case 0: // '\0'
-        case 1: // '\001'
-            iAxis = 0;
-            break;
+            case 0: // '\0'
+            case 1: // '\001'
+                iAxis = 0;
+                break;
 
-        case 2: // '\002'
-        case 3: // '\003'
-            iAxis = 1;
-            break;
+            case 2: // '\002'
+            case 3: // '\003'
+                iAxis = 1;
+                break;
 
-        default:
-            iAxis = 2;
-            break;
+            default:
+                iAxis = 2;
+                break;
         }
-//        int iMetaData = world.getTileMeta(i, j, k) & 3;
-//        iMetaData |= iAxis << 2;
-//        world.setTileMeta(i, j, k, iMetaData);
-
-        BlockState currentState = world.getBlockState(i, j, k);
-        world.setBlockStateWithNotify(i,j,k, currentState.with(FACING, iAxis));
-
-//        world.setBlockState(i,j,k, getDefaultState().with(FACING, iAxis));
+        int iMetaData = world.getTileMeta(i, j, k) & 3;
+        iMetaData |= iAxis << 2;
+        world.setTileMeta(i, j, k, iMetaData);
     }
 
     public int GetPowerLevel(BlockView iBlockAccess, int i, int j, int k)
     {
-        /**
-         * logic change
-         */
-//        return iBlockAccess.getTileMeta(i, j, k) & 3;
-        Level level = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).level;
-        return level.getBlockState(i,j,k).get(POWER);
+        return iBlockAccess.getTileMeta(i, j, k) & 3;
     }
 
     public void SetPowerLevel(Level world, int i, int j, int k, int iPowerLevel)
     {
-        /**
-         * logic change
-         */
-//        System.out.println("SET {PWER LEVEL: " + iPowerLevel);
-//        iPowerLevel &= 3;
-//        int iMetaData = world.getTileMeta(i, j, k) & 0xc;
-//        iMetaData |= iPowerLevel;
-//        world.setTileMeta(i, j, k, iMetaData);
-//        world.method_243(i, j, k);
-        BlockState currentState = world.getBlockState(i, j, k);
-        world.setBlockStateWithNotify(i,j,k, currentState.with(POWER, iPowerLevel));
+        iPowerLevel &= 3;
+        int iMetaData = world.getTileMeta(i, j, k) & 0xc;
+        iMetaData |= iPowerLevel;
+        world.setTileMeta(i, j, k, iMetaData);
+        world.method_243(i, j, k);
     }
 
     public boolean IsAxleOrientedTowardsFacing(BlockView iBlockAccess, int i, int j, int k, int iFacing)
@@ -436,14 +463,4 @@ public class FCBlockAxle extends TemplateBlockBase
 
     }
 
-    /**
-     * STATES
-     */
-    public static final IntProperty FACING = IntProperty.of("facing", 0, 2);
-    public static final IntProperty POWER = IntProperty.of("power", 0, 3);
-
-    public void appendProperties(StateManager.Builder<BlockBase, BlockState> builder){
-        builder.add(FACING);
-        builder.add(POWER);
-    }
 }

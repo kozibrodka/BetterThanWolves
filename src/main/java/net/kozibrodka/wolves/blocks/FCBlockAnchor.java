@@ -7,19 +7,24 @@ package net.kozibrodka.wolves.blocks;
 
 import net.fabricmc.loader.api.FabricLoader;
 import net.kozibrodka.wolves.entity.FCEntityMovingAnchor;
+import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.tileentity.FCTileEntityPulley;
 import net.kozibrodka.wolves.utils.FCBlockPos;
 import net.kozibrodka.wolves.utils.FCUtilsMisc;
+import net.kozibrodka.wolves.utils.FCUtilsRender;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.render.block.BlockRenderer;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.item.ItemInstance;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.minecraft.util.maths.Box;
 import net.modificationstation.stationapi.api.block.BlockState;
+import net.modificationstation.stationapi.api.client.model.block.BlockWithInventoryRenderer;
+import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
 import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.state.StateManager;
 import net.modificationstation.stationapi.api.state.property.BooleanProperty;
@@ -27,7 +32,7 @@ import net.modificationstation.stationapi.api.state.property.IntProperty;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockBase;
 
 
-public class FCBlockAnchor extends TemplateBlockBase
+public class FCBlockAnchor extends TemplateBlockBase implements BlockWithWorldRenderer, BlockWithInventoryRenderer
 {
 
     public FCBlockAnchor(Identifier iid)
@@ -35,7 +40,12 @@ public class FCBlockAnchor extends TemplateBlockBase
         super(iid, Material.STONE);
         setHardness(2.0F);
         setSounds(STONE_SOUNDS);
-        texture = 41;
+    }
+
+    public int getTextureForSide(int iSide, int iMetaData)
+    {
+        int iFacing = iMetaData;
+        return iSide != iFacing && iSide != FCUtilsMisc.GetOppositeFacing(iFacing) ? TextureListener.anchor_side : TextureListener.anchor_top;
     }
 
     public Box getCollisionShape(Level world, int i, int j, int k)
@@ -92,16 +102,9 @@ public class FCBlockAnchor extends TemplateBlockBase
         }
     }
 
-    public int getTextureForSide(int i, int j)
+    public void method_1605()
     {
-//        int k = j;
-//        return i != k && i != FCUtilsMisc.GetOppositeFacing(k) ? 41 : 40;
-        if(i == 0 || i == 1)
-        {
-            return 1;
-        }else{
-            return 2;
-        }
+        setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 0.375F, 1.0F);
     }
 
     public boolean isFullOpaque()
@@ -144,20 +147,12 @@ public class FCBlockAnchor extends TemplateBlockBase
 
     public int GetAnchorFacing(BlockView iBlockAccess, int i, int j, int k)
     {
-//        return iBlockAccess.getTileMeta(i, j, k);
-        Level level = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).level;
-        if(level.getTileId(i,j,k) == mod_FCBetterThanWolves.fcAnchor.id) {
-            return (level.getBlockState(i, j, k).get(FACING));
-        }else{
-            return 0;
-        }
+        return iBlockAccess.getTileMeta(i, j, k);
     }
 
     public void SetAnchorFacing(Level world, int i, int j, int k, int iFacing)
     {
-        BlockState currentState = world.getBlockState(i, j, k);
-        world.setBlockStateWithNotify(i,j,k, currentState.with(FACING, iFacing));
-//        world.setTileMeta(i, j, k, iFacing);
+        world.setTileMeta(i, j, k, iFacing);
     }
 
     void RetractRope(Level world, int i, int j, int k, PlayerBase entityPlayer)
@@ -243,12 +238,77 @@ public class FCBlockAnchor extends TemplateBlockBase
     private final int iAnchorBaseSideTextureIndex = 41;
     public final int iAnchorRopeTextureIndex = 32;
 
-    /**
-     * STATES
-     */
-    public static final IntProperty FACING = IntProperty.of("facing", 0, 5);
+    @Override
+    public boolean renderWorld(BlockRenderer tileRenderer, BlockView tileView, int x, int y, int z) {
+        float f = 0.5F;
+        float f1 = 0.5F;
+        float f2 = fAnchorBaseHeight;
+        int l = GetAnchorFacing(tileView, x, y, z);
+        switch(l)
+        {
+            case 0: // '\0'
+                this.setBoundingBox(0.5F - f1, 1.0F - f2, 0.5F - f, 0.5F + f1, 1.0F, 0.5F + f);
+                break;
 
-    public void appendProperties(StateManager.Builder<BlockBase, BlockState> builder){
-        builder.add(FACING);
+            case 1: // '\001'
+                this.setBoundingBox(0.5F - f1, 0.0F, 0.5F - f, 0.5F + f1, f2, 0.5F + f);
+                break;
+
+            case 2: // '\002'
+                this.setBoundingBox(0.5F - f1, 0.5F - f, 1.0F - f2, 0.5F + f1, 0.5F + f, 1.0F);
+                break;
+
+            case 3: // '\003'
+                this.setBoundingBox(0.5F - f1, 0.5F - f, 0.0F, 0.5F + f1, 0.5F + f, f2);
+                break;
+
+            case 4: // '\004'
+                this.setBoundingBox(1.0F - f2, 0.5F - f1, 0.5F - f, 1.0F, 0.5F + f1, 0.5F + f);
+                break;
+
+            default:
+                this.setBoundingBox(0.0F, 0.5F - f1, 0.5F - f, f2, 0.5F + f1, 0.5F + f);
+                break;
+        }
+        tileRenderer.renderStandardBlock(this, x, y, z);
+        f = 0.125F;
+        f1 = 0.125F;
+        f2 = 0.25F;
+        this.setBoundingBox(0.5F - f1, fAnchorBaseHeight, 0.5F - f, 0.5F + f1, fAnchorBaseHeight + f2, 0.5F + f);
+        FCUtilsRender.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, TextureListener.anchor_button);
+        boolean flag = false;
+        f = 0.0625F;
+        f1 = 0.0625F;
+        f2 = fAnchorBaseHeight;
+        if(l == 1)
+        {
+            int i1 = tileView.getTileId(x, y + 1, z);
+            if(i1 == mod_FCBetterThanWolves.fcRopeBlock.id || i1 == mod_FCBetterThanWolves.fcPulley.id)
+            {
+                this.setBoundingBox(0.5F - f1, f2, 0.5F - f, 0.5F + f1, 1.0F, 0.5F + f);
+                flag = true;
+            }
+        } else
+        if(tileView.getTileId(x, y - 1, z) == mod_FCBetterThanWolves.fcRopeBlock.id)
+        {
+            this.setBoundingBox(0.5F - f1, 0.0F, 0.5F - f, 0.5F + f1, f2, 0.5F + f);
+            flag = true;
+        }
+        if(flag)
+        {
+            FCUtilsRender.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, TextureListener.rope);
+        }
+        return true;
+    }
+
+    @Override
+    public void renderInventory(BlockRenderer tileRenderer, int meta) {
+        this.method_1605();
+        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.25F, -0.5F, 1);
+        float f = 0.125F;
+        float f1 = 0.125F;
+        float f2 = 0.25F;
+        this.setBoundingBox(0.5F - f1, fAnchorBaseHeight, 0.5F - f, 0.5F + f1, fAnchorBaseHeight + f2, 0.5F + f);
+        FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.25F, -0.5F, TextureListener.anchor_button);
     }
 }

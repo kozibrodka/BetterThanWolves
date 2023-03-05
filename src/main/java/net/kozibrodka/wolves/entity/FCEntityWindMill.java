@@ -14,7 +14,6 @@ import net.minecraft.level.Level;
 import net.minecraft.util.io.CompoundTag;
 import net.minecraft.util.maths.Box;
 import net.minecraft.util.maths.MathHelper;
-import net.modificationstation.stationapi.api.vanillafix.item.Items;
 
 public class FCEntityWindMill extends EntityBase
 {
@@ -249,30 +248,27 @@ public class FCEntityWindMill extends EntityBase
         return 0.0F;
     }
 
-    /**
-        błędna funckja canUse?
-     */
-//    public boolean canUse(PlayerBase entityplayer)
-//    {
-//        if(removed)
-//        {
-//            return false;
-//        } else
-//        {
-//            return entityplayer.squaredDistanceToToEntity(this) <= 256D;
-//        }
-//    }
+    public boolean canPlayerUse(PlayerBase entityplayer)
+    {
+        if(removed)
+        {
+            return false;
+        } else
+        {
+            return entityplayer.method_1352(this) <= 256D;
+        }
+    }
 
     public boolean interact(PlayerBase entityplayer)
     {
         //TODO ItemBase to Items and possibly there will be now get.damage()
         ItemInstance ItemInstance = entityplayer.inventory.getHeldItem();
-        if(ItemInstance != null && ((ItemInstance.itemId > 359 && ItemInstance.itemId < 376) || ItemInstance.itemId == mod_FCBetterThanWolves.fcDung.id))
+        if(ItemInstance != null && (ItemInstance.itemId == ItemBase.dyePowder.id || ItemInstance.itemId == mod_FCBetterThanWolves.fcDung.id))
         {
             int iColor = 0;
-            if(ItemInstance.itemId > 359 && ItemInstance.itemId < 376)
+            if(ItemInstance.itemId == ItemBase.dyePowder.id)
             {
-                iColor = Wool.getColour((int) MathHelper.abs(360 - ItemInstance.itemId));
+                iColor = Wool.getColour(ItemInstance.getDamage());
             } else
             {
                 iColor = 12;

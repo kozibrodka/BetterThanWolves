@@ -19,7 +19,6 @@ import net.minecraft.item.ItemInstance;
 import net.minecraft.tileentity.TileEntityBase;
 import net.minecraft.util.io.CompoundTag;
 import net.minecraft.util.io.ListTag;
-import net.modificationstation.stationapi.api.vanillafix.item.Items;
 
 
 public class FCTileEntityMillStone extends TileEntityBase
@@ -31,6 +30,12 @@ public class FCTileEntityMillStone extends TileEntityBase
         millStoneContents = new ItemInstance[3];
         iMillStoneGrindCounter = 0;
     }
+
+    @Override
+    public void validate() {
+        super.validate();
+    }
+
 
     public int getInventorySize()
     {
@@ -127,7 +132,7 @@ public class FCTileEntityMillStone extends TileEntityBase
                 continue;
             }
             ItemBase tempItem = millStoneContents[tempIndex].getType();
-            if(tempItem != null && (tempItem.id == ItemBase.wheat.id || tempItem.id == ItemBase.leather.id || tempItem.id == mod_FCBetterThanWolves.fcHemp.id || tempItem.id == mod_FCBetterThanWolves.fcCompanionCube.id || tempItem.id == ItemBase.sugarCanes.id || tempItem.id == BlockBase.NETHERRACK.id || tempItem.id == ItemBase.bone.id || tempItem.id == Items.COAL.id || tempItem.id == BlockBase.ROSE.id || tempItem.id == BlockBase.DANDELION.id))
+            if(tempItem != null && (tempItem.id == ItemBase.wheat.id || tempItem.id == ItemBase.leather.id || tempItem.id == mod_FCBetterThanWolves.fcHemp.id || tempItem.id == mod_FCBetterThanWolves.fcCompanionCube.id || tempItem.id == ItemBase.sugarCanes.id || tempItem.id == BlockBase.NETHERRACK.id || tempItem.id == ItemBase.bone.id || tempItem.id == ItemBase.coal.id || tempItem.id == BlockBase.ROSE.id || tempItem.id == BlockBase.DANDELION.id))
             {
                 return tempIndex;
             }

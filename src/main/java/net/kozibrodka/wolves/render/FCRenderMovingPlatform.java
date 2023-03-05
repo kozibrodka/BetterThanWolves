@@ -40,7 +40,7 @@ public class FCRenderMovingPlatform extends EntityRenderer
         int i = MathHelper.floor(entity.x);
         int j = MathHelper.floor(entity.y);
         int k = MathHelper.floor(entity.z);
-        bindTexture("/assets/wolves/stationapi/textures/entity/btwterrain01.png");
+//        bindTexture("/assets/wolves/stationapi/textures/entity/btwterrain01.png");
         BlockBase block = mod_FCBetterThanWolves.fcPlatform;
         List list = entity.level.getEntities(FCEntityMovingPlatform.class, Box.createButWasteMemory(entity.x - 1.0D, entity.y - 0.10000000149011612D, entity.z - 0.10000000149011612D, entity.x - 0.89999997615814209D, entity.y + 0.10000000149011612D, entity.z + 0.10000000149011612D));
         if(list == null || list.size() <= 0)

@@ -1,15 +1,22 @@
 package net.kozibrodka.wolves.blocks;
 
 import net.fabricmc.loader.api.FabricLoader;
+import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
+import net.kozibrodka.wolves.itemblocks.FCItemPlanter;
 import net.kozibrodka.wolves.utils.FCIBlock;
 import net.kozibrodka.wolves.utils.FCISoil;
+import net.kozibrodka.wolves.utils.FCUtilsRender;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.render.block.BlockRenderer;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.modificationstation.stationapi.api.block.BlockState;
+import net.modificationstation.stationapi.api.block.HasCustomBlockItemFactory;
+import net.modificationstation.stationapi.api.client.model.block.BlockWithInventoryRenderer;
+import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
 import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.state.StateManager;
 import net.modificationstation.stationapi.api.state.property.BooleanProperty;
@@ -17,18 +24,22 @@ import net.modificationstation.stationapi.api.state.property.IntProperty;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockBase;
 
 import java.util.Random;
-
+@HasCustomBlockItemFactory(FCItemPlanter.class)
 public class FCBlockPlanter extends TemplateBlockBase
-    implements FCIBlock, FCISoil
+    implements FCIBlock, FCISoil, BlockWithWorldRenderer, BlockWithInventoryRenderer
 {
 
     public FCBlockPlanter(Identifier iid)
     {
         super(iid, Material.GLASS);
-        texture = 77;
         setHardness(0.6F);
         setSounds(GLASS_SOUNDS);
         setTicksRandomly(true);
+    }
+
+    public int getTextureForSide(int i)
+    {
+        return TextureListener.planter;
     }
 
     public boolean isFullOpaque()
@@ -39,6 +50,11 @@ public class FCBlockPlanter extends TemplateBlockBase
     public boolean isFullCube()
     {
         return false;
+    }
+
+    protected int droppedMeta(int iMetaData)
+    {
+        return iMetaData & 1;
     }
 
     public void onScheduledTick(Level world, int i, int j, int k, Random random)
@@ -106,32 +122,33 @@ public class FCBlockPlanter extends TemplateBlockBase
 
     public boolean DoesPlanterContainSoil(BlockView iBlockAccess, int i, int j, int k)
     {
-        return true;
+        int iMetaData = iBlockAccess.getTileMeta(i, j, k);
+        return (iMetaData & 1) > 0;
+    }
+
+    public void SetDoesPlanterContainSoil(Level world, int i, int j, int k, boolean bContainsSoil)
+    {
+        int iMetaData = world.getTileMeta(i, j, k) & -2;
+        if(bContainsSoil)
+        {
+            iMetaData |= 1;
+        }
+        world.setTileMeta(i, j, k, iMetaData);
+        world.method_243(i, j, k);
     }
 
     public int GetGrowthState(BlockView iBlockAccess, int i, int j, int k)
     {
-        Level level = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).level;
-        if(level.getTileId(i,j,k) == mod_FCBetterThanWolves.fcPlanter.id) {
-            return level.getBlockState(i, j, k).get(GROWTH);
-        }else{
-            return 0;
-        }
-//        int iMetaData = iBlockAccess.getTileMeta(i, j, k);
-//        return (iMetaData & 6) >> 1;
+        int iMetaData = iBlockAccess.getTileMeta(i, j, k);
+        return (iMetaData & 6) >> 1;
     }
 
     public void SetGrowthState(Level world, int i, int j, int k, int iGrowthState)
     {
-        if(iGrowthState < 3)
-        {
-            BlockState currentState = world.getBlockState(i, j, k);
-            world.setBlockStateWithNotify(i,j,k, currentState.with(GROWTH, iGrowthState));
-        }
-//        int iMetaData = world.getTileMeta(i, j, k) & -7;
-//        iMetaData |= (iGrowthState & 3) << 1;
-//        world.setTileMeta(i, j, k, iMetaData);
-//        world.method_243(i, j, k);
+        int iMetaData = world.getTileMeta(i, j, k) & -7;
+        iMetaData |= (iGrowthState & 3) << 1;
+        world.setTileMeta(i, j, k, iMetaData);
+        world.method_243(i, j, k);
     }
 
     public static final float m_fPlanterWidth = 0.75F;
@@ -140,12 +157,60 @@ public class FCBlockPlanter extends TemplateBlockBase
     public static final float m_fPlanterBandHalfHeight = 0.15625F;
     private final int iPlanterDirtTextureIndex = 78;
 
-    /**
-     * STATES
-     */
-    public static final IntProperty GROWTH = IntProperty.of("growth", 0, 2);
+    @Override
+    public boolean renderWorld(BlockRenderer tileRenderer, BlockView tileView, int x, int y, int z) {
+        this.setBoundingBox(0.125F, 0.0F, 0.125F, 0.25F, 0.6875F, 0.75F);
+        tileRenderer.renderStandardBlock(this, x, y, z);
+        this.setBoundingBox(0.125F, 0.0F, 0.75F, 0.75F, 0.6875F, 0.875F);
+        tileRenderer.renderStandardBlock(this, x, y, z);
+        this.setBoundingBox(0.75F, 0.0F, 0.25F, 0.875F, 0.6875F, 0.875F);
+        tileRenderer.renderStandardBlock(this, x, y, z);
+        this.setBoundingBox(0.25F, 0.0F, 0.125F, 0.875F, 0.6875F, 0.25F);
+        tileRenderer.renderStandardBlock(this, x, y, z);
+        this.setBoundingBox(0.25F, 0.0F, 0.25F, 0.75F, 0.125F, 0.75F);
+        tileRenderer.renderStandardBlock(this, x, y, z);
+        this.setBoundingBox(0.0F, 0.6875F, 0.0F, 0.125F, 1.0F, 0.875F);
+        tileRenderer.renderStandardBlock(this, x, y, z);
+        this.setBoundingBox(0.0F, 0.6875F, 0.875F, 0.875F, 1.0F, 1.0F);
+        tileRenderer.renderStandardBlock(this, x, y, z);
+        this.setBoundingBox(0.875F, 0.6875F, 0.125F, 1.0F, 1.0F, 1.0F);
+        tileRenderer.renderStandardBlock(this, x, y, z);
+        this.setBoundingBox(0.125F, 0.6875F, 0.0F, 1.0F, 1.0F, 0.125F);
+        tileRenderer.renderStandardBlock(this, x, y, z);
+        if(DoesPlanterContainSoil(tileView, x, y, z))
+        {
+            this.setBoundingBox(0.125F, 0.9F, 0.125F, 0.875F, 1.0F, 0.875F);
+            FCUtilsRender.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, TextureListener.planter_soil);
+        }
+        setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+        return true;
+    }
 
-    public void appendProperties(StateManager.Builder<BlockBase, BlockState> builder){
-        builder.add(GROWTH);
+    @Override
+    public void renderInventory(BlockRenderer tileRenderer, int meta) {
+        this.setBoundingBox(0.125F, 0.0F, 0.125F, 0.25F, 0.6875F, 0.75F);
+        FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.planter);
+        this.setBoundingBox(0.125F, 0.0F, 0.75F, 0.75F, 0.6875F, 0.875F);
+        FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.planter);
+        this.setBoundingBox(0.75F, 0.0F, 0.25F, 0.875F, 0.6875F, 0.875F);
+        FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.planter);
+        this.setBoundingBox(0.25F, 0.0F, 0.125F, 0.875F, 0.6875F, 0.25F);
+        FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.planter);
+        this.setBoundingBox(0.25F, 0.0F, 0.25F, 0.75F, 0.125F, 0.75F);
+        FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.planter);
+        this.setBoundingBox(0.0F, 0.6875F, 0.0F, 0.125F, 1.0F, 0.875F);
+        FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.planter);
+        this.setBoundingBox(0.0F, 0.6875F, 0.875F, 0.875F, 1.0F, 1.0F);
+        FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.planter);
+        this.setBoundingBox(0.875F, 0.6875F, 0.125F, 1.0F, 1.0F, 1.0F);
+        FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.planter);
+        this.setBoundingBox(0.125F, 0.6875F, 0.0F, 1.0F, 1.0F, 0.125F);
+        FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.planter);
+        if(meta > 0)
+        {
+            this.setBoundingBox(0.125F, 0.9F, 0.125F, 0.875F, 1.0F, 0.875F);
+            FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.planter_soil);
+        }
+        setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
     }
 }

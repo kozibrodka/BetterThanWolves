@@ -3,6 +3,7 @@ package net.kozibrodka.wolves.blocks;
 
 import net.fabricmc.loader.api.FabricLoader;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
+import net.kozibrodka.wolves.itemblocks.FCItemOmniSlab;
 import net.kozibrodka.wolves.utils.FCUtilsMisc;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.material.Material;
@@ -14,6 +15,7 @@ import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.minecraft.util.maths.Box;
 import net.modificationstation.stationapi.api.block.BlockState;
+import net.modificationstation.stationapi.api.block.HasCustomBlockItemFactory;
 import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.state.StateManager;
 import net.modificationstation.stationapi.api.state.property.BooleanProperty;
@@ -22,6 +24,7 @@ import net.modificationstation.stationapi.api.template.block.TemplateBlockBase;
 
 import java.sql.SQLOutput;
 
+@HasCustomBlockItemFactory(FCItemOmniSlab.class)
 public class FCBlockOmniSlab extends TemplateBlockBase
 {
 
@@ -30,7 +33,21 @@ public class FCBlockOmniSlab extends TemplateBlockBase
         super(iid, Material.WOOD);
         setHardness(2.0F);
         setSounds(WOOD_SOUNDS);
-        texture = 0;
+    }
+
+    protected int droppedMeta(int iMetaData)
+    {
+        return iMetaData & 1;
+    }
+
+    public int getTextureForSide(int iSide, int iMetaData)
+    {
+        return (iMetaData & 1) <= 0 ? 1 : 4;
+    }
+
+    public int getTextureForSide(int iSide)
+    {
+        return getTextureForSide(iSide, 0);
     }
 
     public Box getCollisionShape(Level world, int i, int j, int k)
@@ -87,6 +104,11 @@ public class FCBlockOmniSlab extends TemplateBlockBase
         }
     }
 
+    public void method_1605()
+    {
+        setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, fSlabHeight);
+    }
+
     public boolean isFullOpaque()
     {
         return false;
@@ -97,22 +119,6 @@ public class FCBlockOmniSlab extends TemplateBlockBase
         return false;
     }
 
-//    public void onBlockPlaced(Level world, int i, int j, int k)
-//    {
-//        int iBlock_a = world.getTileId(i - 1, j, k);
-//        if(iBlockBelowID == id)
-//        {
-//
-//        }
-//    }
-
-    public boolean useOnTile(ItemInstance itemstack, PlayerBase playerbase, Level level, int var4, int var5, int var6, int var7) {
-        System.out.println("USEONYILE");
-        if (itemstack.count == 0) {
-            return false;
-        }
-        return false;
-    }
 
     public void onBlockPlaced(Level world, int i, int j, int k, int iFacing)
     {
@@ -120,38 +126,19 @@ public class FCBlockOmniSlab extends TemplateBlockBase
         SetSlabFacing(world, i, j, k, iSlabFacing);
     }
 
-    public void afterPlaced(Level world, int i, int j, int k, Living entityLiving)
-    {
-        int stejt = world.getBlockState(i,j,k).get(FACING);
-        if(stejt < 2){
-            SetSlabFacing(world, i, j, k, FCUtilsMisc.ConvertPlacingEntityOrientationToFlatBlockFacing(entityLiving));
-        }
-    }
-
     public int GetSlabFacing(BlockView iBlockAccess, int i, int j, int k)
     {
-        Level level = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).level;
-        int iTargetid = level.getTileId(i, j, k);
-        BlockBase targetBlock = BlockBase.BY_ID[iTargetid];
-        if(targetBlock instanceof FCBlockOmniSlab) {
-            return level.getBlockState(i, j, k).get(FACING);
-        }else{
-            return 0;
-        }
-//        return iBlockAccess.getTileMeta(i, j, k) >> 1;
+        return iBlockAccess.getTileMeta(i, j, k) >> 1;
     }
 
     public void SetSlabFacing(Level world, int i, int j, int k, int iFacing)
     {
-        BlockState currentState = world.getBlockState(i, j, k);
-        world.setBlockStateWithNotify(i,j,k, currentState.with(FACING, iFacing));
-//    	int iMetaData = world.getTileMeta(i, j, k);
-//    	iMetaData &= 1;
-//        iMetaData |= iFacing << 1;
-//        world.setTileMeta(i, j, k, iMetaData);
+        int iMetaData = world.getTileMeta(i, j, k);
+        iMetaData &= 1;
+        iMetaData |= iFacing << 1;
+        world.setTileMeta(i, j, k, iMetaData);
     }
 
-    //TODO: logic change unnecessary method
     public boolean IsSlabWood(BlockView iBlockAccess, int i, int j, int k)
     {
         return (iBlockAccess.getTileMeta(i, j, k) & 1) > 0;
@@ -160,14 +147,5 @@ public class FCBlockOmniSlab extends TemplateBlockBase
     public static float fSlabHeight = 0.5F;
     private static final int iStoneSlabTextureID = 1;
     private static final int iWoodSlabTextureID = 4;
-
-    /**
-     * STATES
-     */
-    public static final IntProperty FACING = IntProperty.of("facing", 0, 5);
-
-    public void appendProperties(StateManager.Builder<BlockBase, BlockState> builder){
-        builder.add(FACING);
-    }
 
 }

@@ -2,6 +2,7 @@
 package net.kozibrodka.wolves.blocks;
 
 import net.fabricmc.loader.api.FabricLoader;
+import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.mixin.LevelAccessor;
 import net.kozibrodka.wolves.utils.FCBlockPos;
@@ -36,10 +37,38 @@ public class FCBlockBellows extends TemplateBlockBase
         super(iid, Material.WOOD);
         setHardness(2.0F);
         setSounds(WOOD_SOUNDS);
-        setDefaultState(getDefaultState()
-                .with(FACING, 0)
-                .with(POWER, false)
-        );
+    }
+
+    public int getTextureForSide(BlockView blockAccess, int i, int j, int k, int iSide)
+    {
+        int iFacing = GetFacing(blockAccess, i, j, k);
+        if(iSide == iFacing)
+        {
+            return TextureListener.bellows_front;
+        }
+        if(iSide == 1)
+        {
+            return TextureListener.bellows_top;
+        }
+        return iSide != 0 ? TextureListener.bellows_side : TextureListener.bellows_top;
+    }
+
+    public int getTextureForSide(int iSide)
+    {
+        if(iSide == 3)
+        {
+            return TextureListener.bellows_front;
+        }
+        if(iSide == 1)
+        {
+            return TextureListener.bellows_top;
+        }
+        return iSide != 0 ? TextureListener.bellows_side : TextureListener.bellows_top;
+    }
+
+    public void method_1605()
+    {
+        setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 0.6875F, 1.0F);
     }
 
     public int getTickrate()
@@ -49,7 +78,6 @@ public class FCBlockBellows extends TemplateBlockBase
 
     public void onBlockPlaced(Level world, int i, int j, int k, int iFacing)
     {
-//        System.out.println("BELLOW PLACE 1");
         if(iFacing < 2)
         {
             iFacing = 2;
@@ -59,7 +87,6 @@ public class FCBlockBellows extends TemplateBlockBase
 
     public void afterPlaced(Level world, int i, int j, int k, Living entityLiving)
     {
-//        System.out.println("BELLOW PLACE 2");
         int iFacing = FCUtilsMisc.ConvertPlacingEntityOrientationToFlatBlockFacing(entityLiving);
         SetFacing(world, i, j, k, iFacing);
     }
@@ -129,22 +156,12 @@ public class FCBlockBellows extends TemplateBlockBase
 
     public int GetFacing(BlockView iBlockAccess, int i, int j, int k)
     {
-//        return (iBlockAccess.getTileMeta(i, j, k) & 3) + 2;
-
-        Level level = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).level;
-        if(level.getTileId(i,j,k) == mod_FCBetterThanWolves.fcBellows.id) {
-            return (level.getBlockState(i, j, k).get(FACING) & 3) + 2;
-        }else{
-            return 0;
-        }
-
-//        return (iBlockAccess.getTileMeta(i, j, k) & 3) + 2;
+        return (iBlockAccess.getTileMeta(i, j, k) & 3) + 2;
     }
 
     public void SetFacing(Level world, int i, int j, int k, int iFacing)
     {
-//        int iMetaData = world.getTileMeta(i, j, k) & -4;
-//        System.out.println("DMUCHACZ: " + iMetaData);
+        int iMetaData = world.getTileMeta(i, j, k) & -4;
         if(iFacing >= 2)
         {
             iFacing -= 2;
@@ -152,10 +169,8 @@ public class FCBlockBellows extends TemplateBlockBase
         {
             iFacing = 0;
         }
-//        iMetaData |= iFacing;
-//        world.setTileMeta(i, j, k, iMetaData);
-        BlockState currentState = world.getBlockState(i, j, k);
-        world.setBlockStateWithNotify(i,j,k, currentState.with(FACING, iFacing));
+        iMetaData |= iFacing;
+        world.setTileMeta(i, j, k, iMetaData);
     }
 
 
@@ -200,7 +215,7 @@ public class FCBlockBellows extends TemplateBlockBase
             FCBlockPos targetPos = new FCBlockPos(i, j, k);
             targetPos.AddFacingAsOffset(iFacing);
             int iTargetid = world.getTileId(targetPos.i, targetPos.j, targetPos.k);
-            if(iTargetid != mod_FCBetterThanWolves.fcHandCrank.id) //TODO DZWIGNIA HANDCRANK
+            if(iTargetid != mod_FCBetterThanWolves.fcHandCrank.id)
             {
                 continue;
             }
@@ -243,26 +258,18 @@ public class FCBlockBellows extends TemplateBlockBase
 
     public boolean IsBlockMechanicalOn(BlockView iBlockAccess, int i, int j, int k)
     {
-//        return (iBlockAccess.getTileMeta(i, j, k) & 4) > 0;
-        Level level = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).level;
-        if(level.getTileId(i,j,k) == mod_FCBetterThanWolves.fcBellows.id) {
-            return level.getBlockState(i, j, k).get(POWER);
-        }else{
-            return false;
-        }
+        return (iBlockAccess.getTileMeta(i, j, k) & 4) > 0;
     }
 
     public void SetBlockMechanicalOn(Level world, int i, int j, int k, boolean bOn)
     {
-//        int iMetaData = world.getTileMeta(i, j, k) & -5;
-//        if(bOn)
-//        {
-//            iMetaData |= 4;
-//        }
-//        world.setTileMeta(i, j, k, iMetaData);
-//        world.method_243(i, j, k);
-        BlockState currentState = world.getBlockState(i, j, k);
-        world.setBlockStateWithNotify(i,j,k, currentState.with(POWER, bOn));
+        int iMetaData = world.getTileMeta(i, j, k) & -5;
+        if(bOn)
+        {
+            iMetaData |= 4;
+        }
+        world.setTileMeta(i, j, k, iMetaData);
+        world.method_243(i, j, k);
     }
 
     private void EmitBellowsParticles(Level world, int i, int j, int k, Random random)
@@ -363,17 +370,6 @@ public class FCBlockBellows extends TemplateBlockBase
             }
 
         }
-    }
-
-    /**
-     * STATES
-     */
-    public static final BooleanProperty POWER = BooleanProperty.of("power");
-    public static final IntProperty FACING = IntProperty.of("facing", 0, 3);
-
-    public void appendProperties(StateManager.Builder<BlockBase, BlockState> builder){
-        builder.add(FACING);
-        builder.add(POWER);
     }
 
     private static int m_iBellowsTickRate = 10;

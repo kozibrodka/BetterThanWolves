@@ -6,6 +6,7 @@
 package net.kozibrodka.wolves.blocks;
 
 import net.fabricmc.loader.api.FabricLoader;
+import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.gui.FCGuiCauldron;
 import net.kozibrodka.wolves.gui.FCGuiMillStone;
@@ -40,7 +41,6 @@ public class FCBlockCauldron extends TemplateBlockWithEntity
     public FCBlockCauldron(Identifier iid)
     {
         super(iid, Material.METAL);
-        texture = 19;
         setTicksRandomly(true);
     }
 
@@ -56,6 +56,20 @@ public class FCBlockCauldron extends TemplateBlockWithEntity
         super.onBlockRemoved(world, i, j, k);
     }
 
+    public int getTextureForSide(int side)
+    {
+        if(side == 1)
+        {
+            return TextureListener.cauldron_top;
+        }
+        if(side == 0)
+        {
+            return TextureListener.cauldron_bottom;
+        } else
+        {
+            return TextureListener.cauldron_side;
+        }
+    }
 
     public boolean canUse(Level world, int i, int j, int k, PlayerBase entityPlayer)
     {
@@ -167,23 +181,14 @@ public class FCBlockCauldron extends TemplateBlockWithEntity
 
     public int GetFireUnderState(BlockView iBlockAccess, int i, int j, int k)
     {
-        Level level = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).level;
-        if(level.getTileId(i,j,k) == mod_FCBetterThanWolves.fcCauldron.id) {
-            return (level.getBlockState(i, j, k).get(FIRE));
-        }else{
-            return 0;
-        }
-//        return iBlockAccess.getTileMeta(i, j, k) & 3;
+        return iBlockAccess.getTileMeta(i, j, k) & 3;
     }
 
     private void SetFireUnderState(Level world, int i, int j, int k, int iState)
     {
-//        System.out.println("OGNIA + " + iState);
-//        int iMetaData = world.getTileMeta(i, j, k) & -4;
-//        iMetaData |= iState & 3;
-//        world.setTileMeta(i, j, k, iMetaData);
-        BlockState currentState = world.getBlockState(i, j, k);
-        world.setBlockStateWithNotify(i,j,k, currentState.with(FIRE, iState));
+        int iMetaData = world.getTileMeta(i, j, k) & -4;
+        iMetaData |= iState & 3;
+        world.setTileMeta(i, j, k, iMetaData);
     }
 
     private void ValidateFireUnderState(Level world, int i, int j, int k)
@@ -210,13 +215,4 @@ public class FCBlockCauldron extends TemplateBlockWithEntity
     public final int cauldronSideTextureIndex = 18;
     public final int cauldronBottomTextureIndex = 19;
     public static final double dCauldronCollisionBoxHeight = 0.99000000953674316D;
-
-    /**
-     * STATES
-     */
-    public static final IntProperty FIRE = IntProperty.of("fire", 0, 2);
-
-    public void appendProperties(StateManager.Builder<BlockBase, BlockState> builder){
-        builder.add(FIRE);
-    }
 }

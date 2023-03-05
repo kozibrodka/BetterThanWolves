@@ -3,18 +3,23 @@ package net.kozibrodka.wolves.blocks;
 import net.kozibrodka.wolves.entity.FCEntityBlockLiftedByPlatform;
 import net.kozibrodka.wolves.entity.FCEntityMovingAnchor;
 import net.kozibrodka.wolves.entity.FCEntityMovingPlatform;
+import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.utils.FCBlockPos;
 import net.kozibrodka.wolves.utils.FCIBlock;
+import net.kozibrodka.wolves.utils.FCUtilsRender;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.render.block.BlockRenderer;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
+import net.modificationstation.stationapi.api.client.model.block.BlockWithInventoryRenderer;
+import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
 import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockBase;
 
 public class FCBlockPlatform extends TemplateBlockBase
-    implements FCIBlock
+    implements FCIBlock, BlockWithWorldRenderer, BlockWithInventoryRenderer
 {
 
     public FCBlockPlatform(Identifier iid)
@@ -26,7 +31,15 @@ public class FCBlockPlatform extends TemplateBlockBase
         bPlatformAlreadyConsideredForConnectedTest = new boolean[5][5][5];
         ResetPlatformConsideredForEntityConversionArray();
         ResetPlatformConsideredForConnectedTestArray();
-        texture = 73;
+    }
+
+    public int getTextureForSide(int iSide)
+    {
+        if(iSide == 1)
+        {
+            return TextureListener.platform_top;
+        }
+        return iSide != 0 ? TextureListener.platform_side : TextureListener.platform_top;
     }
 
     public boolean isFullOpaque()
@@ -36,10 +49,10 @@ public class FCBlockPlatform extends TemplateBlockBase
 
     public boolean isFullCube()
     {
-        return true;
+        return false;
     }
 
-    public boolean canSuffocate(int i, int j, int l)
+    public boolean canSuffocate(Level world, int i, int j, int l)
     {
         return true;
     }
@@ -242,4 +255,51 @@ public class FCBlockPlatform extends TemplateBlockBase
     private final int iPlatformBottomTextureIndex = 74;
     private boolean bPlatformAlreadyConsideredForEntityConversion[][][];
     private boolean bPlatformAlreadyConsideredForConnectedTest[][][];
+
+    @Override
+    public boolean renderWorld(BlockRenderer tileRenderer, BlockView tileView, int x, int y, int z) {
+        if(tileView.getTileId(x - 1, y, z) != id)
+        {
+            this.setBoundingBox(0.0001F, 0.0625F, 0.0001F, 0.0625F, 0.9375F, 0.9999F);
+            tileRenderer.renderStandardBlock(this, x, y, z);
+        }
+        if(tileView.getTileId(x, y, z + 1) != id)
+        {
+            this.setBoundingBox(0.0F, 0.0625F, 0.9375F, 1.0F, 0.9375F, 1.0F);
+            tileRenderer.renderStandardBlock(this, x, y, z);
+        }
+        if(tileView.getTileId(x + 1, y, z) != id)
+        {
+            this.setBoundingBox(0.9375F, 0.0625F, 0.0001F, 0.9999F, 0.9375F, 0.9999F);
+            tileRenderer.renderStandardBlock(this, x, y, z);
+        }
+        if(tileView.getTileId(x, y, z - 1) != id)
+        {
+            this.setBoundingBox(0.0F, 0.0625F, 0.0F, 1.0F, 0.9375F, 0.0625F);
+            tileRenderer.renderStandardBlock(this, x, y, z);
+        }
+        this.setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 0.0625F, 1.0F);
+        tileRenderer.renderStandardBlock(this, x, y, z);
+        this.setBoundingBox(0.0F, 0.9375F, 0.0F, 1.0F, 1.0F, 1.0F);
+        tileRenderer.renderStandardBlock(this, x, y, z);
+        setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+        return true;
+    }
+
+    @Override
+    public void renderInventory(BlockRenderer tileRenderer, int meta) {
+        this.setBoundingBox(1E-005F, 1E-005F, 1E-005F, 0.0625F, 0.99999F, 0.99999F);
+        FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.platform_side);
+        this.setBoundingBox(0.0F, 0.0F, 0.9375F, 1.0F, 1.0F, 1.0F);
+        FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.platform_side);
+        this.setBoundingBox(0.9375F, 1E-005F, 1E-005F, 0.99999F, 0.99999F, 0.99999F);
+        FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.platform_side);
+        this.setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 0.0625F);
+        FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.platform_side);
+        this.setBoundingBox(0.0001F, 0.001F, 0.0001F, 0.9999F, 0.0625F, 0.9999F);
+        FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.platform_top);
+        this.setBoundingBox(0.0001F, 0.9375F, 0.0001F, 0.9999F, 0.999F, 0.9999F);
+        FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.platform_top);
+        setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+    }
 }

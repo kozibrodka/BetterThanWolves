@@ -2,6 +2,7 @@
 package net.kozibrodka.wolves.blocks;
 
 import net.fabricmc.loader.api.FabricLoader;
+import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.utils.FCIBlock;
 import net.minecraft.block.material.Material;
@@ -22,6 +23,11 @@ public class FCBlockLightBulb extends TemplateBlockBase
         super(iid, 0, Material.GLASS);
         setHardness(0.4F);
         setSounds(GLASS_SOUNDS);
+    }
+
+    public int getTextureForSide(int i)
+    {
+        return id != mod_FCBetterThanWolves.fcLightBulbOn.id ? TextureListener.bulb_off : TextureListener.bulb_on;
     }
 
     public int getTickrate()
@@ -81,7 +87,7 @@ public class FCBlockLightBulb extends TemplateBlockBase
     public boolean isPowered(BlockView iBlockAccess, int i, int j, int k, int l) //isPoweringTo
     {
 //        return ModLoader.getMinecraftInstance().theWorld.isBlockGettingPowered(i, j, k);
-        return Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).level.method_263(i, j, k);
+        return ((Minecraft) FabricLoader.getInstance().getGameInstance()).level.method_263(i, j, k);
 
     }
 

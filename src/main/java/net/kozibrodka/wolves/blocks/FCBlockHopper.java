@@ -6,6 +6,7 @@
 package net.kozibrodka.wolves.blocks;
 
 import net.fabricmc.loader.api.FabricLoader;
+import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.gui.FCGuiHopper;
 import net.kozibrodka.wolves.gui.FCGuiMillStone;
@@ -14,6 +15,7 @@ import net.kozibrodka.wolves.utils.*;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.render.block.BlockRenderer;
 import net.minecraft.entity.EntityBase;
 import net.minecraft.entity.Item;
 import net.minecraft.entity.player.PlayerBase;
@@ -25,6 +27,8 @@ import net.minecraft.level.Level;
 import net.minecraft.tileentity.TileEntityBase;
 import net.minecraft.util.maths.Box;
 import net.modificationstation.stationapi.api.block.BlockState;
+import net.modificationstation.stationapi.api.client.model.block.BlockWithInventoryRenderer;
+import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
 import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.state.StateManager;
 import net.modificationstation.stationapi.api.state.property.BooleanProperty;
@@ -36,22 +40,15 @@ import java.util.Random;
 
 
 public class FCBlockHopper extends TemplateBlockWithEntity
-    implements FCMechanicalDevice, FCIBlock
+    implements FCMechanicalDevice, FCIBlock, BlockWithWorldRenderer, BlockWithInventoryRenderer
 {
     public FCBlockHopper(Identifier iid)
     {
         super(iid, Material.WOOD);
         setHardness(2.0F);
         setSounds(WOOD_SOUNDS);
-        texture = 4;
         setTicksRandomly(true);
         setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-        setDefaultState(getDefaultState()
-                .with(REDOUTPUT, false)
-                .with(POWER, false)
-                .with(FULL, 0)
-                .with(FILTER, 0)
-        );
     }
 
     public int getTickrate()
@@ -79,6 +76,15 @@ public class FCBlockHopper extends TemplateBlockWithEntity
     {
         super.onBlockPlaced(world, i, j, k);
         world.method_216(i, j, k, id, getTickrate());
+    }
+
+    public int getTextureForSide(int iSide)
+    {
+        if(iSide == 0)
+        {
+            return TextureListener.hopper_bottom;
+        }
+        return iSide != 1 ? TextureListener.hopper_side : TextureListener.hopper_top;
     }
 
     public boolean isFullOpaque()
@@ -252,113 +258,79 @@ public class FCBlockHopper extends TemplateBlockWithEntity
 
     public boolean IsBlockOn(BlockView iBlockAccess, int i, int j, int k)
     {
-        Level level = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).level;
-        if(level.getTileId(i,j,k) == mod_FCBetterThanWolves.fcHopper.id) {
-            return level.getBlockState(i, j, k).get(POWER);
-        }else{
-            return false;
-        }
-//        return (iBlockAccess.getTileMeta(i, j, k) & 1) > 0;
+        return (iBlockAccess.getTileMeta(i, j, k) & 1) > 0;
     }
 
     public void SetBlockOn(Level world, int i, int j, int k, boolean bOn)
     {
-        BlockState currentState = world.getBlockState(i, j, k);
-        world.setBlockStateWithNotify(i,j,k, currentState.with(POWER, bOn));
-//        int iMetaData = world.getTileMeta(i, j, k);
-//        if(bOn)
-//        {
-//            iMetaData |= 1;
-//        } else
-//        {
-//            iMetaData &= -2;
-//        }
-//        world.setTileMeta(i, j, k, iMetaData);
+        int iMetaData = world.getTileMeta(i, j, k);
+        if(bOn)
+        {
+            iMetaData |= 1;
+        } else
+        {
+            iMetaData &= -2;
+        }
+        world.setTileMeta(i, j, k, iMetaData);
     }
 
     public boolean IsHopperFull(BlockView iBlockAccess, int i, int j, int k)
     {
-        Level level = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).level;
-        if(level.getTileId(i,j,k) == mod_FCBetterThanWolves.fcHopper.id) {
-            return level.getBlockState(i, j, k).get(FULL) == 18;
-        }else{
-            return false;
-        }
-
-//        return (iBlockAccess.getTileMeta(i, j, k) & 2) > 0;
+        return (iBlockAccess.getTileMeta(i, j, k) & 2) > 0;
     }
 
-    public void SetHopperFull(Level world, int i, int j, int k, int fullness)
+    public void SetHopperFull(Level world, int i, int j, int k, boolean bOn)
     {
-        BlockState currentState = world.getBlockState(i, j, k);
-        world.setBlockStateWithNotify(i,j,k, currentState.with(FULL, fullness));
-//        boolean bOldOn = IsHopperFull(world, i, j, k);
-//        if(bOldOn != bOn)
-//        {
-//            int iMetaData = world.getTileMeta(i, j, k);
-//            if(bOn)
-//            {
-//                iMetaData |= 2;
-//            } else
-//            {
-//                iMetaData &= -3;
-//            }
-//            world.setTileMeta(i, j, k, iMetaData);
-//            world.method_216(i, j, k, id, getTickrate());
-//        }
+        boolean bOldOn = IsHopperFull(world, i, j, k);
+        if(bOldOn != bOn)
+        {
+            int iMetaData = world.getTileMeta(i, j, k);
+            if(bOn)
+            {
+                iMetaData |= 2;
+            } else
+            {
+                iMetaData &= -3;
+            }
+            world.setTileMeta(i, j, k, iMetaData);
+            world.method_216(i, j, k, id, getTickrate());
+        }
     }
 
     public boolean IsRedstoneOutputOn(BlockView iBlockAccess, int i, int j, int k)
     {
-        Level level = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).level;
-        if(level.getTileId(i,j,k) == mod_FCBetterThanWolves.fcHopper.id) {
-            return level.getBlockState(i, j, k).get(REDOUTPUT);
-        }else{
-            return false;
-        }
-//        return (iBlockAccess.getTileMeta(i, j, k) & 4) > 0;
+        return (iBlockAccess.getTileMeta(i, j, k) & 4) > 0;
     }
 
     public void SetRedstoneOutputOn(Level world, int i, int j, int k, boolean bOn)
     {
-        BlockState currentState = world.getBlockState(i, j, k);
-        world.setBlockStateWithNotify(i,j,k, currentState.with(REDOUTPUT, bOn));
-//        int iMetaData = world.getTileMeta(i, j, k);
-//        if(bOn)
-//        {
-//            iMetaData |= 4;
-//        } else
-//        {
-//            iMetaData &= -5;
-//        }
-//        world.setTileMeta(i, j, k, iMetaData);
+        int iMetaData = world.getTileMeta(i, j, k);
+        if(bOn)
+        {
+            iMetaData |= 4;
+        } else
+        {
+            iMetaData &= -5;
+        }
+        world.setTileMeta(i, j, k, iMetaData);
     }
 
     public boolean HasFilter(BlockView iBlockAccess, int i, int j, int k)
     {
-        Level level = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).level;
-        if(level.getTileId(i,j,k) == mod_FCBetterThanWolves.fcHopper.id) {
-            return level.getBlockState(i, j, k).get(FILTER) > 0;
-        }else{
-            return false;
-        }
-//        return (iBlockAccess.getTileMeta(i, j, k) & 8) > 0;
+        return (iBlockAccess.getTileMeta(i, j, k) & 8) > 0;
     }
 
-    //TODO logic change
-    public void SetHasFilter(Level world, int i, int j, int k, int filterInt)
+    public void SetHasFilter(Level world, int i, int j, int k, boolean bOn)
     {
-        BlockState currentState = world.getBlockState(i, j, k);
-        world.setBlockStateWithNotify(i,j,k, currentState.with(FILTER, filterInt));
-//        int iMetaData = world.getTileMeta(i, j, k);
-//        if(bOn)
-//        {
-//            iMetaData |= 8;
-//        } else
-//        {
-//            iMetaData &= -9;
-//        }
-//        world.setTileMeta(i, j, k, iMetaData);
+        int iMetaData = world.getTileMeta(i, j, k);
+        if(bOn)
+        {
+            iMetaData |= 8;
+        } else
+        {
+            iMetaData &= -9;
+        }
+        world.setTileMeta(i, j, k, iMetaData);
     }
 
     void EmitHopperParticles(Level world, int i, int j, int k, Random random)
@@ -377,7 +349,7 @@ public class FCBlockHopper extends TemplateBlockWithEntity
     {
         for(int iTemp = 0; iTemp < 2; iTemp++)
         {
-            FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcPanel_wood.id, 1); //TODO meta?
+            FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcOmniSlab.id, 1);
         }
 
         for(int iTemp = 0; iTemp < 1; iTemp++)
@@ -474,15 +446,80 @@ public class FCBlockHopper extends TemplateBlockWithEntity
     public static final float fHopperCollisionBoxHeightWithFilter = 0.99F;
     public static final float fHopperVisualHeight = 1F;
 
-    public static final BooleanProperty POWER = BooleanProperty.of("power");
-    public static final BooleanProperty REDOUTPUT = BooleanProperty.of("redoutput");
-    public static final IntProperty FULL = IntProperty.of("full",0,18);
-    public static final IntProperty FILTER = IntProperty.of("filter",0,6);
+    @Override
+    public boolean renderWorld(BlockRenderer tileRenderer, BlockView tileView, int x, int y, int z) {
+        this.setBoundingBox(0.0F, 0.25F, 0.0F, 0.125F, 1.0F, 0.875F);
+        tileRenderer.renderStandardBlock(this, x, y, z);
+        this.setBoundingBox(0.0F, 0.25F, 0.875F, 0.875F, 1.0F, 1.0F);
+        tileRenderer.renderStandardBlock(this, x, y, z);
+        this.setBoundingBox(0.875F, 0.25F, 0.125F, 1.0F, 1.0F, 1.0F);
+        tileRenderer.renderStandardBlock(this, x, y, z);
+        this.setBoundingBox(0.125F, 0.25F, 0.0F, 1.0F, 1.0F, 0.125F);
+        tileRenderer.renderStandardBlock(this, x, y, z);
+        this.setBoundingBox(0.125F, 0.25F, 0.125F, 0.875F, 0.375F, 0.875F);
+        tileRenderer.renderStandardBlock(this, x, y, z);
+        this.setBoundingBox(0.3125F, 0.0F, 0.3125F, 0.6875F, 0.25F, 0.6875F);
+        tileRenderer.renderStandardBlock(this, x, y, z);
+        FCTileEntityHopper fctileentityhopper = (FCTileEntityHopper)tileView.getTileEntity(x, y, z);
+        int l = FCUtilsInventory.GetNumOccupiedStacksInSlotRange(fctileentityhopper, 0, 17);
+        if(l > 0)
+        {
+            float f = (float)l / 18F;
+            float f1 = 0.375F;
+            float f2 = f1 + 0.0625F + (0.875F - (f1 + 0.0625F)) * f;
+            this.setBoundingBox(0.125F, f1, 0.125F, 0.875F, f2, 0.875F);
+            FCUtilsRender.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, TextureListener.filler);
+        }
+        int i1 = fctileentityhopper.GetFilterType();
+        if(i1 > 0)
+        {
+//            boolean flag = FCUtilsRender.GetOverrideBlockTexture(tileRenderer) >= 0;
+            int byte0 = 0;
+            if(i1 == 1)
+            {
+                byte0 = TextureListener.hopper_ladder; //50
+            } else
+            if(i1 == 2)
+            {
+                byte0 = TextureListener.hopper_trapdoor; //51
+            } else
+            if(i1 == 3)
+            {
+                byte0 = TextureListener.hopper_grate; //52
+            } else
+            if(i1 == 4)
+            {
+                byte0 = TextureListener.hopper_wicker;  //54
+            } else
+            if(i1 == 5)
+            {
+                byte0 = TextureListener.hopper_rollers; //53
+            } else
+            if(i1 == 6)
+            {
+                byte0 = TextureListener.hopper_soulsand; //55
+            }
+            this.setBoundingBox(0.125F, 0.875F, 0.125F, 0.875F, 0.9375F, 0.875F);
+            FCUtilsRender.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, byte0);
+        }
+        setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+        return true;
+    }
 
-    public void appendProperties(StateManager.Builder<BlockBase, BlockState> builder){
-        builder.add(REDOUTPUT);
-        builder.add(POWER);
-        builder.add(FULL);
-        builder.add(FILTER);
+    @Override
+    public void renderInventory(BlockRenderer tileRenderer, int meta) {
+        this.setBoundingBox(0.0F, 0.25F, 0.0F, 0.125F, 1.0F, 0.875F);
+        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
+        this.setBoundingBox(0.0F, 0.25F, 0.875F, 0.875F, 1.0F, 1.0F);
+        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
+        this.setBoundingBox(0.875F, 0.25F, 0.125F, 1.0F, 1.0F, 1.0F);
+        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
+        this.setBoundingBox(0.125F, 0.25F, 0.0F, 1.0F, 1.0F, 0.125F);
+        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
+        this.setBoundingBox(0.125F, 0.25F, 0.125F, 0.875F, 0.375F, 0.875F);
+        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
+        this.setBoundingBox(0.3125F, 0.0F, 0.3125F, 0.6875F, 0.25F, 0.6875F);
+        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
+        setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
     }
 }

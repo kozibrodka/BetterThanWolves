@@ -7,6 +7,7 @@ package net.kozibrodka.wolves.blocks;
 
 import net.fabricmc.loader.api.FabricLoader;
 import net.kozibrodka.wolves.entity.FCEntityBroadheadArrow;
+import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.mixin.LevelAccessor;
 import net.kozibrodka.wolves.utils.FCIBlock;
@@ -39,10 +40,51 @@ public class FCBlockDetectorBlock extends TemplateBlockBase
         texture = 10;
         setLightOpacity(255);
         setTicksRandomly(true);
-        setDefaultState(getDefaultState()
-                .with(FACING, 0)
-                .with(DETECT, false)
-        );
+    }
+
+    public int getTextureForSide(BlockView iblockaccess, int i, int j, int k, int l)
+    {
+        int iFacing = GetFacing(iblockaccess, i, j, k);
+        if(l == iFacing)
+        {
+            if(IsBlockOn(iblockaccess, i, j, k))
+            {
+                return TextureListener.detector_on;
+            } else
+            {
+                return TextureListener.detector_off;
+            }
+        }
+        if(l == 1)
+        {
+            return TextureListener.detector_top;
+        }
+        if(l == 0)
+        {
+            return TextureListener.detector_bottom;
+        } else
+        {
+            return TextureListener.detector_side;
+        }
+    }
+
+    public int getTextureForSide(int i)
+    {
+        if(i == 3)
+        {
+            return TextureListener.detector_off;
+        }
+        if(i == 1)
+        {
+            return TextureListener.detector_top;
+        }
+        if(i == 0)
+        {
+            return TextureListener.detector_bottom;
+        } else
+        {
+            return TextureListener.detector_side;
+        }
     }
 
     public int getTickrate()
@@ -62,45 +104,26 @@ public class FCBlockDetectorBlock extends TemplateBlockBase
 
     public boolean IsBlockOn(BlockView iBlockAccess, int i, int j, int k)
     {
-        Level level = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).level;
-        if(level.getTileId(i,j,k) == mod_FCBetterThanWolves.fcBlockDetector.id) {
-            return level.getBlockState(i, j, k).get(DETECT);
-        }else{
-            return false;
-        }
-//        return (iBlockAccess.getTileMeta(i, j, k) & 1) > 0;
+        return (iBlockAccess.getTileMeta(i, j, k) & 1) > 0;
     }
 
     public void SetBlockOn(Level world, int i, int j, int k, boolean bOn)
     {
         if(bOn != IsBlockOn(world, i, j, k))
         {
+            int iMetaData = world.getTileMeta(i, j, k);
             if(bOn)
             {
+                iMetaData |= 1;
                 world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.click", 0.75F, 2.0F);
-            } else {
+            } else
+            {
+                iMetaData &= -2;
             }
-            BlockState currentState = world.getBlockState(i, j, k);
-            world.setBlockStateWithNotify(i,j,k, currentState.with(DETECT, bOn));
-
+            world.setTileMeta(i, j, k, iMetaData);
             world.updateAdjacentBlocks(i, j, k, id);
             world.method_202(i, j, k, i, j, k);
         }
-//        if(bOn != IsBlockOn(world, i, j, k))
-//        {
-//            int iMetaData = world.getTileMeta(i, j, k);
-//            if(bOn)
-//            {
-//                iMetaData |= 1;
-//                 world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.click", 0.75F, 2.0F);
-//            } else
-//            {
-//                iMetaData &= -2;
-//            }
-//            world.setTileMeta(i, j, k, iMetaData);
-//            world.updateAdjacentBlocks(i, j, k, id);
-//            world.method_202(i, j, k, i, j, k);
-//        }
     }
 
     public void onBlockPlaced(Level world, int i, int j, int k, int iFacing)
@@ -292,22 +315,14 @@ public class FCBlockDetectorBlock extends TemplateBlockBase
 
     public int GetFacing(BlockView iBlockAccess, int i, int j, int k)
     {
-        Level level = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).level;
-        if(level.getTileId(i,j,k) == mod_FCBetterThanWolves.fcBlockDetector.id) {
-            return level.getBlockState(i, j, k).get(FACING);
-        }else{
-            return 0;
-        }
-//        return (iBlockAccess.getTileMeta(i, j, k) & -2) >> 1;
+        return (iBlockAccess.getTileMeta(i, j, k) & -2) >> 1;
     }
 
     public void SetFacing(Level world, int i, int j, int k, int iFacing)
     {
-        BlockState currentState = world.getBlockState(i, j, k);
-        world.setBlockStateWithNotify(i,j,k, currentState.with(FACING, iFacing));
-//        int iMetaData = world.getTileMeta(i, j, k);
-//        iMetaData = iMetaData & 1 | iFacing << 1;
-//        world.setTileMeta(i, j, k, iMetaData);
+        int iMetaData = world.getTileMeta(i, j, k);
+        iMetaData = iMetaData & 1 | iFacing << 1;
+        world.setTileMeta(i, j, k, iMetaData);
     }
 
     public boolean CanRotate(BlockView iBlockAccess, int i, int j, int l)
@@ -416,17 +431,6 @@ public class FCBlockDetectorBlock extends TemplateBlockBase
             }
         }
         return false;
-    }
-
-    /**
-     * STATES
-     */
-    public static final BooleanProperty DETECT = BooleanProperty.of("detect");
-    public static final IntProperty FACING = IntProperty.of("facing", 0, 5);
-
-    public void appendProperties(StateManager.Builder<BlockBase, BlockState> builder){
-        builder.add(FACING);
-        builder.add(DETECT);
     }
 
     private final int detectorTextureIDTop = 10;

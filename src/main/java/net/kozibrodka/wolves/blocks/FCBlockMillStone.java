@@ -1,6 +1,7 @@
 package net.kozibrodka.wolves.blocks;
 
 import net.fabricmc.loader.api.FabricLoader;
+import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.gui.FCGuiMillStone;
 import net.kozibrodka.wolves.tileentity.FCTileEntityMillStone;
@@ -20,7 +21,7 @@ import net.modificationstation.stationapi.api.state.StateManager;
 import net.modificationstation.stationapi.api.state.property.BooleanProperty;
 import net.modificationstation.stationapi.api.state.property.IntProperty;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockWithEntity;
-import net.modificationstation.stationapi.api.vanillafix.block.Blocks;
+
 
 import java.util.Random;
 
@@ -31,7 +32,6 @@ public class FCBlockMillStone extends TemplateBlockWithEntity
     public FCBlockMillStone(Identifier iid)
     {
         super(iid, Material.STONE);
-        texture = 14;
         setHardness(3.5F);
         setSounds(STONE_SOUNDS);
         setTicksRandomly(true);
@@ -40,6 +40,21 @@ public class FCBlockMillStone extends TemplateBlockWithEntity
     public int getTickrate()
     {
         return iMillStoneTickRate;
+    }
+
+    public int getTextureForSide(int side)
+    {
+        if(side == 1)
+        {
+            return TextureListener.millstone_top;
+        }
+        if(side == 0)
+        {
+            return TextureListener.millstone_bottom;
+        } else
+        {
+            return TextureListener.millstone_side;
+        }
     }
 
     public void onBlockPlaced(Level world, int i, int j, int k)
@@ -67,7 +82,6 @@ public class FCBlockMillStone extends TemplateBlockWithEntity
             FCTileEntityMillStone tileEntityMillStone = (FCTileEntityMillStone)world.getTileEntity(i, j, k);
             Minecraft minecraft = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance());
             minecraft.openScreen(new FCGuiMillStone(entityplayer.inventory, tileEntityMillStone));
-
             //ModLoader.OpenGUI(entityplayer, new FCGuiMillStone(entityplayer.inventory, tileEntityMillStone));
             return true;
         }
@@ -113,32 +127,25 @@ public class FCBlockMillStone extends TemplateBlockWithEntity
         }
     }
 
-//    public void onBlockRemoved(Level world, int i, int j, int k)
-//    {
-//        /**
-//         * DZIWNA KWESTIA chyba destroy na zmianie stanu
-//         */
-//        FCUtilsInventory.EjectInventoryContents(world, i, j, k, (InventoryBase)world.getTileEntity(i, j, k));
-//        super.onBlockRemoved(world, i, j, k);
-//    }
+    public void onBlockRemoved(Level world, int i, int j, int k)
+    {
+        FCUtilsInventory.EjectInventoryContents(world, i, j, k, (InventoryBase)world.getTileEntity(i, j, k));
+        super.onBlockRemoved(world, i, j, k);
+    }
 
     public boolean IsBlockOn(Level world, int i, int j, int k)
     {
-        return world.getBlockState(i,j,k).get(POWER);
-//        return world.getTileMeta(i, j, k) > 0;
+        return world.getTileMeta(i, j, k) > 0;
     }
 
     public void SetBlockOn(Level world, int i, int j, int k, boolean bOn)
     {
-        BlockState currentState = world.getBlockState(i, j, k);
         if(bOn)
         {
-            world.setBlockStateWithNotify(i,j,k,currentState.with(POWER, true));
-//            world.setTileMeta(i, j, k, 1);
+            world.setTileMeta(i, j, k, 1);
         } else
         {
-            world.setBlockStateWithNotify(i,j,k,currentState.with(POWER, false));
-//            world.setTileMeta(i, j, k, 0);
+            world.setTileMeta(i, j, k, 0);
         }
     }
 
@@ -205,15 +212,6 @@ public class FCBlockMillStone extends TemplateBlockWithEntity
     public boolean IsOutputtingMechanicalPower(Level world, int i, int j, int l)
     {
         return false;
-    }
-
-    /**
-     * STATES
-     */
-    public static final BooleanProperty POWER = BooleanProperty.of("power");
-
-    public void appendProperties(StateManager.Builder<BlockBase, BlockState> builder){
-        builder.add(POWER);
     }
 
     private static int iMillStoneTickRate = 10;

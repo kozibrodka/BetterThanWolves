@@ -12,7 +12,6 @@ import java.util.Random;
 
 public class FCBlockStokedFire extends TemplateFire
 {
-//TODO get rid of metadata usage later
     public FCBlockStokedFire(Identifier iid)
     {
         super(iid, 31);
@@ -105,6 +104,17 @@ public class FCBlockStokedFire extends TemplateFire
             world.placeBlockWithMetaData(i, j, k, BlockBase.FIRE.id, 15);
         }
         world.method_216(i, j, k, id, getTickrate());
+    }
+
+//TODO: forge methods?
+    public boolean isBlockReplaceable(Level world, int i, int j, int l)
+    {
+        return true;
+    }
+
+    public boolean isBlockBurning(Level world, int i, int j, int l)
+    {
+        return true;
     }
 
 }

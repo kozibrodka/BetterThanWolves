@@ -120,7 +120,7 @@ public class FCTileEntityCrucible extends TileEntityBase
         nbttagcompound.put("m_iCrucibleCookCounter", m_iCrucibleCookCounter);
     }
 
-    public void updateEntity()
+    public void tick()
     {
         int iStokedFireFactor = GetStokedFireFactor();
         if(iStokedFireFactor > 0)

@@ -137,6 +137,11 @@ public class FCBlockCorner extends TemplateBlockBase
         SetCornerAlignment(world, i, j, k, bIOffset, bJOffset, bKOffset);
     }
 
+    public void method_1605()
+    {
+        setBoundingBox(0.25F, 0.25F, 0.25F, 0.75F, 0.75F, 0.75F);
+    }
+
     public int GetFacing(BlockView iBlockAccess, int i, int j, int l)
     {
         return 0;
@@ -167,50 +172,24 @@ public class FCBlockCorner extends TemplateBlockBase
 
     public boolean IsIOffset(BlockView iBlockAccess, int i, int j, int k)
     {
-        Level level = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).level;
-        int iTargetid = level.getTileId(i, j, k);
-        BlockBase targetBlock = BlockBase.BY_ID[iTargetid];
-        if(targetBlock instanceof FCBlockCorner) {
-            return (level.getBlockState(i, j, k).get(FACING) & 4) > 0;
-        }else{
-            return false;
-        }
-//        return (iBlockAccess.getTileMeta(i, j, k) & 4) > 0;
+        return (iBlockAccess.getTileMeta(i, j, k) & 4) > 0;
     }
 
     public boolean IsJOffset(BlockView iBlockAccess, int i, int j, int k)
     {
-        Level level = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).level;
-        int iTargetid = level.getTileId(i, j, k);
-        BlockBase targetBlock = BlockBase.BY_ID[iTargetid];
-        if(targetBlock instanceof FCBlockCorner) {
-            return (level.getBlockState(i, j, k).get(FACING) & 2) > 0;
-        }else{
-            return false;
-        }
-//        return (iBlockAccess.getTileMeta(i, j, k) & 2) > 0;
+        return (iBlockAccess.getTileMeta(i, j, k) & 2) > 0;
     }
 
     public boolean IsKOffset(BlockView iBlockAccess, int i, int j, int k)
     {
-        Level level = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).level;
-        int iTargetid = level.getTileId(i, j, k);
-        BlockBase targetBlock = BlockBase.BY_ID[iTargetid];
-        if(targetBlock instanceof FCBlockCorner) {
-            return (level.getBlockState(i, j, k).get(FACING) & 1) > 0;
-        }else{
-            return false;
-        }
-//        return (iBlockAccess.getTileMeta(i, j, k) & 1) > 0;
+        return (iBlockAccess.getTileMeta(i, j, k) & 1) > 0;
     }
 
     public void SetCornerAlignment(Level world, int i, int j, int k, int iAlignment)
     {
-//        int iMetaData = world.getTileMeta(i, j, k) & 8;
-//        iMetaData |= iAlignment;
-//        world.setTileMeta(i, j, k, iMetaData);
-        BlockState currentState = world.getBlockState(i, j, k);
-        world.setBlockStateWithNotify(i,j,k, currentState.with(FACING, iAlignment));
+        int iMetaData = world.getTileMeta(i, j, k) & 8;
+        iMetaData |= iAlignment;
+        world.setTileMeta(i, j, k, iMetaData);
     }
 
     public void SetCornerAlignment(Level world, int i, int j, int k, boolean bIAligned, boolean bJAligned, boolean bKAligned)
@@ -297,14 +276,4 @@ public class FCBlockCorner extends TemplateBlockBase
     private static final int iCornerTextureID = 4;
     private static final float fCornerWidth = 0.5F;
     private static final float fCornerWidthOffset = 0.5F;
-
-    /**
-     * STATES
-     */
-    public static final IntProperty FACING = IntProperty.of("facing", 0, 7);
-
-    public void appendProperties(StateManager.Builder<BlockBase, BlockState> builder){
-        builder.add(FACING);
-    }
-
 }

@@ -6,6 +6,7 @@
 package net.kozibrodka.wolves.blocks;
 import net.fabricmc.loader.api.FabricLoader;
 import net.kozibrodka.wolves.entity.FCEntityBroadheadArrow;
+import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.gui.FCGuiBlockDispenser;
 import net.kozibrodka.wolves.gui.FCGuiMillStone;
@@ -51,7 +52,45 @@ public class FCBlockBlockDispenser extends TemplateBlockWithEntity
     public FCBlockBlockDispenser(Identifier iid)
     {
         super(iid, Material.STONE);
-        texture = 6;
+    }
+
+    public int getTextureForSide(BlockView iblockaccess, int i, int j, int k, int iSide)
+    {
+        int iFacing = GetFacing(iblockaccess, i, j, k);
+        if(iSide == iFacing)
+        {
+            return TextureListener.dispenser_face;
+        }
+        if(iSide == 1)
+        {
+            return TextureListener.dispenser_top;
+        }
+        if(iSide == 0)
+        {
+            return TextureListener.dispenser_bottom;
+        } else
+        {
+            return TextureListener.dispenser_side;
+        }
+    }
+
+    public int getTextureForSide(int iSide)
+    {
+        if(iSide == 3)
+        {
+            return TextureListener.dispenser_face;
+        }
+        if(iSide == 1)
+        {
+            return TextureListener.dispenser_top;
+        }
+        if(iSide == 0)
+        {
+            return TextureListener.dispenser_bottom;
+        } else
+        {
+            return TextureListener.dispenser_side;
+        }
     }
 
     public int getTickrate()
@@ -128,22 +167,14 @@ public class FCBlockBlockDispenser extends TemplateBlockWithEntity
 
     public int GetFacing(BlockView iBlockAccess, int i, int j, int k)
     {
-        Level level = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).level;
-        if(level.getTileId(i,j,k) == mod_FCBetterThanWolves.fcBlockDispenser.id) {
-            return level.getBlockState(i, j, k).get(FACING);
-        }else{
-            return 0;
-        }
-//        return iBlockAccess.getTileMeta(i, j, k) & -9;
+        return iBlockAccess.getTileMeta(i, j, k) & -9;
     }
 
     public void SetFacing(Level world, int i, int j, int k, int iFacing)
     {
-        BlockState currentState = world.getBlockState(i, j, k);
-        world.setBlockStateWithNotify(i,j,k, currentState.with(FACING, iFacing));
-//        int iMetaData = world.getTileMeta(i, j, k) & 8;
-//        iMetaData |= iFacing;
-//        world.setTileMeta(i, j, k, iMetaData);
+        int iMetaData = world.getTileMeta(i, j, k) & 8;
+        iMetaData |= iFacing;
+        world.setTileMeta(i, j, k, iMetaData);
     }
 
     public boolean CanRotate(BlockView iBlockAccess, int i, int j, int l)
@@ -169,33 +200,23 @@ public class FCBlockBlockDispenser extends TemplateBlockWithEntity
 
     public boolean IsOn(Level world, int i, int j, int k)
     {
-//        int iMetaData = world.getTileMeta(i, j, k);
-//        return (iMetaData & 8) > 0;
-        Level level = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).level;
-        if(level.getTileId(i,j,k) == mod_FCBetterThanWolves.fcBlockDispenser.id) {
-            return level.getBlockState(i, j, k).get(REDPOWER);
-        }else{
-            return false;
-        }
+        int iMetaData = world.getTileMeta(i, j, k);
+        return (iMetaData & 8) > 0;
     }
 
     private void TurnOn(Level world, int i, int j, int k)
     {
-//        int iMetaData = world.getTileMeta(i, j, k);
-//        iMetaData |= 8;
-//        world.setTileMeta(i, j, k, iMetaData);
-        BlockState currentState = world.getBlockState(i, j, k);
-        world.setBlockStateWithNotify(i,j,k, currentState.with(REDPOWER, true));
+        int iMetaData = world.getTileMeta(i, j, k);
+        iMetaData |= 8;
+        world.setTileMeta(i, j, k, iMetaData);
         DispenseBlockOrItem(world, i, j, k, world.rand);
     }
 
     private void TurnOff(Level world, int i, int j, int k)
     {
-//        int iMetaData = world.getTileMeta(i, j, k);
-//        iMetaData &= -9;
-//        world.setTileMeta(i, j, k, iMetaData);
-        BlockState currentState = world.getBlockState(i, j, k);
-        world.setBlockStateWithNotify(i,j,k, currentState.with(REDPOWER, false));
+        int iMetaData = world.getTileMeta(i, j, k);
+        iMetaData &= -9;
+        world.setTileMeta(i, j, k, iMetaData);
         ConsumeFacingBlock(world, i, j, k);
     }
 
@@ -632,26 +653,26 @@ public class FCBlockBlockDispenser extends TemplateBlockWithEntity
 
     private boolean ValidateBlockDispenser(Level world, int i, int j, int k)
     {
-        TileEntityBase oldTileEntityBase = world.getTileEntity(i, j, k);
-        if(!(oldTileEntityBase instanceof FCTileEntityBlockDispenser))
+        TileEntityBase tileentity = world.getTileEntity(i, j, k);
+        if(!(tileentity instanceof FCTileEntityBlockDispenser))
         {
-            FCTileEntityBlockDispenser newTileEntityBase = new FCTileEntityBlockDispenser();
-            if(oldTileEntityBase instanceof TileEntityDispenser)
+            FCTileEntityBlockDispenser fctileentityblockdispenser = new FCTileEntityBlockDispenser();
+            if(tileentity instanceof TileEntityDispenser)
             {
-                TileEntityDispenser oldTileEntityDispenser = (TileEntityDispenser)oldTileEntityBase;
-                int iOldInventorySize = oldTileEntityDispenser.getInventorySize();
-                int iNewInventorySize = newTileEntityBase.getInventorySize();
-                for(int tempSlot = 0; tempSlot < iOldInventorySize && tempSlot < iNewInventorySize; tempSlot++)
+                TileEntityDispenser tileentitydispenser = (TileEntityDispenser)tileentity;
+                int l = tileentitydispenser.getInventorySize();
+                int i1 = fctileentityblockdispenser.getInventorySize();
+                for(int j1 = 0; j1 < l && j1 < i1; j1++)
                 {
-                    ItemInstance tempStack = oldTileEntityDispenser.getInventoryItem(tempSlot);
-                    if(tempStack != null)
+                    ItemInstance itemstack = tileentitydispenser.getInventoryItem(j1);
+                    if(itemstack != null)
                     {
-                        newTileEntityBase.setInventoryItem(tempSlot, tempStack.copy());
+                        fctileentityblockdispenser.setInventoryItem(j1, itemstack.copy());
                     }
                 }
 
             }
-            world.setTileEntity(i, j, k, newTileEntityBase);
+            world.setTileEntity(i, j, k, fctileentityblockdispenser);
             return false;
         } else
         {
@@ -665,14 +686,4 @@ public class FCBlockBlockDispenser extends TemplateBlockWithEntity
     public final int blockDispenserTextureIDBottom = 9;
     private final int iBlockDispenserTickRate = 4;
 
-    /**
-     * STATES
-     */
-    public static final BooleanProperty REDPOWER = BooleanProperty.of("redpower");
-    public static final IntProperty FACING = IntProperty.of("facing", 0, 5);
-
-    public void appendProperties(StateManager.Builder<BlockBase, BlockState> builder){
-        builder.add(FACING);
-        builder.add(REDPOWER);
-    }
 }

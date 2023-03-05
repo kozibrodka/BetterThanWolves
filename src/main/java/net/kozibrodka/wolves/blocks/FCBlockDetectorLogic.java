@@ -31,6 +31,17 @@ public class FCBlockDetectorLogic extends TemplateBlockBase
         setTicksRandomly(true);
     }
 
+    public int getRenderType()
+    {
+        if(bLogicDebugDisplay)
+        {
+            return super.getRenderType();
+        } else
+        {
+            return -1;
+        }
+    }
+
     public int getTickrate()
     {
         return 8;
@@ -169,16 +180,16 @@ public class FCBlockDetectorLogic extends TemplateBlockBase
         return false;
     }
 
-    //TODO: Forge methods?
+    //TODO: Forge method?
 //    public boolean isBlockReplaceable(Level world, int i, int j, int l)
 //    {
 //        return true;
 //    }
-//
-//    public boolean isAir(Level world, int i, int j, int l)
-//    {
-//        return true;
-//    }
+
+    public boolean isAir(Level world, int i, int j, int l)
+    {
+        return true;
+    }
 
     private static final int iDetectorLogicTickRate = 8;
     private boolean bLogicDebugDisplay;

@@ -168,6 +168,11 @@ public class FCBlockMoulding extends TemplateBlockBase
         setBoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
     }
 
+    public void method_1605()
+    {
+        setBoundingBox(0.25F, 0.25F, 0.0F, 0.75F, 0.75F, 1.0F);
+    }
+
     public boolean isFullOpaque()
     {
         return false;
@@ -364,22 +369,12 @@ public class FCBlockMoulding extends TemplateBlockBase
 
     public int GetMouldingAlignment(BlockView iBlockAccess, int i, int j, int k)
     {
-        Level level = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).level;
-        int iTargetid = level.getTileId(i, j, k);
-        BlockBase targetBlock = BlockBase.BY_ID[iTargetid];
-        if(targetBlock instanceof FCBlockMoulding) {
-            return level.getBlockState(i, j, k).get(FACING);
-        }else{
-            return 0;
-        }
-//        return iBlockAccess.getTileMeta(i, j, k);
+        return iBlockAccess.getTileMeta(i, j, k);
     }
 
     public void SetMouldingAlignment(Level world, int i, int j, int k, int iAlignment)
     {
-        BlockState currentState = world.getBlockState(i, j, k);
-        world.setBlockStateWithNotify(i,j,k, currentState.with(FACING, iAlignment));
-//        world.setTileMeta(i, j, k, iAlignment);
+        world.setTileMeta(i, j, k, iAlignment);
     }
 
     private boolean IsValidNeighbour(Level world, int i, int j, int k)
@@ -392,12 +387,4 @@ public class FCBlockMoulding extends TemplateBlockBase
     private static final float fMouldingWidth = 0.5F;
     private static final float fMouldingLength = 1F;
 
-    /**
-     * STATES
-     */
-    public static final IntProperty FACING = IntProperty.of("facing", 0, 11);
-
-    public void appendProperties(StateManager.Builder<BlockBase, BlockState> builder){
-        builder.add(FACING);
-    }
 }

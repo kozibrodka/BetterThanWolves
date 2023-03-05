@@ -1,15 +1,14 @@
 package net.kozibrodka.wolves.blocks;
 
 import net.fabricmc.loader.api.FabricLoader;
+import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.mixin.LevelAccessor;
-import net.kozibrodka.wolves.utils.FCBlockPos;
-import net.kozibrodka.wolves.utils.FCIBlock;
-import net.kozibrodka.wolves.utils.FCMechanicalDevice;
-import net.kozibrodka.wolves.utils.FCUtilsMisc;
+import net.kozibrodka.wolves.utils.*;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.render.block.BlockRenderer;
 import net.minecraft.entity.EntityBase;
 import net.minecraft.entity.Living;
 import net.minecraft.item.ItemBase;
@@ -17,18 +16,19 @@ import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.minecraft.util.maths.Box;
 import net.modificationstation.stationapi.api.block.BlockState;
+import net.modificationstation.stationapi.api.client.model.block.BlockWithInventoryRenderer;
+import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
 import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.state.StateManager;
 import net.modificationstation.stationapi.api.state.property.BooleanProperty;
 import net.modificationstation.stationapi.api.state.property.IntProperty;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockBase;
-import net.modificationstation.stationapi.api.vanillafix.block.Blocks;
 
 import java.util.List;
 import java.util.Random;
 
 public class FCBlockSaw extends TemplateBlockBase
-    implements FCMechanicalDevice, FCIBlock
+    implements FCMechanicalDevice, FCIBlock, BlockWithWorldRenderer, BlockWithInventoryRenderer
 {
 
     public FCBlockSaw(Identifier iid)
@@ -36,13 +36,19 @@ public class FCBlockSaw extends TemplateBlockBase
         super(iid, Material.WOOD);
         setHardness(2.0F);
         setSounds(WOOD_SOUNDS);
-        texture = 57;
         setTicksRandomly(true);
         setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 0.75F, 1.0F);
-        setDefaultState(getDefaultState()
-                .with(FACING, 0)
-                .with(POWER, false)
-        );
+    }
+
+    public int getTextureForSide(BlockView blockAccess, int i, int j, int k, int iSide)
+    {
+        int iFacing = GetFacing(blockAccess, i, j, k);
+        return iSide != iFacing ? TextureListener.saw_side : TextureListener.saw_face;
+    }
+
+    public int getTextureForSide(int iSide)
+    {
+        return iSide != 1 ? TextureListener.saw_side : TextureListener.saw_face;
     }
 
     public int getTickrate()
@@ -129,6 +135,11 @@ public class FCBlockSaw extends TemplateBlockBase
             setBoundingBox(0.0F, 0.0F, 0.0F, 0.75F, 1.0F, 1.0F);
             break;
         }
+    }
+
+    public void method_1605()
+    {
+        setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 0.75F, 1.0F);
     }
 
     public void onAdjacentBlockUpdate(Level world, int i, int j, int k, int iid)
@@ -232,22 +243,14 @@ public class FCBlockSaw extends TemplateBlockBase
 
     public int GetFacing(BlockView iBlockAccess, int i, int j, int k)
     {
-        Level level = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).level;
-        if(level.getTileId(i,j,k) == mod_FCBetterThanWolves.fcSaw.id) {
-            return (level.getBlockState(i, j, k).get(FACING));
-        }else{
-            return 0;
-        }
-//        return iBlockAccess.getTileMeta(i, j, k) & 7;
+        return iBlockAccess.getTileMeta(i, j, k) & 7;
     }
 
     public void SetFacing(Level world, int i, int j, int k, int iFacing)
     {
-        BlockState currentState = world.getBlockState(i, j, k);
-        world.setBlockStateWithNotify(i,j,k, currentState.with(FACING, iFacing));
-//        int iMetaData = world.getTileMeta(i, j, k) & -8;
-//        iMetaData |= iFacing;
-//        world.setTileMeta(i, j, k, iMetaData);
+        int iMetaData = world.getTileMeta(i, j, k) & -8;
+        iMetaData |= iFacing;
+        world.setTileMeta(i, j, k, iMetaData);
     }
 
     public boolean CanRotate(BlockView iBlockAccess, int i, int j, int k)
@@ -278,25 +281,17 @@ public class FCBlockSaw extends TemplateBlockBase
 
     public boolean IsBlockOn(BlockView iBlockAccess, int i, int j, int k)
     {
-        Level level = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).level;
-        if(level.getTileId(i,j,k) == mod_FCBetterThanWolves.fcSaw.id) {
-            return (level.getBlockState(i, j, k).get(POWER));
-        }else{
-            return false;
-        }
-//        return (iBlockAccess.getTileMeta(i, j, k) & 8) > 0;
+        return (iBlockAccess.getTileMeta(i, j, k) & 8) > 0;
     }
 
     public void SetBlockOn(Level world, int i, int j, int k, boolean bOn)
     {
-//        int iMetaData = world.getTileMeta(i, j, k) & 7;
-//        if(bOn)
-//        {
-//            iMetaData |= 8;
-//        }
-//        world.setTileMeta(i, j, k, iMetaData);
-        BlockState currentState = world.getBlockState(i, j, k);
-        world.setBlockStateWithNotify(i,j,k, currentState.with(POWER, bOn));
+        int iMetaData = world.getTileMeta(i, j, k) & 7;
+        if(bOn)
+        {
+            iMetaData |= 8;
+        }
+        world.setTileMeta(i, j, k, iMetaData);
     }
 
     void EmitSawParticles(Level world, int i, int j, int k, Random random)
@@ -381,8 +376,7 @@ public class FCBlockSaw extends TemplateBlockBase
             boolean bSawedBlock = false;
             BlockBase targetBlock = BlockBase.BY_ID[iTargetid];
             boolean bRemoveOriginalBlockIfSawed = true;
-            //TODO: logic change Wood Types Blocks/BlockBase A LOT!
-            if(iTargetid == Blocks.OAK_LOG.id) //if(iTargetid == BlockBase.LOG.id)
+            if(iTargetid == BlockBase.LOG.id)
             {
                 for(int iTempCount = 0; iTempCount < 4; iTempCount++)
                 {
@@ -395,30 +389,36 @@ public class FCBlockSaw extends TemplateBlockBase
             {
                 for(int iTempCount = 0; iTempCount < 2; iTempCount++)
                 {
-                    FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcPanel_wood.id, 1);
+                    FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcOmniSlab.id, 1);
                 }
 
                 bSawedBlock = true;
             } else
-            if(iTargetid == mod_FCBetterThanWolves.fcPanel_wood.id)
+            if(iTargetid == mod_FCBetterThanWolves.fcOmniSlab.id)
             {
+                if(((FCBlockOmniSlab)mod_FCBetterThanWolves.fcOmniSlab).IsSlabWood(world, i, j, k))
+                {
                     for(int iTempCount = 0; iTempCount < 2; iTempCount++)
                     {
-                        FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcMoulding_wood.id, 0);
+                        FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcMoulding.id, 0);
                     }
 
                     bSawedBlock = true;
+                } else
+                {
+                    return false;
+                }
             } else
-            if(iTargetid == mod_FCBetterThanWolves.fcMoulding_wood.id)
+            if(iTargetid == mod_FCBetterThanWolves.fcMoulding.id)
             {
                 for(int iTempCount = 0; iTempCount < 2; iTempCount++)
                 {
-                    FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcCorner_wood.id, 0);
+                    FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcCorner.id, 0);
                 }
 
                 bSawedBlock = true;
             } else
-            if(iTargetid == mod_FCBetterThanWolves.fcCorner_wood.id)
+            if(iTargetid == mod_FCBetterThanWolves.fcCorner.id)
             {
                 for(int iTempCount = 0; iTempCount < 2; iTempCount++)
                 {
@@ -427,39 +427,43 @@ public class FCBlockSaw extends TemplateBlockBase
 
                 bSawedBlock = true;
             } else
-            if(iTargetid == mod_FCBetterThanWolves.fcCompanionCube_slab.id){
-                if(iSawFacing == 0 || iSawFacing == 1)
-                {
-                    FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcCompanionCube_slab.id, 1);
-                    bSawedBlock = true;
-                }
-            } else
-            if(iTargetid == mod_FCBetterThanWolves.fcCompanionCube.id){
+            if(iTargetid == mod_FCBetterThanWolves.fcCompanionCube.id)
+            {
                 FCBlockCompanionCube cubeBlock = (FCBlockCompanionCube)mod_FCBetterThanWolves.fcCompanionCube;
-                if(iSawFacing == 0 || iSawFacing == 1)
+                if(!cubeBlock.GetHalfCubeState(world, i, j, k))
                 {
-                    for(int iTempCount = 0; iTempCount < 2; iTempCount++)
+                    if(iSawFacing == 0 || iSawFacing == 1)
                     {
-                        FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcCompanionCube_slab.id, 1);
-                    }
-                }else {
-                    int faceOLd = cubeBlock.GetFacing(world,i,j,k);
-                    world.setTile(i,j,k, mod_FCBetterThanWolves.fcCompanionCube_slab.id);
-                    FCBlockCompanionSlab slabBlock = (FCBlockCompanionSlab)mod_FCBetterThanWolves.fcCompanionCube_slab;
-                    slabBlock.SetFacing(world,i,j,k, faceOLd);
+                        for(int iTempCount = 0; iTempCount < 2; iTempCount++)
+                        {
+                            FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcCompanionCube.id, 1);
+                        }
 
-                    FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcCompanionCube_slab.id, 1);
-                    world.method_202(i, j, k, i, j, k);
-                    bRemoveOriginalBlockIfSawed = false;
-                }
+                    } else
+                    {
+                        FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcCompanionCube.id, 1);
+                        cubeBlock.SetHalfCubeState(world, i, j, k, true);
+                        world.method_202(i, j, k, i, j, k);
+                        bRemoveOriginalBlockIfSawed = false;
+                    }
                     FCBlockPos bloodPos = new FCBlockPos(i, j, k);
                     bloodPos.AddFacingAsOffset(FCUtilsMisc.GetOppositeFacing(iSawFacing));
                     EmitBloodParticles(world, bloodPos.i, bloodPos.j, bloodPos.k, world.rand);
                     world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "mob.wolf.hurt", 5F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
                     bSawedBlock = true;
-
+                } else
+                if(iSawFacing == 0 || iSawFacing == 1)
+                {
+                    FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcCompanionCube.id, 1);
+                    bSawedBlock = true;
+                }
             } else
-//            if(iTargetid == BlockBase.SUGAR_CANES.id) //TODO debug code?? cyhba useless
+            if(iTargetid == BlockBase.LEAVES.id || iTargetid == BlockBase.SUGAR_CANES.id || iTargetid == BlockBase.CROPS.id || iTargetid == mod_FCBetterThanWolves.fcHempCrop.id)
+            {
+                targetBlock.drop(world, i, j, k, world.getTileMeta(i, j, k));
+                bSawedBlock = true;
+            } else
+//            if(iTargetid == BlockBase.SUGAR_CANES.id)
 //            {
 //                targetBlock.drop(world, i, j, k, world.getTileMeta(i, j, k));
 //                bSawedBlock = true;
@@ -481,7 +485,7 @@ public class FCBlockSaw extends TemplateBlockBase
             }
             if(bSawedBlock)
             {
-                 world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.explode", 0.2F, 1.25F);
+                world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.explode", 0.2F, 1.25F);
                 EmitSawParticles(world, i, j, k, random);
                 if(bRemoveOriginalBlockIfSawed)
                 {
@@ -565,15 +569,79 @@ public class FCBlockSaw extends TemplateBlockBase
     private final int iSawSideTextureIndex = 57;
     private final int iSawBladeTextureIndex = 58;
 
-    /**
-     * STATES
-     */
-    public static final IntProperty FACING = IntProperty.of("facing", 0, 5);
-    public static final BooleanProperty POWER = BooleanProperty.of("power");
+    @Override
+    public boolean renderWorld(BlockRenderer tileRenderer, BlockView tileView, int x, int y, int z) {
+        float f = 0.5F;
+        float f1 = 0.5F;
+        float f2 = 0.75F;
+        int l = GetFacing(tileView, x, y, z);
+        switch(l)
+        {
+            case 0: // '\0'
+                this.setBoundingBox(0.5F - f1, 1.0F - f2, 0.5F - f, 0.5F + f1, 1.0F, 0.5F + f);
+                break;
 
-    public void appendProperties(StateManager.Builder<BlockBase, BlockState> builder){
-        builder.add(FACING);
-        builder.add(POWER);
+            case 1: // '\001'
+                this.setBoundingBox(0.5F - f1, 0.0F, 0.5F - f, 0.5F + f1, f2, 0.5F + f);
+                break;
+
+            case 2: // '\002'
+                this.setBoundingBox(0.5F - f1, 0.5F - f, 1.0F - f2, 0.5F + f1, 0.5F + f, 1.0F);
+                break;
+
+            case 3: // '\003'
+                this.setBoundingBox(0.5F - f1, 0.5F - f, 0.0F, 0.5F + f1, 0.5F + f, f2);
+                break;
+
+            case 4: // '\004'
+                this.setBoundingBox(1.0F - f2, 0.5F - f1, 0.5F - f, 1.0F, 0.5F + f1, 0.5F + f);
+                break;
+
+            default:
+                this.setBoundingBox(0.0F, 0.5F - f1, 0.5F - f, f2, 0.5F + f1, 0.5F + f);
+                break;
+        }
+        tileRenderer.renderStandardBlock(this, x, y, z);
+        f = 0.3125F;
+        f1 = 0.0078125F;
+        f2 = 0.25F;
+        switch(l)
+        {
+            case 0: // '\0'
+                this.setBoundingBox(0.5F - f, 0.0F, 0.5F - f1, 0.5F + f, 0.999F, 0.5F + f1);
+                break;
+
+            case 1: // '\001'
+                this.setBoundingBox(0.5F - f, 0.001F, 0.5F - f1, 0.5F + f, 1.0F, 0.5F + f1);
+                break;
+
+            case 2: // '\002'
+                this.setBoundingBox(0.5F - f, 0.5F - f1, 0.0F, 0.5F + f, 0.5F + f1, f2);
+                break;
+
+            case 3: // '\003'
+                this.setBoundingBox(0.5F - f, 0.5F - f1, 1.0F - f2, 0.5F + f, 0.5F + f1, 1.0F);
+                break;
+
+            case 4: // '\004'
+                this.setBoundingBox(0.0F, 0.5F - f1, 0.5F - f, f2, 0.5F + f1, 0.5F + f);
+                break;
+
+            default:
+                this.setBoundingBox(1.0F - f2, 0.5F - f1, 0.5F - f, 1.0F, 0.5F + f1, 0.5F + f);
+                break;
+        }
+        FCUtilsRender.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, TextureListener.saw_saw);
+        return true;
     }
 
+    @Override
+    public void renderInventory(BlockRenderer tileRenderer, int meta) {
+        this.method_1605();
+        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 1);
+        float f = 0.3125F;
+        float f1 = 0.0078125F;
+        this.setBoundingBox(0.5F - f, 0.001F, 0.5F - f1, 0.5F + f, 1.0F, 0.5F + f1);
+        FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.saw_saw);
+    }
 }

@@ -163,9 +163,8 @@ public class FCTileEntityHopper extends TileEntityBase
         level.method_202(x, y, z, x, y, z);
         bHopperEjectBlocked = false;
         int iOccupiedStacks = FCUtilsInventory.GetNumOccupiedStacksInSlotRange(this, 0, 17);
-        ((FCBlockHopper)mod_FCBetterThanWolves.fcHopper).SetHopperFull(level, x, y, z, iOccupiedStacks); //iOccupiedStacks == 18
-        //TODO logic change
-        ((FCBlockHopper)mod_FCBetterThanWolves.fcHopper).SetHasFilter(level, x, y, z, GetFilterType()); //GetFilterType() > 0
+        ((FCBlockHopper)mod_FCBetterThanWolves.fcHopper).SetHopperFull(level, x, y, z, iOccupiedStacks == 18);
+        ((FCBlockHopper)mod_FCBetterThanWolves.fcHopper).SetHasFilter(level, x, y, z, GetFilterType() > 0);
     }
 
     public int GetFilterType()

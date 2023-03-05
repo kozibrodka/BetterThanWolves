@@ -2,6 +2,7 @@ package net.kozibrodka.wolves.blocks;
 
 import net.fabricmc.loader.api.FabricLoader;
 import net.kozibrodka.wolves.container.FCContainerPulley;
+import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.gui.FCGuiMillStone;
 import net.kozibrodka.wolves.gui.FCGuiPulley;
@@ -33,11 +34,15 @@ public class FCBlockPulley extends TemplateBlockWithEntity
         super(iid, Material.WOOD);
         setHardness(2.0F);
         setSounds(WOOD_SOUNDS);
-        texture = 62;
-        setDefaultState(getDefaultState()
-                .with(REDSTONE, false)
-                .with(POWER, false)
-        );
+    }
+
+    public int getTextureForSide(int iSide)
+    {
+        if(iSide == 0)
+        {
+            return TextureListener.pulley_bottom;
+        }
+        return iSide != 1 ? TextureListener.pulley_side : TextureListener.pulley_top;
     }
 
     public boolean canUse(Level world, int i, int j, int k, PlayerBase entityplayer)
@@ -69,9 +74,6 @@ public class FCBlockPulley extends TemplateBlockWithEntity
 
     public void onBlockRemoved(Level world, int i, int j, int k)
     {
-        /**
-         * DZIWNA KWESTIA chyba destroy na zmianie stanu
-         */
             TileEntityBase tileEntity = world.getTileEntity(i, j, k);
             if (tileEntity != null) {
                 FCUtilsInventory.EjectInventoryContents(world, i, j, k, (InventoryBase) tileEntity);
@@ -188,51 +190,35 @@ public class FCBlockPulley extends TemplateBlockWithEntity
 
     public boolean IsBlockOn(BlockView iBlockAccess, int i, int j, int k)
     {
-        Level level = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).level;
-        if(level.getTileId(i,j,k) == mod_FCBetterThanWolves.fcPulley.id) {
-            return (level.getBlockState(i, j, k).get(POWER));
-        }else{
-            return false;
-        }
-//        return (iBlockAccess.getTileMeta(i, j, k) & 1) > 0;
+        return (iBlockAccess.getTileMeta(i, j, k) & 1) > 0;
     }
 
     public void SetBlockOn(Level world, int i, int j, int k, boolean bOn)
     {
-        BlockState currentState = world.getBlockState(i, j, k);
-        world.setBlockStateWithNotify(i,j,k,currentState.with(POWER, bOn));
-//        int iMetaData = world.getTileMeta(i, j, k);
-//        if(bOn)
-//        {
-//            iMetaData |= 1;
-//        } else
-//        {
-//            iMetaData &= -2;
-//        }
-//        world.setTileMeta(i, j, k, iMetaData);
+        int iMetaData = world.getTileMeta(i, j, k);
+        if(bOn)
+        {
+            iMetaData |= 1;
+        } else
+        {
+            iMetaData &= -2;
+        }
+        world.setTileMeta(i, j, k, iMetaData);
     }
 
     public boolean IsRedstoneOn(BlockView iBlockAccess, int i, int j, int k)
     {
-        Level level = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).level;
-        if(level.getTileId(i,j,k) == mod_FCBetterThanWolves.fcPulley.id) {
-            return (level.getBlockState(i, j, k).get(REDSTONE));
-        }else{
-            return false;
-        }
-//        return (iBlockAccess.getTileMeta(i, j, k) & 2) > 0;
+        return (iBlockAccess.getTileMeta(i, j, k) & 2) > 0;
     }
 
     public void SetRedstoneOn(Level world, int i, int j, int k, boolean bOn)
     {
-        BlockState currentState = world.getBlockState(i, j, k);
-        world.setBlockStateWithNotify(i,j,k,currentState.with(REDSTONE, bOn));
-//        int iMetaData = world.getTileMeta(i, j, k) & -3;
-//        if(bOn)
-//        {
-//            iMetaData |= 2;
-//        }
-//        world.setTileMeta(i, j, k, iMetaData);
+        int iMetaData = world.getTileMeta(i, j, k) & -3;
+        if(bOn)
+        {
+            iMetaData |= 2;
+        }
+        world.setTileMeta(i, j, k, iMetaData);
     }
 
     void EmitPulleyParticles(Level world, int i, int j, int k, Random random)
@@ -251,14 +237,4 @@ public class FCBlockPulley extends TemplateBlockWithEntity
     private final int iPulleySideIndex = 63;
     private final int iPulleyBottomIndex = 64;
     private static int iPulleyTickRate = 10;
-    /**
-     * STATES
-     */
-    public static final BooleanProperty POWER = BooleanProperty.of("power");
-    public static final BooleanProperty REDSTONE = BooleanProperty.of("redstone");
-
-    public void appendProperties(StateManager.Builder<BlockBase, BlockState> builder){
-        builder.add(REDSTONE);
-        builder.add(POWER);
-    }
 }

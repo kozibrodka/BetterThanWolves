@@ -2,6 +2,7 @@
 package net.kozibrodka.wolves.blocks;
 
 import net.fabricmc.loader.api.FabricLoader;
+import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.utils.FCISoil;
 import net.kozibrodka.wolves.utils.FCUtilsMisc;
@@ -18,7 +19,6 @@ import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.state.StateManager;
 import net.modificationstation.stationapi.api.state.property.IntProperty;
 import net.modificationstation.stationapi.api.template.block.TemplatePlant;
-import net.modificationstation.stationapi.api.vanillafix.item.Items;
 
 import java.util.List;
 import java.util.Random;
@@ -36,6 +36,30 @@ public class FCBlockHempCrop extends TemplatePlant
         float f = 0.2F;
         setBoundingBox(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, 1.0F, 0.5F + f);
         setTicksRandomly(true);
+    }
+
+//    public int getTextureForSide(int i, int j)
+//    {
+//        if(j < 0)
+//        {
+//            j = 7;
+//        }
+//        return texture + j;
+//    }
+
+    public int getTextureForSide(int iSide, int iMetaData)
+    {
+        return switch (iMetaData) {
+            case 0 -> TextureListener.hemp_0;
+            case 1 -> TextureListener.hemp_1;
+            case 2 -> TextureListener.hemp_2;
+            case 3 -> TextureListener.hemp_3;
+            case 4 -> TextureListener.hemp_4;
+            case 5 -> TextureListener.hemp_5;
+            case 6 -> TextureListener.hemp_6;
+            case 7 -> TextureListener.hemp_7;
+            default -> 0;
+        };
     }
 
     protected boolean canPlantOnTopOf(int i)
@@ -64,16 +88,13 @@ public class FCBlockHempCrop extends TemplatePlant
             }
             if(bOnHydratedSoil)
             {
-                BlockState currentState = world.getBlockState(i, j, k);
-//                int l = world.getTileMeta(i, j, k);
-                int l = currentState.get(GROWTH);
+                int l = world.getTileMeta(i, j, k);
                 if(l < 7)
                 {
                     if(random.nextInt(20) == 0)
                     {
                         l++;
-//                        world.setTileMeta(i, j, k, l);
-                        world.setBlockStateWithNotify(i,j,k, currentState.with(GROWTH, l));
+                        world.setTileMeta(i, j, k, l);
                     }
                 } else
                 {
@@ -89,9 +110,7 @@ public class FCBlockHempCrop extends TemplatePlant
                         {
                             if(world.isAir(i, targetj, k) && random.nextInt(60) == 0)
                             {
-//                                world.placeBlockWithMetaData(i, targetj, k, id, 7);
-                                world.setTile(i, targetj, k, id);
-                                world.setBlockStateWithNotify(i, targetj, k, currentState.with(GROWTH,7));
+                                world.placeBlockWithMetaData(i, targetj, k, id, 7);
                             }
                             break;
                         }
@@ -102,95 +121,58 @@ public class FCBlockHempCrop extends TemplatePlant
         }
     }
 
-    //TODO w moim modzie z melonami ogarnac co i jak
+    public void beforeDestroyedByExplosion(Level world, int i, int j, int k, int l, float f)
+    {
+        super.beforeDestroyedByExplosion(world, i, j, k, l, f);
+        if(world.isServerSide)
+        {
+            return;
+        }
+        if(world.rand.nextInt(100) < 50)
+        {
+            float f1 = 0.7F;
+            float f2 = world.rand.nextFloat() * f1 + (1.0F - f1) * 0.5F;
+            float f3 = world.rand.nextFloat() * f1 + (1.0F - f1) * 0.5F;
+            float f4 = world.rand.nextFloat() * f1 + (1.0F - f1) * 0.5F;
+            Item entityitem = new Item(world, (float)i + f2, (float)j + f3, (float)k + f4, new ItemInstance(mod_FCBetterThanWolves.fcHempSeeds));
+            entityitem.pickupDelay = 10;
+            world.spawnEntity(entityitem);
+        }
+    }
 
-//    public void beforeDestroyedByExplosion(Level world, int i, int j, int k, int l, float f)
-//    {
-//        super.beforeDestroyedByExplosion(world, i, j, k, l, f);
-//        if(world.isServerSide)
-//        {
-//            return;
-//        }
-//        if(world.rand.nextInt(100) < 50)
-//        {
-//            float f1 = 0.7F;
-//            float f2 = world.rand.nextFloat() * f1 + (1.0F - f1) * 0.5F;
-//            float f3 = world.rand.nextFloat() * f1 + (1.0F - f1) * 0.5F;
-//            float f4 = world.rand.nextFloat() * f1 + (1.0F - f1) * 0.5F;
-//            Item entityitem = new Item(world, (float)i + f2, (float)j + f3, (float)k + f4, new ItemInstance(mod_FCBetterThanWolves.fcHempSeeds));
-//            entityitem.pickupDelay = 10;
-//            world.spawnEntity(entityitem);
-//        }
-//    }
+    public int getDropId(int i, Random random)
+    {
+        if(i == 7)
+        {
+            return mod_FCBetterThanWolves.fcHemp.id;
+        } else
+        {
+            return -1;
+        }
+    }
 
-//    public void dropWithChance(Level level, int i, int j, int k, BlockState state, int l, float f) {
-//        if(state.get(GROWTH) == 7){
-//            this.drop(level, i, j, k, new ItemInstance(mod_FCBetterThanWolves.fcHemp));
-//        }
-//    }
-//
-//        public List<ItemInstance> getDropList(Level level, int x, int y, int z, BlockState blockState, int meta) {
-//            if(blockState.get(GROWTH) == 7){
-//                return List.of(new ItemInstance(mod_FCBetterThanWolves.fcHemp));
-//            }
-//            return null;
-//        }
-
-//    public int getDropId(int i, Random random)
-//    {
-//        if(i == 7)
-//        {
-//            return mod_FCBetterThanWolves.fcHemp.id;
-//        } else
-//        {
-//            return -1;
-//        }
-//    }
-
-//    public int getDropCount(Random random)
-//    {
-//        return 1;
-//    }
+    public int getDropCount(Random random)
+    {
+        return 1;
+    }
 
     /**
      * EXTRA
      */
-    public void updateBoundingBox(BlockView arg, int i, int j, int k)
-    {
-        Level level = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).level;
-        float max = 0.1F;
-        float f = 0.2F;
-        int state;
-        if(level.getTileId(i,j,k) == mod_FCBetterThanWolves.fcHempCrop.id) {
-            state = 7 - level.getBlockState(i, j, k).get(GROWTH);
-            setBoundingBox(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, 1.0F - (max*state), 0.5F + f);
-        }
-    }
-
-    //DEBUG
-    public boolean canUse(Level world, int i, int j, int k, PlayerBase entityplayer) {
-        ItemInstance itemstack = entityplayer.inventory.getHeldItem();
-        if (itemstack != null && itemstack.itemId == Items.BONE_MEAL.id) { //Items.BONE_MEAL.id
-            if(--itemstack.count == 0) {
-                entityplayer.inventory.setInventoryItem(entityplayer.inventory.selectedHotbarSlot, null);
-            }
-                BlockState currentState = world.getBlockState(i, j, k);
-                int chuj = world.getBlockState(i,j,k).get(GROWTH);
-                if(chuj < 7){
-                    world.setBlockStateWithNotify(i,j,k,currentState.with(GROWTH, chuj + 1));
-                    return true;
-                    }
-        }
-        return true;
-    }
+//    public void updateBoundingBox(BlockView arg, int i, int j, int k)
+//    {
+//        Level level = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).level;
+//        float max = 0.1F;
+//        float f = 0.2F;
+//        int state;
+//        if(level.getTileId(i,j,k) == mod_FCBetterThanWolves.fcHempCrop.id) {
+//            state = 7 - level.getTileMeta(i, j, k);
+//            setBoundingBox(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, 1.0F - (max*state), 0.5F + f);
+//        }
+//    }
 
     /**
-     * STATES
+     * GROWTH DEGUB
      */
-    public static final IntProperty GROWTH = IntProperty.of("growth", 0, 7);
-
-    public void appendProperties(StateManager.Builder<BlockBase, BlockState> builder){
-        builder.add(GROWTH);
-    }
 
 }

@@ -6,15 +6,18 @@
 package net.kozibrodka.wolves.blocks;
 
 import net.fabricmc.loader.api.FabricLoader;
+import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.gui.FCGuiCraftingAnvil;
 import net.kozibrodka.wolves.gui.FCGuiMillStone;
 import net.kozibrodka.wolves.mixin.LevelAccessor;
 import net.kozibrodka.wolves.utils.FCIBlock;
 import net.kozibrodka.wolves.utils.FCUtilsMisc;
+import net.kozibrodka.wolves.utils.FCUtilsRender;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.render.block.BlockRenderer;
 import net.minecraft.entity.Living;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.entity.player.ServerPlayer;
@@ -22,21 +25,27 @@ import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.minecraft.util.maths.Box;
 import net.modificationstation.stationapi.api.block.BlockState;
+import net.modificationstation.stationapi.api.client.model.block.BlockWithInventoryRenderer;
+import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
 import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.state.StateManager;
 import net.modificationstation.stationapi.api.state.property.IntProperty;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockBase;
 
 public class FCBlockAnvil extends TemplateBlockBase
-    implements FCIBlock
+    implements FCIBlock, BlockWithWorldRenderer, BlockWithInventoryRenderer
 {
 
     public FCBlockAnvil(Identifier iid)
     {
         super(iid, Material.METAL);
-        texture = 79;
         setHardness(3.5F);
         setSounds(METAL_SOUNDS);
+    }
+
+    public int getTextureForSide(int iSide)
+    {
+        return TextureListener.anvil;
     }
 
     public boolean isFullOpaque()
@@ -107,27 +116,12 @@ public class FCBlockAnvil extends TemplateBlockBase
 
     public int GetFacing(BlockView iBlockAccess, int i, int j, int k)
     {
-        Level level = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).level;
-        if(level.getTileId(i,j,k) == mod_FCBetterThanWolves.fcAnvil.id) {
-            return (level.getBlockState(i, j, k).get(FACING) & 3) + 2;
-        }else{
-            return 0;
-        }
-//        return iBlockAccess.getTileMeta(i, j, k);
+        return iBlockAccess.getTileMeta(i, j, k);
     }
 
     public void SetFacing(Level world, int i, int j, int k, int iFacing)
     {
-        if(iFacing >= 2)
-        {
-            iFacing -= 2;
-        } else
-        {
-            iFacing = 0;
-        }
-        BlockState currentState = world.getBlockState(i, j, k);
-        world.setBlockStateWithNotify(i,j,k, currentState.with(FACING, iFacing));
-//        world.setTileMeta(i, j, k, iFacing);
+        world.setTileMeta(i, j, k, iFacing);
     }
 
     public boolean CanRotate(BlockView iBlockAccess, int i, int j, int l)
@@ -153,6 +147,87 @@ public class FCBlockAnvil extends TemplateBlockBase
         }
     }
 
+    public void SetBlockBoundsRotatedAboutJToFacing(float x1, float y1, float z1, float x2, float y2, float z2, int iFacing)
+    {
+        float rotatedX1;
+        float rotatedZ1;
+        float rotatedX2;
+        float rotatedZ2;
+        if(iFacing == 4)
+        {
+            rotatedX1 = 1.0F - x2;
+            rotatedZ1 = 1.0F - z2;
+            rotatedX2 = 1.0F - x1;
+            rotatedZ2 = 1.0F - z1;
+        } else
+        if(iFacing == 3)
+        {
+            rotatedX1 = z1;
+            rotatedZ1 = x1;
+            rotatedX2 = z2;
+            rotatedZ2 = x2;
+        } else
+        if(iFacing == 2)
+        {
+            rotatedX1 = 1.0F - z2;
+            rotatedZ1 = 1.0F - x2;
+            rotatedX2 = 1.0F - z1;
+            rotatedZ2 = 1.0F - x1;
+        } else
+        {
+            rotatedX1 = x1;
+            rotatedZ1 = z1;
+            rotatedX2 = x2;
+            rotatedZ2 = z2;
+        }
+        setBoundingBox(rotatedX1, y1, rotatedZ1, rotatedX2, y2, rotatedZ2);
+    }
+
+    @Override
+    public boolean renderWorld(BlockRenderer tileRenderer, BlockView tileView, int x, int y, int z) {
+        int l = GetFacing(tileView, x, y, z);
+        SetBlockBoundsRotatedAboutJToFacing(0.0F, 0.0F, 0.25F, 1.0F, 0.125F, 0.75F, l);
+        tileRenderer.renderStandardBlock(this, x, y, z);
+        SetBlockBoundsRotatedAboutJToFacing(0.375F, 0.125F, 0.375F, 0.625F, 0.5625F, 0.625F, l);
+        tileRenderer.renderStandardBlock(this, x, y, z);
+        SetBlockBoundsRotatedAboutJToFacing(0.3125F, 0.5625F, 0.3125F, 0.6875F, 1.0F, 0.6875F, l);
+        tileRenderer.renderStandardBlock(this, x, y, z);
+        SetBlockBoundsRotatedAboutJToFacing(0.6875F, 0.75F, 0.3125F, 0.75F, 1.0F, 0.6875F, l);
+        tileRenderer.renderStandardBlock(this, x, y, z);
+        SetBlockBoundsRotatedAboutJToFacing(0.75F, 0.9375F, 0.3125F, 1.0F, 1.0F, 0.6875F, l);
+        tileRenderer.renderStandardBlock(this, x, y, z);
+        SetBlockBoundsRotatedAboutJToFacing(0.25F, 0.75F, 0.3125F, 0.3125F, 1.0F, 0.6875F, l);
+        tileRenderer.renderStandardBlock(this, x, y, z);
+        SetBlockBoundsRotatedAboutJToFacing(0.125F, 0.8125F, 0.375F, 0.25F, 1.0F, 0.625F, l);
+        tileRenderer.renderStandardBlock(this, x, y, z);
+        SetBlockBoundsRotatedAboutJToFacing(0.0F, 0.875F, 0.4375F, 0.125F, 1.0F, 0.5625F, l);
+        tileRenderer.renderStandardBlock(this, x, y, z);
+        setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+        return true;
+    }
+
+    @Override
+    public void renderInventory(BlockRenderer tileRenderer, int meta) {
+
+        setBoundingBox(0.0F, 0.0F, 0.25F, 1.0F, 0.125F, 0.75F);
+        FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.anvil);
+        setBoundingBox(0.375F, 0.125F, 0.375F, 0.625F, 0.5625F, 0.625F);
+        FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.anvil);
+        setBoundingBox(0.3125F, 0.5625F, 0.3125F, 0.6875F, 1.0F, 0.6875F);
+        FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.anvil);
+        setBoundingBox(0.6875F, 0.75F, 0.3125F, 0.75F, 1.0F, 0.6875F);
+        FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.anvil);
+        setBoundingBox(0.75F, 0.9375F, 0.3125F, 1.0F, 1.0F, 0.6875F);
+        FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.anvil);
+        setBoundingBox(0.25F, 0.75F, 0.3125F, 0.3125F, 1.0F, 0.6875F);
+        FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.anvil);
+        setBoundingBox(0.125F, 0.8125F, 0.375F, 0.25F, 1.0F, 0.625F);
+        FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.anvil);
+        setBoundingBox(0.0F, 0.875F, 0.4375F, 0.125F, 1.0F, 0.5625F);
+        FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.anvil);
+        setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+    }
+
     public static final float m_fAnvilBaseHeight = 0.125F;
     public static final float m_fAnvilBaseWidth = 0.5F;
     public static final float m_fAnvilHalfBaseWidth = 0.25F;
@@ -162,13 +237,4 @@ public class FCBlockAnvil extends TemplateBlockBase
     public static final float m_fAnvilTopHeight = 0.4375F;
     public static final float m_fAnvilTopWidth = 0.375F;
     public static final float m_fAnvilTopHalfWidth = 0.1875F;
-
-    /**
-     * STATES
-     */
-    public static final IntProperty FACING = IntProperty.of("facing", 0, 3);
-
-    public void appendProperties(StateManager.Builder<BlockBase, BlockState> builder){
-        builder.add(FACING);
-    }
 }

@@ -1,24 +1,31 @@
 package net.kozibrodka.wolves.blocks;
 
 import net.fabricmc.loader.api.FabricLoader;
+import net.kozibrodka.wolves.events.TextureListener;
+import net.kozibrodka.wolves.itemblocks.FCItemVase;
 import net.kozibrodka.wolves.tileentity.FCTileEntityVase;
 import net.kozibrodka.wolves.utils.FCIBlock;
 import net.kozibrodka.wolves.utils.FCUtilsInventory;
+import net.kozibrodka.wolves.utils.FCUtilsRender;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.render.block.BlockRenderer;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.item.ItemInstance;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.minecraft.tileentity.TileEntityBase;
+import net.modificationstation.stationapi.api.block.HasCustomBlockItemFactory;
+import net.modificationstation.stationapi.api.client.model.block.BlockWithInventoryRenderer;
+import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
 import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockWithEntity;
 
 import java.util.Random;
 
-
+@HasCustomBlockItemFactory(FCItemVase.class)
 public class FCBlockVase extends TemplateBlockWithEntity
-    implements FCIBlock
+    implements FCIBlock, BlockWithWorldRenderer, BlockWithInventoryRenderer
 {
 
     public FCBlockVase(Identifier iid)
@@ -43,6 +50,34 @@ public class FCBlockVase extends TemplateBlockWithEntity
     public int getDropCount(Random random)
     {
         return 0;
+    }
+
+    protected int droppedMeta(int i)
+    {
+        return i;
+    }
+
+    public int getTextureForSide(int iSide, int iMetaData)
+    {
+        return switch (iMetaData) {
+            case 0 -> TextureListener.vase_white;
+            case 1 -> TextureListener.vase_orange;
+            case 2 -> TextureListener.vase_magenta;
+            case 3 -> TextureListener.vase_light_blue;
+            case 4 -> TextureListener.vase_yellow;
+            case 5 -> TextureListener.vase_lime;
+            case 6 -> TextureListener.vase_pink;
+            case 7 -> TextureListener.vase_gray;
+            case 8 -> TextureListener.vase_light_gray;
+            case 9 -> TextureListener.vase_cyan;
+            case 10 -> TextureListener.vase_purple;
+            case 11 -> TextureListener.vase_blue;
+            case 12 -> TextureListener.vase_brown;
+            case 13 -> TextureListener.vase_green;
+            case 14 -> TextureListener.vase_red;
+            case 15 -> TextureListener.vase_black;
+            default -> 0;
+        };
     }
 
     protected TileEntityBase createTileEntity()
@@ -132,4 +167,35 @@ public class FCBlockVase extends TemplateBlockWithEntity
     public static final float m_fVaseTopHalfWidth = 0.1875F;
     public static final float m_fVaseTopHeight = 0.0625F;
     private final int iVaseFirstTextureIndex = 224;
+
+    @Override
+    public boolean renderWorld(BlockRenderer tileRenderer, BlockView tileView, int x, int y, int z) {
+        this.setBoundingBox(0.25F, 0.0F, 0.25F, 0.75F, 0.0625F, 0.75F);
+        tileRenderer.renderStandardBlock(this, x, y, z);
+        this.setBoundingBox(0.1875F, 0.0625F, 0.1875F, 0.8125F, 0.4375F, 0.8125F);
+        tileRenderer.renderStandardBlock(this, x, y, z);
+        this.setBoundingBox(0.25F, 0.4375F, 0.25F, 0.75F, 0.5F, 0.75F);
+        tileRenderer.renderStandardBlock(this, x, y, z);
+        this.setBoundingBox(0.375F, 0.5F, 0.375F, 0.625F, 0.9375F, 0.625F);
+        tileRenderer.renderStandardBlock(this, x, y, z);
+        this.setBoundingBox(0.3125F, 0.9375F, 0.3125F, 0.6875F, 1.0F, 0.6875F);
+        tileRenderer.renderStandardBlock(this, x, y, z);
+        setBoundingBox(0.1875F, 0.0F, 0.1875F, 0.8125F, 1.0F, 0.8125F);
+        return true;
+    }
+
+    @Override
+    public void renderInventory(BlockRenderer tileRenderer, int meta) {
+        this.setBoundingBox(0.25F, 0.0F, 0.25F, 0.75F, 0.0625F, 0.75F);
+        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, meta);
+        this.setBoundingBox(0.1875F, 0.0625F, 0.1875F, 0.8125F, 0.4375F, 0.8125F);
+        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, meta);
+        this.setBoundingBox(0.25F, 0.4375F, 0.25F, 0.75F, 0.5F, 0.75F);
+        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, meta);
+        this.setBoundingBox(0.375F, 0.5F, 0.375F, 0.625F, 0.9375F, 0.625F);
+        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, meta);
+        this.setBoundingBox(0.3125F, 0.9375F, 0.3125F, 0.6875F, 1.0F, 0.6875F);
+        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, meta);
+        setBoundingBox(0.1875F, 0.0F, 0.1875F, 0.8125F, 1.0F, 0.8125F);
+    }
 }

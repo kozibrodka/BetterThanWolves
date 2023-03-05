@@ -1,20 +1,24 @@
 package net.kozibrodka.wolves.blocks;
 
 import net.fabricmc.loader.api.FabricLoader;
+import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.utils.FCUtilsMisc;
+import net.kozibrodka.wolves.utils.FCUtilsRender;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.render.block.BlockRenderer;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.minecraft.util.maths.Box;
+import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
 import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockBase;
 
 import java.util.Random;
 
 
-public class FCBlockRope extends TemplateBlockBase
+public class FCBlockRope extends TemplateBlockBase implements BlockWithWorldRenderer
 {
 
     public FCBlockRope(Identifier iid)
@@ -22,7 +26,11 @@ public class FCBlockRope extends TemplateBlockBase
         super(iid, Material.DOODADS);
         setHardness(0.5F);
         setSounds(GRASS_SOUNDS);
-        texture = 32;
+    }
+
+    public int getTextureForSide(int iSide)
+    {
+        return TextureListener.rope;
     }
 
     public int getDropId(int i, Random random)
@@ -80,4 +88,24 @@ public class FCBlockRope extends TemplateBlockBase
     }
 
     public static final float fRopeWidth = 0.125F;
+
+    @Override
+    public boolean renderWorld(BlockRenderer tileRenderer, BlockView tileView, int x, int y, int z) {
+        boolean flag = FCUtilsRender.GetOverrideBlockTexture(tileRenderer) >= 0;
+        int l = this.getTextureForSide(0);
+        if(!flag)
+        {
+            FCUtilsRender.SetOverrideBlockTexture(tileRenderer, l);
+        }
+        float f = 0.0625F;
+        float f1 = 0.0625F;
+        float f2 = 1.0F;
+        this.setBoundingBox(0.5F - f1, 0.0F, 0.5F - f, 0.5F + f1, f2, 0.5F + f);
+        tileRenderer.renderStandardBlock(this, x,y,z);
+        if(!flag)
+        {
+            FCUtilsRender.SetOverrideBlockTexture(tileRenderer, -1);
+        }
+        return true;
+    }
 }

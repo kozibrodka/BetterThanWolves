@@ -2,6 +2,7 @@
 package net.kozibrodka.wolves.blocks;
 
 import com.jcraft.jorbis.Block;
+import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.Fluid;
@@ -26,6 +27,15 @@ public class FCBlockBBQ extends TemplateBlockBase
         setHardness(3.5F);
         setSounds(STONE_SOUNDS);
         setTicksRandomly(true);
+    }
+
+    public int getTextureForSide(int side)
+    {
+        if(side == 1)
+        {
+            return TextureListener.hibachi_top;
+        }
+        return side != 0 ? TextureListener.hibachi_side : TextureListener.hibachi_bottom;
     }
 
     public int getTickrate()
@@ -96,27 +106,20 @@ public class FCBlockBBQ extends TemplateBlockBase
 
     public boolean IsBBQLit(Level world, int i, int j, int k)
     {
-//        int iMetaData = world.getTileMeta(i, j, k);
-        int iMetaData = world.getBlockState(i,j,k).get(POWER);
+        int iMetaData = world.getTileMeta(i, j, k);
         return (iMetaData & 4) > 0;
     }
 
     private void SetBBQLitFlag(Level world, int i, int j, int k)
     {
-//        int iMetaData = world.getTileMeta(i, j, k);
-        BlockState currentState = world.getBlockState(i, j, k);
-        int iMetaData = currentState.get(POWER);
-        world.setBlockStateWithNotify(i,j,k,currentState.with(POWER,iMetaData | 4));
-//        world.setTileMeta(i, j, k, iMetaData | 4);
+        int iMetaData = world.getTileMeta(i, j, k);
+        world.setTileMeta(i, j, k, iMetaData | 4);
     }
 
     private void ClearBBQLitFlag(Level world, int i, int j, int k)
     {
-//        int iMetaData = world.getTileMeta(i, j, k);
-        BlockState currentState = world.getBlockState(i, j, k);
-        int iMetaData = currentState.get(POWER);
-        world.setBlockStateWithNotify(i,j,k,currentState.with(POWER,iMetaData & -5));
-//        world.setTileMeta(i, j, k, iMetaData & -5);
+        int iMetaData = world.getTileMeta(i, j, k);
+        world.setTileMeta(i, j, k, iMetaData & -5);
     }
 
     private boolean BBQShouldIgniteAbove(Level world, int i, int j, int k)
@@ -128,8 +131,7 @@ public class FCBlockBBQ extends TemplateBlockBase
         {
             if(targetBlock != null)
             {
-                //TODO cement
-                if(!(targetBlock instanceof Fluid)) // && !(targetBlock instanceof FCBlockCement)
+                if(!(targetBlock instanceof Fluid) && !(targetBlock instanceof FCBlockCement))
                 {
                     shouldIgnite = true;
                 }
@@ -166,12 +168,4 @@ public class FCBlockBBQ extends TemplateBlockBase
         }
     }
 
-    /**
-     * STATES
-     */
-    public static final IntProperty POWER = IntProperty.of("power", 0, 4);
-
-    public void appendProperties(StateManager.Builder<BlockBase, BlockState> builder){
-        builder.add(POWER);
-    }
 }
