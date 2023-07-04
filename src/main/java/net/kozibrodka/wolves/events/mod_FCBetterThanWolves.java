@@ -186,21 +186,15 @@ public class mod_FCBetterThanWolves {
         event.register(FCTileEntityCement.class, String.valueOf(Identifier.of(MOD_ID, "TileCement")));
     }
 
-    //TODO: OLD WHEN JSON: moze sie przydac zeby patrzec w przeszlosc
-    //TODO: recipes, anvilrecipes + hmi,
-    //TODO: Detector Logic airblock&replacable and arrow detection, Dispenset logic, Planter functionality, Fire (meta use mess) on hibachi na sekunde gasnie
-    //TODO: Companion cube sound on place.
-    //TODO: ZNIKAJĄCE ITEMY ROPE ITD. JEST TO WINA STAPI onBlockRemoved na zmianie stanu sie odpala, HOOPER przez to jest useless, Hoopoer logic wstrzymane
-    //TODO: MOving blocks render need rewrite
-    //TODO: Obsidian Plate wait for preessure plate vanilla states with UP-DOWN animation, Rail Models also wait for vanilla
-
-    //TODO EXTRA: Saw animated, Anvil gravity,
+    //TODO EXTRA: Saw animated, Anvil gravity, PANELS/options
 
     //TODO: NEW
     //TODO: render Inventory : rails, cement
-    //TODO: anvil crafting fix
-    //TODO: Render moving platform
+    //TODO: placing redstone?
     //TODO: Stoked fire dissaperaing?
+    //TODO: custom recipes xhmi
+    //TODO: planter functionality
+
 
     public static boolean fcDisableAxeChanges = false;
     public static boolean fcFaceGearBoxAwayFromPlayer = false;

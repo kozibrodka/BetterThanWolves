@@ -50,15 +50,18 @@ public class FCContainerAnvil extends ContainerBase
             addSlot(new Slot(inventoryplayer, j1, 8 + j1 * 18, 142));
         }
 
-        onCraftMatrixChanged(craftMatrix);
+        onContentsChanged(craftMatrix);
     }
 
-    public void onCraftMatrixChanged(InventoryBase iinventory)
+    public void onContentsChanged(InventoryBase iinventory)
     {
+        //TODO: in my opinon anvil should not do regular recipes
         ItemInstance craftedStack = RecipeRegistry.getInstance().getCraftingOutput(craftMatrix);
+//        System.out.println("SPRAWDZAM RECIpe v0");
         if(craftedStack == null)
         {
             craftedStack = FCCraftingManagerAnvil.getInstance().findMatchingRecipe(craftMatrix);
+//            System.out.println("SPRAWDZAM RECIOE");
         }
         craftResult.setInventoryItem(0, craftedStack);
     }

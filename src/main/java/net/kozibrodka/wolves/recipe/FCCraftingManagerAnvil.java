@@ -1,5 +1,6 @@
 package net.kozibrodka.wolves.recipe;
 
+import net.kozibrodka.wolves.utils.FCRecipeAnvil;
 import net.minecraft.block.BlockBase;
 import net.minecraft.inventory.Crafting;
 import net.minecraft.item.ItemBase;
@@ -86,7 +87,7 @@ public class FCCraftingManagerAnvil
             }
         }
 
-        recipes.add(new ShapedRecipe(j, k, aItemInstance, ItemInstance));
+        recipes.add(new AnvilShapedRecipe(j, k, aItemInstance, ItemInstance));
     }
 
     public void addShapelessRecipe(ItemInstance ItemInstance, Object aobj[])
@@ -116,14 +117,14 @@ public class FCCraftingManagerAnvil
             }
         }
 
-        recipes.add(new ShapelessRecipe(ItemInstance, arraylist));
+        recipes.add(new AnvilShapelessRecipe(ItemInstance, arraylist));
     }
 
     public ItemInstance findMatchingRecipe(Crafting inventorycrafting)
     {
         for(int i = 0; i < recipes.size(); i++)
         {
-            Recipe irecipe = (Recipe)recipes.get(i);
+            FCRecipeAnvil irecipe = (FCRecipeAnvil)recipes.get(i);
             if(irecipe.canCraft(inventorycrafting))
             {
                 return irecipe.craft(inventorycrafting);

@@ -48,6 +48,15 @@ public class FCBlockAnchor extends TemplateBlockBase implements BlockWithWorldRe
         return iSide != iFacing && iSide != FCUtilsMisc.GetOppositeFacing(iFacing) ? TextureListener.anchor_side : TextureListener.anchor_top;
     }
 
+//    public int getTextureForSide(int iSide)
+//    {
+//        if(iSide == 1)
+//        {
+//            return TextureListener.anchor_top;
+//        }
+//        return iSide != 0 ? TextureListener.anchor_side : TextureListener.anchor_top;
+//    }
+
     public Box getCollisionShape(Level world, int i, int j, int k)
     {
         int iFacing = GetAnchorFacing(world, i, j, k);

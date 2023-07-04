@@ -7,6 +7,7 @@ import net.minecraft.level.Level;
 import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.template.block.TemplateFire;
 
+import java.sql.SQLOutput;
 import java.util.Random;
 
 

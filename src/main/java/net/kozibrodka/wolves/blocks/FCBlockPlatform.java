@@ -49,8 +49,8 @@ public class FCBlockPlatform extends TemplateBlockBase
 
     public boolean isFullCube()
     {
-        return false;
-    }
+        return true;
+    } //ZMIANA KODU
 
     public boolean canSuffocate(Level world, int i, int j, int l)
     {

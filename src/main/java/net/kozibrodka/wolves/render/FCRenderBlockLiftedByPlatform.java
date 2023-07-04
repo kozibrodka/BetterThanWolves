@@ -14,6 +14,8 @@ import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.entity.EntityBase;
 import net.minecraft.level.Level;
 import net.minecraft.util.maths.MathHelper;
+import net.modificationstation.stationapi.api.client.texture.atlas.Atlas;
+import net.modificationstation.stationapi.api.client.texture.atlas.Atlases;
 import org.lwjgl.opengl.GL11;
 
 public class FCRenderBlockLiftedByPlatform extends EntityRenderer
@@ -65,12 +67,13 @@ public class FCRenderBlockLiftedByPlatform extends EntityRenderer
         }
         tessellator.colour(0.4F * f, 0.0F, 0.0F);
         int i1 = blockredstonewire.getTextureForSide(0, i);
-        int j1 = (i1 & 0xf) << 4;
-        int k1 = i1 & 0xf0;
-        double d3 = (float)j1 / 256F;
-        double d4 = ((float)j1 + 15.99F) / 256F;
-        double d5 = (float)k1 / 256F;
-        double d6 = ((float)k1 + 15.99F) / 256F;
+        Atlas.Sprite atlasTex =  Atlases.getTerrain().getTexture(i1);
+//        int j1 = (i1 & 0xf) << 4;
+//        int k1 = i1 & 0xf0;
+        double d3 = atlasTex.getStartU();
+        double d4 = atlasTex.getEndU();
+        double d5 = atlasTex.getStartV();
+        double d6 = atlasTex.getEndV();
         float f2 = 0.015625F;
         float f3 = (float)(d + 0.5D);
         float f4 = (float)(d + 0.5D);
@@ -102,14 +105,14 @@ public class FCRenderBlockLiftedByPlatform extends EntityRenderer
     {
         GL11.glPushMatrix();
         GL11.glDisable(2896 /*GL_LIGHTING*/);
-        //TODO tutaj może być kompletny rewrite renderu
-        if(blockrail instanceof FCFakeTextureProvider) //UWAGA
-        {
-            bindTexture("/assets/wolves/stationapi/textures/entity/btwterrain01.png");
-        } else
-        {
-            bindTexture("/terrain.png");
-        }
+//        if(blockrail instanceof FCFakeTextureProvider) //UWAGA
+//        {
+//            bindTexture("/assets/wolves/stationapi/textures/entity/btwterrain01.png");
+//        } else
+//        {
+//            bindTexture("/terrain.png");
+//        }
+        bindTexture("/terrain.png");
         Tessellator tessellator = Tessellator.INSTANCE;
         tessellator.start();
         int j = MathHelper.floor(fcentityblockliftedbyplatform.x);
@@ -123,16 +126,17 @@ public class FCRenderBlockLiftedByPlatform extends EntityRenderer
         }
         tessellator.colour(f, f, f);
         int i1 = blockrail.getTextureForSide(0, i);
+        Atlas.Sprite atlasTex =  Atlases.getTerrain().getTexture(i1);
         if(blockrail.method_1108()) //getIsPowered
         {
             i &= 7;
         }
-        int j1 = (i1 & 0xf) << 4;
-        int k1 = i1 & 0xf0;
-        double d3 = (float)j1 / 256F;
-        double d4 = ((float)j1 + 15.99F) / 256F;
-        double d5 = (float)k1 / 256F;
-        double d6 = ((float)k1 + 15.99F) / 256F;
+//        int j1 = (i1 & 0xf) << 4;
+//        int k1 = i1 & 0xf0;
+        double d3 = atlasTex.getStartU();
+        double d4 = atlasTex.getEndU();
+        double d5 = atlasTex.getStartV();
+        double d6 = atlasTex.getEndV();
         float f2 = 0.0625F;
         float f3 = (float)(d + 0.5D);
         float f4 = (float)(d + 0.5D);

@@ -147,48 +147,49 @@ public class FCUtilsRender
             f5 = f4;
         }
         tessellator.colour(f * f5, f * f5, f * f5);
-//        renderblocks.renderBottomFace(block, -0.5D, -0.5D, -0.5D, block.getTextureForSide(0, l));
-        renderblocks.renderBottomFace(block, -0.5D, -0.5D, -0.5D, TextureListener.platform_side);
+        renderblocks.renderBottomFace(block, -0.5D, -0.5D, -0.5D, block.getTextureForSide(0, l));
+//        renderblocks.renderBottomFace(block, -0.5D, -0.5D, -0.5D, TextureListener.platform_side);
         f5 = block.getBrightness(world, i, j + 1, k);
         if(f5 < f4)
         {
             f5 = f4;
         }
         tessellator.colour(f1 * f5, f1 * f5, f1 * f5);
-//        renderblocks.renderTopFace(block, -0.5D, -0.5D, -0.5D, block.getTextureForSide(1, l));
-        renderblocks.renderTopFace(block, -0.5D, -0.5D, -0.5D, TextureListener.platform_side);
+        renderblocks.renderTopFace(block, -0.5D, -0.5D, -0.5D, block.getTextureForSide(1, l));
+//        renderblocks.renderTopFace(block, -0.5D, -0.5D, -0.5D, TextureListener.platform_side);
         f5 = block.getBrightness(world, i, j, k - 1);
         if(f5 < f4)
         {
             f5 = f4;
         }
         tessellator.colour(f2 * f5, f2 * f5, f2 * f5);
-//        renderblocks.renderEastFace(block, -0.5D, -0.5D, -0.5D, block.getTextureForSide(2, l));
-        renderblocks.renderEastFace(block, -0.5D, -0.5D, -0.5D, TextureListener.platform_side);
+        renderblocks.renderEastFace(block, -0.5D, -0.5D, -0.5D, block.getTextureForSide(2, l));
+//        FCUtilsRenderMoving.renderEastFace(block, -0.5D, -0.5D, -0.5D, block.getTextureForSide(2, l), renderblocks);
+//        renderblocks.renderEastFace(block, -0.5D, -0.5D, -0.5D, TextureListener.platform_side);
         f5 = block.getBrightness(world, i, j, k + 1);
         if(f5 < f4)
         {
             f5 = f4;
         }
         tessellator.colour(f2 * f5, f2 * f5, f2 * f5);
-//        renderblocks.renderWestFace(block, -0.5D, -0.5D, -0.5D, block.getTextureForSide(3, l));
-        renderblocks.renderWestFace(block, -0.5D, -0.5D, -0.5D, TextureListener.platform_side);
+        renderblocks.renderWestFace(block, -0.5D, -0.5D, -0.5D, block.getTextureForSide(3, l));
+//        renderblocks.renderWestFace(block, -0.5D, -0.5D, -0.5D, TextureListener.platform_side);
         f5 = block.getBrightness(world, i - 1, j, k);
         if(f5 < f4)
         {
             f5 = f4;
         }
         tessellator.colour(f3 * f5, f3 * f5, f3 * f5);
-//        renderblocks.renderNorthFace(block, -0.5D, -0.5D, -0.5D, block.getTextureForSide(4, l));
-        renderblocks.renderNorthFace(block, -0.5D, -0.5D, -0.5D, TextureListener.platform_side);
+        renderblocks.renderNorthFace(block, -0.5D, -0.5D, -0.5D, block.getTextureForSide(4, l));
+//        renderblocks.renderNorthFace(block, -0.5D, -0.5D, -0.5D, TextureListener.platform_side);
         f5 = block.getBrightness(world, i + 1, j, k);
         if(f5 < f4)
         {
             f5 = f4;
         }
         tessellator.colour(f3 * f5, f3 * f5, f3 * f5);
-//        renderblocks.renderSouthFace(block, -0.5D, -0.5D, -0.5D, block.getTextureForSide(5, l));
-        renderblocks.renderSouthFace(block, -0.5D, -0.5D, -0.5D, TextureListener.platform_side);
+        renderblocks.renderSouthFace(block, -0.5D, -0.5D, -0.5D, block.getTextureForSide(5, l));
+//        renderblocks.renderSouthFace(block, -0.5D, -0.5D, -0.5D, TextureListener.platform_side);
         tessellator.draw();
     }
 

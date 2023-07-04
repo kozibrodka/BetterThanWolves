@@ -52,8 +52,8 @@ public class FCBlockCompanionCube extends TemplateBlockBase
 
     public boolean isFullCube()
     {
-        return false;
-    }
+        return true;
+    } //ZMIANA KODU
 
     public Box getCollisionShape(Level world, int i, int j, int k)
     {
