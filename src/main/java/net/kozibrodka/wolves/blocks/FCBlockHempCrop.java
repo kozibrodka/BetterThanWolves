@@ -94,7 +94,7 @@ public class FCBlockHempCrop extends TemplatePlant
                     if(random.nextInt(20) == 0)
                     {
                         l++;
-                        world.setTileMeta(i, j, k, l);
+                        world.placeBlockWithMetaData(i, j, k, this.id, l);
                     }
                 } else
                 {

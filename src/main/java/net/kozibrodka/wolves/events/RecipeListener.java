@@ -12,6 +12,7 @@ import net.modificationstation.stationapi.api.event.recipe.RecipeRegisterEvent;
 import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
 import net.modificationstation.stationapi.api.recipe.CraftingRegistry;
 import net.modificationstation.stationapi.api.recipe.SmeltingRegistry;
+import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.registry.ModID;
 import net.modificationstation.stationapi.api.util.Null;
 
@@ -22,17 +23,23 @@ public class RecipeListener {
 
     @EventListener
     public void registerRecipes(RecipeRegisterEvent event) {
-        AddAllModRecipes();
+        AddAllModRecipes(event);
     }
 
-    public static void AddAllModRecipes()
+    public static void AddAllModRecipes(RecipeRegisterEvent event)
     {
-        AddBlockRecipes();
-        AddItemRecipes();
-        AddDyeRecipes();
-        AddAlternateVanillaRecipes();
-        AddConversionRecipes();
-        AddSmeltingRecipes();
+        Identifier type = event.recipeId;
+        if (type == RecipeRegisterEvent.Vanilla.CRAFTING_SHAPED.type()) {
+            AddBlockRecipes();
+            AddItemRecipes();
+            AddAlternateVanillaRecipes();
+        }
+        if (type == RecipeRegisterEvent.Vanilla.CRAFTING_SHAPELESS.type()) {
+            AddDyeRecipes();
+            AddConversionRecipes();
+        }
+        if (type == RecipeRegisterEvent.Vanilla.SMELTING.type()) AddSmeltingRecipes();
+        // TODO: Add custom recipe types to the event bus and check for them like vanilla recipes to avoid redundant recipe creation
         AddAnvilRecipes();
         AddCauldronRecipes();
         AddDebugRecipes();

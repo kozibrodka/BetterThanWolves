@@ -12,7 +12,9 @@
     "BlockRendererAccessor",
     "EntityBaseAccessor",
     "FireAccessor",
-    "LevelAccessor"
+    "LevelAccessor",
+    "HempSeedDrop",
+    "WolfDump"
   ],
   "server": [
   ],
