@@ -3,6 +3,7 @@ package net.kozibrodka.wolves.events;
 import net.kozibrodka.wolves.recipe.FCCraftingManagerAnvil;
 import net.kozibrodka.wolves.recipe.FCCraftingManagerCauldron;
 import net.kozibrodka.wolves.recipe.FCCraftingManagerCauldronStoked;
+import net.kozibrodka.wolves.recipe.MillingRecipeRegistry;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.Wool;
@@ -43,6 +44,7 @@ public class RecipeListener {
         AddAnvilRecipes();
         AddCauldronRecipes();
         AddDebugRecipes();
+        AddMillingRecipes();
     }
 
     private static void AddAnvilRecipe(ItemInstance itemstack, Object aobj[])
@@ -291,6 +293,19 @@ public class RecipeListener {
         AddStokedCauldronRecipe(new ItemInstance(mod_FCBetterThanWolves.fcTallow, 1), new ItemInstance[] {
                 new ItemInstance(mod_FCBetterThanWolves.fcWolfRaw, 1)
         });
+    }
+
+    private static void AddMillingRecipes()
+    {
+        MillingRecipeRegistry.getInstance().addMillingRecipe(ItemBase.wheat.id, new ItemInstance(mod_FCBetterThanWolves.fcFlour, 1));
+        MillingRecipeRegistry.getInstance().addMillingRecipe(ItemBase.leather.id, new ItemInstance(mod_FCBetterThanWolves.fcScouredLeather, 1));
+        MillingRecipeRegistry.getInstance().addMillingRecipe(mod_FCBetterThanWolves.fcHemp.id, new ItemInstance(mod_FCBetterThanWolves.fcHempFibers, 4));
+        MillingRecipeRegistry.getInstance().addMillingRecipe(ItemBase.sugarCanes.id, new ItemInstance(ItemBase.sugar, 1));
+        MillingRecipeRegistry.getInstance().addMillingRecipe(BlockBase.NETHERRACK.id, new ItemInstance(mod_FCBetterThanWolves.fcGroundNetherrack, 1));
+        MillingRecipeRegistry.getInstance().addMillingRecipe(ItemBase.bone.id, new ItemInstance(ItemBase.dyePowder, 3, 15));
+        MillingRecipeRegistry.getInstance().addMillingRecipe(ItemBase.coal.id, new ItemInstance(mod_FCBetterThanWolves.fcCoalDust, 1));
+        MillingRecipeRegistry.getInstance().addMillingRecipe(BlockBase.ROSE.id, new ItemInstance(ItemBase.dyePowder, 2, 1));
+        MillingRecipeRegistry.getInstance().addMillingRecipe(BlockBase.DANDELION.id, new ItemInstance(ItemBase.dyePowder, 2, 11));
     }
 
     private static void AddDebugRecipes()

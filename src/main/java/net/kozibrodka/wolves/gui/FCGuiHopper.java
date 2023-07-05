@@ -29,7 +29,7 @@ public class FCGuiHopper extends ContainerBase
 
     protected void renderContainerBackground(float f)
     {
-        int i = minecraft.textureManager.getTextureId("/assets/wolves/stationapi/textures/gui/fcHopper.png");
+        int i = minecraft.textureManager.getTextureId("/assets/wolves/stationapi/textures/gui/fchopper.png");
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         minecraft.textureManager.bindTexture(i);
         int j = (width - containerWidth) / 2;

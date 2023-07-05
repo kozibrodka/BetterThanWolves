@@ -1,6 +1,15 @@
 {
   "values": [
     "wolves:fcAxleBlock",
-    "wolves:fcGearBox"
+    "wolves:fcGearBox",
+    "wolves:fcPlatform",
+    "wolves:fcMoulding",
+    "wolves:fcCorner",
+    "wolves:fcOmniSlab",
+    "wolves:fcHopper",
+    "wolves:fcSaw",
+    "wolves:fcPulley",
+    "wolves:fcHandCrank",
+    "wolves:fcBellows"
   ]
 }

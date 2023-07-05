@@ -280,7 +280,7 @@ public class FCEntityMovingPlatform extends EntityBase
 
     private void PushEntity(EntityBase entity)
     {
-        if(true)return;
+        // if(true)return;
     	double platformMaxY = boundingBox.maxY + 0.074999999999999997D;
         double entityMinY = entity.boundingBox.minY;
         if(entityMinY < platformMaxY)
