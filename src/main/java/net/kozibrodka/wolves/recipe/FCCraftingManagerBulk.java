@@ -41,14 +41,14 @@ public abstract class FCCraftingManagerBulk
         return null;
     }
 
-    public ItemInstance ConsumeIngrediantsAndReturnResult(InventoryBase inventory)
+    public ItemInstance ConsumeIngredientsAndReturnResult(InventoryBase inventory)
     {
         for(int i = 0; i < m_recipes.size(); i++)
         {
             FCCraftingManagerBulkRecipe tempRecipe = (FCCraftingManagerBulkRecipe)m_recipes.get(i);
             if(tempRecipe.DoesInventoryContainIngredients(inventory))
             {
-                tempRecipe.ConsumeInventoryIngrediants(inventory);
+                tempRecipe.ConsumeInventoryIngredients(inventory);
                 return tempRecipe.getCopyOfOutputStack();
             }
         }
@@ -56,5 +56,5 @@ public abstract class FCCraftingManagerBulk
         return null;
     }
 
-    private List m_recipes;
+    protected List m_recipes;
 }

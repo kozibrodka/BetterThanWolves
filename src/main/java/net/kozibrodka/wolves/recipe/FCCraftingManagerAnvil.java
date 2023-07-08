@@ -113,7 +113,7 @@ public class FCCraftingManagerAnvil
                 arraylist.add(new ItemInstance((BlockBase)obj));
             } else
             {
-                throw new RuntimeException("Invalid shapeless recipy!");
+                throw new RuntimeException("Invalid shapeless recipe!");
             }
         }
 

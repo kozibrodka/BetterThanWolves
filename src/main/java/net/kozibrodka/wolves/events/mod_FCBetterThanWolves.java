@@ -251,6 +251,7 @@ public class mod_FCBetterThanWolves {
     public static TemplateBlockWithEntity fcVase_green;
     public static TemplateBlockWithEntity fcVase_red;
     public static TemplateBlockWithEntity fcVase_black;
+    // These are never registered! Why do they exist?
     public static TemplateBlockWithEntity fcUnfiredPottery_crucible;
     public static TemplateBlockWithEntity fcUnfiredPottery_planter;
     public static TemplateBlockWithEntity fcUnfiredPottery_vase;

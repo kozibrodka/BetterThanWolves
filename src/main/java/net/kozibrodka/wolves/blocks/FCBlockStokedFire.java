@@ -8,10 +8,20 @@ import net.minecraft.util.maths.Box;
 import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockBase;
 
+import java.util.Random;
+
 public class FCBlockStokedFire extends TemplateBlockBase {
     public FCBlockStokedFire(Identifier identifier, Material material) {
         super(identifier, material);
         setTranslationKey(identifier.modID, identifier.id);
+        setTicksRandomly(true);
+        setLightEmittance(1.0F);
+    }
+
+    @Override
+    public void onScheduledTick(Level arg, int i, int j, int k, Random random) {
+        if (arg.getTileMeta(i, j, k) >= 3) arg.setTile(i, j, k, 0);
+        else arg.setTileMeta(i, j, k, arg.getTileMeta(i, j, k) + 1);
     }
 
     @Override

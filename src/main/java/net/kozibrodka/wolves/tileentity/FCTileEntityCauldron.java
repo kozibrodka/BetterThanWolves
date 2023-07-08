@@ -280,7 +280,7 @@ public class FCTileEntityCauldron extends TileEntityBase
                 }
                 if(FCCraftingManagerCauldron.getInstance().GetCraftingResult(this) != null)
                 {
-                    ItemInstance cookedStack = FCCraftingManagerCauldron.getInstance().ConsumeIngrediantsAndReturnResult(this);
+                    ItemInstance cookedStack = FCCraftingManagerCauldron.getInstance().ConsumeIngredientsAndReturnResult(this);
                     if(!$assertionsDisabled && cookedStack == null)
                     {
                         throw new AssertionError();
@@ -314,7 +314,7 @@ public class FCTileEntityCauldron extends TileEntityBase
                 } else
                 if(FCCraftingManagerCauldronStoked.getInstance().GetCraftingResult(this) != null)
                 {
-                    ItemInstance cookedStack = FCCraftingManagerCauldronStoked.getInstance().ConsumeIngrediantsAndReturnResult(this);
+                    ItemInstance cookedStack = FCCraftingManagerCauldronStoked.getInstance().ConsumeIngredientsAndReturnResult(this);
                     if(!$assertionsDisabled && cookedStack == null)
                     {
                         throw new AssertionError();

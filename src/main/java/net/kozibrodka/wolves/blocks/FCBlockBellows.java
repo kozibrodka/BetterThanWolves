@@ -325,13 +325,17 @@ public class FCBlockBellows extends TemplateBlockBase
 
     private void StokeFire(Level world, int i, int j, int k)
     {
-        System.out.println("Stoking Attempt");
     	if(world.getTileId(i, j - 1, k) == mod_FCBetterThanWolves.fcBBQ.id)
         {
             if(world.getTileId(i, j, k) == BlockBase.FIRE.id && world.isAir(i, j + 1, k))
             {
-                System.out.println("Successful Stoke");
                 world.setTile(i, j + 1, k, mod_FCBetterThanWolves.fcStokedFire.id);
+                world.method_243(i, j, k);
+            }
+            else if (world.getTileId(i, j, k) == BlockBase.FIRE.id && world.getTileId(i, j + 1, k) == mod_FCBetterThanWolves.fcStokedFire.id)
+            {
+                world.setTileMeta(i, j + 1, k, 0);
+                world.method_243(i, j, k);
             }
         } else
         {

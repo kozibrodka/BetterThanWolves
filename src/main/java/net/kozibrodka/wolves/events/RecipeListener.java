@@ -1,9 +1,6 @@
 package net.kozibrodka.wolves.events;
 
-import net.kozibrodka.wolves.recipe.FCCraftingManagerAnvil;
-import net.kozibrodka.wolves.recipe.FCCraftingManagerCauldron;
-import net.kozibrodka.wolves.recipe.FCCraftingManagerCauldronStoked;
-import net.kozibrodka.wolves.recipe.MillingRecipeRegistry;
+import net.kozibrodka.wolves.recipe.*;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.Wool;
@@ -45,6 +42,7 @@ public class RecipeListener {
         AddCauldronRecipes();
         AddDebugRecipes();
         AddMillingRecipes();
+        AddTurntableRecipes(); // Only used for tabs right now. TODO: Integrate this registry into the TileEntity of the turntable
     }
 
     private static void AddAnvilRecipe(ItemInstance itemstack, Object aobj[])
@@ -306,6 +304,12 @@ public class RecipeListener {
         MillingRecipeRegistry.getInstance().addMillingRecipe(ItemBase.coal.id, new ItemInstance(mod_FCBetterThanWolves.fcCoalDust, 1));
         MillingRecipeRegistry.getInstance().addMillingRecipe(BlockBase.ROSE.id, new ItemInstance(ItemBase.dyePowder, 2, 1));
         MillingRecipeRegistry.getInstance().addMillingRecipe(BlockBase.DANDELION.id, new ItemInstance(ItemBase.dyePowder, 2, 11));
+    }
+
+    private static void AddTurntableRecipes()
+    {
+        TurntableRecipeRegistry.getInstance().addTurntableRecipe(BlockBase.CLAY.id, new ItemInstance(mod_FCBetterThanWolves.fcUnfiredPottery));
+        TurntableRecipeRegistry.getInstance().addTurntableRecipe(mod_FCBetterThanWolves.fcUnfiredPottery.id, new ItemInstance(mod_FCBetterThanWolves.fcUnfiredPottery, 1, 1));
     }
 
     private static void AddDebugRecipes()

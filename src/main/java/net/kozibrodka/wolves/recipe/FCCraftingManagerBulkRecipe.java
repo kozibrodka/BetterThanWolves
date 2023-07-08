@@ -47,7 +47,7 @@ public class FCCraftingManagerBulkRecipe
         }
     }
 
-    public boolean ConsumeInventoryIngrediants(InventoryBase inventory)
+    public boolean ConsumeInventoryIngredients(InventoryBase inventory)
     {
         boolean bSuccessful = true;
         if(m_recipeInputStacks != null && m_recipeInputStacks.size() > 0)
@@ -61,6 +61,21 @@ public class FCCraftingManagerBulkRecipe
 
         }
         return bSuccessful;
+    }
+
+    public ItemInstance getInputStack(int index)
+    {
+        return (ItemInstance) m_recipeInputStacks.get(index);
+    }
+
+    public int getNumberOfInputStacks()
+    {
+        return m_recipeInputStacks.size();
+    }
+
+    public ItemInstance getOutputStack()
+    {
+        return m_recipeOutputStack;
     }
 
     private final ItemInstance m_recipeOutputStack;

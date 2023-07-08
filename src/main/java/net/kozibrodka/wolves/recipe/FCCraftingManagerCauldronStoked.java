@@ -5,6 +5,11 @@
 
 package net.kozibrodka.wolves.recipe;
 
+import net.minecraft.item.ItemInstance;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class FCCraftingManagerCauldronStoked extends FCCraftingManagerBulk
 {
 
@@ -19,4 +24,19 @@ public class FCCraftingManagerCauldronStoked extends FCCraftingManagerBulk
 
     private static final FCCraftingManagerCauldronStoked instance = new FCCraftingManagerCauldronStoked();
 
+    public List getSingleRecipes()
+    {
+        ArrayList<ItemInstance[]> recipeList = new ArrayList<>();
+
+        for (int i = 0; i < m_recipes.size(); i++) {
+            FCCraftingManagerBulkRecipe bulkRecipe = (FCCraftingManagerBulkRecipe) m_recipes.get(i);
+            if (bulkRecipe.getNumberOfInputStacks() != 1) continue;
+            ItemInstance[] recipeArray = new ItemInstance[2];
+            recipeArray[0] = bulkRecipe.getOutputStack();
+            recipeArray[1] = bulkRecipe.getInputStack(0);
+            recipeList.add(recipeArray);
+        }
+
+        return recipeList;
+    }
 }
