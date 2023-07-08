@@ -190,7 +190,6 @@ public class mod_FCBetterThanWolves {
 
     //TODO: NEW
     //TODO: render Inventory : rails, cement
-    //TODO: placing redstone?
     //TODO: Stoked fire dissaperaing?
     //TODO: custom recipes xhmi
     //TODO: planter functionality
