@@ -2,6 +2,7 @@ package net.kozibrodka.wolves.recipe;
 
 import net.minecraft.item.ItemInstance;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,7 +22,22 @@ public class MillingRecipeRegistry {
         return (ItemInstance)this.recipes.get(i);
     }
 
-    public Map getRecipes() {
-        return this.recipes;
+    // This is not a clean solution, but it should work fine
+    public ArrayList<ItemInstance[]> getRecipes() {
+        ArrayList<ItemInstance[]> itemInstances = new ArrayList<>();
+        ArrayList<ItemInstance> inputs = new ArrayList<>();
+        ArrayList<ItemInstance> outputs = new ArrayList<>();
+        for (Object obj : recipes.keySet()) {
+            if (obj instanceof Integer)
+            {
+                inputs.add(new ItemInstance((Integer) obj, 1, 0));
+                outputs.add(getResult((Integer) obj));
+            }
+        }
+        for (int i = 0; i < inputs.size(); i++) {
+            if (i >= outputs.size()) break;
+            itemInstances.add(new ItemInstance[] {inputs.get(i), outputs.get(i)});
+        }
+        return itemInstances;
     }
 }

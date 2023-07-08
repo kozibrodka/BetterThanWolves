@@ -66,8 +66,8 @@ dependencies {
 		transitive false
 	}
 	modImplementation("net.glasslauncher.mods:GlassConfigAPI:${project.gcapi_version}") {
-   transitive false
-   }
+    	transitive false
+    }
 	modImplementation("net.glasslauncher:HowManyItems-Fabric-Unofficial:${project.howmanyitems_version}") {
 		transitive false
 	}

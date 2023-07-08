@@ -13,15 +13,12 @@ import net.minecraft.block.BlockBase;
 import net.minecraft.block.PressurePlateTrigger;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColour;
-import net.minecraft.client.render.entity.PigRenderer;
-import net.minecraft.client.render.entity.model.Pig;
 import net.minecraft.item.tool.ToolMaterial;
 import net.modificationstation.stationapi.api.client.event.render.entity.EntityRendererRegisterEvent;
 import net.modificationstation.stationapi.api.event.entity.EntityRegister;
 import net.modificationstation.stationapi.api.event.registry.BlockRegistryEvent;
 import net.modificationstation.stationapi.api.event.registry.EntityHandlerRegistryEvent;
 import net.modificationstation.stationapi.api.event.registry.ItemRegistryEvent;
-import net.modificationstation.stationapi.api.event.registry.MobHandlerRegistryEvent;
 import net.modificationstation.stationapi.api.event.tileentity.TileEntityRegisterEvent;
 import net.modificationstation.stationapi.api.item.tool.ToolMaterialFactory;
 import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
@@ -125,6 +122,7 @@ public class mod_FCBetterThanWolves {
         fcBlockDetector = (TemplateBlockBase) new FCBlockDetectorBlock(Identifier.of(MOD_ID, "fcBlockDetector")).setTranslationKey(MOD_ID, "fcBlockDetector").setHardness(3.5F).setSounds(BlockBase.STONE_SOUNDS).setTranslationKey(MOD_ID,"fcBlockDetector");
         fcBlockDetectorLogic = (TemplateBlockBase) new FCBlockDetectorLogic(Identifier.of(MOD_ID, "fcBlockDetectorLogic")).setTranslationKey(MOD_ID, "fcBlockDetectorLogic");
 //        fcBlockLens = new FCBlockLens(Identifier.of(MOD_ID, "fcBlockLens")).setTranslationKey(MOD_ID, "fcBlockLens"); //TODO chyba tego nie ma
+        // TODO: Translate the TODO above into English
         fcHempCrop = (TemplatePlant) new FCBlockHempCrop(Identifier.of(MOD_ID, "fcHempCrop")).setTranslationKey(MOD_ID, "fcHempCrop");
         fcHandCrank = (TemplateBlockBase) new FCBlockHandCrank(Identifier.of(MOD_ID, "fcHandCrank")).setTranslationKey(MOD_ID, "fcHandCrank");
         fcMillStone = (TemplateBlockWithEntity) new FCBlockMillStone(Identifier.of(MOD_ID, "fcMillStone")).setTranslationKey(MOD_ID, "fcMillStone");
@@ -135,7 +133,7 @@ public class mod_FCBetterThanWolves {
         fcGearBox = (TemplateBlockBase) new FCBlockGearBox(Identifier.of(MOD_ID, "fcGearBox")).setTranslationKey(MOD_ID, "fcGearBox");
         fcTurntable = (TemplateBlockWithEntity) new FCBlockTurntable(Identifier.of(MOD_ID, "fcTurntable")).setTranslationKey(MOD_ID, "fcTurntable");
         fcBellows = (TemplateBlockBase) new FCBlockBellows(Identifier.of(MOD_ID, "fcBellows")).setTranslationKey(MOD_ID, "fcBellows");
-        fcStokedFire = (TemplateFire) new FCBlockStokedFire(Identifier.of(MOD_ID, "fcStokedFire")).setTranslationKey(MOD_ID, "fcStokedFire");
+        fcStokedFire = (TemplateBlockBase) new FCBlockStokedFire(Identifier.of(MOD_ID, "fcStokedFire"), Material.FIRE).setTranslationKey(MOD_ID, "fcStokedFire");
         fcUnfiredPottery = (TemplateBlockWithEntity) new FCBlockUnfiredPottery(Identifier.of(MOD_ID, "fcUnfiredPottery")).setTranslationKey(MOD_ID, "fcUnfiredPottery");
         fcCrucible = (TemplateBlockWithEntity) new FCBlockCrucible(Identifier.of(MOD_ID, "fcCrucible")).setTranslationKey(MOD_ID, "fcCrucible");
         fcPlanter = (TemplateBlockBase) new FCBlockPlanter(Identifier.of(MOD_ID, "fcPlanter")).setTranslationKey(MOD_ID, "fcPlanter");
@@ -230,7 +228,7 @@ public class mod_FCBetterThanWolves {
     public static TemplateBlockBase fcGearBox;
     public static TemplateBlockWithEntity fcTurntable;
     public static TemplateBlockBase fcBellows;
-    public static TemplateFire fcStokedFire;
+    public static TemplateBlockBase fcStokedFire;
     public static TemplateBlockWithEntity fcUnfiredPottery;
     public static TemplateBlockWithEntity fcCrucible;
     public static TemplateBlockBase fcPlanter;

@@ -325,21 +325,13 @@ public class FCBlockBellows extends TemplateBlockBase
 
     private void StokeFire(Level world, int i, int j, int k)
     {
+        System.out.println("Stoking Attempt");
     	if(world.getTileId(i, j - 1, k) == mod_FCBetterThanWolves.fcBBQ.id)
         {
-            if(world.getTileId(i, j, k) == mod_FCBetterThanWolves.fcStokedFire.id)
+            if(world.getTileId(i, j, k) == BlockBase.FIRE.id && world.isAir(i, j + 1, k))
             {
-                world.setTileMeta(i, j, k, 0);
-                world.method_243(i, j, k);
-            } else
-            {
-                world.setTile(i, j, k, mod_FCBetterThanWolves.fcStokedFire.id);
-                world.method_243(i, j, k);
-            }
-            if(world.isAir(i, j + 1, k))
-            {
-                world.setTile(i, j + 1, k, FIRE.id);
-                world.method_243(i, j+1, k);
+                System.out.println("Successful Stoke");
+                world.setTile(i, j + 1, k, mod_FCBetterThanWolves.fcStokedFire.id);
             }
         } else
         {
@@ -373,10 +365,5 @@ public class FCBlockBellows extends TemplateBlockBase
     }
 
     private static int m_iBellowsTickRate = 10;
-    public static final float m_fBellowsContractedHeight = 0.6875F;
-    private final int m_iBellowsTopTextureIndex = 68;
-    private final int m_iBellowsFrontTextureIndex = 69;
-    private final int m_iBellowsSideTextureIndex = 70;
-    private final int m_iBellowsBottomTextureIndex = 71;
 
 }
