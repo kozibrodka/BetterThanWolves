@@ -4,6 +4,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.mixin.LevelAccessor;
+import net.kozibrodka.wolves.recipe.SawingRecipeRegistry;
 import net.kozibrodka.wolves.utils.*;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.material.Material;
@@ -12,6 +13,7 @@ import net.minecraft.client.render.block.BlockRenderer;
 import net.minecraft.entity.EntityBase;
 import net.minecraft.entity.Living;
 import net.minecraft.item.ItemBase;
+import net.minecraft.item.ItemInstance;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.minecraft.util.maths.Box;
@@ -376,58 +378,27 @@ public class FCBlockSaw extends TemplateBlockBase
             boolean bSawedBlock = false;
             BlockBase targetBlock = BlockBase.BY_ID[iTargetid];
             boolean bRemoveOriginalBlockIfSawed = true;
-            if(iTargetid == BlockBase.LOG.id)
-            {
-                for(int iTempCount = 0; iTempCount < 4; iTempCount++)
-                {
-                    FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, BlockBase.WOOD.id, 0);
-                }
 
+            // This exists so the slab can be in the registry and to keep the wood check intact
+            if (iTargetid == mod_FCBetterThanWolves.fcOmniSlab.id)
+            {
+                if(!((FCBlockOmniSlab)mod_FCBetterThanWolves.fcOmniSlab).IsSlabWood(world, i, j, k)) return false;
+            }
+
+            // Standard recipes from the registry
+            ItemInstance output = SawingRecipeRegistry.getInstance().getResult(iTargetid);
+            if (output != null)
+            {
+                if (output.count == 0) output.count = 1;
+                for(int iTempCount = 0; iTempCount < output.count; iTempCount++)
+                {
+                    FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, output.itemId, output.getDamage());
+                }
                 bSawedBlock = true;
-            } else
-            if(iTargetid == BlockBase.WOOD.id)
-            {
-                for(int iTempCount = 0; iTempCount < 2; iTempCount++)
-                {
-                    FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcOmniSlab.id, 1);
-                }
+            }
 
-                bSawedBlock = true;
-            } else
-            if(iTargetid == mod_FCBetterThanWolves.fcOmniSlab.id)
-            {
-                if(((FCBlockOmniSlab)mod_FCBetterThanWolves.fcOmniSlab).IsSlabWood(world, i, j, k))
-                {
-                    for(int iTempCount = 0; iTempCount < 2; iTempCount++)
-                    {
-                        FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcMoulding.id, 0);
-                    }
-
-                    bSawedBlock = true;
-                } else
-                {
-                    return false;
-                }
-            } else
-            if(iTargetid == mod_FCBetterThanWolves.fcMoulding.id)
-            {
-                for(int iTempCount = 0; iTempCount < 2; iTempCount++)
-                {
-                    FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcCorner.id, 0);
-                }
-
-                bSawedBlock = true;
-            } else
-            if(iTargetid == mod_FCBetterThanWolves.fcCorner.id)
-            {
-                for(int iTempCount = 0; iTempCount < 2; iTempCount++)
-                {
-                    FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcGear.id, 0);
-                }
-
-                bSawedBlock = true;
-            } else
-            if(iTargetid == mod_FCBetterThanWolves.fcCompanionCube.id)
+            // Special recipes with more complex outcomes
+            else if(iTargetid == mod_FCBetterThanWolves.fcCompanionCube.id)
             {
                 FCBlockCompanionCube cubeBlock = (FCBlockCompanionCube)mod_FCBetterThanWolves.fcCompanionCube;
                 if(!cubeBlock.GetHalfCubeState(world, i, j, k))

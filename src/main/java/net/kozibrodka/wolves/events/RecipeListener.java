@@ -1,6 +1,7 @@
 package net.kozibrodka.wolves.events;
 
 import net.kozibrodka.wolves.recipe.*;
+import net.kozibrodka.wolves.tabs.CrucibleTripleRecipeTab;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.Wool;
@@ -42,7 +43,10 @@ public class RecipeListener {
         AddCauldronRecipes();
         AddDebugRecipes();
         AddMillingRecipes();
+        AddSawingRecipes();
         AddTurntableRecipes(); // Only used for tabs right now. TODO: Integrate this registry into the TileEntity of the turntable
+        AddCrucibleRecipes(); // Only used for tabs right now. TODO: Integrate this registry into the TileEntity of the crucible
+        AddHopperRecipes(); // Only used for tabs right now. TODO: Integrate this registry into the TileEntity of the hopper
     }
 
     private static void AddAnvilRecipe(ItemInstance itemstack, Object aobj[])
@@ -63,6 +67,11 @@ public class RecipeListener {
     public static void AddStokedCauldronRecipe(ItemInstance itemstack, ItemInstance aitemstack[])
     {
         FCCraftingManagerCauldronStoked.getInstance().AddRecipe(itemstack, aitemstack);
+    }
+
+    public static void AddCrucibleRecipe(ItemInstance itemstack, ItemInstance aitemstack[])
+    {
+        CraftingManagerCrucible.getInstance().AddRecipe(itemstack, aitemstack);
     }
 
     private static void AddBlockRecipes()
@@ -310,6 +319,25 @@ public class RecipeListener {
     {
         TurntableRecipeRegistry.getInstance().addTurntableRecipe(BlockBase.CLAY.id, new ItemInstance(mod_FCBetterThanWolves.fcUnfiredPottery));
         TurntableRecipeRegistry.getInstance().addTurntableRecipe(mod_FCBetterThanWolves.fcUnfiredPottery.id, new ItemInstance(mod_FCBetterThanWolves.fcUnfiredPottery, 1, 1));
+    }
+
+    private static void AddCrucibleRecipes()
+    {
+        AddCrucibleRecipe(new ItemInstance(mod_FCBetterThanWolves.fcSteel), new ItemInstance[] { new ItemInstance(ItemBase.ironIngot, 3), new ItemInstance(mod_FCBetterThanWolves.fcConcentratedHellfire), new ItemInstance(mod_FCBetterThanWolves.fcCoalDust) });
+    }
+
+    private static void AddHopperRecipes()
+    {
+        HopperHauntingRecipeRegistry.getInstance().addHopperHauntingRecipe(mod_FCBetterThanWolves.fcGroundNetherrack.id, new ItemInstance(mod_FCBetterThanWolves.fcHellfireDust));
+    }
+
+    private static void AddSawingRecipes()
+    {
+        SawingRecipeRegistry.getInstance().addSawingRecipe(BlockBase.LOG.id, new ItemInstance(BlockBase.WOOD, 4));
+        SawingRecipeRegistry.getInstance().addSawingRecipe(BlockBase.WOOD.id, new ItemInstance(mod_FCBetterThanWolves.fcOmniSlab, 2, 1));
+        SawingRecipeRegistry.getInstance().addSawingRecipe(mod_FCBetterThanWolves.fcOmniSlab.id, new ItemInstance(mod_FCBetterThanWolves.fcMoulding, 2));
+        SawingRecipeRegistry.getInstance().addSawingRecipe(mod_FCBetterThanWolves.fcMoulding.id, new ItemInstance(mod_FCBetterThanWolves.fcCorner, 2));
+        SawingRecipeRegistry.getInstance().addSawingRecipe(mod_FCBetterThanWolves.fcCorner.id, new ItemInstance(mod_FCBetterThanWolves.fcGear, 2));
     }
 
     private static void AddDebugRecipes()

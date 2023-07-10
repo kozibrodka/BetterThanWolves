@@ -88,7 +88,7 @@ public class TurntableRecipeTab extends TabWithTexture {
         recipesReady.forEach(recipe -> {
             ItemInstance input = recipe[0];
             ItemInstance output = recipe[1];
-            if (filter == null || (!getUses && compare(filter, output)) || (getUses && compare(filter, input))) {
+            if (filter == null || (!getUses && compare(filter, output)) || (getUses && compare(filter, input)) || filter.isDamageAndIDIdentical(new ItemInstance(tabBlock))) {
                 recipes.add(recipe);
             }
         });

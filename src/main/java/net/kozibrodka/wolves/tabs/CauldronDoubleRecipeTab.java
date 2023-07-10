@@ -62,10 +62,6 @@ public class CauldronDoubleRecipeTab extends TabWithTexture {
                 items[j][2] = recipe[0];
                 items[j][1] = recipe[1];
                 items[j][0] = recipe[2];
-
-                System.out.println(items[j][0]);
-                System.out.println(items[j][1]);
-                System.out.println(items[j][2]);
             } catch (Throwable throwable) {
                 throwable.printStackTrace();
             }
@@ -94,7 +90,7 @@ public class CauldronDoubleRecipeTab extends TabWithTexture {
             ItemInstance input1 = recipe[2];
             ItemInstance input = recipe[1];
             ItemInstance output = recipe[0];
-            if (filter == null || (!getUses && compare(filter, output)) || (getUses && compare(filter, input)) || (getUses && compare(filter, input1))) {
+            if (filter == null || (!getUses && compare(filter, output)) || (getUses && compare(filter, input)) || (getUses && compare(filter, input1)) || filter.isDamageAndIDIdentical(new ItemInstance(tabBlock))) {
                 recipes.add(recipe);
             }
         });

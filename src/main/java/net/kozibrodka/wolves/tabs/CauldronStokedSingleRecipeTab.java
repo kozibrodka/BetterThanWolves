@@ -89,7 +89,7 @@ public class CauldronStokedSingleRecipeTab extends TabWithTexture {
         recipesReady.forEach(recipe -> {
             ItemInstance input = recipe[1];
             ItemInstance output = recipe[0];
-            if (filter == null || (!getUses && compare(filter, output)) || (getUses && compare(filter, input))) {
+            if (filter == null || (!getUses && compare(filter, output)) || (getUses && compare(filter, input)) || filter.isDamageAndIDIdentical(new ItemInstance(tabBlock))) {
                 recipes.add(recipe);
             }
         });

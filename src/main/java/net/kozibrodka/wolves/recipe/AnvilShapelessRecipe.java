@@ -3,12 +3,13 @@ package net.kozibrodka.wolves.recipe;
 import net.kozibrodka.wolves.utils.FCRecipeAnvil;
 import net.minecraft.inventory.Crafting;
 import net.minecraft.item.ItemInstance;
+import net.modificationstation.stationapi.api.recipe.StationRecipe;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class AnvilShapelessRecipe implements FCRecipeAnvil {
+public class AnvilShapelessRecipe implements FCRecipeAnvil, StationRecipe {
     private final ItemInstance output;
     private final List input;
 
@@ -56,5 +57,19 @@ public class AnvilShapelessRecipe implements FCRecipeAnvil {
 
     public int getIngredientCount() {
         return this.input.size();
+    }
+
+    @Override
+    public ItemInstance[] getIngredients() {
+        ItemInstance[] ingredients = new ItemInstance[input.size()];
+        for (int i = 0; i < input.size(); i++) {
+            ingredients[i] = (ItemInstance) input.get(i);
+        }
+        return ingredients;
+    }
+
+    @Override
+    public ItemInstance[] getOutputs() {
+        return new ItemInstance[] {output};
     }
 }
