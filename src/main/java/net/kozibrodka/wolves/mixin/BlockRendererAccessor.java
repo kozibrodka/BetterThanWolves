@@ -20,6 +20,9 @@ public interface BlockRendererAccessor {
     int getEastFaceRotation();
 
     @Accessor
+    int getTextureOverride();
+
+    @Accessor
     boolean getShadeTopFace();
 
     @Accessor

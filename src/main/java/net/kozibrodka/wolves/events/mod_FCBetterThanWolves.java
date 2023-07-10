@@ -121,7 +121,7 @@ public class mod_FCBetterThanWolves {
         fcCompanionCube = (TemplateBlockBase) new FCBlockCompanionCube(Identifier.of(MOD_ID, "fcCompanionCube")).setTranslationKey(MOD_ID, "fcCompanionCube").setHardness(0.4F).setSounds(BlockBase.WOOL_SOUNDS);
         fcBlockDetector = (TemplateBlockBase) new FCBlockDetectorBlock(Identifier.of(MOD_ID, "fcBlockDetector")).setTranslationKey(MOD_ID, "fcBlockDetector").setHardness(3.5F).setSounds(BlockBase.STONE_SOUNDS).setTranslationKey(MOD_ID,"fcBlockDetector");
         fcBlockDetectorLogic = (TemplateBlockBase) new FCBlockDetectorLogic(Identifier.of(MOD_ID, "fcBlockDetectorLogic")).setTranslationKey(MOD_ID, "fcBlockDetectorLogic");
-//        fcBlockLens = new FCBlockLens(Identifier.of(MOD_ID, "fcBlockLens")).setTranslationKey(MOD_ID, "fcBlockLens"); //TODO chyba tego nie ma
+//        fcBlockLens = new FCBlockLens(Identifier.of(MOD_ID, "fcBlockLens")).setTranslationKey(MOD_ID, "fcBlockLens"); //TODO this block is in code, but is not functional?
         // TODO: Translate the TODO above into English
         fcHempCrop = (TemplatePlant) new FCBlockHempCrop(Identifier.of(MOD_ID, "fcHempCrop")).setTranslationKey(MOD_ID, "fcHempCrop");
         fcHandCrank = (TemplateBlockBase) new FCBlockHandCrank(Identifier.of(MOD_ID, "fcHandCrank")).setTranslationKey(MOD_ID, "fcHandCrank");
@@ -133,7 +133,7 @@ public class mod_FCBetterThanWolves {
         fcGearBox = (TemplateBlockBase) new FCBlockGearBox(Identifier.of(MOD_ID, "fcGearBox")).setTranslationKey(MOD_ID, "fcGearBox");
         fcTurntable = (TemplateBlockWithEntity) new FCBlockTurntable(Identifier.of(MOD_ID, "fcTurntable")).setTranslationKey(MOD_ID, "fcTurntable");
         fcBellows = (TemplateBlockBase) new FCBlockBellows(Identifier.of(MOD_ID, "fcBellows")).setTranslationKey(MOD_ID, "fcBellows");
-        fcStokedFire = (TemplateBlockBase) new FCBlockStokedFire(Identifier.of(MOD_ID, "fcStokedFire"), Material.FIRE).setTranslationKey(MOD_ID, "fcStokedFire");
+        fcStokedFire = (TemplateFire) new FCBlockStokedFireDeprecated(Identifier.of(MOD_ID, "fcStokedFire")).setTranslationKey(MOD_ID, "fcStokedFire");
         fcUnfiredPottery = (TemplateBlockWithEntity) new FCBlockUnfiredPottery(Identifier.of(MOD_ID, "fcUnfiredPottery")).setTranslationKey(MOD_ID, "fcUnfiredPottery");
         fcCrucible = (TemplateBlockWithEntity) new FCBlockCrucible(Identifier.of(MOD_ID, "fcCrucible")).setTranslationKey(MOD_ID, "fcCrucible");
         fcPlanter = (TemplateBlockBase) new FCBlockPlanter(Identifier.of(MOD_ID, "fcPlanter")).setTranslationKey(MOD_ID, "fcPlanter");
@@ -228,7 +228,7 @@ public class mod_FCBetterThanWolves {
     public static TemplateBlockBase fcGearBox;
     public static TemplateBlockWithEntity fcTurntable;
     public static TemplateBlockBase fcBellows;
-    public static TemplateBlockBase fcStokedFire;
+    public static TemplateFire fcStokedFire;
     public static TemplateBlockWithEntity fcUnfiredPottery;
     public static TemplateBlockWithEntity fcCrucible;
     public static TemplateBlockBase fcPlanter;
