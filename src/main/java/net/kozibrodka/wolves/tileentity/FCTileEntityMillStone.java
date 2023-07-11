@@ -133,7 +133,7 @@ public class FCTileEntityMillStone extends TileEntityBase
                 continue;
             }
             ItemBase tempItem = millStoneContents[tempIndex].getType();
-            if(tempItem != null && (tempItem.id == ItemBase.wheat.id || tempItem.id == ItemBase.leather.id || tempItem.id == mod_FCBetterThanWolves.fcHemp.id || tempItem.id == mod_FCBetterThanWolves.fcCompanionCube.id || tempItem.id == ItemBase.sugarCanes.id || tempItem.id == BlockBase.NETHERRACK.id || tempItem.id == ItemBase.bone.id || tempItem.id == ItemBase.coal.id || tempItem.id == BlockBase.ROSE.id || tempItem.id == BlockBase.DANDELION.id))
+            if(tempItem != null)
             {
                 return tempIndex;
             }
@@ -152,67 +152,61 @@ public class FCTileEntityMillStone extends TileEntityBase
         return iMillStoneGrindCounter > 0;
     }
 
-    public void tick() //updateEntity
+    public void tick() // updateEntity
     {
         int iUnmilledItemIndex = GetUnmilledItemInventoryIndex();
-        if(iUnmilledItemIndex >= 0)
+
+        if(iUnmilledItemIndex < 0) iMillStoneGrindCounter = 0;
+        if(!((FCBlockMillStone)mod_FCBetterThanWolves.fcMillStone).IsBlockOn(level, x, y, z)) return;
+
+        iMillStoneGrindCounter++;
+
+        int iUnmilledItemID = millStoneContents[iUnmilledItemIndex].getType().id;
+
+        if(iUnmilledItemID == mod_FCBetterThanWolves.fcCompanionCube.id) // Companion cube torture during milling
         {
-            if(((FCBlockMillStone)mod_FCBetterThanWolves.fcMillStone).IsBlockOn(level, x, y, z))
+            if(millStoneContents[iUnmilledItemIndex].getDamage() == 0 && level.rand.nextInt(10) == 0)
             {
-                iMillStoneGrindCounter++;
-                int iUnmilledItemID = millStoneContents[iUnmilledItemIndex].getType().id;
-
-                if(iUnmilledItemID == mod_FCBetterThanWolves.fcCompanionCube.id) // Companion cube torture during milling
-                {
-                    if(millStoneContents[iUnmilledItemIndex].getDamage() == 0 && level.rand.nextInt(10) == 0)
-                    {
-                        level.playSound((float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F, "mob.wolf.hurt", 2.0F, (level.rand.nextFloat() - level.rand.nextFloat()) * 0.2F + 1.0F);
-                    }
-                    if(level.rand.nextInt(20) == 0)
-                    {
-                        ItemInstance stringStack = new ItemInstance(ItemBase.string);
-                        EjectStack(stringStack);
-                    }
-                    if(level.rand.nextInt(60) == 0)
-                    {
-                        ItemInstance woolStack = new ItemInstance(ItemBase.dyePowder.id, 1, 1);
-                        EjectStack(woolStack);
-                    }
-                } else
-                if(iUnmilledItemID == BlockBase.NETHERRACK.id && level.rand.nextInt(10) == 0) // Random scream when there is netherrack
-                {
-                    level.playSound((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, "mob.ghast.scream", 0.25F, level.rand.nextFloat() * 0.4F + 0.8F);
-                }
-
-                if(iMillStoneGrindCounter >= 200) // Standard recipes
-                {
-                    ItemInstance milledStack = null;
-
-                    if(iUnmilledItemID == mod_FCBetterThanWolves.fcCompanionCube.id) // Special recipe (companion cube)
-                    {
-                        milledStack = new ItemInstance(mod_FCBetterThanWolves.fcWolfRaw.id, 1, 0);
-                        FCBlockCompanionCube.SpawnHearts(level, x, y, z);
-                        if(millStoneContents[iUnmilledItemIndex].getDamage() == 0)
-                        {
-                            level.playSound((float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F, "mob.wolf.whine", 0.5F, 2.6F + (level.rand.nextFloat() - level.rand.nextFloat()) * 0.8F);
-                        }
-                    } else
-                    {
-                        milledStack = MillingRecipeRegistry.getInstance().getResult(iUnmilledItemID);
-                    }
-
-                    if(milledStack != null)
-                    {
-                        takeInventoryItem(iUnmilledItemIndex, 1);
-                        EjectStack(milledStack);
-                    }
-                    iMillStoneGrindCounter = 0;
-                }
+                level.playSound((float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F, "mob.wolf.hurt", 2.0F, (level.rand.nextFloat() - level.rand.nextFloat()) * 0.2F + 1.0F);
             }
-        } else
-        {
-            iMillStoneGrindCounter = 0;
+            if(level.rand.nextInt(20) == 0)
+            {
+                ItemInstance stringStack = new ItemInstance(ItemBase.string);
+                EjectStack(stringStack);
+            }
+            if(level.rand.nextInt(60) == 0)
+            {
+                ItemInstance woolStack = new ItemInstance(ItemBase.dyePowder.id, 1, 1);
+                EjectStack(woolStack);
+            }
         }
+        else if(iUnmilledItemID == BlockBase.NETHERRACK.id && level.rand.nextInt(10) == 0) // Random scream when there is netherrack
+        {
+            level.playSound((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, "mob.ghast.scream", 0.25F, level.rand.nextFloat() * 0.4F + 0.8F);
+        }
+
+        if(iMillStoneGrindCounter < 200) return;
+
+        iMillStoneGrindCounter = 0;
+
+        ItemInstance milledStack = MillingRecipeRegistry.getInstance().getResult(iUnmilledItemID);
+        if(milledStack != null)
+        {
+            milledStack = new ItemInstance(milledStack.itemId, milledStack.count, milledStack.getDamage()); // This looks very redundant but cures the millstone from the curse of losing the item count value from the registry for no apparent reason besides metaphysical powers beyond human comprehension or something, I do not know how to explain this anymore.
+            if (milledStack.count == 0) milledStack.count = 1;
+            takeInventoryItem(iUnmilledItemIndex, 1);
+            EjectStack(milledStack);
+        }
+        else if(iUnmilledItemID == mod_FCBetterThanWolves.fcCompanionCube.id) // Special recipe (companion cube)
+        {
+            EjectStack(new ItemInstance(mod_FCBetterThanWolves.fcWolfRaw.id, 1, 0));
+            FCBlockCompanionCube.SpawnHearts(level, x, y, z);
+            if(millStoneContents[iUnmilledItemIndex].getDamage() == 0)
+            {
+                level.playSound((float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F, "mob.wolf.whine", 0.5F, 2.6F + (level.rand.nextFloat() - level.rand.nextFloat()) * 0.8F);
+            }
+        }
+
     }
 
     public void EjectStack(ItemInstance stack)
