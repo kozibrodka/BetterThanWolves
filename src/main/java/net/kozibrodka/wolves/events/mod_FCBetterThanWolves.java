@@ -133,7 +133,7 @@ public class mod_FCBetterThanWolves {
         fcGearBox = (TemplateBlockBase) new FCBlockGearBox(Identifier.of(MOD_ID, "fcGearBox")).setTranslationKey(MOD_ID, "fcGearBox");
         fcTurntable = (TemplateBlockWithEntity) new FCBlockTurntable(Identifier.of(MOD_ID, "fcTurntable")).setTranslationKey(MOD_ID, "fcTurntable");
         fcBellows = (TemplateBlockBase) new FCBlockBellows(Identifier.of(MOD_ID, "fcBellows")).setTranslationKey(MOD_ID, "fcBellows");
-        fcStokedFire = (TemplateFire) new FCBlockStokedFireDeprecated(Identifier.of(MOD_ID, "fcStokedFire")).setTranslationKey(MOD_ID, "fcStokedFire");
+        fcStokedFire = (TemplateFire) new FCBlockStokedFire(Identifier.of(MOD_ID, "fcStokedFire")).setTranslationKey(MOD_ID, "fcStokedFire");
         fcUnfiredPottery = (TemplateBlockWithEntity) new FCBlockUnfiredPottery(Identifier.of(MOD_ID, "fcUnfiredPottery")).setTranslationKey(MOD_ID, "fcUnfiredPottery");
         fcCrucible = (TemplateBlockWithEntity) new FCBlockCrucible(Identifier.of(MOD_ID, "fcCrucible")).setTranslationKey(MOD_ID, "fcCrucible");
         fcPlanter = (TemplateBlockBase) new FCBlockPlanter(Identifier.of(MOD_ID, "fcPlanter")).setTranslationKey(MOD_ID, "fcPlanter");

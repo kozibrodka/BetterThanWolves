@@ -327,20 +327,24 @@ public class FCBlockBellows extends TemplateBlockBase
     {
     	if(world.getTileId(i, j - 1, k) == mod_FCBetterThanWolves.fcBBQ.id)
         {
-            if(world.getTileId(i, j, k) == BlockBase.FIRE.id && world.isAir(i, j + 1, k))
+            if(world.getTileId(i, j, k) == mod_FCBetterThanWolves.fcStokedFire.id)
+            {
+                world.setTileMeta(i, j, k, 0);
+//                world.method_243(i, j, k);
+            } else
+            {
+                world.setTile(i, j, k, mod_FCBetterThanWolves.fcStokedFire.id);
+//                world.method_243(i, j, k);
+            }
+            if(world.isAir(i, j + 1, k))
             {
                 world.setTile(i, j + 1, k, mod_FCBetterThanWolves.fcStokedFire.id);
-                world.method_243(i, j, k);
-            }
-            else if (world.getTileId(i, j, k) == BlockBase.FIRE.id && world.getTileId(i, j + 1, k) == mod_FCBetterThanWolves.fcStokedFire.id)
-            {
-                world.setTileMeta(i, j + 1, k, 0);
-                world.method_243(i, j, k);
+//                world.method_243(i, j, k);
             }
         } else
         {
             world.setTile(i, j, k, 0);
-            world.method_243(i, j, k);
+//            world.method_243(i, j, k);
         }
     }
 

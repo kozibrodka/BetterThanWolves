@@ -1,168 +1,75 @@
 package net.kozibrodka.wolves.blocks;
 
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
-import net.kozibrodka.wolves.mixin.FireAccessor;
+import net.kozibrodka.wolves.mixin.BlockRendererAccessor;
 import net.minecraft.block.BlockBase;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.block.BlockRenderer;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
+import net.minecraft.util.maths.Box;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
 import net.modificationstation.stationapi.api.client.texture.atlas.Atlas;
 import net.modificationstation.stationapi.api.client.texture.atlas.Atlases;
 import net.modificationstation.stationapi.api.registry.Identifier;
-import net.modificationstation.stationapi.api.template.block.TemplateFire;
+import net.modificationstation.stationapi.api.template.block.TemplateBlockBase;
 
-import java.sql.SQLOutput;
 import java.util.Random;
 
-
-public class FCBlockStokedFireDeprecated extends TemplateFire implements BlockWithWorldRenderer
-{
-    public FCBlockStokedFireDeprecated(Identifier iid)
-    {
-        super(iid, 31);
-        setHardness(0.0F);
+public class FCBlockStokedFireAtilist extends TemplateBlockBase implements BlockWithWorldRenderer{
+    public FCBlockStokedFireAtilist(Identifier identifier, Material material) {
+        super(identifier, material);
+        setTranslationKey(identifier.modID, identifier.id);
+        setTicksRandomly(true);
         setLightEmittance(1.0F);
-        setSounds(WOOD_SOUNDS);
-        disableStat();
-        disableNotifyOnMetaDataChange();
     }
-
-    public void onScheduledTick(Level world, int i, int j, int k, Random random)
-    {
-        boolean flag = world.getTileId(i, j - 1, k) == BlockBase.NETHERRACK.id;
-        if(!canPlaceAt(world, i, j, k))
-        {
-            world.setTile(i, j, k, 0);
-        }
-        if(world.getTileId(i, j - 1, k) == mod_FCBetterThanWolves.fcBBQ.id)
-        {
-            if(((FCBlockBBQ)mod_FCBetterThanWolves.fcBBQ).IsBBQLit(world, i, j - 1, k))
-            {
-                flag = true;
-            } else
-            {
-                world.setTile(i, j, k, 0);
-                return;
-            }
-        } else
-        {
-            world.placeBlockWithMetaData(i, j, k, BlockBase.FIRE.id, 15);
-        }
-        int iMetaData = world.getTileMeta(i, j, k);
-        if(iMetaData < 15)
-        {
-            iMetaData++;
-            world.setTileMeta(i, j, k, iMetaData);
-        }
-        ((FireAccessor) this).invokeFireTick(world, i + 1, j, k, 300, random, 15);
-        ((FireAccessor) this).invokeFireTick(world, i - 1, j, k, 300, random, 15);
-        ((FireAccessor) this).invokeFireTick(world, i, j - 1, k, 250, random, 15);
-        ((FireAccessor) this).invokeFireTick(world, i, j + 1, k, 250, random, 15);
-        ((FireAccessor) this).invokeFireTick(world, i, j, k - 1, 300, random, 15);
-        ((FireAccessor) this).invokeFireTick(world, i, j, k + 1, 300, random, 15);
-        for(int i1 = i - 1; i1 <= i + 1; i1++)
-        {
-            for(int j1 = k - 1; j1 <= k + 1; j1++)
-            {
-                for(int k1 = j - 1; k1 <= j + 4; k1++)
-                {
-                    if(i1 == i && k1 == j && j1 == k)
-                    {
-                        continue;
-                    }
-                    int l1 = 100;
-                    if(k1 > j + 1)
-                    {
-                        l1 += (k1 - (j + 1)) * 100;
-                    }
-                    int i2 = ((FireAccessor) this).invokeMethod_1827(world, i1, k1, j1);
-                    if(i2 <= 0)
-                    {
-                        continue;
-                    }
-                    int j2 = (i2 + 40) / 45;
-                    if(
-                            j2 <= 0 ||
-                            random.nextInt(l1) > j2 ||
-                            world.isRaining() && world.canRainAt(i1, k1, j1) ||
-                            world.canRainAt(i1 - 1, k1, k) ||
-                            world.canRainAt(i1 + 1, k1, j1) ||
-                            world.canRainAt(i1, k1, j1 - 1) ||
-                            world.canRainAt(i1, k1, j1 + 1))
-                    {
-                        continue;
-                    }
-                    int k2 = iMetaData + random.nextInt(5) / 4;
-                    if(k2 > 15)
-                    {
-                        k2 = 15;
-                    }
-                    world.placeBlockWithMetaData(i1, k1, j1, BlockBase.FIRE.id, k2);
-                }
-
-            }
-
-        }
-
-        if(iMetaData >= 3)
-        {
-            world.placeBlockWithMetaData(i, j, k, BlockBase.FIRE.id, 15);
-        }
-        world.method_216(i, j, k, id, getTickrate());
-    }
-
 
     @Override
-    public boolean canPlaceAt(Level arg, int i, int j, int k) {
-        return arg.canSuffocate(i, j - 1, k) || this.method_1826(arg, i, j, k) || arg.getTileId(i, j - 1, k) == BlockBase.FIRE.id;
+    public void onScheduledTick(Level arg, int i, int j, int k, Random random) {
+        if (arg.getTileMeta(i, j, k) >= 3) arg.setTile(i, j, k, 0);
+        else arg.setTileMeta(i, j, k, arg.getTileMeta(i, j, k) + 1);
     }
 
     @Override
     public void onAdjacentBlockUpdate(Level arg, int i, int j, int k, int l) {
-        if (!arg.canSuffocate(i, j - 1, k) && !this.method_1826(arg, i, j, k) && arg.getTileId(i, j - 1, k) != BlockBase.FIRE.id) {
-            arg.setTile(i, j, k, 0);
+        super.onAdjacentBlockUpdate(arg, i, j, k, l);
+        if (arg.getTileId(i, j - 1, k) != BlockBase.FIRE.id)
+        {
+            if (arg.isAir(i, j - 1, k) && arg.getTileId(i, j - 2, k) == mod_FCBetterThanWolves.fcBBQ.id && (arg.getTileMeta(i, j - 2, k) & 4) > 0) arg.setTile(i, j - 1, k, BlockBase.FIRE.id);
+            else arg.setTile(i, j, k, 0);
         }
     }
 
     @Override
-    public void onBlockPlaced(Level arg, int i, int j, int k) {
-        if (arg.getTileId(i, j - 1, k) != BlockBase.OBSIDIAN.id || !BlockBase.PORTAL.method_736(arg, i, j, k)) {
-            if (!arg.canSuffocate(i, j - 1, k) && !this.method_1826(arg, i, j, k ) && arg.getTileId(i, j - 1, k) != BlockBase.FIRE.id) {
-                arg.setTile(i, j, k, 0);
-            } else {
-                arg.method_216(i, j, k, this.id, this.getTickrate());
-            }
-        }
+    public int getTextureForSide(int i) {
+        return BlockBase.FIRE.texture;
     }
 
-    private boolean method_1826(Level arg, int i, int j, int k) {
-        if (this.method_1824(arg, i + 1, j, k)) {
-            return true;
-        } else if (this.method_1824(arg, i - 1, j, k)) {
-            return true;
-        } else if (this.method_1824(arg, i, j - 1, k)) {
-            return true;
-        } else if (this.method_1824(arg, i, j + 1, k)) {
-            return true;
-        } else if (this.method_1824(arg, i, j, k - 1)) {
-            return true;
-        } else {
-            return this.method_1824(arg, i, j, k + 1);
-        }
+    @Override
+    public boolean isFullOpaque() {
+        return false;
     }
 
-
-    //TODO: forge methods?
-    public boolean isBlockReplaceable(Level world, int i, int j, int l)
-    {
-        return true;
+    @Override
+    public boolean isFullCube() {
+        return false;
     }
 
-    public boolean isBlockBurning(Level world, int i, int j, int l)
-    {
-        return true;
+    @Override
+    public boolean isCollidable() {
+        return false;
+    }
+
+    @Override
+    public Box getCollisionShape(Level arg, int i, int j, int k) {
+        return null;
+    }
+
+    @Override
+    public int getRenderType() {
+        // TODO: This is a workaround to make fire render on top of fire, replace with custom fire render in the future
+        return 3;
     }
 
     @Override
@@ -220,10 +127,10 @@ public class FCBlockStokedFireDeprecated extends TemplateFire implements BlockWi
 //            var14 = (double)((float)(var9 + 16) / 256.0F);
 //            var16 = (double)(((float)var9 + 15.99F + 16.0F) / 256.0F);
 
-            var10 = atlasTX.getStartU();
-            var12 = atlasTX.getEndU();
-            var14 = atlasTX.getStartV();
-            var16 = atlasTX.getEndV();
+             var10 = atlasTX.getStartU();
+             var12 = atlasTX.getEndU();
+             var14 = atlasTX.getStartV();
+             var16 = atlasTX.getEndV();
 
             var5.vertex((double)(i + 1), (double)((float)j + var18), var33, var12, var14);
             var5.vertex((double)(i + 1), (double)(j + 0), var25, var12, var16);
