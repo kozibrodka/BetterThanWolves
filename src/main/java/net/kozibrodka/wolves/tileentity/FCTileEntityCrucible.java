@@ -161,7 +161,7 @@ public class FCTileEntityCrucible extends TileEntityBase
     public int GetStokedFireFactor()
     {
         int fireFactor = 0;
-        if(level.getTileId(x, y - 1, z) == mod_FCBetterThanWolves.fcStokedFire.id)
+        if(level.getTileId(x, y - 1, z) == mod_FCBetterThanWolves.fcStokedFire.id && level.getTileId(x, y - 2, z) == mod_FCBetterThanWolves.fcStokedFire.id)
         {
             fireFactor += 5;
             int tempY = y - 1;
@@ -169,7 +169,7 @@ public class FCTileEntityCrucible extends TileEntityBase
             {
                 for(int tempZ = z - 1; tempZ <= z + 1; tempZ++)
                 {
-                    if((tempX != x || tempZ != z) && level.getTileId(tempX, tempY, tempZ) == mod_FCBetterThanWolves.fcStokedFire.id)
+                    if((tempX != x || tempZ != z) && level.getTileId(tempX, tempY, tempZ) == mod_FCBetterThanWolves.fcStokedFire.id && level.getTileId(tempX, tempY - 1, tempZ) == mod_FCBetterThanWolves.fcStokedFire.id)
                     {
                         fireFactor++;
                     }
