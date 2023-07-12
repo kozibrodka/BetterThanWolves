@@ -156,7 +156,12 @@ public class FCTileEntityMillStone extends TileEntityBase
     {
         int iUnmilledItemIndex = GetUnmilledItemInventoryIndex();
 
-        if(iUnmilledItemIndex < 0) iMillStoneGrindCounter = 0;
+        if(iUnmilledItemIndex < 0)
+        {
+            iMillStoneGrindCounter = 0;
+            return;
+        }
+
         if(!((FCBlockMillStone)mod_FCBetterThanWolves.fcMillStone).IsBlockOn(level, x, y, z)) return;
 
         iMillStoneGrindCounter++;
