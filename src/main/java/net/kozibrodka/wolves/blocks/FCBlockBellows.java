@@ -308,7 +308,7 @@ public class FCBlockBellows extends TemplateBlockBase
             FCBlockPos tempSidePos1 = new FCBlockPos(tempTargetPos.i, tempTargetPos.j, tempTargetPos.k);
             tempSidePos1.AddFacingAsOffset(iFacingSide1);
             tempid = world.getTileId(tempSidePos1.i, tempSidePos1.j, tempSidePos1.k);
-            if((tempid == BlockBase.FIRE.id || tempid == mod_FCBetterThanWolves.fcStokedFire.id) && world.getTileId(tempSidePos1.i, tempSidePos1.j, tempSidePos1.k) == BlockBase.FIRE.id)
+            if((tempid == BlockBase.FIRE.id || tempid == mod_FCBetterThanWolves.fcStokedFire.id)) // && world.getTileId(tempSidePos1.i, tempSidePos1.j, tempSidePos1.k) == BlockBase.FIRE.id
             {
                 StokeFire(world, tempSidePos1.i, tempSidePos1.j, tempSidePos1.k);
             }
@@ -330,21 +330,21 @@ public class FCBlockBellows extends TemplateBlockBase
             if(world.getTileId(i, j, k) == mod_FCBetterThanWolves.fcStokedFire.id)
             {
                 world.setTileMeta(i, j, k, 0);
-//                world.method_243(i, j, k);
+                world.method_243(i, j, k);
             } else
             {
                 world.setTile(i, j, k, mod_FCBetterThanWolves.fcStokedFire.id);
-//                world.method_243(i, j, k);
+                world.method_243(i, j, k);
             }
             if(world.isAir(i, j + 1, k))
             {
                 world.setTile(i, j + 1, k, mod_FCBetterThanWolves.fcStokedFire.id);
-//                world.method_243(i, j, k);
+                world.method_243(i, j, k);
             }
         } else
         {
             world.setTile(i, j, k, 0);
-//            world.method_243(i, j, k);
+            world.method_243(i, j, k);
         }
     }
 

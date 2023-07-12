@@ -47,6 +47,7 @@ public class TextureListener {
         turntable_bottom = registerBlockTexture("block/fcBlockTurntable_down");
         turntable_top = registerBlockTexture("block/fcBlockTurntable_top");
         turntable_side = registerBlockTexture("block/fcBlockTurntable_side");
+        turntable_button = registerBlockTexture("block/fcBlockTurntable_button");
         unfiredpottery = registerBlockTexture("block/fcBlockUnfiredPottery");
         unfiredpottery_cook = registerBlockTexture("block/fcBlockUnfiredPottery_cook");
         crucible_bottom = registerBlockTexture("block/fcBlockCrucible_down");
@@ -154,6 +155,7 @@ public class TextureListener {
     public static int turntable_bottom;
     public static int turntable_top;
     public static int turntable_side;
+    public static int turntable_button;
     public static int unfiredpottery;
     public static int unfiredpottery_cook;
     public static int crucible_side;

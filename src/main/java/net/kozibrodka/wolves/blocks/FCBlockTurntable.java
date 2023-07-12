@@ -230,13 +230,13 @@ public class FCBlockTurntable extends TemplateBlockWithEntity
         int l = fctileentityturntable.m_iSwitchSetting;
         float f = 0.25F + (float)l * 0.125F;
         this.setBoundingBox(f, 0.3125F, 0.0625F, f + 0.125F, 0.4375F, 1.0625F);
-        FCUtilsRender.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, 1);
+        FCUtilsRender.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, TextureListener.turntable_button);
         this.setBoundingBox(1.0F - (f + 0.125F), 0.3125F, -0.0625F, 1.0F - f, 0.4375F, 0.9375F);
-        FCUtilsRender.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, 1);
+        FCUtilsRender.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, TextureListener.turntable_button);
         this.setBoundingBox(0.0625F, 0.3125F, 1.0F - (f + 0.125F), 1.0625F, 0.4375F, 1.0F - f);
-        FCUtilsRender.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, 1);
+        FCUtilsRender.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, TextureListener.turntable_button);
         this.setBoundingBox(-0.0625F, 0.3125F, f, 0.9375F, 0.4375F, f + 0.125F);
-        FCUtilsRender.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, 1);
+        FCUtilsRender.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, TextureListener.turntable_button);
         setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         return true;
     }

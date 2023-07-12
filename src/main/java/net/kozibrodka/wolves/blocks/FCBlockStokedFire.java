@@ -34,6 +34,7 @@ public class FCBlockStokedFire extends TemplateFire implements BlockWithWorldRen
         boolean flag = world.getTileId(i, j - 1, k) == BlockBase.NETHERRACK.id;
         if (!canPlaceAt(world, i, j, k)) {
             world.setTile(i, j, k, 0);
+            System.out.println("HELLO 1");
         }
 
         if (world.getTileId(i, j - 2, k) == mod_FCBetterThanWolves.fcBBQ.id) {
@@ -41,12 +42,14 @@ public class FCBlockStokedFire extends TemplateFire implements BlockWithWorldRen
                 flag = true;
             } else {
                 world.setTile(i, j, k, 0);
+                System.out.println("HELLO 2");
                 return;
             }
         } else if (world.getTileId(i, j - 1, k) == mod_FCBetterThanWolves.fcBBQ.id){
             flag = true;
         } else{
             world.placeBlockWithMetaData(i, j, k, BlockBase.FIRE.id, 15);
+            System.out.println("HELLO 3");
         }
 
 //        if (world.getTileId(i, j - 1, k) == mod_FCBetterThanWolves.fcBBQ.id) {
@@ -56,7 +59,7 @@ public class FCBlockStokedFire extends TemplateFire implements BlockWithWorldRen
 //        }
 
         int iMetaData = world.getTileMeta(i, j, k);
-        if (flag)
+        if (true) //flag
         {
 
         if (iMetaData < 15) {
@@ -107,9 +110,11 @@ public class FCBlockStokedFire extends TemplateFire implements BlockWithWorldRen
         }
     }
 
-        if(iMetaData >= 3)
+        if(iMetaData >= 4) //CODE EDIT (3) as its little different
         {
             world.placeBlockWithMetaData(i, j, k, BlockBase.FIRE.id, 15);
+            world.method_243(i, j, k);
+            System.out.println("HELLO 4");
         }
         world.method_216(i, j, k, id, getTickrate());
     }
