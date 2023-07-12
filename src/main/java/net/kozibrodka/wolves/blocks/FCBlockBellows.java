@@ -341,6 +341,11 @@ public class FCBlockBellows extends TemplateBlockBase
                 world.setTile(i, j + 1, k, mod_FCBetterThanWolves.fcStokedFire.id);
                 world.method_243(i, j, k);
             }
+            if(world.getTileId(i, j + 1, k) == mod_FCBetterThanWolves.fcStokedFire.id)
+            {
+                world.setTileMeta(i, j + 1, k, 0);
+                world.method_243(i, j, k);
+            }
         } else
         {
             world.setTile(i, j, k, 0);
