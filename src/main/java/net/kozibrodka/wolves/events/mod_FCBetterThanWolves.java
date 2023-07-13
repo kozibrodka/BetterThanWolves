@@ -108,7 +108,7 @@ public class mod_FCBetterThanWolves {
         fcHopper = (TemplateBlockWithEntity) new FCBlockHopper(Identifier.of(MOD_ID, "fcHopper")).setTranslationKey(MOD_ID, "fcHopper");
         fcSaw = (TemplateBlockBase) new FCBlockSaw(Identifier.of(MOD_ID, "fcSaw")).setTranslationKey(MOD_ID, "fcSaw");
         fcPlatform = (TemplateBlockBase) new FCBlockPlatform(Identifier.of(MOD_ID, "fcPlatform")).setTranslationKey(MOD_ID, "fcPlatform");
-//        fcBlockOfWicker = new TemplateBlockBase(Identifier.of(MOD_ID, "fcBlockOfWicker"), Material.ORGANIC).setHardness(0.5F).setTranslationKey(MOD_ID, "fcBlockOfWicker").setSounds(BlockBase.GRASS_SOUNDS); //Mango-Pack Addon
+        fcBlockOfWicker = (TemplateBlockBase) new FCBlockOfWicker(Identifier.of(MOD_ID, "fcBlockOfWicker"), Material.ORGANIC).setHardness(0.5F).setTranslationKey(MOD_ID, "fcBlockOfWicker").setSounds(BlockBase.GRASS_SOUNDS); //Mango-Pack Addon
         fcCement = (TemplateBlockWithEntity) new FCBlockCement(Identifier.of(MOD_ID, "fcCement")).setTranslationKey(MOD_ID, "fcCement");
         fcPulley = (TemplateBlockWithEntity) new FCBlockPulley(Identifier.of(MOD_ID, "fcPulley")).setTranslationKey(MOD_ID, "fcPulley");
         fcPressurePlateObsidian = (TemplatePressurePlate) new TemplatePressurePlate(Identifier.of(MOD_ID, "fcPressurePlateObsidian"), 37, PressurePlateTrigger.field_1507, Material.STONE).setTranslationKey(MOD_ID, "fcPressurePlateObsidian").setHardness(0.5F).setBlastResistance(2000F).setSounds(BlockBase.STONE_SOUNDS);
@@ -122,7 +122,6 @@ public class mod_FCBetterThanWolves {
         fcBlockDetector = (TemplateBlockBase) new FCBlockDetectorBlock(Identifier.of(MOD_ID, "fcBlockDetector")).setTranslationKey(MOD_ID, "fcBlockDetector").setHardness(3.5F).setSounds(BlockBase.STONE_SOUNDS).setTranslationKey(MOD_ID,"fcBlockDetector");
         fcBlockDetectorLogic = (TemplateBlockBase) new FCBlockDetectorLogic(Identifier.of(MOD_ID, "fcBlockDetectorLogic")).setTranslationKey(MOD_ID, "fcBlockDetectorLogic");
 //        fcBlockLens = new FCBlockLens(Identifier.of(MOD_ID, "fcBlockLens")).setTranslationKey(MOD_ID, "fcBlockLens"); //TODO this block is in code, but is not functional?
-        // TODO: Translate the TODO above into English
         fcHempCrop = (TemplatePlant) new FCBlockHempCrop(Identifier.of(MOD_ID, "fcHempCrop")).setTranslationKey(MOD_ID, "fcHempCrop");
         fcHandCrank = (TemplateBlockBase) new FCBlockHandCrank(Identifier.of(MOD_ID, "fcHandCrank")).setTranslationKey(MOD_ID, "fcHandCrank");
         fcMillStone = (TemplateBlockWithEntity) new FCBlockMillStone(Identifier.of(MOD_ID, "fcMillStone")).setTranslationKey(MOD_ID, "fcMillStone");
@@ -138,6 +137,14 @@ public class mod_FCBetterThanWolves {
         fcCrucible = (TemplateBlockWithEntity) new FCBlockCrucible(Identifier.of(MOD_ID, "fcCrucible")).setTranslationKey(MOD_ID, "fcCrucible");
         fcPlanter = (TemplateBlockBase) new FCBlockPlanter(Identifier.of(MOD_ID, "fcPlanter")).setTranslationKey(MOD_ID, "fcPlanter");
         fcVase = (TemplateBlockWithEntity) new FCBlockVase(Identifier.of(MOD_ID, "fcVase")).setTranslationKey(MOD_ID, "fcVase");
+
+        //TODO: Extra (test) - later move into expansion probably
+        //TODO: My idea: remove crafting of stone omni plates/ corners, moulding and add grinder as a saw for "stone type" blocks
+        //TODO: Omni slabs are really cursed and kinda bad, especially with possible mods that upgrade slabs/stairs to modern (i actually have one in development). I suggest panels instead - would be great addon btw brings.
+        fcPanelNumber1 = (TemplateBlockBase) new FCBlockPanel(Identifier.of(MOD_ID, "fcPanel1"), BlockBase.SAND).setTranslationKey(MOD_ID, "fcPanel1"); //test panels later hide
+        fcPanelNumber2 = (TemplateBlockBase) new FCBlockPanel(Identifier.of(MOD_ID, "fcPanel2"), BlockBase.PUMPKIN).setTranslationKey(MOD_ID, "fcPanel2");
+        fcPanelNumber3 = (TemplateBlockBase) new FCBlockPanel(Identifier.of(MOD_ID, "fcPanel3"), fcCrucible).setTranslationKey(MOD_ID, "fcPanel3");
+        fcPanelNumber4 = (TemplateBlockBase) new FCBlockPanel(Identifier.of(MOD_ID, "fcPanel4"), BlockBase.PORTAL).setTranslationKey(MOD_ID, "fcPanel4");
     }
 
     @EventListener
@@ -187,10 +194,7 @@ public class mod_FCBetterThanWolves {
     //TODO EXTRA: Saw animated, Anvil gravity, PANELS/options
 
     //TODO: NEW
-    //TODO: render Inventory : rails, cement
-    //TODO: Stoked fire dissaperaing?
-    //TODO: custom recipes xhmi
-    //TODO: planter functionality
+    //TODO: custom recipes xhmi, big tree mixin, some mixin so stoked fire deals dmg
 
 
     public static boolean fcDisableAxeChanges = false;
@@ -234,31 +238,35 @@ public class mod_FCBetterThanWolves {
     public static TemplateBlockBase fcPlanter;
     public static TemplateBlockWithEntity fcVase;
 
+    public static TemplateBlockBase fcBlockOfWicker; //Mango Pack Addon
+    public static TemplateBlockBase fcPanelNumber1;
+    public static TemplateBlockBase fcPanelNumber2;
+    public static TemplateBlockBase fcPanelNumber3;
+    public static TemplateBlockBase fcPanelNumber4;
 
-    public static TemplateBlockWithEntity fcVase_white;
-    public static TemplateBlockWithEntity fcVase_orange;
-    public static TemplateBlockWithEntity fcVase_magenta;
-    public static TemplateBlockWithEntity fcVase_light_blue;
-    public static TemplateBlockWithEntity fcVase_yellow;
-    public static TemplateBlockWithEntity fcVase_lime;
-    public static TemplateBlockWithEntity fcVase_pink;
-    public static TemplateBlockWithEntity fcVase_gray;
-    public static TemplateBlockWithEntity fcVase_light_gray;
-    public static TemplateBlockWithEntity fcVase_cyan;
-    public static TemplateBlockWithEntity fcVase_purple;
-    public static TemplateBlockWithEntity fcVase_blue;
-    public static TemplateBlockWithEntity fcVase_brown;
-    public static TemplateBlockWithEntity fcVase_green;
-    public static TemplateBlockWithEntity fcVase_red;
-    public static TemplateBlockWithEntity fcVase_black;
+//    public static TemplateBlockWithEntity fcVase_white;
+//    public static TemplateBlockWithEntity fcVase_orange;
+//    public static TemplateBlockWithEntity fcVase_magenta;
+//    public static TemplateBlockWithEntity fcVase_light_blue;
+//    public static TemplateBlockWithEntity fcVase_yellow;
+//    public static TemplateBlockWithEntity fcVase_lime;
+//    public static TemplateBlockWithEntity fcVase_pink;
+//    public static TemplateBlockWithEntity fcVase_gray;
+//    public static TemplateBlockWithEntity fcVase_light_gray;
+//    public static TemplateBlockWithEntity fcVase_cyan;
+//    public static TemplateBlockWithEntity fcVase_purple;
+//    public static TemplateBlockWithEntity fcVase_blue;
+//    public static TemplateBlockWithEntity fcVase_brown;
+//    public static TemplateBlockWithEntity fcVase_green;
+//    public static TemplateBlockWithEntity fcVase_red;
+//    public static TemplateBlockWithEntity fcVase_black;
     // These are never registered! Why do they exist?
-    public static TemplateBlockWithEntity fcUnfiredPottery_crucible;
-    public static TemplateBlockWithEntity fcUnfiredPottery_planter;
-    public static TemplateBlockWithEntity fcUnfiredPottery_vase;
+//    public static TemplateBlockWithEntity fcUnfiredPottery_crucible;
+//    public static TemplateBlockWithEntity fcUnfiredPottery_planter;
+//    public static TemplateBlockWithEntity fcUnfiredPottery_vase;
 //    public static TemplateBlockBase fcPanel_wood;
 //    public static TemplateBlockBase fcMoulding_wood;
 //    public static TemplateBlockBase fcCorner_wood;
-    public static TemplateBlockBase fcBlockOfWicker; //Mango Pack Addon
 
     public static TemplateBucket fcBucketCement;
     public static TemplateFoodBase fcWolfRaw;
