@@ -25,7 +25,7 @@ public abstract class WolfDump extends AnimalBase {
         super(arg);
     }
 
-    @Inject(at = @At("TAIL"), method = "tick", remap = false)
+    @Inject(at = @At("TAIL"), method = "tick")
     private void tick(CallbackInfo callbackInfo)
     {
         int dungBooster = 1;
