@@ -91,7 +91,7 @@ public class HopperHauntingRecipeTab extends TabWithTexture {
         recipesReady.forEach(recipe -> {
             ItemInstance input = recipe[0];
             ItemInstance output = recipe[1];
-            if (filter == null || (!getUses && compare(filter, output)) || (getUses && compare(filter, input)) || filter.isDamageAndIDIdentical(new ItemInstance(tabBlock))) {
+            if (filter == null || (!getUses && compare(filter, output)) || (getUses && compare(filter, input)) || filter.itemId == mod_FCBetterThanWolves.soulFilter.id) {
                 recipes.add(recipe);
             }
         });

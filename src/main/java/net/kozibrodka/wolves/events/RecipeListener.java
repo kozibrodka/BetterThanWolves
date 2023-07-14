@@ -106,6 +106,7 @@ public class RecipeListener {
         CraftingRegistry.addShapedRecipe(new ItemInstance(mod_FCBetterThanWolves.fcBellows), "###", "XXX", "YZY", '#', new ItemInstance(mod_FCBetterThanWolves.fcOmniSlab.id, 1, 1), 'X', mod_FCBetterThanWolves.fcTannedLeather, 'Y', mod_FCBetterThanWolves.fcGear, 'Z',
                 mod_FCBetterThanWolves.fcBelt);
         CraftingRegistry.addShapedRecipe(new ItemInstance(mod_FCBetterThanWolves.fcPlanter, 1, 1), "Y", "X", "#", '#', new ItemInstance(mod_FCBetterThanWolves.fcPlanter, 1, 0), 'X', ItemBase.waterBucket, 'Y', BlockBase.DIRT);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(mod_FCBetterThanWolves.fcBlockOfWicker, 1), "XX", "XX", 'X', mod_FCBetterThanWolves.fcWicker);
     }
 
     private static void AddItemRecipes()

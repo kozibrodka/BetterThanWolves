@@ -27,7 +27,7 @@ import java.util.Random;
 
 
 public class FCBlockCement extends TemplateBlockWithEntity
-    implements BlockWithWorldRenderer, BlockWithInventoryRenderer
+    implements BlockWithWorldRenderer
 {
 
     public FCBlockCement(Identifier iid)
@@ -42,11 +42,6 @@ public class FCBlockCement extends TemplateBlockWithEntity
         tempClosestDownslopeToSideDist = new int[4];
         setTicksRandomly(true);
     }
-
-//    public int getRenderType()
-//    {
-//        return -1;
-//    }
 
     public int getTextureForSide(BlockView iblockaccess, int i, int j, int k, int l)
     {
@@ -785,22 +780,5 @@ public class FCBlockCement extends TemplateBlockWithEntity
         {
             return 1.0F;
         }
-    }
-
-    @Override
-    public void renderInventory(BlockRenderer tileRenderer, int meta) {
-        Tessellator tessellator = Tessellator.INSTANCE;
-//        tessellator.start();
-//        tessellator.setNormal(0.0F, -1F, 0.0F);
-//        tileRenderer.method_47(this, meta, -0.5D, -0.5D, -0.5D);
-//        tessellator.draw();
-
-
-        tessellator.start();
-        tessellator.setNormal(0.0F, 0.0F, 0.0F);
-        tileRenderer.renderTorchTilted(this, 0, 0, 0, 0.0D, 0.0D);
-//        tileRenderer.method_56(this, meta, -0.5D, -0.5D, -0.5D);
-        tessellator.draw();
-//        tileRenderer.method_48();
     }
 }

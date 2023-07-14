@@ -119,6 +119,8 @@ public class TextureListener {
 
         mod_FCBetterThanWolves.fcDetectorRailObsidian.asItem().setTexturePosition(registerBlockTexture("block/fcRailDetector_obsidian"));
         mod_FCBetterThanWolves.fcDetectorRailWood.asItem().setTexturePosition(registerBlockTexture("block/fcRailDetector_wood"));
+        mod_FCBetterThanWolves.fcCement.asItem().setTexturePosition(cement);
+        mod_FCBetterThanWolves.fcHempCrop.asItem().setTexturePosition(registerBlockTexture("block/fcBlockHemp_7"));
     }
 
     private int registerBlockTexture(String s) {

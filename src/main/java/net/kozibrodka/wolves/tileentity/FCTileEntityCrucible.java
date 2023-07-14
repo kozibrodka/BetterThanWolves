@@ -231,7 +231,7 @@ public class FCTileEntityCrucible extends TileEntityBase
         if(item != null && !(item instanceof FoodBase))
         {
             ItemInstance smeltingResult = SmeltingRecipeRegistry.getInstance().getResult(item.id);
-            if(smeltingResult != null && !(smeltingResult.getType() instanceof FoodBase) && smeltingResult.getType().id != mod_FCBetterThanWolves.fcUnfiredPottery_crucible.id&& smeltingResult.getType().id != mod_FCBetterThanWolves.fcUnfiredPottery_planter.id&& smeltingResult.getType().id != mod_FCBetterThanWolves.fcUnfiredPottery_vase.id)
+            if(smeltingResult != null && !(smeltingResult.getType() instanceof FoodBase) && smeltingResult.getType().id != mod_FCBetterThanWolves.fcUnfiredPottery.id)
             {
                 return true;
             }
