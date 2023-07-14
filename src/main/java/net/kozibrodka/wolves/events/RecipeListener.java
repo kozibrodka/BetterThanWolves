@@ -236,7 +236,6 @@ public class RecipeListener {
                     new ItemInstance(ItemBase.dyePowder, 1, i), new ItemInstance(BlockBase.WOOL, 8, 0)
             });
         }
-
         AddCauldronRecipe(new ItemInstance(BlockBase.WOOL, 8, 12), new ItemInstance[] {
                 new ItemInstance(mod_FCBetterThanWolves.fcDung, 1), new ItemInstance(BlockBase.WOOL.id, 8, 0)
         });
@@ -248,6 +247,9 @@ public class RecipeListener {
         });
         AddCauldronRecipe(new ItemInstance(ItemBase.dyePowder, 1, 2), new ItemInstance[] {
                 new ItemInstance(BlockBase.CACTUS)
+        });
+        AddCauldronRecipe(new ItemInstance(mod_FCBetterThanWolves.soulFilter, 1), new ItemInstance[] {
+                new ItemInstance(mod_FCBetterThanWolves.fcHempCloth, 2), new ItemInstance(BlockBase.SOUL_SAND, 1)
         });
         AddStokedCauldronRecipe(new ItemInstance(mod_FCBetterThanWolves.fcGlue, 1), new ItemInstance[] {
                 new ItemInstance(ItemBase.leather, 1)

@@ -97,6 +97,7 @@ public class mod_FCBetterThanWolves {
         fcBroadheadArrowhead = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcBroadheadArrowhead")).setTranslationKey(MOD_ID, "fcBroadheadArrowhead");
         fcBroadheadArrow = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcBroadheadArrow")).setTranslationKey(MOD_ID, "fcBroadheadArrow");
         fcCoalDust = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcCoalDust")).setTranslationKey(MOD_ID, "fcCoalDust");
+        soulFilter = new SoulFilter(Identifier.of(MOD_ID, "soul_filter"));
     }
 
     @EventListener
@@ -122,7 +123,6 @@ public class mod_FCBetterThanWolves {
         fcBlockDetector = (TemplateBlockBase) new FCBlockDetectorBlock(Identifier.of(MOD_ID, "fcBlockDetector")).setTranslationKey(MOD_ID, "fcBlockDetector").setHardness(3.5F).setSounds(BlockBase.STONE_SOUNDS).setTranslationKey(MOD_ID,"fcBlockDetector");
         fcBlockDetectorLogic = (TemplateBlockBase) new FCBlockDetectorLogic(Identifier.of(MOD_ID, "fcBlockDetectorLogic")).setTranslationKey(MOD_ID, "fcBlockDetectorLogic");
 //        fcBlockLens = new FCBlockLens(Identifier.of(MOD_ID, "fcBlockLens")).setTranslationKey(MOD_ID, "fcBlockLens"); //TODO this block is in code, but is not functional?
-        // TODO: Translate the TODO above into English
         fcHempCrop = (TemplatePlant) new FCBlockHempCrop(Identifier.of(MOD_ID, "fcHempCrop")).setTranslationKey(MOD_ID, "fcHempCrop");
         fcHandCrank = (TemplateBlockBase) new FCBlockHandCrank(Identifier.of(MOD_ID, "fcHandCrank")).setTranslationKey(MOD_ID, "fcHandCrank");
         fcMillStone = (TemplateBlockWithEntity) new FCBlockMillStone(Identifier.of(MOD_ID, "fcMillStone")).setTranslationKey(MOD_ID, "fcMillStone");
@@ -187,9 +187,7 @@ public class mod_FCBetterThanWolves {
     //TODO EXTRA: Saw animated, Anvil gravity, PANELS/options
 
     //TODO: NEW
-    //TODO: render Inventory : rails, cement
-    //TODO: Stoked fire dissaperaing?
-    //TODO: custom recipes xhmi
+    //TODO: render Inventory : cement
     //TODO: planter functionality
 
 
@@ -306,4 +304,5 @@ public class mod_FCBetterThanWolves {
     public static TemplateItemBase fcBroadheadArrowhead;
     public static TemplateItemBase fcBroadheadArrow;
     public static TemplateItemBase fcCoalDust;
+    public static TemplateItemBase soulFilter;
 }

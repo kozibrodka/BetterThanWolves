@@ -63,7 +63,7 @@ public class HopperHauntingRecipeTab extends TabWithTexture {
                 ItemInstance[] recipe = recipes.get(k);
                 items[j][0] = recipe[0];
                 items[j][1] = recipe[1];
-                items[j][2] = new ItemInstance(BlockBase.SOUL_SAND);
+                items[j][2] = new ItemInstance(mod_FCBetterThanWolves.soulFilter);
             } catch (Throwable throwable) {
                 throwable.printStackTrace();
             }

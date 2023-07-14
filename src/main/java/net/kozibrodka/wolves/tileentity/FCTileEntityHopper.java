@@ -29,8 +29,7 @@ public class FCTileEntityHopper extends TileEntityBase
     public FCTileEntityHopper()
     {
         hopperContents = new ItemInstance[19];
-        iHopperEjectCounter = 0;
-        iHoppeContainedSoulCount = 0;
+        ejectCounter = 0;
         bHopperEjectBlocked = false;
     }
 
@@ -81,11 +80,7 @@ public class FCTileEntityHopper extends TileEntityBase
 
         if(nbttagcompound.containsKey("grindCounter"))
         {
-            iHopperEjectCounter = nbttagcompound.getInt("grindCounter");
-        }
-        if(nbttagcompound.containsKey("iHoppeContainedSoulCount"))
-        {
-            iHoppeContainedSoulCount = nbttagcompound.getInt("iHoppeContainedSoulCount");
+            ejectCounter = nbttagcompound.getInt("ejectCounter");
         }
     }
 
@@ -105,8 +100,7 @@ public class FCTileEntityHopper extends TileEntityBase
         }
 
         nbttagcompound.put("Items", nbttaglist);
-        nbttagcompound.put("grindCounter", iHopperEjectCounter);
-        nbttagcompound.put("iHoppeContainedSoulCount", iHoppeContainedSoulCount);
+        nbttagcompound.put("ejectCounter", ejectCounter);
     }
 
     public int getMaxItemCount()
@@ -127,35 +121,80 @@ public class FCTileEntityHopper extends TileEntityBase
 
     public void tick()
     {
-        if(((FCBlockHopper) mod_FCBetterThanWolves.fcHopper).IsBlockOn(level, x, y, z))
+        if(!((FCBlockHopper) mod_FCBetterThanWolves.fcHopper).IsBlockOn(level, x, y, z)) return;
+        if(!bHopperEjectBlocked)
         {
-            iHoppeContainedSoulCount = 0;
-            if(!bHopperEjectBlocked)
+            ejectCounter++;
+            if(ejectCounter >= 3)
             {
-                iHopperEjectCounter++;
-                if(iHopperEjectCounter >= 3)
+                if (attemptSoulFiltering())
                 {
-                    AttemptToEjectStackFromInv();
-                    iHopperEjectCounter = 0;
+                    hopperContents[18].applyDamage(1, null);
+                    if (hopperContents[18].getDamage() <= 0)
+                    {
+                        System.out.println("Overloaded");
+                        hopperContents[18] = null;
+                        HopperSoulOverload();
+                    }
+                    ejectCounter = 0;
+                    return;
                 }
-            } else
-            {
-                iHopperEjectCounter = 0;
+                AttemptToEjectStackFromInv();
+                ejectCounter = 0;
             }
         } else
         {
-            iHopperEjectCounter = 0;
-            if(GetFilterType() == 6)
+            ejectCounter = 0;
+        }
+    }
+
+    public boolean attemptSoulFiltering()
+    {
+        if (GetFilterType() != 6) return false;
+        if (getInventoryItem(18) == null) return false;
+        ItemInstance item = null;
+        int inputSlot = 0;
+
+        for (; inputSlot < 18; inputSlot++) {
+            item = getInventoryItem(inputSlot);
+            if (item == null) continue;
+            if (item.itemId == mod_FCBetterThanWolves.fcGroundNetherrack.id) break;
+        }
+
+        if (item == null) return false;
+        if (item.itemId != mod_FCBetterThanWolves.fcGroundNetherrack.id) return false;
+
+        for (int outputSlot = 0; outputSlot < 18; outputSlot++) {
+            if (getInventoryItem(outputSlot) == null)
             {
-                if(iHoppeContainedSoulCount > 7)
-                {
-                    HopperSoulOverload();
-                }
-            } else
+                convertToHellfireDust(inputSlot, outputSlot, true);
+                return true;
+            }
+            else if (getInventoryItem(outputSlot).itemId == mod_FCBetterThanWolves.fcHellfireDust.id && getInventoryItem(outputSlot).count < getInventoryItem(outputSlot).getMaxStackSize())
             {
-                iHoppeContainedSoulCount = 0;
+                convertToHellfireDust(inputSlot, outputSlot, false);
+                return true;
             }
         }
+        return false;
+    }
+
+    public void convertToHellfireDust(int inputSlot, int outputSlot, boolean emptySlot)
+    {
+        if (emptySlot)
+        {
+            setInventoryItem(outputSlot, new ItemInstance(mod_FCBetterThanWolves.fcHellfireDust, 1));
+        }
+        else
+        {
+            ItemInstance outputItem = getInventoryItem(outputSlot);
+            outputItem.count++;
+            setInventoryItem(outputSlot, outputItem);
+        }
+        ItemInstance inputItem = getInventoryItem(inputSlot);
+        inputItem.count--;
+        if (inputItem.count <= 0) setInventoryItem(inputSlot, null);
+        else setInventoryItem(inputSlot, inputItem);
     }
 
     public void markDirty()
@@ -192,7 +231,7 @@ public class FCTileEntityHopper extends TileEntityBase
             {
                 return 5;
             }
-            if(filterStack.itemId == BlockBase.SOUL_SAND.id)
+            if(filterStack.itemId == mod_FCBetterThanWolves.soulFilter.id)
             {
                 return 6;
             }
@@ -477,16 +516,6 @@ public class FCTileEntityHopper extends TileEntityBase
         level.spawnEntity(entityitem);
     }
 
-    public void ResetContainedSoulCount()
-    {
-        iHoppeContainedSoulCount = 0;
-    }
-
-    public void IncrementContainedSoulCount(int iNumSouls)
-    {
-        iHoppeContainedSoulCount += iNumSouls;
-    }
-
     private void HopperSoulOverload()
     {
         if(SpawnGhast())
@@ -519,14 +548,7 @@ public class FCTileEntityHopper extends TileEntityBase
         return false;
     }
 
-    private final int iHopperInventorySize = 19;
-    private final int iHopperStackSizeLimit = 64;
-    private final int iHopperStackSizeToDrop = 8;
-    private final double dHopperMaxPlayerInteractionDist = 64D;
-    private final int iHoppeMaxContainedSoulCount = 7;
-    private final int iHopperTimeToEject = 3;
-    private ItemInstance hopperContents[];
-    private int iHopperEjectCounter;
-    private int iHoppeContainedSoulCount;
+    private ItemInstance[] hopperContents;
+    private int ejectCounter;
     public boolean bHopperEjectBlocked;
 }

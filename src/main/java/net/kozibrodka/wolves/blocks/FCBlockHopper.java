@@ -60,16 +60,16 @@ public class FCBlockHopper extends TemplateBlockWithEntity
     {
         if(!HasFilter(world, i, j, k))
         {
-            return Box.createButWasteMemory(i, j, k, (float)(i + 1), (float)j + 0.5F, (float)(k + 1));
+            return Box.create(i, j, k, (float)(i + 1), (float)j + 0.5F, (float)(k + 1));
         } else
         {
-            return Box.createButWasteMemory(i, j, k, (float)(i + 1), (float)j + 0.99F, (float)(k + 1));
+            return Box.create(i, j, k, (float)(i + 1), (float)j + 0.99F, (float)(k + 1));
         }
     }
 
     public Box getOutlineShape(Level world, int i, int j, int k)
     {
-        return Box.createButWasteMemory(i, j, k, i + 1, (float)j + 1.0F, k + 1);
+        return Box.create(i, j, k, i + 1, (float)j + 1.0F, k + 1);
     }
 
     public void onBlockPlaced(Level world, int i, int j, int k)
@@ -195,27 +195,16 @@ public class FCBlockHopper extends TemplateBlockWithEntity
                             }
                             if(iSandSwallowed > 0)
                             {
-                                 world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.pop", 0.25F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                                world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.pop", 0.25F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                                 ItemInstance flintItemInstance = new ItemInstance(ItemBase.flint.id, iSandSwallowed, 0);
                                 Item flintEntityitem = new Item(world, targetEntityItem.x, targetEntityItem.y, targetEntityItem.z, flintItemInstance);
                                 flintEntityitem.pickupDelay = 10;
                                 world.spawnEntity(flintEntityitem);
                             }
                         } else
-                        if(iFilterType == 6 && iTargetItemID == mod_FCBetterThanWolves.fcGroundNetherrack.id)
-                        {
-                            ItemInstance hellfireDustItemInstance = new ItemInstance(mod_FCBetterThanWolves.fcHellfireDust, targetEntityItem.item.count, 0);
-                            Item hellfireDustEntityitem = new Item(world, targetEntityItem.x, targetEntityItem.y, targetEntityItem.z, hellfireDustItemInstance);
-                            hellfireDustEntityitem.pickupDelay = 10;
-                            tileEntityHopper.IncrementContainedSoulCount(hellfireDustItemInstance.count);
-                            world.spawnEntity(hellfireDustEntityitem);
-                             world.playSound((float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F, "mob.ghast.moan", 0.5F, 2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
-                            targetEntityItem.remove();
-                            bSwallowed = true;
-                        } else
                         if(FCUtilsInventory.AddItemInstanceToInventoryInSlotRange(tileEntityHopper, targetEntityItem.item, 0, 17))
                         {
-                             world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.pop", 0.25F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                            world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.pop", 0.25F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                             targetEntityItem.remove();
                             bSwallowed = true;
                         }

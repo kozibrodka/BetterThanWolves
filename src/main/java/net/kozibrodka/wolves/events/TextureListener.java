@@ -115,6 +115,7 @@ public class TextureListener {
         detector_bottom = registerBlockTexture("block/fcBlockDetector_down");
 
         mod_FCBetterThanWolves.fcBucketCement.setTexture(Identifier.of(MOD_ID, "item/fcBucketCement"));
+        mod_FCBetterThanWolves.soulFilter.setTexture(Identifier.of(MOD_ID, "item/soul_filter"));
 
         mod_FCBetterThanWolves.fcDetectorRailObsidian.asItem().setTexturePosition(registerBlockTexture("block/fcRailDetector_obsidian"));
         mod_FCBetterThanWolves.fcDetectorRailWood.asItem().setTexturePosition(registerBlockTexture("block/fcRailDetector_wood"));

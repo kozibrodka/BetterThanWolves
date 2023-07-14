@@ -45,6 +45,7 @@ item.fcCompositeBow.name=Composite Bow
 item.fcBroadheadArrowhead.name=Broadhead
 item.fcBroadheadArrow.name=Broadhead Arrow
 item.fcCoalDust.name=Coal Dust
+item.soul_filter.name=Soul Filter
 
 tile.fcAnvil.name=Anvil
 tile.fcLightBulbOff.name=Light Block
