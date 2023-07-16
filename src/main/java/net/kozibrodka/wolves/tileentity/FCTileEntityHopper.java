@@ -2,6 +2,7 @@ package net.kozibrodka.wolves.tileentity;
 
 import net.kozibrodka.wolves.blocks.FCBlockHopper;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
+import net.kozibrodka.wolves.recipe.HopperHauntingRecipeRegistry;
 import net.kozibrodka.wolves.utils.FCBlockPos;
 import net.kozibrodka.wolves.utils.FCUtilsInventory;
 import net.kozibrodka.wolves.utils.FCUtilsWorld;
@@ -132,7 +133,6 @@ public class FCTileEntityHopper extends TileEntityBase
                     hopperContents[18].applyDamage(1, null);
                     if (hopperContents[18].getDamage() <= 0)
                     {
-                        System.out.println("Overloaded");
                         hopperContents[18] = null;
                         HopperSoulOverload();
                     }
@@ -153,42 +153,46 @@ public class FCTileEntityHopper extends TileEntityBase
         if (GetFilterType() != 6) return false;
         if (getInventoryItem(18) == null) return false;
         ItemInstance item = null;
+        ItemInstance recipeResultGetter = null; // This is a necessary workaround, otherwise the registry gets messed up.
+        ItemInstance result = null;
         int inputSlot = 0;
 
         for (; inputSlot < 18; inputSlot++) {
             item = getInventoryItem(inputSlot);
             if (item == null) continue;
-            if (item.itemId == mod_FCBetterThanWolves.fcGroundNetherrack.id) break;
+            recipeResultGetter = HopperHauntingRecipeRegistry.getInstance().getResult(item.itemId);
+            if (recipeResultGetter != null) result = recipeResultGetter.copy();
+            if (result != null) break;
         }
 
         if (item == null) return false;
-        if (item.itemId != mod_FCBetterThanWolves.fcGroundNetherrack.id) return false;
+        if (result == null) return false;
 
         for (int outputSlot = 0; outputSlot < 18; outputSlot++) {
             if (getInventoryItem(outputSlot) == null)
             {
-                convertToHellfireDust(inputSlot, outputSlot, true);
+                convertToHellfireDust(inputSlot, outputSlot, true, result);
                 return true;
             }
-            else if (getInventoryItem(outputSlot).itemId == mod_FCBetterThanWolves.fcHellfireDust.id && getInventoryItem(outputSlot).count < getInventoryItem(outputSlot).getMaxStackSize())
+            else if (result.isDamageAndIDIdentical(getInventoryItem(outputSlot)) && getInventoryItem(outputSlot).count + result.count <= getInventoryItem(outputSlot).getMaxStackSize())
             {
-                convertToHellfireDust(inputSlot, outputSlot, false);
+                convertToHellfireDust(inputSlot, outputSlot, false, HopperHauntingRecipeRegistry.getInstance().getResult(item.itemId));
                 return true;
             }
         }
         return false;
     }
 
-    public void convertToHellfireDust(int inputSlot, int outputSlot, boolean emptySlot)
+    public void convertToHellfireDust(int inputSlot, int outputSlot, boolean emptySlot, ItemInstance result)
     {
         if (emptySlot)
         {
-            setInventoryItem(outputSlot, new ItemInstance(mod_FCBetterThanWolves.fcHellfireDust, 1));
+            setInventoryItem(outputSlot, result);
         }
         else
         {
             ItemInstance outputItem = getInventoryItem(outputSlot);
-            outputItem.count++;
+            outputItem.count += result.count;
             setInventoryItem(outputSlot, outputItem);
         }
         ItemInstance inputItem = getInventoryItem(inputSlot);

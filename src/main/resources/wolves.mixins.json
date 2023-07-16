@@ -21,7 +21,8 @@
     "LevelAccessor",
     "OakTreeMixin",
     "SpruceTreeMixin",
-    "WolfDump"
+    "WolfDump",
+    "WolfAccessor"
   ],
   "server": [
   ],

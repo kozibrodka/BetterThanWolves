@@ -210,6 +210,7 @@ public class FCTileEntityMillStone extends TileEntityBase
             {
                 level.playSound((float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F, "mob.wolf.whine", 0.5F, 2.6F + (level.rand.nextFloat() - level.rand.nextFloat()) * 0.8F);
             }
+            takeInventoryItem(iUnmilledItemIndex, 1);
         }
 
     }

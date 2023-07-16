@@ -46,7 +46,7 @@ public class RecipeListener {
         AddSawingRecipes();
         AddTurntableRecipes(); // Only used for tabs right now. TODO: Integrate this registry into the TileEntity of the turntable
         AddCrucibleRecipes(); // Only used for tabs right now. TODO: Integrate this registry into the TileEntity of the crucible
-        AddHopperRecipes(); // Only used for tabs right now. TODO: Integrate this registry into the TileEntity of the hopper
+        AddHopperRecipes();
     }
 
     private static void AddAnvilRecipe(ItemInstance itemstack, Object aobj[])
@@ -331,7 +331,7 @@ public class RecipeListener {
 
     private static void AddHopperRecipes()
     {
-        HopperHauntingRecipeRegistry.getInstance().addHopperHauntingRecipe(mod_FCBetterThanWolves.fcGroundNetherrack.id, new ItemInstance(mod_FCBetterThanWolves.fcHellfireDust));
+        HopperHauntingRecipeRegistry.getInstance().addHopperHauntingRecipe(mod_FCBetterThanWolves.fcGroundNetherrack.id, new ItemInstance(mod_FCBetterThanWolves.fcHellfireDust, 1));
     }
 
     private static void AddSawingRecipes()
