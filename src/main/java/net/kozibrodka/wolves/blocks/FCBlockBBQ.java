@@ -1,18 +1,14 @@
 
 package net.kozibrodka.wolves.blocks;
 
-import com.jcraft.jorbis.Block;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
+import net.kozibrodka.wolves.modsupport.HibachiIgnitionRegistry;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.Fluid;
 import net.minecraft.block.material.Material;
-import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
-import net.modificationstation.stationapi.api.block.BlockState;
 import net.modificationstation.stationapi.api.registry.Identifier;
-import net.modificationstation.stationapi.api.state.StateManager;
-import net.modificationstation.stationapi.api.state.property.IntProperty;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockBase;
 
 import java.util.Random;
@@ -131,7 +127,7 @@ public class FCBlockBBQ extends TemplateBlockBase
         {
             if(targetBlock != null)
             {
-                if(!(targetBlock instanceof Fluid) && !(targetBlock instanceof FCBlockCement))
+                if(!(targetBlock instanceof Fluid) && !(targetBlock instanceof FCBlockCement) && (world.getMaterial(i, j + 1, k) == Material.WOOD || world.getMaterial(i, j + 1, k) == Material.WOOL || world.getMaterial(i, j + 1, k) == Material.SNOW || world.getMaterial(i, j + 1, k) == Material.PLANT || world.getMaterial(i, j + 1, k) == Material.DOODADS || world.getMaterial(i, j + 1, k) == Material.CACTUS || world.getMaterial(i, j + 1, k) == Material.ORGANIC || world.getMaterial(i, j + 1, k) == Material.PUMPKIN || world.getMaterial(i, j + 1, k) == Material.AIR))
                 {
                     shouldIgnite = true;
                 }
@@ -151,7 +147,13 @@ public class FCBlockBBQ extends TemplateBlockBase
     {
         SetBBQLitFlag(world, i, j, k);
         world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "fire.ignite", 1.0F, world.rand.nextFloat() * 0.4F + 0.8F);
-        if(BBQShouldIgniteAbove(world, i, j, k))
+
+        int ignitedBlockID = HibachiIgnitionRegistry.getInstance().getIgnitedID(world.getTileId(i, j + 1, k));
+        if (ignitedBlockID != 0)
+        {
+            world.setTile(i, j + 1, k, ignitedBlockID);
+        }
+        else if(BBQShouldIgniteAbove(world, i, j, k))
         {
             world.setTile(i, j + 1, k, FIRE.id);
         }

@@ -1,31 +1,23 @@
 
 package net.kozibrodka.wolves.blocks;
 
-import net.fabricmc.loader.api.FabricLoader;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.mixin.LevelAccessor;
-import net.kozibrodka.wolves.tileentity.FCTileEntityHopper;
+import net.kozibrodka.wolves.modsupport.AffectedByBellows;
 import net.kozibrodka.wolves.utils.FCBlockPos;
 import net.kozibrodka.wolves.utils.FCIBlock;
 import net.kozibrodka.wolves.utils.FCMechanicalDevice;
 import net.kozibrodka.wolves.utils.FCUtilsMisc;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityBase;
 import net.minecraft.entity.Item;
 import net.minecraft.entity.Living;
-import net.minecraft.item.ItemInstance;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
-import net.minecraft.tileentity.TileEntityBase;
 import net.minecraft.util.maths.Box;
-import net.modificationstation.stationapi.api.block.BlockState;
 import net.modificationstation.stationapi.api.registry.Identifier;
-import net.modificationstation.stationapi.api.state.StateManager;
-import net.modificationstation.stationapi.api.state.property.BooleanProperty;
-import net.modificationstation.stationapi.api.state.property.IntProperty;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockBase;
 
 import java.util.List;
@@ -296,16 +288,24 @@ public class FCBlockBellows extends TemplateBlockBase
         particlePos.AddFacingAsOffset(iFacing);
         EmitBellowsParticles(world, particlePos.i, particlePos.j, particlePos.k, world.rand);
         FCBlockPos tempTargetPos = new FCBlockPos(i, j, k);
+        BlockBase blockWithInterface;
         for(int iTempCount = 0; iTempCount < 3; iTempCount++)
         {
             tempTargetPos.AddFacingAsOffset(iFacing);
             int tempid = world.getTileId(tempTargetPos.i, tempTargetPos.j, tempTargetPos.k);
+            blockWithInterface = BlockBase.BY_ID[tempid];
+            if (blockWithInterface != null) {
+                if (blockWithInterface instanceof AffectedByBellows)
+                {
+                    ((AffectedByBellows) blockWithInterface).affectBlock(world, tempTargetPos.i, tempTargetPos.j, tempTargetPos.k, tempTargetPos, iFacing);
+                    continue;
+                }
+            }
             if(tempid == BlockBase.FIRE.id || tempid == mod_FCBetterThanWolves.fcStokedFire.id)
             {
                 StokeFire(world, tempTargetPos.i, tempTargetPos.j, tempTargetPos.k);
-            } else if (tempid == mod_FCBetterThanWolves.fcHopper.id) {
-                cleanHopper(world, tempTargetPos.i, tempTargetPos.j, tempTargetPos.k, tempTargetPos, iFacing);
-            } else
+            }
+            else
             if(!world.isAir(tempTargetPos.i, tempTargetPos.j, tempTargetPos.k))
             {
                 break;
@@ -356,19 +356,6 @@ public class FCBlockBellows extends TemplateBlockBase
             world.setTile(i, j, k, 0);
             world.method_243(i, j, k);
         }
-    }
-
-    private void cleanHopper(Level world, int i, int j, int k, FCBlockPos tempTargetPos, int facing)
-    {
-        for (int l = 0; l < 2; l++) {
-            tempTargetPos.AddFacingAsOffset(facing);
-            if (!world.isAir(tempTargetPos.i, tempTargetPos.j, tempTargetPos.k)) return;
-        }
-        TileEntityBase tileEntityHopper = world.getTileEntity(i, j, k);
-        if (tileEntityHopper == null) return;
-        if (!(tileEntityHopper instanceof FCTileEntityHopper)) return;
-        if (((FCTileEntityHopper) tileEntityHopper).GetFilterType() != 6) return;
-        ((FCTileEntityHopper) tileEntityHopper).setInventoryItem(18, new ItemInstance(mod_FCBetterThanWolves.soulFilter, 1));
     }
 
     private void LiftCollidingEntities(Level world, int i, int j, int k)

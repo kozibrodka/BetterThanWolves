@@ -21,11 +21,10 @@
     "stationapi:event_bus": [
       "net.kozibrodka.wolves.events.mod_FCBetterThanWolves",
       "net.kozibrodka.wolves.events.TextureListener",
-      "net.kozibrodka.wolves.events.RecipeListener",
-      "net.kozibrodka.wolves.events.TabListener"
+      "net.kozibrodka.wolves.events.RecipeListener"
     ],
     "stationapi:event_bus_client": [
-
+      "net.kozibrodka.wolves.events.TabListener"
     ],
     "stationapi:event_bus_server": [
 

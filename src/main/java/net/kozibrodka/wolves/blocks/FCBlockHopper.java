@@ -10,6 +10,7 @@ import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.gui.FCGuiHopper;
 import net.kozibrodka.wolves.gui.FCGuiMillStone;
+import net.kozibrodka.wolves.modsupport.AffectedByBellows;
 import net.kozibrodka.wolves.tileentity.FCTileEntityHopper;
 import net.kozibrodka.wolves.utils.*;
 import net.minecraft.block.BlockBase;
@@ -40,7 +41,7 @@ import java.util.Random;
 
 
 public class FCBlockHopper extends TemplateBlockWithEntity
-    implements FCMechanicalDevice, FCIBlock, BlockWithWorldRenderer, BlockWithInventoryRenderer
+    implements FCMechanicalDevice, FCIBlock, BlockWithWorldRenderer, BlockWithInventoryRenderer, AffectedByBellows
 {
     public FCBlockHopper(Identifier iid)
     {
@@ -510,5 +511,18 @@ public class FCBlockHopper extends TemplateBlockWithEntity
         this.setBoundingBox(0.3125F, 0.0F, 0.3125F, 0.6875F, 0.25F, 0.6875F);
         FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
         setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+    }
+
+    @Override
+    public void affectBlock(Level world, int i, int j, int k, FCBlockPos tempTargetPos, int facing) {
+        for (int l = 0; l < 2; l++) {
+            tempTargetPos.AddFacingAsOffset(facing);
+            if (!world.isAir(tempTargetPos.i, tempTargetPos.j, tempTargetPos.k)) return;
+        }
+        TileEntityBase tileEntityHopper = world.getTileEntity(i, j, k);
+        if (tileEntityHopper == null) return;
+        if (!(tileEntityHopper instanceof FCTileEntityHopper)) return;
+        if (((FCTileEntityHopper) tileEntityHopper).GetFilterType() != 6) return;
+        ((FCTileEntityHopper) tileEntityHopper).setInventoryItem(18, new ItemInstance(mod_FCBetterThanWolves.soulFilter, 1));
     }
 }
