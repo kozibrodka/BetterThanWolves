@@ -6,6 +6,7 @@
 package net.kozibrodka.wolves.blocks;
 
 import net.fabricmc.loader.api.FabricLoader;
+import net.kozibrodka.wolves.container.FCContainerAnvil;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.gui.FCGuiCraftingAnvil;
@@ -21,12 +22,14 @@ import net.minecraft.client.render.block.BlockRenderer;
 import net.minecraft.entity.Living;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.entity.player.ServerPlayer;
+import net.minecraft.inventory.InventoryBase;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.minecraft.util.maths.Box;
 import net.modificationstation.stationapi.api.block.BlockState;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithInventoryRenderer;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
+import net.modificationstation.stationapi.api.gui.screen.container.GuiHelper;
 import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.state.StateManager;
 import net.modificationstation.stationapi.api.state.property.IntProperty;
@@ -78,16 +81,19 @@ public class FCBlockAnvil extends TemplateBlockBase
 
     public boolean canUse(Level world, int i, int j, int k, PlayerBase entityplayer)
     {
-        if(world.isServerSide)
-        {
-            return true;
-        } else
-        {
-            Minecraft minecraft = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance());
-            minecraft.openScreen(new FCGuiCraftingAnvil(entityplayer.inventory, world, i, j, k));
-            //ModLoader.getMinecraftInstance().displayGuiScreen(new FCGuiCraftingAnvil(entityplayer.inventory, world, i, j, k));
-        	return true;
-        }
+//        if(world.isServerSide)
+//        {
+//            return true;
+//        } else
+//        {
+//            Minecraft minecraft = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance());
+//            minecraft.openScreen(new FCGuiCraftingAnvil(entityplayer.inventory, world, i, j, k));
+//            //ModLoader.getMinecraftInstance().displayGuiScreen(new FCGuiCraftingAnvil(entityplayer.inventory, world, i, j, k));
+//        	return true;
+//        }
+
+//        GuiHelper.openGUI(entityplayer, Identifier.of("sltest:freezer"), (InventoryBase) tileentityFreezer, new FCGuiCraftingAnvil(entityplayer.inventory, (TileEntityFreezer) tileentityFreezer));
+        return true;
     }
 
     public Box getCollisionShape(Level world, int i, int j, int k)

@@ -6,10 +6,15 @@
 package net.kozibrodka.wolves.blocks;
 
 import net.fabricmc.loader.api.FabricLoader;
+import net.kozibrodka.wolves.container.FCContainerCauldron;
+import net.kozibrodka.wolves.container.FCContainerCrucible;
+import net.kozibrodka.wolves.container.FCContainerHopper;
 import net.kozibrodka.wolves.events.TextureListener;
+import net.kozibrodka.wolves.gui.FCGuiCraftingAnvil;
 import net.kozibrodka.wolves.gui.FCGuiCrucible;
 import net.kozibrodka.wolves.gui.FCGuiMillStone;
 import net.kozibrodka.wolves.tileentity.FCTileEntityCrucible;
+import net.kozibrodka.wolves.tileentity.FCTileEntityHopper;
 import net.kozibrodka.wolves.utils.FCIBlock;
 import net.kozibrodka.wolves.utils.FCUtilsInventory;
 import net.kozibrodka.wolves.utils.FCUtilsRender;
@@ -27,6 +32,7 @@ import net.minecraft.tileentity.TileEntityBase;
 import net.minecraft.util.maths.Box;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithInventoryRenderer;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
+import net.modificationstation.stationapi.api.gui.screen.container.GuiHelper;
 import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockWithEntity;
 
@@ -64,16 +70,19 @@ public class FCBlockCrucible extends TemplateBlockWithEntity
 
     public boolean canUse(Level world, int i, int j, int k, PlayerBase entityPlayer)
     {
-        if(world.isServerSide)
-        {
-            return true;
-        } else
-        {
-            FCTileEntityCrucible tileEntityCrucible = (FCTileEntityCrucible)world.getTileEntity(i, j, k);
-            Minecraft minecraft = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance());
-            minecraft.openScreen(new FCGuiCrucible(entityPlayer.inventory, tileEntityCrucible));
-            return true;
-        }
+//        if(world.isServerSide)
+//        {
+//            return true;
+//        } else
+//        {
+//            Minecraft minecraft = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance());
+//            minecraft.openScreen(new FCGuiCraftingAnvil(entityPlayer.inventory, world, i, j, k));
+//            //ModLoader.getMinecraftInstance().displayGuiScreen(new FCGuiCraftingAnvil(entityplayer.inventory, world, i, j, k));
+//        	return true;
+//        }
+        FCTileEntityCrucible tileEntityCrucible = (FCTileEntityCrucible)world.getTileEntity(i, j, k);
+        GuiHelper.openGUI(entityPlayer, Identifier.of("wolves:openCrucible"), (InventoryBase) tileEntityCrucible, new FCContainerCrucible(entityPlayer.inventory, (FCTileEntityCrucible) tileEntityCrucible));
+        return true;
     }
 
     protected TileEntityBase createTileEntity()

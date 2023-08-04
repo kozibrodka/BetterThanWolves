@@ -6,6 +6,7 @@
 package net.kozibrodka.wolves.blocks;
 
 import net.fabricmc.loader.api.FabricLoader;
+import net.kozibrodka.wolves.container.FCContainerHopper;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.gui.FCGuiHopper;
@@ -30,6 +31,7 @@ import net.minecraft.util.maths.Box;
 import net.modificationstation.stationapi.api.block.BlockState;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithInventoryRenderer;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
+import net.modificationstation.stationapi.api.gui.screen.container.GuiHelper;
 import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.state.StateManager;
 import net.modificationstation.stationapi.api.state.property.BooleanProperty;
@@ -110,17 +112,21 @@ public class FCBlockHopper extends TemplateBlockWithEntity
 
     public boolean canUse(Level world, int i, int j, int k, PlayerBase entityplayer)
     {
-        if(world.isServerSide)
-        {
-            return true;
-        } else
-        {
-            FCTileEntityHopper tileEntityHopper = (FCTileEntityHopper)world.getTileEntity(i, j, k);
-            Minecraft minecraft = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance());
-            minecraft.openScreen(new FCGuiHopper(entityplayer.inventory, tileEntityHopper));
-            //ModLoader.OpenGUI(entityplayer, new FCGuiHopper(entityplayer.inventory, tileEntityHopper));
-            return true;
-        }
+//        if(world.isServerSide)
+//        {
+//            return true;
+//        } else
+//        {
+//            FCTileEntityHopper tileEntityHopper = (FCTileEntityHopper)world.getTileEntity(i, j, k);
+//            Minecraft minecraft = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance());
+//            minecraft.openScreen(new FCGuiHopper(entityplayer.inventory, tileEntityHopper));
+//            //ModLoader.OpenGUI(entityplayer, new FCGuiHopper(entityplayer.inventory, tileEntityHopper));
+//            return true;
+//        }
+
+        FCTileEntityHopper tileEntityHopper = (FCTileEntityHopper)world.getTileEntity(i, j, k);
+        GuiHelper.openGUI(entityplayer, Identifier.of("wolves:openHooper"), (InventoryBase) tileEntityHopper, new FCContainerHopper(entityplayer.inventory, (FCTileEntityHopper) tileEntityHopper));
+        return true;
     }
 
     protected TileEntityBase createTileEntity()

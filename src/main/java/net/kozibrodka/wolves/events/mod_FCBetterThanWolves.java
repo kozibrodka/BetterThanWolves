@@ -97,6 +97,8 @@ public class mod_FCBetterThanWolves {
         fcBroadheadArrowhead = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcBroadheadArrowhead")).setTranslationKey(MOD_ID, "fcBroadheadArrowhead");
         fcBroadheadArrow = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcBroadheadArrow")).setTranslationKey(MOD_ID, "fcBroadheadArrow");
         fcCoalDust = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcCoalDust")).setTranslationKey(MOD_ID, "fcCoalDust");
+//         Custom addition for a hopper rework
+        soulFilter = new SoulFilter(Identifier.of(MOD_ID, "soul_filter"));
     }
 
     @EventListener
@@ -137,8 +139,6 @@ public class mod_FCBetterThanWolves {
         fcCrucible = (TemplateBlockWithEntity) new FCBlockCrucible(Identifier.of(MOD_ID, "fcCrucible")).setTranslationKey(MOD_ID, "fcCrucible");
         fcPlanter = (TemplateBlockBase) new FCBlockPlanter(Identifier.of(MOD_ID, "fcPlanter")).setTranslationKey(MOD_ID, "fcPlanter");
         fcVase = (TemplateBlockWithEntity) new FCBlockVase(Identifier.of(MOD_ID, "fcVase")).setTranslationKey(MOD_ID, "fcVase");
-        // Custom addition for a hopper rework
-        soulFilter = new SoulFilter(Identifier.of(MOD_ID, "soul_filter"));
 
         //TODO: Extra (test) - later move into expansion probably
         //TODO: My idea: remove crafting of stone omni plates/ corners, moulding and add grinder as a saw for "stone type" blocks
@@ -169,15 +169,6 @@ public class mod_FCBetterThanWolves {
         Registry.register(event.registry, MOD_ID.id("MovingAnchor") , FCEntityMovingAnchor::new);
     }
 
-    @EventListener
-    private static void registerEntityRenderers(EntityRendererRegisterEvent event) {
-        event.renderers.put(FCEntityWaterWheel.class, new FCRenderWaterWheel());
-        event.renderers.put(FCEntityWindMill.class, new FCRenderWindMill());
-        event.renderers.put(FCEntityBroadheadArrow.class, new FCRenderBroadheadArrow());
-        event.renderers.put(FCEntityBlockLiftedByPlatform.class, new FCRenderBlockLiftedByPlatform());
-        event.renderers.put(FCEntityMovingPlatform.class, new FCRenderMovingPlatform());
-        event.renderers.put(FCEntityMovingAnchor.class, new FCRenderMovingAnchor());
-    }
 
     @EventListener
     private static void registerTileEntities(TileEntityRegisterEvent event) {

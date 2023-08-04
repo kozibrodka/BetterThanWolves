@@ -1,11 +1,13 @@
 package net.kozibrodka.wolves.blocks;
 
 import net.fabricmc.loader.api.FabricLoader;
+import net.kozibrodka.wolves.container.FCContainerHopper;
 import net.kozibrodka.wolves.container.FCContainerPulley;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.gui.FCGuiMillStone;
 import net.kozibrodka.wolves.gui.FCGuiPulley;
+import net.kozibrodka.wolves.tileentity.FCTileEntityHopper;
 import net.kozibrodka.wolves.tileentity.FCTileEntityPulley;
 import net.kozibrodka.wolves.utils.*;
 import net.minecraft.block.BlockBase;
@@ -17,6 +19,7 @@ import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.minecraft.tileentity.TileEntityBase;
 import net.modificationstation.stationapi.api.block.BlockState;
+import net.modificationstation.stationapi.api.gui.screen.container.GuiHelper;
 import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.state.StateManager;
 import net.modificationstation.stationapi.api.state.property.BooleanProperty;
@@ -47,17 +50,8 @@ public class FCBlockPulley extends TemplateBlockWithEntity
 
     public boolean canUse(Level world, int i, int j, int k, PlayerBase entityplayer)
     {
-        if(world.isServerSide)
-        {
-            return true;
-        }
         FCTileEntityPulley tileEntityPulley = (FCTileEntityPulley)world.getTileEntity(i, j, k);
-        if(tileEntityPulley != null)
-        {
-            //ModLoader.OpenGUI(entityplayer, new FCGuiPulley(entityplayer.inventory, tileEntityPulley));
-            Minecraft minecraft = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance());
-            minecraft.openScreen(new FCGuiPulley(entityplayer.inventory, tileEntityPulley));
-        }
+        GuiHelper.openGUI(entityplayer, Identifier.of("wolves:openPulley"), (InventoryBase) tileEntityPulley, new FCContainerPulley(entityplayer.inventory, (FCTileEntityPulley) tileEntityPulley));
         return true;
     }
 

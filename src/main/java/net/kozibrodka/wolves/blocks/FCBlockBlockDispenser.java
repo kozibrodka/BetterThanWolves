@@ -5,6 +5,8 @@
 
 package net.kozibrodka.wolves.blocks;
 import net.fabricmc.loader.api.FabricLoader;
+import net.kozibrodka.wolves.container.FCContainerBlockDispenser;
+import net.kozibrodka.wolves.container.FCContainerHopper;
 import net.kozibrodka.wolves.entity.FCEntityBroadheadArrow;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
@@ -13,6 +15,7 @@ import net.kozibrodka.wolves.mixin.BlockBaseAccessor;
 import net.kozibrodka.wolves.mixin.ChickenAccessor;
 import net.kozibrodka.wolves.mixin.WolfAccessor;
 import net.kozibrodka.wolves.tileentity.FCTileEntityBlockDispenser;
+import net.kozibrodka.wolves.tileentity.FCTileEntityHopper;
 import net.kozibrodka.wolves.utils.*;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.material.Material;
@@ -33,6 +36,7 @@ import net.minecraft.level.Level;
 import net.minecraft.tileentity.TileEntityBase;
 import net.minecraft.tileentity.TileEntityDispenser;
 import net.minecraft.util.maths.Box;
+import net.modificationstation.stationapi.api.gui.screen.container.GuiHelper;
 import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockWithEntity;
 
@@ -113,18 +117,9 @@ public class FCBlockBlockDispenser extends TemplateBlockWithEntity
 
     public boolean canUse(Level world, int i, int j, int k, PlayerBase entityplayer)
     {
-        if(world.isServerSide)
-        {
-            return true;
-        } else
-        {
-            ValidateBlockDispenser(world, i, j, k);
             FCTileEntityBlockDispenser tileEntityBlockDispenser = (FCTileEntityBlockDispenser)world.getTileEntity(i, j, k);
-            //ModLoader.OpenGUI(entityplayer, new FCGuiBlockDispenser(entityplayer.inventory, tileEntityBlockDispenser));
-            Minecraft minecraft = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance());
-            minecraft.openScreen(new FCGuiBlockDispenser(entityplayer.inventory, tileEntityBlockDispenser));
+            GuiHelper.openGUI(entityplayer, Identifier.of("wolves:openBlockDispenser"), (InventoryBase) tileEntityBlockDispenser, new FCContainerBlockDispenser(entityplayer.inventory, (FCTileEntityBlockDispenser) tileEntityBlockDispenser));
             return true;
-        }
     }
 
     protected TileEntityBase createTileEntity()

@@ -1,9 +1,12 @@
 package net.kozibrodka.wolves.blocks;
 
 import net.fabricmc.loader.api.FabricLoader;
+import net.kozibrodka.wolves.container.FCContainerHopper;
+import net.kozibrodka.wolves.container.FCContainerMillStone;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.gui.FCGuiMillStone;
+import net.kozibrodka.wolves.tileentity.FCTileEntityHopper;
 import net.kozibrodka.wolves.tileentity.FCTileEntityMillStone;
 import net.kozibrodka.wolves.utils.FCBlockPos;
 import net.kozibrodka.wolves.utils.FCMechanicalDevice;
@@ -16,6 +19,7 @@ import net.minecraft.inventory.InventoryBase;
 import net.minecraft.level.Level;
 import net.minecraft.tileentity.TileEntityBase;
 import net.modificationstation.stationapi.api.block.BlockState;
+import net.modificationstation.stationapi.api.gui.screen.container.GuiHelper;
 import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.state.StateManager;
 import net.modificationstation.stationapi.api.state.property.BooleanProperty;
@@ -74,17 +78,9 @@ public class FCBlockMillStone extends TemplateBlockWithEntity
 
     public boolean canUse(Level world, int i, int j, int k, PlayerBase entityplayer)
     {
-        if(world.isServerSide)
-        {
-            return true;
-        } else
-        {
-            FCTileEntityMillStone tileEntityMillStone = (FCTileEntityMillStone)world.getTileEntity(i, j, k);
-            Minecraft minecraft = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance());
-            minecraft.openScreen(new FCGuiMillStone(entityplayer.inventory, tileEntityMillStone));
-            //ModLoader.OpenGUI(entityplayer, new FCGuiMillStone(entityplayer.inventory, tileEntityMillStone));
-            return true;
-        }
+        FCTileEntityMillStone tileEntityMillStone = (FCTileEntityMillStone)world.getTileEntity(i, j, k);
+        GuiHelper.openGUI(entityplayer, Identifier.of("wolves:openMillStone"), (InventoryBase) tileEntityMillStone, new FCContainerMillStone(entityplayer.inventory, (FCTileEntityMillStone) tileEntityMillStone));
+        return true;
     }
 
     protected TileEntityBase createTileEntity()

@@ -1,6 +1,9 @@
 package net.kozibrodka.wolves.events;
 
+import net.kozibrodka.wolves.entity.*;
+import net.kozibrodka.wolves.render.*;
 import net.mine_diver.unsafeevents.listener.EventListener;
+import net.modificationstation.stationapi.api.client.event.render.entity.EntityRendererRegisterEvent;
 import net.modificationstation.stationapi.api.client.event.texture.TextureRegisterEvent;
 import net.modificationstation.stationapi.api.client.texture.atlas.Atlases;
 import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
@@ -129,6 +132,17 @@ public class TextureListener {
         }
         return Atlases.getStationTerrain().addTexture(Identifier.of(MOD_ID, s)).index;
     }
+
+    @EventListener
+    private static void registerEntityRenderers(EntityRendererRegisterEvent event) {
+        event.renderers.put(FCEntityWaterWheel.class, new FCRenderWaterWheel());
+        event.renderers.put(FCEntityWindMill.class, new FCRenderWindMill());
+        event.renderers.put(FCEntityBroadheadArrow.class, new FCRenderBroadheadArrow());
+        event.renderers.put(FCEntityBlockLiftedByPlatform.class, new FCRenderBlockLiftedByPlatform());
+        event.renderers.put(FCEntityMovingPlatform.class, new FCRenderMovingPlatform());
+        event.renderers.put(FCEntityMovingAnchor.class, new FCRenderMovingAnchor());
+    }
+
     public static int axle_vertical;
     public static int axle_horizontal;
     public static int axle_side;
