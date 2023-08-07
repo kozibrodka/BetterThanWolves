@@ -25,8 +25,8 @@ public class AnvilShapelessRecipe implements FCRecipeAnvil, StationRecipe {
     public boolean canCraft(Crafting arg) {
         ArrayList var2 = new ArrayList(this.input);
 
-        for(int var3 = 0; var3 < 3; ++var3) {
-            for(int var4 = 0; var4 < 3; ++var4) {
+        for(int var3 = 0; var3 < 5; ++var3) {
+            for(int var4 = 0; var4 < 5; ++var4) {
                 ItemInstance var5 = arg.getInventoryItemXY(var4, var3);
                 if (var5 != null) {
                     boolean var6 = false;

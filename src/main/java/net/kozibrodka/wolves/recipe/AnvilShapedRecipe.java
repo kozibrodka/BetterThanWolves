@@ -25,8 +25,8 @@ public class AnvilShapedRecipe implements FCRecipeAnvil, StationRecipe {
     }
 
     public boolean canCraft(Crafting arg) {
-        for(int var2 = 0; var2 <= 3 - this.width; ++var2) {
-            for(int var3 = 0; var3 <= 3 - this.height; ++var3) {
+        for(int var2 = 0; var2 <= 5 - this.width; ++var2) {
+            for(int var3 = 0; var3 <= 5 - this.height; ++var3) {
                 if (this.matches(arg, var2, var3, true)) {
                     return true;
                 }
@@ -41,8 +41,8 @@ public class AnvilShapedRecipe implements FCRecipeAnvil, StationRecipe {
     }
 
     private boolean matches(Crafting arg, int i, int j, boolean bl) {
-        for(int var5 = 0; var5 < 3; ++var5) {
-            for(int var6 = 0; var6 < 3; ++var6) {
+        for(int var5 = 0; var5 < 5; ++var5) {
+            for(int var6 = 0; var6 < 5; ++var6) {
                 int var7 = var5 - i;
                 int var8 = var6 - j;
                 ItemInstance var9 = null;

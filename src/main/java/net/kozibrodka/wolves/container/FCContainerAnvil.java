@@ -20,18 +20,18 @@ public class FCContainerAnvil extends ContainerBase
 
     public FCContainerAnvil(PlayerInventory inventoryplayer, Level world, int i, int j, int k)
     {
-        craftMatrix = new Crafting(this, 3, 3);
+        craftMatrix = new Crafting(this, 5, 5);
         craftResult = new Chest();
         m_localWorld = world;
         m_anvilI = i;
         m_anvilJ = j;
         m_anvilK = k;
-        addSlot(new CraftingResult(inventoryplayer.player, craftMatrix, craftResult, 0, 124, 35));
-        for(int l = 0; l < 3; l++)
+        addSlot(new CraftingResult(inventoryplayer.player, craftMatrix, craftResult, 0, 142, 71));
+        for(int l = 0; l < 5; l++)
         {
-            for(int k1 = 0; k1 < 3; k1++)
+            for(int k1 = 0; k1 < 5; k1++)
             {
-                addSlot(new Slot(craftMatrix, k1 + l * 3, 30 + k1 * 18, 17 + l * 18));
+                addSlot(new Slot(craftMatrix, k1 + l * 5, 12 + k1 * 18, 17 + l * 18));
             }
 
         }
@@ -40,14 +40,14 @@ public class FCContainerAnvil extends ContainerBase
         {
             for(int l1 = 0; l1 < 9; l1++)
             {
-                addSlot(new Slot(inventoryplayer, l1 + i1 * 9 + 9, 8 + l1 * 18, 84 + i1 * 18));
+                addSlot(new Slot(inventoryplayer, l1 + i1 * 9 + 9, 8 + l1 * 18, 120 + i1 * 18));
             }
 
         }
 
         for(int j1 = 0; j1 < 9; j1++)
         {
-            addSlot(new Slot(inventoryplayer, j1, 8 + j1 * 18, 142));
+            addSlot(new Slot(inventoryplayer, j1, 8 + j1 * 18, 178));
         }
 
         onContentsChanged(craftMatrix);
@@ -73,7 +73,7 @@ public class FCContainerAnvil extends ContainerBase
         {
             return;
         }
-        for(int i = 0; i < 9; i++)
+        for(int i = 0; i < 25; i++)
         {
             ItemInstance ItemInstance = craftMatrix.getInventoryItem(i);
             if(ItemInstance != null)

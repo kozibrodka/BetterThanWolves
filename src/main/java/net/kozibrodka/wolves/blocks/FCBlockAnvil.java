@@ -81,19 +81,19 @@ public class FCBlockAnvil extends TemplateBlockBase
 
     public boolean canUse(Level world, int i, int j, int k, PlayerBase entityplayer)
     {
-//        if(world.isServerSide)
-//        {
-//            return true;
-//        } else
-//        {
-//            Minecraft minecraft = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance());
-//            minecraft.openScreen(new FCGuiCraftingAnvil(entityplayer.inventory, world, i, j, k));
-//            //ModLoader.getMinecraftInstance().displayGuiScreen(new FCGuiCraftingAnvil(entityplayer.inventory, world, i, j, k));
-//        	return true;
-//        }
+        if(world.isServerSide)
+        {
+            return true;
+        } else
+        {
+            Minecraft minecraft = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance());
+            minecraft.openScreen(new FCGuiCraftingAnvil(entityplayer.inventory, world, i, j, k));
+            //ModLoader.getMinecraftInstance().displayGuiScreen(new FCGuiCraftingAnvil(entityplayer.inventory, world, i, j, k));
+        	return true;
+        }
 
 //        GuiHelper.openGUI(entityplayer, Identifier.of("sltest:freezer"), (InventoryBase) tileentityFreezer, new FCGuiCraftingAnvil(entityplayer.inventory, (TileEntityFreezer) tileentityFreezer));
-        return true;
+//        return true;
     }
 
     public Box getCollisionShape(Level world, int i, int j, int k)

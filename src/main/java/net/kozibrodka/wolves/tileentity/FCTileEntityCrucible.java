@@ -13,6 +13,7 @@ package net.kozibrodka.wolves.tileentity;
 //            Item, FCUtilsMisc, ItemMap, ItemShears
 
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
+import net.kozibrodka.wolves.recipe.CraftingManagerCrucible;
 import net.kozibrodka.wolves.utils.FCUtilsInventory;
 import net.kozibrodka.wolves.utils.FCUtilsMisc;
 import net.minecraft.block.BlockBase;
@@ -193,7 +194,7 @@ public class FCTileEntityCrucible extends TileEntityBase
 
     public boolean DoesCrucibleContainUncookedItems()
     {
-        return DoesCrucibleContainMeltableItems() || DoesCrucibleContainIngrediantsToForgeSteel();
+        return DoesCrucibleContainMeltableItems() || areItemsInRegistry();
     }
 
     private void CookContents()
@@ -201,10 +202,10 @@ public class FCTileEntityCrucible extends TileEntityBase
         if(DoesCrucibleContainMeltableItems())
         {
             MeltContents();
-        } else
-        if(DoesCrucibleContainIngrediantsToForgeSteel())
+        }
+        else
         {
-            ForgeSteel();
+            craftFromRegistry();
         }
     }
 
@@ -228,17 +229,22 @@ public class FCTileEntityCrucible extends TileEntityBase
 
     public boolean CanItemBeSmeltedInCrucible(ItemBase item)
     {
-        if(item != null && !(item instanceof FoodBase))
+        if (item == null) return false;
+        if (item instanceof FoodBase) return false;
+        ItemInstance smeltingResult = SmeltingRecipeRegistry.getInstance().getResult(item.id);
+        if(smeltingResult != null && !(smeltingResult.getType() instanceof FoodBase) && smeltingResult.getType().id != mod_FCBetterThanWolves.fcUnfiredPottery.id)
         {
-            ItemInstance smeltingResult = SmeltingRecipeRegistry.getInstance().getResult(item.id);
-            if(smeltingResult != null && !(smeltingResult.getType() instanceof FoodBase) && smeltingResult.getType().id != mod_FCBetterThanWolves.fcUnfiredPottery.id)
-            {
-                return true;
-            }
+            return true;
         }
         return false;
     }
 
+    public boolean areItemsInRegistry()
+    {
+        return CraftingManagerCrucible.getInstance().GetCraftingResult(this) != null;
+    }
+
+    // Why is this not used?
     private void SmeltContents()
     {
         for(int tempIndex = 0; tempIndex < 27; tempIndex++)
@@ -530,69 +536,24 @@ public class FCTileEntityCrucible extends TileEntityBase
         return tempStack;
     }
 
-    public boolean DoesCrucibleContainIngrediantsToForgeSteel()
+    public void craftFromRegistry()
     {
-        boolean bContainsCoalDust = false;
-        boolean bContainsConcentratedHellfire = false;
-        int iIronCount = 0;
-        for(int tempIndex = 0; tempIndex < 27; tempIndex++)
-        {
-            if(crucibleContents[tempIndex] == null)
-            {
-                continue;
-            }
-            ItemBase tempItem = crucibleContents[tempIndex].getType();
-            if(tempItem.id == mod_FCBetterThanWolves.fcCoalDust.id)
-            {
-                bContainsCoalDust = true;
-                if(iIronCount >= 3 && bContainsConcentratedHellfire)
-                {
-                    return true;
-                }
-                continue;
-            }
-            if(tempItem.id == mod_FCBetterThanWolves.fcConcentratedHellfire.id)
-            {
-                bContainsConcentratedHellfire = true;
-                if(iIronCount >= 3 && bContainsCoalDust)
-                {
-                    return true;
-                }
-                continue;
-            }
-            if(tempItem.id != ItemBase.ironIngot.id)
-            {
-                continue;
-            }
-            iIronCount += crucibleContents[tempIndex].count;
-            if(iIronCount >= 3 && bContainsCoalDust && bContainsConcentratedHellfire)
-            {
-                return true;
-            }
-        }
-
-        return false;
+        if (CraftingManagerCrucible.getInstance().GetCraftingResult(this) == null) return;
+        ItemInstance outputStack = CraftingManagerCrucible.getInstance().ConsumeIngredientsAndReturnResult(this);
+        if(!FCUtilsInventory.AddItemInstanceToInventory(this, outputStack)) FCUtilsMisc.EjectStackWithRandomOffset(level, x, y + 1, z, outputStack);
     }
 
-    private void ForgeSteel()
-    {
-        FCUtilsInventory.ConsumeItemsInInventory(this, mod_FCBetterThanWolves.fcCoalDust.id, -1, 1);
-        FCUtilsInventory.ConsumeItemsInInventory(this, mod_FCBetterThanWolves.fcConcentratedHellfire.id, -1, 1);
-        FCUtilsInventory.ConsumeItemsInInventory(this, ItemBase.ironIngot.id, -1, 3);
-        ItemInstance forgedSteelStack = new ItemInstance(mod_FCBetterThanWolves.fcSteel, 4);
-        if(!FCUtilsInventory.AddItemInstanceToInventory(this, forgedSteelStack))
-        {
-            FCUtilsMisc.EjectStackWithRandomOffset(level, x, y + 1, z, forgedSteelStack);
-        }
-    }
-
-    private final int iCrucibleInventorySize = 27;
-    private final int iCrucibleStackSizeLimit = 64;
-    private final double dCrucibleMaxPlayerInteractionDist = 64D;
-    private final int iPrimaryFireFactor = 5;
-    private final int iSecondaryFireFactor = 1;
-    private final int iCrucibleTimeToCook = 1950;
     private ItemInstance crucibleContents[];
     public int m_iCrucibleCookCounter;
     public boolean m_bOverStokedFire;
+
+    /*
+        ---- Crucible Stats ----
+        Inventory Size = 27;
+        Stack Size Limit = 64;
+        Player Interaction Distance = 64D;
+        Primary Fire Factor = 5;
+        Secondary Fire Factor = 1;
+        Cook Time = 1950;
+     */
 }

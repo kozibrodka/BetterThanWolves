@@ -45,7 +45,7 @@ public class RecipeListener {
         AddMillingRecipes();
         AddSawingRecipes();
         AddTurntableRecipes(); // Only used for tabs right now. TODO: Integrate this registry into the TileEntity of the turntable
-        AddCrucibleRecipes(); // Only used for tabs right now. TODO: Integrate this registry into the TileEntity of the crucible
+        AddCrucibleRecipes();
         AddHopperRecipes();
     }
 
@@ -215,6 +215,9 @@ public class RecipeListener {
         AddShapelessAnvilRecipe(new ItemInstance(mod_FCBetterThanWolves.fcOmniSlab.id, 1, 0), new Object[] {
                 BlockBase.STONE
         });
+        AddAnvilRecipe(new ItemInstance(mod_FCBetterThanWolves.fcWicker, 1), new Object[] {
+                "#####", "#XXX#", "#X X#", "#XXX#", "#####", '#', new ItemInstance(mod_FCBetterThanWolves.fcBelt, 1, 0), 'X', new ItemInstance(mod_FCBetterThanWolves.fcBBQ, 1, 0)
+        });
     }
 
     private static void AddCauldronRecipes()
@@ -326,7 +329,7 @@ public class RecipeListener {
 
     private static void AddCrucibleRecipes()
     {
-        AddCrucibleRecipe(new ItemInstance(mod_FCBetterThanWolves.fcSteel), new ItemInstance[] { new ItemInstance(ItemBase.ironIngot, 3), new ItemInstance(mod_FCBetterThanWolves.fcConcentratedHellfire), new ItemInstance(mod_FCBetterThanWolves.fcCoalDust) });
+        AddCrucibleRecipe(new ItemInstance(mod_FCBetterThanWolves.fcSteel, 4), new ItemInstance[] { new ItemInstance(ItemBase.ironIngot, 3), new ItemInstance(mod_FCBetterThanWolves.fcConcentratedHellfire), new ItemInstance(mod_FCBetterThanWolves.fcCoalDust) });
     }
 
     private static void AddHopperRecipes()

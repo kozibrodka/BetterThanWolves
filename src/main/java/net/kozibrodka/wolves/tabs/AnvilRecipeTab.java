@@ -43,8 +43,8 @@ public class AnvilRecipeTab extends TabWithTexture {
     }
 
     public AnvilRecipeTab(ModID tabCreator, List<Object> recipesComplete, BlockBase tabBlock) {
-        this(tabCreator, 10, recipesComplete, tabBlock, "/gui/crafting.png", 118, 56, 28, 15, 56, 46, 3);
-        slots[0] = new Integer[]{96, 23};
+        this(tabCreator, 26, recipesComplete, tabBlock, "/assets/wolves/stationapi/gui/hmi_tabs/giant_grid.png", 154, 92, 10, 15, 56, 46, 5);
+        slots[0] = new Integer[]{132, 41};
     }
 
     public AnvilRecipeTab(ModID tabCreator, int slotsPerRecipe, List<Object> recipesComplete, BlockBase tabBlock, String texturePath, int width, int height, int textureX, int textureY, int buttonX, int buttonY, int slotsWidth) {
@@ -53,7 +53,7 @@ public class AnvilRecipeTab extends TabWithTexture {
         this.tabBlock = tabBlock;
         recipes = recipesComplete;
         int i = 1;
-        for (int l = 0; l < 3; l++) {
+        for (int l = 0; l < 5; l++) {
             for (int i1 = 0; i1 < slotsWidth; i1++) {
                 slots[i++] = new Integer[]{2 + i1 * 18, 5 + l * 18};
             }

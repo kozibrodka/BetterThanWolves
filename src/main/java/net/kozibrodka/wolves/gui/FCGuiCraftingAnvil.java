@@ -17,6 +17,7 @@ public class FCGuiCraftingAnvil extends ContainerBase
     public FCGuiCraftingAnvil(PlayerInventory inventoryplayer, Level world, int i, int j, int k)
     {
         super(new FCContainerAnvil(inventoryplayer, world, i, j, k));
+        containerHeight = 202;
     }
 
     public void onClose()
@@ -33,7 +34,7 @@ public class FCGuiCraftingAnvil extends ContainerBase
 
     protected void renderContainerBackground(float f)
     {
-        int i = minecraft.textureManager.getTextureId("/gui/crafting.png");
+        int i = minecraft.textureManager.getTextureId("/assets/wolves/stationapi/gui/inventory/anvil.png");
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         minecraft.textureManager.bindTexture(i);
         int j = (width - containerWidth) / 2;
