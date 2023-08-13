@@ -215,9 +215,6 @@ public class RecipeListener {
         AddShapelessAnvilRecipe(new ItemInstance(mod_FCBetterThanWolves.fcOmniSlab.id, 1, 0), new Object[] {
                 BlockBase.STONE
         });
-        AddAnvilRecipe(new ItemInstance(mod_FCBetterThanWolves.fcWicker, 1), new Object[] {
-                "#####", "#XXX#", "#X X#", "#XXX#", "#####", '#', new ItemInstance(mod_FCBetterThanWolves.fcBelt, 1, 0), 'X', new ItemInstance(mod_FCBetterThanWolves.fcBBQ, 1, 0)
-        });
     }
 
     private static void AddCauldronRecipes()
