@@ -1,6 +1,6 @@
 package net.kozibrodka.wolves.gui;
 
-import net.kozibrodka.wolves.container.FCContainerMillStone;
+import net.kozibrodka.wolves.container.MillStoneContainer;
 import net.kozibrodka.wolves.tileentity.FCTileEntityMillStone;
 import net.minecraft.client.gui.screen.container.ContainerBase;
 import net.minecraft.entity.player.PlayerInventory;
@@ -11,7 +11,7 @@ public class FCGuiMillStone extends ContainerBase
 
     public FCGuiMillStone(PlayerInventory inventoryplayer, FCTileEntityMillStone fctileentitymillstone)
     {
-        super(new FCContainerMillStone(inventoryplayer, fctileentitymillstone));
+        super(new MillStoneContainer(inventoryplayer, fctileentitymillstone));
         containerHeight = 193;
         associatedTileEntityMillStone = fctileentitymillstone;
     }

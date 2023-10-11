@@ -4,7 +4,7 @@
 
 package net.kozibrodka.wolves.gui;
 
-import net.kozibrodka.wolves.container.FCContainerPulley;
+import net.kozibrodka.wolves.container.PulleyContainer;
 import net.kozibrodka.wolves.tileentity.FCTileEntityPulley;
 import net.minecraft.client.gui.screen.container.ContainerBase;
 import net.minecraft.entity.player.PlayerInventory;
@@ -15,7 +15,7 @@ public class FCGuiPulley extends ContainerBase
 
     public FCGuiPulley(PlayerInventory inventoryplayer, FCTileEntityPulley fctileentitypulley)
     {
-        super(new FCContainerPulley(inventoryplayer, fctileentitypulley));
+        super(new PulleyContainer(inventoryplayer, fctileentitypulley));
         containerHeight = 174;
         associatedTileEntityPulley = fctileentitypulley;
     }

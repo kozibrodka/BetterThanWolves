@@ -4,8 +4,7 @@
 
 package net.kozibrodka.wolves.gui;
 
-import net.kozibrodka.wolves.container.FCContainerAnvil;
-import net.minecraft.client.Minecraft;
+import net.kozibrodka.wolves.container.AnvilContainer;
 import net.minecraft.client.gui.screen.container.ContainerBase;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.level.Level;
@@ -16,7 +15,7 @@ public class FCGuiCraftingAnvil extends ContainerBase
 
     public FCGuiCraftingAnvil(PlayerInventory inventoryplayer, Level world, int i, int j, int k)
     {
-        super(new FCContainerAnvil(inventoryplayer, world, i, j, k));
+        super(new AnvilContainer(inventoryplayer, world, i, j, k));
         containerHeight = 202;
     }
 

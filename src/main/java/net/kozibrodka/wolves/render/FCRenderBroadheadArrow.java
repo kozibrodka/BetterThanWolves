@@ -2,12 +2,10 @@ package net.kozibrodka.wolves.render;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.kozibrodka.wolves.entity.FCEntityBroadheadArrow;
-import net.kozibrodka.wolves.entity.FCEntityWaterWheel;
+import net.kozibrodka.wolves.entity.BroadheadArrowEntity;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.entity.EntityBase;
-import net.minecraft.entity.projectile.Arrow;
 import net.minecraft.util.maths.MathHelper;
 import org.lwjgl.opengl.GL11;
 
@@ -17,7 +15,7 @@ public class FCRenderBroadheadArrow extends EntityRenderer {
     }
 
     public void render(EntityBase entityBase, double d, double e, double f, float g, float h) {
-        FCEntityBroadheadArrow fcentitybroadheadarrow = (FCEntityBroadheadArrow)entityBase;
+        BroadheadArrowEntity fcentitybroadheadarrow = (BroadheadArrowEntity)entityBase;
         if (fcentitybroadheadarrow.prevYaw != 0.0F || fcentitybroadheadarrow.prevPitch != 0.0F) {
             bindTexture("/assets/wolves/stationapi/textures/entity/fcbroadhead.png");
             GL11.glPushMatrix();

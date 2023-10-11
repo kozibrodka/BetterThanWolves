@@ -1,7 +1,7 @@
 package net.kozibrodka.wolves.utils;
 
 
-import net.kozibrodka.wolves.blocks.FCBlockAxle;
+import net.kozibrodka.wolves.blocks.Axle;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.minecraft.block.BlockBase;
 import net.minecraft.entity.EntityBase;
@@ -333,7 +333,7 @@ public class FCUtilsMisc
             {
                 continue;
             }
-            FCBlockAxle axleBlock = (FCBlockAxle)mod_FCBetterThanWolves.fcAxleBlock;
+            Axle axleBlock = (Axle)mod_FCBetterThanWolves.fcAxleBlock;
             if(axleBlock.IsAxleOrientedTowardsFacing(world, tempPos.i, tempPos.j, tempPos.k, iFacing))
             {
                 axleBlock.BreakAxle(world, tempPos.i, tempPos.j, tempPos.k);

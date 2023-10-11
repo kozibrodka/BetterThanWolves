@@ -6,8 +6,8 @@
 package net.kozibrodka.wolves.tileentity;
 
 import net.fabricmc.loader.api.FabricLoader;
-import net.kozibrodka.wolves.blocks.FCBlockTurntable;
-import net.kozibrodka.wolves.blocks.FCBlockUnfiredPottery;
+import net.kozibrodka.wolves.blocks.Turntable;
+import net.kozibrodka.wolves.blocks.UnfiredPottery;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.utils.FCBlockPos;
 import net.kozibrodka.wolves.utils.FCIBlock;
@@ -64,7 +64,7 @@ public class FCTileEntityTurntable extends TileEntityBase
 
     public void tick()
     {
-        if(((FCBlockTurntable) mod_FCBetterThanWolves.fcTurntable).IsBlockMechanicalOn(level, x, y, z))
+        if(((Turntable) mod_FCBetterThanWolves.fcTurntable).IsBlockMechanicalOn(level, x, y, z))
         {
             m_iRotationCount++;
             if(m_iRotationCount >= GetTicksToRotate())
@@ -86,7 +86,7 @@ public class FCTileEntityTurntable extends TileEntityBase
     private void RotateTurntable()
     {
         level.playSound((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, "random.click", 0.05F, 1.0F);
-        boolean bReverseDirection = ((FCBlockTurntable)mod_FCBetterThanWolves.fcTurntable).IsBlockRedstoneOn(level, x, y, z);
+        boolean bReverseDirection = ((Turntable)mod_FCBetterThanWolves.fcTurntable).IsBlockRedstoneOn(level, x, y, z);
         m_bPotteryRotated = false;
         int iTempJ = y + 1;
         do
@@ -126,7 +126,7 @@ public class FCTileEntityTurntable extends TileEntityBase
             m_bPotteryRotated = true;
             return;
         }
-        if(targetBlock instanceof FCBlockUnfiredPottery) //if(iTargetid == mod_FCBetterThanWolves.fcUnfiredPottery.id)
+        if(targetBlock instanceof UnfiredPottery) //if(iTargetid == mod_FCBetterThanWolves.fcUnfiredPottery.id)
         {
             RotateUnfiredPottery(i, j, k, bReverseDirection);
             m_bPotteryRotated = true;

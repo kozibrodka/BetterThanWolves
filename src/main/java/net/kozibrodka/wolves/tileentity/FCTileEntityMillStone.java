@@ -5,8 +5,8 @@
 
 package net.kozibrodka.wolves.tileentity;
 
-import net.kozibrodka.wolves.blocks.FCBlockCompanionCube;
-import net.kozibrodka.wolves.blocks.FCBlockMillStone;
+import net.kozibrodka.wolves.blocks.CompanionCube;
+import net.kozibrodka.wolves.blocks.MillStone;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.recipe.MillingRecipeRegistry;
 import net.kozibrodka.wolves.utils.FCBlockPos;
@@ -162,7 +162,7 @@ public class FCTileEntityMillStone extends TileEntityBase
             return;
         }
 
-        if(!((FCBlockMillStone)mod_FCBetterThanWolves.fcMillStone).IsBlockOn(level, x, y, z)) return;
+        if(!((MillStone)mod_FCBetterThanWolves.fcMillStone).IsBlockOn(level, x, y, z)) return;
 
         iMillStoneGrindCounter++;
 
@@ -205,7 +205,7 @@ public class FCTileEntityMillStone extends TileEntityBase
         else if(iUnmilledItemID == mod_FCBetterThanWolves.fcCompanionCube.id) // Special recipe (companion cube)
         {
             EjectStack(new ItemInstance(mod_FCBetterThanWolves.fcWolfRaw.id, 1, 0));
-            FCBlockCompanionCube.SpawnHearts(level, x, y, z);
+            CompanionCube.SpawnHearts(level, x, y, z);
             if(millStoneContents[iUnmilledItemIndex].getDamage() == 0)
             {
                 level.playSound((float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F, "mob.wolf.whine", 0.5F, 2.6F + (level.rand.nextFloat() - level.rand.nextFloat()) * 0.8F);

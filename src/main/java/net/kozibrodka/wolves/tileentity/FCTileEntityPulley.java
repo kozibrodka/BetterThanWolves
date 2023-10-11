@@ -5,8 +5,8 @@
 
 package net.kozibrodka.wolves.tileentity;
 import net.fabricmc.loader.api.FabricLoader;
-import net.kozibrodka.wolves.blocks.FCBlockAnchor;
-import net.kozibrodka.wolves.blocks.FCBlockPulley;
+import net.kozibrodka.wolves.blocks.Anchor;
+import net.kozibrodka.wolves.blocks.Pulley;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.utils.FCUtilsInventory;
 import net.kozibrodka.wolves.utils.FCUtilsMisc;
@@ -117,10 +117,10 @@ public class FCTileEntityPulley extends TileEntityBase
         iUpdateRopeStateCounter--;
         if(iUpdateRopeStateCounter <= 0)
         {
-            boolean bIsRedstoneOn = ((FCBlockPulley) mod_FCBetterThanWolves.fcPulley).IsRedstoneOn(level, x, y, z);
+            boolean bIsRedstoneOn = ((Pulley) mod_FCBetterThanWolves.fcPulley).IsRedstoneOn(level, x, y, z);
             if(!bIsRedstoneOn)
             {
-                boolean bIsOn = ((FCBlockPulley)mod_FCBetterThanWolves.fcPulley).IsBlockOn(level, x, y, z);
+                boolean bIsOn = ((Pulley)mod_FCBetterThanWolves.fcPulley).IsBlockOn(level, x, y, z);
                 if(bIsOn)
                 {
                     AttemptToRetractRope();
@@ -135,12 +135,12 @@ public class FCTileEntityPulley extends TileEntityBase
 
     public boolean IsMechanicallyPowered()
     {
-        return ((FCBlockPulley)mod_FCBetterThanWolves.fcPulley).IsBlockOn(level, x, y, z);
+        return ((Pulley)mod_FCBetterThanWolves.fcPulley).IsBlockOn(level, x, y, z);
     }
 
     public boolean IsRedstonePowered()
     {
-        return ((FCBlockPulley)mod_FCBetterThanWolves.fcPulley).IsRedstoneOn(level, x, y, z);
+        return ((Pulley)mod_FCBetterThanWolves.fcPulley).IsRedstoneOn(level, x, y, z);
     }
 
     public boolean IsRaising()
@@ -166,11 +166,11 @@ public class FCTileEntityPulley extends TileEntityBase
             int iTempid = level.getTileId(x, tempj, z);
             if(iTempid == mod_FCBetterThanWolves.fcAnchor.id)
             {
-                if(((FCBlockAnchor)mod_FCBetterThanWolves.fcAnchor).GetAnchorFacing(level, x, tempj, z) != 1)
+                if(((Anchor)mod_FCBetterThanWolves.fcAnchor).GetAnchorFacing(level, x, tempj, z) != 1)
                 {
                     break;
                 }
-                ((FCBlockAnchor)mod_FCBetterThanWolves.fcAnchor).NotifyAnchorBlockOfAttachedPulleyStateChange(this, level, x, tempj, z);
+                ((Anchor)mod_FCBetterThanWolves.fcAnchor).NotifyAnchorBlockOfAttachedPulleyStateChange(this, level, x, tempj, z);
                 continue;
             }
             if(iTempid != mod_FCBetterThanWolves.fcRopeBlock.id)
@@ -223,9 +223,9 @@ public class FCTileEntityPulley extends TileEntityBase
                         Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).soundHelper.playSound(targetBlock.sounds.getWalkSound(), (float)x + 0.5F, (float)tempj + 0.5F, (float)z + 0.5F, targetBlock.sounds.getVolume() / 4F, targetBlock.sounds.getPitch() * 0.8F);
                         RemoveRopeFromInventory();
                         int iBlockBelowTargetID = level.getTileId(x, tempj - 1, z);
-                        if(iBlockBelowTargetID == mod_FCBetterThanWolves.fcAnchor.id && ((FCBlockAnchor)mod_FCBetterThanWolves.fcAnchor).GetAnchorFacing(level, x, tempj - 1, z) == 1)
+                        if(iBlockBelowTargetID == mod_FCBetterThanWolves.fcAnchor.id && ((Anchor)mod_FCBetterThanWolves.fcAnchor).GetAnchorFacing(level, x, tempj - 1, z) == 1)
                         {
-                            ((FCBlockAnchor)mod_FCBetterThanWolves.fcAnchor).NotifyAnchorBlockOfAttachedPulleyStateChange(this, level, x, tempj - 1, z);
+                            ((Anchor)mod_FCBetterThanWolves.fcAnchor).NotifyAnchorBlockOfAttachedPulleyStateChange(this, level, x, tempj - 1, z);
                         }
                         return true;
                     } else

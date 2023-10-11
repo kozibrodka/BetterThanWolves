@@ -4,8 +4,7 @@
 
 package net.kozibrodka.wolves.render;
 
-import net.kozibrodka.wolves.entity.FCEntityBlockLiftedByPlatform;
-import net.kozibrodka.wolves.utils.FCFakeTextureProvider;
+import net.kozibrodka.wolves.entity.LiftedBlockEntity;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.Rail;
 import net.minecraft.block.RedstoneDust;
@@ -30,7 +29,7 @@ public class FCRenderBlockLiftedByPlatform extends EntityRenderer
                        float f, float f1)
     {
         Level world = entity.level;
-        FCEntityBlockLiftedByPlatform fcentityblockliftedbyplatform = (FCEntityBlockLiftedByPlatform)entity;
+        LiftedBlockEntity fcentityblockliftedbyplatform = (LiftedBlockEntity)entity;
         int i = fcentityblockliftedbyplatform.m_iid;
         int j = fcentityblockliftedbyplatform.m_iBlockMetaData;
         BlockBase block = BlockBase.BY_ID[i];
@@ -49,7 +48,7 @@ public class FCRenderBlockLiftedByPlatform extends EntityRenderer
         }
     }
 
-    public boolean RenderBlockRedstoneWire(Level world, FCEntityBlockLiftedByPlatform fcentityblockliftedbyplatform, RedstoneDust blockredstonewire, int i, double d, double d1, double d2)
+    public boolean RenderBlockRedstoneWire(Level world, LiftedBlockEntity fcentityblockliftedbyplatform, RedstoneDust blockredstonewire, int i, double d, double d1, double d2)
     {
         GL11.glPushMatrix();
         GL11.glDisable(2896 /*GL_LIGHTING*/);
@@ -101,7 +100,7 @@ public class FCRenderBlockLiftedByPlatform extends EntityRenderer
         return true;
     }
 
-    public boolean RenderBlockMinecartTrack(Level world, FCEntityBlockLiftedByPlatform fcentityblockliftedbyplatform, Rail blockrail, int i, double d, double d1, double d2)
+    public boolean RenderBlockMinecartTrack(Level world, LiftedBlockEntity fcentityblockliftedbyplatform, Rail blockrail, int i, double d, double d1, double d2)
     {
         GL11.glPushMatrix();
         GL11.glDisable(2896 /*GL_LIGHTING*/);

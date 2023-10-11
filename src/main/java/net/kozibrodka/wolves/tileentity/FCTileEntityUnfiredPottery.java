@@ -5,7 +5,7 @@
 
 package net.kozibrodka.wolves.tileentity;
 
-import net.kozibrodka.wolves.blocks.FCBlockUnfiredPottery;
+import net.kozibrodka.wolves.blocks.UnfiredPottery;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.utils.FCBlockPos;
 import net.minecraft.block.BlockBase;
@@ -51,7 +51,7 @@ public class FCTileEntityUnfiredPottery extends TileEntityBase
                 {
                     int iTargetid = level.getTileId(x, y, z);
                     BlockBase targetBlock = BlockBase.BY_ID[iTargetid];
-                    ((FCBlockUnfiredPottery)targetBlock).Cook(level, x, y, z);
+                    ((UnfiredPottery)targetBlock).Cook(level, x, y, z);
                     return;
                 }
             } else

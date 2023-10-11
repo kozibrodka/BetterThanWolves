@@ -6,7 +6,7 @@ package net.kozibrodka.wolves.render;
 
 import java.util.List;
 
-import net.kozibrodka.wolves.entity.FCEntityMovingPlatform;
+import net.kozibrodka.wolves.entity.MovingPlatformEntity;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.mixin.BlockRendererAccessor;
 import net.kozibrodka.wolves.utils.FCUtilsRender;
@@ -14,7 +14,6 @@ import net.minecraft.block.BlockBase;
 import net.minecraft.client.render.block.BlockRenderer;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.entity.EntityBase;
-import net.minecraft.entity.FallingBlock;
 import net.minecraft.level.Level;
 import net.minecraft.util.maths.Box;
 import net.minecraft.util.maths.MathHelper;
@@ -42,28 +41,28 @@ public class FCRenderMovingPlatform extends EntityRenderer
         int k = MathHelper.floor(entity.z);
         bindTexture("/terrain.png");
         BlockBase block = mod_FCBetterThanWolves.fcPlatform;
-        List list = entity.level.getEntities(FCEntityMovingPlatform.class, Box.createButWasteMemory(entity.x - 1.0D, entity.y - 0.10000000149011612D, entity.z - 0.10000000149011612D, entity.x - 0.89999997615814209D, entity.y + 0.10000000149011612D, entity.z + 0.10000000149011612D));
+        List list = entity.level.getEntities(MovingPlatformEntity.class, Box.createButWasteMemory(entity.x - 1.0D, entity.y - 0.10000000149011612D, entity.z - 0.10000000149011612D, entity.x - 0.89999997615814209D, entity.y + 0.10000000149011612D, entity.z + 0.10000000149011612D));
         if(list == null || list.size() <= 0)
         {
             block.setBoundingBox(0.0001F, 0.0625F, 0.0001F, 0.0625F, 0.9375F, 0.9999F);
 //            this.localRenderBlocks.method_53(block, world, i, j, k);
             FCUtilsRender.RenderMovingBlock(localRenderBlocks, block, world, i, j, k);
         }
-        list = entity.level.getEntities(FCEntityMovingPlatform.class, Box.createButWasteMemory(entity.x - 0.10000000149011612D, entity.y - 0.10000000149011612D, entity.z + 0.89999997615814209D, entity.x + 0.10000000149011612D, entity.y + 0.10000000149011612D, entity.z + 1.0D));
+        list = entity.level.getEntities(MovingPlatformEntity.class, Box.createButWasteMemory(entity.x - 0.10000000149011612D, entity.y - 0.10000000149011612D, entity.z + 0.89999997615814209D, entity.x + 0.10000000149011612D, entity.y + 0.10000000149011612D, entity.z + 1.0D));
         if(list == null || list.size() <= 0)
         {
             block.setBoundingBox(0.0F, 0.0625F, 0.9375F, 1.0F, 0.9375F, 1.0F);
 //            this.localRenderBlocks.method_53( block, world, i, j, k);
             FCUtilsRender.RenderMovingBlock(localRenderBlocks, block, world, i, j, k);
         }
-        list = entity.level.getEntities(FCEntityMovingPlatform.class, Box.createButWasteMemory(entity.x + 0.89999997615814209D, entity.y - 0.10000000149011612D, entity.z - 0.10000000149011612D, entity.x + 1.0D, entity.y + 0.10000000149011612D, entity.z + 0.10000000149011612D));
+        list = entity.level.getEntities(MovingPlatformEntity.class, Box.createButWasteMemory(entity.x + 0.89999997615814209D, entity.y - 0.10000000149011612D, entity.z - 0.10000000149011612D, entity.x + 1.0D, entity.y + 0.10000000149011612D, entity.z + 0.10000000149011612D));
         if(list == null || list.size() <= 0)
         {
             block.setBoundingBox(0.9375F, 0.0625F, 0.0001F, 0.9999F, 0.9375F, 0.9999F);
 //            this.localRenderBlocks.method_53(block, world, i, j, k);
             FCUtilsRender.RenderMovingBlock(localRenderBlocks, block, world, i, j, k);
         }
-        list = entity.level.getEntities(FCEntityMovingPlatform.class, Box.createButWasteMemory(entity.x - 0.10000000149011612D, entity.y - 0.10000000149011612D, entity.z - 1.0D, entity.x + 0.10000000149011612D, entity.y + 0.10000000149011612D, entity.z - 0.89999997615814209D));
+        list = entity.level.getEntities(MovingPlatformEntity.class, Box.createButWasteMemory(entity.x - 0.10000000149011612D, entity.y - 0.10000000149011612D, entity.z - 1.0D, entity.x + 0.10000000149011612D, entity.y + 0.10000000149011612D, entity.z - 0.89999997615814209D));
         if(list == null || list.size() <= 0)
         {
             block.setBoundingBox(0.0F, 0.0625F, 0.0F, 1.0F, 0.9375F, 0.0625F);

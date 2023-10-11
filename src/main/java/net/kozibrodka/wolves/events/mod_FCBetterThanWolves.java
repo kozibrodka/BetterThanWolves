@@ -5,7 +5,6 @@ import net.kozibrodka.wolves.blocks.*;
 import net.kozibrodka.wolves.entity.*;
 import net.kozibrodka.wolves.glasscfg.BetterThanWolvesCFG;
 import net.kozibrodka.wolves.items.*;
-import net.kozibrodka.wolves.render.*;
 import net.kozibrodka.wolves.tileentity.*;
 import net.kozibrodka.wolves.utils.FCMaterialCement;
 import net.mine_diver.unsafeevents.listener.EventListener;
@@ -14,7 +13,6 @@ import net.minecraft.block.PressurePlateTrigger;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColour;
 import net.minecraft.item.tool.ToolMaterial;
-import net.modificationstation.stationapi.api.client.event.render.entity.EntityRendererRegisterEvent;
 import net.modificationstation.stationapi.api.event.entity.EntityRegister;
 import net.modificationstation.stationapi.api.event.registry.BlockRegistryEvent;
 import net.modificationstation.stationapi.api.event.registry.EntityHandlerRegistryEvent;
@@ -75,11 +73,6 @@ public class mod_FCBetterThanWolves {
         fcTallow = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcTallow")).setTranslationKey(MOD_ID, "fcTallow");
         fcHaft = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcHaft")).setTranslationKey(MOD_ID, "fcHaft");
         fcSteel = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcSteel")).setTranslationKey(MOD_ID, "fcSteel");
-//        fcRefinedPickAxe = new FCItemRefinedPickAxe(Identifier.of(MOD_ID, "fcRefinedPickAxe")).setTranslationKey(MOD_ID, "fcRefinedPickAxe");
-//        fcRefinedShovel = new FCItemRefinedShovel(Identifier.of(MOD_ID, "fcRefinedShovel")).setTranslationKey(MOD_ID, "fcRefinedShovel");
-//        fcRefinedHoe = new FCItemRefinedHoe(Identifier.of(MOD_ID, "fcRefinedHoe")).setTranslationKey(MOD_ID, "fcRefinedHoe");
-//        fcRefinedAxe = new FCItemRefinedAxe(Identifier.of(MOD_ID, "fcRefinedAxe")).setTranslationKey(MOD_ID, "fcRefinedAxe");
-//        fcRefinedSword = new FCItemRefinedSword(Identifier.of(MOD_ID, "fcRefinedSword")).setTranslationKey(MOD_ID, "fcRefinedSword");
         fcRefinedPickAxe = (TemplatePickaxe) new TemplatePickaxe(Identifier.of(MOD_ID, "fcRefinedPickAxe"), ToolMaterial.valueOf("STEEL")).setTranslationKey(MOD_ID, "fcRefinedPickAxe");
         fcRefinedShovel = (TemplateShovel) new TemplateShovel(Identifier.of(MOD_ID, "fcRefinedShovel"), ToolMaterial.valueOf("STEEL")).setTranslationKey(MOD_ID, "fcRefinedShovel");
         fcRefinedHoe = (TemplateHoe) new TemplateHoe(Identifier.of(MOD_ID, "fcRefinedHoe"), ToolMaterial.valueOf("STEEL")).setTranslationKey(MOD_ID, "fcRefinedHoe");
@@ -97,76 +90,75 @@ public class mod_FCBetterThanWolves {
         fcBroadheadArrowhead = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcBroadheadArrowhead")).setTranslationKey(MOD_ID, "fcBroadheadArrowhead");
         fcBroadheadArrow = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcBroadheadArrow")).setTranslationKey(MOD_ID, "fcBroadheadArrow");
         fcCoalDust = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcCoalDust")).setTranslationKey(MOD_ID, "fcCoalDust");
-//         Custom addition for a hopper rework
         soulFilter = new SoulFilter(Identifier.of(MOD_ID, "soul_filter"));
     }
 
     @EventListener
     public void registerBlocks(BlockRegistryEvent event) {
-        fcAnvil = (TemplateBlockBase) new FCBlockAnvil(Identifier.of(MOD_ID, "fcAnvil")).setTranslationKey(MOD_ID, "fcAnvil");
-        fcLightBulbOff = (TemplateBlockBase) new FCBlockLightBulb(Identifier.of(MOD_ID, "fcLightBulbOff")).setTranslationKey(MOD_ID, "fcLightBulbOff");
-        fcLightBulbOn = (TemplateBlockBase) new FCBlockLightBulb(Identifier.of(MOD_ID, "fcLightBulbOn")).setTranslationKey(MOD_ID, "fcLightBulbOn").setLightEmittance(1.0F);
-        fcBBQ = (TemplateBlockBase) new FCBlockBBQ(Identifier.of(MOD_ID, "fcBBQ")).setTranslationKey(MOD_ID, "fcBBQ");
-        fcHopper = (TemplateBlockWithEntity) new FCBlockHopper(Identifier.of(MOD_ID, "fcHopper")).setTranslationKey(MOD_ID, "fcHopper");
-        fcSaw = (TemplateBlockBase) new FCBlockSaw(Identifier.of(MOD_ID, "fcSaw")).setTranslationKey(MOD_ID, "fcSaw");
-        fcPlatform = (TemplateBlockBase) new FCBlockPlatform(Identifier.of(MOD_ID, "fcPlatform")).setTranslationKey(MOD_ID, "fcPlatform");
-        fcBlockOfWicker = (TemplateBlockBase) new FCBlockOfWicker(Identifier.of(MOD_ID, "fcBlockOfWicker"), Material.ORGANIC).setHardness(0.5F).setTranslationKey(MOD_ID, "fcBlockOfWicker").setSounds(BlockBase.GRASS_SOUNDS); //Mango-Pack Addon
-        fcCement = (TemplateBlockWithEntity) new FCBlockCement(Identifier.of(MOD_ID, "fcCement")).setTranslationKey(MOD_ID, "fcCement");
-        fcPulley = (TemplateBlockWithEntity) new FCBlockPulley(Identifier.of(MOD_ID, "fcPulley")).setTranslationKey(MOD_ID, "fcPulley");
+        fcAnvil = (TemplateBlockBase) new Anvil(Identifier.of(MOD_ID, "fcAnvil")).setTranslationKey(MOD_ID, "fcAnvil");
+        fcLightBulbOff = (TemplateBlockBase) new LightBulb(Identifier.of(MOD_ID, "fcLightBulbOff")).setTranslationKey(MOD_ID, "fcLightBulbOff");
+        fcLightBulbOn = (TemplateBlockBase) new LightBulb(Identifier.of(MOD_ID, "fcLightBulbOn")).setTranslationKey(MOD_ID, "fcLightBulbOn").setLightEmittance(1.0F);
+        fcBBQ = (TemplateBlockBase) new Hibachi(Identifier.of(MOD_ID, "fcBBQ")).setTranslationKey(MOD_ID, "fcBBQ");
+        fcHopper = (TemplateBlockWithEntity) new Hopper(Identifier.of(MOD_ID, "fcHopper")).setTranslationKey(MOD_ID, "fcHopper");
+        fcSaw = (TemplateBlockBase) new Saw(Identifier.of(MOD_ID, "fcSaw")).setTranslationKey(MOD_ID, "fcSaw");
+        fcPlatform = (TemplateBlockBase) new Platform(Identifier.of(MOD_ID, "fcPlatform")).setTranslationKey(MOD_ID, "fcPlatform");
+        fcBlockOfWicker = (TemplateBlockBase) new Wicker(Identifier.of(MOD_ID, "fcBlockOfWicker"), Material.ORGANIC).setHardness(0.5F).setTranslationKey(MOD_ID, "fcBlockOfWicker").setSounds(BlockBase.GRASS_SOUNDS); //Mango-Pack Addon
+        fcCement = (TemplateBlockWithEntity) new Cement(Identifier.of(MOD_ID, "fcCement")).setTranslationKey(MOD_ID, "fcCement");
+        fcPulley = (TemplateBlockWithEntity) new Pulley(Identifier.of(MOD_ID, "fcPulley")).setTranslationKey(MOD_ID, "fcPulley");
         fcPressurePlateObsidian = (TemplatePressurePlate) new TemplatePressurePlate(Identifier.of(MOD_ID, "fcPressurePlateObsidian"), 37, PressurePlateTrigger.field_1507, Material.STONE).setTranslationKey(MOD_ID, "fcPressurePlateObsidian").setHardness(0.5F).setBlastResistance(2000F).setSounds(BlockBase.STONE_SOUNDS);
-        fcMoulding = (TemplateBlockBase) new FCBlockMoulding(Identifier.of(MOD_ID, "fcMoulding")).setTranslationKey(MOD_ID, "fcMoulding");
-        fcCorner = (TemplateBlockBase) new FCBlockCorner(Identifier.of(MOD_ID, "fcCorner")).setTranslationKey(MOD_ID, "fcCorner");
-        fcBlockDispenser = (TemplateBlockWithEntity) new FCBlockBlockDispenser(Identifier.of(MOD_ID, "fcBlockDispenser")).setTranslationKey(MOD_ID, "fcBlockDispenser").setHardness(3.5F).setSounds(BlockBase.STONE_SOUNDS).setTranslationKey(MOD_ID,"fcBlockDispenser");
-        fcCauldron = (TemplateBlockWithEntity) new FCBlockCauldron(Identifier.of(MOD_ID, "fcCauldron")).setTranslationKey(MOD_ID, "fcCauldron").setHardness(3.5F).setBlastResistance(10F).setSounds(BlockBase.METAL_SOUNDS).setTranslationKey(MOD_ID,"fcCauldron");
-        fcDetectorRailWood = (TemplateDetectorRail) new FCBlockDetectorRail(Identifier.of(MOD_ID, "fcDetectorRailWood"), 22).setTranslationKey(MOD_ID, "fcDetectorRailWood");
-        fcDetectorRailObsidian = (TemplateDetectorRail) new FCBlockDetectorRail(Identifier.of(MOD_ID, "fcDetectorRailObsidian"), 23).setTranslationKey(MOD_ID, "fcDetectorRailObsidian");
-        fcCompanionCube = (TemplateBlockBase) new FCBlockCompanionCube(Identifier.of(MOD_ID, "fcCompanionCube")).setTranslationKey(MOD_ID, "fcCompanionCube").setHardness(0.4F).setSounds(BlockBase.WOOL_SOUNDS);
-        fcBlockDetector = (TemplateBlockBase) new FCBlockDetectorBlock(Identifier.of(MOD_ID, "fcBlockDetector")).setTranslationKey(MOD_ID, "fcBlockDetector").setHardness(3.5F).setSounds(BlockBase.STONE_SOUNDS).setTranslationKey(MOD_ID,"fcBlockDetector");
-        fcBlockDetectorLogic = (TemplateBlockBase) new FCBlockDetectorLogic(Identifier.of(MOD_ID, "fcBlockDetectorLogic")).setTranslationKey(MOD_ID, "fcBlockDetectorLogic");
-//        fcBlockLens = new FCBlockLens(Identifier.of(MOD_ID, "fcBlockLens")).setTranslationKey(MOD_ID, "fcBlockLens"); //TODO this block is in code, but is not functional?
-        fcHempCrop = (TemplatePlant) new FCBlockHempCrop(Identifier.of(MOD_ID, "fcHempCrop")).setTranslationKey(MOD_ID, "fcHempCrop");
-        fcHandCrank = (TemplateBlockBase) new FCBlockHandCrank(Identifier.of(MOD_ID, "fcHandCrank")).setTranslationKey(MOD_ID, "fcHandCrank");
-        fcMillStone = (TemplateBlockWithEntity) new FCBlockMillStone(Identifier.of(MOD_ID, "fcMillStone")).setTranslationKey(MOD_ID, "fcMillStone");
-        fcAnchor = (TemplateBlockBase) new FCBlockAnchor(Identifier.of(MOD_ID, "fcAnchor")).setTranslationKey(MOD_ID, "fcAnchor");
-        fcRopeBlock = (TemplateBlockBase) new FCBlockRope(Identifier.of(MOD_ID, "fcRopeBlock")).setTranslationKey(MOD_ID, "fcRopeBlock");
-        fcOmniSlab = (TemplateBlockBase) new FCBlockOmniSlab(Identifier.of(MOD_ID, "fcOmniSlab")).setTranslationKey(MOD_ID, "fcOmniSlab");
-        fcAxleBlock = (TemplateBlockBase) new FCBlockAxle(Identifier.of(MOD_ID, "fcAxleBlock")).setTranslationKey(MOD_ID, "fcAxleBlock");
-        fcGearBox = (TemplateBlockBase) new FCBlockGearBox(Identifier.of(MOD_ID, "fcGearBox")).setTranslationKey(MOD_ID, "fcGearBox");
-        fcTurntable = (TemplateBlockWithEntity) new FCBlockTurntable(Identifier.of(MOD_ID, "fcTurntable")).setTranslationKey(MOD_ID, "fcTurntable");
-        fcBellows = (TemplateBlockBase) new FCBlockBellows(Identifier.of(MOD_ID, "fcBellows")).setTranslationKey(MOD_ID, "fcBellows");
-        fcStokedFire = (TemplateFire) new FCBlockStokedFire(Identifier.of(MOD_ID, "fcStokedFire")).setTranslationKey(MOD_ID, "fcStokedFire");
-        fcUnfiredPottery = (TemplateBlockWithEntity) new FCBlockUnfiredPottery(Identifier.of(MOD_ID, "fcUnfiredPottery")).setTranslationKey(MOD_ID, "fcUnfiredPottery");
-        fcCrucible = (TemplateBlockWithEntity) new FCBlockCrucible(Identifier.of(MOD_ID, "fcCrucible")).setTranslationKey(MOD_ID, "fcCrucible");
-        fcPlanter = (TemplateBlockBase) new FCBlockPlanter(Identifier.of(MOD_ID, "fcPlanter")).setTranslationKey(MOD_ID, "fcPlanter");
-        fcVase = (TemplateBlockWithEntity) new FCBlockVase(Identifier.of(MOD_ID, "fcVase")).setTranslationKey(MOD_ID, "fcVase");
+        fcMoulding = (TemplateBlockBase) new Moulding(Identifier.of(MOD_ID, "fcMoulding")).setTranslationKey(MOD_ID, "fcMoulding");
+        fcCorner = (TemplateBlockBase) new Corner(Identifier.of(MOD_ID, "fcCorner")).setTranslationKey(MOD_ID, "fcCorner");
+        fcBlockDispenser = (TemplateBlockWithEntity) new BlockDispenser(Identifier.of(MOD_ID, "fcBlockDispenser")).setTranslationKey(MOD_ID, "fcBlockDispenser").setHardness(3.5F).setSounds(BlockBase.STONE_SOUNDS).setTranslationKey(MOD_ID,"fcBlockDispenser");
+        fcCauldron = (TemplateBlockWithEntity) new Cauldron(Identifier.of(MOD_ID, "fcCauldron")).setTranslationKey(MOD_ID, "fcCauldron").setHardness(3.5F).setBlastResistance(10F).setSounds(BlockBase.METAL_SOUNDS).setTranslationKey(MOD_ID,"fcCauldron");
+        fcDetectorRailWood = (TemplateDetectorRail) new DetectorRailVariants(Identifier.of(MOD_ID, "fcDetectorRailWood"), 22).setTranslationKey(MOD_ID, "fcDetectorRailWood");
+        fcDetectorRailObsidian = (TemplateDetectorRail) new DetectorRailVariants(Identifier.of(MOD_ID, "fcDetectorRailObsidian"), 23).setTranslationKey(MOD_ID, "fcDetectorRailObsidian");
+        fcCompanionCube = (TemplateBlockBase) new CompanionCube(Identifier.of(MOD_ID, "fcCompanionCube")).setTranslationKey(MOD_ID, "fcCompanionCube").setHardness(0.4F).setSounds(BlockBase.WOOL_SOUNDS);
+        fcBlockDetector = (TemplateBlockBase) new DetectorBlock(Identifier.of(MOD_ID, "fcBlockDetector")).setTranslationKey(MOD_ID, "fcBlockDetector").setHardness(3.5F).setSounds(BlockBase.STONE_SOUNDS).setTranslationKey(MOD_ID,"fcBlockDetector");
+        fcBlockDetectorLogic = (TemplateBlockBase) new DetectorLogic(Identifier.of(MOD_ID, "fcBlockDetectorLogic")).setTranslationKey(MOD_ID, "fcBlockDetectorLogic");
+        fcHempCrop = (TemplatePlant) new HempCrop(Identifier.of(MOD_ID, "fcHempCrop")).setTranslationKey(MOD_ID, "fcHempCrop");
+        fcHandCrank = (TemplateBlockBase) new HandCrank(Identifier.of(MOD_ID, "fcHandCrank")).setTranslationKey(MOD_ID, "fcHandCrank");
+        fcMillStone = (TemplateBlockWithEntity) new MillStone(Identifier.of(MOD_ID, "fcMillStone")).setTranslationKey(MOD_ID, "fcMillStone");
+        fcAnchor = (TemplateBlockBase) new Anchor(Identifier.of(MOD_ID, "fcAnchor")).setTranslationKey(MOD_ID, "fcAnchor");
+        fcRopeBlock = (TemplateBlockBase) new Rope(Identifier.of(MOD_ID, "fcRopeBlock")).setTranslationKey(MOD_ID, "fcRopeBlock");
+        fcOmniSlab = (TemplateBlockBase) new OmniSlab(Identifier.of(MOD_ID, "fcOmniSlab")).setTranslationKey(MOD_ID, "fcOmniSlab");
+        fcAxleBlock = (TemplateBlockBase) new Axle(Identifier.of(MOD_ID, "fcAxleBlock")).setTranslationKey(MOD_ID, "fcAxleBlock");
+        fcGearBox = (TemplateBlockBase) new GearBox(Identifier.of(MOD_ID, "fcGearBox")).setTranslationKey(MOD_ID, "fcGearBox");
+        fcTurntable = (TemplateBlockWithEntity) new Turntable(Identifier.of(MOD_ID, "fcTurntable")).setTranslationKey(MOD_ID, "fcTurntable");
+        fcBellows = (TemplateBlockBase) new Bellows(Identifier.of(MOD_ID, "fcBellows")).setTranslationKey(MOD_ID, "fcBellows");
+        fcStokedFire = (TemplateFire) new StokedFire(Identifier.of(MOD_ID, "fcStokedFire")).setTranslationKey(MOD_ID, "fcStokedFire");
+        fcUnfiredPottery = (TemplateBlockWithEntity) new UnfiredPottery(Identifier.of(MOD_ID, "fcUnfiredPottery")).setTranslationKey(MOD_ID, "fcUnfiredPottery");
+        fcCrucible = (TemplateBlockWithEntity) new Crucible(Identifier.of(MOD_ID, "fcCrucible")).setTranslationKey(MOD_ID, "fcCrucible");
+        fcPlanter = (TemplateBlockBase) new Planter(Identifier.of(MOD_ID, "fcPlanter")).setTranslationKey(MOD_ID, "fcPlanter");
+        fcVase = (TemplateBlockWithEntity) new Vase(Identifier.of(MOD_ID, "fcVase")).setTranslationKey(MOD_ID, "fcVase");
+        superiorDetectorBlock = new DetectorBlockButNotCompletelyAwful(Identifier.of(MOD_ID, "superior_detector_block"), Material.DOODADS);
 
         //TODO: Extra (test) - later move into expansion probably
         //TODO: My idea: remove crafting of stone omni plates/ corners, moulding and add grinder as a saw for "stone type" blocks
         //TODO: Omni slabs are really cursed and kinda bad, especially with possible mods that upgrade slabs/stairs to modern (i actually have one in development). I suggest panels instead - would be great addon btw brings.
-        fcPanelNumber1 = (TemplateBlockBase) new FCBlockPanel(Identifier.of(MOD_ID, "fcPanel1"), BlockBase.SAND).setTranslationKey(MOD_ID, "fcPanel1"); //test panels later hide
-        fcPanelNumber2 = (TemplateBlockBase) new FCBlockPanel(Identifier.of(MOD_ID, "fcPanel2"), BlockBase.PUMPKIN).setTranslationKey(MOD_ID, "fcPanel2");
-        fcPanelNumber3 = (TemplateBlockBase) new FCBlockPanel(Identifier.of(MOD_ID, "fcPanel3"), fcCrucible).setTranslationKey(MOD_ID, "fcPanel3");
-        fcPanelNumber4 = (TemplateBlockBase) new FCBlockPanel(Identifier.of(MOD_ID, "fcPanel4"), BlockBase.PORTAL).setTranslationKey(MOD_ID, "fcPanel4");
+        fcPanelNumber1 = (TemplateBlockBase) new Panel(Identifier.of(MOD_ID, "fcPanel1"), BlockBase.SAND).setTranslationKey(MOD_ID, "fcPanel1"); //test panels later hide
+        fcPanelNumber2 = (TemplateBlockBase) new Panel(Identifier.of(MOD_ID, "fcPanel2"), BlockBase.PUMPKIN).setTranslationKey(MOD_ID, "fcPanel2");
+        fcPanelNumber3 = (TemplateBlockBase) new Panel(Identifier.of(MOD_ID, "fcPanel3"), fcCrucible).setTranslationKey(MOD_ID, "fcPanel3");
+        fcPanelNumber4 = (TemplateBlockBase) new Panel(Identifier.of(MOD_ID, "fcPanel4"), BlockBase.PORTAL).setTranslationKey(MOD_ID, "fcPanel4");
     }
 
     @EventListener
     private static void registerEntities(EntityRegister event) {
-        event.register(FCEntityWaterWheel.class, String.valueOf(Identifier.of(MOD_ID, "WaterWheel")));
-        event.register(FCEntityWindMill.class, String.valueOf(Identifier.of(MOD_ID, "WindMill")));
-        event.register(FCEntityBroadheadArrow.class, String.valueOf(Identifier.of(MOD_ID, "BroadheadArrow")));
-        event.register(FCEntityBlockLiftedByPlatform.class, String.valueOf(Identifier.of(MOD_ID, "BlockLiftedByPlatform")));
-        event.register(FCEntityMovingPlatform.class, String.valueOf(Identifier.of(MOD_ID, "MovingPlatform")));
-        event.register(FCEntityMovingAnchor.class, String.valueOf(Identifier.of(MOD_ID, "MovingAnchor")));
+        event.register(WaterWheelEntity.class, String.valueOf(Identifier.of(MOD_ID, "WaterWheel")));
+        event.register(WindMillEntity.class, String.valueOf(Identifier.of(MOD_ID, "WindMill")));
+        event.register(BroadheadArrowEntity.class, String.valueOf(Identifier.of(MOD_ID, "BroadheadArrow")));
+        event.register(LiftedBlockEntity.class, String.valueOf(Identifier.of(MOD_ID, "BlockLiftedByPlatform")));
+        event.register(MovingPlatformEntity.class, String.valueOf(Identifier.of(MOD_ID, "MovingPlatform")));
+        event.register(MovingAnchorEntity.class, String.valueOf(Identifier.of(MOD_ID, "MovingAnchor")));
     }
 
     @EventListener
     private static void registerMobHandlers(EntityHandlerRegistryEvent event) {
-        Registry.register(event.registry, MOD_ID.id("WaterWheel") , FCEntityWaterWheel::new);
-        Registry.register(event.registry, MOD_ID.id("WindMill") , FCEntityWindMill::new);
-        Registry.register(event.registry, MOD_ID.id("BroadheadArrow") , FCEntityBroadheadArrow::new);
-        Registry.register(event.registry, MOD_ID.id("BlockLiftedByPlatform") , FCEntityBlockLiftedByPlatform::new);
-        Registry.register(event.registry, MOD_ID.id("MovingPlatform") , FCEntityMovingPlatform::new);
-        Registry.register(event.registry, MOD_ID.id("MovingAnchor") , FCEntityMovingAnchor::new);
+        Registry.register(event.registry, MOD_ID.id("WaterWheel") , WaterWheelEntity::new);
+        Registry.register(event.registry, MOD_ID.id("WindMill") , WindMillEntity::new);
+        Registry.register(event.registry, MOD_ID.id("BroadheadArrow") , BroadheadArrowEntity::new);
+        Registry.register(event.registry, MOD_ID.id("BlockLiftedByPlatform") , LiftedBlockEntity::new);
+        Registry.register(event.registry, MOD_ID.id("MovingPlatform") , MovingPlatformEntity::new);
+        Registry.register(event.registry, MOD_ID.id("MovingAnchor") , MovingAnchorEntity::new);
     }
 
 
@@ -230,6 +222,7 @@ public class mod_FCBetterThanWolves {
     public static TemplateBlockWithEntity fcCrucible;
     public static TemplateBlockBase fcPlanter;
     public static TemplateBlockWithEntity fcVase;
+    public static DetectorBlockButNotCompletelyAwful superiorDetectorBlock;
 
     public static TemplateBlockBase fcBlockOfWicker; //Mango Pack Addon
     public static TemplateBlockBase fcPanelNumber1;

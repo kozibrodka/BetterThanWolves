@@ -4,9 +4,8 @@
 
 package net.kozibrodka.wolves.gui;
 
-import net.kozibrodka.wolves.container.FCContainerCauldron;
+import net.kozibrodka.wolves.container.CauldronContainer;
 import net.kozibrodka.wolves.tileentity.FCTileEntityCauldron;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.container.ContainerBase;
 import net.minecraft.entity.player.PlayerInventory;
 import org.lwjgl.opengl.GL11;
@@ -17,7 +16,7 @@ public class FCGuiCauldron extends ContainerBase
 
     public FCGuiCauldron(PlayerInventory inventoryplayer, FCTileEntityCauldron fctileentitycauldron)
     {
-        super(new FCContainerCauldron(inventoryplayer, fctileentitycauldron));
+        super(new CauldronContainer(inventoryplayer, fctileentitycauldron));
         containerHeight = 193;
         associatedTileEntityCauldron = fctileentitycauldron;
     }

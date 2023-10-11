@@ -1,9 +1,8 @@
 package net.kozibrodka.wolves.render;
 
-import net.kozibrodka.wolves.entity.FCEntityWindMill;
+import net.kozibrodka.wolves.entity.WindMillEntity;
 import net.kozibrodka.wolves.model.FCModelWindMill;
 import net.minecraft.client.render.entity.EntityRenderer;
-import net.minecraft.client.render.entity.model.EntityModelBase;
 import net.minecraft.entity.EntityBase;
 import net.minecraft.util.maths.MathHelper;
 import org.lwjgl.opengl.GL11;
@@ -20,7 +19,7 @@ public class FCRenderWindMill extends EntityRenderer
     public void render(EntityBase entity, double d, double d1, double d2,
                          float f, float f1)
     {
-        FCEntityWindMill fcentitywindmill = (FCEntityWindMill)entity;
+        WindMillEntity fcentitywindmill = (WindMillEntity)entity;
         GL11.glPushMatrix();
         GL11.glTranslatef((float)d, (float)d1, (float)d2);
         bindTexture("/assets/wolves/stationapi/textures/entity/fcwindmillent.png");

@@ -1,6 +1,6 @@
 package net.kozibrodka.wolves.render;
 
-import net.kozibrodka.wolves.entity.FCEntityWaterWheel;
+import net.kozibrodka.wolves.entity.WaterWheelEntity;
 import net.kozibrodka.wolves.model.FCModelWaterWheel;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.model.EntityModelBase;
@@ -20,7 +20,7 @@ public class FCRenderWaterWheel extends EntityRenderer
     public void render(EntityBase entity, double d, double d1, double d2,
                          float f, float f1)
     {
-        FCEntityWaterWheel fcentitywaterwheel = (FCEntityWaterWheel)entity;
+        WaterWheelEntity fcentitywaterwheel = (WaterWheelEntity)entity;
         GL11.glPushMatrix();
         GL11.glTranslatef((float)d, (float)d1, (float)d2);
         bindTexture("/assets/wolves/stationapi/textures/entity/fcwaterwheelent.png");

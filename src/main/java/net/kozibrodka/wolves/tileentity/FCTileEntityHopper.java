@@ -1,6 +1,6 @@
 package net.kozibrodka.wolves.tileentity;
 
-import net.kozibrodka.wolves.blocks.FCBlockHopper;
+import net.kozibrodka.wolves.blocks.Hopper;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.recipe.HopperHauntingRecipeRegistry;
 import net.kozibrodka.wolves.utils.FCBlockPos;
@@ -122,7 +122,7 @@ public class FCTileEntityHopper extends TileEntityBase
 
     public void tick()
     {
-        if(!((FCBlockHopper) mod_FCBetterThanWolves.fcHopper).IsBlockOn(level, x, y, z)) return;
+        if(!((Hopper) mod_FCBetterThanWolves.fcHopper).IsBlockOn(level, x, y, z)) return;
         if(!bHopperEjectBlocked)
         {
             ejectCounter++;
@@ -206,8 +206,8 @@ public class FCTileEntityHopper extends TileEntityBase
         level.method_202(x, y, z, x, y, z);
         bHopperEjectBlocked = false;
         int iOccupiedStacks = FCUtilsInventory.GetNumOccupiedStacksInSlotRange(this, 0, 17);
-        ((FCBlockHopper)mod_FCBetterThanWolves.fcHopper).SetHopperFull(level, x, y, z, iOccupiedStacks == 18);
-        ((FCBlockHopper)mod_FCBetterThanWolves.fcHopper).SetHasFilter(level, x, y, z, GetFilterType() > 0);
+        ((Hopper)mod_FCBetterThanWolves.fcHopper).SetHopperFull(level, x, y, z, iOccupiedStacks == 18);
+        ((Hopper)mod_FCBetterThanWolves.fcHopper).SetHasFilter(level, x, y, z, GetFilterType() > 0);
     }
 
     public int GetFilterType()
@@ -353,7 +353,7 @@ public class FCTileEntityHopper extends TileEntityBase
 
     public boolean IsEjecting()
     {
-        return ((FCBlockHopper)mod_FCBetterThanWolves.fcHopper).IsBlockOn(level, x, y, z);
+        return ((Hopper)mod_FCBetterThanWolves.fcHopper).IsBlockOn(level, x, y, z);
     }
 
     private void AttemptToEjectStackFromInv()
@@ -526,7 +526,7 @@ public class FCTileEntityHopper extends TileEntityBase
         {
             level.playSound((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, "mob.ghast.scream", 1.0F, level.rand.nextFloat() * 0.4F + 0.8F);
         }
-        ((FCBlockHopper)mod_FCBetterThanWolves.fcHopper).BreakHopper(level, x, y, z);
+        ((Hopper)mod_FCBetterThanWolves.fcHopper).BreakHopper(level, x, y, z);
     }
 
     private boolean SpawnGhast()

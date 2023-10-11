@@ -13,7 +13,7 @@ package net.kozibrodka.wolves.tileentity;
 //            Block, FCCraftingManagerCauldronStoked, BlockFire, FCUtilsMisc, 
 //            FurnaceRecipes, FoodBase
 
-import net.kozibrodka.wolves.blocks.FCBlockCauldron;
+import net.kozibrodka.wolves.blocks.Cauldron;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.recipe.FCCraftingManagerCauldron;
 import net.kozibrodka.wolves.recipe.FCCraftingManagerCauldronStoked;
@@ -105,7 +105,7 @@ public class FCTileEntityCauldron extends TileEntityBase
 
     public void tick()
     {
-        int iFireUnderState = ((FCBlockCauldron) mod_FCBetterThanWolves.fcCauldron).GetFireUnderState(level, x, y, z);
+        int iFireUnderState = ((Cauldron) mod_FCBetterThanWolves.fcCauldron).GetFireUnderState(level, x, y, z);
         if(iFireUnderState > 0)
         {
             if(m_bForceValidateOnUpdate)
@@ -177,7 +177,7 @@ public class FCTileEntityCauldron extends TileEntityBase
 
     public void markDirty()
     {
-        int iFireUnderState = ((FCBlockCauldron)mod_FCBetterThanWolves.fcCauldron).GetFireUnderState(level, x, y, z);
+        int iFireUnderState = ((Cauldron)mod_FCBetterThanWolves.fcCauldron).GetFireUnderState(level, x, y, z);
         ValidateContentsForState(iFireUnderState);
     }
 

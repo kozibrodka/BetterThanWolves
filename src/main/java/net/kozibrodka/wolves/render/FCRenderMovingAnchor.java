@@ -4,7 +4,7 @@
 
 package net.kozibrodka.wolves.render;
 
-import net.kozibrodka.wolves.blocks.FCBlockAnchor;
+import net.kozibrodka.wolves.blocks.Anchor;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.mixin.BlockRendererAccessor;
@@ -43,15 +43,15 @@ public class FCRenderMovingAnchor extends EntityRenderer
         BlockBase block = mod_FCBetterThanWolves.fcAnchor;
         float f3 = 0.5F;
         float f5 = 0.5F;
-        float f7 = FCBlockAnchor.fAnchorBaseHeight;
+        float f7 = Anchor.fAnchorBaseHeight;
         block.setBoundingBox(0.5F - f5, 0.0F, 0.5F - f3, 0.5F + f5, f7, 0.5F + f3);
 //        this.localRenderBlocks.method_53(block, world, i, j, k);
         FCUtilsRender.RenderMovingBlockWithMetadata(localRenderBlocks, block, world, i, j, k, 1);
         f3 = 0.125F;
         f5 = 0.125F;
         f7 = 0.25F;
-        block.setBoundingBox(0.5F - f5, FCBlockAnchor.fAnchorBaseHeight, 0.5F - f3, 0.5F + f5, FCBlockAnchor.fAnchorBaseHeight + f7, 0.5F + f3);
-        ((FCBlockAnchor)mod_FCBetterThanWolves.fcAnchor).getClass();
+        block.setBoundingBox(0.5F - f5, Anchor.fAnchorBaseHeight, 0.5F - f3, 0.5F + f5, Anchor.fAnchorBaseHeight + f7, 0.5F + f3);
+        ((Anchor)mod_FCBetterThanWolves.fcAnchor).getClass();
 //        this.localRenderBlocks.method_53(block,world, i, j, k);
         FCUtilsRender.RenderMovingBlockWithTexture(localRenderBlocks, block, world, i, j, k, TextureListener.anchor_button);
         if(world.getTileId(i, j, k) != mod_FCBetterThanWolves.fcRopeBlock.id)
@@ -59,8 +59,8 @@ public class FCRenderMovingAnchor extends EntityRenderer
             float f4 = 0.062375F;
             float f6 = 0.062375F;
             float f8 = 1.0F;
-            block.setBoundingBox(0.5F - f6, FCBlockAnchor.fAnchorBaseHeight, 0.5F - f4, 0.5F + f6, 1.99F, 0.5F + f4);
-            ((FCBlockAnchor)mod_FCBetterThanWolves.fcAnchor).getClass();
+            block.setBoundingBox(0.5F - f6, Anchor.fAnchorBaseHeight, 0.5F - f4, 0.5F + f6, 1.99F, 0.5F + f4);
+            ((Anchor)mod_FCBetterThanWolves.fcAnchor).getClass();
 //            this.localRenderBlocks.method_53(block, world, i, j, k);
             FCUtilsRender.RenderMovingBlockWithTexture(localRenderBlocks, block, world, i, j, k, TextureListener.rope);
         }

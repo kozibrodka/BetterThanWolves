@@ -4,9 +4,8 @@
 
 package net.kozibrodka.wolves.gui;
 
-import net.kozibrodka.wolves.container.FCContainerBlockDispenser;
+import net.kozibrodka.wolves.container.BlockDispenserContainer;
 import net.kozibrodka.wolves.tileentity.FCTileEntityBlockDispenser;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.container.ContainerBase;
 import net.minecraft.entity.player.PlayerInventory;
 import org.lwjgl.opengl.GL11;
@@ -16,7 +15,7 @@ public class FCGuiBlockDispenser extends ContainerBase
 
     public FCGuiBlockDispenser(PlayerInventory inventoryplayer, FCTileEntityBlockDispenser fctileentityblockdispenser)
     {
-        super(new FCContainerBlockDispenser(inventoryplayer, fctileentityblockdispenser));
+        super(new BlockDispenserContainer(inventoryplayer, fctileentityblockdispenser));
         associatedTileEntityBlockDispenser = fctileentityblockdispenser;
     }
 

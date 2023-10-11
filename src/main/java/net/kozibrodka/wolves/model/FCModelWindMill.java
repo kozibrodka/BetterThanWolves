@@ -1,10 +1,9 @@
 package net.kozibrodka.wolves.model;
 
-import net.kozibrodka.wolves.entity.FCEntityWindMill;
+import net.kozibrodka.wolves.entity.WindMillEntity;
 import net.minecraft.client.model.Cuboid;
 import net.minecraft.client.render.entity.model.EntityModelBase;
 import net.minecraft.entity.animal.Sheep;
-import net.minecraft.util.maths.MathHelper;
 import org.lwjgl.opengl.GL11;
 
 public class FCModelWindMill extends EntityModelBase
@@ -32,7 +31,7 @@ public class FCModelWindMill extends EntityModelBase
 
     }
 
-    public void render(float f, float f1, float f2, float f3, float f4, float f5, FCEntityWindMill fcentitywindmill)
+    public void render(float f, float f1, float f2, float f3, float f4, float f5, WindMillEntity fcentitywindmill)
     {
         for(int i = 0; i < 4; i++)
         {

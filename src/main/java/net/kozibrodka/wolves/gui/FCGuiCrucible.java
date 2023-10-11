@@ -4,9 +4,8 @@
 
 package net.kozibrodka.wolves.gui;
 
-import net.kozibrodka.wolves.container.FCContainerCrucible;
+import net.kozibrodka.wolves.container.CrucibleContainer;
 import net.kozibrodka.wolves.tileentity.FCTileEntityCrucible;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.container.ContainerBase;
 import net.minecraft.entity.player.PlayerInventory;
 import org.lwjgl.opengl.GL11;
@@ -16,7 +15,7 @@ public class FCGuiCrucible extends ContainerBase
 
     public FCGuiCrucible(PlayerInventory inventoryplayer, FCTileEntityCrucible fctileentitycrucible)
     {
-        super(new FCContainerCrucible(inventoryplayer, fctileentitycrucible));
+        super(new CrucibleContainer(inventoryplayer, fctileentitycrucible));
         containerHeight = 193;
         associatedTileEntityCrucible = fctileentitycrucible;
     }

@@ -1,8 +1,8 @@
 
 package net.kozibrodka.wolves.items;
 
-import net.kozibrodka.wolves.blocks.FCBlockAxle;
-import net.kozibrodka.wolves.entity.FCEntityWindMill;
+import net.kozibrodka.wolves.blocks.Axle;
+import net.kozibrodka.wolves.entity.WindMillEntity;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.item.ItemInstance;
@@ -27,7 +27,7 @@ public class FCItemWindMill extends TemplateItemBase
         int iTargetid = world.getTileId(i, j, k);
         if(iTargetid == mod_FCBetterThanWolves.fcAxleBlock.id && !world.isServerSide)
         {
-            int iAxisAlignment = ((FCBlockAxle)mod_FCBetterThanWolves.fcAxleBlock).GetAxisAlignment(world, i, j, k);
+            int iAxisAlignment = ((Axle)mod_FCBetterThanWolves.fcAxleBlock).GetAxisAlignment(world, i, j, k);
             if(iAxisAlignment != 0)
             {
                 boolean bIAligned = false;
@@ -35,9 +35,9 @@ public class FCItemWindMill extends TemplateItemBase
                 {
                     bIAligned = true;
                 }
-                if(FCEntityWindMill.WindMillValidateAreaAroundBlock(world, i, j, k, bIAligned))
+                if(WindMillEntity.WindMillValidateAreaAroundBlock(world, i, j, k, bIAligned))
                 {
-                    world.spawnEntity(new FCEntityWindMill(world, (float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F, bIAligned));
+                    world.spawnEntity(new WindMillEntity(world, (float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F, bIAligned));
                     iteminstance.count--;
                     return true;
                 }

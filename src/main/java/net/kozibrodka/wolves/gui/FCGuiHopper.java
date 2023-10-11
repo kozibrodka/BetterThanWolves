@@ -4,9 +4,8 @@
 
 package net.kozibrodka.wolves.gui;
 
-import net.kozibrodka.wolves.container.FCContainerHopper;
+import net.kozibrodka.wolves.container.HopperContainer;
 import net.kozibrodka.wolves.tileentity.FCTileEntityHopper;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.container.ContainerBase;
 import net.minecraft.entity.player.PlayerInventory;
 import org.lwjgl.opengl.GL11;
@@ -16,7 +15,7 @@ public class FCGuiHopper extends ContainerBase
 
     public FCGuiHopper(PlayerInventory inventoryplayer, FCTileEntityHopper fctileentityhopper)
     {
-        super(new FCContainerHopper(inventoryplayer, fctileentityhopper));
+        super(new HopperContainer(inventoryplayer, fctileentityhopper));
         containerHeight = 193;
         associatedTileEntityHopper = fctileentityhopper;
     }
