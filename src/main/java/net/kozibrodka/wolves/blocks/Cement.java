@@ -7,7 +7,7 @@ package net.kozibrodka.wolves.blocks;
 
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
-import net.kozibrodka.wolves.tileentity.FCTileEntityCement;
+import net.kozibrodka.wolves.tileentity.CementTileEntity;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.render.Tessellator;
@@ -16,7 +16,6 @@ import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.minecraft.tileentity.TileEntityBase;
 import net.minecraft.util.maths.Box;
-import net.modificationstation.stationapi.api.client.model.block.BlockWithInventoryRenderer;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
 import net.modificationstation.stationapi.api.client.texture.atlas.Atlas;
 import net.modificationstation.stationapi.api.client.texture.atlas.Atlases;
@@ -56,7 +55,7 @@ public class Cement extends TemplateBlockWithEntity
 
     protected TileEntityBase createTileEntity()
     {
-        return new FCTileEntityCement();
+        return new CementTileEntity();
     }
 
     public boolean isFullCube()
@@ -293,14 +292,14 @@ public class Cement extends TemplateBlockWithEntity
             return -1;
         } else
         {
-            FCTileEntityCement tileEntity = (FCTileEntityCement)blockAccess.getTileEntity(i, j, k);
+            CementTileEntity tileEntity = (CementTileEntity)blockAccess.getTileEntity(i, j, k);
             return tileEntity.spreadDist;
         }
     }
 
     public void SetCementSpreadDist(Level world, int i, int j, int k, int iSpreadDist)
     {
-        FCTileEntityCement tileEntity = (FCTileEntityCement)world.getTileEntity(i, j, k);
+        CementTileEntity tileEntity = (CementTileEntity)world.getTileEntity(i, j, k);
         tileEntity.spreadDist = iSpreadDist;
         world.updateAdjacentBlocks(i, j, k, id);
         world.method_202(i, j, k, i, j, k);
@@ -318,14 +317,14 @@ public class Cement extends TemplateBlockWithEntity
             return 0;
         } else
         {
-            FCTileEntityCement tileEntity = (FCTileEntityCement)blockAccess.getTileEntity(i, j, k);
+            CementTileEntity tileEntity = (CementTileEntity)blockAccess.getTileEntity(i, j, k);
             return tileEntity.dryTime;
         }
     }
 
     public void SetCementDryTime(Level world, int i, int j, int k, int iDryTime)
     {
-        FCTileEntityCement tileEntity = (FCTileEntityCement)world.getTileEntity(i, j, k);
+        CementTileEntity tileEntity = (CementTileEntity)world.getTileEntity(i, j, k);
         tileEntity.dryTime = iDryTime;
         world.updateAdjacentBlocks(i, j, k, id);
         world.method_202(i, j, k, i, j, k);

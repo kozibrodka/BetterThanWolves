@@ -3,7 +3,7 @@ package net.kozibrodka.wolves.blocks;
 import net.kozibrodka.wolves.container.PulleyContainer;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
-import net.kozibrodka.wolves.tileentity.FCTileEntityPulley;
+import net.kozibrodka.wolves.tileentity.PulleyTileEntity;
 import net.kozibrodka.wolves.utils.*;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.material.Material;
@@ -19,7 +19,7 @@ import net.modificationstation.stationapi.api.template.block.TemplateBlockWithEn
 import java.util.Random;
 
 public class Pulley extends TemplateBlockWithEntity
-    implements FCMechanicalDevice, FCIBlock
+    implements MechanicalDevice, RotatableBlock
 {
 
     public Pulley(Identifier iid)
@@ -40,14 +40,14 @@ public class Pulley extends TemplateBlockWithEntity
 
     public boolean canUse(Level world, int i, int j, int k, PlayerBase entityplayer)
     {
-        FCTileEntityPulley tileEntityPulley = (FCTileEntityPulley)world.getTileEntity(i, j, k);
-        GuiHelper.openGUI(entityplayer, Identifier.of("wolves:openPulley"), (InventoryBase) tileEntityPulley, new PulleyContainer(entityplayer.inventory, (FCTileEntityPulley) tileEntityPulley));
+        PulleyTileEntity tileEntityPulley = (PulleyTileEntity)world.getTileEntity(i, j, k);
+        GuiHelper.openGUI(entityplayer, Identifier.of("wolves:openPulley"), (InventoryBase) tileEntityPulley, new PulleyContainer(entityplayer.inventory, (PulleyTileEntity) tileEntityPulley));
         return true;
     }
 
     protected TileEntityBase createTileEntity()
     {
-        return new FCTileEntityPulley();
+        return new PulleyTileEntity();
     }
 
     public void onBlockPlaced(Level world, int i, int j, int k)
@@ -60,7 +60,7 @@ public class Pulley extends TemplateBlockWithEntity
     {
             TileEntityBase tileEntity = world.getTileEntity(i, j, k);
             if (tileEntity != null) {
-                FCUtilsInventory.EjectInventoryContents(world, i, j, k, (InventoryBase) tileEntity);
+                InventoryHandler.EjectInventoryContents(world, i, j, k, (InventoryBase) tileEntity);
             }
             super.onBlockRemoved(world, i, j, k);
     }
@@ -98,7 +98,7 @@ public class Pulley extends TemplateBlockWithEntity
         }
         if(bStateChanged)
         {
-            ((FCTileEntityPulley)world.getTileEntity(i, j, k)).NotifyPulleyEntityOfBlockStateChange();
+            ((PulleyTileEntity)world.getTileEntity(i, j, k)).NotifyPulleyEntityOfBlockStateChange();
         }
     }
 
@@ -123,7 +123,7 @@ public class Pulley extends TemplateBlockWithEntity
 
     public void Rotate(Level world, int i, int j, int k, boolean bReverse)
     {
-        FCUtilsMisc.DestroyHorizontallyAttachedAxles(world, i, j, k);
+        UnsortedUtils.DestroyHorizontallyAttachedAxles(world, i, j, k);
     }
 
     public boolean CanOutputMechanicalPower()
@@ -140,7 +140,7 @@ public class Pulley extends TemplateBlockWithEntity
     {
         for(int iFacing = 2; iFacing <= 5; iFacing++)
         {
-            FCBlockPos targetPos = new FCBlockPos(i, j, k);
+            BlockPosition targetPos = new BlockPosition(i, j, k);
             targetPos.AddFacingAsOffset(iFacing);
             int iTargetid = world.getTileId(targetPos.i, targetPos.j, targetPos.k);
             if(iTargetid == mod_FCBetterThanWolves.fcAxleBlock.id)
@@ -157,7 +157,7 @@ public class Pulley extends TemplateBlockWithEntity
                 continue;
             }
             BlockBase targetBlock = BlockBase.BY_ID[iTargetid];
-            FCMechanicalDevice device = (FCMechanicalDevice)targetBlock;
+            MechanicalDevice device = (MechanicalDevice)targetBlock;
             if(device.IsOutputtingMechanicalPower(world, targetPos.i, targetPos.j, targetPos.k))
             {
                 return true;

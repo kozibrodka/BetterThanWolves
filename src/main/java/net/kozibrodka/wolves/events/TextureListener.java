@@ -135,12 +135,12 @@ public class TextureListener {
 
     @EventListener
     private static void registerEntityRenderers(EntityRendererRegisterEvent event) {
-        event.renderers.put(WaterWheelEntity.class, new FCRenderWaterWheel());
-        event.renderers.put(WindMillEntity.class, new FCRenderWindMill());
-        event.renderers.put(BroadheadArrowEntity.class, new FCRenderBroadheadArrow());
-        event.renderers.put(LiftedBlockEntity.class, new FCRenderBlockLiftedByPlatform());
-        event.renderers.put(MovingPlatformEntity.class, new FCRenderMovingPlatform());
-        event.renderers.put(MovingAnchorEntity.class, new FCRenderMovingAnchor());
+        event.renderers.put(WaterWheelEntity.class, new WaterWheelRender());
+        event.renderers.put(WindMillEntity.class, new WindMillRender());
+        event.renderers.put(BroadheadArrowEntity.class, new BroadHeadArrowRender());
+        event.renderers.put(LiftedBlockEntity.class, new LiftedBlockRender());
+        event.renderers.put(MovingPlatformEntity.class, new MovingPlatformRender());
+        event.renderers.put(MovingAnchorEntity.class, new MovingAnchorRender());
     }
 
     public static int axle_vertical;

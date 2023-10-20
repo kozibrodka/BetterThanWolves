@@ -4,7 +4,7 @@ package net.kozibrodka.wolves.blocks;
 import net.fabricmc.loader.api.FabricLoader;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
-import net.kozibrodka.wolves.utils.FCIBlock;
+import net.kozibrodka.wolves.utils.RotatableBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.level.BlockView;
@@ -15,7 +15,7 @@ import net.modificationstation.stationapi.api.template.block.TemplateBlockBase;
 import java.util.Random;
 
 public class LightBulb extends TemplateBlockBase
-    implements FCIBlock
+    implements RotatableBlock
 {
 
     public LightBulb(Identifier iid)

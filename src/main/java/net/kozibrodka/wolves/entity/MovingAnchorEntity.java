@@ -4,10 +4,10 @@ import net.kozibrodka.wolves.blocks.Anchor;
 import net.kozibrodka.wolves.blocks.Rope;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.mixin.EntityBaseAccessor;
-import net.kozibrodka.wolves.tileentity.FCTileEntityPulley;
-import net.kozibrodka.wolves.utils.FCBlockPos;
-import net.kozibrodka.wolves.utils.FCUtilsMisc;
-import net.kozibrodka.wolves.utils.FCUtilsWorld;
+import net.kozibrodka.wolves.tileentity.PulleyTileEntity;
+import net.kozibrodka.wolves.utils.BlockPosition;
+import net.kozibrodka.wolves.utils.UnsortedUtils;
+import net.kozibrodka.wolves.utils.ReplaceableBlockChecker;
 import net.minecraft.block.BlockBase;
 import net.minecraft.entity.EntityBase;
 import net.minecraft.entity.Item;
@@ -27,7 +27,7 @@ public class MovingAnchorEntity extends EntityBase
     public MovingAnchorEntity(Level world)
     {
         super(world);
-        associatedPulleyPos = new FCBlockPos();
+        associatedPulleyPos = new BlockPosition();
         field_1593 = true;
         setSize(0.98F, Anchor.fAnchorBaseHeight - 0.02F);
         standingEyeHeight = height / 2.0F;
@@ -37,7 +37,7 @@ public class MovingAnchorEntity extends EntityBase
     }
 
     public MovingAnchorEntity(Level world, double x, double y, double z,
-                              FCBlockPos pulleyPos, int iMovementDirection)
+                              BlockPosition pulleyPos, int iMovementDirection)
     {
         this(world);
         associatedPulleyPos.i = pulleyPos.i;
@@ -114,7 +114,7 @@ public class MovingAnchorEntity extends EntityBase
         {
             return;
         }
-        FCTileEntityPulley tileEntityPulley = null;
+        PulleyTileEntity tileEntityPulley = null;
         int oldJ = MathHelper.floor(y - (double)standingEyeHeight);
         int i = MathHelper.floor(x);
         int k = MathHelper.floor(z);
@@ -123,7 +123,7 @@ public class MovingAnchorEntity extends EntityBase
         int i2BlockAboveID = level.getTileId(i, oldJ + 2, k);
         if(associatedPulleyid == mod_FCBetterThanWolves.fcPulley.id && (iBlockAboveID == mod_FCBetterThanWolves.fcPulley.id || iBlockAboveID == mod_FCBetterThanWolves.fcRopeBlock.id || i2BlockAboveID == mod_FCBetterThanWolves.fcPulley.id || i2BlockAboveID == mod_FCBetterThanWolves.fcRopeBlock.id))
         {
-            tileEntityPulley = (FCTileEntityPulley)level.getTileEntity(associatedPulleyPos.i, associatedPulleyPos.j, associatedPulleyPos.k);
+            tileEntityPulley = (PulleyTileEntity)level.getTileEntity(associatedPulleyPos.i, associatedPulleyPos.j, associatedPulleyPos.k);
             if(velocityY > 0.0D)
             {
                 if(tileEntityPulley.IsLowering())
@@ -207,7 +207,7 @@ public class MovingAnchorEntity extends EntityBase
                 {
                     bStop = true;
                 } else
-                if(!FCUtilsWorld.IsReplaceableBlock(level, i, newJ, k))
+                if(!ReplaceableBlockChecker.IsReplaceableBlock(level, i, newJ, k))
                 {
                     if(!BlockBase.BY_ID[iTargetid].material.isSolid())
                     {
@@ -259,7 +259,7 @@ public class MovingAnchorEntity extends EntityBase
         int j = MathHelper.floor(y);
         int k = MathHelper.floor(z);
         ItemInstance anchorStack = new ItemInstance(mod_FCBetterThanWolves.fcAnchor);
-        FCUtilsMisc.EjectStackWithRandomOffset(level, i, j, k, anchorStack);
+        UnsortedUtils.EjectStackWithRandomOffset(level, i, j, k, anchorStack);
         remove();
     }
 
@@ -358,13 +358,13 @@ public class MovingAnchorEntity extends EntityBase
     {
         boolean bCanPlace = true;
         int iTargetid = level.getTileId(i, j, k);
-        if(!FCUtilsWorld.IsReplaceableBlock(level, i, j, k))
+        if(!ReplaceableBlockChecker.IsReplaceableBlock(level, i, j, k))
         {
             if(iTargetid == mod_FCBetterThanWolves.fcRopeBlock.id)
             {
                 if(!ReturnRopeToPulley())
                 {
-                    FCUtilsMisc.EjectSingleItemWithRandomOffset(level, i, j, k, mod_FCBetterThanWolves.fcRopeItem.id, 0);
+                    UnsortedUtils.EjectSingleItemWithRandomOffset(level, i, j, k, mod_FCBetterThanWolves.fcRopeItem.id, 0);
                 }
             } else
             if(!BlockBase.BY_ID[iTargetid].material.isSolid())
@@ -382,7 +382,7 @@ public class MovingAnchorEntity extends EntityBase
             ((Anchor)mod_FCBetterThanWolves.fcAnchor).SetAnchorFacing(level, i, j, k, 1);
         } else
         {
-            FCUtilsMisc.EjectSingleItemWithRandomOffset(level, i, j, k, mod_FCBetterThanWolves.fcAnchor.id, 0);
+            UnsortedUtils.EjectSingleItemWithRandomOffset(level, i, j, k, mod_FCBetterThanWolves.fcAnchor.id, 0);
         }
         remove();
     }
@@ -392,7 +392,7 @@ public class MovingAnchorEntity extends EntityBase
         int associatedPulleyid = level.getTileId(associatedPulleyPos.i, associatedPulleyPos.j, associatedPulleyPos.k);
         if(associatedPulleyid == mod_FCBetterThanWolves.fcPulley.id)
         {
-            FCTileEntityPulley tileEntityPulley = (FCTileEntityPulley)level.getTileEntity(associatedPulleyPos.i, associatedPulleyPos.j, associatedPulleyPos.k);
+            PulleyTileEntity tileEntityPulley = (PulleyTileEntity)level.getTileEntity(associatedPulleyPos.i, associatedPulleyPos.j, associatedPulleyPos.k);
             if(tileEntityPulley != null)
             {
                 tileEntityPulley.AddRopeToInventory();
@@ -403,6 +403,6 @@ public class MovingAnchorEntity extends EntityBase
     }
 
     public static final float fMovementSpeed = 0.05F;
-    private FCBlockPos associatedPulleyPos;
+    private BlockPosition associatedPulleyPos;
     private double sentVel;
 }

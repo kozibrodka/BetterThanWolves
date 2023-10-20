@@ -5,33 +5,25 @@
 
 package net.kozibrodka.wolves.blocks;
 
-import net.fabricmc.loader.api.FabricLoader;
 import net.kozibrodka.wolves.events.TextureListener;
-import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
-import net.kozibrodka.wolves.itemblocks.FCItemCompanionCube;
-import net.kozibrodka.wolves.utils.FCIBlock;
-import net.kozibrodka.wolves.utils.FCUtilsMisc;
-import net.kozibrodka.wolves.utils.FCUtilsRender;
-import net.minecraft.block.BlockBase;
+import net.kozibrodka.wolves.itemblocks.CompanionCubeItemBlock;
+import net.kozibrodka.wolves.utils.RotatableBlock;
+import net.kozibrodka.wolves.utils.UnsortedUtils;
+import net.kozibrodka.wolves.utils.CustomBlockRendering;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.render.block.BlockRenderer;
 import net.minecraft.entity.Living;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.minecraft.util.maths.Box;
-import net.modificationstation.stationapi.api.block.BlockState;
 import net.modificationstation.stationapi.api.block.HasCustomBlockItemFactory;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithInventoryRenderer;
 import net.modificationstation.stationapi.api.registry.Identifier;
-import net.modificationstation.stationapi.api.state.StateManager;
-import net.modificationstation.stationapi.api.state.property.BooleanProperty;
-import net.modificationstation.stationapi.api.state.property.IntProperty;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockBase;
 
-@HasCustomBlockItemFactory(FCItemCompanionCube.class)
+@HasCustomBlockItemFactory(CompanionCubeItemBlock.class)
 public class CompanionCube extends TemplateBlockBase
-    implements FCIBlock, BlockWithInventoryRenderer
+    implements RotatableBlock, BlockWithInventoryRenderer
 {
 
     public CompanionCube(Identifier iid)
@@ -134,7 +126,7 @@ public class CompanionCube extends TemplateBlockBase
 
     public void onBlockPlaced(Level world, int i, int j, int k, int iFacing)
     {
-        SetFacing(world, i, j, k, FCUtilsMisc.GetOppositeFacing(iFacing));
+        SetFacing(world, i, j, k, UnsortedUtils.GetOppositeFacing(iFacing));
     }
 
     public void afterPlaced(Level world, int i, int j, int k, Living entityliving)
@@ -143,7 +135,7 @@ public class CompanionCube extends TemplateBlockBase
         {
             SpawnHearts(world, i, j, k);
         }
-        int iFacing = FCUtilsMisc.ConvertPlacingEntityOrientationToBlockFacing(entityliving);
+        int iFacing = UnsortedUtils.ConvertPlacingEntityOrientationToBlockFacing(entityliving);
         SetFacing(world, i, j, k, iFacing);
     }
 
@@ -206,7 +198,7 @@ public class CompanionCube extends TemplateBlockBase
     public void Rotate(Level world, int i, int j, int k, boolean bReverse)
     {
         int iFacing = GetFacing(world, i, j, k);
-        int iNewFacing = FCUtilsMisc.RotateFacingAroundJ(iFacing, bReverse);
+        int iNewFacing = UnsortedUtils.RotateFacingAroundJ(iFacing, bReverse);
         if(iNewFacing != iFacing)
         {
             SetFacing(world, i, j, k, iNewFacing);
@@ -260,6 +252,6 @@ public class CompanionCube extends TemplateBlockBase
         {
             this.setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         }
-        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, byte0);
+        CustomBlockRendering.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, byte0);
     }
 }

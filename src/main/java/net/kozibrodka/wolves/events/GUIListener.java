@@ -26,12 +26,12 @@ public class GUIListener {
     public void registerGuiHandlers(GuiHandlerRegistryEvent event) {
         GuiHandlerRegistry registry = event.registry;
 //        registry.registerValueNoMessage(Identifier.of(MOD_ID, "openAnvil"), BiTuple.of(this::openAnvil, TileEntityFreezer::new));
-        registry.registerValueNoMessage(Identifier.of(MOD_ID, "openHooper"), BiTuple.of(this::openHooper, FCTileEntityHopper::new));
-        registry.registerValueNoMessage(Identifier.of(MOD_ID, "openCrucible"), BiTuple.of(this::openCrucible, FCTileEntityCrucible::new));
-        registry.registerValueNoMessage(Identifier.of(MOD_ID, "openMillStone"), BiTuple.of(this::openMillStone, FCTileEntityMillStone::new));
-        registry.registerValueNoMessage(Identifier.of(MOD_ID, "openCauldron"), BiTuple.of(this::openCauldron, FCTileEntityCauldron::new));
-        registry.registerValueNoMessage(Identifier.of(MOD_ID, "openBlockDispenser"), BiTuple.of(this::openBlockDispenser, FCTileEntityBlockDispenser::new));
-        registry.registerValueNoMessage(Identifier.of(MOD_ID, "openPulley"), BiTuple.of(this::openPulley, FCTileEntityPulley::new));
+        registry.registerValueNoMessage(Identifier.of(MOD_ID, "openHooper"), BiTuple.of(this::openHooper, HopperTileEntity::new));
+        registry.registerValueNoMessage(Identifier.of(MOD_ID, "openCrucible"), BiTuple.of(this::openCrucible, CrucibleTileEntity::new));
+        registry.registerValueNoMessage(Identifier.of(MOD_ID, "openMillStone"), BiTuple.of(this::openMillStone, MillStoneTileEntity::new));
+        registry.registerValueNoMessage(Identifier.of(MOD_ID, "openCauldron"), BiTuple.of(this::openCauldron, CauldronTileEntity::new));
+        registry.registerValueNoMessage(Identifier.of(MOD_ID, "openBlockDispenser"), BiTuple.of(this::openBlockDispenser, BlockDispenserTileEntity::new));
+        registry.registerValueNoMessage(Identifier.of(MOD_ID, "openPulley"), BiTuple.of(this::openPulley, PulleyTileEntity::new));
     }
 
 //    @Environment(EnvType.CLIENT)
@@ -40,26 +40,26 @@ public class GUIListener {
 //    }
     @Environment(EnvType.CLIENT)
     public ScreenBase openHooper(PlayerBase player, InventoryBase inventoryBase) {
-        return new FCGuiHopper(player.inventory, (FCTileEntityHopper) inventoryBase);
+        return new HopperGUI(player.inventory, (HopperTileEntity) inventoryBase);
     }
     @Environment(EnvType.CLIENT)
     public ScreenBase openCrucible(PlayerBase player, InventoryBase inventoryBase) {
-        return new FCGuiCrucible(player.inventory, (FCTileEntityCrucible) inventoryBase);
+        return new CrucibleGUI(player.inventory, (CrucibleTileEntity) inventoryBase);
     }
     @Environment(EnvType.CLIENT)
     public ScreenBase openMillStone(PlayerBase player, InventoryBase inventoryBase) {
-        return new FCGuiMillStone(player.inventory, (FCTileEntityMillStone) inventoryBase);
+        return new MillStoneGUI(player.inventory, (MillStoneTileEntity) inventoryBase);
     }
     @Environment(EnvType.CLIENT)
     public ScreenBase openCauldron(PlayerBase player, InventoryBase inventoryBase) {
-        return new FCGuiCauldron(player.inventory, (FCTileEntityCauldron) inventoryBase);
+        return new CauldronGUI(player.inventory, (CauldronTileEntity) inventoryBase);
     }
     @Environment(EnvType.CLIENT)
     public ScreenBase openBlockDispenser(PlayerBase player, InventoryBase inventoryBase) {
-        return new FCGuiBlockDispenser(player.inventory, (FCTileEntityBlockDispenser) inventoryBase);
+        return new BlockDispenserGUI(player.inventory, (BlockDispenserTileEntity) inventoryBase);
     }
     @Environment(EnvType.CLIENT)
     public ScreenBase openPulley(PlayerBase player, InventoryBase inventoryBase) {
-        return new FCGuiPulley(player.inventory, (FCTileEntityPulley) inventoryBase);
+        return new PulleyGUI(player.inventory, (PulleyTileEntity) inventoryBase);
     }
 }

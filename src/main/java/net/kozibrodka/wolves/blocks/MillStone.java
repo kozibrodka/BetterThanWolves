@@ -3,10 +3,10 @@ package net.kozibrodka.wolves.blocks;
 import net.kozibrodka.wolves.container.MillStoneContainer;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
-import net.kozibrodka.wolves.tileentity.FCTileEntityMillStone;
-import net.kozibrodka.wolves.utils.FCBlockPos;
-import net.kozibrodka.wolves.utils.FCMechanicalDevice;
-import net.kozibrodka.wolves.utils.FCUtilsInventory;
+import net.kozibrodka.wolves.tileentity.MillStoneTileEntity;
+import net.kozibrodka.wolves.utils.BlockPosition;
+import net.kozibrodka.wolves.utils.MechanicalDevice;
+import net.kozibrodka.wolves.utils.InventoryHandler;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerBase;
@@ -21,7 +21,7 @@ import net.modificationstation.stationapi.api.template.block.TemplateBlockWithEn
 import java.util.Random;
 
 public class MillStone extends TemplateBlockWithEntity
-    implements FCMechanicalDevice
+    implements MechanicalDevice
 {
 
     public MillStone(Identifier iid)
@@ -69,14 +69,14 @@ public class MillStone extends TemplateBlockWithEntity
 
     public boolean canUse(Level world, int i, int j, int k, PlayerBase entityplayer)
     {
-        FCTileEntityMillStone tileEntityMillStone = (FCTileEntityMillStone)world.getTileEntity(i, j, k);
-        GuiHelper.openGUI(entityplayer, Identifier.of("wolves:openMillStone"), (InventoryBase) tileEntityMillStone, new MillStoneContainer(entityplayer.inventory, (FCTileEntityMillStone) tileEntityMillStone));
+        MillStoneTileEntity tileEntityMillStone = (MillStoneTileEntity)world.getTileEntity(i, j, k);
+        GuiHelper.openGUI(entityplayer, Identifier.of("wolves:openMillStone"), (InventoryBase) tileEntityMillStone, new MillStoneContainer(entityplayer.inventory, (MillStoneTileEntity) tileEntityMillStone));
         return true;
     }
 
     protected TileEntityBase createTileEntity()
     {
-        return new FCTileEntityMillStone();
+        return new MillStoneTileEntity();
     }
 
     public void onScheduledTick(Level world, int i, int j, int k, Random random)
@@ -90,7 +90,7 @@ public class MillStone extends TemplateBlockWithEntity
                 SetBlockOn(world, i, j, k, false);
             } else
             {
-                FCTileEntityMillStone tileEntityMillStone = (FCTileEntityMillStone)world.getTileEntity(i, j, k);
+                MillStoneTileEntity tileEntityMillStone = (MillStoneTileEntity)world.getTileEntity(i, j, k);
                 if(tileEntityMillStone.IsWholeCompanionCubeNextToBeProcessed())
                 {
                     world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "mob.wolf.hurt", 5F, (world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F + 1.0F);
@@ -116,7 +116,7 @@ public class MillStone extends TemplateBlockWithEntity
 
     public void onBlockRemoved(Level world, int i, int j, int k)
     {
-        FCUtilsInventory.EjectInventoryContents(world, i, j, k, (InventoryBase)world.getTileEntity(i, j, k));
+        InventoryHandler.EjectInventoryContents(world, i, j, k, (InventoryBase)world.getTileEntity(i, j, k));
         super.onBlockRemoved(world, i, j, k);
     }
 
@@ -162,7 +162,7 @@ public class MillStone extends TemplateBlockWithEntity
     {
         for(int iFacing = 0; iFacing <= 1; iFacing++)
         {
-            FCBlockPos targetPos = new FCBlockPos(i, j, k);
+            BlockPosition targetPos = new BlockPosition(i, j, k);
             targetPos.AddFacingAsOffset(iFacing);
             int iTargetid = world.getTileId(targetPos.i, targetPos.j, targetPos.k);
             if(iTargetid != mod_FCBetterThanWolves.fcAxleBlock.id)
@@ -178,7 +178,7 @@ public class MillStone extends TemplateBlockWithEntity
 
         for(int iFacing = 2; iFacing <= 5; iFacing++)
         {
-            FCBlockPos targetPos = new FCBlockPos(i, j, k);
+            BlockPosition targetPos = new BlockPosition(i, j, k);
             targetPos.AddFacingAsOffset(iFacing);
             int iTargetid = world.getTileId(targetPos.i, targetPos.j, targetPos.k);
             if(iTargetid != mod_FCBetterThanWolves.fcHandCrank.id)
@@ -186,7 +186,7 @@ public class MillStone extends TemplateBlockWithEntity
                 continue;
             }
             BlockBase targetBlock = BlockBase.BY_ID[iTargetid];
-            FCMechanicalDevice device = (FCMechanicalDevice)targetBlock;
+            MechanicalDevice device = (MechanicalDevice)targetBlock;
             if(device.IsOutputtingMechanicalPower(world, targetPos.i, targetPos.j, targetPos.k))
             {
                 return true;

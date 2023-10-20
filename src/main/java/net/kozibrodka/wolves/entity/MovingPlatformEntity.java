@@ -1,8 +1,8 @@
 package net.kozibrodka.wolves.entity;
 
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
-import net.kozibrodka.wolves.utils.FCUtilsMisc;
-import net.kozibrodka.wolves.utils.FCUtilsWorld;
+import net.kozibrodka.wolves.utils.UnsortedUtils;
+import net.kozibrodka.wolves.utils.ReplaceableBlockChecker;
 import net.minecraft.block.BlockBase;
 import net.minecraft.entity.EntityBase;
 import net.minecraft.entity.Item;
@@ -168,7 +168,7 @@ public class MovingPlatformEntity extends EntityBase
             if(newTopJ != oldTopJ)
             {
                 int iTargetid = level.getTileId(i, newTopJ, k);
-                if(!FCUtilsWorld.IsReplaceableBlock(level, i, newTopJ, k))
+                if(!ReplaceableBlockChecker.IsReplaceableBlock(level, i, newTopJ, k))
                 {
                     if(!BlockBase.BY_ID[iTargetid].material.isSolid())
                     {
@@ -198,7 +198,7 @@ public class MovingPlatformEntity extends EntityBase
             if(oldBottomJ != newBottomJ)
             {
                 int iTargetid = level.getTileId(i, newBottomJ, k);
-                if(!FCUtilsWorld.IsReplaceableBlock(level, i, newBottomJ, k))
+                if(!ReplaceableBlockChecker.IsReplaceableBlock(level, i, newBottomJ, k))
                 {
                     if(!BlockBase.BY_ID[iTargetid].material.isSolid())
                     {
@@ -235,7 +235,7 @@ public class MovingPlatformEntity extends EntityBase
         int j = MathHelper.floor(y);
         int k = MathHelper.floor(z);
         ItemInstance platformStack = new ItemInstance(mod_FCBetterThanWolves.fcPlatform);
-        FCUtilsMisc.EjectStackWithRandomOffset(level, i, j, k, platformStack);
+        UnsortedUtils.EjectStackWithRandomOffset(level, i, j, k, platformStack);
         remove();
     }
 
@@ -306,7 +306,7 @@ public class MovingPlatformEntity extends EntityBase
     {
         boolean moveEntities = true;
         int iTargetid = level.getTileId(i, j, k);
-        if(FCUtilsWorld.IsReplaceableBlock(level, i, j, k))
+        if(ReplaceableBlockChecker.IsReplaceableBlock(level, i, j, k))
         {
             level.setTile(i, j, k, mod_FCBetterThanWolves.fcPlatform.id);
         } else
@@ -325,10 +325,10 @@ public class MovingPlatformEntity extends EntityBase
             level.setTile(i, j, k, mod_FCBetterThanWolves.fcPlatform.id);
         } else
         {
-            FCUtilsMisc.EjectSingleItemWithRandomOffset(level, i, j, k, mod_FCBetterThanWolves.fcPlatform.id, 0);
+            UnsortedUtils.EjectSingleItemWithRandomOffset(level, i, j, k, mod_FCBetterThanWolves.fcPlatform.id, 0);
             moveEntities = false;
         }
-        FCUtilsMisc.PositionAllMoveableEntitiesOutsideOfLocation(level, i, j, k);
+        UnsortedUtils.PositionAllMoveableEntitiesOutsideOfLocation(level, i, j, k);
         remove();
     }
 

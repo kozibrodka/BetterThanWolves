@@ -3,9 +3,8 @@ package net.kozibrodka.wolves.tabs;
 import net.glasslauncher.hmifabric.Utils;
 import net.glasslauncher.hmifabric.tabs.TabWithTexture;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
-import net.kozibrodka.wolves.gui.FCGuiCauldron;
-import net.kozibrodka.wolves.recipe.CraftingManagerCrucible;
-import net.kozibrodka.wolves.recipe.FCCraftingManagerCauldron;
+import net.kozibrodka.wolves.gui.CauldronGUI;
+import net.kozibrodka.wolves.recipe.CrucibleCraftingManager;
 import net.minecraft.block.BlockBase;
 import net.minecraft.client.gui.screen.container.ContainerBase;
 import net.minecraft.item.ItemInstance;
@@ -25,7 +24,7 @@ public class CrucibleTripleRecipeTab extends TabWithTexture {
     private final List<ItemInstance[]> recipesReady;
 
     public CrucibleTripleRecipeTab(ModID tabCreator) {
-        this(tabCreator, new ArrayList<ItemInstance[]>(CraftingManagerCrucible.getInstance().getTripleRecipes()), mod_FCBetterThanWolves.fcCrucible);
+        this(tabCreator, new ArrayList<ItemInstance[]>(CrucibleCraftingManager.getInstance().getTripleRecipes()), mod_FCBetterThanWolves.fcCrucible);
     }
 
     public CrucibleTripleRecipeTab(ModID tabCreator, List<ItemInstance[]> recipesReady, BlockBase tabBlock) {
@@ -104,7 +103,7 @@ public class CrucibleTripleRecipeTab extends TabWithTexture {
 
     @Override
     public Class<? extends ContainerBase> getGuiClass() {
-        return FCGuiCauldron.class;
+        return CauldronGUI.class;
     }
 
     @Override

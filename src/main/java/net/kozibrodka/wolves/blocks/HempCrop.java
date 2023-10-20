@@ -1,26 +1,17 @@
 
 package net.kozibrodka.wolves.blocks;
 
-import net.fabricmc.loader.api.FabricLoader;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
-import net.kozibrodka.wolves.utils.FCISoil;
-import net.kozibrodka.wolves.utils.FCUtilsMisc;
+import net.kozibrodka.wolves.utils.SoilTemplate;
+import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.BlockBase;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Item;
-import net.minecraft.entity.player.PlayerBase;
-import net.minecraft.item.ItemBase;
 import net.minecraft.item.ItemInstance;
-import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
-import net.modificationstation.stationapi.api.block.BlockState;
 import net.modificationstation.stationapi.api.registry.Identifier;
-import net.modificationstation.stationapi.api.state.StateManager;
-import net.modificationstation.stationapi.api.state.property.IntProperty;
 import net.modificationstation.stationapi.api.template.block.TemplatePlant;
 
-import java.util.List;
 import java.util.Random;
 
 public class HempCrop extends TemplatePlant
@@ -78,10 +69,10 @@ public class HempCrop extends TemplatePlant
             {
                 bOnHydratedSoil = true;
             } else
-            if(FCUtilsMisc.CanPlantGrowOnBlock(world, i, j - 1, k, this))
+            if(UnsortedUtils.CanPlantGrowOnBlock(world, i, j - 1, k, this))
             {
                 BlockBase blockBelow = BlockBase.BY_ID[iBlockBelowID];
-                if((blockBelow instanceof FCISoil) && ((FCISoil)blockBelow).IsBlockHydrated(world, i, j - 1, k))
+                if((blockBelow instanceof SoilTemplate) && ((SoilTemplate)blockBelow).IsBlockHydrated(world, i, j - 1, k))
                 {
                     bOnHydratedSoil = true;
                 }

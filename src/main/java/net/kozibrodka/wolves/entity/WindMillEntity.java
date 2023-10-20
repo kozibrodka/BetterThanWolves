@@ -3,7 +3,7 @@ package net.kozibrodka.wolves.entity;
 
 import net.kozibrodka.wolves.blocks.Axle;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
-import net.kozibrodka.wolves.utils.FCUtilsMisc;
+import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.Wool;
 import net.minecraft.entity.EntityBase;
 import net.minecraft.entity.player.PlayerBase;
@@ -347,7 +347,7 @@ public class WindMillEntity extends EntityBase
         } else
         if(level.isAboveGroundCached(iCenterI, iCenterJ, iCenterK))
         {
-            if(FCUtilsMisc.IsBlockBeingPrecipitatedOn(level, iCenterI, 128, iCenterK))
+            if(UnsortedUtils.IsBlockBeingPrecipitatedOn(level, iCenterI, 128, iCenterK))
             {
                 fRotationAmount = -2F;
                 if(iOverpowerTimer < 0)

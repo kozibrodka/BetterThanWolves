@@ -3,9 +3,8 @@ package net.kozibrodka.wolves.tabs;
 import net.glasslauncher.hmifabric.Utils;
 import net.glasslauncher.hmifabric.tabs.TabWithTexture;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
-import net.kozibrodka.wolves.gui.FCGuiCauldron;
-import net.kozibrodka.wolves.recipe.FCCraftingManagerCauldron;
-import net.kozibrodka.wolves.recipe.FCCraftingManagerCauldronStoked;
+import net.kozibrodka.wolves.gui.CauldronGUI;
+import net.kozibrodka.wolves.recipe.CauldronStokedCraftingManager;
 import net.minecraft.block.BlockBase;
 import net.minecraft.client.gui.screen.container.ContainerBase;
 import net.minecraft.item.ItemInstance;
@@ -25,7 +24,7 @@ public class CauldronStokedSingleRecipeTab extends TabWithTexture {
     private final List<ItemInstance[]> recipesReady;
 
     public CauldronStokedSingleRecipeTab(ModID tabCreator) {
-        this(tabCreator, new ArrayList<ItemInstance[]>(FCCraftingManagerCauldronStoked.getInstance().getSingleRecipes()), mod_FCBetterThanWolves.fcCauldron);
+        this(tabCreator, new ArrayList<ItemInstance[]>(CauldronStokedCraftingManager.getInstance().getSingleRecipes()), mod_FCBetterThanWolves.fcCauldron);
     }
 
     public CauldronStokedSingleRecipeTab(ModID tabCreator, List<ItemInstance[]> recipesReady, BlockBase tabBlock) {
@@ -98,7 +97,7 @@ public class CauldronStokedSingleRecipeTab extends TabWithTexture {
 
     @Override
     public Class<? extends ContainerBase> getGuiClass() {
-        return FCGuiCauldron.class;
+        return CauldronGUI.class;
     }
 
     @Override

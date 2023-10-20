@@ -1,6 +1,6 @@
 package net.kozibrodka.wolves.mixin;
 
-import net.kozibrodka.wolves.utils.FCUtilsMisc;
+import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.BlockBase;
 import net.minecraft.level.Level;
 import net.minecraft.level.structure.LargeOak;
@@ -27,7 +27,7 @@ public class LargeOakMixin extends Structure{
 
     @Inject(method = "method_611", at = @At(value = "RETURN", ordinal = 0), cancellable = true)
     private void injected(CallbackInfoReturnable<Boolean> cir) {
-        if(!FCUtilsMisc.CanPlantGrowOnBlock(field_647, field_648[0], field_648[1] - 1, field_648[2], BlockBase.SAPLING))
+        if(!UnsortedUtils.CanPlantGrowOnBlock(field_647, field_648[0], field_648[1] - 1, field_648[2], BlockBase.SAPLING))
         cir.setReturnValue(false);
     }
 

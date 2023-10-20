@@ -1,11 +1,10 @@
 package net.kozibrodka.wolves.recipe;
 
-import net.kozibrodka.wolves.utils.FCRecipeAnvil;
 import net.minecraft.inventory.Crafting;
 import net.minecraft.item.ItemInstance;
 import net.modificationstation.stationapi.api.recipe.StationRecipe;
 
-public class AnvilShapedRecipe implements FCRecipeAnvil, StationRecipe {
+public class AnvilShapedRecipe implements AnvilRecipeTemplate, StationRecipe {
     private int width;
     private int height;
     private ItemInstance[] ingredients;

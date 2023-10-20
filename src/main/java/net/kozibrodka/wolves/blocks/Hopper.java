@@ -9,7 +9,7 @@ import net.kozibrodka.wolves.container.HopperContainer;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.modsupport.AffectedByBellows;
-import net.kozibrodka.wolves.tileentity.FCTileEntityHopper;
+import net.kozibrodka.wolves.tileentity.HopperTileEntity;
 import net.kozibrodka.wolves.utils.*;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.material.Material;
@@ -35,7 +35,7 @@ import java.util.Random;
 
 
 public class Hopper extends TemplateBlockWithEntity
-    implements FCMechanicalDevice, FCIBlock, BlockWithWorldRenderer, BlockWithInventoryRenderer, AffectedByBellows
+    implements MechanicalDevice, RotatableBlock, BlockWithWorldRenderer, BlockWithInventoryRenderer, AffectedByBellows
 {
     public Hopper(Identifier iid)
     {
@@ -99,7 +99,7 @@ public class Hopper extends TemplateBlockWithEntity
         {
             world.method_216(i, j, k, id, getTickrate());
         }
-        ((FCTileEntityHopper)world.getTileEntity(i, j, k)).bHopperEjectBlocked = false;
+        ((HopperTileEntity)world.getTileEntity(i, j, k)).bHopperEjectBlocked = false;
     }
 
     public boolean canUse(Level world, int i, int j, int k, PlayerBase entityplayer)
@@ -116,14 +116,14 @@ public class Hopper extends TemplateBlockWithEntity
 //            return true;
 //        }
 
-        FCTileEntityHopper tileEntityHopper = (FCTileEntityHopper)world.getTileEntity(i, j, k);
-        GuiHelper.openGUI(entityplayer, Identifier.of("wolves:openHooper"), (InventoryBase) tileEntityHopper, new HopperContainer(entityplayer.inventory, (FCTileEntityHopper) tileEntityHopper));
+        HopperTileEntity tileEntityHopper = (HopperTileEntity)world.getTileEntity(i, j, k);
+        GuiHelper.openGUI(entityplayer, Identifier.of("wolves:openHooper"), (InventoryBase) tileEntityHopper, new HopperContainer(entityplayer.inventory, (HopperTileEntity) tileEntityHopper));
         return true;
     }
 
     protected TileEntityBase createTileEntity()
     {
-        return new FCTileEntityHopper();
+        return new HopperTileEntity();
     }
 
     public void onScheduledTick(Level world, int i, int j, int k, Random random)
@@ -147,7 +147,7 @@ public class Hopper extends TemplateBlockWithEntity
 
     public void onBlockRemoved(Level world, int i, int j, int k)
     {
-        FCUtilsInventory.EjectInventoryContents(world, i, j, k, (InventoryBase)world.getTileEntity(i, j, k));
+        InventoryHandler.EjectInventoryContents(world, i, j, k, (InventoryBase)world.getTileEntity(i, j, k));
         super.onBlockRemoved(world, i, j, k);
     }
 
@@ -166,7 +166,7 @@ public class Hopper extends TemplateBlockWithEntity
         collisionList = world.getEntities(Item.class, Box.createButWasteMemory((float)i, (float)j + fHopperHeight, (float)k, (float)(i + 1), (float)j + fHopperHeight + 0.05F, (float)(k + 1)));
         if(collisionList != null && collisionList.size() > 0)
         {
-            FCTileEntityHopper tileEntityHopper = (FCTileEntityHopper)world.getTileEntity(i, j, k);
+            HopperTileEntity tileEntityHopper = (HopperTileEntity)world.getTileEntity(i, j, k);
             for(int listIndex = 0; listIndex < collisionList.size(); listIndex++)
             {
                 Item targetEntityItem = (Item)collisionList.get(listIndex);
@@ -182,7 +182,7 @@ public class Hopper extends TemplateBlockWithEntity
                         {
                             ItemInstance sandItemInstance = new ItemInstance(BlockBase.SAND.id, targetEntityItem.item.count, 0);
                             int iSandSwallowed = 0;
-                            if(FCUtilsInventory.AddItemInstanceToInventoryInSlotRange(tileEntityHopper, sandItemInstance, 0, 17))
+                            if(InventoryHandler.AddItemInstanceToInventoryInSlotRange(tileEntityHopper, sandItemInstance, 0, 17))
                             {
                                 iSandSwallowed = targetEntityItem.item.count;
                                 targetEntityItem.remove();
@@ -201,7 +201,7 @@ public class Hopper extends TemplateBlockWithEntity
                                 world.spawnEntity(flintEntityitem);
                             }
                         } else
-                        if(FCUtilsInventory.AddItemInstanceToInventoryInSlotRange(tileEntityHopper, targetEntityItem.item, 0, 17))
+                        if(InventoryHandler.AddItemInstanceToInventoryInSlotRange(tileEntityHopper, targetEntityItem.item, 0, 17))
                         {
                             world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.pop", 0.25F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                             targetEntityItem.remove();
@@ -337,12 +337,12 @@ public class Hopper extends TemplateBlockWithEntity
     {
         for(int iTemp = 0; iTemp < 2; iTemp++)
         {
-            FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcOmniSlab.id, 1);
+            UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcOmniSlab.id, 1);
         }
 
         for(int iTemp = 0; iTemp < 1; iTemp++)
         {
-            FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcGear.id, 0);
+            UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcGear.id, 0);
         }
 
          world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.explode", 1.0F, 1.25F);
@@ -370,7 +370,7 @@ public class Hopper extends TemplateBlockWithEntity
 
     public void Rotate(Level world, int i, int j, int k, boolean bReverse)
     {
-        FCUtilsMisc.DestroyHorizontallyAttachedAxles(world, i, j, k);
+        UnsortedUtils.DestroyHorizontallyAttachedAxles(world, i, j, k);
     }
 
     public boolean CanOutputMechanicalPower()
@@ -387,7 +387,7 @@ public class Hopper extends TemplateBlockWithEntity
     {
         for(int iFacing = 2; iFacing <= 5; iFacing++)
         {
-            FCBlockPos targetPos = new FCBlockPos(i, j, k);
+            BlockPosition targetPos = new BlockPosition(i, j, k);
             targetPos.AddFacingAsOffset(iFacing);
             int iTargetid = world.getTileId(targetPos.i, targetPos.j, targetPos.k);
             if(iTargetid == mod_FCBetterThanWolves.fcAxleBlock.id)
@@ -404,7 +404,7 @@ public class Hopper extends TemplateBlockWithEntity
                 continue;
             }
             BlockBase targetBlock = BlockBase.BY_ID[iTargetid];
-            FCMechanicalDevice device = (FCMechanicalDevice)targetBlock;
+            MechanicalDevice device = (MechanicalDevice)targetBlock;
             if(device.IsOutputtingMechanicalPower(world, targetPos.i, targetPos.j, targetPos.k))
             {
                 return true;
@@ -448,15 +448,15 @@ public class Hopper extends TemplateBlockWithEntity
         tileRenderer.renderStandardBlock(this, x, y, z);
         this.setBoundingBox(0.3125F, 0.0F, 0.3125F, 0.6875F, 0.25F, 0.6875F);
         tileRenderer.renderStandardBlock(this, x, y, z);
-        FCTileEntityHopper fctileentityhopper = (FCTileEntityHopper)tileView.getTileEntity(x, y, z);
-        int l = FCUtilsInventory.GetNumOccupiedStacksInSlotRange(fctileentityhopper, 0, 17);
+        HopperTileEntity fctileentityhopper = (HopperTileEntity)tileView.getTileEntity(x, y, z);
+        int l = InventoryHandler.GetNumOccupiedStacksInSlotRange(fctileentityhopper, 0, 17);
         if(l > 0)
         {
             float f = (float)l / 18F;
             float f1 = 0.375F;
             float f2 = f1 + 0.0625F + (0.875F - (f1 + 0.0625F)) * f;
             this.setBoundingBox(0.125F, f1, 0.125F, 0.875F, f2, 0.875F);
-            FCUtilsRender.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, TextureListener.filler);
+            CustomBlockRendering.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, TextureListener.filler);
         }
         int i1 = fctileentityhopper.GetFilterType();
         if(i1 > 0)
@@ -488,7 +488,7 @@ public class Hopper extends TemplateBlockWithEntity
                 byte0 = TextureListener.hopper_soulsand; //55
             }
             this.setBoundingBox(0.125F, 0.875F, 0.125F, 0.875F, 0.9375F, 0.875F);
-            FCUtilsRender.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, byte0);
+            CustomBlockRendering.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, byte0);
         }
         setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         return true;
@@ -497,30 +497,30 @@ public class Hopper extends TemplateBlockWithEntity
     @Override
     public void renderInventory(BlockRenderer tileRenderer, int meta) {
         this.setBoundingBox(0.0F, 0.25F, 0.0F, 0.125F, 1.0F, 0.875F);
-        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
+        CustomBlockRendering.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
         this.setBoundingBox(0.0F, 0.25F, 0.875F, 0.875F, 1.0F, 1.0F);
-        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
+        CustomBlockRendering.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
         this.setBoundingBox(0.875F, 0.25F, 0.125F, 1.0F, 1.0F, 1.0F);
-        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
+        CustomBlockRendering.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
         this.setBoundingBox(0.125F, 0.25F, 0.0F, 1.0F, 1.0F, 0.125F);
-        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
+        CustomBlockRendering.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
         this.setBoundingBox(0.125F, 0.25F, 0.125F, 0.875F, 0.375F, 0.875F);
-        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
+        CustomBlockRendering.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
         this.setBoundingBox(0.3125F, 0.0F, 0.3125F, 0.6875F, 0.25F, 0.6875F);
-        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
+        CustomBlockRendering.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
         setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
     }
 
     @Override
-    public void affectBlock(Level world, int i, int j, int k, FCBlockPos tempTargetPos, int facing) {
+    public void affectBlock(Level world, int i, int j, int k, BlockPosition tempTargetPos, int facing) {
         for (int l = 0; l < 2; l++) {
             tempTargetPos.AddFacingAsOffset(facing);
             if (!world.isAir(tempTargetPos.i, tempTargetPos.j, tempTargetPos.k)) return;
         }
         TileEntityBase tileEntityHopper = world.getTileEntity(i, j, k);
         if (tileEntityHopper == null) return;
-        if (!(tileEntityHopper instanceof FCTileEntityHopper)) return;
-        if (((FCTileEntityHopper) tileEntityHopper).GetFilterType() != 6) return;
-        ((FCTileEntityHopper) tileEntityHopper).setInventoryItem(18, new ItemInstance(mod_FCBetterThanWolves.soulFilter, 1));
+        if (!(tileEntityHopper instanceof HopperTileEntity)) return;
+        if (((HopperTileEntity) tileEntityHopper).GetFilterType() != 6) return;
+        ((HopperTileEntity) tileEntityHopper).setInventoryItem(18, new ItemInstance(mod_FCBetterThanWolves.soulFilter, 1));
     }
 }

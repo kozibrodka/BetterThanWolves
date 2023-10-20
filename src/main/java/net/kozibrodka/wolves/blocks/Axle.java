@@ -2,8 +2,8 @@ package net.kozibrodka.wolves.blocks;
 
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
-import net.kozibrodka.wolves.utils.FCBlockPos;
-import net.kozibrodka.wolves.utils.FCUtilsMisc;
+import net.kozibrodka.wolves.utils.BlockPosition;
+import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemBase;
 import net.minecraft.level.BlockView;
@@ -236,13 +236,13 @@ public class Axle extends TemplateBlockBase
     public void PropagatePowerFromSource(Level world, int i, int j, int k, boolean bPowered)
     {
         int iSourceAxis = GetAxisAlignment(world, i, j, k);
-        FCBlockPos tempPos = new FCBlockPos(i, j, k);
+        BlockPosition tempPos = new BlockPosition(i, j, k);
         int iTempPowerLevel = 0;
         if(bPowered)
         {
             iTempPowerLevel = 3;
         }
-        FCBlockPos offsetPos = new FCBlockPos();
+        BlockPosition offsetPos = new BlockPosition();
         switch(iSourceAxis)
         {
         case 0: // '\0'
@@ -306,12 +306,12 @@ public class Axle extends TemplateBlockBase
         {
             for(int iTemp = 0; iTemp < 5; iTemp++)
             {
-                FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcHempFibers.id, 0);
+                UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcHempFibers.id, 0);
             }
 
             for(int iTemp = 0; iTemp < 2; iTemp++)
             {
-                FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, ItemBase.stick.id, 0);
+                UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, ItemBase.stick.id, 0);
             }
 
             world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.explode", 0.2F, 1.25F);
@@ -325,9 +325,9 @@ public class Axle extends TemplateBlockBase
         int iAxis = GetAxisAlignment(world, i, j, k);
         if(iCurrentPower != 3)
         {
-            FCBlockPos potentialSources[] = new FCBlockPos[2];
-            potentialSources[0] = new FCBlockPos(i, j, k);
-            potentialSources[1] = new FCBlockPos(i, j, k);
+            BlockPosition potentialSources[] = new BlockPosition[2];
+            potentialSources[0] = new BlockPosition(i, j, k);
+            potentialSources[1] = new BlockPosition(i, j, k);
             switch(iAxis)
             {
             case 0: // '\0'
@@ -412,9 +412,9 @@ public class Axle extends TemplateBlockBase
     {
         int iCurrentPower = GetPowerLevel(world, i, j, k);
         int iAxis = GetAxisAlignment(world, i, j, k);
-        FCBlockPos potentialSources[] = new FCBlockPos[2];
-        potentialSources[0] = new FCBlockPos(i, j, k);
-        potentialSources[1] = new FCBlockPos(i, j, k);
+        BlockPosition potentialSources[] = new BlockPosition[2];
+        potentialSources[0] = new BlockPosition(i, j, k);
+        potentialSources[1] = new BlockPosition(i, j, k);
         switch(iAxis)
         {
         case 0: // '\0'

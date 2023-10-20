@@ -5,8 +5,9 @@ import net.kozibrodka.wolves.blocks.*;
 import net.kozibrodka.wolves.entity.*;
 import net.kozibrodka.wolves.glasscfg.BetterThanWolvesCFG;
 import net.kozibrodka.wolves.items.*;
+import net.kozibrodka.wolves.items.Rope;
 import net.kozibrodka.wolves.tileentity.*;
-import net.kozibrodka.wolves.utils.FCMaterialCement;
+import net.kozibrodka.wolves.materials.Cement;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.PressurePlateTrigger;
@@ -44,7 +45,7 @@ public class mod_FCBetterThanWolves {
     public void registerItems(ItemRegistryEvent event) {
         ToolMaterialFactory.create("STEEL",3,2250,12F,8);
 
-        fcBucketCement = (TemplateBucket) new FCItemBucketCement(Identifier.of(MOD_ID, "fcBucketCement"), fcCement.id).setTranslationKey(MOD_ID, "fcBucketCement");
+        fcBucketCement = (TemplateBucket) new BucketCement(Identifier.of(MOD_ID, "fcBucketCement"), fcCement.id).setTranslationKey(MOD_ID, "fcBucketCement");
         fcWolfRaw = (TemplateFoodBase) new TemplateFoodBase(Identifier.of(MOD_ID, "fcWolfRaw"),3,false).setTranslationKey(MOD_ID, "fcWolfRaw");
         fcWolfCooked = (TemplateFoodBase) new TemplateFoodBase(Identifier.of(MOD_ID, "fcWolfCooked"),8,false).setTranslationKey(MOD_ID, "fcWolfCooked");
         fcNethercoal = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcNethercoal")).setTranslationKey(MOD_ID, "fcNethercoal");
@@ -55,19 +56,19 @@ public class mod_FCBetterThanWolves {
         fcHempFibers = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcHempFibers")).setTranslationKey(MOD_ID, "fcHempFibers");
         fcScouredLeather = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcScouredLeather")).setTranslationKey(MOD_ID, "fcScouredLeather");
         fcDonut = (TemplateFoodBase) new TemplateFoodBase(Identifier.of(MOD_ID, "fcDonut"),1,false).setTranslationKey(MOD_ID, "fcDonut").setMaxStackSize(12);
-        fcRopeItem = (TemplateItemBase) new FCItemRope(Identifier.of(MOD_ID, "fcRopeItem")).setTranslationKey(MOD_ID, "fcRopeItem");
+        fcRopeItem = (TemplateItemBase) new Rope(Identifier.of(MOD_ID, "fcRopeItem")).setTranslationKey(MOD_ID, "fcRopeItem");
         fcRollersItem = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcRollersItem")).setTranslationKey(MOD_ID, "fcRollersItem");
         fcDung = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcDung")).setTranslationKey(MOD_ID, "fcDung");
-        fcWaterWheelItem = (TemplateItemBase) new FCItemWaterWheel(Identifier.of(MOD_ID, "fcWaterWheelItem")).setTranslationKey(MOD_ID, "fcWaterWheelItem");
+        fcWaterWheelItem = (TemplateItemBase) new WaterWheel(Identifier.of(MOD_ID, "fcWaterWheelItem")).setTranslationKey(MOD_ID, "fcWaterWheelItem");
         fcWindMillBladeItem = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcWindMillBladeItem")).setTranslationKey(MOD_ID, "fcWindMillBladeItem").setMaxStackSize(1);
-        fcWindMillItem = (TemplateItemBase) new FCItemWindMill(Identifier.of(MOD_ID, "fcWindMillItem")).setTranslationKey(MOD_ID, "fcWindMillItem");
+        fcWindMillItem = (TemplateItemBase) new WindMill(Identifier.of(MOD_ID, "fcWindMillItem")).setTranslationKey(MOD_ID, "fcWindMillItem");
         fcHempCloth = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcHempCloth")).setTranslationKey(MOD_ID, "fcHempCloth");
         fcGrate = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcGrate")).setTranslationKey(MOD_ID, "fcGrate");
         fcWicker = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcWicker")).setTranslationKey(MOD_ID, "fcWicker");
         fcTannedLeather = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcTannedLeather")).setTranslationKey(MOD_ID, "fcTannedLeather");
         fcStrap = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcStrap")).setTranslationKey(MOD_ID, "fcStrap");
         fcBelt = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcBelt")).setTranslationKey(MOD_ID, "fcBelt");
-        fcFoulFood = (TemplateItemBase) new FCItemFoulFood(Identifier.of(MOD_ID, "fcFoulFood")).setTranslationKey(MOD_ID, "fcFoulFood");
+        fcFoulFood = (TemplateItemBase) new FoulFood(Identifier.of(MOD_ID, "fcFoulFood")).setTranslationKey(MOD_ID, "fcFoulFood");
         fcWoodBlade = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcWoodBlade")).setTranslationKey(MOD_ID, "fcWoodBlade");
         fcGlue = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcGlue")).setTranslationKey(MOD_ID, "fcGlue");
         fcTallow = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcTallow")).setTranslationKey(MOD_ID, "fcTallow");
@@ -82,11 +83,11 @@ public class mod_FCBetterThanWolves {
         fcHellfireDust = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcHellfireDust")).setTranslationKey(MOD_ID, "fcHellfireDust");
         fcConcentratedHellfire = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcConcentratedHellfire")).setTranslationKey(MOD_ID, "fcConcentratedHellfire");
         fcArmorPlate = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcArmorPlate")).setTranslationKey(MOD_ID, "fcArmorPlate");
-        fcPlateHelm = (TemplateArmour) new FCItemRefinedArmor(Identifier.of(MOD_ID, "fcPlateHelm"), 0).setTranslationKey(MOD_ID, "fcPlateHelm");
-        fcPlateBreastPlate = (TemplateArmour) new FCItemRefinedArmor(Identifier.of(MOD_ID, "fcPlateBreastPlate"), 1).setTranslationKey(MOD_ID, "fcPlateBreastPlate");
-        fcPlateLeggings = (TemplateArmour) new FCItemRefinedArmor(Identifier.of(MOD_ID, "fcPlateLeggings"), 2).setTranslationKey(MOD_ID, "fcPlateLeggings");
-        fcPlateBoots = (TemplateArmour) new FCItemRefinedArmor(Identifier.of(MOD_ID, "fcPlateBoots"), 3).setTranslationKey(MOD_ID, "fcPlateBoots");
-        fcCompositeBow = (TemplateItemBase) new FCItemCompositeBow(Identifier.of(MOD_ID, "fcCompositeBow")).setTranslationKey(MOD_ID, "fcCompositeBow");
+        fcPlateHelm = (TemplateArmour) new RefinedArmour(Identifier.of(MOD_ID, "fcPlateHelm"), 0).setTranslationKey(MOD_ID, "fcPlateHelm");
+        fcPlateBreastPlate = (TemplateArmour) new RefinedArmour(Identifier.of(MOD_ID, "fcPlateBreastPlate"), 1).setTranslationKey(MOD_ID, "fcPlateBreastPlate");
+        fcPlateLeggings = (TemplateArmour) new RefinedArmour(Identifier.of(MOD_ID, "fcPlateLeggings"), 2).setTranslationKey(MOD_ID, "fcPlateLeggings");
+        fcPlateBoots = (TemplateArmour) new RefinedArmour(Identifier.of(MOD_ID, "fcPlateBoots"), 3).setTranslationKey(MOD_ID, "fcPlateBoots");
+        fcCompositeBow = (TemplateItemBase) new CompositeBow(Identifier.of(MOD_ID, "fcCompositeBow")).setTranslationKey(MOD_ID, "fcCompositeBow");
         fcBroadheadArrowhead = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcBroadheadArrowhead")).setTranslationKey(MOD_ID, "fcBroadheadArrowhead");
         fcBroadheadArrow = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcBroadheadArrow")).setTranslationKey(MOD_ID, "fcBroadheadArrow");
         fcCoalDust = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcCoalDust")).setTranslationKey(MOD_ID, "fcCoalDust");
@@ -103,7 +104,7 @@ public class mod_FCBetterThanWolves {
         fcSaw = (TemplateBlockBase) new Saw(Identifier.of(MOD_ID, "fcSaw")).setTranslationKey(MOD_ID, "fcSaw");
         fcPlatform = (TemplateBlockBase) new Platform(Identifier.of(MOD_ID, "fcPlatform")).setTranslationKey(MOD_ID, "fcPlatform");
         fcBlockOfWicker = (TemplateBlockBase) new Wicker(Identifier.of(MOD_ID, "fcBlockOfWicker"), Material.ORGANIC).setHardness(0.5F).setTranslationKey(MOD_ID, "fcBlockOfWicker").setSounds(BlockBase.GRASS_SOUNDS); //Mango-Pack Addon
-        fcCement = (TemplateBlockWithEntity) new Cement(Identifier.of(MOD_ID, "fcCement")).setTranslationKey(MOD_ID, "fcCement");
+        fcCement = (TemplateBlockWithEntity) new net.kozibrodka.wolves.blocks.Cement(Identifier.of(MOD_ID, "fcCement")).setTranslationKey(MOD_ID, "fcCement");
         fcPulley = (TemplateBlockWithEntity) new Pulley(Identifier.of(MOD_ID, "fcPulley")).setTranslationKey(MOD_ID, "fcPulley");
         fcPressurePlateObsidian = (TemplatePressurePlate) new TemplatePressurePlate(Identifier.of(MOD_ID, "fcPressurePlateObsidian"), 37, PressurePlateTrigger.field_1507, Material.STONE).setTranslationKey(MOD_ID, "fcPressurePlateObsidian").setHardness(0.5F).setBlastResistance(2000F).setSounds(BlockBase.STONE_SOUNDS);
         fcMoulding = (TemplateBlockBase) new Moulding(Identifier.of(MOD_ID, "fcMoulding")).setTranslationKey(MOD_ID, "fcMoulding");
@@ -119,7 +120,7 @@ public class mod_FCBetterThanWolves {
         fcHandCrank = (TemplateBlockBase) new HandCrank(Identifier.of(MOD_ID, "fcHandCrank")).setTranslationKey(MOD_ID, "fcHandCrank");
         fcMillStone = (TemplateBlockWithEntity) new MillStone(Identifier.of(MOD_ID, "fcMillStone")).setTranslationKey(MOD_ID, "fcMillStone");
         fcAnchor = (TemplateBlockBase) new Anchor(Identifier.of(MOD_ID, "fcAnchor")).setTranslationKey(MOD_ID, "fcAnchor");
-        fcRopeBlock = (TemplateBlockBase) new Rope(Identifier.of(MOD_ID, "fcRopeBlock")).setTranslationKey(MOD_ID, "fcRopeBlock");
+        fcRopeBlock = (TemplateBlockBase) new net.kozibrodka.wolves.blocks.Rope(Identifier.of(MOD_ID, "fcRopeBlock")).setTranslationKey(MOD_ID, "fcRopeBlock");
         fcOmniSlab = (TemplateBlockBase) new OmniSlab(Identifier.of(MOD_ID, "fcOmniSlab")).setTranslationKey(MOD_ID, "fcOmniSlab");
         fcAxleBlock = (TemplateBlockBase) new Axle(Identifier.of(MOD_ID, "fcAxleBlock")).setTranslationKey(MOD_ID, "fcAxleBlock");
         fcGearBox = (TemplateBlockBase) new GearBox(Identifier.of(MOD_ID, "fcGearBox")).setTranslationKey(MOD_ID, "fcGearBox");
@@ -164,16 +165,16 @@ public class mod_FCBetterThanWolves {
 
     @EventListener
     private static void registerTileEntities(TileEntityRegisterEvent event) {
-        event.register(FCTileEntityMillStone.class, String.valueOf(Identifier.of(MOD_ID, "TileMillStone")));
-        event.register(FCTileEntityCrucible.class, String.valueOf(Identifier.of(MOD_ID, "TileCrucible")));
-        event.register(FCTileEntityCauldron.class, String.valueOf(Identifier.of(MOD_ID, "TileCauldron")));
-        event.register(FCTileEntityPulley.class, String.valueOf(Identifier.of(MOD_ID, "TilePulley")));
-        event.register(FCTileEntityTurntable.class, String.valueOf(Identifier.of(MOD_ID, "TileTurntable")));
-        event.register(FCTileEntityHopper.class, String.valueOf(Identifier.of(MOD_ID, "TileHooper")));
-        event.register(FCTileEntityBlockDispenser.class, String.valueOf(Identifier.of(MOD_ID, "TileDispenser")));
-        event.register(FCTileEntityUnfiredPottery.class, String.valueOf(Identifier.of(MOD_ID, "TilePottery")));
-        event.register(FCTileEntityVase.class, String.valueOf(Identifier.of(MOD_ID, "TileVase")));
-        event.register(FCTileEntityCement.class, String.valueOf(Identifier.of(MOD_ID, "TileCement")));
+        event.register(MillStoneTileEntity.class, String.valueOf(Identifier.of(MOD_ID, "TileMillStone")));
+        event.register(CrucibleTileEntity.class, String.valueOf(Identifier.of(MOD_ID, "TileCrucible")));
+        event.register(CauldronTileEntity.class, String.valueOf(Identifier.of(MOD_ID, "TileCauldron")));
+        event.register(PulleyTileEntity.class, String.valueOf(Identifier.of(MOD_ID, "TilePulley")));
+        event.register(TurntableTileEntity.class, String.valueOf(Identifier.of(MOD_ID, "TileTurntable")));
+        event.register(HopperTileEntity.class, String.valueOf(Identifier.of(MOD_ID, "TileHooper")));
+        event.register(BlockDispenserTileEntity.class, String.valueOf(Identifier.of(MOD_ID, "TileDispenser")));
+        event.register(UnfiredPotteryTileEntity.class, String.valueOf(Identifier.of(MOD_ID, "TilePottery")));
+        event.register(VaseTileEntity.class, String.valueOf(Identifier.of(MOD_ID, "TileVase")));
+        event.register(CementTileEntity.class, String.valueOf(Identifier.of(MOD_ID, "TileCement")));
     }
 
     //TODO EXTRA: Saw animated, Anvil gravity, PANELS/options
@@ -185,7 +186,7 @@ public class mod_FCBetterThanWolves {
     public static boolean fcDisableAxeChanges = false;
     public static boolean fcFaceGearBoxAwayFromPlayer = false;
     public static boolean fcDisableMinecartChanges = false;
-    public static final Material fcCementMaterial = new FCMaterialCement(MaterialColour.STONE);;
+    public static final Material fcCementMaterial = new Cement(MaterialColour.STONE);;
     public static TemplateBlockBase fcAnvil;
     public static TemplateBlockBase fcLightBulbOff;
     public static TemplateBlockBase fcLightBulbOn;

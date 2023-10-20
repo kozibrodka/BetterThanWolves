@@ -1,6 +1,6 @@
 package net.kozibrodka.wolves.container;
 
-import net.kozibrodka.wolves.tileentity.FCTileEntityCauldron;
+import net.kozibrodka.wolves.tileentity.CauldronTileEntity;
 import net.minecraft.container.ContainerBase;
 import net.minecraft.container.slot.Slot;
 import net.minecraft.entity.player.PlayerBase;
@@ -11,7 +11,7 @@ import net.minecraft.item.ItemInstance;
 public class CauldronContainer extends ContainerBase
 {
 
-    public CauldronContainer(InventoryBase playerinventory, FCTileEntityCauldron tileentitycauldron)
+    public CauldronContainer(InventoryBase playerinventory, CauldronTileEntity tileentitycauldron)
     {
         localTileEntityCauldron = tileentitycauldron;
         for(int iRow = 0; iRow < 3; iRow++)
@@ -126,5 +126,5 @@ public class CauldronContainer extends ContainerBase
     private final int iNumCauldronSlotRows = 3;
     private final int iNumCauldronSlotColumns = 9;
     private final int iNumCauldronSlots = 27;
-    private FCTileEntityCauldron localTileEntityCauldron;
+    private CauldronTileEntity localTileEntityCauldron;
 }

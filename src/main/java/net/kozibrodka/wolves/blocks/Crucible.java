@@ -7,10 +7,10 @@ package net.kozibrodka.wolves.blocks;
 
 import net.kozibrodka.wolves.container.CrucibleContainer;
 import net.kozibrodka.wolves.events.TextureListener;
-import net.kozibrodka.wolves.tileentity.FCTileEntityCrucible;
-import net.kozibrodka.wolves.utils.FCIBlock;
-import net.kozibrodka.wolves.utils.FCUtilsInventory;
-import net.kozibrodka.wolves.utils.FCUtilsRender;
+import net.kozibrodka.wolves.tileentity.CrucibleTileEntity;
+import net.kozibrodka.wolves.utils.RotatableBlock;
+import net.kozibrodka.wolves.utils.InventoryHandler;
+import net.kozibrodka.wolves.utils.CustomBlockRendering;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.render.block.BlockRenderer;
@@ -31,7 +31,7 @@ import net.modificationstation.stationapi.api.template.block.TemplateBlockWithEn
 import java.util.List;
 
 public class Crucible extends TemplateBlockWithEntity
-    implements FCIBlock, BlockWithWorldRenderer, BlockWithInventoryRenderer
+    implements RotatableBlock, BlockWithWorldRenderer, BlockWithInventoryRenderer
 {
 
     public Crucible(Identifier iid)
@@ -72,19 +72,19 @@ public class Crucible extends TemplateBlockWithEntity
 //            //ModLoader.getMinecraftInstance().displayGuiScreen(new FCGuiCraftingAnvil(entityplayer.inventory, world, i, j, k));
 //        	return true;
 //        }
-        FCTileEntityCrucible tileEntityCrucible = (FCTileEntityCrucible)world.getTileEntity(i, j, k);
-        GuiHelper.openGUI(entityPlayer, Identifier.of("wolves:openCrucible"), (InventoryBase) tileEntityCrucible, new CrucibleContainer(entityPlayer.inventory, (FCTileEntityCrucible) tileEntityCrucible));
+        CrucibleTileEntity tileEntityCrucible = (CrucibleTileEntity)world.getTileEntity(i, j, k);
+        GuiHelper.openGUI(entityPlayer, Identifier.of("wolves:openCrucible"), (InventoryBase) tileEntityCrucible, new CrucibleContainer(entityPlayer.inventory, (CrucibleTileEntity) tileEntityCrucible));
         return true;
     }
 
     protected TileEntityBase createTileEntity()
     {
-        return new FCTileEntityCrucible();
+        return new CrucibleTileEntity();
     }
 
     public void onBlockRemoved(Level world, int i, int j, int k)
     {
-        FCUtilsInventory.EjectInventoryContents(world, i, j, k, (InventoryBase)world.getTileEntity(i, j, k));
+        InventoryHandler.EjectInventoryContents(world, i, j, k, (InventoryBase)world.getTileEntity(i, j, k));
         super.onBlockRemoved(world, i, j, k);
     }
 
@@ -99,7 +99,7 @@ public class Crucible extends TemplateBlockWithEntity
         collisionList = world.getEntities(Item.class, Box.createButWasteMemory((float)i, (double)(float)j + 0.99000000953674316D, (float)k, (float)(i + 1), (double)(float)j + 0.99000000953674316D + 0.05000000074505806D, (float)(k + 1)));
         if(collisionList != null && collisionList.size() > 0)
         {
-            FCTileEntityCrucible tileEntityCrucible = (FCTileEntityCrucible)world.getTileEntity(i, j, k);
+            CrucibleTileEntity tileEntityCrucible = (CrucibleTileEntity)world.getTileEntity(i, j, k);
             for(int listIndex = 0; listIndex < collisionList.size(); listIndex++)
             {
                 Item targetEntityItem = (Item)collisionList.get(listIndex);
@@ -107,7 +107,7 @@ public class Crucible extends TemplateBlockWithEntity
                 {
                     continue;
                 }
-                if(FCUtilsInventory.AddItemInstanceToInventory(tileEntityCrucible, targetEntityItem.item))
+                if(InventoryHandler.AddItemInstanceToInventory(tileEntityCrucible, targetEntityItem.item))
                 {
                      world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.pop", 0.25F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                     targetEntityItem.remove();
@@ -183,8 +183,8 @@ public class Crucible extends TemplateBlockWithEntity
         tileRenderer.renderStandardBlock(this, x, y, z);
         this.setBoundingBox(0.125F, 0.125F, 0.0F, 1.0F, 0.875F, 0.125F);
         tileRenderer.renderStandardBlock(this, x, y, z);
-        FCTileEntityCrucible fctileentitycrucible = (FCTileEntityCrucible)tileView.getTileEntity(x, y, z);
-        int l = FCUtilsInventory.GetNumOccupiedStacks(fctileentitycrucible);
+        CrucibleTileEntity fctileentitycrucible = (CrucibleTileEntity)tileView.getTileEntity(x, y, z);
+        int l = InventoryHandler.GetNumOccupiedStacks(fctileentitycrucible);
         if(l > 0)
         {
             float f = (float)l / 27F;
@@ -194,11 +194,11 @@ public class Crucible extends TemplateBlockWithEntity
             if(fctileentitycrucible.m_bOverStokedFire)
             {
 //                MinecraftForgeClient.unbindTexture();
-                FCUtilsRender.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, 237);
+                CustomBlockRendering.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, 237);
 //                MinecraftForgeClient.bindTexture(getTextureFile());
             } else
             {
-                FCUtilsRender.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, TextureListener.filler);
+                CustomBlockRendering.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, TextureListener.filler);
             }
         }
         setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 0.99F, 1.0F);
@@ -208,23 +208,23 @@ public class Crucible extends TemplateBlockWithEntity
     @Override
     public void renderInventory(BlockRenderer tileRenderer, int meta) {
         this.setBoundingBox(0.0625F, 0.0F, 0.0625F, 0.1875F, 1.0F, 0.8125F);
-        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
+        CustomBlockRendering.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
         this.setBoundingBox(0.0625F, 0.0F, 0.8125F, 0.8125F, 1.0F, 0.9375F);
-        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
+        CustomBlockRendering.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
         this.setBoundingBox(0.8125F, 0.0F, 0.1875F, 0.9375F, 1.0F, 0.9375F);
-        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
+        CustomBlockRendering.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
         this.setBoundingBox(0.1875F, 0.0F, 0.0625F, 0.9375F, 1.0F, 0.1875F);
-        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
+        CustomBlockRendering.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
         this.setBoundingBox(0.1875F, 0.0F, 0.1875F, 0.8125F, 0.125F, 0.8125F);
-        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
+        CustomBlockRendering.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
         this.setBoundingBox(0.0F, 0.125F, 0.0F, 0.125F, 0.875F, 0.875F);
-        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
+        CustomBlockRendering.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
         this.setBoundingBox(0.0F, 0.125F, 0.875F, 0.875F, 0.875F, 1.0F);
-        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
+        CustomBlockRendering.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
         this.setBoundingBox(0.875F, 0.125F, 0.125F, 1.0F, 0.875F, 1.0F);
-        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
+        CustomBlockRendering.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
         this.setBoundingBox(0.125F, 0.125F, 0.0F, 1.0F, 0.875F, 0.125F);
-        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
+        CustomBlockRendering.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
         setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
     }
 }

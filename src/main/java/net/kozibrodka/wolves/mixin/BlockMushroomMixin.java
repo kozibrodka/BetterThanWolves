@@ -1,7 +1,6 @@
 package net.kozibrodka.wolves.mixin;
 
-import net.kozibrodka.wolves.utils.FCUtilsMisc;
-import net.minecraft.block.BlockBase;
+import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.Mushroom;
 import net.minecraft.block.Plant;
 import net.minecraft.level.Level;
@@ -18,6 +17,6 @@ public class BlockMushroomMixin extends Plant {
 
     @Inject(method = "canGrow", at = @At(value = "RETURN", ordinal = 0), cancellable = true)
     private void injected(Level arg, int i, int j, int k, CallbackInfoReturnable<Boolean> cir) {
-        cir.setReturnValue(arg.getLightLevel(i, j, k) < 13 && (this.canPlantOnTopOf(arg.getTileId(i, j - 1, k)) || FCUtilsMisc.CanPlantGrowOnBlock(arg, i, j - 1, k, this)));
+        cir.setReturnValue(arg.getLightLevel(i, j, k) < 13 && (this.canPlantOnTopOf(arg.getTileId(i, j - 1, k)) || UnsortedUtils.CanPlantGrowOnBlock(arg, i, j - 1, k, this)));
     }
 }

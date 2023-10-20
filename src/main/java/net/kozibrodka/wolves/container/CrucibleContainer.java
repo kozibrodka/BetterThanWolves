@@ -1,6 +1,6 @@
 package net.kozibrodka.wolves.container;
 
-import net.kozibrodka.wolves.tileentity.FCTileEntityCrucible;
+import net.kozibrodka.wolves.tileentity.CrucibleTileEntity;
 import net.minecraft.container.ContainerBase;
 import net.minecraft.container.slot.Slot;
 import net.minecraft.entity.player.PlayerBase;
@@ -11,7 +11,7 @@ import net.minecraft.item.ItemInstance;
 public class CrucibleContainer extends ContainerBase
 {
 
-    public CrucibleContainer(InventoryBase playerinventory, FCTileEntityCrucible tileEntityCrucible)
+    public CrucibleContainer(InventoryBase playerinventory, CrucibleTileEntity tileEntityCrucible)
     {
         localTileEntityCrucible = tileEntityCrucible;
         for(int iRow = 0; iRow < 3; iRow++)
@@ -126,5 +126,5 @@ public class CrucibleContainer extends ContainerBase
     private final int iNumCrucibleSlotRows = 3;
     private final int iNumCrucibleSlotColumns = 9;
     private final int iNumCrucibleSlots = 27;
-    private FCTileEntityCrucible localTileEntityCrucible;
+    private CrucibleTileEntity localTileEntityCrucible;
 }

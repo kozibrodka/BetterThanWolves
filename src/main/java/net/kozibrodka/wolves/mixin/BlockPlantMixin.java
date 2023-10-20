@@ -1,7 +1,7 @@
 package net.kozibrodka.wolves.mixin;
 
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
-import net.kozibrodka.wolves.utils.FCUtilsMisc;
+import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.Plant;
 import net.minecraft.block.material.Material;
@@ -24,7 +24,7 @@ public class BlockPlantMixin extends BlockBase {
 
     @Inject(method = "canPlaceAt", at = @At(value = "RETURN"), cancellable = true)
     private void injected(Level arg, int i, int j, int k, CallbackInfoReturnable<Boolean> cir) {
-        cir.setReturnValue(super.canPlaceAt(arg, i, j, k) && (this.canPlantOnTopOf2(arg.getTileId(i, j - 1, k)) || FCUtilsMisc.CanPlantGrowOnBlock(arg, i, j - 1, k, this)));
+        cir.setReturnValue(super.canPlaceAt(arg, i, j, k) && (this.canPlantOnTopOf2(arg.getTileId(i, j - 1, k)) || UnsortedUtils.CanPlantGrowOnBlock(arg, i, j - 1, k, this)));
     }
 
     @Inject(method = "canPlantOnTopOf", at = @At(value = "RETURN"), cancellable = true)

@@ -3,11 +3,11 @@ package net.kozibrodka.wolves.blocks;
 
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
-import net.kozibrodka.wolves.itemblocks.FCItemUnfiredPottery;
-import net.kozibrodka.wolves.tileentity.FCTileEntityUnfiredPottery;
-import net.kozibrodka.wolves.utils.FCIBlock;
-import net.kozibrodka.wolves.utils.FCUtilsMisc;
-import net.kozibrodka.wolves.utils.FCUtilsRender;
+import net.kozibrodka.wolves.itemblocks.UnfiredPotteryItemBlock;
+import net.kozibrodka.wolves.tileentity.UnfiredPotteryTileEntity;
+import net.kozibrodka.wolves.utils.RotatableBlock;
+import net.kozibrodka.wolves.utils.UnsortedUtils;
+import net.kozibrodka.wolves.utils.CustomBlockRendering;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.render.block.BlockRenderer;
@@ -21,9 +21,9 @@ import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldR
 import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockWithEntity;
 
-@HasCustomBlockItemFactory(FCItemUnfiredPottery.class)
+@HasCustomBlockItemFactory(UnfiredPotteryItemBlock.class)
 public class UnfiredPottery extends TemplateBlockWithEntity
-   implements FCIBlock, BlockWithWorldRenderer, BlockWithInventoryRenderer
+   implements RotatableBlock, BlockWithWorldRenderer, BlockWithInventoryRenderer
 {
 
     public UnfiredPottery(Identifier iid)
@@ -90,7 +90,7 @@ public class UnfiredPottery extends TemplateBlockWithEntity
 
     protected TileEntityBase createTileEntity()
     {
-        return new FCTileEntityUnfiredPottery();
+        return new UnfiredPotteryTileEntity();
     }
 
     public int GetFacing(BlockView iBlockAccess, int i, int j, int l)
@@ -137,7 +137,7 @@ public class UnfiredPottery extends TemplateBlockWithEntity
         world.setTile(i, j, k, 0);
         if(iNewid > 0)
         {
-            FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, iNewid, 0);
+            UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, iNewid, 0);
         }
     }
 
@@ -170,7 +170,7 @@ public class UnfiredPottery extends TemplateBlockWithEntity
     @Override
     public boolean renderWorld(BlockRenderer tileRenderer, BlockView tileView, int x, int y, int z) {
         updateBoundingBox(tileView, x, y, z);
-        FCTileEntityUnfiredPottery fctileentityunfiredpottery = (FCTileEntityUnfiredPottery)tileView.getTileEntity(x, y, z);
+        UnfiredPotteryTileEntity fctileentityunfiredpottery = (UnfiredPotteryTileEntity)tileView.getTileEntity(x, y, z);
         int l = TextureListener.unfiredpottery;
         if(fctileentityunfiredpottery != null && fctileentityunfiredpottery.IsCooking())
         {
@@ -201,23 +201,23 @@ public class UnfiredPottery extends TemplateBlockWithEntity
     public boolean RenderUnfiredCrucible(BlockRenderer renderblocks, BlockView iblockaccess, int i, int j, int k, int l)
     {
         this.setBoundingBox(0.0625F, 0.0F, 0.0625F, 0.1875F, 1.0F, 0.8125F);
-        FCUtilsRender.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         this.setBoundingBox(0.0625F, 0.0F, 0.8125F, 0.8125F, 1.0F, 0.9375F);
-        FCUtilsRender.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         this.setBoundingBox(0.8125F, 0.0F, 0.1875F, 0.9375F, 1.0F, 0.9375F);
-        FCUtilsRender.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         this.setBoundingBox(0.1875F, 0.0F, 0.0625F, 0.9375F, 1.0F, 0.1875F);
-        FCUtilsRender.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         this.setBoundingBox(0.1875F, 0.0F, 0.1875F, 0.8125F, 0.125F, 0.8125F);
-        FCUtilsRender.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         this.setBoundingBox(0.0F, 0.125F, 0.0F, 0.125F, 0.875F, 0.875F);
-        FCUtilsRender.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         this.setBoundingBox(0.0F, 0.125F, 0.875F, 0.875F, 0.875F, 1.0F);
-        FCUtilsRender.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         this.setBoundingBox(0.875F, 0.125F, 0.125F, 1.0F, 0.875F, 1.0F);
-        FCUtilsRender.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         this.setBoundingBox(0.125F, 0.125F, 0.0F, 1.0F, 0.875F, 0.125F);
-        FCUtilsRender.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         updateBoundingBox(iblockaccess, i, j, k);
         return true;
     }
@@ -225,23 +225,23 @@ public class UnfiredPottery extends TemplateBlockWithEntity
     public boolean RenderUnfiredPot(BlockRenderer renderblocks, BlockView iblockaccess, int i, int j, int k, int l)
     {
         this.setBoundingBox(0.125F, 0.0F, 0.125F, 0.25F, 0.6875F, 0.75F);
-        FCUtilsRender.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         this.setBoundingBox(0.125F, 0.0F, 0.75F, 0.75F, 0.6875F, 0.875F);
-        FCUtilsRender.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         this.setBoundingBox(0.75F, 0.0F, 0.25F, 0.875F, 0.6875F, 0.875F);
-        FCUtilsRender.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         this.setBoundingBox(0.25F, 0.0F, 0.125F, 0.875F, 0.6875F, 0.25F);
-        FCUtilsRender.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         this.setBoundingBox(0.25F, 0.0F, 0.25F, 0.75F, 0.125F, 0.75F);
-        FCUtilsRender.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         this.setBoundingBox(0.0F, 0.6875F, 0.0F, 0.125F, 1.0F, 0.875F);
-        FCUtilsRender.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         this.setBoundingBox(0.0F, 0.6875F, 0.875F, 0.875F, 1.0F, 1.0F);
-        FCUtilsRender.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         this.setBoundingBox(0.875F, 0.6875F, 0.125F, 1.0F, 1.0F, 1.0F);
-        FCUtilsRender.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         this.setBoundingBox(0.125F, 0.6875F, 0.0F, 1.0F, 1.0F, 0.125F);
-        FCUtilsRender.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         updateBoundingBox(iblockaccess, i, j, k);
         return true;
     }
@@ -249,15 +249,15 @@ public class UnfiredPottery extends TemplateBlockWithEntity
     public boolean RenderUnfiredVase(BlockRenderer renderblocks, BlockView iblockaccess, int i, int j, int k, int l)
     {
         this.setBoundingBox(0.25F, 0.0F, 0.25F, 0.75F, 0.0625F, 0.75F);
-        FCUtilsRender.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         this.setBoundingBox(0.1875F, 0.0625F, 0.1875F, 0.8125F, 0.4375F, 0.8125F);
-        FCUtilsRender.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         this.setBoundingBox(0.25F, 0.4375F, 0.25F, 0.75F, 0.5F, 0.75F);
-        FCUtilsRender.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         this.setBoundingBox(0.375F, 0.5F, 0.375F, 0.625F, 0.9375F, 0.625F);
-        FCUtilsRender.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         this.setBoundingBox(0.3125F, 0.9375F, 0.3125F, 0.6875F, 1.0F, 0.6875F);
-        FCUtilsRender.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         updateBoundingBox(iblockaccess, i, j, k);
         return true;
     }
@@ -280,7 +280,7 @@ public class UnfiredPottery extends TemplateBlockWithEntity
                 break;
 
             default:
-                FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+                CustomBlockRendering.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
                 break;
         }
     }
@@ -288,61 +288,61 @@ public class UnfiredPottery extends TemplateBlockWithEntity
     public void RenderUnfiredCrucibleInvBlock(BlockRenderer renderblocks, BlockBase block, int i)
     {
         this.setBoundingBox(0.0625F, 0.0F, 0.0625F, 0.1875F, 1.0F, 0.8125F);
-        FCUtilsRender.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
         this.setBoundingBox(0.0625F, 0.0F, 0.8125F, 0.8125F, 1.0F, 0.9375F);
-        FCUtilsRender.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
         this.setBoundingBox(0.8125F, 0.0F, 0.1875F, 0.9375F, 1.0F, 0.9375F);
-        FCUtilsRender.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
         this.setBoundingBox(0.1875F, 0.0F, 0.0625F, 0.9375F, 1.0F, 0.1875F);
-        FCUtilsRender.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
         this.setBoundingBox(0.1875F, 0.0F, 0.1875F, 0.8125F, 0.125F, 0.8125F);
-        FCUtilsRender.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
         this.setBoundingBox(0.0F, 0.125F, 0.0F, 0.125F, 0.875F, 0.875F);
-        FCUtilsRender.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
         this.setBoundingBox(0.0F, 0.125F, 0.875F, 0.875F, 0.875F, 1.0F);
-        FCUtilsRender.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
         this.setBoundingBox(0.875F, 0.125F, 0.125F, 1.0F, 0.875F, 1.0F);
-        FCUtilsRender.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
         this.setBoundingBox(0.125F, 0.125F, 0.0F, 1.0F, 0.875F, 0.125F);
-        FCUtilsRender.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
         this.method_1605();
     }
 
     public void RenderUnfiredPotInvBlock(BlockRenderer renderblocks, BlockBase block, int i)
     {
         this.setBoundingBox(0.125F, 0.0F, 0.125F, 0.25F, 0.6875F, 0.75F);
-        FCUtilsRender.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
         this.setBoundingBox(0.125F, 0.0F, 0.75F, 0.75F, 0.6875F, 0.875F);
-        FCUtilsRender.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
         this.setBoundingBox(0.75F, 0.0F, 0.25F, 0.875F, 0.6875F, 0.875F);
-        FCUtilsRender.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
         this.setBoundingBox(0.25F, 0.0F, 0.125F, 0.875F, 0.6875F, 0.25F);
-        FCUtilsRender.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
         this.setBoundingBox(0.25F, 0.0F, 0.25F, 0.75F, 0.125F, 0.75F);
-        FCUtilsRender.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
         this.setBoundingBox(0.0F, 0.6875F, 0.0F, 0.125F, 1.0F, 0.875F);
-        FCUtilsRender.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
         this.setBoundingBox(0.0F, 0.6875F, 0.875F, 0.875F, 1.0F, 1.0F);
-        FCUtilsRender.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
         this.setBoundingBox(0.875F, 0.6875F, 0.125F, 1.0F, 1.0F, 1.0F);
-        FCUtilsRender.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
         this.setBoundingBox(0.125F, 0.6875F, 0.0F, 1.0F, 1.0F, 0.125F);
-        FCUtilsRender.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
         this.method_1605();
     }
 
     public void RenderUnfiredVaseInvBlock(BlockRenderer renderblocks, BlockBase block, int i)
     {
         this.setBoundingBox(0.25F, 0.0F, 0.25F, 0.75F, 0.0625F, 0.75F);
-        FCUtilsRender.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
         this.setBoundingBox(0.1875F, 0.0625F, 0.1875F, 0.8125F, 0.4375F, 0.8125F);
-        FCUtilsRender.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
         this.setBoundingBox(0.25F, 0.4375F, 0.25F, 0.75F, 0.5F, 0.75F);
-        FCUtilsRender.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
         this.setBoundingBox(0.375F, 0.5F, 0.375F, 0.625F, 0.9375F, 0.625F);
-        FCUtilsRender.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
         this.setBoundingBox(0.3125F, 0.9375F, 0.3125F, 0.6875F, 1.0F, 0.6875F);
-        FCUtilsRender.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
         this.method_1605();
     }
 }

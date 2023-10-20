@@ -3,8 +3,8 @@ package net.kozibrodka.wolves.blocks;
 import net.fabricmc.loader.api.FabricLoader;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
-import net.kozibrodka.wolves.utils.FCUtilsMisc;
-import net.kozibrodka.wolves.utils.FCUtilsRender;
+import net.kozibrodka.wolves.utils.UnsortedUtils;
+import net.kozibrodka.wolves.utils.CustomBlockRendering;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.render.block.BlockRenderer;
@@ -82,7 +82,7 @@ public class Rope extends TemplateBlockBase implements BlockWithWorldRenderer
 
     public void BreakRope(Level world, int i, int j, int k)
     {
-        FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcRopeItem.id, 0);
+        UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcRopeItem.id, 0);
         Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).soundHelper.playSound(sounds.getWalkSound(), (float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F, (sounds.getVolume() + 1.0F) / 2.0F, sounds.getPitch() * 0.8F);
         world.setTile(i, j, k, 0);
     }
@@ -91,11 +91,11 @@ public class Rope extends TemplateBlockBase implements BlockWithWorldRenderer
 
     @Override
     public boolean renderWorld(BlockRenderer tileRenderer, BlockView tileView, int x, int y, int z) {
-        boolean flag = FCUtilsRender.GetOverrideBlockTexture(tileRenderer) >= 0;
+        boolean flag = CustomBlockRendering.GetOverrideBlockTexture(tileRenderer) >= 0;
         int l = this.getTextureForSide(0);
         if(!flag)
         {
-            FCUtilsRender.SetOverrideBlockTexture(tileRenderer, l);
+            CustomBlockRendering.SetOverrideBlockTexture(tileRenderer, l);
         }
         float f = 0.0625F;
         float f1 = 0.0625F;
@@ -104,7 +104,7 @@ public class Rope extends TemplateBlockBase implements BlockWithWorldRenderer
         tileRenderer.renderStandardBlock(this, x,y,z);
         if(!flag)
         {
-            FCUtilsRender.SetOverrideBlockTexture(tileRenderer, -1);
+            CustomBlockRendering.SetOverrideBlockTexture(tileRenderer, -1);
         }
         return true;
     }

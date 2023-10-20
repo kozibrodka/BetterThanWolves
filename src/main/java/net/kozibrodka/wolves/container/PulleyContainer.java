@@ -1,6 +1,6 @@
 package net.kozibrodka.wolves.container;
 
-import net.kozibrodka.wolves.tileentity.FCTileEntityPulley;
+import net.kozibrodka.wolves.tileentity.PulleyTileEntity;
 import net.minecraft.container.ContainerBase;
 import net.minecraft.container.slot.Slot;
 import net.minecraft.entity.player.PlayerBase;
@@ -11,7 +11,7 @@ import net.minecraft.item.ItemInstance;
 public class PulleyContainer extends ContainerBase
 {
 
-    public PulleyContainer(InventoryBase playerinventory, FCTileEntityPulley tileEntityPulley)
+    public PulleyContainer(InventoryBase playerinventory, PulleyTileEntity tileEntityPulley)
     {
         localTileEntityPulley = tileEntityPulley;
         for(int iRow = 0; iRow < 2; iRow++)
@@ -126,5 +126,5 @@ public class PulleyContainer extends ContainerBase
     private final int iNumPulleySlotRows = 2;
     private final int iNumPulleySlotColumns = 1;
     private final int iNumPulleySlots = 2;
-    private FCTileEntityPulley localTileEntityPulley;
+    private PulleyTileEntity localTileEntityPulley;
 }

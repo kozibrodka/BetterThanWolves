@@ -7,11 +7,11 @@ package net.kozibrodka.wolves.blocks;
 
 import net.fabricmc.loader.api.FabricLoader;
 import net.kozibrodka.wolves.events.TextureListener;
-import net.kozibrodka.wolves.gui.FCGuiCraftingAnvil;
+import net.kozibrodka.wolves.gui.AnvilGUI;
 import net.kozibrodka.wolves.mixin.LevelAccessor;
-import net.kozibrodka.wolves.utils.FCIBlock;
-import net.kozibrodka.wolves.utils.FCUtilsMisc;
-import net.kozibrodka.wolves.utils.FCUtilsRender;
+import net.kozibrodka.wolves.utils.RotatableBlock;
+import net.kozibrodka.wolves.utils.UnsortedUtils;
+import net.kozibrodka.wolves.utils.CustomBlockRendering;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.render.block.BlockRenderer;
@@ -26,7 +26,7 @@ import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockBase;
 
 public class Anvil extends TemplateBlockBase
-    implements FCIBlock, BlockWithWorldRenderer, BlockWithInventoryRenderer
+    implements RotatableBlock, BlockWithWorldRenderer, BlockWithInventoryRenderer
 {
 
     public Anvil(Identifier iid)
@@ -58,14 +58,14 @@ public class Anvil extends TemplateBlockBase
             iFacing = 2;
         } else
         {
-            iFacing = FCUtilsMisc.GetOppositeFacing(iFacing);
+            iFacing = UnsortedUtils.GetOppositeFacing(iFacing);
         }
         SetFacing(world, i, j, k, iFacing);
     }
 
     public void afterPlaced(Level world, int i, int j, int k, Living entityLiving)
     {
-        int iFacing = FCUtilsMisc.ConvertPlacingEntityOrientationToFlatBlockFacing(entityLiving);
+        int iFacing = UnsortedUtils.ConvertPlacingEntityOrientationToFlatBlockFacing(entityLiving);
         SetFacing(world, i, j, k, iFacing);
     }
 
@@ -77,7 +77,7 @@ public class Anvil extends TemplateBlockBase
         } else
         {
             Minecraft minecraft = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance());
-            minecraft.openScreen(new FCGuiCraftingAnvil(entityplayer.inventory, world, i, j, k));
+            minecraft.openScreen(new AnvilGUI(entityplayer.inventory, world, i, j, k));
             //ModLoader.getMinecraftInstance().displayGuiScreen(new FCGuiCraftingAnvil(entityplayer.inventory, world, i, j, k));
         	return true;
         }
@@ -133,7 +133,7 @@ public class Anvil extends TemplateBlockBase
     public void Rotate(Level world, int i, int j, int k, boolean bReverse)
     {
         int iFacing = GetFacing(world, i, j, k);
-        int iNewFacing = FCUtilsMisc.RotateFacingAroundJ(iFacing, bReverse);
+        int iNewFacing = UnsortedUtils.RotateFacingAroundJ(iFacing, bReverse);
         if(iNewFacing != iFacing)
         {
             SetFacing(world, i, j, k, iNewFacing);
@@ -206,21 +206,21 @@ public class Anvil extends TemplateBlockBase
     public void renderInventory(BlockRenderer tileRenderer, int meta) {
 
         setBoundingBox(0.0F, 0.0F, 0.25F, 1.0F, 0.125F, 0.75F);
-        FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.anvil);
+        CustomBlockRendering.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.anvil);
         setBoundingBox(0.375F, 0.125F, 0.375F, 0.625F, 0.5625F, 0.625F);
-        FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.anvil);
+        CustomBlockRendering.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.anvil);
         setBoundingBox(0.3125F, 0.5625F, 0.3125F, 0.6875F, 1.0F, 0.6875F);
-        FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.anvil);
+        CustomBlockRendering.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.anvil);
         setBoundingBox(0.6875F, 0.75F, 0.3125F, 0.75F, 1.0F, 0.6875F);
-        FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.anvil);
+        CustomBlockRendering.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.anvil);
         setBoundingBox(0.75F, 0.9375F, 0.3125F, 1.0F, 1.0F, 0.6875F);
-        FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.anvil);
+        CustomBlockRendering.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.anvil);
         setBoundingBox(0.25F, 0.75F, 0.3125F, 0.3125F, 1.0F, 0.6875F);
-        FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.anvil);
+        CustomBlockRendering.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.anvil);
         setBoundingBox(0.125F, 0.8125F, 0.375F, 0.25F, 1.0F, 0.625F);
-        FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.anvil);
+        CustomBlockRendering.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.anvil);
         setBoundingBox(0.0F, 0.875F, 0.4375F, 0.125F, 1.0F, 0.5625F);
-        FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.anvil);
+        CustomBlockRendering.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.anvil);
         setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
     }
 

@@ -5,9 +5,9 @@ import net.kozibrodka.wolves.entity.MovingAnchorEntity;
 import net.kozibrodka.wolves.entity.MovingPlatformEntity;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
-import net.kozibrodka.wolves.utils.FCBlockPos;
-import net.kozibrodka.wolves.utils.FCIBlock;
-import net.kozibrodka.wolves.utils.FCUtilsRender;
+import net.kozibrodka.wolves.utils.BlockPosition;
+import net.kozibrodka.wolves.utils.RotatableBlock;
+import net.kozibrodka.wolves.utils.CustomBlockRendering;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.render.block.BlockRenderer;
 import net.minecraft.level.BlockView;
@@ -18,7 +18,7 @@ import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockBase;
 
 public class Platform extends TemplateBlockBase
-    implements FCIBlock, BlockWithWorldRenderer, BlockWithInventoryRenderer
+    implements RotatableBlock, BlockWithWorldRenderer, BlockWithInventoryRenderer
 {
 
     public Platform(Identifier iid)
@@ -150,7 +150,7 @@ public class Platform extends TemplateBlockBase
         bPlatformAlreadyConsideredForConnectedTest[iDeltaI + 2][iDeltaJ + 2][iDeltaK + 2] = true;
         for(int iFacing = 0; iFacing < 6; iFacing++)
         {
-            FCBlockPos tempPos = new FCBlockPos(i, j, k);
+            BlockPosition tempPos = new BlockPosition(i, j, k);
             tempPos.AddFacingAsOffset(iFacing);
             if(tempPos.i == targetI && tempPos.j == targetJ && tempPos.k == targetK)
             {
@@ -231,7 +231,7 @@ public class Platform extends TemplateBlockBase
         }
         for(int iFacing = 0; iFacing < 6; iFacing++)
         {
-            FCBlockPos tempPos = new FCBlockPos(i, j, k);
+            BlockPosition tempPos = new BlockPosition(i, j, k);
             tempPos.AddFacingAsOffset(iFacing);
             int iTempid = world.getTileId(tempPos.i, tempPos.j, tempPos.k);
             if(iTempid != id)
@@ -288,17 +288,17 @@ public class Platform extends TemplateBlockBase
     @Override
     public void renderInventory(BlockRenderer tileRenderer, int meta) {
         this.setBoundingBox(1E-005F, 1E-005F, 1E-005F, 0.0625F, 0.99999F, 0.99999F);
-        FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.platform_side);
+        CustomBlockRendering.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.platform_side);
         this.setBoundingBox(0.0F, 0.0F, 0.9375F, 1.0F, 1.0F, 1.0F);
-        FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.platform_side);
+        CustomBlockRendering.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.platform_side);
         this.setBoundingBox(0.9375F, 1E-005F, 1E-005F, 0.99999F, 0.99999F, 0.99999F);
-        FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.platform_side);
+        CustomBlockRendering.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.platform_side);
         this.setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 0.0625F);
-        FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.platform_side);
+        CustomBlockRendering.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.platform_side);
         this.setBoundingBox(0.0001F, 0.001F, 0.0001F, 0.9999F, 0.0625F, 0.9999F);
-        FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.platform_top);
+        CustomBlockRendering.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.platform_top);
         this.setBoundingBox(0.0001F, 0.9375F, 0.0001F, 0.9999F, 0.999F, 0.9999F);
-        FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.platform_top);
+        CustomBlockRendering.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.platform_top);
         setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
     }
 }

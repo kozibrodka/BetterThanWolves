@@ -2,11 +2,11 @@ package net.kozibrodka.wolves.blocks;
 
 import net.fabricmc.loader.api.FabricLoader;
 import net.kozibrodka.wolves.events.TextureListener;
-import net.kozibrodka.wolves.itemblocks.FCItemVase;
-import net.kozibrodka.wolves.tileentity.FCTileEntityVase;
-import net.kozibrodka.wolves.utils.FCIBlock;
-import net.kozibrodka.wolves.utils.FCUtilsInventory;
-import net.kozibrodka.wolves.utils.FCUtilsRender;
+import net.kozibrodka.wolves.itemblocks.VaseItemBlock;
+import net.kozibrodka.wolves.tileentity.VaseTileEntity;
+import net.kozibrodka.wolves.utils.RotatableBlock;
+import net.kozibrodka.wolves.utils.InventoryHandler;
+import net.kozibrodka.wolves.utils.CustomBlockRendering;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.render.block.BlockRenderer;
@@ -23,9 +23,9 @@ import net.modificationstation.stationapi.api.template.block.TemplateBlockWithEn
 
 import java.util.Random;
 
-@HasCustomBlockItemFactory(FCItemVase.class)
+@HasCustomBlockItemFactory(VaseItemBlock.class)
 public class Vase extends TemplateBlockWithEntity
-    implements FCIBlock, BlockWithWorldRenderer, BlockWithInventoryRenderer
+    implements RotatableBlock, BlockWithWorldRenderer, BlockWithInventoryRenderer
 {
 
     public Vase(Identifier iid)
@@ -82,7 +82,7 @@ public class Vase extends TemplateBlockWithEntity
 
     protected TileEntityBase createTileEntity()
     {
-        return new FCTileEntityVase();
+        return new VaseTileEntity();
     }
 
     public boolean canUse(Level world, int i, int j, int k, PlayerBase entityPlayer)
@@ -94,9 +94,9 @@ public class Vase extends TemplateBlockWithEntity
         ItemInstance playerEquippedItemInstance = entityPlayer.getHeldItem();
         if(playerEquippedItemInstance != null && playerEquippedItemInstance.count > 0)
         {
-            FCTileEntityVase tileEntityVase = (FCTileEntityVase)world.getTileEntity(i, j, k);
+            VaseTileEntity tileEntityVase = (VaseTileEntity)world.getTileEntity(i, j, k);
             int iTempStackSize = playerEquippedItemInstance.count;
-            if(FCUtilsInventory.AddItemInstanceToInventory(tileEntityVase, playerEquippedItemInstance))
+            if(InventoryHandler.AddItemInstanceToInventory(tileEntityVase, playerEquippedItemInstance))
             {
                 entityPlayer.breakHeldItem();
                  world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.pop", 0.25F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
@@ -113,10 +113,10 @@ public class Vase extends TemplateBlockWithEntity
 
     public void onBlockRemoved(Level world, int i, int j, int k)
     {
-        FCTileEntityVase tileEntity = (FCTileEntityVase)world.getTileEntity(i, j, k);
+        VaseTileEntity tileEntity = (VaseTileEntity)world.getTileEntity(i, j, k);
         if(tileEntity != null)
         {
-            FCUtilsInventory.EjectInventoryContents(world, i, j, k, tileEntity);
+            InventoryHandler.EjectInventoryContents(world, i, j, k, tileEntity);
         }
         super.onBlockRemoved(world, i, j, k);
     }
@@ -187,15 +187,15 @@ public class Vase extends TemplateBlockWithEntity
     @Override
     public void renderInventory(BlockRenderer tileRenderer, int meta) {
         this.setBoundingBox(0.25F, 0.0F, 0.25F, 0.75F, 0.0625F, 0.75F);
-        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, meta);
+        CustomBlockRendering.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, meta);
         this.setBoundingBox(0.1875F, 0.0625F, 0.1875F, 0.8125F, 0.4375F, 0.8125F);
-        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, meta);
+        CustomBlockRendering.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, meta);
         this.setBoundingBox(0.25F, 0.4375F, 0.25F, 0.75F, 0.5F, 0.75F);
-        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, meta);
+        CustomBlockRendering.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, meta);
         this.setBoundingBox(0.375F, 0.5F, 0.375F, 0.625F, 0.9375F, 0.625F);
-        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, meta);
+        CustomBlockRendering.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, meta);
         this.setBoundingBox(0.3125F, 0.9375F, 0.3125F, 0.6875F, 1.0F, 0.6875F);
-        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, meta);
+        CustomBlockRendering.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, meta);
         setBoundingBox(0.1875F, 0.0F, 0.1875F, 0.8125F, 1.0F, 0.8125F);
     }
 }

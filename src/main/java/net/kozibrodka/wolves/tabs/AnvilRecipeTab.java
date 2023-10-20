@@ -3,10 +3,10 @@ package net.kozibrodka.wolves.tabs;
 import net.glasslauncher.hmifabric.Utils;
 import net.glasslauncher.hmifabric.tabs.TabWithTexture;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
-import net.kozibrodka.wolves.gui.FCGuiCraftingAnvil;
+import net.kozibrodka.wolves.gui.AnvilGUI;
 import net.kozibrodka.wolves.recipe.AnvilShapelessRecipe;
-import net.kozibrodka.wolves.recipe.FCCraftingManagerAnvil;
-import net.kozibrodka.wolves.utils.FCRecipeAnvil;
+import net.kozibrodka.wolves.recipe.AnvilCraftingManager;
+import net.kozibrodka.wolves.recipe.AnvilRecipeTemplate;
 import net.minecraft.block.BlockBase;
 import net.minecraft.client.BaseClientInteractionManager;
 import net.minecraft.client.gui.screen.ScreenBase;
@@ -37,7 +37,7 @@ public class AnvilRecipeTab extends TabWithTexture {
     public int recipeIndex;
 
     public AnvilRecipeTab(ModID tabCreator) {
-        this(tabCreator, new ArrayList<Object>(FCCraftingManagerAnvil.getInstance().getRecipeList()), mod_FCBetterThanWolves.fcAnvil);
+        this(tabCreator, new ArrayList<Object>(AnvilCraftingManager.getInstance().getRecipeList()), mod_FCBetterThanWolves.fcAnvil);
         isVanillaWorkbench = true;
         guiCraftingStations.add(Crafting.class);
     }
@@ -81,7 +81,7 @@ public class AnvilRecipeTab extends TabWithTexture {
 
     @Override
     public Class<? extends ContainerBase> getGuiClass() {
-        return FCGuiCraftingAnvil.class;
+        return AnvilGUI.class;
     }
 
     @Override
@@ -142,7 +142,7 @@ public class AnvilRecipeTab extends TabWithTexture {
             recipes = recipesComplete;
         } else {
             for (Object o : recipesComplete) {
-                if (o instanceof FCRecipeAnvil) {
+                if (o instanceof AnvilRecipeTemplate) {
                     StationRecipe recipe = (StationRecipe) o;
                     if (!getUses) {
                         if (Arrays.stream(recipe.getOutputs()).anyMatch(itemInstance -> filter.itemId == itemInstance.itemId && (itemInstance.getDamage() == filter.getDamage() || itemInstance.getDamage() < 0 || !itemInstance.usesMeta()))) {

@@ -3,37 +3,32 @@ package net.kozibrodka.wolves.blocks;
 
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
-import net.kozibrodka.wolves.utils.FCBlockPos;
-import net.kozibrodka.wolves.utils.FCMechanicalDevice;
-import net.kozibrodka.wolves.utils.FCUtilsMisc;
-import net.kozibrodka.wolves.utils.FCUtilsRender;
+import net.kozibrodka.wolves.utils.BlockPosition;
+import net.kozibrodka.wolves.utils.MechanicalDevice;
+import net.kozibrodka.wolves.utils.UnsortedUtils;
+import net.kozibrodka.wolves.utils.CustomBlockRendering;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.block.BlockRenderer;
-import net.minecraft.entity.Living;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.item.ItemBase;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.minecraft.util.maths.Box;
 import net.minecraft.util.maths.Vec3f;
-import net.modificationstation.stationapi.api.block.BlockState;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithInventoryRenderer;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
-import net.modificationstation.stationapi.api.client.texture.Sprite;
 import net.modificationstation.stationapi.api.client.texture.atlas.Atlas;
 import net.modificationstation.stationapi.api.client.texture.atlas.Atlases;
 import net.modificationstation.stationapi.api.registry.Identifier;
-import net.modificationstation.stationapi.api.state.StateManager;
-import net.modificationstation.stationapi.api.state.property.IntProperty;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockBase;
 
 import java.util.Random;
 
 
 public class HandCrank extends TemplateBlockBase
-    implements FCMechanicalDevice, BlockWithWorldRenderer, BlockWithInventoryRenderer
+    implements MechanicalDevice, BlockWithWorldRenderer, BlockWithInventoryRenderer
 {
 
     public HandCrank(Identifier iid)
@@ -180,15 +175,15 @@ public class HandCrank extends TemplateBlockBase
         int iNumPotentialDevicesToPower = 0;
         for(int iTempFacing = 2; iTempFacing <= 5; iTempFacing++)
         {
-            FCBlockPos tempPos = new FCBlockPos(i, j, k);
+            BlockPosition tempPos = new BlockPosition(i, j, k);
             tempPos.AddFacingAsOffset(iTempFacing);
             int iTempid = world.getTileId(tempPos.i, tempPos.j, tempPos.k);
             BlockBase tempBlock = BlockBase.BY_ID[iTempid];
-            if(tempBlock == null || !(tempBlock instanceof FCMechanicalDevice))
+            if(tempBlock == null || !(tempBlock instanceof MechanicalDevice))
             {
                 continue;
             }
-            FCMechanicalDevice tempDevice = (FCMechanicalDevice)tempBlock;
+            MechanicalDevice tempDevice = (MechanicalDevice)tempBlock;
             if(tempDevice.CanInputMechanicalPower())
             {
                 iNumPotentialDevicesToPower++;
@@ -200,10 +195,10 @@ public class HandCrank extends TemplateBlockBase
 
     public void BreakCrankWithDrop(Level world, int i, int j, int k)
     {
-        FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, ItemBase.stick.id, 0);
-        FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, BlockBase.COBBLESTONE.id, 0);
-        FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, BlockBase.COBBLESTONE.id, 0);
-        FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcGear.id, 0);
+        UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, ItemBase.stick.id, 0);
+        UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, BlockBase.COBBLESTONE.id, 0);
+        UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, BlockBase.COBBLESTONE.id, 0);
+        UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcGear.id, 0);
         world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.explode", 0.2F, 1.25F);
         world.setTile(i, j, k, 0);
     }
@@ -366,11 +361,11 @@ public class HandCrank extends TemplateBlockBase
         float f1 = 0.5F;
         float f2 = fHandCrankBaseHeight;
         this.setBoundingBox(0.5F - f1, 0.0F, 0.5F - f, 0.5F + f1, f2, 0.5F + f);
-        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
+        CustomBlockRendering.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
         f = 0.0625F;
         f1 = 0.0625F;
         f2 = 1.0F;
         this.setBoundingBox(0.5F - f1, 0.0F, 0.5F - f, 0.5F + f1, f2, 0.5F + f);
-        FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.handcrack_lever);
+        CustomBlockRendering.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.handcrack_lever);
     }
 }

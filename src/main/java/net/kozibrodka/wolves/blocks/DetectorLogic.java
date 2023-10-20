@@ -6,8 +6,8 @@
 package net.kozibrodka.wolves.blocks;
 
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
-import net.kozibrodka.wolves.utils.FCBlockPos;
-import net.kozibrodka.wolves.utils.FCUtilsMisc;
+import net.kozibrodka.wolves.utils.BlockPosition;
+import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityBase;
@@ -66,7 +66,7 @@ public class DetectorLogic extends TemplateBlockBase
     {
         for(int iFacing = 0; iFacing <= 5; iFacing++)
         {
-            FCBlockPos targetPos = new FCBlockPos(i, j, k);
+            BlockPosition targetPos = new BlockPosition(i, j, k);
             targetPos.AddFacingAsOffset(iFacing);
             int iTargetid = world.getTileId(targetPos.i, targetPos.j, targetPos.k);
             if(iTargetid == mod_FCBetterThanWolves.fcBlockDetector.id)
@@ -113,9 +113,9 @@ public class DetectorLogic extends TemplateBlockBase
     {
         for(int iTempFacing = 0; iTempFacing <= 5; iTempFacing++)
         {
-            FCBlockPos tempPos = new FCBlockPos(i, j, k);
+            BlockPosition tempPos = new BlockPosition(i, j, k);
             tempPos.AddFacingAsOffset(iTempFacing);
-            if(world.getTileId(tempPos.i, tempPos.j, tempPos.k) == mod_FCBetterThanWolves.fcBlockDetector.id && ((DetectorBlock)mod_FCBetterThanWolves.fcBlockDetector).GetFacing(world, tempPos.i, tempPos.j, tempPos.k) == FCUtilsMisc.GetOppositeFacing(iTempFacing))
+            if(world.getTileId(tempPos.i, tempPos.j, tempPos.k) == mod_FCBetterThanWolves.fcBlockDetector.id && ((DetectorBlock)mod_FCBetterThanWolves.fcBlockDetector).GetFacing(world, tempPos.i, tempPos.j, tempPos.k) == UnsortedUtils.GetOppositeFacing(iTempFacing))
             {
                 return true;
             }

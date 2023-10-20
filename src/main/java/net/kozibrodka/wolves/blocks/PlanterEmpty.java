@@ -1,25 +1,14 @@
 package net.kozibrodka.wolves.blocks;
 
-import net.fabricmc.loader.api.FabricLoader;
-import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
-import net.kozibrodka.wolves.utils.FCIBlock;
-import net.kozibrodka.wolves.utils.FCISoil;
-import net.minecraft.block.BlockBase;
+import net.kozibrodka.wolves.utils.RotatableBlock;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
-import net.modificationstation.stationapi.api.block.BlockState;
 import net.modificationstation.stationapi.api.registry.Identifier;
-import net.modificationstation.stationapi.api.state.StateManager;
-import net.modificationstation.stationapi.api.state.property.BooleanProperty;
-import net.modificationstation.stationapi.api.state.property.IntProperty;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockBase;
 
-import java.util.Random;
-
 public class PlanterEmpty extends TemplateBlockBase
-    implements FCIBlock
+    implements RotatableBlock
 {
 
     public PlanterEmpty(Identifier iid)

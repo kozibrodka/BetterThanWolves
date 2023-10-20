@@ -1,6 +1,6 @@
 package net.kozibrodka.wolves.container;
 
-import net.kozibrodka.wolves.tileentity.FCTileEntityBlockDispenser;
+import net.kozibrodka.wolves.tileentity.BlockDispenserTileEntity;
 import net.minecraft.container.ContainerBase;
 import net.minecraft.container.slot.Slot;
 import net.minecraft.entity.player.PlayerBase;
@@ -11,7 +11,7 @@ import net.minecraft.item.ItemInstance;
 public class BlockDispenserContainer extends ContainerBase
 {
 
-    public BlockDispenserContainer(InventoryBase iinventory, FCTileEntityBlockDispenser tileEntityBlockDispenser)
+    public BlockDispenserContainer(InventoryBase iinventory, BlockDispenserTileEntity tileEntityBlockDispenser)
     {
         localTileEntityBlockDispenser = tileEntityBlockDispenser;
         for(int i = 0; i < 3; i++)
@@ -132,6 +132,6 @@ public class BlockDispenserContainer extends ContainerBase
         return super.clickSlot(i, j, flag, entityplayer);
     }
 
-    private FCTileEntityBlockDispenser localTileEntityBlockDispenser;
+    private BlockDispenserTileEntity localTileEntityBlockDispenser;
     private final int iNumBlockDispenserSlots = 9;
 }

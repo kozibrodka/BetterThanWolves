@@ -3,9 +3,7 @@ package net.kozibrodka.wolves.tabs;
 import net.glasslauncher.hmifabric.Utils;
 import net.glasslauncher.hmifabric.tabs.TabWithTexture;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
-import net.kozibrodka.wolves.gui.FCGuiCauldron;
-import net.kozibrodka.wolves.gui.FCGuiHopper;
-import net.kozibrodka.wolves.recipe.FCCraftingManagerCauldron;
+import net.kozibrodka.wolves.gui.HopperGUI;
 import net.kozibrodka.wolves.recipe.HopperHauntingRecipeRegistry;
 import net.minecraft.block.BlockBase;
 import net.minecraft.client.gui.screen.container.ContainerBase;
@@ -100,7 +98,7 @@ public class HopperHauntingRecipeTab extends TabWithTexture {
 
     @Override
     public Class<? extends ContainerBase> getGuiClass() {
-        return FCGuiHopper.class;
+        return HopperGUI.class;
     }
 
     @Override

@@ -1,8 +1,8 @@
 package net.kozibrodka.wolves.blocks;
 
 import net.kozibrodka.wolves.events.TextureListener;
-import net.kozibrodka.wolves.utils.FCBlockPos;
-import net.kozibrodka.wolves.utils.FCUtilsMisc;
+import net.kozibrodka.wolves.utils.BlockPosition;
+import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityBase;
 import net.minecraft.entity.Living;
@@ -91,7 +91,7 @@ public class DetectorBlockButNotCompletelyAwful extends TemplateBlockBase {
                 return;
             }
         }
-        FCBlockPos tempPos = new FCBlockPos(x, y, z);
+        BlockPosition tempPos = new BlockPosition(x, y, z);
         tempPos.AddFacingAsOffset(getFacing(level, x, y, z));
         List list = level.getEntities(EntityBase.class, Box.createButWasteMemory(tempPos.i, tempPos.j, tempPos.k, 1 + tempPos.i, 1 + tempPos.j, 1 + tempPos.k));
         if (list == null)
@@ -154,7 +154,7 @@ public class DetectorBlockButNotCompletelyAwful extends TemplateBlockBase {
 
     private boolean isObstructed(Level level, int x, int y, int z)
     {
-        FCBlockPos tempPos = new FCBlockPos(x, y, z);
+        BlockPosition tempPos = new BlockPosition(x, y, z);
         tempPos.AddFacingAsOffset(getFacing(level, x, y, z));
         return level.getTileId(tempPos.i, tempPos.j, tempPos.k) != 0;
     }
@@ -173,13 +173,13 @@ public class DetectorBlockButNotCompletelyAwful extends TemplateBlockBase {
     @Override
     public void onBlockPlaced(Level level, int x, int y, int z, int facing)
     {
-        setFacing(level, x, y, z, FCUtilsMisc.GetOppositeFacing(facing));
+        setFacing(level, x, y, z, UnsortedUtils.GetOppositeFacing(facing));
     }
 
     @Override
     public void afterPlaced(Level level, int x, int y, int z, Living entityLiving)
     {
-        setFacing(level, x, y, z, FCUtilsMisc.ConvertPlacingEntityOrientationToBlockFacing(entityLiving));
+        setFacing(level, x, y, z, UnsortedUtils.ConvertPlacingEntityOrientationToBlockFacing(entityLiving));
     }
 
     @Override

@@ -1,7 +1,7 @@
 package net.kozibrodka.wolves.container;
 
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
-import net.kozibrodka.wolves.recipe.FCCraftingManagerAnvil;
+import net.kozibrodka.wolves.recipe.AnvilCraftingManager;
 import net.minecraft.container.ContainerBase;
 import net.minecraft.container.slot.CraftingResult;
 import net.minecraft.container.slot.Slot;
@@ -60,7 +60,7 @@ public class AnvilContainer extends ContainerBase
 //        System.out.println("SPRAWDZAM RECIpe v0");
         if(craftedStack == null)
         {
-            craftedStack = FCCraftingManagerAnvil.getInstance().findMatchingRecipe(craftMatrix);
+            craftedStack = AnvilCraftingManager.getInstance().findMatchingRecipe(craftMatrix);
 //            System.out.println("SPRAWDZAM RECIOE");
         }
         craftResult.setInventoryItem(0, craftedStack);

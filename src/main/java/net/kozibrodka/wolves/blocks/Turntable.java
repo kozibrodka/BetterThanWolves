@@ -2,11 +2,11 @@ package net.kozibrodka.wolves.blocks;
 
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
-import net.kozibrodka.wolves.tileentity.FCTileEntityTurntable;
-import net.kozibrodka.wolves.utils.FCBlockPos;
-import net.kozibrodka.wolves.utils.FCIBlock;
-import net.kozibrodka.wolves.utils.FCMechanicalDevice;
-import net.kozibrodka.wolves.utils.FCUtilsRender;
+import net.kozibrodka.wolves.tileentity.TurntableTileEntity;
+import net.kozibrodka.wolves.utils.BlockPosition;
+import net.kozibrodka.wolves.utils.RotatableBlock;
+import net.kozibrodka.wolves.utils.MechanicalDevice;
+import net.kozibrodka.wolves.utils.CustomBlockRendering;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.render.block.BlockRenderer;
 import net.minecraft.entity.player.PlayerBase;
@@ -21,7 +21,7 @@ import net.modificationstation.stationapi.api.template.block.TemplateBlockWithEn
 import java.util.Random;
 
 public class Turntable extends TemplateBlockWithEntity
-    implements FCMechanicalDevice, FCIBlock, BlockWithWorldRenderer
+    implements MechanicalDevice, RotatableBlock, BlockWithWorldRenderer
 {
 
     public Turntable(Identifier iid)
@@ -47,7 +47,7 @@ public class Turntable extends TemplateBlockWithEntity
 
     protected TileEntityBase createTileEntity()
     {
-        return new FCTileEntityTurntable();
+        return new TurntableTileEntity();
     }
 
     public void onBlockPlaced(Level world, int i, int j, int k)
@@ -95,7 +95,7 @@ public class Turntable extends TemplateBlockWithEntity
         ItemInstance playerEquippedItem = entityPlayer.getHeldItem();
         if(playerEquippedItem == null)
         {
-            FCTileEntityTurntable tileEntityTurntable = (FCTileEntityTurntable)world.getTileEntity(i, j, k);
+            TurntableTileEntity tileEntityTurntable = (TurntableTileEntity)world.getTileEntity(i, j, k);
             int iSwitchSetting = tileEntityTurntable.m_iSwitchSetting;
             if(++iSwitchSetting > 3)
             {
@@ -191,7 +191,7 @@ public class Turntable extends TemplateBlockWithEntity
 
     public boolean IsInputtingMechanicalPower(Level world, int i, int j, int k)
     {
-        FCBlockPos targetPos = new FCBlockPos(i, j, k);
+        BlockPosition targetPos = new BlockPosition(i, j, k);
         targetPos.AddFacingAsOffset(0);
         int iTargetid = world.getTileId(targetPos.i, targetPos.j, targetPos.k);
         if(iTargetid == mod_FCBetterThanWolves.fcAxleBlock.id)
@@ -219,17 +219,17 @@ public class Turntable extends TemplateBlockWithEntity
     @Override
     public boolean renderWorld(BlockRenderer tileRenderer, BlockView tileView, int x, int y, int z) {
         tileRenderer.renderStandardBlock(this, x, y, z);
-        FCTileEntityTurntable fctileentityturntable = (FCTileEntityTurntable)tileView.getTileEntity(x, y, z);
+        TurntableTileEntity fctileentityturntable = (TurntableTileEntity)tileView.getTileEntity(x, y, z);
         int l = fctileentityturntable.m_iSwitchSetting;
         float f = 0.25F + (float)l * 0.125F;
         this.setBoundingBox(f, 0.3125F, 0.0625F, f + 0.125F, 0.4375F, 1.0625F);
-        FCUtilsRender.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, TextureListener.turntable_button);
+        CustomBlockRendering.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, TextureListener.turntable_button);
         this.setBoundingBox(1.0F - (f + 0.125F), 0.3125F, -0.0625F, 1.0F - f, 0.4375F, 0.9375F);
-        FCUtilsRender.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, TextureListener.turntable_button);
+        CustomBlockRendering.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, TextureListener.turntable_button);
         this.setBoundingBox(0.0625F, 0.3125F, 1.0F - (f + 0.125F), 1.0625F, 0.4375F, 1.0F - f);
-        FCUtilsRender.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, TextureListener.turntable_button);
+        CustomBlockRendering.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, TextureListener.turntable_button);
         this.setBoundingBox(-0.0625F, 0.3125F, f, 0.9375F, 0.4375F, f + 0.125F);
-        FCUtilsRender.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, TextureListener.turntable_button);
+        CustomBlockRendering.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, TextureListener.turntable_button);
         setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         return true;
     }

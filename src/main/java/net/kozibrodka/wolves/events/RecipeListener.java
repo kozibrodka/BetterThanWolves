@@ -1,7 +1,6 @@
 package net.kozibrodka.wolves.events;
 
 import net.kozibrodka.wolves.recipe.*;
-import net.kozibrodka.wolves.tabs.CrucibleTripleRecipeTab;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.Wool;
@@ -51,27 +50,27 @@ public class RecipeListener {
 
     private static void AddAnvilRecipe(ItemInstance itemstack, Object aobj[])
     {
-        FCCraftingManagerAnvil.getInstance().addRecipe(itemstack, aobj);
+        AnvilCraftingManager.getInstance().addRecipe(itemstack, aobj);
     }
 
     private static void AddShapelessAnvilRecipe(ItemInstance itemstack, Object aobj[])
     {
-        FCCraftingManagerAnvil.getInstance().addShapelessRecipe(itemstack, aobj);
+        AnvilCraftingManager.getInstance().addShapelessRecipe(itemstack, aobj);
     }
 
     public static void AddCauldronRecipe(ItemInstance itemstack, ItemInstance aitemstack[])
     {
-        FCCraftingManagerCauldron.getInstance().AddRecipe(itemstack, aitemstack);
+        CauldronCraftingManager.getInstance().AddRecipe(itemstack, aitemstack);
     }
 
     public static void AddStokedCauldronRecipe(ItemInstance itemstack, ItemInstance aitemstack[])
     {
-        FCCraftingManagerCauldronStoked.getInstance().AddRecipe(itemstack, aitemstack);
+        CauldronStokedCraftingManager.getInstance().AddRecipe(itemstack, aitemstack);
     }
 
     public static void AddCrucibleRecipe(ItemInstance itemstack, ItemInstance aitemstack[])
     {
-        CraftingManagerCrucible.getInstance().AddRecipe(itemstack, aitemstack);
+        CrucibleCraftingManager.getInstance().AddRecipe(itemstack, aitemstack);
     }
 
     private static void AddBlockRecipes()

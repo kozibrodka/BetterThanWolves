@@ -9,10 +9,10 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.kozibrodka.wolves.entity.MovingAnchorEntity;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
-import net.kozibrodka.wolves.tileentity.FCTileEntityPulley;
-import net.kozibrodka.wolves.utils.FCBlockPos;
-import net.kozibrodka.wolves.utils.FCUtilsMisc;
-import net.kozibrodka.wolves.utils.FCUtilsRender;
+import net.kozibrodka.wolves.tileentity.PulleyTileEntity;
+import net.kozibrodka.wolves.utils.BlockPosition;
+import net.kozibrodka.wolves.utils.UnsortedUtils;
+import net.kozibrodka.wolves.utils.CustomBlockRendering;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -41,7 +41,7 @@ public class Anchor extends TemplateBlockBase implements BlockWithWorldRenderer,
     public int getTextureForSide(int iSide, int iMetaData)
     {
         int iFacing = iMetaData;
-        return iSide != iFacing && iSide != FCUtilsMisc.GetOppositeFacing(iFacing) ? TextureListener.anchor_side : TextureListener.anchor_top;
+        return iSide != iFacing && iSide != UnsortedUtils.GetOppositeFacing(iFacing) ? TextureListener.anchor_side : TextureListener.anchor_top;
     }
 
 //    public int getTextureForSide(int iSide)
@@ -194,11 +194,11 @@ public class Anchor extends TemplateBlockBase implements BlockWithWorldRenderer,
             world.playSound(entityPlayer, "random.pop", 0.2F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
         } else
         {
-            FCUtilsMisc.EjectStackWithRandomOffset(world, i, j, k, ropeStack);
+            UnsortedUtils.EjectStackWithRandomOffset(world, i, j, k, ropeStack);
         }
     }
 
-    public void NotifyAnchorBlockOfAttachedPulleyStateChange(FCTileEntityPulley tileEntityPulley, Level world, int i, int j, int k)
+    public void NotifyAnchorBlockOfAttachedPulleyStateChange(PulleyTileEntity tileEntityPulley, Level world, int i, int j, int k)
     {
         int iMovementDirection = 0;
         if(tileEntityPulley.IsRaising())
@@ -218,9 +218,9 @@ public class Anchor extends TemplateBlockBase implements BlockWithWorldRenderer,
         }
     }
 
-    private void ConvertAnchorToEntity(Level world, int i, int j, int k, FCTileEntityPulley attachedTileEntityPulley, int iMovementDirection)
+    private void ConvertAnchorToEntity(Level world, int i, int j, int k, PulleyTileEntity attachedTileEntityPulley, int iMovementDirection)
     {
-        FCBlockPos pulleyPos = new FCBlockPos(attachedTileEntityPulley.x, attachedTileEntityPulley.y, attachedTileEntityPulley.z);
+        BlockPosition pulleyPos = new BlockPosition(attachedTileEntityPulley.x, attachedTileEntityPulley.y, attachedTileEntityPulley.z);
         MovingAnchorEntity entityAnchor = new MovingAnchorEntity(world, (float)i + 0.5F, (float)j + fAnchorBaseHeight / 2.0F, (float)k + 0.5F, pulleyPos, iMovementDirection);
         world.spawnEntity(entityAnchor);
         ConvertConnectedPlatformsToEntities(world, i, j, k, entityAnchor);
@@ -280,7 +280,7 @@ public class Anchor extends TemplateBlockBase implements BlockWithWorldRenderer,
         f1 = 0.125F;
         f2 = 0.25F;
         this.setBoundingBox(0.5F - f1, fAnchorBaseHeight, 0.5F - f, 0.5F + f1, fAnchorBaseHeight + f2, 0.5F + f);
-        FCUtilsRender.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, TextureListener.anchor_button);
+        CustomBlockRendering.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, TextureListener.anchor_button);
         boolean flag = false;
         f = 0.0625F;
         f1 = 0.0625F;
@@ -301,7 +301,7 @@ public class Anchor extends TemplateBlockBase implements BlockWithWorldRenderer,
         }
         if(flag)
         {
-            FCUtilsRender.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, TextureListener.rope);
+            CustomBlockRendering.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, TextureListener.rope);
         }
         return true;
     }
@@ -309,11 +309,11 @@ public class Anchor extends TemplateBlockBase implements BlockWithWorldRenderer,
     @Override
     public void renderInventory(BlockRenderer tileRenderer, int meta) {
         this.method_1605();
-        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.25F, -0.5F, 1);
+        CustomBlockRendering.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.25F, -0.5F, 1);
         float f = 0.125F;
         float f1 = 0.125F;
         float f2 = 0.25F;
         this.setBoundingBox(0.5F - f1, fAnchorBaseHeight, 0.5F - f, 0.5F + f1, fAnchorBaseHeight + f2, 0.5F + f);
-        FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.25F, -0.5F, TextureListener.anchor_button);
+        CustomBlockRendering.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.25F, -0.5F, TextureListener.anchor_button);
     }
 }

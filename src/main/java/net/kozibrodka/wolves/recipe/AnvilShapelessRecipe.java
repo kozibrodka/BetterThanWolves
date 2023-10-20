@@ -1,6 +1,5 @@
 package net.kozibrodka.wolves.recipe;
 
-import net.kozibrodka.wolves.utils.FCRecipeAnvil;
 import net.minecraft.inventory.Crafting;
 import net.minecraft.item.ItemInstance;
 import net.modificationstation.stationapi.api.recipe.StationRecipe;
@@ -9,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class AnvilShapelessRecipe implements FCRecipeAnvil, StationRecipe {
+public class AnvilShapelessRecipe implements AnvilRecipeTemplate, StationRecipe {
     private final ItemInstance output;
     private final List input;
 

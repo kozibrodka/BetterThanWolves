@@ -9,8 +9,8 @@ import net.kozibrodka.wolves.entity.BroadheadArrowEntity;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.mixin.LevelAccessor;
-import net.kozibrodka.wolves.utils.FCIBlock;
-import net.kozibrodka.wolves.utils.FCUtilsMisc;
+import net.kozibrodka.wolves.utils.RotatableBlock;
+import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityBase;
 import net.minecraft.entity.Living;
@@ -24,7 +24,7 @@ import java.util.Random;
 
 
 public class DetectorBlock extends TemplateBlockBase
-    implements FCIBlock
+    implements RotatableBlock
 {
 
     public DetectorBlock(Identifier iid)
@@ -121,12 +121,12 @@ public class DetectorBlock extends TemplateBlockBase
 
     public void onBlockPlaced(Level world, int i, int j, int k, int iFacing)
     {
-        SetFacing(world, i, j, k, FCUtilsMisc.GetOppositeFacing(iFacing));
+        SetFacing(world, i, j, k, UnsortedUtils.GetOppositeFacing(iFacing));
     }
 
     public void afterPlaced(Level world, int i, int j, int k, Living entityLiving)
     {
-        int iFacing = FCUtilsMisc.ConvertPlacingEntityOrientationToBlockFacing(entityLiving);
+        int iFacing = UnsortedUtils.ConvertPlacingEntityOrientationToBlockFacing(entityLiving);
         SetFacing(world, i, j, k, iFacing);
     }
 
@@ -150,7 +150,7 @@ public class DetectorBlock extends TemplateBlockBase
             int iFacingDirection = GetFacing(world, i, j, k);
             if(iFacingDirection == 1)
             {
-                if(FCUtilsMisc.IsBlockBeingPrecipitatedOn(world, i, j + 1, k))
+                if(UnsortedUtils.IsBlockBeingPrecipitatedOn(world, i, j + 1, k))
                 {
                     bDetected = true;
                 }
@@ -331,7 +331,7 @@ public class DetectorBlock extends TemplateBlockBase
     public void Rotate(Level world, int i, int j, int k, boolean bReverse)
     {
         int iFacing = GetFacing(world, i, j, k);
-        int iNewFacing = FCUtilsMisc.RotateFacingAroundJ(iFacing, bReverse);
+        int iNewFacing = UnsortedUtils.RotateFacingAroundJ(iFacing, bReverse);
         if(iNewFacing != iFacing)
         {
             SetFacing(world, i, j, k, iNewFacing);

@@ -4,10 +4,10 @@ package net.kozibrodka.wolves.blocks;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.mixin.LevelAccessor;
-import net.kozibrodka.wolves.utils.FCBlockPos;
-import net.kozibrodka.wolves.utils.FCIBlock;
-import net.kozibrodka.wolves.utils.FCMechanicalDevice;
-import net.kozibrodka.wolves.utils.FCUtilsMisc;
+import net.kozibrodka.wolves.utils.BlockPosition;
+import net.kozibrodka.wolves.utils.RotatableBlock;
+import net.kozibrodka.wolves.utils.MechanicalDevice;
+import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Living;
@@ -21,7 +21,7 @@ import java.util.Random;
 
 
 public class GearBox extends TemplateBlockBase
-    implements FCMechanicalDevice, FCIBlock
+    implements MechanicalDevice, RotatableBlock
 {
 
     public GearBox(Identifier iid)
@@ -38,7 +38,7 @@ public class GearBox extends TemplateBlockBase
         {
             return TextureListener.gearbox_front;
         }
-        FCBlockPos sideBlockPos = new FCBlockPos(i, j, k);
+        BlockPosition sideBlockPos = new BlockPosition(i, j, k);
         sideBlockPos.AddFacingAsOffset(iSide);
         if(iblockaccess.getTileId(sideBlockPos.i, sideBlockPos.j, sideBlockPos.k) == mod_FCBetterThanWolves.fcAxleBlock.id && ((Axle)mod_FCBetterThanWolves.fcAxleBlock).IsAxleOrientedTowardsFacing(iblockaccess, sideBlockPos.i, sideBlockPos.j, sideBlockPos.k, iSide))
         {
@@ -67,15 +67,15 @@ public class GearBox extends TemplateBlockBase
 
     public void onBlockPlaced(Level world, int i, int j, int k, int iFacing)
     {
-        SetFacing(world, i, j, k, FCUtilsMisc.GetOppositeFacing(iFacing));
+        SetFacing(world, i, j, k, UnsortedUtils.GetOppositeFacing(iFacing));
     }
 
     public void afterPlaced(Level world, int i, int j, int k, Living entityLiving) //onBlockPlacedBy
     {
-        int iFacing = FCUtilsMisc.ConvertPlacingEntityOrientationToBlockFacing(entityLiving);
+        int iFacing = UnsortedUtils.ConvertPlacingEntityOrientationToBlockFacing(entityLiving);
         if(mod_FCBetterThanWolves.fcFaceGearBoxAwayFromPlayer)
         {
-            iFacing = FCUtilsMisc.GetOppositeFacing(iFacing);
+            iFacing = UnsortedUtils.GetOppositeFacing(iFacing);
         }
         SetFacing(world, i, j, k, iFacing);
     }
@@ -165,7 +165,7 @@ public class GearBox extends TemplateBlockBase
     {
         System.out.println("METODA ROTATE W GEARBOX");
         int iFacing = GetFacing(world, i, j, k);
-        int iNewFacing = FCUtilsMisc.RotateFacingAroundJ(iFacing, bReverse);
+        int iNewFacing = UnsortedUtils.RotateFacingAroundJ(iFacing, bReverse);
         if(iNewFacing != iFacing)
         {
             SetFacing(world, i, j, k, iNewFacing);
@@ -173,7 +173,7 @@ public class GearBox extends TemplateBlockBase
             world.method_216(i, j, k, id, getTickrate());
             ((LevelAccessor) world).invokeMethod_235(i, j, k, id);
         }
-        FCUtilsMisc.DestroyHorizontallyAttachedAxles(world, i, j, k);
+        UnsortedUtils.DestroyHorizontallyAttachedAxles(world, i, j, k);
     }
 
     public boolean IsGearBoxOn(BlockView iBlockAccess, int i, int j, int k)
@@ -214,7 +214,7 @@ public class GearBox extends TemplateBlockBase
             {
                 continue;
             }
-            FCBlockPos tempPos = new FCBlockPos(i, j, k);
+            BlockPosition tempPos = new BlockPosition(i, j, k);
             tempPos.AddFacingAsOffset(iFacing);
             if(world.getTileId(tempPos.i, tempPos.j, tempPos.k) != mod_FCBetterThanWolves.fcAxleBlock.id)
             {
@@ -260,15 +260,15 @@ public class GearBox extends TemplateBlockBase
     {
         for(int iTemp = 0; iTemp < 4; iTemp++)
         {
-            FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, BlockBase.WOOD.id, 0);
+            UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, BlockBase.WOOD.id, 0);
         }
 
         for(int iTemp = 0; iTemp < 3; iTemp++)
         {
-            FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcGear.id, 0);
+            UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcGear.id, 0);
         }
 
-        FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, ItemBase.redstoneDust.id, 0);
+        UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, ItemBase.redstoneDust.id, 0);
         world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.explode", 0.2F, 1.25F);
         world.setTile(i, j, k, 0);
     }
@@ -286,7 +286,7 @@ public class GearBox extends TemplateBlockBase
     public boolean IsInputtingMechanicalPower(Level world, int i, int j, int k)
     {
         int iFacing = GetFacing(world, i, j, k);
-        FCBlockPos targetBlockPos = new FCBlockPos(i, j, k);
+        BlockPosition targetBlockPos = new BlockPosition(i, j, k);
         targetBlockPos.AddFacingAsOffset(iFacing);
         int iTargetid = world.getTileId(targetBlockPos.i, targetBlockPos.j, targetBlockPos.k);
         return iTargetid == mod_FCBetterThanWolves.fcAxleBlock.id && ((Axle)mod_FCBetterThanWolves.fcAxleBlock).IsAxleOrientedTowardsFacing(world, targetBlockPos.i, targetBlockPos.j, targetBlockPos.k, iFacing) && ((Axle)mod_FCBetterThanWolves.fcAxleBlock).GetPowerLevel(world, targetBlockPos.i, targetBlockPos.j, targetBlockPos.k) > 0;

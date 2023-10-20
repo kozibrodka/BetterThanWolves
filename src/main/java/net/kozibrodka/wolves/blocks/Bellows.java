@@ -5,10 +5,10 @@ import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.mixin.LevelAccessor;
 import net.kozibrodka.wolves.modsupport.AffectedByBellows;
-import net.kozibrodka.wolves.utils.FCBlockPos;
-import net.kozibrodka.wolves.utils.FCIBlock;
-import net.kozibrodka.wolves.utils.FCMechanicalDevice;
-import net.kozibrodka.wolves.utils.FCUtilsMisc;
+import net.kozibrodka.wolves.utils.BlockPosition;
+import net.kozibrodka.wolves.utils.RotatableBlock;
+import net.kozibrodka.wolves.utils.MechanicalDevice;
+import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityBase;
@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Bellows extends TemplateBlockBase
-    implements FCMechanicalDevice, FCIBlock
+    implements MechanicalDevice, RotatableBlock
 {
 
     public Bellows(Identifier iid)
@@ -82,7 +82,7 @@ public class Bellows extends TemplateBlockBase
 
     public void afterPlaced(Level world, int i, int j, int k, Living entityLiving)
     {
-        int iFacing = FCUtilsMisc.ConvertPlacingEntityOrientationToFlatBlockFacing(entityLiving);
+        int iFacing = UnsortedUtils.ConvertPlacingEntityOrientationToFlatBlockFacing(entityLiving);
         SetFacing(world, i, j, k, iFacing);
     }
 
@@ -182,7 +182,7 @@ public class Bellows extends TemplateBlockBase
     public void Rotate(Level world, int i, int j, int k, boolean bReverse)
     {
         int iFacing = GetFacing(world, i, j, k);
-        int iNewFacing = FCUtilsMisc.RotateFacingAroundJ(iFacing, bReverse);
+        int iNewFacing = UnsortedUtils.RotateFacingAroundJ(iFacing, bReverse);
         if(iNewFacing != iFacing)
         {
             SetFacing(world, i, j, k, iNewFacing);
@@ -190,7 +190,7 @@ public class Bellows extends TemplateBlockBase
             world.method_216(i, j, k, id, getTickrate());
             ((LevelAccessor) world).invokeMethod_235(i, j, k, id);
         }
-        FCUtilsMisc.DestroyHorizontallyAttachedAxles(world, i, j, k);
+        UnsortedUtils.DestroyHorizontallyAttachedAxles(world, i, j, k);
     }
 
     public boolean CanOutputMechanicalPower()
@@ -207,7 +207,7 @@ public class Bellows extends TemplateBlockBase
     {
         for(int iFacing = 2; iFacing <= 5; iFacing++)
         {
-            FCBlockPos targetPos = new FCBlockPos(i, j, k);
+            BlockPosition targetPos = new BlockPosition(i, j, k);
             targetPos.AddFacingAsOffset(iFacing);
             int iTargetid = world.getTileId(targetPos.i, targetPos.j, targetPos.k);
             if(iTargetid != mod_FCBetterThanWolves.fcHandCrank.id)
@@ -215,7 +215,7 @@ public class Bellows extends TemplateBlockBase
                 continue;
             }
             BlockBase targetBlock = BlockBase.BY_ID[iTargetid];
-            FCMechanicalDevice device = (FCMechanicalDevice)targetBlock;
+            MechanicalDevice device = (MechanicalDevice)targetBlock;
             if(device.IsOutputtingMechanicalPower(world, targetPos.i, targetPos.j, targetPos.k))
             {
                 return true;
@@ -229,7 +229,7 @@ public class Bellows extends TemplateBlockBase
             {
                 continue;
             }
-            FCBlockPos targetPos = new FCBlockPos(i, j, k);
+            BlockPosition targetPos = new BlockPosition(i, j, k);
             targetPos.AddFacingAsOffset(iFacing);
             int iTargetid = world.getTileId(targetPos.i, targetPos.j, targetPos.k);
             if(iTargetid != mod_FCBetterThanWolves.fcAxleBlock.id)
@@ -282,12 +282,12 @@ public class Bellows extends TemplateBlockBase
     private void Blow(Level world, int i, int j, int k)
     {
         int iFacing = GetFacing(world, i, j, k);
-        int iFacingSide1 = FCUtilsMisc.RotateFacingAroundJ(iFacing, false);
-        int iFacingSide2 = FCUtilsMisc.RotateFacingAroundJ(iFacing, true);
-        FCBlockPos particlePos = new FCBlockPos(i, j, k);
+        int iFacingSide1 = UnsortedUtils.RotateFacingAroundJ(iFacing, false);
+        int iFacingSide2 = UnsortedUtils.RotateFacingAroundJ(iFacing, true);
+        BlockPosition particlePos = new BlockPosition(i, j, k);
         particlePos.AddFacingAsOffset(iFacing);
         EmitBellowsParticles(world, particlePos.i, particlePos.j, particlePos.k, world.rand);
-        FCBlockPos tempTargetPos = new FCBlockPos(i, j, k);
+        BlockPosition tempTargetPos = new BlockPosition(i, j, k);
         BlockBase blockWithInterface;
         for(int iTempCount = 0; iTempCount < 3; iTempCount++)
         {
@@ -310,14 +310,14 @@ public class Bellows extends TemplateBlockBase
             {
                 break;
             }
-            FCBlockPos tempSidePos1 = new FCBlockPos(tempTargetPos.i, tempTargetPos.j, tempTargetPos.k);
+            BlockPosition tempSidePos1 = new BlockPosition(tempTargetPos.i, tempTargetPos.j, tempTargetPos.k);
             tempSidePos1.AddFacingAsOffset(iFacingSide1);
             tempid = world.getTileId(tempSidePos1.i, tempSidePos1.j, tempSidePos1.k);
             if((tempid == BlockBase.FIRE.id || tempid == mod_FCBetterThanWolves.fcStokedFire.id)) // && world.getTileId(tempSidePos1.i, tempSidePos1.j, tempSidePos1.k) == BlockBase.FIRE.id
             {
                 StokeFire(world, tempSidePos1.i, tempSidePos1.j, tempSidePos1.k);
             }
-            FCBlockPos tempSidePos2 = new FCBlockPos(tempTargetPos.i, tempTargetPos.j, tempTargetPos.k);
+            BlockPosition tempSidePos2 = new BlockPosition(tempTargetPos.i, tempTargetPos.j, tempTargetPos.k);
             tempSidePos2.AddFacingAsOffset(iFacingSide2);
             tempid = world.getTileId(tempSidePos2.i, tempSidePos2.j, tempSidePos2.k);
             if(tempid == BlockBase.FIRE.id || tempid == mod_FCBetterThanWolves.fcStokedFire.id)

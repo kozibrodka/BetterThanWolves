@@ -1,6 +1,6 @@
 package net.kozibrodka.wolves.mixin;
 
-import net.kozibrodka.wolves.utils.FCUtilsMisc;
+import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.Cactus;
 import net.minecraft.block.material.Material;
@@ -20,6 +20,6 @@ public class BlockCactusMixin extends BlockBase{
     @Inject(method = "canGrow", at = @At(value = "RETURN", ordinal = 4), cancellable = true)
     private void injected(Level arg, int i, int j, int k, CallbackInfoReturnable<Boolean> cir) {
         int var5 = arg.getTileId(i, j - 1, k);
-        cir.setReturnValue(var5 == BlockBase.CACTUS.id || var5 == BlockBase.SAND.id || FCUtilsMisc.CanPlantGrowOnBlock(arg, i, j - 1, k, this));
+        cir.setReturnValue(var5 == BlockBase.CACTUS.id || var5 == BlockBase.SAND.id || UnsortedUtils.CanPlantGrowOnBlock(arg, i, j - 1, k, this));
     }
 }

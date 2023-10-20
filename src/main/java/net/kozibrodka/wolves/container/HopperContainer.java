@@ -1,6 +1,6 @@
 package net.kozibrodka.wolves.container;
 
-import net.kozibrodka.wolves.tileentity.FCTileEntityHopper;
+import net.kozibrodka.wolves.tileentity.HopperTileEntity;
 import net.minecraft.container.ContainerBase;
 import net.minecraft.container.slot.Slot;
 import net.minecraft.entity.player.PlayerBase;
@@ -11,7 +11,7 @@ import net.minecraft.item.ItemInstance;
 public class HopperContainer extends ContainerBase
 {
 
-    public HopperContainer(InventoryBase playerinventory, FCTileEntityHopper tileentityHopper)
+    public HopperContainer(InventoryBase playerinventory, HopperTileEntity tileentityHopper)
     {
         localTileEntityHopper = tileentityHopper;
         for(int iRow = 0; iRow < 2; iRow++)
@@ -127,5 +127,5 @@ public class HopperContainer extends ContainerBase
     private final int iNumHopperSlotRows = 2;
     private final int iNumHopperSlotColumns = 9;
     private final int iNumHopperSlots = 18;
-    private FCTileEntityHopper localTileEntityHopper;
+    private HopperTileEntity localTileEntityHopper;
 }

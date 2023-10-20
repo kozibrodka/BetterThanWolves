@@ -1,15 +1,12 @@
 package net.kozibrodka.wolves.mixin;
 
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
-import net.kozibrodka.wolves.utils.FCUtilsMisc;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.Crops;
-import net.minecraft.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(Crops.class)
 public class BlockCropsMixin {

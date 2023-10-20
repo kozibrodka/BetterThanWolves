@@ -1,8 +1,8 @@
 package net.kozibrodka.wolves.entity;
 
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
-import net.kozibrodka.wolves.utils.FCUtilsMisc;
-import net.kozibrodka.wolves.utils.FCUtilsWorld;
+import net.kozibrodka.wolves.utils.UnsortedUtils;
+import net.kozibrodka.wolves.utils.ReplaceableBlockChecker;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.Rail;
 import net.minecraft.entity.EntityBase;
@@ -152,7 +152,7 @@ public class LiftedBlockEntity extends EntityBase
         int idDropped = BlockBase.BY_ID[m_iid].getDropId(0, level.rand);
         if(idDropped > 0)
         {
-            FCUtilsMisc.EjectSingleItemWithRandomOffset(level, i, j, k, idDropped, 0);
+            UnsortedUtils.EjectSingleItemWithRandomOffset(level, i, j, k, idDropped, 0);
         }
         remove();
     }
@@ -160,7 +160,7 @@ public class LiftedBlockEntity extends EntityBase
     private void ConvertToBlock(int i, int j, int k)
     {
         boolean bDestroyBlock = true;
-        if(level.getTileId(i, j - 1, k) == mod_FCBetterThanWolves.fcPlatform.id && FCUtilsWorld.IsReplaceableBlock(level, i, j, k))
+        if(level.getTileId(i, j - 1, k) == mod_FCBetterThanWolves.fcPlatform.id && ReplaceableBlockChecker.IsReplaceableBlock(level, i, j, k))
         {
             level.placeBlockWithMetaData(i, j, k, m_iid, m_iBlockMetaData);
             bDestroyBlock = false;

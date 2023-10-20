@@ -1,6 +1,6 @@
 package net.kozibrodka.wolves.container;
 
-import net.kozibrodka.wolves.tileentity.FCTileEntityMillStone;
+import net.kozibrodka.wolves.tileentity.MillStoneTileEntity;
 import net.minecraft.container.ContainerBase;
 import net.minecraft.container.slot.Slot;
 import net.minecraft.entity.player.PlayerBase;
@@ -11,7 +11,7 @@ import net.minecraft.item.ItemInstance;
 public class MillStoneContainer extends ContainerBase
 {
 
-    public MillStoneContainer(InventoryBase playerinventory, FCTileEntityMillStone tileentityMillStone)
+    public MillStoneContainer(InventoryBase playerinventory, MillStoneTileEntity tileentityMillStone)
     {
         localTileEntityMillStone = tileentityMillStone;
         for(int iRow = 0; iRow < 3; iRow++)
@@ -126,5 +126,5 @@ public class MillStoneContainer extends ContainerBase
     private final int iNumMillStoneSlotRows = 3;
     private final int iNumMillStoneSlotColumns = 1;
     private final int iNumMillStoneSlots = 3;
-    private FCTileEntityMillStone localTileEntityMillStone;
+    private MillStoneTileEntity localTileEntityMillStone;
 }

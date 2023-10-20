@@ -8,9 +8,9 @@ package net.kozibrodka.wolves.blocks;
 import net.kozibrodka.wolves.container.CauldronContainer;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
-import net.kozibrodka.wolves.tileentity.FCTileEntityCauldron;
-import net.kozibrodka.wolves.utils.FCIBlock;
-import net.kozibrodka.wolves.utils.FCUtilsInventory;
+import net.kozibrodka.wolves.tileentity.CauldronTileEntity;
+import net.kozibrodka.wolves.utils.RotatableBlock;
+import net.kozibrodka.wolves.utils.InventoryHandler;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityBase;
@@ -30,7 +30,7 @@ import java.util.Random;
 
 
 public class Cauldron extends TemplateBlockWithEntity
-    implements FCIBlock
+    implements RotatableBlock
 {
 
     public Cauldron(Identifier iid)
@@ -47,7 +47,7 @@ public class Cauldron extends TemplateBlockWithEntity
 
     public void onBlockRemoved(Level world, int i, int j, int k)
     {
-        FCUtilsInventory.EjectInventoryContents(world, i, j, k, (InventoryBase)world.getTileEntity(i, j, k));
+        InventoryHandler.EjectInventoryContents(world, i, j, k, (InventoryBase)world.getTileEntity(i, j, k));
         super.onBlockRemoved(world, i, j, k);
     }
 
@@ -68,14 +68,14 @@ public class Cauldron extends TemplateBlockWithEntity
 
     public boolean canUse(Level world, int i, int j, int k, PlayerBase entityPlayer)
     {
-        FCTileEntityCauldron tileentitycauldron = (FCTileEntityCauldron)world.getTileEntity(i, j, k);
-        GuiHelper.openGUI(entityPlayer, Identifier.of("wolves:openCauldron"), (InventoryBase) tileentitycauldron, new CauldronContainer(entityPlayer.inventory, (FCTileEntityCauldron) tileentitycauldron));
+        CauldronTileEntity tileentitycauldron = (CauldronTileEntity)world.getTileEntity(i, j, k);
+        GuiHelper.openGUI(entityPlayer, Identifier.of("wolves:openCauldron"), (InventoryBase) tileentitycauldron, new CauldronContainer(entityPlayer.inventory, (CauldronTileEntity) tileentitycauldron));
         return true;
     }
 
     protected TileEntityBase createTileEntity()
     {
-        return new FCTileEntityCauldron();
+        return new CauldronTileEntity();
     }
 
     public Box getCollisionShape(Level world, int i, int j, int k)
@@ -104,7 +104,7 @@ public class Cauldron extends TemplateBlockWithEntity
         collisionList = world.getEntities(Item.class, Box.createButWasteMemory((float)i, (double)(float)j + 0.99000000953674316D, (float)k, (float)(i + 1), (double)(float)j + 0.99000000953674316D + 0.05000000074505806D, (float)(k + 1)));
         if(collisionList != null && collisionList.size() > 0)
         {
-            FCTileEntityCauldron tileEntityCauldron = (FCTileEntityCauldron)world.getTileEntity(i, j, k);
+            CauldronTileEntity tileEntityCauldron = (CauldronTileEntity)world.getTileEntity(i, j, k);
             for(int listIndex = 0; listIndex < collisionList.size(); listIndex++)
             {
                 Item targetEntityItem = (Item)collisionList.get(listIndex);
@@ -112,7 +112,7 @@ public class Cauldron extends TemplateBlockWithEntity
                 {
                     continue;
                 }
-                if(FCUtilsInventory.AddItemInstanceToInventory(tileEntityCauldron, targetEntityItem.item))
+                if(InventoryHandler.AddItemInstanceToInventory(tileEntityCauldron, targetEntityItem.item))
                 {
                      world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.pop", 0.25F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                     targetEntityItem.remove();
@@ -194,7 +194,7 @@ public class Cauldron extends TemplateBlockWithEntity
         if(iNewState != iOldState)
         {
             SetFireUnderState(world, i, j, k, iNewState);
-            FCTileEntityCauldron tileEntityCauldron = (FCTileEntityCauldron)world.getTileEntity(i, j, k);
+            CauldronTileEntity tileEntityCauldron = (CauldronTileEntity)world.getTileEntity(i, j, k);
             tileEntityCauldron.NotifyOfChangeInFireUnder(iNewState);
         }
     }

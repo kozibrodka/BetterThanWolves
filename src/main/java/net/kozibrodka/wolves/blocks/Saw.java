@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Saw extends TemplateBlockBase
-    implements FCMechanicalDevice, FCIBlock, BlockWithWorldRenderer, BlockWithInventoryRenderer
+    implements MechanicalDevice, RotatableBlock, BlockWithWorldRenderer, BlockWithInventoryRenderer
 {
 
     public Saw(Identifier iid)
@@ -54,12 +54,12 @@ public class Saw extends TemplateBlockBase
 
     public void onBlockPlaced(Level world, int i, int j, int k, int iFacing)
     {
-        SetFacing(world, i, j, k, FCUtilsMisc.GetOppositeFacing(iFacing));
+        SetFacing(world, i, j, k, UnsortedUtils.GetOppositeFacing(iFacing));
     }
 
     public void afterPlaced(Level world, int i, int j, int k, Living entityLiving)
     {
-        int iFacing = FCUtilsMisc.ConvertPlacingEntityOrientationToBlockFacing(entityLiving);
+        int iFacing = UnsortedUtils.ConvertPlacingEntityOrientationToBlockFacing(entityLiving);
         SetFacing(world, i, j, k, iFacing);
     }
 
@@ -166,7 +166,7 @@ public class Saw extends TemplateBlockBase
         if(bOn)
         {
             int iFacing = GetFacing(world, i, j, k);
-            FCBlockPos targetPos = new FCBlockPos(i, j, k);
+            BlockPosition targetPos = new BlockPosition(i, j, k);
             targetPos.AddFacingAsOffset(iFacing);
             if(!AttemptToSawBlock(world, targetPos.i, targetPos.j, targetPos.k, random, iFacing))
             {
@@ -264,7 +264,7 @@ public class Saw extends TemplateBlockBase
     public void Rotate(Level world, int i, int j, int k, boolean bReverse)
     {
         int iFacing = GetFacing(world, i, j, k);
-        int iNewFacing = FCUtilsMisc.RotateFacingAroundJ(iFacing, bReverse);
+        int iNewFacing = UnsortedUtils.RotateFacingAroundJ(iFacing, bReverse);
         if(iNewFacing != iFacing)
         {
             SetFacing(world, i, j, k, iNewFacing);
@@ -272,7 +272,7 @@ public class Saw extends TemplateBlockBase
             world.method_216(i, j, k, id, getTickrate());
             ((LevelAccessor) world).invokeMethod_235(i, j, k, id);
         }
-        FCUtilsMisc.DestroyHorizontallyAttachedAxles(world, i, j, k);
+        UnsortedUtils.DestroyHorizontallyAttachedAxles(world, i, j, k);
     }
 
     public boolean IsBlockOn(BlockView iBlockAccess, int i, int j, int k)
@@ -352,7 +352,7 @@ public class Saw extends TemplateBlockBase
     void EmitBloodParticles(Level world, int i, int j, int k, Random random)
     {
         int iFacing = GetFacing(world, i, j, k);
-        FCBlockPos iTargetPos = new FCBlockPos(i, j, k);
+        BlockPosition iTargetPos = new BlockPosition(i, j, k);
         iTargetPos.AddFacingAsOffset(iFacing);
         for(int counter = 0; counter < 10; counter++)
         {
@@ -386,7 +386,7 @@ public class Saw extends TemplateBlockBase
                 if (output.count == 0) output.count = 1;
                 for(int iTempCount = 0; iTempCount < output.count; iTempCount++)
                 {
-                    FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, output.itemId, output.getDamage());
+                    UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, output.itemId, output.getDamage());
                 }
                 bSawedBlock = true;
             }
@@ -401,25 +401,25 @@ public class Saw extends TemplateBlockBase
                     {
                         for(int iTempCount = 0; iTempCount < 2; iTempCount++)
                         {
-                            FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcCompanionCube.id, 1);
+                            UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcCompanionCube.id, 1);
                         }
 
                     } else
                     {
-                        FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcCompanionCube.id, 1);
+                        UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcCompanionCube.id, 1);
                         cubeBlock.SetHalfCubeState(world, i, j, k, true);
                         world.method_202(i, j, k, i, j, k);
                         bRemoveOriginalBlockIfSawed = false;
                     }
-                    FCBlockPos bloodPos = new FCBlockPos(i, j, k);
-                    bloodPos.AddFacingAsOffset(FCUtilsMisc.GetOppositeFacing(iSawFacing));
+                    BlockPosition bloodPos = new BlockPosition(i, j, k);
+                    bloodPos.AddFacingAsOffset(UnsortedUtils.GetOppositeFacing(iSawFacing));
                     EmitBloodParticles(world, bloodPos.i, bloodPos.j, bloodPos.k, world.rand);
                     world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "mob.wolf.hurt", 5F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
                     bSawedBlock = true;
                 } else
                 if(iSawFacing == 0 || iSawFacing == 1)
                 {
-                    FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcCompanionCube.id, 1);
+                    UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcCompanionCube.id, 1);
                     bSawedBlock = true;
                 }
             } else
@@ -465,22 +465,22 @@ public class Saw extends TemplateBlockBase
     {
         for(int iTemp = 0; iTemp < 2; iTemp++)
         {
-            FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcGear.id, 0);
+            UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcGear.id, 0);
         }
 
         for(int iTemp = 0; iTemp < 2; iTemp++)
         {
-            FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, BlockBase.WOOD.id, 0);
+            UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, BlockBase.WOOD.id, 0);
         }
 
         for(int iTemp = 0; iTemp < 2; iTemp++)
         {
-            FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, ItemBase.ironIngot.id, 0);
+            UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, ItemBase.ironIngot.id, 0);
         }
 
         for(int iTemp = 0; iTemp < 1; iTemp++)
         {
-            FCUtilsMisc.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcBelt.id, 0);
+            UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcBelt.id, 0);
         }
 
          world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.explode", 0.2F, 1.25F);
@@ -506,7 +506,7 @@ public class Saw extends TemplateBlockBase
             {
                 continue;
             }
-            FCBlockPos targetPos = new FCBlockPos(i, j, k);
+            BlockPosition targetPos = new BlockPosition(i, j, k);
             targetPos.AddFacingAsOffset(iFacing);
             int iTargetid = world.getTileId(targetPos.i, targetPos.j, targetPos.k);
             if(iTargetid != mod_FCBetterThanWolves.fcAxleBlock.id)
@@ -596,17 +596,17 @@ public class Saw extends TemplateBlockBase
                 this.setBoundingBox(1.0F - f2, 0.5F - f1, 0.5F - f, 1.0F, 0.5F + f1, 0.5F + f);
                 break;
         }
-        FCUtilsRender.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, TextureListener.saw_saw);
+        CustomBlockRendering.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, TextureListener.saw_saw);
         return true;
     }
 
     @Override
     public void renderInventory(BlockRenderer tileRenderer, int meta) {
         this.method_1605();
-        FCUtilsRender.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 1);
+        CustomBlockRendering.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 1);
         float f = 0.3125F;
         float f1 = 0.0078125F;
         this.setBoundingBox(0.5F - f, 0.001F, 0.5F - f1, 0.5F + f, 1.0F, 0.5F + f1);
-        FCUtilsRender.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.saw_saw);
+        CustomBlockRendering.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.saw_saw);
     }
 }
