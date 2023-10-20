@@ -1,5 +1,6 @@
 package net.kozibrodka.wolves.blocks;
 
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.tileentity.TurntableTileEntity;
@@ -194,9 +195,9 @@ public class Turntable extends TemplateBlockWithEntity
         BlockPosition targetPos = new BlockPosition(i, j, k);
         targetPos.AddFacingAsOffset(0);
         int iTargetid = world.getTileId(targetPos.i, targetPos.j, targetPos.k);
-        if(iTargetid == mod_FCBetterThanWolves.fcAxleBlock.id)
+        if(iTargetid == BlockListener.fcAxleBlock.id)
         {
-            Axle axleBlock = (Axle)mod_FCBetterThanWolves.fcAxleBlock;
+            Axle axleBlock = (Axle)BlockListener.fcAxleBlock;
             if(axleBlock.IsAxleOrientedTowardsFacing(world, targetPos.i, targetPos.j, targetPos.k, 0) && axleBlock.GetPowerLevel(world, targetPos.i, targetPos.j, targetPos.k) > 0)
             {
                 return true;

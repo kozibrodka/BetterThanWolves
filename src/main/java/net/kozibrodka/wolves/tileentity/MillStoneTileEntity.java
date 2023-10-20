@@ -7,6 +7,7 @@ package net.kozibrodka.wolves.tileentity;
 
 import net.kozibrodka.wolves.blocks.CompanionCube;
 import net.kozibrodka.wolves.blocks.MillStone;
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.recipe.MillingRecipeRegistry;
 import net.kozibrodka.wolves.utils.BlockPosition;
@@ -162,13 +163,13 @@ public class MillStoneTileEntity extends TileEntityBase
             return;
         }
 
-        if(!((MillStone)mod_FCBetterThanWolves.fcMillStone).IsBlockOn(level, x, y, z)) return;
+        if(!((MillStone) BlockListener.fcMillStone).IsBlockOn(level, x, y, z)) return;
 
         iMillStoneGrindCounter++;
 
         int iUnmilledItemID = millStoneContents[iUnmilledItemIndex].getType().id;
 
-        if(iUnmilledItemID == mod_FCBetterThanWolves.fcCompanionCube.id) // Companion cube torture during milling
+        if(iUnmilledItemID == BlockListener.fcCompanionCube.id) // Companion cube torture during milling
         {
             if(millStoneContents[iUnmilledItemIndex].getDamage() == 0 && level.rand.nextInt(10) == 0)
             {
@@ -202,7 +203,7 @@ public class MillStoneTileEntity extends TileEntityBase
             takeInventoryItem(iUnmilledItemIndex, 1);
             EjectStack(milledStack);
         }
-        else if(iUnmilledItemID == mod_FCBetterThanWolves.fcCompanionCube.id) // Special recipe (companion cube)
+        else if(iUnmilledItemID == BlockListener.fcCompanionCube.id) // Special recipe (companion cube)
         {
             EjectStack(new ItemInstance(mod_FCBetterThanWolves.fcWolfRaw.id, 1, 0));
             CompanionCube.SpawnHearts(level, x, y, z);
@@ -325,7 +326,7 @@ public class MillStoneTileEntity extends TileEntityBase
                 continue;
             }
             ItemBase tempItem = millStoneContents[tempIndex].getType();
-            if(tempItem != null && tempItem.id == mod_FCBetterThanWolves.fcCompanionCube.id && millStoneContents[tempIndex].getDamage() == 0)
+            if(tempItem != null && tempItem.id == BlockListener.fcCompanionCube.id && millStoneContents[tempIndex].getDamage() == 0)
             {
                 return true;
             }
@@ -340,7 +341,7 @@ public class MillStoneTileEntity extends TileEntityBase
         if(iUnmilledItemIndex >= 0)
         {
             int iUnmilledItemID = millStoneContents[iUnmilledItemIndex].getType().id;
-            if(iUnmilledItemID == mod_FCBetterThanWolves.fcCompanionCube.id && millStoneContents[iUnmilledItemIndex].getDamage() == 0)
+            if(iUnmilledItemID == BlockListener.fcCompanionCube.id && millStoneContents[iUnmilledItemIndex].getDamage() == 0)
             {
                 return true;
             }

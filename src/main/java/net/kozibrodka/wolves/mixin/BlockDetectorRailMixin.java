@@ -1,5 +1,6 @@
 package net.kozibrodka.wolves.mixin;
 
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.DetectorRail;
@@ -90,11 +91,11 @@ public class BlockDetectorRailMixin extends Rail {
     public  boolean ShouldPlateActivateBasedOnMinecart(Level world, int i, int j, int k, int l, EntityBase entity)
     {
         int i1 = world.getTileId(i, j, k);
-        if(i1 == mod_FCBetterThanWolves.fcDetectorRailWood.id)
+        if(i1 == BlockListener.fcDetectorRailWood.id)
         {
             return true;
         }
-        if(i1 == mod_FCBetterThanWolves.fcDetectorRailObsidian.id)
+        if(i1 == BlockListener.fcDetectorRailObsidian.id)
         {
             if(entity != null && (entity instanceof PlayerBase))
             {

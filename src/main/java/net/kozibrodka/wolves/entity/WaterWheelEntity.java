@@ -1,6 +1,7 @@
 package net.kozibrodka.wolves.entity;
 
 import net.kozibrodka.wolves.blocks.Axle;
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.Fluid;
@@ -131,9 +132,9 @@ public class WaterWheelEntity extends EntityBase
             int iCenterJ = (int)(y - 0.5D);
             int iCenterK = (int)(z - 0.5D);
             int iCenterid = level.getTileId(iCenterI, iCenterJ, iCenterK);
-            if(iCenterid == mod_FCBetterThanWolves.fcAxleBlock.id)
+            if(iCenterid == BlockListener.fcAxleBlock.id)
             {
-                ((Axle)mod_FCBetterThanWolves.fcAxleBlock).SetPowerLevel(level, iCenterI, iCenterJ, iCenterK, 0);
+                ((Axle)BlockListener.fcAxleBlock).SetPowerLevel(level, iCenterI, iCenterJ, iCenterK, 0);
             }
         }
         super.remove();
@@ -162,7 +163,7 @@ public class WaterWheelEntity extends EntityBase
             int iCenterJ = (int)(y - 0.5D);
             int iCenterK = (int)(z - 0.5D);
             int iCenterid = level.getTileId(iCenterI, iCenterJ, iCenterK);
-            if(iCenterid != mod_FCBetterThanWolves.fcAxleBlock.id)
+            if(iCenterid != BlockListener.fcAxleBlock.id)
             {
                 DestroyWithDrop();
                 return;
@@ -172,7 +173,7 @@ public class WaterWheelEntity extends EntityBase
                 DestroyWithDrop();
                 return;
             }
-            if(!bProvidingPower && ((Axle)mod_FCBetterThanWolves.fcAxleBlock).GetPowerLevel(level, iCenterI, iCenterJ, iCenterK) > 0)
+            if(!bProvidingPower && ((Axle)BlockListener.fcAxleBlock).GetPowerLevel(level, iCenterI, iCenterJ, iCenterK) > 0)
             {
                 DestroyWithDrop();
                 return;
@@ -190,12 +191,12 @@ public class WaterWheelEntity extends EntityBase
                 if(!bProvidingPower)
                 {
                     bProvidingPower = true;
-                    ((Axle)mod_FCBetterThanWolves.fcAxleBlock).SetPowerLevel(level, iCenterI, iCenterJ, iCenterK, 3);
+                    ((Axle)BlockListener.fcAxleBlock).SetPowerLevel(level, iCenterI, iCenterJ, iCenterK, 3);
                 }
             } else
                 if (bProvidingPower) {
                     bProvidingPower = false;
-                    ((Axle) mod_FCBetterThanWolves.fcAxleBlock).SetPowerLevel(level, iCenterI, iCenterJ, iCenterK, 0);
+                    ((Axle) BlockListener.fcAxleBlock).SetPowerLevel(level, iCenterI, iCenterJ, iCenterK, 0);
                 }
 
         }

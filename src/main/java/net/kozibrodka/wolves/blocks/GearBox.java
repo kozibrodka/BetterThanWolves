@@ -1,6 +1,7 @@
 
 package net.kozibrodka.wolves.blocks;
 
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.mixin.LevelAccessor;
@@ -40,7 +41,7 @@ public class GearBox extends TemplateBlockBase
         }
         BlockPosition sideBlockPos = new BlockPosition(i, j, k);
         sideBlockPos.AddFacingAsOffset(iSide);
-        if(iblockaccess.getTileId(sideBlockPos.i, sideBlockPos.j, sideBlockPos.k) == mod_FCBetterThanWolves.fcAxleBlock.id && ((Axle)mod_FCBetterThanWolves.fcAxleBlock).IsAxleOrientedTowardsFacing(iblockaccess, sideBlockPos.i, sideBlockPos.j, sideBlockPos.k, iSide))
+        if(iblockaccess.getTileId(sideBlockPos.i, sideBlockPos.j, sideBlockPos.k) == BlockListener.fcAxleBlock.id && ((Axle)BlockListener.fcAxleBlock).IsAxleOrientedTowardsFacing(iblockaccess, sideBlockPos.i, sideBlockPos.j, sideBlockPos.k, iSide))
         {
             return TextureListener.gearbox_output;
         } else
@@ -216,11 +217,11 @@ public class GearBox extends TemplateBlockBase
             }
             BlockPosition tempPos = new BlockPosition(i, j, k);
             tempPos.AddFacingAsOffset(iFacing);
-            if(world.getTileId(tempPos.i, tempPos.j, tempPos.k) != mod_FCBetterThanWolves.fcAxleBlock.id)
+            if(world.getTileId(tempPos.i, tempPos.j, tempPos.k) != BlockListener.fcAxleBlock.id)
             {
                 continue;
             }
-            Axle axleBlock = (Axle)mod_FCBetterThanWolves.fcAxleBlock;
+            Axle axleBlock = (Axle)BlockListener.fcAxleBlock;
             if(!axleBlock.IsAxleOrientedTowardsFacing(world, tempPos.i, tempPos.j, tempPos.k, iFacing))
             {
                 continue;
@@ -289,7 +290,7 @@ public class GearBox extends TemplateBlockBase
         BlockPosition targetBlockPos = new BlockPosition(i, j, k);
         targetBlockPos.AddFacingAsOffset(iFacing);
         int iTargetid = world.getTileId(targetBlockPos.i, targetBlockPos.j, targetBlockPos.k);
-        return iTargetid == mod_FCBetterThanWolves.fcAxleBlock.id && ((Axle)mod_FCBetterThanWolves.fcAxleBlock).IsAxleOrientedTowardsFacing(world, targetBlockPos.i, targetBlockPos.j, targetBlockPos.k, iFacing) && ((Axle)mod_FCBetterThanWolves.fcAxleBlock).GetPowerLevel(world, targetBlockPos.i, targetBlockPos.j, targetBlockPos.k) > 0;
+        return iTargetid == BlockListener.fcAxleBlock.id && ((Axle)BlockListener.fcAxleBlock).IsAxleOrientedTowardsFacing(world, targetBlockPos.i, targetBlockPos.j, targetBlockPos.k, iFacing) && ((Axle)BlockListener.fcAxleBlock).GetPowerLevel(world, targetBlockPos.i, targetBlockPos.j, targetBlockPos.k) > 0;
     }
 
     public boolean IsOutputtingMechanicalPower(Level world, int i, int j, int k)

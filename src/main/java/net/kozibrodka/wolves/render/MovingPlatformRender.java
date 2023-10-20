@@ -7,6 +7,7 @@ package net.kozibrodka.wolves.render;
 import java.util.List;
 
 import net.kozibrodka.wolves.entity.MovingPlatformEntity;
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.mixin.BlockRendererAccessor;
 import net.kozibrodka.wolves.utils.CustomBlockRendering;
@@ -40,7 +41,7 @@ public class MovingPlatformRender extends EntityRenderer
         int j = MathHelper.floor(entity.y);
         int k = MathHelper.floor(entity.z);
         bindTexture("/terrain.png");
-        BlockBase block = mod_FCBetterThanWolves.fcPlatform;
+        BlockBase block = BlockListener.fcPlatform;
         List list = entity.level.getEntities(MovingPlatformEntity.class, Box.createButWasteMemory(entity.x - 1.0D, entity.y - 0.10000000149011612D, entity.z - 0.10000000149011612D, entity.x - 0.89999997615814209D, entity.y + 0.10000000149011612D, entity.z + 0.10000000149011612D));
         if(list == null || list.size() <= 0)
         {

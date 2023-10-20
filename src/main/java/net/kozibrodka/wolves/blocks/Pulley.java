@@ -1,6 +1,7 @@
 package net.kozibrodka.wolves.blocks;
 
 import net.kozibrodka.wolves.container.PulleyContainer;
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.tileentity.PulleyTileEntity;
@@ -143,16 +144,16 @@ public class Pulley extends TemplateBlockWithEntity
             BlockPosition targetPos = new BlockPosition(i, j, k);
             targetPos.AddFacingAsOffset(iFacing);
             int iTargetid = world.getTileId(targetPos.i, targetPos.j, targetPos.k);
-            if(iTargetid == mod_FCBetterThanWolves.fcAxleBlock.id)
+            if(iTargetid == BlockListener.fcAxleBlock.id)
             {
-                Axle axleBlock = (Axle)mod_FCBetterThanWolves.fcAxleBlock;
+                Axle axleBlock = (Axle)BlockListener.fcAxleBlock;
                 if(axleBlock.IsAxleOrientedTowardsFacing(world, targetPos.i, targetPos.j, targetPos.k, iFacing) && axleBlock.GetPowerLevel(world, targetPos.i, targetPos.j, targetPos.k) > 0)
                 {
                     return true;
                 }
                 continue;
             }
-            if(iTargetid != mod_FCBetterThanWolves.fcHandCrank.id)
+            if(iTargetid != BlockListener.fcHandCrank.id)
             {
                 continue;
             }

@@ -1,6 +1,7 @@
 
 package net.kozibrodka.wolves.blocks;
 
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.modsupport.HibachiIgnitionRegistry;
@@ -55,7 +56,7 @@ public class Hibachi extends TemplateBlockBase
             } else
             {
                 int iBlockAboveID = world.getTileId(i, j + 1, k);
-                if(iBlockAboveID != BlockBase.FIRE.id && iBlockAboveID != mod_FCBetterThanWolves.fcStokedFire.id && BBQShouldIgniteAbove(world, i, j, k))
+                if(iBlockAboveID != BlockBase.FIRE.id && iBlockAboveID != BlockListener.fcStokedFire.id && BBQShouldIgniteAbove(world, i, j, k))
                 {
                     world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "fire.ignite", 1.0F, world.rand.nextFloat() * 0.4F + 0.8F);
                     world.setTile(i, j + 1, k, FIRE.id);
@@ -68,7 +69,7 @@ public class Hibachi extends TemplateBlockBase
         } else
         {
             int iBlockAboveID = world.getTileId(i, j + 1, k);
-            if(iBlockAboveID == BlockBase.FIRE.id || iBlockAboveID == mod_FCBetterThanWolves.fcStokedFire.id)
+            if(iBlockAboveID == BlockBase.FIRE.id || iBlockAboveID == BlockListener.fcStokedFire.id)
             {
                 world.setTile(i, j + 1, k, 0);
             }
@@ -88,7 +89,7 @@ public class Hibachi extends TemplateBlockBase
             if(IsBBQLit(world, i, j, k))
             {
                 int iBlockAboveID = world.getTileId(i, j + 1, k);
-                if(iBlockAboveID != BlockBase.FIRE.id && iBlockAboveID != mod_FCBetterThanWolves.fcStokedFire.id && BBQShouldIgniteAbove(world, i, j, k))
+                if(iBlockAboveID != BlockBase.FIRE.id && iBlockAboveID != BlockListener.fcStokedFire.id && BBQShouldIgniteAbove(world, i, j, k))
                 {
                     bShouldUpdate = true;
                 }
@@ -163,7 +164,7 @@ public class Hibachi extends TemplateBlockBase
     {
         ClearBBQLitFlag(world, i, j, k);
         world.playSound((float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F, "random.fizz", 0.5F, 2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
-        boolean isFireAbove = world.getTileId(i, j + 1, k) == FIRE.id || world.getTileId(i, j + 1, k) == mod_FCBetterThanWolves.fcStokedFire.id;
+        boolean isFireAbove = world.getTileId(i, j + 1, k) == FIRE.id || world.getTileId(i, j + 1, k) == BlockListener.fcStokedFire.id;
         if(isFireAbove)
         {
             world.setTile(i, j + 1, k, 0);

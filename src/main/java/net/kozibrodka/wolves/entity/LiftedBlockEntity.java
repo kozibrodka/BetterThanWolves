@@ -1,5 +1,6 @@
 package net.kozibrodka.wolves.entity;
 
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.kozibrodka.wolves.utils.ReplaceableBlockChecker;
@@ -34,7 +35,7 @@ public class LiftedBlockEntity extends EntityBase
         this(world);
         m_iid = world.getTileId(i, j, k);
         m_iBlockMetaData = world.getTileMeta(i, j, k);
-        if(m_iid == BlockBase.GOLDEN_RAIL.id || m_iid == BlockBase.DETECTOR_RAIL.id || m_iid == mod_FCBetterThanWolves.fcDetectorRailWood.id || m_iid == mod_FCBetterThanWolves.fcDetectorRailObsidian.id)
+        if(m_iid == BlockBase.GOLDEN_RAIL.id || m_iid == BlockBase.DETECTOR_RAIL.id || m_iid == BlockListener.fcDetectorRailWood.id || m_iid == BlockListener.fcDetectorRailObsidian.id)
         {
             m_iBlockMetaData &= 7;
         } else
@@ -160,7 +161,7 @@ public class LiftedBlockEntity extends EntityBase
     private void ConvertToBlock(int i, int j, int k)
     {
         boolean bDestroyBlock = true;
-        if(level.getTileId(i, j - 1, k) == mod_FCBetterThanWolves.fcPlatform.id && ReplaceableBlockChecker.IsReplaceableBlock(level, i, j, k))
+        if(level.getTileId(i, j - 1, k) == BlockListener.fcPlatform.id && ReplaceableBlockChecker.IsReplaceableBlock(level, i, j, k))
         {
             level.placeBlockWithMetaData(i, j, k, m_iid, m_iBlockMetaData);
             bDestroyBlock = false;

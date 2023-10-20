@@ -1,6 +1,7 @@
 
 package net.kozibrodka.wolves.items;
 
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.utils.ReplaceableBlockChecker;
 import net.minecraft.entity.player.PlayerBase;
@@ -24,18 +25,18 @@ public class Rope extends TemplateItemBase
             return false;
         }
         int iTargetid = world.getTileId(i, j, k);
-        if(iTargetid == mod_FCBetterThanWolves.fcAnchor.id || iTargetid == mod_FCBetterThanWolves.fcRopeBlock.id)
+        if(iTargetid == BlockListener.fcAnchor.id || iTargetid == BlockListener.fcRopeBlock.id)
         {
             for(int tempj = j - 1; tempj >= 0; tempj--)
             {
                 int iTempid = world.getTileId(i, tempj, k);
                 if(ReplaceableBlockChecker.IsReplaceableBlock(world, i, tempj, k))
                 {
-                    if(world.setTile(i, tempj, k, mod_FCBetterThanWolves.fcRopeBlock.id))
+                    if(world.setTile(i, tempj, k, BlockListener.fcRopeBlock.id))
                     {
-                        mod_FCBetterThanWolves.fcRopeBlock.onBlockPlaced(world, i, tempj, k, iFacing);
-                        mod_FCBetterThanWolves.fcRopeBlock.afterPlaced(world, i, tempj, k, entityplayer);
-                        world.playSound((float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F, mod_FCBetterThanWolves.fcRopeBlock.sounds.getWalkSound(), (mod_FCBetterThanWolves.fcRopeBlock.sounds.getVolume() + 1.0F) / 2.0F, mod_FCBetterThanWolves.fcRopeBlock.sounds.getPitch() * 0.8F);
+                        BlockListener.fcRopeBlock.onBlockPlaced(world, i, tempj, k, iFacing);
+                        BlockListener.fcRopeBlock.afterPlaced(world, i, tempj, k, entityplayer);
+                        world.playSound((float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F, BlockListener.fcRopeBlock.sounds.getWalkSound(), (BlockListener.fcRopeBlock.sounds.getVolume() + 1.0F) / 2.0F, BlockListener.fcRopeBlock.sounds.getPitch() * 0.8F);
                         ItemInstance.count--;
                         return true;
                     } else
@@ -43,7 +44,7 @@ public class Rope extends TemplateItemBase
                         return false;
                     }
                 }
-                if(iTempid != mod_FCBetterThanWolves.fcRopeBlock.id)
+                if(iTempid != BlockListener.fcRopeBlock.id)
                 {
                     return false;
                 }

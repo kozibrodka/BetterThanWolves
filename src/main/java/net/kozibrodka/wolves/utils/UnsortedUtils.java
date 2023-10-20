@@ -2,6 +2,7 @@ package net.kozibrodka.wolves.utils;
 
 
 import net.kozibrodka.wolves.blocks.Axle;
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.minecraft.block.BlockBase;
 import net.minecraft.entity.EntityBase;
@@ -333,11 +334,11 @@ public class UnsortedUtils
         {
             BlockPosition tempPos = new BlockPosition(i, j, k);
             tempPos.AddFacingAsOffset(iFacing);
-            if(world.getTileId(tempPos.i, tempPos.j, tempPos.k) != mod_FCBetterThanWolves.fcAxleBlock.id)
+            if(world.getTileId(tempPos.i, tempPos.j, tempPos.k) != BlockListener.fcAxleBlock.id)
             {
                 continue;
             }
-            Axle axleBlock = (Axle)mod_FCBetterThanWolves.fcAxleBlock;
+            Axle axleBlock = (Axle)BlockListener.fcAxleBlock;
             if(axleBlock.IsAxleOrientedTowardsFacing(world, tempPos.i, tempPos.j, tempPos.k, iFacing))
             {
                 axleBlock.BreakAxle(world, tempPos.i, tempPos.j, tempPos.k);

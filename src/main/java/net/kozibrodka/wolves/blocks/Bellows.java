@@ -1,6 +1,7 @@
 
 package net.kozibrodka.wolves.blocks;
 
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.mixin.LevelAccessor;
@@ -210,7 +211,7 @@ public class Bellows extends TemplateBlockBase
             BlockPosition targetPos = new BlockPosition(i, j, k);
             targetPos.AddFacingAsOffset(iFacing);
             int iTargetid = world.getTileId(targetPos.i, targetPos.j, targetPos.k);
-            if(iTargetid != mod_FCBetterThanWolves.fcHandCrank.id)
+            if(iTargetid != BlockListener.fcHandCrank.id)
             {
                 continue;
             }
@@ -232,11 +233,11 @@ public class Bellows extends TemplateBlockBase
             BlockPosition targetPos = new BlockPosition(i, j, k);
             targetPos.AddFacingAsOffset(iFacing);
             int iTargetid = world.getTileId(targetPos.i, targetPos.j, targetPos.k);
-            if(iTargetid != mod_FCBetterThanWolves.fcAxleBlock.id)
+            if(iTargetid != BlockListener.fcAxleBlock.id)
             {
                 continue;
             }
-            Axle axleBlock = (Axle)mod_FCBetterThanWolves.fcAxleBlock;
+            Axle axleBlock = (Axle)BlockListener.fcAxleBlock;
             if(axleBlock.IsAxleOrientedTowardsFacing(world, targetPos.i, targetPos.j, targetPos.k, iFacing) && axleBlock.GetPowerLevel(world, targetPos.i, targetPos.j, targetPos.k) > 0)
             {
                 return true;
@@ -301,7 +302,7 @@ public class Bellows extends TemplateBlockBase
                     continue;
                 }
             }
-            if(tempid == BlockBase.FIRE.id || tempid == mod_FCBetterThanWolves.fcStokedFire.id)
+            if(tempid == BlockBase.FIRE.id || tempid == BlockListener.fcStokedFire.id)
             {
                 StokeFire(world, tempTargetPos.i, tempTargetPos.j, tempTargetPos.k);
             }
@@ -313,14 +314,14 @@ public class Bellows extends TemplateBlockBase
             BlockPosition tempSidePos1 = new BlockPosition(tempTargetPos.i, tempTargetPos.j, tempTargetPos.k);
             tempSidePos1.AddFacingAsOffset(iFacingSide1);
             tempid = world.getTileId(tempSidePos1.i, tempSidePos1.j, tempSidePos1.k);
-            if((tempid == BlockBase.FIRE.id || tempid == mod_FCBetterThanWolves.fcStokedFire.id)) // && world.getTileId(tempSidePos1.i, tempSidePos1.j, tempSidePos1.k) == BlockBase.FIRE.id
+            if((tempid == BlockBase.FIRE.id || tempid == BlockListener.fcStokedFire.id)) // && world.getTileId(tempSidePos1.i, tempSidePos1.j, tempSidePos1.k) == BlockBase.FIRE.id
             {
                 StokeFire(world, tempSidePos1.i, tempSidePos1.j, tempSidePos1.k);
             }
             BlockPosition tempSidePos2 = new BlockPosition(tempTargetPos.i, tempTargetPos.j, tempTargetPos.k);
             tempSidePos2.AddFacingAsOffset(iFacingSide2);
             tempid = world.getTileId(tempSidePos2.i, tempSidePos2.j, tempSidePos2.k);
-            if(tempid == BlockBase.FIRE.id || tempid == mod_FCBetterThanWolves.fcStokedFire.id)
+            if(tempid == BlockBase.FIRE.id || tempid == BlockListener.fcStokedFire.id)
             {
                 StokeFire(world, tempSidePos2.i, tempSidePos2.j, tempSidePos2.k);
             }
@@ -330,23 +331,23 @@ public class Bellows extends TemplateBlockBase
 
     private void StokeFire(Level world, int i, int j, int k)
     {
-    	if(world.getTileId(i, j - 1, k) == mod_FCBetterThanWolves.fcBBQ.id)
+    	if(world.getTileId(i, j - 1, k) == BlockListener.fcBBQ.id)
         {
-            if(world.getTileId(i, j, k) == mod_FCBetterThanWolves.fcStokedFire.id)
+            if(world.getTileId(i, j, k) == BlockListener.fcStokedFire.id)
             {
                 world.setTileMeta(i, j, k, 0);
                 world.method_243(i, j, k);
             } else
             {
-                world.setTile(i, j, k, mod_FCBetterThanWolves.fcStokedFire.id);
+                world.setTile(i, j, k, BlockListener.fcStokedFire.id);
                 world.method_243(i, j, k);
             }
             if(world.isAir(i, j + 1, k))
             {
-                world.setTile(i, j + 1, k, mod_FCBetterThanWolves.fcStokedFire.id);
+                world.setTile(i, j + 1, k, BlockListener.fcStokedFire.id);
                 world.method_243(i, j, k);
             }
-            if(world.getTileId(i, j + 1, k) == mod_FCBetterThanWolves.fcStokedFire.id)
+            if(world.getTileId(i, j + 1, k) == BlockListener.fcStokedFire.id)
             {
                 world.setTileMeta(i, j + 1, k, 0);
                 world.method_243(i, j, k);

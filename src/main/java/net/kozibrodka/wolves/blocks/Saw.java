@@ -1,5 +1,6 @@
 package net.kozibrodka.wolves.blocks;
 
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.mixin.LevelAccessor;
@@ -140,7 +141,7 @@ public class Saw extends TemplateBlockBase
 
     public void onAdjacentBlockUpdate(Level world, int i, int j, int k, int iid)
     {
-        if(iid == mod_FCBetterThanWolves.fcAxleBlock.id || iid == mod_FCBetterThanWolves.fcHandCrank.id)
+        if(iid == BlockListener.fcAxleBlock.id || iid == BlockListener.fcHandCrank.id)
         {
             world.method_216(i, j, k, id, getTickrate());
         } else
@@ -374,9 +375,9 @@ public class Saw extends TemplateBlockBase
             boolean bRemoveOriginalBlockIfSawed = true;
 
             // This exists so the slab can be in the registry and to keep the wood check intact
-            if (iTargetid == mod_FCBetterThanWolves.fcOmniSlab.id)
+            if (iTargetid == BlockListener.fcOmniSlab.id)
             {
-                if(!((OmniSlab)mod_FCBetterThanWolves.fcOmniSlab).IsSlabWood(world, i, j, k)) return false;
+                if(!((OmniSlab)BlockListener.fcOmniSlab).IsSlabWood(world, i, j, k)) return false;
             }
 
             // Standard recipes from the registry
@@ -392,21 +393,21 @@ public class Saw extends TemplateBlockBase
             }
 
             // Special recipes with more complex outcomes
-            else if(iTargetid == mod_FCBetterThanWolves.fcCompanionCube.id)
+            else if(iTargetid == BlockListener.fcCompanionCube.id)
             {
-                CompanionCube cubeBlock = (CompanionCube)mod_FCBetterThanWolves.fcCompanionCube;
+                CompanionCube cubeBlock = (CompanionCube)BlockListener.fcCompanionCube;
                 if(!cubeBlock.GetHalfCubeState(world, i, j, k))
                 {
                     if(iSawFacing == 0 || iSawFacing == 1)
                     {
                         for(int iTempCount = 0; iTempCount < 2; iTempCount++)
                         {
-                            UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcCompanionCube.id, 1);
+                            UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, BlockListener.fcCompanionCube.id, 1);
                         }
 
                     } else
                     {
-                        UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcCompanionCube.id, 1);
+                        UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, BlockListener.fcCompanionCube.id, 1);
                         cubeBlock.SetHalfCubeState(world, i, j, k, true);
                         world.method_202(i, j, k, i, j, k);
                         bRemoveOriginalBlockIfSawed = false;
@@ -419,11 +420,11 @@ public class Saw extends TemplateBlockBase
                 } else
                 if(iSawFacing == 0 || iSawFacing == 1)
                 {
-                    UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcCompanionCube.id, 1);
+                    UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, BlockListener.fcCompanionCube.id, 1);
                     bSawedBlock = true;
                 }
             } else
-            if(iTargetid == BlockBase.LEAVES.id || iTargetid == BlockBase.SUGAR_CANES.id || iTargetid == BlockBase.CROPS.id || iTargetid == mod_FCBetterThanWolves.fcHempCrop.id)
+            if(iTargetid == BlockBase.LEAVES.id || iTargetid == BlockBase.SUGAR_CANES.id || iTargetid == BlockBase.CROPS.id || iTargetid == BlockListener.fcHempCrop.id)
             {
                 targetBlock.drop(world, i, j, k, world.getTileMeta(i, j, k));
                 bSawedBlock = true;
@@ -509,11 +510,11 @@ public class Saw extends TemplateBlockBase
             BlockPosition targetPos = new BlockPosition(i, j, k);
             targetPos.AddFacingAsOffset(iFacing);
             int iTargetid = world.getTileId(targetPos.i, targetPos.j, targetPos.k);
-            if(iTargetid != mod_FCBetterThanWolves.fcAxleBlock.id)
+            if(iTargetid != BlockListener.fcAxleBlock.id)
             {
                 continue;
             }
-            Axle axleBlock = (Axle)mod_FCBetterThanWolves.fcAxleBlock;
+            Axle axleBlock = (Axle)BlockListener.fcAxleBlock;
             if(axleBlock.IsAxleOrientedTowardsFacing(world, targetPos.i, targetPos.j, targetPos.k, iFacing) && axleBlock.GetPowerLevel(world, targetPos.i, targetPos.j, targetPos.k) > 0)
             {
                 return true;

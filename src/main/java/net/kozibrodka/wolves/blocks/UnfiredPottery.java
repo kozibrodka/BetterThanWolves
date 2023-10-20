@@ -1,6 +1,7 @@
 package net.kozibrodka.wolves.blocks;
 
 
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.itemblocks.UnfiredPotteryItemBlock;
@@ -123,15 +124,15 @@ public class UnfiredPottery extends TemplateBlockWithEntity
         switch(iMetaData)
         {
             case 0: // '\0'
-                iNewid = mod_FCBetterThanWolves.fcCrucible.id;
+                iNewid = BlockListener.fcCrucible.id;
                 break;
 
             case 1: // '\001'
-                iNewid = mod_FCBetterThanWolves.fcPlanter.id;
+                iNewid = BlockListener.fcPlanter.id;
                 break;
 
             case 2: // '\002'
-                iNewid = mod_FCBetterThanWolves.fcVase.id;
+                iNewid = BlockListener.fcVase.id;
                 break;
         }
         world.setTile(i, j, k, 0);

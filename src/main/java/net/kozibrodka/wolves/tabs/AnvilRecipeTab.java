@@ -2,6 +2,7 @@ package net.kozibrodka.wolves.tabs;
 
 import net.glasslauncher.hmifabric.Utils;
 import net.glasslauncher.hmifabric.tabs.TabWithTexture;
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.gui.AnvilGUI;
 import net.kozibrodka.wolves.recipe.AnvilShapelessRecipe;
@@ -37,7 +38,7 @@ public class AnvilRecipeTab extends TabWithTexture {
     public int recipeIndex;
 
     public AnvilRecipeTab(ModID tabCreator) {
-        this(tabCreator, new ArrayList<Object>(AnvilCraftingManager.getInstance().getRecipeList()), mod_FCBetterThanWolves.fcAnvil);
+        this(tabCreator, new ArrayList<Object>(AnvilCraftingManager.getInstance().getRecipeList()), BlockListener.fcAnvil);
         isVanillaWorkbench = true;
         guiCraftingStations.add(Crafting.class);
     }

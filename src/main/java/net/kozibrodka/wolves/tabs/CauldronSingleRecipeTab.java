@@ -2,6 +2,7 @@ package net.kozibrodka.wolves.tabs;
 
 import net.glasslauncher.hmifabric.Utils;
 import net.glasslauncher.hmifabric.tabs.TabWithTexture;
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.gui.CauldronGUI;
 import net.kozibrodka.wolves.recipe.CauldronCraftingManager;
@@ -24,7 +25,7 @@ public class CauldronSingleRecipeTab extends TabWithTexture {
     private final List<ItemInstance[]> recipesReady;
 
     public CauldronSingleRecipeTab(ModID tabCreator) {
-        this(tabCreator, new ArrayList<ItemInstance[]>(CauldronCraftingManager.getInstance().getSingleRecipes()), mod_FCBetterThanWolves.fcCauldron);
+        this(tabCreator, new ArrayList<ItemInstance[]>(CauldronCraftingManager.getInstance().getSingleRecipes()), BlockListener.fcCauldron);
     }
 
     public CauldronSingleRecipeTab(ModID tabCreator, List<ItemInstance[]> recipesReady, BlockBase tabBlock) {
@@ -47,7 +48,7 @@ public class CauldronSingleRecipeTab extends TabWithTexture {
     @Override
     public void draw(int x, int y, int recipeOnThisPageIndex, int cursorX, int cursorY) {
         super.draw(x, y, recipeOnThisPageIndex, cursorX, cursorY);
-        Utils.drawScaledItem(new ItemInstance(mod_FCBetterThanWolves.fcCauldron), x + 54, y + 12, 34);
+        Utils.drawScaledItem(new ItemInstance(BlockListener.fcCauldron), x + 54, y + 12, 34);
     }
 
     @Override

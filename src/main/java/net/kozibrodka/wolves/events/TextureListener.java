@@ -120,10 +120,10 @@ public class TextureListener {
         mod_FCBetterThanWolves.fcBucketCement.setTexture(Identifier.of(MOD_ID, "item/fcBucketCement"));
         mod_FCBetterThanWolves.soulFilter.setTexture(Identifier.of(MOD_ID, "item/soul_filter"));
 
-        mod_FCBetterThanWolves.fcDetectorRailObsidian.asItem().setTexturePosition(registerBlockTexture("block/fcRailDetector_obsidian"));
-        mod_FCBetterThanWolves.fcDetectorRailWood.asItem().setTexturePosition(registerBlockTexture("block/fcRailDetector_wood"));
-        mod_FCBetterThanWolves.fcCement.asItem().setTexturePosition(cement);
-        mod_FCBetterThanWolves.fcHempCrop.asItem().setTexturePosition(registerBlockTexture("block/fcBlockHemp_7"));
+        BlockListener.fcDetectorRailObsidian.asItem().setTexturePosition(registerBlockTexture("block/fcRailDetector_obsidian"));
+        BlockListener.fcDetectorRailWood.asItem().setTexturePosition(registerBlockTexture("block/fcRailDetector_wood"));
+        BlockListener.fcCement.asItem().setTexturePosition(cement);
+        BlockListener.fcHempCrop.asItem().setTexturePosition(registerBlockTexture("block/fcBlockHemp_7"));
     }
 
     private int registerBlockTexture(String s) {

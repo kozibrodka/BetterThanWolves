@@ -2,6 +2,7 @@ package net.kozibrodka.wolves.tabs;
 
 import net.glasslauncher.hmifabric.Utils;
 import net.glasslauncher.hmifabric.tabs.TabWithTexture;
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.gui.CauldronGUI;
 import net.kozibrodka.wolves.recipe.CauldronCraftingManager;
@@ -24,7 +25,7 @@ public class CauldronDoubleRecipeTab extends TabWithTexture {
     private final List<ItemInstance[]> recipesReady;
 
     public CauldronDoubleRecipeTab(ModID tabCreator) {
-        this(tabCreator, new ArrayList<ItemInstance[]>(CauldronCraftingManager.getInstance().getDoubleRecipes()), mod_FCBetterThanWolves.fcCauldron);
+        this(tabCreator, new ArrayList<ItemInstance[]>(CauldronCraftingManager.getInstance().getDoubleRecipes()), BlockListener.fcCauldron);
     }
 
     public CauldronDoubleRecipeTab(ModID tabCreator, List<ItemInstance[]> recipesReady, BlockBase tabBlock) {
@@ -48,7 +49,7 @@ public class CauldronDoubleRecipeTab extends TabWithTexture {
     @Override
     public void draw(int x, int y, int recipeOnThisPageIndex, int cursorX, int cursorY) {
         super.draw(x, y, recipeOnThisPageIndex, cursorX, cursorY);
-        Utils.drawScaledItem(new ItemInstance(mod_FCBetterThanWolves.fcCauldron), x + 54, y + 12, 34);
+        Utils.drawScaledItem(new ItemInstance(BlockListener.fcCauldron), x + 54, y + 12, 34);
     }
 
     @Override
@@ -87,10 +88,10 @@ public class CauldronDoubleRecipeTab extends TabWithTexture {
     public void updateRecipesWithoutClear(ItemInstance filter, Boolean getUses) {
         lastIndex = 0;
         recipesReady.forEach(recipe -> {
-            ItemInstance input1 = recipe[2];
-            ItemInstance input = recipe[1];
+            ItemInstance firstInput = recipe[1];
+            ItemInstance secondInput = recipe[2];
             ItemInstance output = recipe[0];
-            if (filter == null || (!getUses && compare(filter, output)) || (getUses && compare(filter, input)) || (getUses && compare(filter, input1)) || filter.isDamageAndIDIdentical(new ItemInstance(tabBlock))) {
+            if (filter == null || (!getUses && compare(filter, output)) || (getUses && compare(filter, firstInput)) || (getUses && compare(filter, secondInput)) || filter.isDamageAndIDIdentical(new ItemInstance(tabBlock))) {
                 recipes.add(recipe);
             }
         });

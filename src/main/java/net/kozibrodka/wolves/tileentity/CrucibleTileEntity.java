@@ -12,6 +12,7 @@ package net.kozibrodka.wolves.tileentity;
 //            mod_FCBetterThanWolves, Block, FoodBase, FurnaceRecipes, 
 //            Item, FCUtilsMisc, ItemMap, ItemShears
 
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.recipe.CrucibleCraftingManager;
 import net.kozibrodka.wolves.utils.InventoryHandler;
@@ -162,7 +163,7 @@ public class CrucibleTileEntity extends TileEntityBase
     public int GetStokedFireFactor()
     {
         int fireFactor = 0;
-        if(level.getTileId(x, y - 1, z) == mod_FCBetterThanWolves.fcStokedFire.id && level.getTileId(x, y - 2, z) == mod_FCBetterThanWolves.fcStokedFire.id)
+        if(level.getTileId(x, y - 1, z) == BlockListener.fcStokedFire.id && level.getTileId(x, y - 2, z) == BlockListener.fcStokedFire.id)
         {
             fireFactor += 5;
             int tempY = y - 1;
@@ -170,7 +171,7 @@ public class CrucibleTileEntity extends TileEntityBase
             {
                 for(int tempZ = z - 1; tempZ <= z + 1; tempZ++)
                 {
-                    if((tempX != x || tempZ != z) && level.getTileId(tempX, tempY, tempZ) == mod_FCBetterThanWolves.fcStokedFire.id && level.getTileId(tempX, tempY - 1, tempZ) == mod_FCBetterThanWolves.fcStokedFire.id)
+                    if((tempX != x || tempZ != z) && level.getTileId(tempX, tempY, tempZ) == BlockListener.fcStokedFire.id && level.getTileId(tempX, tempY - 1, tempZ) == BlockListener.fcStokedFire.id)
                     {
                         fireFactor++;
                     }
@@ -232,7 +233,7 @@ public class CrucibleTileEntity extends TileEntityBase
         if (item == null) return false;
         if (item instanceof FoodBase) return false;
         ItemInstance smeltingResult = SmeltingRecipeRegistry.getInstance().getResult(item.id);
-        if(smeltingResult != null && !(smeltingResult.getType() instanceof FoodBase) && smeltingResult.getType().id != mod_FCBetterThanWolves.fcUnfiredPottery.id)
+        if(smeltingResult != null && !(smeltingResult.getType() instanceof FoodBase) && smeltingResult.getType().id != BlockListener.fcUnfiredPottery.id)
         {
             return true;
         }
@@ -389,6 +390,9 @@ public class CrucibleTileEntity extends TileEntityBase
 
     }
 
+    /**
+     * THIS IS BEYOND HORRENDOUS!!! TODO: Add these recipes to the registry and say goodbye to this abomination.
+     */
     ItemInstance GetMeltingResult(ItemBase item)
     {
         ItemInstance tempStack = null;
@@ -445,7 +449,7 @@ public class CrucibleTileEntity extends TileEntityBase
         {
             tempStack = new ItemInstance(ItemBase.ironIngot, 2);
         } else
-        if(iShiftedIndex == BlockBase.DETECTOR_RAIL.id || iShiftedIndex == mod_FCBetterThanWolves.fcDetectorRailWood.id || iShiftedIndex == mod_FCBetterThanWolves.fcDetectorRailObsidian.id)
+        if(iShiftedIndex == BlockBase.DETECTOR_RAIL.id || iShiftedIndex == BlockListener.fcDetectorRailWood.id || iShiftedIndex == BlockListener.fcDetectorRailObsidian.id)
         {
             tempStack = new ItemInstance(ItemBase.ironIngot, 1);
         } else
@@ -509,7 +513,7 @@ public class CrucibleTileEntity extends TileEntityBase
         {
             tempStack = new ItemInstance(mod_FCBetterThanWolves.fcSteel, 1);
         } else
-        if(iShiftedIndex == mod_FCBetterThanWolves.fcAnvil.id)
+        if(iShiftedIndex == BlockListener.fcAnvil.id)
         {
             tempStack = new ItemInstance(mod_FCBetterThanWolves.fcSteel, 7);
         } else

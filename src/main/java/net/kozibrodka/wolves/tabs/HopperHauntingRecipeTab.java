@@ -2,6 +2,7 @@ package net.kozibrodka.wolves.tabs;
 
 import net.glasslauncher.hmifabric.Utils;
 import net.glasslauncher.hmifabric.tabs.TabWithTexture;
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.gui.HopperGUI;
 import net.kozibrodka.wolves.recipe.HopperHauntingRecipeRegistry;
@@ -24,7 +25,7 @@ public class HopperHauntingRecipeTab extends TabWithTexture {
     private final List<ItemInstance[]> recipesReady;
 
     public HopperHauntingRecipeTab(ModID tabCreator) {
-        this(tabCreator, new ArrayList<ItemInstance[]>(HopperHauntingRecipeRegistry.getInstance().getRecipes()), mod_FCBetterThanWolves.fcHopper);
+        this(tabCreator, new ArrayList<ItemInstance[]>(HopperHauntingRecipeRegistry.getInstance().getRecipes()), BlockListener.fcHopper);
     }
 
     public HopperHauntingRecipeTab(ModID tabCreator, List<ItemInstance[]> recipesReady, BlockBase tabBlock) {
@@ -48,7 +49,7 @@ public class HopperHauntingRecipeTab extends TabWithTexture {
     @Override
     public void draw(int x, int y, int recipeOnThisPageIndex, int cursorX, int cursorY) {
         super.draw(x, y, recipeOnThisPageIndex, cursorX, cursorY);
-        Utils.drawScaledItem(new ItemInstance(mod_FCBetterThanWolves.fcHopper), x + 54, y + 24, 34);
+        Utils.drawScaledItem(new ItemInstance(BlockListener.fcHopper), x + 54, y + 24, 34);
     }
 
     @Override

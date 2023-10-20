@@ -5,6 +5,7 @@
 package net.kozibrodka.wolves.render;
 
 import net.kozibrodka.wolves.blocks.Anchor;
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.mixin.BlockRendererAccessor;
@@ -40,7 +41,7 @@ public class MovingAnchorRender extends EntityRenderer
         int j = MathHelper.floor(entity.y);
         int k = MathHelper.floor(entity.z);
         bindTexture("/terrain.png");
-        BlockBase block = mod_FCBetterThanWolves.fcAnchor;
+        BlockBase block = BlockListener.fcAnchor;
         float f3 = 0.5F;
         float f5 = 0.5F;
         float f7 = Anchor.fAnchorBaseHeight;
@@ -51,16 +52,16 @@ public class MovingAnchorRender extends EntityRenderer
         f5 = 0.125F;
         f7 = 0.25F;
         block.setBoundingBox(0.5F - f5, Anchor.fAnchorBaseHeight, 0.5F - f3, 0.5F + f5, Anchor.fAnchorBaseHeight + f7, 0.5F + f3);
-        ((Anchor)mod_FCBetterThanWolves.fcAnchor).getClass();
+        ((Anchor)BlockListener.fcAnchor).getClass();
 //        this.localRenderBlocks.method_53(block,world, i, j, k);
         CustomBlockRendering.RenderMovingBlockWithTexture(localRenderBlocks, block, world, i, j, k, TextureListener.anchor_button);
-        if(world.getTileId(i, j, k) != mod_FCBetterThanWolves.fcRopeBlock.id)
+        if(world.getTileId(i, j, k) != BlockListener.fcRopeBlock.id)
         {
             float f4 = 0.062375F;
             float f6 = 0.062375F;
             float f8 = 1.0F;
             block.setBoundingBox(0.5F - f6, Anchor.fAnchorBaseHeight, 0.5F - f4, 0.5F + f6, 1.99F, 0.5F + f4);
-            ((Anchor)mod_FCBetterThanWolves.fcAnchor).getClass();
+            ((Anchor)BlockListener.fcAnchor).getClass();
 //            this.localRenderBlocks.method_53(block, world, i, j, k);
             CustomBlockRendering.RenderMovingBlockWithTexture(localRenderBlocks, block, world, i, j, k, TextureListener.rope);
         }

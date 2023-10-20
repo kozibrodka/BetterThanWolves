@@ -6,6 +6,7 @@
 package net.kozibrodka.wolves.blocks;
 
 import net.kozibrodka.wolves.container.CauldronContainer;
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.tileentity.CauldronTileEntity;
@@ -187,7 +188,7 @@ public class Cauldron extends TemplateBlockWithEntity
         {
             iNewState = 1;
         } else
-        if(world.getTileId(i, j - 1, k) == mod_FCBetterThanWolves.fcStokedFire.id)
+        if(world.getTileId(i, j - 1, k) == BlockListener.fcStokedFire.id)
         {
             iNewState = 2;
         }

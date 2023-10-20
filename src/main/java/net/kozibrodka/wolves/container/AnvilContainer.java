@@ -1,5 +1,6 @@
 package net.kozibrodka.wolves.container;
 
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.recipe.AnvilCraftingManager;
 import net.minecraft.container.ContainerBase;
@@ -86,7 +87,7 @@ public class AnvilContainer extends ContainerBase
 
     public boolean canUse(PlayerBase entityplayer)
     {
-        if(m_localWorld.getTileId(m_anvilI, m_anvilJ, m_anvilK) != mod_FCBetterThanWolves.fcAnvil.id)
+        if(m_localWorld.getTileId(m_anvilI, m_anvilJ, m_anvilK) != BlockListener.fcAnvil.id)
         {
             return false;
         } else

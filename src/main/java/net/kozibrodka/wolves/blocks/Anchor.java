@@ -7,6 +7,7 @@ package net.kozibrodka.wolves.blocks;
 
 import net.fabricmc.loader.api.FabricLoader;
 import net.kozibrodka.wolves.entity.MovingAnchorEntity;
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.tileentity.PulleyTileEntity;
@@ -170,14 +171,14 @@ public class Anchor extends TemplateBlockBase implements BlockWithWorldRenderer,
                 break;
             }
             int iTempid = world.getTileId(i, tempj, k);
-            if(iTempid != mod_FCBetterThanWolves.fcRopeBlock.id)
+            if(iTempid != BlockListener.fcRopeBlock.id)
             {
                 break;
             }
-            if(world.getTileId(i, tempj - 1, k) != mod_FCBetterThanWolves.fcRopeBlock.id)
+            if(world.getTileId(i, tempj - 1, k) != BlockListener.fcRopeBlock.id)
             {
                 AddRopeToPlayerInventory(world, i, j, k, entityPlayer);
-                BlockBase targetBlock = mod_FCBetterThanWolves.fcRopeBlock;
+                BlockBase targetBlock = BlockListener.fcRopeBlock;
                 Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).soundHelper.playSound(targetBlock.sounds.getWalkSound(), (float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F, (targetBlock.sounds.getVolume() + 1.0F) / 2.0F, targetBlock.sounds.getPitch() * 0.8F);
                 world.setTile(i, tempj, k, 0);
                 break;
@@ -203,12 +204,12 @@ public class Anchor extends TemplateBlockBase implements BlockWithWorldRenderer,
         int iMovementDirection = 0;
         if(tileEntityPulley.IsRaising())
         {
-            if(world.getTileId(i, j + 1, k) == mod_FCBetterThanWolves.fcRopeBlock.id)
+            if(world.getTileId(i, j + 1, k) == BlockListener.fcRopeBlock.id)
             {
                 iMovementDirection = 1;
             }
         } else
-        if(tileEntityPulley.IsLowering() && (world.isAir(i, j - 1, k) || world.getTileId(i, j - 1, k) == mod_FCBetterThanWolves.fcPlatform.id))
+        if(tileEntityPulley.IsLowering() && (world.isAir(i, j - 1, k) || world.getTileId(i, j - 1, k) == BlockListener.fcPlatform.id))
         {
             iMovementDirection = -1;
         }
@@ -231,9 +232,9 @@ public class Anchor extends TemplateBlockBase implements BlockWithWorldRenderer,
     {
         int iTargetJ = j - 1;
         int iTargetid = world.getTileId(i, iTargetJ, k);
-        if(iTargetid == mod_FCBetterThanWolves.fcPlatform.id)
+        if(iTargetid == BlockListener.fcPlatform.id)
         {
-            ((Platform)mod_FCBetterThanWolves.fcPlatform).CovertToEntitiesFromThisPlatform(world, i, iTargetJ, k, associatedAnchorEntity);
+            ((Platform)BlockListener.fcPlatform).CovertToEntitiesFromThisPlatform(world, i, iTargetJ, k, associatedAnchorEntity);
         }
     }
 
@@ -288,13 +289,13 @@ public class Anchor extends TemplateBlockBase implements BlockWithWorldRenderer,
         if(l == 1)
         {
             int i1 = tileView.getTileId(x, y + 1, z);
-            if(i1 == mod_FCBetterThanWolves.fcRopeBlock.id || i1 == mod_FCBetterThanWolves.fcPulley.id)
+            if(i1 == BlockListener.fcRopeBlock.id || i1 == BlockListener.fcPulley.id)
             {
                 this.setBoundingBox(0.5F - f1, f2, 0.5F - f, 0.5F + f1, 1.0F, 0.5F + f);
                 flag = true;
             }
         } else
-        if(tileView.getTileId(x, y - 1, z) == mod_FCBetterThanWolves.fcRopeBlock.id)
+        if(tileView.getTileId(x, y - 1, z) == BlockListener.fcRopeBlock.id)
         {
             this.setBoundingBox(0.5F - f1, 0.0F, 0.5F - f, 0.5F + f1, f2, 0.5F + f);
             flag = true;

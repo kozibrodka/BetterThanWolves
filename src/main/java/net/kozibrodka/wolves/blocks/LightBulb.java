@@ -2,6 +2,7 @@
 package net.kozibrodka.wolves.blocks;
 
 import net.fabricmc.loader.api.FabricLoader;
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.utils.RotatableBlock;
@@ -27,7 +28,7 @@ public class LightBulb extends TemplateBlockBase
 
     public int getTextureForSide(int i)
     {
-        return id != mod_FCBetterThanWolves.fcLightBulbOn.id ? TextureListener.bulb_off : TextureListener.bulb_on;
+        return id != BlockListener.fcLightBulbOn.id ? TextureListener.bulb_off : TextureListener.bulb_on;
     }
 
     public int getTickrate()
@@ -42,7 +43,7 @@ public class LightBulb extends TemplateBlockBase
 
     public int getDropId(int i, Random random)
     {
-        return mod_FCBetterThanWolves.fcLightBulbOff.id;
+        return BlockListener.fcLightBulbOff.id;
     }
 
     public boolean isFullOpaque()
@@ -52,7 +53,7 @@ public class LightBulb extends TemplateBlockBase
 
     public float getBrightness(BlockView iBlockAccess, int i, int j, int k)
     {
-    	if(id == mod_FCBetterThanWolves.fcLightBulbOn.id)
+    	if(id == BlockListener.fcLightBulbOn.id)
         {
             return 100F;
         } else
@@ -117,17 +118,17 @@ public class LightBulb extends TemplateBlockBase
 
     private void LightBulbTurnOn(Level world, int i, int j, int k)
     {
-        world.setTile(i, j, k, mod_FCBetterThanWolves.fcLightBulbOn.id);
+        world.setTile(i, j, k, BlockListener.fcLightBulbOn.id);
     }
 
     private void LightBulbTurnOff(Level world, int i, int j, int k)
     {
-        world.setTile(i, j, k, mod_FCBetterThanWolves.fcLightBulbOff.id);
+        world.setTile(i, j, k, BlockListener.fcLightBulbOff.id);
     }
 
     public boolean IsLightOn(Level world, int i, int j, int k)
     {
-        return world.getTileId(i, j, k) == mod_FCBetterThanWolves.fcLightBulbOn.id;
+        return world.getTileId(i, j, k) == BlockListener.fcLightBulbOn.id;
     }
 
 }

@@ -14,6 +14,7 @@ package net.kozibrodka.wolves.tileentity;
 //            FurnaceRecipes, FoodBase
 
 import net.kozibrodka.wolves.blocks.Cauldron;
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.recipe.CauldronCraftingManager;
 import net.kozibrodka.wolves.recipe.CauldronStokedCraftingManager;
@@ -105,7 +106,7 @@ public class CauldronTileEntity extends TileEntityBase
 
     public void tick()
     {
-        int iFireUnderState = ((Cauldron) mod_FCBetterThanWolves.fcCauldron).GetFireUnderState(level, x, y, z);
+        int iFireUnderState = ((Cauldron) BlockListener.fcCauldron).GetFireUnderState(level, x, y, z);
         if(iFireUnderState > 0)
         {
             if(m_bForceValidateOnUpdate)
@@ -177,7 +178,7 @@ public class CauldronTileEntity extends TileEntityBase
 
     public void markDirty()
     {
-        int iFireUnderState = ((Cauldron)mod_FCBetterThanWolves.fcCauldron).GetFireUnderState(level, x, y, z);
+        int iFireUnderState = ((Cauldron)BlockListener.fcCauldron).GetFireUnderState(level, x, y, z);
         ValidateContentsForState(iFireUnderState);
     }
 
@@ -246,7 +247,7 @@ public class CauldronTileEntity extends TileEntityBase
             int iidToTest = BlockBase.FIRE.id;
             if(iFireUnderState == 2)
             {
-                iidToTest = mod_FCBetterThanWolves.fcStokedFire.id;
+                iidToTest = BlockListener.fcStokedFire.id;
             }
             int tempY = y - 1;
             for(int tempX = x - 1; tempX <= x + 1; tempX++)

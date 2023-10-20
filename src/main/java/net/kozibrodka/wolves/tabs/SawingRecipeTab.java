@@ -2,6 +2,7 @@ package net.kozibrodka.wolves.tabs;
 
 import net.glasslauncher.hmifabric.Utils;
 import net.glasslauncher.hmifabric.tabs.TabWithTexture;
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.gui.MillStoneGUI;
 import net.kozibrodka.wolves.recipe.SawingRecipeRegistry;
@@ -24,7 +25,7 @@ public class SawingRecipeTab extends TabWithTexture {
     private final List<ItemInstance[]> recipesReady;
 
     public SawingRecipeTab(ModID tabCreator) {
-        this(tabCreator, new ArrayList<ItemInstance[]>(SawingRecipeRegistry.getInstance().getRecipes()), mod_FCBetterThanWolves.fcSaw);
+        this(tabCreator, new ArrayList<ItemInstance[]>(SawingRecipeRegistry.getInstance().getRecipes()), BlockListener.fcSaw);
     }
 
     public SawingRecipeTab(ModID tabCreator, List<ItemInstance[]> recipesReady, BlockBase tabBlock) {
@@ -47,7 +48,7 @@ public class SawingRecipeTab extends TabWithTexture {
     @Override
     public void draw(int x, int y, int recipeOnThisPageIndex, int cursorX, int cursorY) {
         super.draw(x, y, recipeOnThisPageIndex, cursorX, cursorY);
-        Utils.drawScaledItem(new ItemInstance(mod_FCBetterThanWolves.fcSaw), x + 54, y + 12, 34);
+        Utils.drawScaledItem(new ItemInstance(BlockListener.fcSaw), x + 54, y + 12, 34);
     }
 
     @Override
@@ -58,7 +59,7 @@ public class SawingRecipeTab extends TabWithTexture {
             int k = index + j;
             if (k < recipes.size()) try {
                 ItemInstance[] recipe = recipes.get(k);
-                if (recipe[0].itemId == mod_FCBetterThanWolves.fcOmniSlab.id) recipe[0] = new ItemInstance(mod_FCBetterThanWolves.fcOmniSlab, 1, 1); // This is a very cursed workaround to display the wooden slab and not the stone variant
+                if (recipe[0].itemId == BlockListener.fcOmniSlab.id) recipe[0] = new ItemInstance(BlockListener.fcOmniSlab, 1, 1); // This is a very cursed workaround to display the wooden slab and not the stone variant
                 items[j][0] = recipe[0];
                 items[j][1] = recipe[1];
             } catch (Throwable throwable) {

@@ -6,6 +6,7 @@
 package net.kozibrodka.wolves.blocks;
 
 import net.kozibrodka.wolves.container.HopperContainer;
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.modsupport.AffectedByBellows;
@@ -48,7 +49,7 @@ public class Hopper extends TemplateBlockWithEntity
 
     public int getTickrate()
     {
-        return iHopperTickRate;
+        return hopperTickRate;
     }
 
     public Box getCollisionShape(Level world, int i, int j, int k)
@@ -337,7 +338,7 @@ public class Hopper extends TemplateBlockWithEntity
     {
         for(int iTemp = 0; iTemp < 2; iTemp++)
         {
-            UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcOmniSlab.id, 1);
+            UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, BlockListener.fcOmniSlab.id, 1);
         }
 
         for(int iTemp = 0; iTemp < 1; iTemp++)
@@ -390,16 +391,16 @@ public class Hopper extends TemplateBlockWithEntity
             BlockPosition targetPos = new BlockPosition(i, j, k);
             targetPos.AddFacingAsOffset(iFacing);
             int iTargetid = world.getTileId(targetPos.i, targetPos.j, targetPos.k);
-            if(iTargetid == mod_FCBetterThanWolves.fcAxleBlock.id)
+            if(iTargetid == BlockListener.fcAxleBlock.id)
             {
-                Axle axleBlock = (Axle)mod_FCBetterThanWolves.fcAxleBlock;
+                Axle axleBlock = (Axle)BlockListener.fcAxleBlock;
                 if(axleBlock.IsAxleOrientedTowardsFacing(world, targetPos.i, targetPos.j, targetPos.k, iFacing) && axleBlock.GetPowerLevel(world, targetPos.i, targetPos.j, targetPos.k) > 0)
                 {
                     return true;
                 }
                 continue;
             }
-            if(iTargetid != mod_FCBetterThanWolves.fcHandCrank.id)
+            if(iTargetid != BlockListener.fcHandCrank.id)
             {
                 continue;
             }
@@ -419,20 +420,7 @@ public class Hopper extends TemplateBlockWithEntity
         return false;
     }
 
-    public final int iHopperTopTextureIndex = 46;
-    public final int iHopperSideTextureIndex = 47;
-    public final int iHopperBottomTextureIndex = 48;
-    public final int iHopperContentsTextureIndex = 49;
-    private final int iHopperLadderFilterTextureID = 50;
-    private final int iHopperTrapDoorFilterTextureID = 51;
-    private final int iHopperGrateFilterTextureID = 52;
-    private final int iHopperRollersFilterTextureID = 53;
-    private final int iHopperWhickerFilterTextureID = 54;
-    private final int iHopperSoulSandFilterTextureID = 55;
-    private static int iHopperTickRate = 10;
-    public static final float fHopperCollisionBoxHeight = 0.5F;
-    public static final float fHopperCollisionBoxHeightWithFilter = 0.99F;
-    public static final float fHopperVisualHeight = 1F;
+    private static int hopperTickRate = 10;
 
     @Override
     public boolean renderWorld(BlockRenderer tileRenderer, BlockView tileView, int x, int y, int z) {

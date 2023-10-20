@@ -1,5 +1,6 @@
 package net.kozibrodka.wolves.blocks;
 
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.utils.BlockPosition;
@@ -449,9 +450,9 @@ public class Axle extends TemplateBlockBase
                 }
                 continue;
             }
-            if(iTempid == mod_FCBetterThanWolves.fcGearBox.id)
+            if(iTempid == BlockListener.fcGearBox.id)
             {
-                ((GearBox)mod_FCBetterThanWolves.fcGearBox).Overpower(world, potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
+                ((GearBox)BlockListener.fcGearBox).Overpower(world, potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
             }
         }
 

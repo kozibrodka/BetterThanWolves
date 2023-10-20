@@ -1,6 +1,7 @@
 package net.kozibrodka.wolves.blocks;
 
 import net.fabricmc.loader.api.FabricLoader;
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
@@ -41,7 +42,7 @@ public class Rope extends TemplateBlockBase implements BlockWithWorldRenderer
     public void onAdjacentBlockUpdate(Level world, int i, int j, int k, int iid)
     {
         int iBlockAboveID = world.getTileId(i, j + 1, k);
-        if(iBlockAboveID != id && iBlockAboveID != mod_FCBetterThanWolves.fcAnchor.id && iBlockAboveID != mod_FCBetterThanWolves.fcPulley.id)
+        if(iBlockAboveID != id && iBlockAboveID != BlockListener.fcAnchor.id && iBlockAboveID != BlockListener.fcPulley.id)
         {
             drop(world, i, j, k, world.getTileMeta(i, j, k));
             world.setTile(i, j, k, 0);
@@ -51,7 +52,7 @@ public class Rope extends TemplateBlockBase implements BlockWithWorldRenderer
     public boolean canPlaceAt(Level world, int i, int j, int k)
     {
         int iBlockAboveID = world.getTileId(i, j + 1, k);
-        return iBlockAboveID == id || iBlockAboveID == mod_FCBetterThanWolves.fcAnchor.id;
+        return iBlockAboveID == id || iBlockAboveID == BlockListener.fcAnchor.id;
     }
 
     public boolean isFullOpaque()

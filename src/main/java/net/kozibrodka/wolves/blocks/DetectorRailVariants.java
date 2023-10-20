@@ -1,5 +1,6 @@
 package net.kozibrodka.wolves.blocks;
 
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.minecraft.client.render.block.BlockRenderer;
@@ -20,7 +21,7 @@ public class DetectorRailVariants extends TemplateDetectorRail implements BlockW
     }
 
     public int getTextureForSide(int i, int j) {
-        if(this.id == mod_FCBetterThanWolves.fcDetectorRailWood.id)
+        if(this.id == BlockListener.fcDetectorRailWood.id)
         {
             return TextureListener.rail_wood;
         }else{
@@ -30,7 +31,7 @@ public class DetectorRailVariants extends TemplateDetectorRail implements BlockW
 
         public int getTextureForSide(int i)
     {
-        if(this.id == mod_FCBetterThanWolves.fcDetectorRailWood.id)
+        if(this.id == BlockListener.fcDetectorRailWood.id)
         {
             return TextureListener.rail_wood;
         }else{
@@ -40,7 +41,7 @@ public class DetectorRailVariants extends TemplateDetectorRail implements BlockW
 
     public int getTextureForSide(BlockView iblockaccess, int i, int j, int k, int l)
     {
-        if(this.id == mod_FCBetterThanWolves.fcDetectorRailWood.id)
+        if(this.id == BlockListener.fcDetectorRailWood.id)
         {
             return TextureListener.rail_wood;
         }else{

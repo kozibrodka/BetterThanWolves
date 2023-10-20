@@ -7,6 +7,7 @@ package net.kozibrodka.wolves.blocks;
 import net.fabricmc.loader.api.FabricLoader;
 import net.kozibrodka.wolves.container.BlockDispenserContainer;
 import net.kozibrodka.wolves.entity.BroadheadArrowEntity;
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.mixin.BlockBaseAccessor;
@@ -96,7 +97,7 @@ public class BlockDispenser extends TemplateBlockWithEntity
 
     public int getDropId(int i, Random random)
     {
-        return mod_FCBetterThanWolves.fcBlockDispenser.id;
+        return BlockListener.fcBlockDispenser.id;
     }
 
     public void onBlockPlaced(Level world, int i, int j, int k, int iFacing)
@@ -214,7 +215,7 @@ public class BlockDispenser extends TemplateBlockWithEntity
                 targetBlock != BlockBase.STILL_WATER &&
                 targetBlock != BlockBase.FLOWING_LAVA &&
                 targetBlock != BlockBase.STILL_LAVA &&
-                targetBlock != mod_FCBetterThanWolves.fcCement &&
+                targetBlock != BlockListener.fcCement &&
                 targetBlock != BlockBase.FIRE &&
                 targetBlock != BlockBase.MOB_SPAWNER &&
                 targetBlock != BlockBase.PORTAL &&
@@ -328,7 +329,7 @@ public class BlockDispenser extends TemplateBlockWithEntity
                     Wolf targetWolf = (Wolf)targetEntity;
                     world.playSound(targetEntity, ((WolfAccessor) targetWolf).invokeGetHurtSound(), ((WolfAccessor) targetWolf).invokeGetSoundVolume(), (world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F + 1.0F);
                     targetEntity.remove();
-                    InventoryHandler.AddSingleItemToInventory(tileEentityDispenser, mod_FCBetterThanWolves.fcCompanionCube.id, 0);
+                    InventoryHandler.AddSingleItemToInventory(tileEentityDispenser, BlockListener.fcCompanionCube.id, 0);
                     for(int tempCount = 0; tempCount < 2; tempCount++)
                     {
                         SpitOutItem(world, i, j, k, new ItemInstance(ItemBase.string), world.rand);

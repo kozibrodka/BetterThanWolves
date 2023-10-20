@@ -3,6 +3,7 @@ package net.kozibrodka.wolves.blocks;
 import net.kozibrodka.wolves.entity.LiftedBlockEntity;
 import net.kozibrodka.wolves.entity.MovingAnchorEntity;
 import net.kozibrodka.wolves.entity.MovingPlatformEntity;
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.utils.BlockPosition;
@@ -110,7 +111,7 @@ public class Platform extends TemplateBlockBase
                         continue;
                     }
                     int iUpwardsid = world.getTileId(tempI, tempJ + 1, tempK);
-                    if(iUpwardsid != mod_FCBetterThanWolves.fcAnchor.id || ((Anchor)mod_FCBetterThanWolves.fcAnchor).GetAnchorFacing(world, tempI, tempJ + 1, tempK) != 1 || !IsPlatformConnectedToAnchorPoint(world, i, j, k, tempI, tempJ, tempK))
+                    if(iUpwardsid != BlockListener.fcAnchor.id || ((Anchor)BlockListener.fcAnchor).GetAnchorFacing(world, tempI, tempJ + 1, tempK) != 1 || !IsPlatformConnectedToAnchorPoint(world, i, j, k, tempI, tempJ, tempK))
                     {
                         continue;
                     }

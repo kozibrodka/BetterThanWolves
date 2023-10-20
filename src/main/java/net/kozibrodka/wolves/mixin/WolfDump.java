@@ -29,7 +29,7 @@ public abstract class WolfDump extends AnimalBase {
     private void tick(CallbackInfo callbackInfo)
     {
         int dungBooster = 1;
-        if (level.getLightLevel((int)x, (int)y, (int)z) < 5) dungBooster*=2;
+        if (level.getLightLevel((int)x, (int)y, (int)z) < 5) dungBooster *= 2;
         if (isTamed()) dungBooster *= 4;
         if (level.rand.nextInt(9600) > dungBooster) return;
         int turboDump = 1;

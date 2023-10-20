@@ -2,6 +2,7 @@ package net.kozibrodka.wolves.tabs;
 
 import net.glasslauncher.hmifabric.Utils;
 import net.glasslauncher.hmifabric.tabs.TabWithTexture;
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.gui.CauldronGUI;
 import net.kozibrodka.wolves.recipe.CrucibleCraftingManager;
@@ -24,7 +25,7 @@ public class CrucibleTripleRecipeTab extends TabWithTexture {
     private final List<ItemInstance[]> recipesReady;
 
     public CrucibleTripleRecipeTab(ModID tabCreator) {
-        this(tabCreator, new ArrayList<ItemInstance[]>(CrucibleCraftingManager.getInstance().getTripleRecipes()), mod_FCBetterThanWolves.fcCrucible);
+        this(tabCreator, new ArrayList<ItemInstance[]>(CrucibleCraftingManager.getInstance().getTripleRecipes()), BlockListener.fcCrucible);
     }
 
     public CrucibleTripleRecipeTab(ModID tabCreator, List<ItemInstance[]> recipesReady, BlockBase tabBlock) {
@@ -49,8 +50,8 @@ public class CrucibleTripleRecipeTab extends TabWithTexture {
     @Override
     public void draw(int x, int y, int recipeOnThisPageIndex, int cursorX, int cursorY) {
         super.draw(x, y, recipeOnThisPageIndex, cursorX, cursorY);
-        Utils.drawScaledItem(new ItemInstance(mod_FCBetterThanWolves.fcBellows), x + 60, y + 36, 21);
-        Utils.drawScaledItem(new ItemInstance(mod_FCBetterThanWolves.fcCrucible), x + 54, y + 12, 34);
+        Utils.drawScaledItem(new ItemInstance(BlockListener.fcBellows), x + 60, y + 36, 21);
+        Utils.drawScaledItem(new ItemInstance(BlockListener.fcCrucible), x + 54, y + 12, 34);
     }
 
     @Override
@@ -90,11 +91,11 @@ public class CrucibleTripleRecipeTab extends TabWithTexture {
     public void updateRecipesWithoutClear(ItemInstance filter, Boolean getUses) {
         lastIndex = 0;
         recipesReady.forEach(recipe -> {
-            ItemInstance input2 = recipe[3];
-            ItemInstance input1 = recipe[2];
-            ItemInstance input = recipe[1];
+            ItemInstance firstInput = recipe[1];
+            ItemInstance secondInput = recipe[2];
+            ItemInstance thirdInput = recipe[3];
             ItemInstance output = recipe[0];
-            if (filter == null || (!getUses && compare(filter, output)) || (getUses && compare(filter, input)) || (getUses && compare(filter, input1)) || (getUses && compare(filter, input2)) || filter.isDamageAndIDIdentical(new ItemInstance(tabBlock))) {
+            if (filter == null || (!getUses && compare(filter, output)) || (getUses && compare(filter, firstInput)) || (getUses && compare(filter, secondInput)) || (getUses && compare(filter, thirdInput)) || filter.isDamageAndIDIdentical(new ItemInstance(tabBlock))) {
                 recipes.add(recipe);
             }
         });
