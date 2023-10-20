@@ -4,7 +4,6 @@ package net.kozibrodka.wolves.items;
 import net.kozibrodka.wolves.blocks.Axle;
 import net.kozibrodka.wolves.entity.WaterWheelEntity;
 import net.kozibrodka.wolves.events.BlockListener;
-import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.item.ItemInstance;
 import net.minecraft.level.Level;
@@ -24,9 +23,9 @@ public class WaterWheel extends TemplateItemBase
     public boolean useOnTile(ItemInstance ItemInstance, PlayerBase entityplayer, Level world, int i, int j, int k, int l)
     {
         int iTargetid = world.getTileId(i, j, k);
-        if(iTargetid == BlockListener.fcAxleBlock.id && !world.isServerSide)
+        if(iTargetid == BlockListener.axleBlock.id && !world.isServerSide)
         {
-            int iAxisAlignment = ((Axle)BlockListener.fcAxleBlock).GetAxisAlignment(world, i, j, k);
+            int iAxisAlignment = ((Axle)BlockListener.axleBlock).GetAxisAlignment(world, i, j, k);
             if(iAxisAlignment != 0)
             {
                 boolean bIAligned = false;

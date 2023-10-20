@@ -156,7 +156,7 @@ public class HempCrop extends TemplatePlant
 //        float max = 0.1F;
 //        float f = 0.2F;
 //        int state;
-//        if(level.getTileId(i,j,k) == mod_FCBetterThanWolves.fcHempCrop.id) {
+//        if(level.getTileId(i,j,k) == mod_FCBetterThanWolves.hempCrop.id) {
 //            state = 7 - level.getTileMeta(i, j, k);
 //            setBoundingBox(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, 1.0F - (max*state), 0.5F + f);
 //        }

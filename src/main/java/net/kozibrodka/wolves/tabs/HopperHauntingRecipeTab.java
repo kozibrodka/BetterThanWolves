@@ -25,7 +25,7 @@ public class HopperHauntingRecipeTab extends TabWithTexture {
     private final List<ItemInstance[]> recipesReady;
 
     public HopperHauntingRecipeTab(ModID tabCreator) {
-        this(tabCreator, new ArrayList<ItemInstance[]>(HopperHauntingRecipeRegistry.getInstance().getRecipes()), BlockListener.fcHopper);
+        this(tabCreator, new ArrayList<ItemInstance[]>(HopperHauntingRecipeRegistry.getInstance().getRecipes()), BlockListener.hopper);
     }
 
     public HopperHauntingRecipeTab(ModID tabCreator, List<ItemInstance[]> recipesReady, BlockBase tabBlock) {
@@ -49,7 +49,7 @@ public class HopperHauntingRecipeTab extends TabWithTexture {
     @Override
     public void draw(int x, int y, int recipeOnThisPageIndex, int cursorX, int cursorY) {
         super.draw(x, y, recipeOnThisPageIndex, cursorX, cursorY);
-        Utils.drawScaledItem(new ItemInstance(BlockListener.fcHopper), x + 54, y + 24, 34);
+        Utils.drawScaledItem(new ItemInstance(BlockListener.hopper), x + 54, y + 24, 34);
     }
 
     @Override

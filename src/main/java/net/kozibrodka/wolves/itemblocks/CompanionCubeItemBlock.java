@@ -11,7 +11,7 @@ public class CompanionCubeItemBlock extends Block
         super(i);
         setDurability(0);
         setHasSubItems(true);
-        setTranslationKey("fcCompanionCube");
+        setTranslationKey("companionCube");
     }
 
     public int getMetaData(int i) //getPlacedBlockMetadata

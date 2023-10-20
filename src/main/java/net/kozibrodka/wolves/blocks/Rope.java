@@ -42,7 +42,7 @@ public class Rope extends TemplateBlockBase implements BlockWithWorldRenderer
     public void onAdjacentBlockUpdate(Level world, int i, int j, int k, int iid)
     {
         int iBlockAboveID = world.getTileId(i, j + 1, k);
-        if(iBlockAboveID != id && iBlockAboveID != BlockListener.fcAnchor.id && iBlockAboveID != BlockListener.fcPulley.id)
+        if(iBlockAboveID != id && iBlockAboveID != BlockListener.anchor.id && iBlockAboveID != BlockListener.pulley.id)
         {
             drop(world, i, j, k, world.getTileMeta(i, j, k));
             world.setTile(i, j, k, 0);
@@ -52,7 +52,7 @@ public class Rope extends TemplateBlockBase implements BlockWithWorldRenderer
     public boolean canPlaceAt(Level world, int i, int j, int k)
     {
         int iBlockAboveID = world.getTileId(i, j + 1, k);
-        return iBlockAboveID == id || iBlockAboveID == BlockListener.fcAnchor.id;
+        return iBlockAboveID == id || iBlockAboveID == BlockListener.anchor.id;
     }
 
     public boolean isFullOpaque()

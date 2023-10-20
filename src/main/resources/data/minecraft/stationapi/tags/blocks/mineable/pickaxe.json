@@ -1,21 +1,21 @@
 {
   "values": [
-    "wolves:fcAnchor",
-    "wolves:fcMillStone",
-    "wolves:fcAnvil",
-    "wolves:fcLightBulbOff",
-    "wolves:fcLightBulbOn",
-    "wolves:fcBBQ",
-    "wolves:fcPressurePlateObsidian",
-    "wolves:fcBlockDispenser",
-    "wolves:fcCauldron",
-    "wolves:fcDetectorRailWood",
-    "wolves:fcDetectorRailObsidian",
-    "wolves:fcBlockDetector",
-    "wolves:fcHandCrank",
-    "wolves:fcAnchor",
-    "wolves:fcTurntable",
-    "wolves:fcCrucible",
-    "wolves:fcPlanter"
+    "wolves:anchor",
+    "wolves:millStone",
+    "wolves:anvil",
+    "wolves:lightBulbOff",
+    "wolves:lightBulbOn",
+    "wolves:hibachi",
+    "wolves:pressurePlateObsidian",
+    "wolves:blockDispenser",
+    "wolves:cauldron",
+    "wolves:detectorRailWood",
+    "wolves:detectorRailObsidian",
+    "wolves:blockDetector",
+    "wolves:handCrank",
+    "wolves:anchor",
+    "wolves:turntable",
+    "wolves:crucible",
+    "wolves:planter"
   ]
 }

@@ -450,9 +450,9 @@ public class Axle extends TemplateBlockBase
                 }
                 continue;
             }
-            if(iTempid == BlockListener.fcGearBox.id)
+            if(iTempid == BlockListener.gearBox.id)
             {
-                ((GearBox)BlockListener.fcGearBox).Overpower(world, potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
+                ((GearBox)BlockListener.gearBox).Overpower(world, potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
             }
         }
 

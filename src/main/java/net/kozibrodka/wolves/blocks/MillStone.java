@@ -3,7 +3,6 @@ package net.kozibrodka.wolves.blocks;
 import net.kozibrodka.wolves.container.MillStoneContainer;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
-import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.tileentity.MillStoneTileEntity;
 import net.kozibrodka.wolves.utils.BlockPosition;
 import net.kozibrodka.wolves.utils.MechanicalDevice;
@@ -166,11 +165,11 @@ public class MillStone extends TemplateBlockWithEntity
             BlockPosition targetPos = new BlockPosition(i, j, k);
             targetPos.AddFacingAsOffset(iFacing);
             int iTargetid = world.getTileId(targetPos.i, targetPos.j, targetPos.k);
-            if(iTargetid != BlockListener.fcAxleBlock.id)
+            if(iTargetid != BlockListener.axleBlock.id)
             {
                 continue;
             }
-            Axle axleBlock = (Axle)BlockListener.fcAxleBlock;
+            Axle axleBlock = (Axle)BlockListener.axleBlock;
             if(axleBlock.IsAxleOrientedTowardsFacing(world, targetPos.i, targetPos.j, targetPos.k, iFacing) && axleBlock.GetPowerLevel(world, targetPos.i, targetPos.j, targetPos.k) > 0)
             {
                 return true;
@@ -182,7 +181,7 @@ public class MillStone extends TemplateBlockWithEntity
             BlockPosition targetPos = new BlockPosition(i, j, k);
             targetPos.AddFacingAsOffset(iFacing);
             int iTargetid = world.getTileId(targetPos.i, targetPos.j, targetPos.k);
-            if(iTargetid != BlockListener.fcHandCrank.id)
+            if(iTargetid != BlockListener.handCrank.id)
             {
                 continue;
             }

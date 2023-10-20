@@ -12,7 +12,7 @@ public class VaseItemBlock extends Block
         super(i);
         setDurability(0);
         setHasSubItems(true);
-        setTranslationKey("fcVase");
+        setTranslationKey("vase");
     }
 
     public int getMetaData(int i)

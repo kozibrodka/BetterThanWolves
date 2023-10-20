@@ -1,7 +1,6 @@
 package net.kozibrodka.wolves.mixin;
 
 import net.kozibrodka.wolves.events.BlockListener;
-import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.DetectorRail;
 import net.minecraft.block.Rail;
@@ -11,12 +10,8 @@ import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.level.Level;
 import net.minecraft.util.maths.Box;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
 
@@ -91,11 +86,11 @@ public class BlockDetectorRailMixin extends Rail {
     public  boolean ShouldPlateActivateBasedOnMinecart(Level world, int i, int j, int k, int l, EntityBase entity)
     {
         int i1 = world.getTileId(i, j, k);
-        if(i1 == BlockListener.fcDetectorRailWood.id)
+        if(i1 == BlockListener.detectorRailWood.id)
         {
             return true;
         }
-        if(i1 == BlockListener.fcDetectorRailObsidian.id)
+        if(i1 == BlockListener.detectorRailObsidian.id)
         {
             if(entity != null && (entity instanceof PlayerBase))
             {

@@ -3,7 +3,6 @@ package net.kozibrodka.wolves.tabs;
 import net.glasslauncher.hmifabric.Utils;
 import net.glasslauncher.hmifabric.tabs.TabWithTexture;
 import net.kozibrodka.wolves.events.BlockListener;
-import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.gui.MillStoneGUI;
 import net.kozibrodka.wolves.recipe.MillingRecipeRegistry;
 import net.minecraft.block.BlockBase;
@@ -25,7 +24,7 @@ public class MillingRecipeTab extends TabWithTexture {
     private final List<ItemInstance[]> recipesReady;
 
     public MillingRecipeTab(ModID tabCreator) {
-        this(tabCreator, new ArrayList<ItemInstance[]>(MillingRecipeRegistry.getInstance().getRecipes()), BlockListener.fcMillStone);
+        this(tabCreator, new ArrayList<ItemInstance[]>(MillingRecipeRegistry.getInstance().getRecipes()), BlockListener.millStone);
     }
 
     public MillingRecipeTab(ModID tabCreator, List<ItemInstance[]> recipesReady, BlockBase tabBlock) {
@@ -48,7 +47,7 @@ public class MillingRecipeTab extends TabWithTexture {
     @Override
     public void draw(int x, int y, int recipeOnThisPageIndex, int cursorX, int cursorY) {
         super.draw(x, y, recipeOnThisPageIndex, cursorX, cursorY);
-        Utils.drawScaledItem(new ItemInstance(BlockListener.fcMillStone), x + 54, y + 12, 34);
+        Utils.drawScaledItem(new ItemInstance(BlockListener.millStone), x + 54, y + 12, 34);
     }
 
     @Override

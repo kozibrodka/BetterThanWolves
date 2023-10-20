@@ -11,7 +11,7 @@ public class PlanterItemBlock extends Block
         super(i);
         setDurability(0);
         setHasSubItems(true);
-        setTranslationKey("fcPlanter");
+        setTranslationKey("planter");
     }
 
     public int getMetaData(int i)

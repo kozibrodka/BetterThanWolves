@@ -163,7 +163,7 @@ public class CrucibleTileEntity extends TileEntityBase
     public int GetStokedFireFactor()
     {
         int fireFactor = 0;
-        if(level.getTileId(x, y - 1, z) == BlockListener.fcStokedFire.id && level.getTileId(x, y - 2, z) == BlockListener.fcStokedFire.id)
+        if(level.getTileId(x, y - 1, z) == BlockListener.stokedFire.id && level.getTileId(x, y - 2, z) == BlockListener.stokedFire.id)
         {
             fireFactor += 5;
             int tempY = y - 1;
@@ -171,7 +171,7 @@ public class CrucibleTileEntity extends TileEntityBase
             {
                 for(int tempZ = z - 1; tempZ <= z + 1; tempZ++)
                 {
-                    if((tempX != x || tempZ != z) && level.getTileId(tempX, tempY, tempZ) == BlockListener.fcStokedFire.id && level.getTileId(tempX, tempY - 1, tempZ) == BlockListener.fcStokedFire.id)
+                    if((tempX != x || tempZ != z) && level.getTileId(tempX, tempY, tempZ) == BlockListener.stokedFire.id && level.getTileId(tempX, tempY - 1, tempZ) == BlockListener.stokedFire.id)
                     {
                         fireFactor++;
                     }
@@ -233,7 +233,7 @@ public class CrucibleTileEntity extends TileEntityBase
         if (item == null) return false;
         if (item instanceof FoodBase) return false;
         ItemInstance smeltingResult = SmeltingRecipeRegistry.getInstance().getResult(item.id);
-        if(smeltingResult != null && !(smeltingResult.getType() instanceof FoodBase) && smeltingResult.getType().id != BlockListener.fcUnfiredPottery.id)
+        if(smeltingResult != null && !(smeltingResult.getType() instanceof FoodBase) && smeltingResult.getType().id != BlockListener.unfiredPottery.id)
         {
             return true;
         }
@@ -449,7 +449,7 @@ public class CrucibleTileEntity extends TileEntityBase
         {
             tempStack = new ItemInstance(ItemBase.ironIngot, 2);
         } else
-        if(iShiftedIndex == BlockBase.DETECTOR_RAIL.id || iShiftedIndex == BlockListener.fcDetectorRailWood.id || iShiftedIndex == BlockListener.fcDetectorRailObsidian.id)
+        if(iShiftedIndex == BlockBase.DETECTOR_RAIL.id || iShiftedIndex == BlockListener.detectorRailWood.id || iShiftedIndex == BlockListener.detectorRailObsidian.id)
         {
             tempStack = new ItemInstance(ItemBase.ironIngot, 1);
         } else
@@ -513,7 +513,7 @@ public class CrucibleTileEntity extends TileEntityBase
         {
             tempStack = new ItemInstance(mod_FCBetterThanWolves.fcSteel, 1);
         } else
-        if(iShiftedIndex == BlockListener.fcAnvil.id)
+        if(iShiftedIndex == BlockListener.anvil.id)
         {
             tempStack = new ItemInstance(mod_FCBetterThanWolves.fcSteel, 7);
         } else

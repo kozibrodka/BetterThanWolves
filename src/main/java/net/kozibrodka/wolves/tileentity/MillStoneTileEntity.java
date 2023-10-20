@@ -163,13 +163,13 @@ public class MillStoneTileEntity extends TileEntityBase
             return;
         }
 
-        if(!((MillStone) BlockListener.fcMillStone).IsBlockOn(level, x, y, z)) return;
+        if(!((MillStone) BlockListener.millStone).IsBlockOn(level, x, y, z)) return;
 
         iMillStoneGrindCounter++;
 
         int iUnmilledItemID = millStoneContents[iUnmilledItemIndex].getType().id;
 
-        if(iUnmilledItemID == BlockListener.fcCompanionCube.id) // Companion cube torture during milling
+        if(iUnmilledItemID == BlockListener.companionCube.id) // Companion cube torture during milling
         {
             if(millStoneContents[iUnmilledItemIndex].getDamage() == 0 && level.rand.nextInt(10) == 0)
             {
@@ -203,7 +203,7 @@ public class MillStoneTileEntity extends TileEntityBase
             takeInventoryItem(iUnmilledItemIndex, 1);
             EjectStack(milledStack);
         }
-        else if(iUnmilledItemID == BlockListener.fcCompanionCube.id) // Special recipe (companion cube)
+        else if(iUnmilledItemID == BlockListener.companionCube.id) // Special recipe (companion cube)
         {
             EjectStack(new ItemInstance(mod_FCBetterThanWolves.fcWolfRaw.id, 1, 0));
             CompanionCube.SpawnHearts(level, x, y, z);
@@ -326,7 +326,7 @@ public class MillStoneTileEntity extends TileEntityBase
                 continue;
             }
             ItemBase tempItem = millStoneContents[tempIndex].getType();
-            if(tempItem != null && tempItem.id == BlockListener.fcCompanionCube.id && millStoneContents[tempIndex].getDamage() == 0)
+            if(tempItem != null && tempItem.id == BlockListener.companionCube.id && millStoneContents[tempIndex].getDamage() == 0)
             {
                 return true;
             }
@@ -341,7 +341,7 @@ public class MillStoneTileEntity extends TileEntityBase
         if(iUnmilledItemIndex >= 0)
         {
             int iUnmilledItemID = millStoneContents[iUnmilledItemIndex].getType().id;
-            if(iUnmilledItemID == BlockListener.fcCompanionCube.id && millStoneContents[iUnmilledItemIndex].getDamage() == 0)
+            if(iUnmilledItemID == BlockListener.companionCube.id && millStoneContents[iUnmilledItemIndex].getDamage() == 0)
             {
                 return true;
             }

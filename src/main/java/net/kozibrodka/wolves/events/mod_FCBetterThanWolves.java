@@ -1,7 +1,6 @@
 package net.kozibrodka.wolves.events;
 
 import net.glasslauncher.mods.api.gcapi.api.GConfig;
-import net.kozibrodka.wolves.blocks.*;
 import net.kozibrodka.wolves.entity.*;
 import net.kozibrodka.wolves.glasscfg.BetterThanWolvesCFG;
 import net.kozibrodka.wolves.items.*;
@@ -9,13 +8,10 @@ import net.kozibrodka.wolves.items.Rope;
 import net.kozibrodka.wolves.tileentity.*;
 import net.kozibrodka.wolves.materials.Cement;
 import net.mine_diver.unsafeevents.listener.EventListener;
-import net.minecraft.block.BlockBase;
-import net.minecraft.block.PressurePlateTrigger;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColour;
 import net.minecraft.item.tool.ToolMaterial;
 import net.modificationstation.stationapi.api.event.entity.EntityRegister;
-import net.modificationstation.stationapi.api.event.registry.BlockRegistryEvent;
 import net.modificationstation.stationapi.api.event.registry.EntityHandlerRegistryEvent;
 import net.modificationstation.stationapi.api.event.registry.ItemRegistryEvent;
 import net.modificationstation.stationapi.api.event.tileentity.TileEntityRegisterEvent;
@@ -24,7 +20,6 @@ import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
 import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.registry.ModID;
 import net.modificationstation.stationapi.api.registry.Registry;
-import net.modificationstation.stationapi.api.template.block.*;
 import net.modificationstation.stationapi.api.template.item.TemplateItemBase;
 import net.modificationstation.stationapi.api.template.item.TemplateSeeds;
 import net.modificationstation.stationapi.api.template.item.armour.TemplateArmour;
@@ -45,11 +40,11 @@ public class mod_FCBetterThanWolves {
     public void registerItems(ItemRegistryEvent event) {
         ToolMaterialFactory.create("STEEL",3,2250,12F,8);
 
-        fcBucketCement = (TemplateBucket) new BucketCement(Identifier.of(MOD_ID, "fcBucketCement"), BlockListener.fcCement.id).setTranslationKey(MOD_ID, "fcBucketCement");
+        fcBucketCement = (TemplateBucket) new BucketCement(Identifier.of(MOD_ID, "fcBucketCement"), BlockListener.cement.id).setTranslationKey(MOD_ID, "fcBucketCement");
         fcWolfRaw = (TemplateFoodBase) new TemplateFoodBase(Identifier.of(MOD_ID, "fcWolfRaw"),3,false).setTranslationKey(MOD_ID, "fcWolfRaw");
         fcWolfCooked = (TemplateFoodBase) new TemplateFoodBase(Identifier.of(MOD_ID, "fcWolfCooked"),8,false).setTranslationKey(MOD_ID, "fcWolfCooked");
         fcNethercoal = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcNethercoal")).setTranslationKey(MOD_ID, "fcNethercoal");
-        fcHempSeeds = (TemplateSeeds) new TemplateSeeds(Identifier.of(MOD_ID, "fcHempSeeds"), BlockListener.fcHempCrop.id).setTranslationKey(MOD_ID, "fcHempSeeds");
+        fcHempSeeds = (TemplateSeeds) new TemplateSeeds(Identifier.of(MOD_ID, "fcHempSeeds"), BlockListener.hempCrop.id).setTranslationKey(MOD_ID, "fcHempSeeds");
         fcHemp = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcHemp")).setTranslationKey(MOD_ID, "fcHemp");
         fcGear = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcGear")).setTranslationKey(MOD_ID, "fcGear");
         fcFlour = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcFlour")).setTranslationKey(MOD_ID, "fcFlour");
@@ -135,34 +130,10 @@ public class mod_FCBetterThanWolves {
     //TODO: custom recipes xhmi, big tree mixin, some mixin so stoked fire deals dmg
 
 
-    public static boolean fcDisableAxeChanges = false;
+    // TODO: This should be part of the config.
     public static boolean fcFaceGearBoxAwayFromPlayer = false;
-    public static boolean fcDisableMinecartChanges = false;
-    public static final Material fcCementMaterial = new Cement(MaterialColour.STONE);;
 
-//    public static TemplateBlockWithEntity fcVase_white;
-//    public static TemplateBlockWithEntity fcVase_orange;
-//    public static TemplateBlockWithEntity fcVase_magenta;
-//    public static TemplateBlockWithEntity fcVase_light_blue;
-//    public static TemplateBlockWithEntity fcVase_yellow;
-//    public static TemplateBlockWithEntity fcVase_lime;
-//    public static TemplateBlockWithEntity fcVase_pink;
-//    public static TemplateBlockWithEntity fcVase_gray;
-//    public static TemplateBlockWithEntity fcVase_light_gray;
-//    public static TemplateBlockWithEntity fcVase_cyan;
-//    public static TemplateBlockWithEntity fcVase_purple;
-//    public static TemplateBlockWithEntity fcVase_blue;
-//    public static TemplateBlockWithEntity fcVase_brown;
-//    public static TemplateBlockWithEntity fcVase_green;
-//    public static TemplateBlockWithEntity fcVase_red;
-//    public static TemplateBlockWithEntity fcVase_black;
-    // These are never registered! Why do they exist?
-//    public static TemplateBlockWithEntity fcUnfiredPottery_crucible;
-//    public static TemplateBlockWithEntity fcUnfiredPottery_planter;
-//    public static TemplateBlockWithEntity fcUnfiredPottery_vase;
-//    public static TemplateBlockBase fcPanel_wood;
-//    public static TemplateBlockBase fcMoulding_wood;
-//    public static TemplateBlockBase fcCorner_wood;
+    public static final Material fcCementMaterial = new Cement(MaterialColour.STONE);
 
     public static TemplateBucket fcBucketCement;
     public static TemplateFoodBase fcWolfRaw;

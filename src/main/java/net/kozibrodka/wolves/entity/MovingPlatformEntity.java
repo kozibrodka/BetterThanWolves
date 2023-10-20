@@ -1,7 +1,6 @@
 package net.kozibrodka.wolves.entity;
 
 import net.kozibrodka.wolves.events.BlockListener;
-import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.kozibrodka.wolves.utils.ReplaceableBlockChecker;
 import net.minecraft.block.BlockBase;
@@ -173,7 +172,7 @@ public class MovingPlatformEntity extends EntityBase
                 {
                     if(!BlockBase.BY_ID[iTargetid].material.isSolid())
                     {
-                        if(iTargetid == BlockListener.fcRopeBlock.id)
+                        if(iTargetid == BlockListener.rope.id)
                         {
                             if(!associatedMovingAnchor.ReturnRopeToPulley())
                             {
@@ -203,7 +202,7 @@ public class MovingPlatformEntity extends EntityBase
                 {
                     if(!BlockBase.BY_ID[iTargetid].material.isSolid())
                     {
-                        if(iTargetid == BlockListener.fcRopeBlock.id)
+                        if(iTargetid == BlockListener.rope.id)
                         {
                             if(!associatedMovingAnchor.ReturnRopeToPulley())
                             {
@@ -235,7 +234,7 @@ public class MovingPlatformEntity extends EntityBase
         int i = MathHelper.floor(x);
         int j = MathHelper.floor(y);
         int k = MathHelper.floor(z);
-        ItemInstance platformStack = new ItemInstance(BlockListener.fcPlatform);
+        ItemInstance platformStack = new ItemInstance(BlockListener.platform);
         UnsortedUtils.EjectStackWithRandomOffset(level, i, j, k, platformStack);
         remove();
     }
@@ -309,11 +308,11 @@ public class MovingPlatformEntity extends EntityBase
         int iTargetid = level.getTileId(i, j, k);
         if(ReplaceableBlockChecker.IsReplaceableBlock(level, i, j, k))
         {
-            level.setTile(i, j, k, BlockListener.fcPlatform.id);
+            level.setTile(i, j, k, BlockListener.platform.id);
         } else
         if(!BlockBase.BY_ID[iTargetid].material.isSolid())
         {
-            if(iTargetid == BlockListener.fcRopeBlock.id && associatedAnchor != null)
+            if(iTargetid == BlockListener.rope.id && associatedAnchor != null)
             {
                 if(!associatedAnchor.ReturnRopeToPulley())
                 {
@@ -323,10 +322,10 @@ public class MovingPlatformEntity extends EntityBase
             {
                 BlockBase.BY_ID[iTargetid].drop(level, i, j, k, level.getTileMeta(i, j, k));
             }
-            level.setTile(i, j, k, BlockListener.fcPlatform.id);
+            level.setTile(i, j, k, BlockListener.platform.id);
         } else
         {
-            UnsortedUtils.EjectSingleItemWithRandomOffset(level, i, j, k, BlockListener.fcPlatform.id, 0);
+            UnsortedUtils.EjectSingleItemWithRandomOffset(level, i, j, k, BlockListener.platform.id, 0);
             moveEntities = false;
         }
         UnsortedUtils.PositionAllMoveableEntitiesOutsideOfLocation(level, i, j, k);

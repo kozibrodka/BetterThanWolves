@@ -123,7 +123,7 @@ public class HopperTileEntity extends TileEntityBase
 
     public void tick()
     {
-        if(!((Hopper) BlockListener.fcHopper).IsBlockOn(level, x, y, z)) return;
+        if(!((Hopper) BlockListener.hopper).IsBlockOn(level, x, y, z)) return;
         if(!bHopperEjectBlocked)
         {
             ejectCounter++;
@@ -207,8 +207,8 @@ public class HopperTileEntity extends TileEntityBase
         level.method_202(x, y, z, x, y, z);
         bHopperEjectBlocked = false;
         int iOccupiedStacks = InventoryHandler.GetNumOccupiedStacksInSlotRange(this, 0, 17);
-        ((Hopper)BlockListener.fcHopper).SetHopperFull(level, x, y, z, iOccupiedStacks == 18);
-        ((Hopper)BlockListener.fcHopper).SetHasFilter(level, x, y, z, GetFilterType() > 0);
+        ((Hopper)BlockListener.hopper).SetHopperFull(level, x, y, z, iOccupiedStacks == 18);
+        ((Hopper)BlockListener.hopper).SetHasFilter(level, x, y, z, GetFilterType() > 0);
     }
 
     public int GetFilterType()
@@ -355,7 +355,7 @@ public class HopperTileEntity extends TileEntityBase
 
     public boolean IsEjecting()
     {
-        return ((Hopper)BlockListener.fcHopper).IsBlockOn(level, x, y, z);
+        return ((Hopper)BlockListener.hopper).IsBlockOn(level, x, y, z);
     }
 
     private void AttemptToEjectStackFromInv()
@@ -405,7 +405,7 @@ public class HopperTileEntity extends TileEntityBase
                             {
                                 iMaxSlotToAddTo = 0;
                             } else
-                            if(iTargetid == BlockListener.fcHopper.id)
+                            if(iTargetid == BlockListener.hopper.id)
                             {
                                 iMaxSlotToAddTo = 17;
                                 canProcessStack = ((HopperTileEntity)targetTileEntityBase).CanCurrentFilterProcessItem(ItemBase.byId[ejectStack.itemId]);
@@ -528,7 +528,7 @@ public class HopperTileEntity extends TileEntityBase
         {
             level.playSound((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, "mob.ghast.scream", 1.0F, level.rand.nextFloat() * 0.4F + 0.8F);
         }
-        ((Hopper)BlockListener.fcHopper).BreakHopper(level, x, y, z);
+        ((Hopper)BlockListener.hopper).BreakHopper(level, x, y, z);
     }
 
     private boolean SpawnGhast()

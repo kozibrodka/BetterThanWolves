@@ -11,7 +11,7 @@ public class UnfiredPotteryItemBlock extends Block
         super(i);
         setDurability(0);
         setHasSubItems(true);
-        setTranslationKey("fcUnfiredPottery");
+        setTranslationKey("unfiredPottery");
     }
 
     public int getMetaData(int i)

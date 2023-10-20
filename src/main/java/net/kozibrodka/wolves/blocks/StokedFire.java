@@ -1,7 +1,6 @@
 package net.kozibrodka.wolves.blocks;
 
 import net.kozibrodka.wolves.events.BlockListener;
-import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.mixin.FireAccessor;
 import net.minecraft.block.BlockBase;
 import net.minecraft.client.render.Tessellator;
@@ -37,23 +36,23 @@ public class StokedFire extends TemplateFire implements BlockWithWorldRenderer
             System.out.println("HELLO 1");
         }
 
-        if (world.getTileId(i, j - 2, k) == BlockListener.fcBBQ.id) {
-            if (((Hibachi) BlockListener.fcBBQ).IsBBQLit(world, i, j - 2, k)) {
+        if (world.getTileId(i, j - 2, k) == BlockListener.hibachi.id) {
+            if (((Hibachi) BlockListener.hibachi).IsBBQLit(world, i, j - 2, k)) {
                 flag = true;
             } else {
                 world.setTile(i, j, k, 0);
                 System.out.println("HELLO 2");
                 return;
             }
-        } else if (world.getTileId(i, j - 1, k) == BlockListener.fcBBQ.id){
+        } else if (world.getTileId(i, j - 1, k) == BlockListener.hibachi.id){
             flag = true;
         } else{
             world.placeBlockWithMetaData(i, j, k, BlockBase.FIRE.id, 15);
             System.out.println("HELLO 3");
         }
 
-//        if (world.getTileId(i, j - 1, k) == mod_FCBetterThanWolves.fcBBQ.id) {
-//            if (((FCBlockBBQ) mod_FCBetterThanWolves.fcBBQ).IsBBQLit(world, i, j - 1, k)) {
+//        if (world.getTileId(i, j - 1, k) == mod_FCBetterThanWolves.hibachi.id) {
+//            if (((FCBlockBBQ) mod_FCBetterThanWolves.hibachi).IsBBQLit(world, i, j - 1, k)) {
 //                flag = true;
 //            }
 //        }
@@ -102,7 +101,7 @@ public class StokedFire extends TemplateFire implements BlockWithWorldRenderer
                         k2 = 15;
                     }
 //                    world.placeBlockWithMetaData(i1, k1, j1, BlockBase.FIRE.id, k2);
-                    world.placeBlockWithMetaData(i1, k1, j1, BlockListener.fcStokedFire.id, k2);
+                    world.placeBlockWithMetaData(i1, k1, j1, BlockListener.stokedFire.id, k2);
                 }
 
             }
@@ -122,12 +121,12 @@ public class StokedFire extends TemplateFire implements BlockWithWorldRenderer
 
     @Override
     public boolean canPlaceAt(Level arg, int i, int j, int k) {
-        return arg.canSuffocate(i, j - 1, k) || this.method_1826(arg, i, j, k) || arg.getTileId(i, j - 1, k) == BlockListener.fcStokedFire.id || arg.getTileId(i, j - 1, k) == BlockBase.FIRE.id;
+        return arg.canSuffocate(i, j - 1, k) || this.method_1826(arg, i, j, k) || arg.getTileId(i, j - 1, k) == BlockListener.stokedFire.id || arg.getTileId(i, j - 1, k) == BlockBase.FIRE.id;
     }
 
     @Override
     public void onAdjacentBlockUpdate(Level arg, int i, int j, int k, int l) {
-        if (!arg.canSuffocate(i, j - 1, k) && !this.method_1826(arg, i, j, k) && arg.getTileId(i, j - 1, k) != BlockListener.fcStokedFire.id && arg.getTileId(i, j - 1, k) != BlockBase.FIRE.id) {
+        if (!arg.canSuffocate(i, j - 1, k) && !this.method_1826(arg, i, j, k) && arg.getTileId(i, j - 1, k) != BlockListener.stokedFire.id && arg.getTileId(i, j - 1, k) != BlockBase.FIRE.id) {
             arg.setTile(i, j, k, 0);
         }
     }
@@ -135,7 +134,7 @@ public class StokedFire extends TemplateFire implements BlockWithWorldRenderer
     @Override
     public void onBlockPlaced(Level arg, int i, int j, int k) {
         if (arg.getTileId(i, j - 1, k) != BlockBase.OBSIDIAN.id || !BlockBase.PORTAL.method_736(arg, i, j, k)) {
-            if (!arg.canSuffocate(i, j - 1, k) && !this.method_1826(arg, i, j, k ) && arg.getTileId(i, j - 1, k) != BlockListener.fcStokedFire.id && arg.getTileId(i, j - 1, k) != BlockBase.FIRE.id) {
+            if (!arg.canSuffocate(i, j - 1, k) && !this.method_1826(arg, i, j, k ) && arg.getTileId(i, j - 1, k) != BlockListener.stokedFire.id && arg.getTileId(i, j - 1, k) != BlockBase.FIRE.id) {
                 arg.setTile(i, j, k, 0);
             } else {
                 arg.method_216(i, j, k, this.id, this.getTickrate());

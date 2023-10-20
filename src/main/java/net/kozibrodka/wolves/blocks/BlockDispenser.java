@@ -97,7 +97,7 @@ public class BlockDispenser extends TemplateBlockWithEntity
 
     public int getDropId(int i, Random random)
     {
-        return BlockListener.fcBlockDispenser.id;
+        return BlockListener.blockDispenser.id;
     }
 
     public void onBlockPlaced(Level world, int i, int j, int k, int iFacing)
@@ -215,7 +215,7 @@ public class BlockDispenser extends TemplateBlockWithEntity
                 targetBlock != BlockBase.STILL_WATER &&
                 targetBlock != BlockBase.FLOWING_LAVA &&
                 targetBlock != BlockBase.STILL_LAVA &&
-                targetBlock != BlockListener.fcCement &&
+                targetBlock != BlockListener.cement &&
                 targetBlock != BlockBase.FIRE &&
                 targetBlock != BlockBase.MOB_SPAWNER &&
                 targetBlock != BlockBase.PORTAL &&
@@ -329,7 +329,7 @@ public class BlockDispenser extends TemplateBlockWithEntity
                     Wolf targetWolf = (Wolf)targetEntity;
                     world.playSound(targetEntity, ((WolfAccessor) targetWolf).invokeGetHurtSound(), ((WolfAccessor) targetWolf).invokeGetSoundVolume(), (world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F + 1.0F);
                     targetEntity.remove();
-                    InventoryHandler.AddSingleItemToInventory(tileEentityDispenser, BlockListener.fcCompanionCube.id, 0);
+                    InventoryHandler.AddSingleItemToInventory(tileEentityDispenser, BlockListener.companionCube.id, 0);
                     for(int tempCount = 0; tempCount < 2; tempCount++)
                     {
                         SpitOutItem(world, i, j, k, new ItemInstance(ItemBase.string), world.rand);

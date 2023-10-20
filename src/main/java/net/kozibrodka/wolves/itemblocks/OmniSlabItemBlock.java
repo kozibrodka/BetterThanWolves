@@ -1,7 +1,6 @@
 package net.kozibrodka.wolves.itemblocks;
 
 import net.kozibrodka.wolves.events.BlockListener;
-import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.minecraft.item.Block;
 
 public class OmniSlabItemBlock extends Block
@@ -12,12 +11,12 @@ public class OmniSlabItemBlock extends Block
         super(i);
         setDurability(0);
         setHasSubItems(true);
-        setTranslationKey("fcOmniSlab");
+        setTranslationKey("omniSlab");
     }
 
     public int getTexturePosition(int i)
     {
-        return BlockListener.fcOmniSlab.getTextureForSide(2, i);
+        return BlockListener.omniSlab.getTextureForSide(2, i);
     }
 
     public int getMetaData(int i)

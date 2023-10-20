@@ -8,7 +8,6 @@ package net.kozibrodka.wolves.blocks;
 import net.kozibrodka.wolves.container.CauldronContainer;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
-import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.tileentity.CauldronTileEntity;
 import net.kozibrodka.wolves.utils.RotatableBlock;
 import net.kozibrodka.wolves.utils.InventoryHandler;
@@ -188,7 +187,7 @@ public class Cauldron extends TemplateBlockWithEntity
         {
             iNewState = 1;
         } else
-        if(world.getTileId(i, j - 1, k) == BlockListener.fcStokedFire.id)
+        if(world.getTileId(i, j - 1, k) == BlockListener.stokedFire.id)
         {
             iNewState = 2;
         }

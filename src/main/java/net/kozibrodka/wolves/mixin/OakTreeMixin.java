@@ -1,7 +1,6 @@
 package net.kozibrodka.wolves.mixin;
 
 import net.kozibrodka.wolves.events.BlockListener;
-import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.BlockBase;
 import net.minecraft.level.Level;
@@ -53,7 +52,7 @@ public class OakTreeMixin extends Structure {
             } else {
                 var8 = arg.getTileId(i, j - 1, k);
                 if ((var8 == BlockBase.GRASS.id || var8 == BlockBase.DIRT.id || UnsortedUtils.CanPlantGrowOnBlock(arg, i, j - 1, k, BlockBase.SAPLING)) && j < 128 - var6 - 1) {
-                    if(var8 != BlockListener.fcPlanter.id)
+                    if(var8 != BlockListener.planter.id)
                     {
                         arg.setTileInChunk(i, j - 1, k, BlockBase.DIRT.id);
                     }

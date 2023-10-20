@@ -106,7 +106,7 @@ public class CauldronTileEntity extends TileEntityBase
 
     public void tick()
     {
-        int iFireUnderState = ((Cauldron) BlockListener.fcCauldron).GetFireUnderState(level, x, y, z);
+        int iFireUnderState = ((Cauldron) BlockListener.cauldron).GetFireUnderState(level, x, y, z);
         if(iFireUnderState > 0)
         {
             if(m_bForceValidateOnUpdate)
@@ -178,7 +178,7 @@ public class CauldronTileEntity extends TileEntityBase
 
     public void markDirty()
     {
-        int iFireUnderState = ((Cauldron)BlockListener.fcCauldron).GetFireUnderState(level, x, y, z);
+        int iFireUnderState = ((Cauldron)BlockListener.cauldron).GetFireUnderState(level, x, y, z);
         ValidateContentsForState(iFireUnderState);
     }
 
@@ -247,7 +247,7 @@ public class CauldronTileEntity extends TileEntityBase
             int iidToTest = BlockBase.FIRE.id;
             if(iFireUnderState == 2)
             {
-                iidToTest = BlockListener.fcStokedFire.id;
+                iidToTest = BlockListener.stokedFire.id;
             }
             int tempY = y - 1;
             for(int tempX = x - 1; tempX <= x + 1; tempX++)

@@ -4,7 +4,6 @@ package net.kozibrodka.wolves.blocks;
 import net.fabricmc.loader.api.FabricLoader;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
-import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.utils.RotatableBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -28,7 +27,7 @@ public class LightBulb extends TemplateBlockBase
 
     public int getTextureForSide(int i)
     {
-        return id != BlockListener.fcLightBulbOn.id ? TextureListener.bulb_off : TextureListener.bulb_on;
+        return id != BlockListener.lightBulbOn.id ? TextureListener.bulb_off : TextureListener.bulb_on;
     }
 
     public int getTickrate()
@@ -43,7 +42,7 @@ public class LightBulb extends TemplateBlockBase
 
     public int getDropId(int i, Random random)
     {
-        return BlockListener.fcLightBulbOff.id;
+        return BlockListener.lightBulbOff.id;
     }
 
     public boolean isFullOpaque()
@@ -53,7 +52,7 @@ public class LightBulb extends TemplateBlockBase
 
     public float getBrightness(BlockView iBlockAccess, int i, int j, int k)
     {
-    	if(id == BlockListener.fcLightBulbOn.id)
+    	if(id == BlockListener.lightBulbOn.id)
         {
             return 100F;
         } else
@@ -118,17 +117,17 @@ public class LightBulb extends TemplateBlockBase
 
     private void LightBulbTurnOn(Level world, int i, int j, int k)
     {
-        world.setTile(i, j, k, BlockListener.fcLightBulbOn.id);
+        world.setTile(i, j, k, BlockListener.lightBulbOn.id);
     }
 
     private void LightBulbTurnOff(Level world, int i, int j, int k)
     {
-        world.setTile(i, j, k, BlockListener.fcLightBulbOff.id);
+        world.setTile(i, j, k, BlockListener.lightBulbOff.id);
     }
 
     public boolean IsLightOn(Level world, int i, int j, int k)
     {
-        return world.getTileId(i, j, k) == BlockListener.fcLightBulbOn.id;
+        return world.getTileId(i, j, k) == BlockListener.lightBulbOn.id;
     }
 
 }

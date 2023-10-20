@@ -9,7 +9,6 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.kozibrodka.wolves.blocks.Turntable;
 import net.kozibrodka.wolves.blocks.UnfiredPottery;
 import net.kozibrodka.wolves.events.BlockListener;
-import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.utils.BlockPosition;
 import net.kozibrodka.wolves.utils.RotatableBlock;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
@@ -65,7 +64,7 @@ public class TurntableTileEntity extends TileEntityBase
 
     public void tick()
     {
-        if(((Turntable) BlockListener.fcTurntable).IsBlockMechanicalOn(level, x, y, z))
+        if(((Turntable) BlockListener.turntable).IsBlockMechanicalOn(level, x, y, z))
         {
             m_iRotationCount++;
             if(m_iRotationCount >= GetTicksToRotate())
@@ -87,7 +86,7 @@ public class TurntableTileEntity extends TileEntityBase
     private void RotateTurntable()
     {
         level.playSound((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, "random.click", 0.05F, 1.0F);
-        boolean bReverseDirection = ((Turntable)BlockListener.fcTurntable).IsBlockRedstoneOn(level, x, y, z);
+        boolean bReverseDirection = ((Turntable)BlockListener.turntable).IsBlockRedstoneOn(level, x, y, z);
         m_bPotteryRotated = false;
         int iTempJ = y + 1;
         do
@@ -127,7 +126,7 @@ public class TurntableTileEntity extends TileEntityBase
             m_bPotteryRotated = true;
             return;
         }
-        if(targetBlock instanceof UnfiredPottery) //if(iTargetid == mod_FCBetterThanWolves.fcUnfiredPottery.id)
+        if(targetBlock instanceof UnfiredPottery) //if(iTargetid == mod_FCBetterThanWolves.unfiredPottery.id)
         {
             RotateUnfiredPottery(i, j, k, bReverseDirection);
             m_bPotteryRotated = true;
@@ -485,7 +484,7 @@ public class TurntableTileEntity extends TileEntityBase
         m_iPotteryRotationCount++;
         if(m_iPotteryRotationCount >= 8)
         {
-            level.setTile(i, j, k, BlockListener.fcUnfiredPottery.id);
+            level.setTile(i, j, k, BlockListener.unfiredPottery.id);
             level.method_202(i, j, k, i, j, k);
             UnsortedUtils.EjectSingleItemWithRandomOffset(level, i, j + 1, k, ItemBase.clay.id, 0);
             m_iPotteryRotationCount = 0;

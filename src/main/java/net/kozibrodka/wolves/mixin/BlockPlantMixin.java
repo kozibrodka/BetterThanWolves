@@ -1,7 +1,6 @@
 package net.kozibrodka.wolves.mixin;
 
 import net.kozibrodka.wolves.events.BlockListener;
-import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.Plant;
@@ -30,7 +29,7 @@ public class BlockPlantMixin extends BlockBase {
 
     @Inject(method = "canPlantOnTopOf", at = @At(value = "RETURN"), cancellable = true)
     private void injected2(int i, CallbackInfoReturnable<Boolean> cir) {
-        cir.setReturnValue(i == BlockBase.GRASS.id || i == BlockBase.DIRT.id || i == BlockBase.FARMLAND.id || i == BlockListener.fcPlanter.id);
+        cir.setReturnValue(i == BlockBase.GRASS.id || i == BlockBase.DIRT.id || i == BlockBase.FARMLAND.id || i == BlockListener.planter.id);
     }
 
     private boolean canPlantOnTopOf2(int i) {

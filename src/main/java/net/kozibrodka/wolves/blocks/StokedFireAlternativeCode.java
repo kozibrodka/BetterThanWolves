@@ -1,8 +1,6 @@
 package net.kozibrodka.wolves.blocks;
 
 import net.kozibrodka.wolves.events.BlockListener;
-import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
-import net.kozibrodka.wolves.mixin.BlockRendererAccessor;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.render.Tessellator;
@@ -37,7 +35,7 @@ public class StokedFireAlternativeCode extends TemplateBlockBase implements Bloc
         super.onAdjacentBlockUpdate(arg, i, j, k, l);
         if (arg.getTileId(i, j - 1, k) != BlockBase.FIRE.id)
         {
-            if (arg.isAir(i, j - 1, k) && arg.getTileId(i, j - 2, k) == BlockListener.fcBBQ.id && (arg.getTileMeta(i, j - 2, k) & 4) > 0) arg.setTile(i, j - 1, k, BlockBase.FIRE.id);
+            if (arg.isAir(i, j - 1, k) && arg.getTileId(i, j - 2, k) == BlockListener.hibachi.id && (arg.getTileMeta(i, j - 2, k) & 4) > 0) arg.setTile(i, j - 1, k, BlockBase.FIRE.id);
             else arg.setTile(i, j, k, 0);
         }
     }

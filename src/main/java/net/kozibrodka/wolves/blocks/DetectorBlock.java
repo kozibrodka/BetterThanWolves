@@ -8,7 +8,6 @@ package net.kozibrodka.wolves.blocks;
 import net.kozibrodka.wolves.entity.BroadheadArrowEntity;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
-import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.mixin.LevelAccessor;
 import net.kozibrodka.wolves.utils.RotatableBlock;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
@@ -223,9 +222,9 @@ public class DetectorBlock extends TemplateBlockBase
             {
                 targeti--;
             }
-            if(world.getTileId(targeti, targetj, targetk) == BlockListener.fcBlockDetectorLogic.id)
+            if(world.getTileId(targeti, targetj, targetk) == BlockListener.blockDetectorLogic.id)
             {
-                BlockListener.fcBlockDetectorLogic.onEntityCollision(world, targeti, targetj, targetk, entity);
+                BlockListener.blockDetectorLogic.onEntityCollision(world, targeti, targetj, targetk, entity);
             }
         }
     }
@@ -373,7 +372,7 @@ public class DetectorBlock extends TemplateBlockBase
         }
         if(world.getTileId(targeti, targetj, targetk) == 0)
         {
-            world.setTile(targeti, targetj, targetk, BlockListener.fcBlockDetectorLogic.id);
+            world.setTile(targeti, targetj, targetk, BlockListener.blockDetectorLogic.id);
             return true;
         } else
         {
@@ -413,7 +412,7 @@ public class DetectorBlock extends TemplateBlockBase
         int targetid = world.getTileId(targeti, targetj, targetk);
         if(targetid > 0)
         {
-            if(targetid == BlockListener.fcBlockDetectorLogic.id)
+            if(targetid == BlockListener.blockDetectorLogic.id)
             {
                 if(world.getTileMeta(targeti, targetj, targetk) > 0)
                 {

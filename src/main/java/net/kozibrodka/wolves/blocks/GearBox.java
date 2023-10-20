@@ -41,7 +41,7 @@ public class GearBox extends TemplateBlockBase
         }
         BlockPosition sideBlockPos = new BlockPosition(i, j, k);
         sideBlockPos.AddFacingAsOffset(iSide);
-        if(iblockaccess.getTileId(sideBlockPos.i, sideBlockPos.j, sideBlockPos.k) == BlockListener.fcAxleBlock.id && ((Axle)BlockListener.fcAxleBlock).IsAxleOrientedTowardsFacing(iblockaccess, sideBlockPos.i, sideBlockPos.j, sideBlockPos.k, iSide))
+        if(iblockaccess.getTileId(sideBlockPos.i, sideBlockPos.j, sideBlockPos.k) == BlockListener.axleBlock.id && ((Axle)BlockListener.axleBlock).IsAxleOrientedTowardsFacing(iblockaccess, sideBlockPos.i, sideBlockPos.j, sideBlockPos.k, iSide))
         {
             return TextureListener.gearbox_output;
         } else
@@ -217,11 +217,11 @@ public class GearBox extends TemplateBlockBase
             }
             BlockPosition tempPos = new BlockPosition(i, j, k);
             tempPos.AddFacingAsOffset(iFacing);
-            if(world.getTileId(tempPos.i, tempPos.j, tempPos.k) != BlockListener.fcAxleBlock.id)
+            if(world.getTileId(tempPos.i, tempPos.j, tempPos.k) != BlockListener.axleBlock.id)
             {
                 continue;
             }
-            Axle axleBlock = (Axle)BlockListener.fcAxleBlock;
+            Axle axleBlock = (Axle)BlockListener.axleBlock;
             if(!axleBlock.IsAxleOrientedTowardsFacing(world, tempPos.i, tempPos.j, tempPos.k, iFacing))
             {
                 continue;
@@ -290,7 +290,7 @@ public class GearBox extends TemplateBlockBase
         BlockPosition targetBlockPos = new BlockPosition(i, j, k);
         targetBlockPos.AddFacingAsOffset(iFacing);
         int iTargetid = world.getTileId(targetBlockPos.i, targetBlockPos.j, targetBlockPos.k);
-        return iTargetid == BlockListener.fcAxleBlock.id && ((Axle)BlockListener.fcAxleBlock).IsAxleOrientedTowardsFacing(world, targetBlockPos.i, targetBlockPos.j, targetBlockPos.k, iFacing) && ((Axle)BlockListener.fcAxleBlock).GetPowerLevel(world, targetBlockPos.i, targetBlockPos.j, targetBlockPos.k) > 0;
+        return iTargetid == BlockListener.axleBlock.id && ((Axle)BlockListener.axleBlock).IsAxleOrientedTowardsFacing(world, targetBlockPos.i, targetBlockPos.j, targetBlockPos.k, iFacing) && ((Axle)BlockListener.axleBlock).GetPowerLevel(world, targetBlockPos.i, targetBlockPos.j, targetBlockPos.k) > 0;
     }
 
     public boolean IsOutputtingMechanicalPower(Level world, int i, int j, int k)

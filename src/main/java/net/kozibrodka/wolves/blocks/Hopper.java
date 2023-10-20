@@ -338,7 +338,7 @@ public class Hopper extends TemplateBlockWithEntity
     {
         for(int iTemp = 0; iTemp < 2; iTemp++)
         {
-            UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, BlockListener.fcOmniSlab.id, 1);
+            UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, BlockListener.omniSlab.id, 1);
         }
 
         for(int iTemp = 0; iTemp < 1; iTemp++)
@@ -391,16 +391,16 @@ public class Hopper extends TemplateBlockWithEntity
             BlockPosition targetPos = new BlockPosition(i, j, k);
             targetPos.AddFacingAsOffset(iFacing);
             int iTargetid = world.getTileId(targetPos.i, targetPos.j, targetPos.k);
-            if(iTargetid == BlockListener.fcAxleBlock.id)
+            if(iTargetid == BlockListener.axleBlock.id)
             {
-                Axle axleBlock = (Axle)BlockListener.fcAxleBlock;
+                Axle axleBlock = (Axle)BlockListener.axleBlock;
                 if(axleBlock.IsAxleOrientedTowardsFacing(world, targetPos.i, targetPos.j, targetPos.k, iFacing) && axleBlock.GetPowerLevel(world, targetPos.i, targetPos.j, targetPos.k) > 0)
                 {
                     return true;
                 }
                 continue;
             }
-            if(iTargetid != BlockListener.fcHandCrank.id)
+            if(iTargetid != BlockListener.handCrank.id)
             {
                 continue;
             }

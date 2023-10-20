@@ -132,9 +132,9 @@ public class WaterWheelEntity extends EntityBase
             int iCenterJ = (int)(y - 0.5D);
             int iCenterK = (int)(z - 0.5D);
             int iCenterid = level.getTileId(iCenterI, iCenterJ, iCenterK);
-            if(iCenterid == BlockListener.fcAxleBlock.id)
+            if(iCenterid == BlockListener.axleBlock.id)
             {
-                ((Axle)BlockListener.fcAxleBlock).SetPowerLevel(level, iCenterI, iCenterJ, iCenterK, 0);
+                ((Axle)BlockListener.axleBlock).SetPowerLevel(level, iCenterI, iCenterJ, iCenterK, 0);
             }
         }
         super.remove();
@@ -163,7 +163,7 @@ public class WaterWheelEntity extends EntityBase
             int iCenterJ = (int)(y - 0.5D);
             int iCenterK = (int)(z - 0.5D);
             int iCenterid = level.getTileId(iCenterI, iCenterJ, iCenterK);
-            if(iCenterid != BlockListener.fcAxleBlock.id)
+            if(iCenterid != BlockListener.axleBlock.id)
             {
                 DestroyWithDrop();
                 return;
@@ -173,7 +173,7 @@ public class WaterWheelEntity extends EntityBase
                 DestroyWithDrop();
                 return;
             }
-            if(!bProvidingPower && ((Axle)BlockListener.fcAxleBlock).GetPowerLevel(level, iCenterI, iCenterJ, iCenterK) > 0)
+            if(!bProvidingPower && ((Axle)BlockListener.axleBlock).GetPowerLevel(level, iCenterI, iCenterJ, iCenterK) > 0)
             {
                 DestroyWithDrop();
                 return;
@@ -191,12 +191,12 @@ public class WaterWheelEntity extends EntityBase
                 if(!bProvidingPower)
                 {
                     bProvidingPower = true;
-                    ((Axle)BlockListener.fcAxleBlock).SetPowerLevel(level, iCenterI, iCenterJ, iCenterK, 3);
+                    ((Axle)BlockListener.axleBlock).SetPowerLevel(level, iCenterI, iCenterJ, iCenterK, 3);
                 }
             } else
                 if (bProvidingPower) {
                     bProvidingPower = false;
-                    ((Axle) BlockListener.fcAxleBlock).SetPowerLevel(level, iCenterI, iCenterJ, iCenterK, 0);
+                    ((Axle) BlockListener.axleBlock).SetPowerLevel(level, iCenterI, iCenterJ, iCenterK, 0);
                 }
 
         }
