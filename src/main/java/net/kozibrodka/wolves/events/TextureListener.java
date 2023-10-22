@@ -3,7 +3,6 @@ package net.kozibrodka.wolves.events;
 import net.kozibrodka.wolves.entity.*;
 import net.kozibrodka.wolves.render.*;
 import net.mine_diver.unsafeevents.listener.EventListener;
-import net.minecraft.client.render.entity.model.Sheep;
 import net.modificationstation.stationapi.api.client.event.render.entity.EntityRendererRegisterEvent;
 import net.modificationstation.stationapi.api.client.event.texture.TextureRegisterEvent;
 import net.modificationstation.stationapi.api.client.texture.atlas.Atlases;
@@ -118,8 +117,8 @@ public class TextureListener {
         detector_top = registerBlockTexture("block/fcBlockDetector_top");
         detector_bottom = registerBlockTexture("block/fcBlockDetector_down");
 
-        mod_FCBetterThanWolves.fcBucketCement.setTexture(Identifier.of(MOD_ID, "item/fcBucketCement"));
-        mod_FCBetterThanWolves.soulFilter.setTexture(Identifier.of(MOD_ID, "item/soul_filter"));
+        ItemListener.bucketCement.setTexture(Identifier.of(MOD_ID, "item/bucketCement"));
+        ItemListener.soulFilter.setTexture(Identifier.of(MOD_ID, "item/soul_filter"));
 
         BlockListener.detectorRailObsidian.asItem().setTexturePosition(registerBlockTexture("block/fcRailDetector_obsidian"));
         BlockListener.detectorRailWood.asItem().setTexturePosition(registerBlockTexture("block/fcRailDetector_wood"));

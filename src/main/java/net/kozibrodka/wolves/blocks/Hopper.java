@@ -7,8 +7,8 @@ package net.kozibrodka.wolves.blocks;
 
 import net.kozibrodka.wolves.container.HopperContainer;
 import net.kozibrodka.wolves.events.BlockListener;
+import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.events.TextureListener;
-import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.modsupport.AffectedByBellows;
 import net.kozibrodka.wolves.tileentity.HopperTileEntity;
 import net.kozibrodka.wolves.utils.*;
@@ -343,7 +343,7 @@ public class Hopper extends TemplateBlockWithEntity
 
         for(int iTemp = 0; iTemp < 1; iTemp++)
         {
-            UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcGear.id, 0);
+            UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, ItemListener.gear.id, 0);
         }
 
          world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.explode", 1.0F, 1.25F);
@@ -509,6 +509,6 @@ public class Hopper extends TemplateBlockWithEntity
         if (tileEntityHopper == null) return;
         if (!(tileEntityHopper instanceof HopperTileEntity)) return;
         if (((HopperTileEntity) tileEntityHopper).GetFilterType() != 6) return;
-        ((HopperTileEntity) tileEntityHopper).setInventoryItem(18, new ItemInstance(mod_FCBetterThanWolves.soulFilter, 1));
+        ((HopperTileEntity) tileEntityHopper).setInventoryItem(18, new ItemInstance(ItemListener.soulFilter, 1));
     }
 }

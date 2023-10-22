@@ -1,8 +1,8 @@
 
 package net.kozibrodka.wolves.blocks;
 
+import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.events.TextureListener;
-import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.utils.BlockPosition;
 import net.kozibrodka.wolves.utils.MechanicalDevice;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
@@ -198,7 +198,7 @@ public class HandCrank extends TemplateBlockBase
         UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, ItemBase.stick.id, 0);
         UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, BlockBase.COBBLESTONE.id, 0);
         UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, BlockBase.COBBLESTONE.id, 0);
-        UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcGear.id, 0);
+        UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, ItemListener.gear.id, 0);
         world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.explode", 0.2F, 1.25F);
         world.setTile(i, j, k, 0);
     }

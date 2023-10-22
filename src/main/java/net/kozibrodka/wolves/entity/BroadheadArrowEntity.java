@@ -2,12 +2,11 @@ package net.kozibrodka.wolves.entity;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
+import net.kozibrodka.wolves.events.ItemListener;
 import net.minecraft.block.BlockBase;
 import net.minecraft.entity.EntityBase;
 import net.minecraft.entity.Living;
 import net.minecraft.entity.player.PlayerBase;
-import net.minecraft.item.ItemBase;
 import net.minecraft.item.ItemInstance;
 import net.minecraft.level.Level;
 import net.minecraft.util.hit.HitResult;
@@ -274,7 +273,7 @@ public class BroadheadArrowEntity extends EntityBase{
 
     public void onPlayerCollision(PlayerBase arg) {
         if (!this.level.isServerSide) {
-            if (this.inGround && this.spawnedByPlayer && this.shake <= 0 && arg.inventory.addStack(new ItemInstance(mod_FCBetterThanWolves.fcBroadheadArrow, 1))) {
+            if (this.inGround && this.spawnedByPlayer && this.shake <= 0 && arg.inventory.addStack(new ItemInstance(ItemListener.broadHeadArrow, 1))) {
                 this.level.playSound(this, "random.pop", 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                 arg.onItemPickup(this, 1);
                 this.remove();

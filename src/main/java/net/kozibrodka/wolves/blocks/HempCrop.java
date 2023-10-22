@@ -1,8 +1,8 @@
 
 package net.kozibrodka.wolves.blocks;
 
+import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.events.TextureListener;
-import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.utils.SoilTemplate;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.BlockBase;
@@ -125,7 +125,7 @@ public class HempCrop extends TemplatePlant
             float f2 = world.rand.nextFloat() * f1 + (1.0F - f1) * 0.5F;
             float f3 = world.rand.nextFloat() * f1 + (1.0F - f1) * 0.5F;
             float f4 = world.rand.nextFloat() * f1 + (1.0F - f1) * 0.5F;
-            Item entityitem = new Item(world, (float)i + f2, (float)j + f3, (float)k + f4, new ItemInstance(mod_FCBetterThanWolves.fcHempSeeds));
+            Item entityitem = new Item(world, (float)i + f2, (float)j + f3, (float)k + f4, new ItemInstance(ItemListener.hempSeeds));
             entityitem.pickupDelay = 10;
             world.spawnEntity(entityitem);
         }
@@ -135,7 +135,7 @@ public class HempCrop extends TemplatePlant
     {
         if(i == 7)
         {
-            return mod_FCBetterThanWolves.fcHemp.id;
+            return ItemListener.hemp.id;
         } else
         {
             return -1;

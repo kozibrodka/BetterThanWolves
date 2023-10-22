@@ -8,8 +8,8 @@ package net.kozibrodka.wolves.blocks;
 import net.fabricmc.loader.api.FabricLoader;
 import net.kozibrodka.wolves.entity.MovingAnchorEntity;
 import net.kozibrodka.wolves.events.BlockListener;
+import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.events.TextureListener;
-import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.tileentity.PulleyTileEntity;
 import net.kozibrodka.wolves.utils.BlockPosition;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
@@ -137,7 +137,7 @@ public class Anchor extends TemplateBlockBase implements BlockWithWorldRenderer,
         }
         ItemInstance playerEquippedItem = entityPlayer.getHeldItem();
         boolean bRopeEquipped = false;
-        if(playerEquippedItem != null && playerEquippedItem.itemId == mod_FCBetterThanWolves.fcRopeItem.id)
+        if(playerEquippedItem != null && playerEquippedItem.itemId == ItemListener.ropeItem.id)
         {
             bRopeEquipped = true;
         }
@@ -189,7 +189,7 @@ public class Anchor extends TemplateBlockBase implements BlockWithWorldRenderer,
 
     private void AddRopeToPlayerInventory(Level world, int i, int j, int k, PlayerBase entityPlayer)
     {
-        ItemInstance ropeStack = new ItemInstance(mod_FCBetterThanWolves.fcRopeItem);
+        ItemInstance ropeStack = new ItemInstance(ItemListener.ropeItem);
         if(entityPlayer.inventory.addStack(ropeStack))
         {
             world.playSound(entityPlayer, "random.pop", 0.2F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);

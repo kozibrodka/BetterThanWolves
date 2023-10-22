@@ -75,17 +75,17 @@ public class RecipeListener {
 
     private static void AddBlockRecipes()
     {
-        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.anvil, 1), "###", " # ", "###", '#', mod_FCBetterThanWolves.fcSteel);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.anvil, 1), "###", " # ", "###", '#', ItemListener.steel);
         CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.lightBulbOff, 1), " # ", "#X#", " Y ", '#', BlockBase.GLASS, 'X', ItemBase.glowstoneDust, 'Y', ItemBase.redstoneDust);
-        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.hibachi), "XXX", "#Z#", "#Y#", '#', BlockBase.STONE, 'X', mod_FCBetterThanWolves.fcConcentratedHellfire, 'Y', ItemBase.redstoneDust, 'Z',
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.hibachi), "XXX", "#Z#", "#Y#", '#', BlockBase.STONE, 'X', ItemListener.concentratedHellfire, 'Y', ItemBase.redstoneDust, 'Z',
                 ItemBase.glowstoneDust);
-        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.hopper), "# #", "XYX", " Z ", '#', new ItemInstance(BlockListener.omniSlab.id, 1, 1), 'X', mod_FCBetterThanWolves.fcGear, 'Y', BlockBase.WOODEN_PRESSURE_PLATE, 'Z',
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.hopper), "# #", "XYX", " Z ", '#', new ItemInstance(BlockListener.omniSlab.id, 1, 1), 'X', ItemListener.gear, 'Y', BlockBase.WOODEN_PRESSURE_PLATE, 'Z',
                 BlockListener.corner);
-        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.saw), "YYY", "XZX", "#X#", '#', BlockBase.WOOD, 'X', mod_FCBetterThanWolves.fcGear, 'Y', ItemBase.ironIngot, 'Z',
-                mod_FCBetterThanWolves.fcBelt);
-        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.platform), "#X#", " # ", "#X#", '#', BlockBase.WOOD, 'X', mod_FCBetterThanWolves.fcWicker);
-        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.platform), "X#X", " X ", "X#X", '#', mod_FCBetterThanWolves.fcWicker, 'X', BlockListener.moulding);
-        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.pulley), "#Y#", "XZX", "#Y#", '#', BlockBase.WOOD, 'X', mod_FCBetterThanWolves.fcGear, 'Y', ItemBase.ironIngot, 'Z',
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.saw), "YYY", "XZX", "#X#", '#', BlockBase.WOOD, 'X', ItemListener.gear, 'Y', ItemBase.ironIngot, 'Z',
+                ItemListener.belt);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.platform), "#X#", " # ", "#X#", '#', BlockBase.WOOD, 'X', ItemListener.wicker);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.platform), "X#X", " X ", "X#X", '#', ItemListener.wicker, 'X', BlockListener.moulding);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.pulley), "#Y#", "XZX", "#Y#", '#', BlockBase.WOOD, 'X', ItemListener.gear, 'Y', ItemBase.ironIngot, 'Z',
                 ItemBase.redstoneDust);
         CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.pressurePlateObsidian, 1), "##", '#', BlockBase.OBSIDIAN);
         CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.blockDispenser), "###", "# #", "YXY", '#', BlockBase.MOSSY_COBBLESTONE, 'X', ItemBase.redstoneDust, 'Y', BlockBase.STONE);
@@ -94,45 +94,45 @@ public class RecipeListener {
         CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.detectorRailObsidian, 6), "X X", "X#X", "XRX", 'X', ItemBase.ironIngot, 'R', ItemBase.redstoneDust, '#', BlockListener.pressurePlateObsidian);
         CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.blockDetector), "X#X", "###", "ZYZ", '#', BlockBase.COBBLESTONE, 'X', new ItemInstance(ItemBase.dyePowder, 1, 4), 'Y', ItemBase.redstoneDust, 'Z',
                 BlockBase.STONE);
-        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.handCrank), "  Y", " Y ", "#X#", '#', BlockBase.COBBLESTONE, 'X', mod_FCBetterThanWolves.fcGear, 'Y', ItemBase.stick);
-        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.millStone), "YYY", "YYY", "YXY", 'X', mod_FCBetterThanWolves.fcGear, 'Y', BlockBase.STONE);
-        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.axleBlock), "#", "X", "#", '#', BlockBase.WOOD, 'X', mod_FCBetterThanWolves.fcRopeItem);
-        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.axleBlock), "#", "X", "#", '#', BlockListener.moulding, 'X', mod_FCBetterThanWolves.fcRopeItem);
-        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.gearBox), "#X#", "XYX", "#X#", '#', BlockBase.WOOD, 'X', mod_FCBetterThanWolves.fcGear, 'Y', ItemBase.redstoneDust);
-        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.gearBox), "#X#", "XYX", "#X#", '#', new ItemInstance(BlockListener.omniSlab.id, 1, 1), 'X', mod_FCBetterThanWolves.fcGear, 'Y', ItemBase.redstoneDust);
-        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.turntable), "###", "ZXZ", "ZYZ", '#', new ItemInstance(BlockListener.omniSlab.id, 1, 1), 'X', ItemBase.redstoneDust, 'Y', mod_FCBetterThanWolves.fcGear, 'Z',
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.handCrank), "  Y", " Y ", "#X#", '#', BlockBase.COBBLESTONE, 'X', ItemListener.gear, 'Y', ItemBase.stick);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.millStone), "YYY", "YYY", "YXY", 'X', ItemListener.gear, 'Y', BlockBase.STONE);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.axleBlock), "#", "X", "#", '#', BlockBase.WOOD, 'X', ItemListener.ropeItem);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.axleBlock), "#", "X", "#", '#', BlockListener.moulding, 'X', ItemListener.ropeItem);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.gearBox), "#X#", "XYX", "#X#", '#', BlockBase.WOOD, 'X', ItemListener.gear, 'Y', ItemBase.redstoneDust);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.gearBox), "#X#", "XYX", "#X#", '#', new ItemInstance(BlockListener.omniSlab.id, 1, 1), 'X', ItemListener.gear, 'Y', ItemBase.redstoneDust);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.turntable), "###", "ZXZ", "ZYZ", '#', new ItemInstance(BlockListener.omniSlab.id, 1, 1), 'X', ItemBase.redstoneDust, 'Y', ItemListener.gear, 'Z',
                 BlockBase.STONE);
-        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.bellows), "###", "XXX", "YZY", '#', new ItemInstance(BlockListener.omniSlab.id, 1, 1), 'X', mod_FCBetterThanWolves.fcTannedLeather, 'Y', mod_FCBetterThanWolves.fcGear, 'Z',
-                mod_FCBetterThanWolves.fcBelt);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.bellows), "###", "XXX", "YZY", '#', new ItemInstance(BlockListener.omniSlab.id, 1, 1), 'X', ItemListener.tannedLeather, 'Y', ItemListener.gear, 'Z',
+                ItemListener.belt);
         CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.planter, 1, 1), "Y", "X", "#", '#', new ItemInstance(BlockListener.planter, 1, 0), 'X', ItemBase.waterBucket, 'Y', BlockBase.DIRT);
-        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.blockOfWicker, 1), "XX", "XX", 'X', mod_FCBetterThanWolves.fcWicker);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.blockOfWicker, 1), "XX", "XX", 'X', ItemListener.wicker);
     }
 
     private static void AddItemRecipes()
     {
-        CraftingRegistry.addShapedRecipe(new ItemInstance(mod_FCBetterThanWolves.fcBucketCement, 1), "#YX", " Z ", Character.valueOf('#'), BlockBase.SOUL_SAND, Character.valueOf('X'), BlockBase.GRAVEL, Character.valueOf('Y'), ItemBase.waterBucket, Character.valueOf('Z'), ItemBase.bucket);
-        CraftingRegistry.addShapedRecipe(new ItemInstance(mod_FCBetterThanWolves.fcGear, 2), " X ", "X#X", " X ", Character.valueOf('#'), BlockBase.WOOD, Character.valueOf('X'), ItemBase.stick);
-        CraftingRegistry.addShapedRecipe(new ItemInstance(mod_FCBetterThanWolves.fcRopeItem, 1), "##", "##", "##", Character.valueOf('#'), mod_FCBetterThanWolves.fcHempFibers);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemListener.bucketCement, 1), "#YX", " Z ", Character.valueOf('#'), BlockBase.SOUL_SAND, Character.valueOf('X'), BlockBase.GRAVEL, Character.valueOf('Y'), ItemBase.waterBucket, Character.valueOf('Z'), ItemBase.bucket);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemListener.gear, 2), " X ", "X#X", " X ", Character.valueOf('#'), BlockBase.WOOD, Character.valueOf('X'), ItemBase.stick);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemListener.ropeItem, 1), "##", "##", "##", Character.valueOf('#'), ItemListener.hempFibers);
         CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.anchor), " X ", "###", Character.valueOf('#'), BlockBase.STONE, Character.valueOf('X'), ItemBase.ironIngot);
-        CraftingRegistry.addShapedRecipe(new ItemInstance(mod_FCBetterThanWolves.fcWaterWheelItem), "###", "# #", "###", Character.valueOf('#'), mod_FCBetterThanWolves.fcWoodBlade);
-        CraftingRegistry.addShapedRecipe(new ItemInstance(mod_FCBetterThanWolves.fcWindMillBladeItem), "###", "###", "XXX", Character.valueOf('#'), mod_FCBetterThanWolves.fcHempCloth, Character.valueOf('X'), BlockListener.moulding);
-        CraftingRegistry.addShapedRecipe(new ItemInstance(mod_FCBetterThanWolves.fcWindMillBladeItem), "###", "###", "XXX", Character.valueOf('#'), mod_FCBetterThanWolves.fcHempCloth, Character.valueOf('X'), BlockBase.WOOD);
-        CraftingRegistry.addShapedRecipe(new ItemInstance(mod_FCBetterThanWolves.fcWindMillItem), " # ", "# #", " # ", Character.valueOf('#'), mod_FCBetterThanWolves.fcWindMillBladeItem);
-        CraftingRegistry.addShapedRecipe(new ItemInstance(mod_FCBetterThanWolves.fcHempCloth, 1), "###", "###", "###", Character.valueOf('#'), mod_FCBetterThanWolves.fcHempFibers);
-        CraftingRegistry.addShapedRecipe(new ItemInstance(mod_FCBetterThanWolves.fcGrate, 1), "###", "###", "###", Character.valueOf('#'), ItemBase.stick);
-        CraftingRegistry.addShapedRecipe(new ItemInstance(mod_FCBetterThanWolves.fcWicker, 1), "###", "###", "###", Character.valueOf('#'), ItemBase.sugarCanes);
-        CraftingRegistry.addShapedRecipe(new ItemInstance(mod_FCBetterThanWolves.fcRollersItem, 1), "###", "###", "###", Character.valueOf('#'), BlockListener.moulding);
-        CraftingRegistry.addShapedRecipe(new ItemInstance(mod_FCBetterThanWolves.fcStrap, 8), "#", Character.valueOf('#'), mod_FCBetterThanWolves.fcTannedLeather);
-        CraftingRegistry.addShapedRecipe(new ItemInstance(mod_FCBetterThanWolves.fcBelt, 1), " # ", "# #", " # ", Character.valueOf('#'), mod_FCBetterThanWolves.fcStrap);
-        CraftingRegistry.addShapedRecipe(new ItemInstance(mod_FCBetterThanWolves.fcWoodBlade, 1), "#  ", "#X#", "#  ", Character.valueOf('#'), new ItemInstance(BlockListener.omniSlab.id, 1, 1), Character.valueOf('X'), ItemBase.slimeball);
-        CraftingRegistry.addShapedRecipe(new ItemInstance(mod_FCBetterThanWolves.fcWoodBlade, 1), "#  ", "#X#", "#  ", Character.valueOf('#'), new ItemInstance(BlockListener.omniSlab.id, 1, 1), Character.valueOf('X'), mod_FCBetterThanWolves.fcGlue);
-        CraftingRegistry.addShapedRecipe(new ItemInstance(mod_FCBetterThanWolves.fcHaft, 1), "Y", "X", "#", Character.valueOf('#'), BlockListener.moulding, Character.valueOf('X'), mod_FCBetterThanWolves.fcGlue, Character.valueOf('Y'), mod_FCBetterThanWolves.fcStrap);
-        CraftingRegistry.addShapedRecipe(new ItemInstance(mod_FCBetterThanWolves.fcHaft, 1), "Y", "X", "#", Character.valueOf('#'), BlockListener.moulding, Character.valueOf('X'), ItemBase.slimeball, Character.valueOf('Y'), mod_FCBetterThanWolves.fcStrap);
-        CraftingRegistry.addShapedRecipe(new ItemInstance(mod_FCBetterThanWolves.fcCompositeBow, 1), "X#Y", "ZX#", "X#Y", Character.valueOf('#'), BlockListener.moulding, Character.valueOf('X'), ItemBase.bone, Character.valueOf('Y'), ItemBase.slimeball, Character.valueOf('Z'),
+        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemListener.waterWheelItem), "###", "# #", "###", Character.valueOf('#'), ItemListener.woodBlade);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemListener.windMillBladeItem), "###", "###", "XXX", Character.valueOf('#'), ItemListener.hempCloth, Character.valueOf('X'), BlockListener.moulding);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemListener.windMillBladeItem), "###", "###", "XXX", Character.valueOf('#'), ItemListener.hempCloth, Character.valueOf('X'), BlockBase.WOOD);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemListener.windMillItem), " # ", "# #", " # ", Character.valueOf('#'), ItemListener.windMillBladeItem);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemListener.hempCloth, 1), "###", "###", "###", Character.valueOf('#'), ItemListener.hempFibers);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemListener.grate, 1), "###", "###", "###", Character.valueOf('#'), ItemBase.stick);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemListener.wicker, 1), "###", "###", "###", Character.valueOf('#'), ItemBase.sugarCanes);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemListener.rollersItem, 1), "###", "###", "###", Character.valueOf('#'), BlockListener.moulding);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemListener.strap, 8), "#", Character.valueOf('#'), ItemListener.tannedLeather);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemListener.belt, 1), " # ", "# #", " # ", Character.valueOf('#'), ItemListener.strap);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemListener.woodBlade, 1), "#  ", "#X#", "#  ", Character.valueOf('#'), new ItemInstance(BlockListener.omniSlab.id, 1, 1), Character.valueOf('X'), ItemBase.slimeball);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemListener.woodBlade, 1), "#  ", "#X#", "#  ", Character.valueOf('#'), new ItemInstance(BlockListener.omniSlab.id, 1, 1), Character.valueOf('X'), ItemListener.glue);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemListener.haft, 1), "Y", "X", "#", Character.valueOf('#'), BlockListener.moulding, Character.valueOf('X'), ItemListener.glue, Character.valueOf('Y'), ItemListener.strap);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemListener.haft, 1), "Y", "X", "#", Character.valueOf('#'), BlockListener.moulding, Character.valueOf('X'), ItemBase.slimeball, Character.valueOf('Y'), ItemListener.strap);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemListener.compositeBow, 1), "X#Y", "ZX#", "X#Y", Character.valueOf('#'), BlockListener.moulding, Character.valueOf('X'), ItemBase.bone, Character.valueOf('Y'), ItemBase.slimeball, Character.valueOf('Z'),
                 ItemBase.string);
-        CraftingRegistry.addShapedRecipe(new ItemInstance(mod_FCBetterThanWolves.fcCompositeBow, 1), "X#Y", "ZX#", "X#Y", Character.valueOf('#'), BlockListener.moulding, Character.valueOf('X'), ItemBase.bone, Character.valueOf('Y'), mod_FCBetterThanWolves.fcGlue, Character.valueOf('Z'),
+        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemListener.compositeBow, 1), "X#Y", "ZX#", "X#Y", Character.valueOf('#'), BlockListener.moulding, Character.valueOf('X'), ItemBase.bone, Character.valueOf('Y'), ItemListener.glue, Character.valueOf('Z'),
                 ItemBase.string);
-        CraftingRegistry.addShapedRecipe(new ItemInstance(mod_FCBetterThanWolves.fcBroadheadArrow, 4), "#", "X", "Y", Character.valueOf('#'), mod_FCBetterThanWolves.fcBroadheadArrowhead, Character.valueOf('X'), BlockListener.moulding, Character.valueOf('Y'), ItemBase.feather);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemListener.broadHeadArrow, 4), "#", "X", "Y", Character.valueOf('#'), ItemListener.broadHeadArrowhead, Character.valueOf('X'), BlockListener.moulding, Character.valueOf('Y'), ItemBase.feather);
     }
 
     private static void AddDyeRecipes()
@@ -142,21 +142,21 @@ public class RecipeListener {
             CraftingRegistry.addShapelessRecipe(new ItemInstance(BlockListener.vase, 1, Wool.getColour(i)), new ItemInstance(ItemBase.dyePowder, 1, i), new ItemInstance(BlockListener.vase.id, 1, 0));
         }
 
-        CraftingRegistry.addShapelessRecipe(new ItemInstance(BlockBase.WOOL, 1, 12), new ItemInstance(mod_FCBetterThanWolves.fcDung), new ItemInstance(BlockBase.WOOL.id, 1, 0));
-        CraftingRegistry.addShapelessRecipe(new ItemInstance(BlockListener.vase, 1, 12), new ItemInstance(mod_FCBetterThanWolves.fcDung), new ItemInstance(BlockListener.vase.id, 1, 0));
+        CraftingRegistry.addShapelessRecipe(new ItemInstance(BlockBase.WOOL, 1, 12), new ItemInstance(ItemListener.dung), new ItemInstance(BlockBase.WOOL.id, 1, 0));
+        CraftingRegistry.addShapelessRecipe(new ItemInstance(BlockListener.vase, 1, 12), new ItemInstance(ItemListener.dung), new ItemInstance(BlockListener.vase.id, 1, 0));
     }
 
     private static void AddAlternateVanillaRecipes()
     {
-        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockBase.STICKY_PISTON, 1), "#", "X", Character.valueOf('#'), mod_FCBetterThanWolves.fcGlue, Character.valueOf('X'), BlockBase.PISTON);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockBase.STICKY_PISTON, 1), "#", "X", Character.valueOf('#'), ItemListener.glue, Character.valueOf('X'), BlockBase.PISTON);
         CraftingRegistry.addShapedRecipe(new ItemInstance(BlockBase.FENCE, 2), "###", Character.valueOf('#'), BlockListener.moulding);
         CraftingRegistry.addShapedRecipe(new ItemInstance(BlockBase.WOOD_STAIRS, 1), "# ", "##", Character.valueOf('#'), BlockListener.moulding);
         CraftingRegistry.addShapedRecipe(new ItemInstance(ItemBase.sign, 1), "###", "###", " X ", Character.valueOf('#'), new ItemInstance(BlockListener.omniSlab.id, 1, 1), Character.valueOf('X'), ItemBase.stick);
         CraftingRegistry.addShapedRecipe(new ItemInstance(ItemBase.woodDoor, 1), "##", "##", "##", Character.valueOf('#'), new ItemInstance(BlockListener.omniSlab.id, 1, 1));
         CraftingRegistry.addShapedRecipe(new ItemInstance(BlockBase.TRAPDOOR, 2), "###", "###", Character.valueOf('#'), new ItemInstance(BlockListener.omniSlab.id, 1, 1));
-        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemBase.cake, 1), "AAA", "BEB", "CCC", Character.valueOf('A'), ItemBase.sugar, Character.valueOf('B'), ItemBase.milk, Character.valueOf('C'), mod_FCBetterThanWolves.fcFlour, Character.valueOf('E'),
+        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemBase.cake, 1), "AAA", "BEB", "CCC", Character.valueOf('A'), ItemBase.sugar, Character.valueOf('B'), ItemBase.milk, Character.valueOf('C'), ItemListener.flour, Character.valueOf('E'),
                 ItemBase.egg);
-        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockBase.TORCH, 4), "#", "X", Character.valueOf('#'), mod_FCBetterThanWolves.fcNethercoal, Character.valueOf('X'), ItemBase.stick);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockBase.TORCH, 4), "#", "X", Character.valueOf('#'), ItemListener.netherCoal, Character.valueOf('X'), ItemBase.stick);
     }
 
     private static void AddConversionRecipes()
@@ -165,51 +165,51 @@ public class RecipeListener {
         CraftingRegistry.addShapelessRecipe(new ItemInstance(BlockBase.STONE), new ItemInstance(BlockListener.omniSlab.id, 1, 0), new ItemInstance(BlockListener.omniSlab.id, 1, 0));
         CraftingRegistry.addShapelessRecipe(new ItemInstance(BlockListener.omniSlab.id, 1, 1), new ItemInstance(BlockListener.moulding.id,1,0), new ItemInstance(BlockListener.moulding.id,1,0));
         CraftingRegistry.addShapelessRecipe(new ItemInstance(BlockListener.moulding.id,1,0), new ItemInstance(BlockListener.corner.id,1,0), new ItemInstance(BlockListener.corner.id,1,0));
-        CraftingRegistry.addShapelessRecipe(new ItemInstance(ItemBase.string), new ItemInstance(mod_FCBetterThanWolves.fcHempFibers), new ItemInstance(mod_FCBetterThanWolves.fcHempFibers));
+        CraftingRegistry.addShapelessRecipe(new ItemInstance(ItemBase.string), new ItemInstance(ItemListener.hempFibers), new ItemInstance(ItemListener.hempFibers));
     }
 
     private static void AddSmeltingRecipes()
     {
-        SmeltingRegistry.addSmeltingRecipe(mod_FCBetterThanWolves.fcWolfRaw.id, new ItemInstance(mod_FCBetterThanWolves.fcWolfCooked));
-        SmeltingRegistry.addSmeltingRecipe(mod_FCBetterThanWolves.fcFlour.id, new ItemInstance(ItemBase.bread));
-//        ModLoader.AddSmelting(mod_FCBetterThanWolves.fcWolfRaw.id, new ItemInstance(mod_FCBetterThanWolves.fcWolfCooked));
-//        ModLoader.AddSmelting(mod_FCBetterThanWolves.fcFlour.id, new ItemInstance(ItemBase.bread));
+        SmeltingRegistry.addSmeltingRecipe(ItemListener.wolfRaw.id, new ItemInstance(ItemListener.wolfCooked));
+        SmeltingRegistry.addSmeltingRecipe(ItemListener.flour.id, new ItemInstance(ItemBase.bread));
+//        ModLoader.AddSmelting(mod_FCBetterThanWolves.wolfRaw.id, new ItemInstance(mod_FCBetterThanWolves.wolfCooked));
+//        ModLoader.AddSmelting(mod_FCBetterThanWolves.flour.id, new ItemInstance(ItemBase.bread));
     }
 
     private static void AddAnvilRecipes()
     {
-        AddAnvilRecipe(new ItemInstance(mod_FCBetterThanWolves.fcRefinedPickAxe, 1), new Object[] {
-                "###", " X ", " X ", '#', mod_FCBetterThanWolves.fcSteel, 'X', mod_FCBetterThanWolves.fcHaft
+        AddAnvilRecipe(new ItemInstance(ItemListener.refinedPickAxe, 1), new Object[] {
+                "###", " X ", " X ", '#', ItemListener.steel, 'X', ItemListener.haft
         });
-        AddAnvilRecipe(new ItemInstance(mod_FCBetterThanWolves.fcRefinedShovel, 1), new Object[] {
-                "#", "X", "X", '#', mod_FCBetterThanWolves.fcSteel, 'X', mod_FCBetterThanWolves.fcHaft
+        AddAnvilRecipe(new ItemInstance(ItemListener.refinedShovel, 1), new Object[] {
+                "#", "X", "X", '#', ItemListener.steel, 'X', ItemListener.haft
         });
-        AddAnvilRecipe(new ItemInstance(mod_FCBetterThanWolves.fcRefinedHoe, 1), new Object[] {
-                "##", " X", " X", '#', mod_FCBetterThanWolves.fcSteel, 'X', mod_FCBetterThanWolves.fcHaft
+        AddAnvilRecipe(new ItemInstance(ItemListener.refinedHoe, 1), new Object[] {
+                "##", " X", " X", '#', ItemListener.steel, 'X', ItemListener.haft
         });
-        AddAnvilRecipe(new ItemInstance(mod_FCBetterThanWolves.fcRefinedAxe, 1), new Object[] {
-                "###", "#X#", " X ", '#', mod_FCBetterThanWolves.fcSteel, 'X', mod_FCBetterThanWolves.fcHaft
+        AddAnvilRecipe(new ItemInstance(ItemListener.refinedAxe, 1), new Object[] {
+                "###", "#X#", " X ", '#', ItemListener.steel, 'X', ItemListener.haft
         });
-        AddAnvilRecipe(new ItemInstance(mod_FCBetterThanWolves.fcRefinedSword, 1), new Object[] {
-                "#", "#", "X", '#', mod_FCBetterThanWolves.fcSteel, 'X', mod_FCBetterThanWolves.fcHaft
+        AddAnvilRecipe(new ItemInstance(ItemListener.refinedSword, 1), new Object[] {
+                "#", "#", "X", '#', ItemListener.steel, 'X', ItemListener.haft
         });
-        AddAnvilRecipe(new ItemInstance(mod_FCBetterThanWolves.fcArmorPlate, 1), new Object[] {
-                "#X#", '#', mod_FCBetterThanWolves.fcStrap, 'X', mod_FCBetterThanWolves.fcSteel
+        AddAnvilRecipe(new ItemInstance(ItemListener.armourPlateSteel, 1), new Object[] {
+                "#X#", '#', ItemListener.strap, 'X', ItemListener.steel
         });
-        AddAnvilRecipe(new ItemInstance(mod_FCBetterThanWolves.fcPlateHelm, 1), new Object[] {
-                "###", "#X#", '#', mod_FCBetterThanWolves.fcSteel, 'X', mod_FCBetterThanWolves.fcArmorPlate
+        AddAnvilRecipe(new ItemInstance(ItemListener.helmetSteel, 1), new Object[] {
+                "###", "#X#", '#', ItemListener.steel, 'X', ItemListener.armourPlateSteel
         });
-        AddAnvilRecipe(new ItemInstance(mod_FCBetterThanWolves.fcPlateBreastPlate, 1), new Object[] {
-                "X X", "###", "###", '#', mod_FCBetterThanWolves.fcSteel, 'X', mod_FCBetterThanWolves.fcArmorPlate
+        AddAnvilRecipe(new ItemInstance(ItemListener.chestPlateSteel, 1), new Object[] {
+                "X X", "###", "###", '#', ItemListener.steel, 'X', ItemListener.armourPlateSteel
         });
-        AddAnvilRecipe(new ItemInstance(mod_FCBetterThanWolves.fcPlateLeggings, 1), new Object[] {
-                "###", "X X", "X X", '#', mod_FCBetterThanWolves.fcSteel, 'X', mod_FCBetterThanWolves.fcArmorPlate
+        AddAnvilRecipe(new ItemInstance(ItemListener.leggingsSteel, 1), new Object[] {
+                "###", "X X", "X X", '#', ItemListener.steel, 'X', ItemListener.armourPlateSteel
         });
-        AddAnvilRecipe(new ItemInstance(mod_FCBetterThanWolves.fcPlateBoots, 1), new Object[] {
-                "# #", "# #", '#', mod_FCBetterThanWolves.fcSteel, 'X', mod_FCBetterThanWolves.fcArmorPlate
+        AddAnvilRecipe(new ItemInstance(ItemListener.bootsSteel, 1), new Object[] {
+                "# #", "# #", '#', ItemListener.steel, 'X', ItemListener.armourPlateSteel
         });
-        AddShapelessAnvilRecipe(new ItemInstance(mod_FCBetterThanWolves.fcBroadheadArrowhead, 4), new Object[] {
-                mod_FCBetterThanWolves.fcSteel
+        AddShapelessAnvilRecipe(new ItemInstance(ItemListener.broadHeadArrowhead, 4), new Object[] {
+                ItemListener.steel
         });
         AddShapelessAnvilRecipe(new ItemInstance(BlockListener.omniSlab.id, 1, 0), new Object[] {
                 BlockBase.STONE
@@ -218,17 +218,17 @@ public class RecipeListener {
 
     private static void AddCauldronRecipes()
     {
-        AddCauldronRecipe(new ItemInstance(mod_FCBetterThanWolves.fcNethercoal, 2), new ItemInstance[] {
-                new ItemInstance(mod_FCBetterThanWolves.fcHellfireDust, 4), new ItemInstance(mod_FCBetterThanWolves.fcCoalDust, 1)
+        AddCauldronRecipe(new ItemInstance(ItemListener.netherCoal, 2), new ItemInstance[] {
+                new ItemInstance(ItemListener.hellfireDust, 4), new ItemInstance(ItemListener.coalDust, 1)
         });
-        AddCauldronRecipe(new ItemInstance(mod_FCBetterThanWolves.fcConcentratedHellfire, 1), new ItemInstance[] {
-                new ItemInstance(mod_FCBetterThanWolves.fcHellfireDust, 8)
+        AddCauldronRecipe(new ItemInstance(ItemListener.concentratedHellfire, 1), new ItemInstance[] {
+                new ItemInstance(ItemListener.hellfireDust, 8)
         });
-        AddCauldronRecipe(new ItemInstance(mod_FCBetterThanWolves.fcTannedLeather, 1), new ItemInstance[] {
-                new ItemInstance(mod_FCBetterThanWolves.fcDung, 1), new ItemInstance(mod_FCBetterThanWolves.fcScouredLeather, 1)
+        AddCauldronRecipe(new ItemInstance(ItemListener.tannedLeather, 1), new ItemInstance[] {
+                new ItemInstance(ItemListener.dung, 1), new ItemInstance(ItemListener.scouredLeather, 1)
         });
-        AddCauldronRecipe(new ItemInstance(mod_FCBetterThanWolves.fcDonut, 4), new ItemInstance[] {
-                new ItemInstance(mod_FCBetterThanWolves.fcFlour, 1)
+        AddCauldronRecipe(new ItemInstance(ItemListener.donut, 4), new ItemInstance[] {
+                new ItemInstance(ItemListener.flour, 1)
         });
         for(int i = 0; i < 15; i++)
         {
@@ -237,7 +237,7 @@ public class RecipeListener {
             });
         }
         AddCauldronRecipe(new ItemInstance(BlockBase.WOOL, 8, 12), new ItemInstance[] {
-                new ItemInstance(mod_FCBetterThanWolves.fcDung, 1), new ItemInstance(BlockBase.WOOL.id, 8, 0)
+                new ItemInstance(ItemListener.dung, 1), new ItemInstance(BlockBase.WOOL.id, 8, 0)
         });
         AddCauldronRecipe(new ItemInstance(BlockBase.TNT), new ItemInstance[] {
                 new ItemInstance(BlockBase.SAND, 4), new ItemInstance(ItemBase.gunpowder, 5)
@@ -248,71 +248,71 @@ public class RecipeListener {
         AddCauldronRecipe(new ItemInstance(ItemBase.dyePowder, 1, 2), new ItemInstance[] {
                 new ItemInstance(BlockBase.CACTUS)
         });
-        AddCauldronRecipe(new ItemInstance(mod_FCBetterThanWolves.soulFilter, 1), new ItemInstance[] {
-                new ItemInstance(mod_FCBetterThanWolves.fcHempCloth, 2), new ItemInstance(BlockBase.SOUL_SAND, 1)
+        AddCauldronRecipe(new ItemInstance(ItemListener.soulFilter, 1), new ItemInstance[] {
+                new ItemInstance(ItemListener.hempCloth, 2), new ItemInstance(BlockBase.SOUL_SAND, 1)
         });
-        AddStokedCauldronRecipe(new ItemInstance(mod_FCBetterThanWolves.fcGlue, 1), new ItemInstance[] {
+        AddStokedCauldronRecipe(new ItemInstance(ItemListener.glue, 1), new ItemInstance[] {
                 new ItemInstance(ItemBase.leather, 1)
         });
-        AddStokedCauldronRecipe(new ItemInstance(mod_FCBetterThanWolves.fcGlue, 1), new ItemInstance[] {
-                new ItemInstance(mod_FCBetterThanWolves.fcTannedLeather, 1)
+        AddStokedCauldronRecipe(new ItemInstance(ItemListener.glue, 1), new ItemInstance[] {
+                new ItemInstance(ItemListener.tannedLeather, 1)
         });
-        AddStokedCauldronRecipe(new ItemInstance(mod_FCBetterThanWolves.fcGlue, 1), new ItemInstance[] {
-                new ItemInstance(mod_FCBetterThanWolves.fcScouredLeather, 1)
+        AddStokedCauldronRecipe(new ItemInstance(ItemListener.glue, 1), new ItemInstance[] {
+                new ItemInstance(ItemListener.scouredLeather, 1)
         });
-        AddStokedCauldronRecipe(new ItemInstance(mod_FCBetterThanWolves.fcGlue, 1), new ItemInstance[] {
-                new ItemInstance(mod_FCBetterThanWolves.fcBelt, 2)
+        AddStokedCauldronRecipe(new ItemInstance(ItemListener.glue, 1), new ItemInstance[] {
+                new ItemInstance(ItemListener.belt, 2)
         });
-        AddStokedCauldronRecipe(new ItemInstance(mod_FCBetterThanWolves.fcGlue, 1), new ItemInstance[] {
+        AddStokedCauldronRecipe(new ItemInstance(ItemListener.glue, 1), new ItemInstance[] {
                 new ItemInstance(ItemBase.bone, 8)
         });
-        AddStokedCauldronRecipe(new ItemInstance(mod_FCBetterThanWolves.fcGlue, 1), new ItemInstance[] {
-                new ItemInstance(mod_FCBetterThanWolves.fcStrap, 8)
+        AddStokedCauldronRecipe(new ItemInstance(ItemListener.glue, 1), new ItemInstance[] {
+                new ItemInstance(ItemListener.strap, 8)
         });
-        AddStokedCauldronRecipe(new ItemInstance(mod_FCBetterThanWolves.fcGlue, 1), new ItemInstance[] {
+        AddStokedCauldronRecipe(new ItemInstance(ItemListener.glue, 1), new ItemInstance[] {
                 new ItemInstance(BlockBase.WOOL, 16)
         });
-        AddStokedCauldronRecipe(new ItemInstance(mod_FCBetterThanWolves.fcGlue, 1), new ItemInstance[] {
+        AddStokedCauldronRecipe(new ItemInstance(ItemListener.glue, 1), new ItemInstance[] {
                 new ItemInstance(ItemBase.feather, 16)
         });
-        AddStokedCauldronRecipe(new ItemInstance(mod_FCBetterThanWolves.fcGlue, 1), new ItemInstance[] {
+        AddStokedCauldronRecipe(new ItemInstance(ItemListener.glue, 1), new ItemInstance[] {
                 new ItemInstance(ItemBase.string, 64)
         });
-        AddStokedCauldronRecipe(new ItemInstance(mod_FCBetterThanWolves.fcGlue, 5), new ItemInstance[] {
+        AddStokedCauldronRecipe(new ItemInstance(ItemListener.glue, 5), new ItemInstance[] {
                 new ItemInstance(ItemBase.leatherHelmet, 1)
         });
-        AddStokedCauldronRecipe(new ItemInstance(mod_FCBetterThanWolves.fcGlue, 8), new ItemInstance[] {
+        AddStokedCauldronRecipe(new ItemInstance(ItemListener.glue, 8), new ItemInstance[] {
                 new ItemInstance(ItemBase.leatherChestplate, 1)
         });
-        AddStokedCauldronRecipe(new ItemInstance(mod_FCBetterThanWolves.fcGlue, 7), new ItemInstance[] {
+        AddStokedCauldronRecipe(new ItemInstance(ItemListener.glue, 7), new ItemInstance[] {
                 new ItemInstance(ItemBase.leatherLeggings, 1)
         });
-        AddStokedCauldronRecipe(new ItemInstance(mod_FCBetterThanWolves.fcGlue, 4), new ItemInstance[] {
+        AddStokedCauldronRecipe(new ItemInstance(ItemListener.glue, 4), new ItemInstance[] {
                 new ItemInstance(ItemBase.leatherBoots, 1)
         });
-        AddStokedCauldronRecipe(new ItemInstance(mod_FCBetterThanWolves.fcTallow, 1), new ItemInstance[] {
+        AddStokedCauldronRecipe(new ItemInstance(ItemListener.tallow, 1), new ItemInstance[] {
                 new ItemInstance(ItemBase.cookedPorkchop, 1)
         });
-        AddStokedCauldronRecipe(new ItemInstance(mod_FCBetterThanWolves.fcTallow, 1), new ItemInstance[] {
+        AddStokedCauldronRecipe(new ItemInstance(ItemListener.tallow, 1), new ItemInstance[] {
                 new ItemInstance(ItemBase.rawPorkchop, 1)
         });
-        AddStokedCauldronRecipe(new ItemInstance(mod_FCBetterThanWolves.fcTallow, 1), new ItemInstance[] {
-                new ItemInstance(mod_FCBetterThanWolves.fcWolfCooked, 1)
+        AddStokedCauldronRecipe(new ItemInstance(ItemListener.tallow, 1), new ItemInstance[] {
+                new ItemInstance(ItemListener.wolfCooked, 1)
         });
-        AddStokedCauldronRecipe(new ItemInstance(mod_FCBetterThanWolves.fcTallow, 1), new ItemInstance[] {
-                new ItemInstance(mod_FCBetterThanWolves.fcWolfRaw, 1)
+        AddStokedCauldronRecipe(new ItemInstance(ItemListener.tallow, 1), new ItemInstance[] {
+                new ItemInstance(ItemListener.wolfRaw, 1)
         });
     }
 
     private static void AddMillingRecipes()
     {
-        MillingRecipeRegistry.getInstance().addMillingRecipe(ItemBase.wheat.id, new ItemInstance(mod_FCBetterThanWolves.fcFlour, 1));
-        MillingRecipeRegistry.getInstance().addMillingRecipe(ItemBase.leather.id, new ItemInstance(mod_FCBetterThanWolves.fcScouredLeather, 1));
-        MillingRecipeRegistry.getInstance().addMillingRecipe(mod_FCBetterThanWolves.fcHemp.id, new ItemInstance(mod_FCBetterThanWolves.fcHempFibers, 4));
+        MillingRecipeRegistry.getInstance().addMillingRecipe(ItemBase.wheat.id, new ItemInstance(ItemListener.flour, 1));
+        MillingRecipeRegistry.getInstance().addMillingRecipe(ItemBase.leather.id, new ItemInstance(ItemListener.scouredLeather, 1));
+        MillingRecipeRegistry.getInstance().addMillingRecipe(ItemListener.hemp.id, new ItemInstance(ItemListener.hempFibers, 4));
         MillingRecipeRegistry.getInstance().addMillingRecipe(ItemBase.sugarCanes.id, new ItemInstance(ItemBase.sugar, 1));
-        MillingRecipeRegistry.getInstance().addMillingRecipe(BlockBase.NETHERRACK.id, new ItemInstance(mod_FCBetterThanWolves.fcGroundNetherrack, 1));
+        MillingRecipeRegistry.getInstance().addMillingRecipe(BlockBase.NETHERRACK.id, new ItemInstance(ItemListener.groundNetherrack, 1));
         MillingRecipeRegistry.getInstance().addMillingRecipe(ItemBase.bone.id, new ItemInstance(ItemBase.dyePowder, 3, 15));
-        MillingRecipeRegistry.getInstance().addMillingRecipe(ItemBase.coal.id, new ItemInstance(mod_FCBetterThanWolves.fcCoalDust, 1));
+        MillingRecipeRegistry.getInstance().addMillingRecipe(ItemBase.coal.id, new ItemInstance(ItemListener.coalDust, 1));
         MillingRecipeRegistry.getInstance().addMillingRecipe(BlockBase.ROSE.id, new ItemInstance(ItemBase.dyePowder, 2, 1));
         MillingRecipeRegistry.getInstance().addMillingRecipe(BlockBase.DANDELION.id, new ItemInstance(ItemBase.dyePowder, 2, 11));
     }
@@ -325,12 +325,12 @@ public class RecipeListener {
 
     private static void AddCrucibleRecipes()
     {
-        AddCrucibleRecipe(new ItemInstance(mod_FCBetterThanWolves.fcSteel, 4), new ItemInstance[] { new ItemInstance(ItemBase.ironIngot, 3), new ItemInstance(mod_FCBetterThanWolves.fcConcentratedHellfire), new ItemInstance(mod_FCBetterThanWolves.fcCoalDust) });
+        AddCrucibleRecipe(new ItemInstance(ItemListener.steel, 4), new ItemInstance[] { new ItemInstance(ItemBase.ironIngot, 3), new ItemInstance(ItemListener.concentratedHellfire), new ItemInstance(ItemListener.coalDust) });
     }
 
     private static void AddHopperRecipes()
     {
-        HopperHauntingRecipeRegistry.getInstance().addHopperHauntingRecipe(mod_FCBetterThanWolves.fcGroundNetherrack.id, new ItemInstance(mod_FCBetterThanWolves.fcHellfireDust, 1));
+        HopperHauntingRecipeRegistry.getInstance().addHopperHauntingRecipe(ItemListener.groundNetherrack.id, new ItemInstance(ItemListener.hellfireDust, 1));
     }
 
     private static void AddSawingRecipes()
@@ -339,7 +339,7 @@ public class RecipeListener {
         SawingRecipeRegistry.getInstance().addSawingRecipe(BlockBase.WOOD.id, new ItemInstance(BlockListener.omniSlab, 2, 1));
         SawingRecipeRegistry.getInstance().addSawingRecipe(BlockListener.omniSlab.id, new ItemInstance(BlockListener.moulding, 2));
         SawingRecipeRegistry.getInstance().addSawingRecipe(BlockListener.moulding.id, new ItemInstance(BlockListener.corner, 2));
-        SawingRecipeRegistry.getInstance().addSawingRecipe(BlockListener.corner.id, new ItemInstance(mod_FCBetterThanWolves.fcGear, 2));
+        SawingRecipeRegistry.getInstance().addSawingRecipe(BlockListener.corner.id, new ItemInstance(ItemListener.gear, 2));
     }
 
     private static void AddDebugRecipes()

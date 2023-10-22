@@ -2,7 +2,7 @@ package net.kozibrodka.wolves.entity;
 
 import net.kozibrodka.wolves.blocks.Axle;
 import net.kozibrodka.wolves.events.BlockListener;
-import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
+import net.kozibrodka.wolves.events.ItemListener;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.Fluid;
 import net.minecraft.entity.EntityBase;
@@ -144,7 +144,7 @@ public class WaterWheelEntity extends EntityBase
     {
         if(!removed)
         {
-            dropItem(mod_FCBetterThanWolves.fcWaterWheelItem.id, 1, 0.0F);
+            dropItem(ItemListener.waterWheelItem.id, 1, 0.0F);
             remove();
         }
     }

@@ -3,6 +3,7 @@ package net.kozibrodka.wolves.tabs;
 import net.glasslauncher.hmifabric.Utils;
 import net.glasslauncher.hmifabric.tabs.TabWithTexture;
 import net.kozibrodka.wolves.events.BlockListener;
+import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.gui.HopperGUI;
 import net.kozibrodka.wolves.recipe.HopperHauntingRecipeRegistry;
@@ -62,7 +63,7 @@ public class HopperHauntingRecipeTab extends TabWithTexture {
                 ItemInstance[] recipe = recipes.get(k);
                 items[j][0] = recipe[0];
                 items[j][1] = recipe[1];
-                items[j][2] = new ItemInstance(mod_FCBetterThanWolves.soulFilter);
+                items[j][2] = new ItemInstance(ItemListener.soulFilter);
             } catch (Throwable throwable) {
                 throwable.printStackTrace();
             }
@@ -90,7 +91,7 @@ public class HopperHauntingRecipeTab extends TabWithTexture {
         recipesReady.forEach(recipe -> {
             ItemInstance input = recipe[0];
             ItemInstance output = recipe[1];
-            if (filter == null || (!getUses && compare(filter, output)) || (getUses && compare(filter, input)) || filter.itemId == mod_FCBetterThanWolves.soulFilter.id) {
+            if (filter == null || (!getUses && compare(filter, output)) || (getUses && compare(filter, input)) || filter.itemId == ItemListener.soulFilter.id) {
                 recipes.add(recipe);
             }
         });

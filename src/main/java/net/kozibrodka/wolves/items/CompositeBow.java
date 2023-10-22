@@ -2,11 +2,7 @@
 package net.kozibrodka.wolves.items;
 
 import net.kozibrodka.wolves.entity.BroadheadArrowEntity;
-import net.kozibrodka.wolves.entity.FCEntityTEST;
-import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
-import net.minecraft.block.Wool;
-import net.minecraft.entity.Living;
-import net.minecraft.entity.animal.Sheep;
+import net.kozibrodka.wolves.events.ItemListener;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.entity.projectile.Arrow;
 import net.minecraft.item.ItemBase;
@@ -26,7 +22,7 @@ public class CompositeBow extends TemplateItemBase
 
     public ItemInstance use(ItemInstance ItemInstance, Level world, PlayerBase entityplayer)
     {
-        if(entityplayer.inventory.decreaseAmountOfItem(mod_FCBetterThanWolves.fcBroadheadArrow.id))
+        if(entityplayer.inventory.decreaseAmountOfItem(ItemListener.broadHeadArrow.id))
         {
             world.playSound(entityplayer, "random.bow", 1.0F, 1.0F / (rand.nextFloat() * 0.4F + 0.8F));
             if(!world.isServerSide)

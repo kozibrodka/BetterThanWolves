@@ -2,6 +2,7 @@
 package net.kozibrodka.wolves.blocks;
 
 import net.kozibrodka.wolves.events.BlockListener;
+import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.mixin.LevelAccessor;
@@ -266,7 +267,7 @@ public class GearBox extends TemplateBlockBase
 
         for(int iTemp = 0; iTemp < 3; iTemp++)
         {
-            UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcGear.id, 0);
+            UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, ItemListener.gear.id, 0);
         }
 
         UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, ItemBase.redstoneDust.id, 0);

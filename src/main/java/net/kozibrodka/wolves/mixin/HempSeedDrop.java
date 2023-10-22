@@ -1,6 +1,6 @@
 package net.kozibrodka.wolves.mixin;
 
-import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
+import net.kozibrodka.wolves.events.ItemListener;
 import net.minecraft.block.TallGrass;
 import net.minecraft.entity.Item;
 import net.minecraft.item.ItemBase;
@@ -9,8 +9,6 @@ import net.minecraft.level.Level;
 import net.modificationstation.stationapi.api.block.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
-
-import java.awt.event.ItemListener;
 
 @Mixin(TallGrass.class)
 @Unique
@@ -28,7 +26,7 @@ public class HempSeedDrop {
         f2 = level.rand.nextFloat() * f1 + (1.0F - f1) * 0.5F;
         f3 = level.rand.nextFloat() * f1 + (1.0F - f1) * 0.5F;
         f4 = level.rand.nextFloat() * f1 + (1.0F - f1) * 0.5F;
-        entityItem = new Item(level, (float)x + f2, (float)y + f3, (float)z + f4, new ItemInstance(mod_FCBetterThanWolves.fcHempSeeds));
+        entityItem = new Item(level, (float)x + f2, (float)y + f3, (float)z + f4, new ItemInstance(ItemListener.hempSeeds));
         entityItem.pickupDelay = 10;
         level.spawnEntity(entityItem);
     }

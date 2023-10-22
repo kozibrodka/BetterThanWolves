@@ -39,60 +39,6 @@ public class mod_FCBetterThanWolves {
     @Entrypoint.ModID
     public static final ModID MOD_ID = Null.get();
 
-
-    @EventListener
-    public void registerItems(ItemRegistryEvent event) {
-        ToolMaterialFactory.create("STEEL",3,2250,12F,8);
-
-        fcBucketCement = (TemplateBucket) new BucketCement(Identifier.of(MOD_ID, "fcBucketCement"), BlockListener.cement.id).setTranslationKey(MOD_ID, "fcBucketCement");
-        fcWolfRaw = (TemplateFoodBase) new TemplateFoodBase(Identifier.of(MOD_ID, "fcWolfRaw"),3,false).setTranslationKey(MOD_ID, "fcWolfRaw");
-        fcWolfCooked = (TemplateFoodBase) new TemplateFoodBase(Identifier.of(MOD_ID, "fcWolfCooked"),8,false).setTranslationKey(MOD_ID, "fcWolfCooked");
-        fcNethercoal = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcNethercoal")).setTranslationKey(MOD_ID, "fcNethercoal");
-        fcHempSeeds = (TemplateSeeds) new TemplateSeeds(Identifier.of(MOD_ID, "fcHempSeeds"), BlockListener.hempCrop.id).setTranslationKey(MOD_ID, "fcHempSeeds");
-        fcHemp = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcHemp")).setTranslationKey(MOD_ID, "fcHemp");
-        fcGear = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcGear")).setTranslationKey(MOD_ID, "fcGear");
-        fcFlour = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcFlour")).setTranslationKey(MOD_ID, "fcFlour");
-        fcHempFibers = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcHempFibers")).setTranslationKey(MOD_ID, "fcHempFibers");
-        fcScouredLeather = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcScouredLeather")).setTranslationKey(MOD_ID, "fcScouredLeather");
-        fcDonut = (TemplateFoodBase) new TemplateFoodBase(Identifier.of(MOD_ID, "fcDonut"),1,false).setTranslationKey(MOD_ID, "fcDonut").setMaxStackSize(12);
-        fcRopeItem = (TemplateItemBase) new Rope(Identifier.of(MOD_ID, "fcRopeItem")).setTranslationKey(MOD_ID, "fcRopeItem");
-        fcRollersItem = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcRollersItem")).setTranslationKey(MOD_ID, "fcRollersItem");
-        fcDung = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcDung")).setTranslationKey(MOD_ID, "fcDung");
-        fcWaterWheelItem = (TemplateItemBase) new WaterWheel(Identifier.of(MOD_ID, "fcWaterWheelItem")).setTranslationKey(MOD_ID, "fcWaterWheelItem");
-        fcWindMillBladeItem = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcWindMillBladeItem")).setTranslationKey(MOD_ID, "fcWindMillBladeItem").setMaxStackSize(1);
-        fcWindMillItem = (TemplateItemBase) new WindMill(Identifier.of(MOD_ID, "fcWindMillItem")).setTranslationKey(MOD_ID, "fcWindMillItem");
-        fcHempCloth = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcHempCloth")).setTranslationKey(MOD_ID, "fcHempCloth");
-        fcGrate = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcGrate")).setTranslationKey(MOD_ID, "fcGrate");
-        fcWicker = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcWicker")).setTranslationKey(MOD_ID, "fcWicker");
-        fcTannedLeather = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcTannedLeather")).setTranslationKey(MOD_ID, "fcTannedLeather");
-        fcStrap = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcStrap")).setTranslationKey(MOD_ID, "fcStrap");
-        fcBelt = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcBelt")).setTranslationKey(MOD_ID, "fcBelt");
-        fcFoulFood = (TemplateItemBase) new FoulFood(Identifier.of(MOD_ID, "fcFoulFood")).setTranslationKey(MOD_ID, "fcFoulFood");
-        fcWoodBlade = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcWoodBlade")).setTranslationKey(MOD_ID, "fcWoodBlade");
-        fcGlue = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcGlue")).setTranslationKey(MOD_ID, "fcGlue");
-        fcTallow = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcTallow")).setTranslationKey(MOD_ID, "fcTallow");
-        fcHaft = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcHaft")).setTranslationKey(MOD_ID, "fcHaft");
-        fcSteel = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcSteel")).setTranslationKey(MOD_ID, "fcSteel");
-        fcRefinedPickAxe = (TemplatePickaxe) new TemplatePickaxe(Identifier.of(MOD_ID, "fcRefinedPickAxe"), ToolMaterial.valueOf("STEEL")).setTranslationKey(MOD_ID, "fcRefinedPickAxe");
-        fcRefinedShovel = (TemplateShovel) new TemplateShovel(Identifier.of(MOD_ID, "fcRefinedShovel"), ToolMaterial.valueOf("STEEL")).setTranslationKey(MOD_ID, "fcRefinedShovel");
-        fcRefinedHoe = (TemplateHoe) new TemplateHoe(Identifier.of(MOD_ID, "fcRefinedHoe"), ToolMaterial.valueOf("STEEL")).setTranslationKey(MOD_ID, "fcRefinedHoe");
-        fcRefinedAxe = (TemplateHatchet) new TemplateHatchet(Identifier.of(MOD_ID, "fcRefinedAxe"), ToolMaterial.valueOf("STEEL")).setTranslationKey(MOD_ID, "fcRefinedAxe");
-        fcRefinedSword = (TemplateSword) new TemplateSword(Identifier.of(MOD_ID, "fcRefinedSword"), ToolMaterial.valueOf("STEEL")).setTranslationKey(MOD_ID, "fcRefinedSword");
-        fcGroundNetherrack = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcGroundNetherrack")).setTranslationKey(MOD_ID, "fcGroundNetherrack");
-        fcHellfireDust = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcHellfireDust")).setTranslationKey(MOD_ID, "fcHellfireDust");
-        fcConcentratedHellfire = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcConcentratedHellfire")).setTranslationKey(MOD_ID, "fcConcentratedHellfire");
-        fcArmorPlate = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcArmorPlate")).setTranslationKey(MOD_ID, "fcArmorPlate");
-        fcPlateHelm = (TemplateArmour) new RefinedArmour(Identifier.of(MOD_ID, "fcPlateHelm"), 0).setTranslationKey(MOD_ID, "fcPlateHelm");
-        fcPlateBreastPlate = (TemplateArmour) new RefinedArmour(Identifier.of(MOD_ID, "fcPlateBreastPlate"), 1).setTranslationKey(MOD_ID, "fcPlateBreastPlate");
-        fcPlateLeggings = (TemplateArmour) new RefinedArmour(Identifier.of(MOD_ID, "fcPlateLeggings"), 2).setTranslationKey(MOD_ID, "fcPlateLeggings");
-        fcPlateBoots = (TemplateArmour) new RefinedArmour(Identifier.of(MOD_ID, "fcPlateBoots"), 3).setTranslationKey(MOD_ID, "fcPlateBoots");
-        fcCompositeBow = (TemplateItemBase) new CompositeBow(Identifier.of(MOD_ID, "fcCompositeBow")).setTranslationKey(MOD_ID, "fcCompositeBow");
-        fcBroadheadArrowhead = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcBroadheadArrowhead")).setTranslationKey(MOD_ID, "fcBroadheadArrowhead");
-        fcBroadheadArrow = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcBroadheadArrow")).setTranslationKey(MOD_ID, "fcBroadheadArrow");
-        fcCoalDust = (TemplateItemBase) new TemplateItemBase(Identifier.of(MOD_ID, "fcCoalDust")).setTranslationKey(MOD_ID, "fcCoalDust");
-        soulFilter = new SoulFilter(Identifier.of(MOD_ID, "soul_filter"));
-    }
-
     @EventListener
     private static void registerEntities(EntityRegister event) {
         event.register(WaterWheelEntity.class, String.valueOf(Identifier.of(MOD_ID, "WaterWheel")));
@@ -165,52 +111,4 @@ public class mod_FCBetterThanWolves {
 //    public static TemplateBlockBase fcPanel_wood;
 //    public static TemplateBlockBase fcMoulding_wood;
 //    public static TemplateBlockBase fcCorner_wood;
-
-    public static TemplateBucket fcBucketCement;
-    public static TemplateFoodBase fcWolfRaw;
-    public static TemplateFoodBase fcWolfCooked;
-    public static TemplateItemBase fcNethercoal;
-    public static TemplateSeeds fcHempSeeds;
-    public static TemplateItemBase fcHemp;
-    public static TemplateItemBase fcGear;
-    public static TemplateItemBase fcFlour;
-    public static TemplateItemBase fcHempFibers;
-    public static TemplateItemBase fcScouredLeather;
-    public static TemplateFoodBase fcDonut;
-    public static TemplateItemBase fcRopeItem;
-    public static TemplateItemBase fcRollersItem;
-    public static TemplateItemBase fcDung;
-    public static TemplateItemBase fcWaterWheelItem;
-    public static TemplateItemBase fcWindMillBladeItem;
-    public static TemplateItemBase fcWindMillItem;
-    public static TemplateItemBase fcHempCloth;
-    public static TemplateItemBase fcGrate;
-    public static TemplateItemBase fcWicker;
-    public static TemplateItemBase fcTannedLeather;
-    public static TemplateItemBase fcStrap;
-    public static TemplateItemBase fcBelt;
-    public static TemplateItemBase fcFoulFood;
-    public static TemplateItemBase fcWoodBlade;
-    public static TemplateItemBase fcGlue;
-    public static TemplateItemBase fcTallow;
-    public static TemplateItemBase fcHaft;
-    public static TemplateItemBase fcSteel;
-    public static TemplatePickaxe fcRefinedPickAxe;
-    public static TemplateShovel fcRefinedShovel;
-    public static TemplateHoe fcRefinedHoe;
-    public static TemplateHatchet fcRefinedAxe;
-    public static TemplateSword fcRefinedSword;
-    public static TemplateItemBase fcGroundNetherrack;
-    public static TemplateItemBase fcHellfireDust;
-    public static TemplateItemBase fcConcentratedHellfire;
-    public static TemplateItemBase fcArmorPlate;
-    public static TemplateArmour fcPlateHelm;
-    public static TemplateArmour fcPlateBreastPlate;
-    public static TemplateArmour fcPlateLeggings;
-    public static TemplateArmour fcPlateBoots;
-    public static TemplateItemBase fcCompositeBow;
-    public static TemplateItemBase fcBroadheadArrowhead;
-    public static TemplateItemBase fcBroadheadArrow;
-    public static TemplateItemBase fcCoalDust;
-    public static TemplateItemBase soulFilter;
 }

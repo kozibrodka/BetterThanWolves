@@ -1,6 +1,6 @@
 package net.kozibrodka.wolves.mixin;
 
-import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
+import net.kozibrodka.wolves.events.ItemListener;
 import net.minecraft.entity.Item;
 import net.minecraft.entity.animal.AnimalBase;
 import net.minecraft.entity.animal.Wolf;
@@ -12,8 +12,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.awt.event.ItemListener;
 
 @Mixin(Wolf.class)
 public abstract class WolfDump extends AnimalBase {
@@ -38,7 +36,7 @@ public abstract class WolfDump extends AnimalBase {
             float xOffset = -(-MathHelper.sin(this.yaw / 180.0F * 3.141593F) * MathHelper.cos(this.pitch / 180.0F * 3.141593F));
             float zOffset = -(MathHelper.cos(this.yaw / 180.0F * 3.141593F) * MathHelper.cos(this.pitch / 180.0F * 3.141593F));
             float yOffset = 0.25F;
-            Item entityitem = new Item(this.level, this.x + (double)xOffset, this.y + (double)yOffset, this.z + (double)zOffset, new ItemInstance(mod_FCBetterThanWolves.fcDung));
+            Item entityitem = new Item(this.level, this.x + (double)xOffset, this.y + (double)yOffset, this.z + (double)zOffset, new ItemInstance(ItemListener.dung));
             float velocityFactor = 0.05F;
             entityitem.velocityX = (double)(-(-MathHelper.sin(this.yaw / 180.0F * 3.141593F) * MathHelper.cos(this.pitch / 180.0F * 3.141593F)) * 10.0F * velocityFactor);
             entityitem.velocityY = (double)(-(MathHelper.cos(this.yaw / 180.0F * 3.141593F) * MathHelper.cos(this.pitch / 180.0F * 3.141593F)) * 10.0F * velocityFactor);

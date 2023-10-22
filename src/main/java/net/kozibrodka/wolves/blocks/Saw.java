@@ -1,8 +1,8 @@
 package net.kozibrodka.wolves.blocks;
 
 import net.kozibrodka.wolves.events.BlockListener;
+import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.events.TextureListener;
-import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.mixin.LevelAccessor;
 import net.kozibrodka.wolves.recipe.SawingRecipeRegistry;
 import net.kozibrodka.wolves.utils.*;
@@ -466,7 +466,7 @@ public class Saw extends TemplateBlockBase
     {
         for(int iTemp = 0; iTemp < 2; iTemp++)
         {
-            UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcGear.id, 0);
+            UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, ItemListener.gear.id, 0);
         }
 
         for(int iTemp = 0; iTemp < 2; iTemp++)
@@ -481,7 +481,7 @@ public class Saw extends TemplateBlockBase
 
         for(int iTemp = 0; iTemp < 1; iTemp++)
         {
-            UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcBelt.id, 0);
+            UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, ItemListener.belt.id, 0);
         }
 
          world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.explode", 0.2F, 1.25F);

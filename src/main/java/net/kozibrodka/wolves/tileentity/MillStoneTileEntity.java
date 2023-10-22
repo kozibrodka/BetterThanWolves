@@ -8,7 +8,7 @@ package net.kozibrodka.wolves.tileentity;
 import net.kozibrodka.wolves.blocks.CompanionCube;
 import net.kozibrodka.wolves.blocks.MillStone;
 import net.kozibrodka.wolves.events.BlockListener;
-import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
+import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.recipe.MillingRecipeRegistry;
 import net.kozibrodka.wolves.utils.BlockPosition;
 import net.kozibrodka.wolves.utils.InventoryHandler;
@@ -205,7 +205,7 @@ public class MillStoneTileEntity extends TileEntityBase
         }
         else if(iUnmilledItemID == BlockListener.companionCube.id) // Special recipe (companion cube)
         {
-            EjectStack(new ItemInstance(mod_FCBetterThanWolves.fcWolfRaw.id, 1, 0));
+            EjectStack(new ItemInstance(ItemListener.wolfRaw.id, 1, 0));
             CompanionCube.SpawnHearts(level, x, y, z);
             if(millStoneContents[iUnmilledItemIndex].getDamage() == 0)
             {

@@ -1,8 +1,8 @@
 package net.kozibrodka.wolves.blocks;
 
 import net.kozibrodka.wolves.events.BlockListener;
+import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.events.TextureListener;
-import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.utils.BlockPosition;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.material.Material;
@@ -307,7 +307,7 @@ public class Axle extends TemplateBlockBase
         {
             for(int iTemp = 0; iTemp < 5; iTemp++)
             {
-                UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcHempFibers.id, 0);
+                UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, ItemListener.hempFibers.id, 0);
             }
 
             for(int iTemp = 0; iTemp < 2; iTemp++)

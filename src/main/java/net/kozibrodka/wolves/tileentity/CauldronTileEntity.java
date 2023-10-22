@@ -15,7 +15,7 @@ package net.kozibrodka.wolves.tileentity;
 
 import net.kozibrodka.wolves.blocks.Cauldron;
 import net.kozibrodka.wolves.events.BlockListener;
-import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
+import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.recipe.CauldronCraftingManager;
 import net.kozibrodka.wolves.recipe.CauldronStokedCraftingManager;
 import net.kozibrodka.wolves.utils.InventoryHandler;
@@ -212,7 +212,7 @@ public class CauldronTileEntity extends TileEntityBase
             {
                 m_bContainsValidIngrediantsForState = true;
             } else
-            if(InventoryHandler.GetFirstOccupiedStackOfItem(this, mod_FCBetterThanWolves.fcDung.id) >= 0 && ContainsFood())
+            if(InventoryHandler.GetFirstOccupiedStackOfItem(this, ItemListener.dung.id) >= 0 && ContainsFood())
             {
                 m_bContainsValidIngrediantsForState = true;
             }
@@ -227,7 +227,7 @@ public class CauldronTileEntity extends TileEntityBase
             {
                 m_bContainsValidIngrediantsForState = true;
             } else
-            if(InventoryHandler.GetFirstOccupiedStackOfItem(this, mod_FCBetterThanWolves.fcHellfireDust.id) >= 0)
+            if(InventoryHandler.GetFirstOccupiedStackOfItem(this, ItemListener.hellfireDust.id) >= 0)
             {
                 m_bContainsValidIngrediantsForState = true;
             } else
@@ -273,7 +273,7 @@ public class CauldronTileEntity extends TileEntityBase
             m_iCauldronCookCounter += m_iFireFactor;
             if(m_iCauldronCookCounter >= 1950)
             {
-                int iDungIndex = InventoryHandler.GetFirstOccupiedStackOfItem(this, mod_FCBetterThanWolves.fcDung.id);
+                int iDungIndex = InventoryHandler.GetFirstOccupiedStackOfItem(this, ItemListener.dung.id);
                 if(iDungIndex >= 0 && DestroyAllFoodInInventory())
                 {
                     m_iCauldronCookCounter = 0;
@@ -309,7 +309,7 @@ public class CauldronTileEntity extends TileEntityBase
             m_iCauldronCookCounter += m_iFireFactor;
             if(m_iCauldronCookCounter >= 1950)
             {
-                if(InventoryHandler.GetFirstOccupiedStackOfItem(this, mod_FCBetterThanWolves.fcHellfireDust.id) >= 0 || InventoryHandler.GetFirstOccupiedStackOfItem(this, BlockBase.TNT.id) >= 0 || InventoryHandler.GetFirstOccupiedStackOfItem(this, ItemBase.gunpowder.id) >= 0)
+                if(InventoryHandler.GetFirstOccupiedStackOfItem(this, ItemListener.hellfireDust.id) >= 0 || InventoryHandler.GetFirstOccupiedStackOfItem(this, BlockBase.TNT.id) >= 0 || InventoryHandler.GetFirstOccupiedStackOfItem(this, ItemBase.gunpowder.id) >= 0)
                 {
                     BlowUpCauldron();
                 } else
@@ -408,7 +408,7 @@ public class CauldronTileEntity extends TileEntityBase
             {
                 int stackSize = cauldronContents[tempIndex].count;
                 cauldronContents[tempIndex] = null;
-                ItemInstance spoiledStack = new ItemInstance(mod_FCBetterThanWolves.fcFoulFood, stackSize);
+                ItemInstance spoiledStack = new ItemInstance(ItemListener.foulFood, stackSize);
                 setInventoryItem(tempIndex, spoiledStack);
                 bFoodDestroyed = true;
             }
@@ -419,7 +419,7 @@ public class CauldronTileEntity extends TileEntityBase
 
     private void BlowUpCauldron()
     {
-        int iHellfireCount = InventoryHandler.CountItemsInInventory(this, mod_FCBetterThanWolves.fcHellfireDust.id, -1);
+        int iHellfireCount = InventoryHandler.CountItemsInInventory(this, ItemListener.hellfireDust.id, -1);
         float fExplosionSize = ((float)iHellfireCount * 10F) / 64F;
         fExplosionSize += ((float) InventoryHandler.CountItemsInInventory(this, ItemBase.gunpowder.id, -1) * 10F) / 64F;
         int iTNTCount = InventoryHandler.CountItemsInInventory(this, BlockBase.TNT.id, -1);

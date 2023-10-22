@@ -3,7 +3,7 @@ package net.kozibrodka.wolves.entity;
 
 import net.kozibrodka.wolves.blocks.Axle;
 import net.kozibrodka.wolves.events.BlockListener;
-import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
+import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.Wool;
 import net.minecraft.entity.EntityBase;
@@ -163,7 +163,7 @@ public class WindMillEntity extends EntityBase
     {
         if(!removed)
         {
-            dropItem(mod_FCBetterThanWolves.fcWindMillItem.id, 1, 0.0F);
+            dropItem(ItemListener.windMillItem.id, 1, 0.0F);
             remove();
         }
     }
@@ -262,7 +262,7 @@ public class WindMillEntity extends EntityBase
     {
         //TODO ItemBase to Items and possibly there will be now get.damage()
         ItemInstance ItemInstance = entityplayer.inventory.getHeldItem();
-        if(ItemInstance != null && (ItemInstance.itemId == ItemBase.dyePowder.id || ItemInstance.itemId == mod_FCBetterThanWolves.fcDung.id))
+        if(ItemInstance != null && (ItemInstance.itemId == ItemBase.dyePowder.id || ItemInstance.itemId == ItemListener.dung.id))
         {
             int iColor = 0;
             if(ItemInstance.itemId == ItemBase.dyePowder.id)

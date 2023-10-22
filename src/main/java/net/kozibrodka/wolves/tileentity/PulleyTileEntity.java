@@ -8,7 +8,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.kozibrodka.wolves.blocks.Anchor;
 import net.kozibrodka.wolves.blocks.Pulley;
 import net.kozibrodka.wolves.events.BlockListener;
-import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
+import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.utils.InventoryHandler;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.kozibrodka.wolves.utils.ReplaceableBlockChecker;
@@ -151,7 +151,7 @@ public class PulleyTileEntity extends TileEntityBase
 
     public boolean IsLowering()
     {
-        return !IsRedstonePowered() && !IsMechanicallyPowered() && InventoryHandler.GetFirstOccupiedStackOfItem(this, mod_FCBetterThanWolves.fcRopeItem.id) >= 0;
+        return !IsRedstonePowered() && !IsMechanicallyPowered() && InventoryHandler.GetFirstOccupiedStackOfItem(this, ItemListener.ropeItem.id) >= 0;
     }
 
     public void NotifyPulleyEntityOfBlockStateChange()
@@ -208,7 +208,7 @@ public class PulleyTileEntity extends TileEntityBase
 
     public boolean AttemptToDispenseRope()
     {
-        int iRopeSlot = InventoryHandler.GetFirstOccupiedStackOfItem(this, mod_FCBetterThanWolves.fcRopeItem.id);
+        int iRopeSlot = InventoryHandler.GetFirstOccupiedStackOfItem(this, ItemListener.ropeItem.id);
         iUpdateRopeStateCounter = 20;
         if(iRopeSlot >= 0)
         {
@@ -246,7 +246,7 @@ public class PulleyTileEntity extends TileEntityBase
 
     public void AddRopeToInventory()
     {
-        ItemInstance ropeStack = new ItemInstance(mod_FCBetterThanWolves.fcRopeItem);
+        ItemInstance ropeStack = new ItemInstance(ItemListener.ropeItem);
         iUpdateRopeStateCounter = 20;
         if(InventoryHandler.AddItemInstanceToInventory(this, ropeStack))
         {
@@ -259,12 +259,12 @@ public class PulleyTileEntity extends TileEntityBase
 
     public int GetContainedRopeCount()
     {
-        return InventoryHandler.CountItemsInInventory(this, mod_FCBetterThanWolves.fcRopeItem.id, -1);
+        return InventoryHandler.CountItemsInInventory(this, ItemListener.ropeItem.id, -1);
     }
 
     public void RemoveRopeFromInventory()
     {
-        int iRopeSlot = InventoryHandler.GetFirstOccupiedStackOfItem(this, mod_FCBetterThanWolves.fcRopeItem.id);
+        int iRopeSlot = InventoryHandler.GetFirstOccupiedStackOfItem(this, ItemListener.ropeItem.id);
         if(iRopeSlot >= 0)
         {
             InventoryHandler.DecrStackSize(this, iRopeSlot, 1);

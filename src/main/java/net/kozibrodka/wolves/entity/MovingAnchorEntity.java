@@ -3,7 +3,7 @@ package net.kozibrodka.wolves.entity;
 import net.kozibrodka.wolves.blocks.Anchor;
 import net.kozibrodka.wolves.blocks.Rope;
 import net.kozibrodka.wolves.events.BlockListener;
-import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
+import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.mixin.EntityBaseAccessor;
 import net.kozibrodka.wolves.tileentity.PulleyTileEntity;
 import net.kozibrodka.wolves.utils.BlockPosition;
@@ -365,7 +365,7 @@ public class MovingAnchorEntity extends EntityBase
             {
                 if(!ReturnRopeToPulley())
                 {
-                    UnsortedUtils.EjectSingleItemWithRandomOffset(level, i, j, k, mod_FCBetterThanWolves.fcRopeItem.id, 0);
+                    UnsortedUtils.EjectSingleItemWithRandomOffset(level, i, j, k, ItemListener.ropeItem.id, 0);
                 }
             } else
             if(!BlockBase.BY_ID[iTargetid].material.isSolid())

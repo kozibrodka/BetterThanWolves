@@ -13,7 +13,7 @@ package net.kozibrodka.wolves.tileentity;
 //            Item, FCUtilsMisc, ItemMap, ItemShears
 
 import net.kozibrodka.wolves.events.BlockListener;
-import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
+import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.recipe.CrucibleCraftingManager;
 import net.kozibrodka.wolves.utils.InventoryHandler;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
@@ -295,7 +295,7 @@ public class CrucibleTileEntity extends TileEntityBase
                 }
                 continue;
             }
-            if(tempItem.id == mod_FCBetterThanWolves.fcBroadheadArrowhead.id)
+            if(tempItem.id == ItemListener.broadHeadArrowhead.id)
             {
                 iBroadheadArrowheadCount += crucibleContents[tempIndex].count;
                 if(iBroadheadArrowheadCount >= 4)
@@ -304,7 +304,7 @@ public class CrucibleTileEntity extends TileEntityBase
                 }
                 continue;
             }
-            if(tempItem.id != mod_FCBetterThanWolves.fcBroadheadArrow.id)
+            if(tempItem.id != ItemListener.broadHeadArrow.id)
             {
                 continue;
             }
@@ -355,22 +355,22 @@ public class CrucibleTileEntity extends TileEntityBase
                 }
                 return;
             }
-            if(tempItem.id == mod_FCBetterThanWolves.fcBroadheadArrowhead.id)
+            if(tempItem.id == ItemListener.broadHeadArrowhead.id)
             {
                 iBroadheadArrowheadCount += crucibleContents[tempIndex].count;
                 if(iBroadheadArrowheadCount < 4)
                 {
                     continue;
                 }
-                InventoryHandler.ConsumeItemsInInventory(this, mod_FCBetterThanWolves.fcBroadheadArrowhead.id, -1, 4);
-                cookedStack = new ItemInstance(mod_FCBetterThanWolves.fcSteel, 1);
+                InventoryHandler.ConsumeItemsInInventory(this, ItemListener.broadHeadArrowhead.id, -1, 4);
+                cookedStack = new ItemInstance(ItemListener.steel, 1);
                 if(!InventoryHandler.AddItemInstanceToInventory(this, cookedStack))
                 {
                     UnsortedUtils.EjectStackWithRandomOffset(level, x, y + 1, z, cookedStack);
                 }
                 return;
             }
-            if(tempItem.id != mod_FCBetterThanWolves.fcBroadheadArrow.id)
+            if(tempItem.id != ItemListener.broadHeadArrow.id)
             {
                 continue;
             }
@@ -379,8 +379,8 @@ public class CrucibleTileEntity extends TileEntityBase
             {
                 continue;
             }
-            InventoryHandler.ConsumeItemsInInventory(this, mod_FCBetterThanWolves.fcBroadheadArrow.id, -1, 16);
-            cookedStack = new ItemInstance(mod_FCBetterThanWolves.fcSteel, 1);
+            InventoryHandler.ConsumeItemsInInventory(this, ItemListener.broadHeadArrow.id, -1, 16);
+            cookedStack = new ItemInstance(ItemListener.steel, 1);
             if(!InventoryHandler.AddItemInstanceToInventory(this, cookedStack))
             {
                 UnsortedUtils.EjectStackWithRandomOffset(level, x, y + 1, z, cookedStack);
@@ -397,7 +397,7 @@ public class CrucibleTileEntity extends TileEntityBase
     {
         ItemInstance tempStack = null;
         int iShiftedIndex = item.id;
-        if(iShiftedIndex == ItemBase.bucket.id || iShiftedIndex == ItemBase.lavaBucket.id || iShiftedIndex == ItemBase.waterBucket.id || iShiftedIndex == ItemBase.milk.id || iShiftedIndex == mod_FCBetterThanWolves.fcBucketCement.id)
+        if(iShiftedIndex == ItemBase.bucket.id || iShiftedIndex == ItemBase.lavaBucket.id || iShiftedIndex == ItemBase.waterBucket.id || iShiftedIndex == ItemBase.milk.id || iShiftedIndex == ItemListener.bucketCement.id)
         {
             tempStack = new ItemInstance(ItemBase.ironIngot, 3);
         } else
@@ -501,41 +501,41 @@ public class CrucibleTileEntity extends TileEntityBase
         {
             tempStack = new ItemInstance(ItemBase.goldIngot, 9);
         } else
-        if(iShiftedIndex == mod_FCBetterThanWolves.fcRefinedPickAxe.id || iShiftedIndex == mod_FCBetterThanWolves.fcRefinedAxe.id)
+        if(iShiftedIndex == ItemListener.refinedPickAxe.id || iShiftedIndex == ItemListener.refinedAxe.id)
         {
-            tempStack = new ItemInstance(mod_FCBetterThanWolves.fcSteel, 3);
+            tempStack = new ItemInstance(ItemListener.steel, 3);
         } else
-        if(iShiftedIndex == mod_FCBetterThanWolves.fcRefinedSword.id || iShiftedIndex == mod_FCBetterThanWolves.fcRefinedHoe.id)
+        if(iShiftedIndex == ItemListener.refinedSword.id || iShiftedIndex == ItemListener.refinedHoe.id)
         {
-            tempStack = new ItemInstance(mod_FCBetterThanWolves.fcSteel, 2);
+            tempStack = new ItemInstance(ItemListener.steel, 2);
         } else
-        if(iShiftedIndex == mod_FCBetterThanWolves.fcRefinedShovel.id)
+        if(iShiftedIndex == ItemListener.refinedShovel.id)
         {
-            tempStack = new ItemInstance(mod_FCBetterThanWolves.fcSteel, 1);
+            tempStack = new ItemInstance(ItemListener.steel, 1);
         } else
         if(iShiftedIndex == BlockListener.anvil.id)
         {
-            tempStack = new ItemInstance(mod_FCBetterThanWolves.fcSteel, 7);
+            tempStack = new ItemInstance(ItemListener.steel, 7);
         } else
-        if(iShiftedIndex == mod_FCBetterThanWolves.fcArmorPlate.id)
+        if(iShiftedIndex == ItemListener.armourPlateSteel.id)
         {
-            tempStack = new ItemInstance(mod_FCBetterThanWolves.fcSteel, 1);
+            tempStack = new ItemInstance(ItemListener.steel, 1);
         } else
-        if(iShiftedIndex == mod_FCBetterThanWolves.fcPlateHelm.id)
+        if(iShiftedIndex == ItemListener.helmetSteel.id)
         {
-            tempStack = new ItemInstance(mod_FCBetterThanWolves.fcSteel, 5);
+            tempStack = new ItemInstance(ItemListener.steel, 5);
         } else
-        if(iShiftedIndex == mod_FCBetterThanWolves.fcPlateBreastPlate.id)
+        if(iShiftedIndex == ItemListener.chestPlateSteel.id)
         {
-            tempStack = new ItemInstance(mod_FCBetterThanWolves.fcSteel, 8);
+            tempStack = new ItemInstance(ItemListener.steel, 8);
         } else
-        if(iShiftedIndex == mod_FCBetterThanWolves.fcPlateLeggings.id)
+        if(iShiftedIndex == ItemListener.leggingsSteel.id)
         {
-            tempStack = new ItemInstance(mod_FCBetterThanWolves.fcSteel, 7);
+            tempStack = new ItemInstance(ItemListener.steel, 7);
         } else
-        if(iShiftedIndex == mod_FCBetterThanWolves.fcPlateBoots.id)
+        if(iShiftedIndex == ItemListener.bootsSteel.id)
         {
-            tempStack = new ItemInstance(mod_FCBetterThanWolves.fcSteel, 4);
+            tempStack = new ItemInstance(ItemListener.steel, 4);
         }
         return tempStack;
     }

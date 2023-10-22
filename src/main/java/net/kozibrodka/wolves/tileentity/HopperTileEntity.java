@@ -2,7 +2,7 @@ package net.kozibrodka.wolves.tileentity;
 
 import net.kozibrodka.wolves.blocks.Hopper;
 import net.kozibrodka.wolves.events.BlockListener;
-import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
+import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.recipe.HopperHauntingRecipeRegistry;
 import net.kozibrodka.wolves.utils.BlockPosition;
 import net.kozibrodka.wolves.utils.InventoryHandler;
@@ -224,19 +224,19 @@ public class HopperTileEntity extends TileEntityBase
             {
                 return 2;
             }
-            if(filterStack.itemId == mod_FCBetterThanWolves.fcGrate.id)
+            if(filterStack.itemId == ItemListener.grate.id)
             {
                 return 3;
             }
-            if(filterStack.itemId == mod_FCBetterThanWolves.fcWicker.id)
+            if(filterStack.itemId == ItemListener.wicker.id)
             {
                 return 4;
             }
-            if(filterStack.itemId == mod_FCBetterThanWolves.fcRollersItem.id)
+            if(filterStack.itemId == ItemListener.rollersItem.id)
             {
                 return 5;
             }
-            if(filterStack.itemId == mod_FCBetterThanWolves.soulFilter.id)
+            if(filterStack.itemId == ItemListener.soulFilter.id)
             {
                 return 6;
             }
@@ -300,16 +300,16 @@ public class HopperTileEntity extends TileEntityBase
                         item.id != ItemBase.glowstoneDust.id &&
                         item.id != ItemBase.dyePowder.id &&
                         item.id != ItemBase.sugar.id &&
-                        item.id != mod_FCBetterThanWolves.fcNethercoal.id &&
-                        item.id != mod_FCBetterThanWolves.fcHempSeeds.id &&
-                        item.id != mod_FCBetterThanWolves.fcFlour.id &&
-                        item.id != mod_FCBetterThanWolves.fcHempFibers.id &&
-                        item.id != mod_FCBetterThanWolves.fcDonut.id &&
-                        item.id != mod_FCBetterThanWolves.fcDung.id &&
-                        item.id != mod_FCBetterThanWolves.fcGroundNetherrack.id &&
-                        item.id != mod_FCBetterThanWolves.fcHellfireDust.id &&
-                        item.id != mod_FCBetterThanWolves.fcCoalDust.id &&
-                        item.id != mod_FCBetterThanWolves.fcBroadheadArrowhead.id
+                        item.id != ItemListener.netherCoal.id &&
+                        item.id != ItemListener.hempSeeds.id &&
+                        item.id != ItemListener.flour.id &&
+                        item.id != ItemListener.hempFibers.id &&
+                        item.id != ItemListener.donut.id &&
+                        item.id != ItemListener.dung.id &&
+                        item.id != ItemListener.groundNetherrack.id &&
+                        item.id != ItemListener.hellfireDust.id &&
+                        item.id != ItemListener.coalDust.id &&
+                        item.id != ItemListener.broadHeadArrowhead.id
                 )
                 {
                     return false;
@@ -326,16 +326,16 @@ public class HopperTileEntity extends TileEntityBase
                         item.id != ItemBase.glowstoneDust.id &&
                         item.id != ItemBase.dyePowder.id &&
                         item.id != ItemBase.sugar.id &&
-                        item.id != mod_FCBetterThanWolves.fcHempSeeds.id &&
-                        item.id != mod_FCBetterThanWolves.fcFlour.id &&
-                        item.id != mod_FCBetterThanWolves.fcGroundNetherrack.id &&
-                        item.id != mod_FCBetterThanWolves.fcHellfireDust.id &&
-                        item.id != mod_FCBetterThanWolves.fcCoalDust.id
+                        item.id != ItemListener.hempSeeds.id &&
+                        item.id != ItemListener.flour.id &&
+                        item.id != ItemListener.groundNetherrack.id &&
+                        item.id != ItemListener.hellfireDust.id &&
+                        item.id != ItemListener.coalDust.id
                 )
                 {
                     if(iFilterType == 5)
                     {
-                        if(item.id != ItemBase.string.id && item.id != ItemBase.paper.id && item.id != mod_FCBetterThanWolves.fcHempFibers.id)
+                        if(item.id != ItemBase.string.id && item.id != ItemBase.paper.id && item.id != ItemListener.hempFibers.id)
                         {
                             return false;
                         }
@@ -345,7 +345,7 @@ public class HopperTileEntity extends TileEntityBase
                     }
                 }
             } else
-            if(iFilterType == 6 && item.id != mod_FCBetterThanWolves.fcGroundNetherrack.id)
+            if(iFilterType == 6 && item.id != ItemListener.groundNetherrack.id)
             {
                 return false;
             }

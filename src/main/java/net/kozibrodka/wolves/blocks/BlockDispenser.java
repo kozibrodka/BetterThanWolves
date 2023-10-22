@@ -8,8 +8,8 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.kozibrodka.wolves.container.BlockDispenserContainer;
 import net.kozibrodka.wolves.entity.BroadheadArrowEntity;
 import net.kozibrodka.wolves.events.BlockListener;
+import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.events.TextureListener;
-import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.mixin.BlockBaseAccessor;
 import net.kozibrodka.wolves.mixin.ChickenAccessor;
 import net.kozibrodka.wolves.mixin.WolfAccessor;
@@ -495,7 +495,7 @@ public class BlockDispenser extends TemplateBlockWithEntity
                      world.playSound(i, j, k, "random.bow", 1.0F, 1.2F);
                     bSuccessfullyDispensed = true;
                 } else
-                if(iteminstance.itemId == mod_FCBetterThanWolves.fcBroadheadArrow.id)
+                if(iteminstance.itemId == ItemListener.broadHeadArrow.id)
                 {
                     BroadheadArrowEntity entityarrow = new BroadheadArrowEntity(world, d, d1, d2);
                     entityarrow.method_1291(f, deltaj, f1, 1.1F, 6F);

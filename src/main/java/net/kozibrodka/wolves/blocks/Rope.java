@@ -2,8 +2,8 @@ package net.kozibrodka.wolves.blocks;
 
 import net.fabricmc.loader.api.FabricLoader;
 import net.kozibrodka.wolves.events.BlockListener;
+import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.events.TextureListener;
-import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.kozibrodka.wolves.utils.CustomBlockRendering;
 import net.minecraft.block.material.Material;
@@ -36,7 +36,7 @@ public class Rope extends TemplateBlockBase implements BlockWithWorldRenderer
 
     public int getDropId(int i, Random random)
     {
-        return mod_FCBetterThanWolves.fcRopeItem.id;
+        return ItemListener.ropeItem.id;
     }
 
     public void onAdjacentBlockUpdate(Level world, int i, int j, int k, int iid)
@@ -83,7 +83,7 @@ public class Rope extends TemplateBlockBase implements BlockWithWorldRenderer
 
     public void BreakRope(Level world, int i, int j, int k)
     {
-        UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, mod_FCBetterThanWolves.fcRopeItem.id, 0);
+        UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, ItemListener.ropeItem.id, 0);
         Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).soundHelper.playSound(sounds.getWalkSound(), (float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F, (sounds.getVolume() + 1.0F) / 2.0F, sounds.getPitch() * 0.8F);
         world.setTile(i, j, k, 0);
     }
