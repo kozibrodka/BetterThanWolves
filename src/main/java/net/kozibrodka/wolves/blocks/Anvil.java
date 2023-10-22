@@ -76,8 +76,8 @@ public class Anvil extends TemplateBlockBase
             return true;
         } else
         {
-            Minecraft minecraft = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance());
-            minecraft.openScreen(new AnvilGUI(entityplayer.inventory, world, i, j, k));
+//            Minecraft minecraft = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance());
+//            minecraft.openScreen(new AnvilGUI(entityplayer.inventory, world, i, j, k));
             //ModLoader.getMinecraftInstance().displayGuiScreen(new FCGuiCraftingAnvil(entityplayer.inventory, world, i, j, k));
         	return true;
         }

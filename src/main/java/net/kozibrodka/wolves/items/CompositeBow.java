@@ -2,7 +2,11 @@
 package net.kozibrodka.wolves.items;
 
 import net.kozibrodka.wolves.entity.BroadheadArrowEntity;
+import net.kozibrodka.wolves.entity.FCEntityTEST;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
+import net.minecraft.block.Wool;
+import net.minecraft.entity.Living;
+import net.minecraft.entity.animal.Sheep;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.entity.projectile.Arrow;
 import net.minecraft.item.ItemBase;
@@ -48,4 +52,5 @@ public class CompositeBow extends TemplateItemBase
         }
         return ItemInstance;
     }
+
 }

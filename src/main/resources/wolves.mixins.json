@@ -14,6 +14,7 @@
     "BlockRailMixin",
     "BlockRendererAccessor",
     "BlockSugarCaneMixin",
+    "DataTrackerAccessor",
     "EntityBaseAccessor",
     "FireAccessor",
     "HempSeedDrop",
@@ -21,8 +22,8 @@
     "LevelAccessor",
     "OakTreeMixin",
     "SpruceTreeMixin",
-    "WolfDump",
-    "WolfAccessor"
+    "WolfAccessor",
+    "WolfDump"
   ],
   "server": [
   ],

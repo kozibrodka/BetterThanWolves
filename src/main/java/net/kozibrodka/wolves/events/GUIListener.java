@@ -25,7 +25,7 @@ public class GUIListener {
     @EventListener
     public void registerGuiHandlers(GuiHandlerRegistryEvent event) {
         GuiHandlerRegistry registry = event.registry;
-//        registry.registerValueNoMessage(Identifier.of(MOD_ID, "openAnvil"), BiTuple.of(this::openAnvil, TileEntityFreezer::new));
+        registry.registerValueNoMessage(Identifier.of(MOD_ID, "openAnvil"), BiTuple.of(this::openAnvil, null)); //BAD ONE
         registry.registerValueNoMessage(Identifier.of(MOD_ID, "openHooper"), BiTuple.of(this::openHooper, HopperTileEntity::new));
         registry.registerValueNoMessage(Identifier.of(MOD_ID, "openCrucible"), BiTuple.of(this::openCrucible, CrucibleTileEntity::new));
         registry.registerValueNoMessage(Identifier.of(MOD_ID, "openMillStone"), BiTuple.of(this::openMillStone, MillStoneTileEntity::new));
@@ -34,10 +34,10 @@ public class GUIListener {
         registry.registerValueNoMessage(Identifier.of(MOD_ID, "openPulley"), BiTuple.of(this::openPulley, PulleyTileEntity::new));
     }
 
-//    @Environment(EnvType.CLIENT)
-//    public ScreenBase openAnvil(PlayerBase player, InventoryBase inventoryBase) {
-//        return new FCGuiCraftingAnvil(player.inventory, (TileEntityFreezer) inventoryBase);
-//    }
+    @Environment(EnvType.CLIENT)
+    public ScreenBase openAnvil(PlayerBase player, InventoryBase inventoryBase) {
+        return new AnvilGUI(player.inventory, player.level, player.clientX, player.clientY, player.clientZ);
+    }
     @Environment(EnvType.CLIENT)
     public ScreenBase openHooper(PlayerBase player, InventoryBase inventoryBase) {
         return new HopperGUI(player.inventory, (HopperTileEntity) inventoryBase);

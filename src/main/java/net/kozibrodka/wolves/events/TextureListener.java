@@ -3,6 +3,7 @@ package net.kozibrodka.wolves.events;
 import net.kozibrodka.wolves.entity.*;
 import net.kozibrodka.wolves.render.*;
 import net.mine_diver.unsafeevents.listener.EventListener;
+import net.minecraft.client.render.entity.model.Sheep;
 import net.modificationstation.stationapi.api.client.event.render.entity.EntityRendererRegisterEvent;
 import net.modificationstation.stationapi.api.client.event.texture.TextureRegisterEvent;
 import net.modificationstation.stationapi.api.client.texture.atlas.Atlases;
@@ -141,6 +142,7 @@ public class TextureListener {
         event.renderers.put(LiftedBlockEntity.class, new LiftedBlockRender());
         event.renderers.put(MovingPlatformEntity.class, new MovingPlatformRender());
         event.renderers.put(MovingAnchorEntity.class, new MovingAnchorRender());
+        event.renderers.put(FCEntityTEST.class, new FCEntityTestRender());
     }
 
     public static int axle_vertical;

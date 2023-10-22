@@ -1,17 +1,20 @@
 package net.kozibrodka.wolves.events;
 
 import net.glasslauncher.mods.api.gcapi.api.GConfig;
+import net.kozibrodka.wolves.blocks.*;
 import net.kozibrodka.wolves.entity.*;
 import net.kozibrodka.wolves.glasscfg.BetterThanWolvesCFG;
 import net.kozibrodka.wolves.items.*;
 import net.kozibrodka.wolves.items.Rope;
 import net.kozibrodka.wolves.tileentity.*;
-import net.kozibrodka.wolves.materials.Cement;
 import net.mine_diver.unsafeevents.listener.EventListener;
+import net.minecraft.block.BlockBase;
+import net.minecraft.block.PressurePlateTrigger;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColour;
 import net.minecraft.item.tool.ToolMaterial;
 import net.modificationstation.stationapi.api.event.entity.EntityRegister;
+import net.modificationstation.stationapi.api.event.registry.BlockRegistryEvent;
 import net.modificationstation.stationapi.api.event.registry.EntityHandlerRegistryEvent;
 import net.modificationstation.stationapi.api.event.registry.ItemRegistryEvent;
 import net.modificationstation.stationapi.api.event.tileentity.TileEntityRegisterEvent;
@@ -20,6 +23,7 @@ import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
 import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.registry.ModID;
 import net.modificationstation.stationapi.api.registry.Registry;
+import net.modificationstation.stationapi.api.template.block.*;
 import net.modificationstation.stationapi.api.template.item.TemplateItemBase;
 import net.modificationstation.stationapi.api.template.item.TemplateSeeds;
 import net.modificationstation.stationapi.api.template.item.armour.TemplateArmour;
@@ -97,6 +101,7 @@ public class mod_FCBetterThanWolves {
         event.register(LiftedBlockEntity.class, String.valueOf(Identifier.of(MOD_ID, "BlockLiftedByPlatform")));
         event.register(MovingPlatformEntity.class, String.valueOf(Identifier.of(MOD_ID, "MovingPlatform")));
         event.register(MovingAnchorEntity.class, String.valueOf(Identifier.of(MOD_ID, "MovingAnchor")));
+        event.register(FCEntityTEST.class, String.valueOf(Identifier.of(MOD_ID, "StapiTEST")));
     }
 
     @EventListener
@@ -107,6 +112,7 @@ public class mod_FCBetterThanWolves {
         Registry.register(event.registry, MOD_ID.id("BlockLiftedByPlatform") , LiftedBlockEntity::new);
         Registry.register(event.registry, MOD_ID.id("MovingPlatform") , MovingPlatformEntity::new);
         Registry.register(event.registry, MOD_ID.id("MovingAnchor") , MovingAnchorEntity::new);
+        Registry.register(event.registry, MOD_ID.id("StapiTEST") , FCEntityTEST::new);
     }
 
 
@@ -130,10 +136,35 @@ public class mod_FCBetterThanWolves {
     //TODO: custom recipes xhmi, big tree mixin, some mixin so stoked fire deals dmg
 
 
-    // TODO: This should be part of the config.
+    public static boolean fcDisableAxeChanges = false;
     public static boolean fcFaceGearBoxAwayFromPlayer = false;
+    public static boolean fcDisableMinecartChanges = false;
+    public static final Material fcCementMaterial = new net.kozibrodka.wolves.materials.Cement(MaterialColour.STONE);;
 
-    public static final Material fcCementMaterial = new Cement(MaterialColour.STONE);
+
+//    public static TemplateBlockWithEntity fcVase_white;
+//    public static TemplateBlockWithEntity fcVase_orange;
+//    public static TemplateBlockWithEntity fcVase_magenta;
+//    public static TemplateBlockWithEntity fcVase_light_blue;
+//    public static TemplateBlockWithEntity fcVase_yellow;
+//    public static TemplateBlockWithEntity fcVase_lime;
+//    public static TemplateBlockWithEntity fcVase_pink;
+//    public static TemplateBlockWithEntity fcVase_gray;
+//    public static TemplateBlockWithEntity fcVase_light_gray;
+//    public static TemplateBlockWithEntity fcVase_cyan;
+//    public static TemplateBlockWithEntity fcVase_purple;
+//    public static TemplateBlockWithEntity fcVase_blue;
+//    public static TemplateBlockWithEntity fcVase_brown;
+//    public static TemplateBlockWithEntity fcVase_green;
+//    public static TemplateBlockWithEntity fcVase_red;
+//    public static TemplateBlockWithEntity fcVase_black;
+    // These are never registered! Why do they exist?
+//    public static TemplateBlockWithEntity fcUnfiredPottery_crucible;
+//    public static TemplateBlockWithEntity fcUnfiredPottery_planter;
+//    public static TemplateBlockWithEntity fcUnfiredPottery_vase;
+//    public static TemplateBlockBase fcPanel_wood;
+//    public static TemplateBlockBase fcMoulding_wood;
+//    public static TemplateBlockBase fcCorner_wood;
 
     public static TemplateBucket fcBucketCement;
     public static TemplateFoodBase fcWolfRaw;
