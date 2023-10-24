@@ -116,7 +116,7 @@ public class MillStone extends TemplateBlockWithEntity
 
     public void onBlockRemoved(Level world, int i, int j, int k)
     {
-        InventoryHandler.EjectInventoryContents(world, i, j, k, (InventoryBase)world.getTileEntity(i, j, k));
+        InventoryHandler.ejectInventoryContents(world, i, j, k, (InventoryBase)world.getTileEntity(i, j, k));
         super.onBlockRemoved(world, i, j, k);
     }
 

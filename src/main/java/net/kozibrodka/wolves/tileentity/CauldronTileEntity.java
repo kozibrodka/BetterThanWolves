@@ -153,7 +153,7 @@ public class CauldronTileEntity extends TileEntityBase
 
     public ItemInstance takeInventoryItem(int iSlot, int iAmount)
     {
-        return InventoryHandler.DecrStackSize(this, iSlot, iAmount);
+        return InventoryHandler.decreaseStackSize(this, iSlot, iAmount);
     }
 
     public void setInventoryItem(int iSlot, ItemInstance ItemInstance)
@@ -212,22 +212,22 @@ public class CauldronTileEntity extends TileEntityBase
             {
                 m_bContainsValidIngrediantsForState = true;
             } else
-            if(InventoryHandler.GetFirstOccupiedStackOfItem(this, ItemListener.dung.id) >= 0 && ContainsFood())
+            if(InventoryHandler.getFirstOccupiedStackOfItem(this, ItemListener.dung.id) >= 0 && ContainsFood())
             {
                 m_bContainsValidIngrediantsForState = true;
             }
         } else
         if(iFireUnderState == 2)
         {
-            if(InventoryHandler.GetFirstOccupiedStackOfItem(this, BlockBase.TNT.id) >= 0)
+            if(InventoryHandler.getFirstOccupiedStackOfItem(this, BlockBase.TNT.id) >= 0)
             {
                 m_bContainsValidIngrediantsForState = true;
             } else
-            if(InventoryHandler.GetFirstOccupiedStackOfItem(this, ItemBase.gunpowder.id) >= 0)
+            if(InventoryHandler.getFirstOccupiedStackOfItem(this, ItemBase.gunpowder.id) >= 0)
             {
                 m_bContainsValidIngrediantsForState = true;
             } else
-            if(InventoryHandler.GetFirstOccupiedStackOfItem(this, ItemListener.hellfireDust.id) >= 0)
+            if(InventoryHandler.getFirstOccupiedStackOfItem(this, ItemListener.hellfireDust.id) >= 0)
             {
                 m_bContainsValidIngrediantsForState = true;
             } else
@@ -273,7 +273,7 @@ public class CauldronTileEntity extends TileEntityBase
             m_iCauldronCookCounter += m_iFireFactor;
             if(m_iCauldronCookCounter >= 1950)
             {
-                int iDungIndex = InventoryHandler.GetFirstOccupiedStackOfItem(this, ItemListener.dung.id);
+                int iDungIndex = InventoryHandler.getFirstOccupiedStackOfItem(this, ItemListener.dung.id);
                 if(iDungIndex >= 0 && DestroyAllFoodInInventory())
                 {
                     m_iCauldronCookCounter = 0;
@@ -286,7 +286,7 @@ public class CauldronTileEntity extends TileEntityBase
                     {
                         throw new AssertionError();
                     }
-                    if(!InventoryHandler.AddItemInstanceToInventory(this, cookedStack))
+                    if(!InventoryHandler.addItemInstanceToInventory(this, cookedStack))
                     {
                         UnsortedUtils.EjectStackWithRandomOffset(level, x, y + 1, z, cookedStack);
                     }
@@ -309,7 +309,7 @@ public class CauldronTileEntity extends TileEntityBase
             m_iCauldronCookCounter += m_iFireFactor;
             if(m_iCauldronCookCounter >= 1950)
             {
-                if(InventoryHandler.GetFirstOccupiedStackOfItem(this, ItemListener.hellfireDust.id) >= 0 || InventoryHandler.GetFirstOccupiedStackOfItem(this, BlockBase.TNT.id) >= 0 || InventoryHandler.GetFirstOccupiedStackOfItem(this, ItemBase.gunpowder.id) >= 0)
+                if(InventoryHandler.getFirstOccupiedStackOfItem(this, ItemListener.hellfireDust.id) >= 0 || InventoryHandler.getFirstOccupiedStackOfItem(this, BlockBase.TNT.id) >= 0 || InventoryHandler.getFirstOccupiedStackOfItem(this, ItemBase.gunpowder.id) >= 0)
                 {
                     BlowUpCauldron();
                 } else
@@ -320,7 +320,7 @@ public class CauldronTileEntity extends TileEntityBase
                     {
                         throw new AssertionError();
                     }
-                    if(!InventoryHandler.AddItemInstanceToInventory(this, cookedStack))
+                    if(!InventoryHandler.addItemInstanceToInventory(this, cookedStack))
                     {
                         UnsortedUtils.EjectStackWithRandomOffset(level, x, y + 1, z, cookedStack);
                     }
@@ -341,7 +341,7 @@ public class CauldronTileEntity extends TileEntityBase
             ItemInstance tempStack = SmeltingRecipeRegistry.getInstance().getResult(cauldronContents[iUncookedFoodIndex].getType().id);
             ItemInstance cookedStack = tempStack.copy();
             takeInventoryItem(iUncookedFoodIndex, 1);
-            if(!InventoryHandler.AddItemInstanceToInventory(this, cookedStack))
+            if(!InventoryHandler.addItemInstanceToInventory(this, cookedStack))
             {
                 UnsortedUtils.EjectStackWithRandomOffset(level, x, y + 1, z, cookedStack);
             }
@@ -419,17 +419,17 @@ public class CauldronTileEntity extends TileEntityBase
 
     private void BlowUpCauldron()
     {
-        int iHellfireCount = InventoryHandler.CountItemsInInventory(this, ItemListener.hellfireDust.id, -1);
+        int iHellfireCount = InventoryHandler.itemCountInInventory(this, ItemListener.hellfireDust.id, -1);
         float fExplosionSize = ((float)iHellfireCount * 10F) / 64F;
-        fExplosionSize += ((float) InventoryHandler.CountItemsInInventory(this, ItemBase.gunpowder.id, -1) * 10F) / 64F;
-        int iTNTCount = InventoryHandler.CountItemsInInventory(this, BlockBase.TNT.id, -1);
+        fExplosionSize += ((float) InventoryHandler.itemCountInInventory(this, ItemBase.gunpowder.id, -1) * 10F) / 64F;
+        int iTNTCount = InventoryHandler.itemCountInInventory(this, BlockBase.TNT.id, -1);
         if(iTNTCount > 0)
         {
             if(fExplosionSize < 4F)
             {
                 fExplosionSize = 4F;
             }
-            fExplosionSize += InventoryHandler.CountItemsInInventory(this, BlockBase.TNT.id, -1);
+            fExplosionSize += InventoryHandler.itemCountInInventory(this, BlockBase.TNT.id, -1);
         }
         if(fExplosionSize < 2.0F)
         {
@@ -439,7 +439,7 @@ public class CauldronTileEntity extends TileEntityBase
         {
             fExplosionSize = 10F;
         }
-        InventoryHandler.ClearInventoryContents(this);
+        InventoryHandler.clearInventoryContents(this);
         level.setTile(x, y, z, 0);
         level.createExplosion(null, x, y, z, fExplosionSize);
     }

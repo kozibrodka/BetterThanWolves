@@ -100,7 +100,7 @@ public class Hopper extends TemplateBlockWithEntity
         {
             world.method_216(i, j, k, id, getTickrate());
         }
-        ((HopperTileEntity)world.getTileEntity(i, j, k)).bHopperEjectBlocked = false;
+        ((HopperTileEntity)world.getTileEntity(i, j, k)).hopperEjectBlocked = false;
     }
 
     public boolean canUse(Level world, int i, int j, int k, PlayerBase entityplayer)
@@ -148,7 +148,7 @@ public class Hopper extends TemplateBlockWithEntity
 
     public void onBlockRemoved(Level world, int i, int j, int k)
     {
-        InventoryHandler.EjectInventoryContents(world, i, j, k, (InventoryBase)world.getTileEntity(i, j, k));
+        InventoryHandler.ejectInventoryContents(world, i, j, k, (InventoryBase)world.getTileEntity(i, j, k));
         super.onBlockRemoved(world, i, j, k);
     }
 
@@ -183,7 +183,7 @@ public class Hopper extends TemplateBlockWithEntity
                         {
                             ItemInstance sandItemInstance = new ItemInstance(BlockBase.SAND.id, targetEntityItem.item.count, 0);
                             int iSandSwallowed = 0;
-                            if(InventoryHandler.AddItemInstanceToInventoryInSlotRange(tileEntityHopper, sandItemInstance, 0, 17))
+                            if(InventoryHandler.addItemWithinSlotBounds(tileEntityHopper, sandItemInstance, 0, 17))
                             {
                                 iSandSwallowed = targetEntityItem.item.count;
                                 targetEntityItem.remove();
@@ -202,7 +202,7 @@ public class Hopper extends TemplateBlockWithEntity
                                 world.spawnEntity(flintEntityitem);
                             }
                         } else
-                        if(InventoryHandler.AddItemInstanceToInventoryInSlotRange(tileEntityHopper, targetEntityItem.item, 0, 17))
+                        if(InventoryHandler.addItemWithinSlotBounds(tileEntityHopper, targetEntityItem.item, 0, 17))
                         {
                             world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.pop", 0.25F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                             targetEntityItem.remove();
@@ -437,7 +437,7 @@ public class Hopper extends TemplateBlockWithEntity
         this.setBoundingBox(0.3125F, 0.0F, 0.3125F, 0.6875F, 0.25F, 0.6875F);
         tileRenderer.renderStandardBlock(this, x, y, z);
         HopperTileEntity fctileentityhopper = (HopperTileEntity)tileView.getTileEntity(x, y, z);
-        int l = InventoryHandler.GetNumOccupiedStacksInSlotRange(fctileentityhopper, 0, 17);
+        int l = InventoryHandler.getOccupiedSlotCountWithinBounds(fctileentityhopper, 0, 17);
         if(l > 0)
         {
             float f = (float)l / 18F;

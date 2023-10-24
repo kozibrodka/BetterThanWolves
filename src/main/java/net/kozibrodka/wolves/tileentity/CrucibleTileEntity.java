@@ -56,7 +56,7 @@ public class CrucibleTileEntity extends TileEntityBase
 
     public ItemInstance takeInventoryItem(int iSlot, int iAmount)
     {
-        return InventoryHandler.DecrStackSize(this, iSlot, iAmount);
+        return InventoryHandler.decreaseStackSize(this, iSlot, iAmount);
     }
 
     public void setInventoryItem(int iSlot, ItemInstance ItemInstance)
@@ -261,7 +261,7 @@ public class CrucibleTileEntity extends TileEntityBase
             }
             ItemInstance cookedStack = SmeltingRecipeRegistry.getInstance().getResult(crucibleContents[tempIndex].getType().id).copy();
             takeInventoryItem(tempIndex, 1);
-            if(!InventoryHandler.AddItemInstanceToInventory(this, cookedStack))
+            if(!InventoryHandler.addItemInstanceToInventory(this, cookedStack))
             {
                 UnsortedUtils.EjectStackWithRandomOffset(level, x, y + 1, z, cookedStack);
             }
@@ -334,7 +334,7 @@ public class CrucibleTileEntity extends TileEntityBase
             if(cookedStack != null)
             {
                 takeInventoryItem(tempIndex, 1);
-                if(!InventoryHandler.AddItemInstanceToInventory(this, cookedStack))
+                if(!InventoryHandler.addItemInstanceToInventory(this, cookedStack))
                 {
                     UnsortedUtils.EjectStackWithRandomOffset(level, x, y + 1, z, cookedStack);
                 }
@@ -347,9 +347,9 @@ public class CrucibleTileEntity extends TileEntityBase
                 {
                     continue;
                 }
-                InventoryHandler.ConsumeItemsInInventory(this, BlockBase.RAIL.id, -1, 16);
+                InventoryHandler.consumeItemsInInventory(this, BlockBase.RAIL.id, -1, 16);
                 cookedStack = new ItemInstance(ItemBase.ironIngot, 6);
-                if(!InventoryHandler.AddItemInstanceToInventory(this, cookedStack))
+                if(!InventoryHandler.addItemInstanceToInventory(this, cookedStack))
                 {
                     UnsortedUtils.EjectStackWithRandomOffset(level, x, y + 1, z, cookedStack);
                 }
@@ -362,9 +362,9 @@ public class CrucibleTileEntity extends TileEntityBase
                 {
                     continue;
                 }
-                InventoryHandler.ConsumeItemsInInventory(this, ItemListener.broadHeadArrowhead.id, -1, 4);
+                InventoryHandler.consumeItemsInInventory(this, ItemListener.broadHeadArrowhead.id, -1, 4);
                 cookedStack = new ItemInstance(ItemListener.steel, 1);
-                if(!InventoryHandler.AddItemInstanceToInventory(this, cookedStack))
+                if(!InventoryHandler.addItemInstanceToInventory(this, cookedStack))
                 {
                     UnsortedUtils.EjectStackWithRandomOffset(level, x, y + 1, z, cookedStack);
                 }
@@ -379,9 +379,9 @@ public class CrucibleTileEntity extends TileEntityBase
             {
                 continue;
             }
-            InventoryHandler.ConsumeItemsInInventory(this, ItemListener.broadHeadArrow.id, -1, 16);
+            InventoryHandler.consumeItemsInInventory(this, ItemListener.broadHeadArrow.id, -1, 16);
             cookedStack = new ItemInstance(ItemListener.steel, 1);
-            if(!InventoryHandler.AddItemInstanceToInventory(this, cookedStack))
+            if(!InventoryHandler.addItemInstanceToInventory(this, cookedStack))
             {
                 UnsortedUtils.EjectStackWithRandomOffset(level, x, y + 1, z, cookedStack);
             }
@@ -544,7 +544,7 @@ public class CrucibleTileEntity extends TileEntityBase
     {
         if (CrucibleCraftingManager.getInstance().GetCraftingResult(this) == null) return;
         ItemInstance outputStack = CrucibleCraftingManager.getInstance().ConsumeIngredientsAndReturnResult(this);
-        if(!InventoryHandler.AddItemInstanceToInventory(this, outputStack)) UnsortedUtils.EjectStackWithRandomOffset(level, x, y + 1, z, outputStack);
+        if(!InventoryHandler.addItemInstanceToInventory(this, outputStack)) UnsortedUtils.EjectStackWithRandomOffset(level, x, y + 1, z, outputStack);
     }
 
     private ItemInstance crucibleContents[];

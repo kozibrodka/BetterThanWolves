@@ -32,7 +32,7 @@ public class HopperTileEntity extends TileEntityBase
     {
         hopperContents = new ItemInstance[19];
         ejectCounter = 0;
-        bHopperEjectBlocked = false;
+        hopperEjectBlocked = false;
     }
 
     public int getInventorySize()
@@ -40,14 +40,14 @@ public class HopperTileEntity extends TileEntityBase
         return 19;
     }
 
-    public ItemInstance getInventoryItem(int iSlot)
+    public ItemInstance getInventoryItem(int slot)
     {
-        return hopperContents[iSlot];
+        return hopperContents[slot];
     }
 
-    public ItemInstance takeInventoryItem(int iSlot, int iAmount)
+    public ItemInstance takeInventoryItem(int slot, int amount)
     {
-        return InventoryHandler.DecrStackSize(this, iSlot, iAmount);
+        return InventoryHandler.decreaseStackSize(this, slot, amount);
     }
 
     public void setInventoryItem(int iSlot, ItemInstance ItemInstance)
@@ -124,29 +124,26 @@ public class HopperTileEntity extends TileEntityBase
     public void tick()
     {
         if(!((Hopper) BlockListener.hopper).IsBlockOn(level, x, y, z)) return;
-        if(!bHopperEjectBlocked)
-        {
-            ejectCounter++;
-            if(ejectCounter >= 3)
-            {
-                if (attemptSoulFiltering())
-                {
-                    hopperContents[18].applyDamage(1, null);
-                    if (hopperContents[18].getDamage() <= 0)
-                    {
-                        hopperContents[18] = null;
-                        HopperSoulOverload();
-                    }
-                    ejectCounter = 0;
-                    return;
-                }
-                AttemptToEjectStackFromInv();
-                ejectCounter = 0;
-            }
-        } else
+        if(hopperEjectBlocked)
         {
             ejectCounter = 0;
+            return;
         }
+        ejectCounter++;
+        if(ejectCounter < 3) return;
+        if (!attemptSoulFiltering())
+        {
+            attemptItemEjection();
+            ejectCounter = 0;
+            return;
+        }
+        hopperContents[18].applyDamage(1, null);
+        if (hopperContents[18].getDamage() <= 0)
+        {
+            hopperContents[18] = null;
+            hopperSoulOverload();
+        }
+        ejectCounter = 0;
     }
 
     public boolean attemptSoulFiltering()
@@ -205,8 +202,8 @@ public class HopperTileEntity extends TileEntityBase
     public void markDirty()
     {
         level.method_202(x, y, z, x, y, z);
-        bHopperEjectBlocked = false;
-        int iOccupiedStacks = InventoryHandler.GetNumOccupiedStacksInSlotRange(this, 0, 17);
+        hopperEjectBlocked = false;
+        int iOccupiedStacks = InventoryHandler.getOccupiedSlotCountWithinBounds(this, 0, 17);
         ((Hopper)BlockListener.hopper).SetHopperFull(level, x, y, z, iOccupiedStacks == 18);
         ((Hopper)BlockListener.hopper).SetHasFilter(level, x, y, z, GetFilterType() > 0);
     }
@@ -358,12 +355,12 @@ public class HopperTileEntity extends TileEntityBase
         return ((Hopper)BlockListener.hopper).IsBlockOn(level, x, y, z);
     }
 
-    private void AttemptToEjectStackFromInv()
+    private void attemptItemEjection()
     {
-        int iStackIndex = InventoryHandler.GetFirstOccupiedStackNotOfItem(this, ItemBase.clay.id);
-        if(iStackIndex >= 0 && iStackIndex < 18)
+        int itemIndex = InventoryHandler.getFirstOccupiedStackExcludingItem(this, ItemBase.clay.id);
+        if(itemIndex >= 0 && itemIndex < 18)
         {
-            ItemInstance invStack = getInventoryItem(iStackIndex);
+            ItemInstance invStack = getInventoryItem(itemIndex);
             int iEjectStackSize;
             if(8 > invStack.count)
             {
@@ -412,7 +409,7 @@ public class HopperTileEntity extends TileEntityBase
                             }
                             if(canProcessStack)
                             {
-                                if(!InventoryHandler.AddItemInstanceToInventoryInSlotRange((InventoryBase)targetTileEntityBase, ejectStack, iMinSlotToAddTo, iMaxSlotToAddTo))
+                                if(!InventoryHandler.addItemWithinSlotBounds((InventoryBase)targetTileEntityBase, ejectStack, iMinSlotToAddTo, iMaxSlotToAddTo))
                                 {
                                     if(iTargetid == BlockBase.CHEST.id)
                                     {
@@ -430,7 +427,7 @@ public class HopperTileEntity extends TileEntityBase
                                                 targetTileEntityBase = level.getTileEntity(iTargetI + tempOffset.i, iTargetJ + tempOffset.j, iTargetK + tempOffset.k);
                                                 if(targetTileEntityBase != null && (targetTileEntityBase instanceof InventoryBase))
                                                 {
-                                                    if(InventoryHandler.AddItemInstanceToInventory((InventoryBase)targetTileEntityBase, ejectStack))
+                                                    if(InventoryHandler.addItemInstanceToInventory((InventoryBase)targetTileEntityBase, ejectStack))
                                                     {
                                                         iNumItemsStored = iEjectStackSize;
                                                     } else
@@ -452,16 +449,16 @@ public class HopperTileEntity extends TileEntityBase
                                 }
                                 if(iNumItemsStored > 0)
                                 {
-                                    takeInventoryItem(iStackIndex, iNumItemsStored);
+                                    takeInventoryItem(itemIndex, iNumItemsStored);
                                     level.playSound((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, "random.pop", 0.25F, ((level.rand.nextFloat() - level.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                                 }
                             } else
                             {
-                                bHopperEjectBlocked = true;
+                                hopperEjectBlocked = true;
                             }
                         } else
                         {
-                            bHopperEjectBlocked = true;
+                            hopperEjectBlocked = true;
                         }
                     }
                 }
@@ -482,7 +479,7 @@ public class HopperTileEntity extends TileEntityBase
                         if(minecartEntity.type == 1 && minecartEntity.boundingBox.boxIntersects(Box.createButWasteMemory((float)x, (float)y - 0.5F, (float)z, (float)x + 0.25F, y, (float)z + 1.0F)) && minecartEntity.boundingBox.boxIntersects(Box.createButWasteMemory((float)x + 0.75F, (float)y - 0.5F, (float)z, (float)x + 1.0F, y, (float)z + 1.0F)) && minecartEntity.boundingBox.boxIntersects(Box.createButWasteMemory((float)x, (float)y - 0.5F, (float)z, (float)x + 1.0F, y, (float)z + 0.25F)) && minecartEntity.boundingBox.boxIntersects(Box.createButWasteMemory((float)x, (float)y - 0.5F, (float)z + 0.75F, (float)x + 1.0F, y, (float)z + 1.0F)))
                         {
                             int iNumItemsStored = 0;
-                            if(InventoryHandler.AddItemInstanceToInventory(minecartEntity, ejectStack))
+                            if(InventoryHandler.addItemInstanceToInventory(minecartEntity, ejectStack))
                             {
                                 iNumItemsStored = iEjectStackSize;
                             } else
@@ -491,7 +488,7 @@ public class HopperTileEntity extends TileEntityBase
                             }
                             if(iNumItemsStored > 0)
                             {
-                                takeInventoryItem(iStackIndex, iNumItemsStored);
+                                takeInventoryItem(itemIndex, iNumItemsStored);
                                 level.playSound((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, "random.pop", 0.25F, ((level.rand.nextFloat() - level.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                             }
                             bEjectIntoWorld = false;
@@ -504,7 +501,7 @@ public class HopperTileEntity extends TileEntityBase
             if(bEjectIntoWorld)
             {
                 EjectStack(ejectStack);
-                takeInventoryItem(iStackIndex, iEjectStackSize);
+                takeInventoryItem(itemIndex, iEjectStackSize);
             }
         }
     }
@@ -522,7 +519,7 @@ public class HopperTileEntity extends TileEntityBase
         level.spawnEntity(entityitem);
     }
 
-    private void HopperSoulOverload()
+    private void hopperSoulOverload()
     {
         if(SpawnGhast())
         {
@@ -556,5 +553,5 @@ public class HopperTileEntity extends TileEntityBase
 
     private ItemInstance[] hopperContents;
     private int ejectCounter;
-    public boolean bHopperEjectBlocked;
+    public boolean hopperEjectBlocked;
 }

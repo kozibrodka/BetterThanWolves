@@ -96,7 +96,7 @@ public class Vase extends TemplateBlockWithEntity
         {
             VaseTileEntity tileEntityVase = (VaseTileEntity)world.getTileEntity(i, j, k);
             int iTempStackSize = playerEquippedItemInstance.count;
-            if(InventoryHandler.AddItemInstanceToInventory(tileEntityVase, playerEquippedItemInstance))
+            if(InventoryHandler.addItemInstanceToInventory(tileEntityVase, playerEquippedItemInstance))
             {
                 entityPlayer.breakHeldItem();
                  world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.pop", 0.25F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
@@ -116,7 +116,7 @@ public class Vase extends TemplateBlockWithEntity
         VaseTileEntity tileEntity = (VaseTileEntity)world.getTileEntity(i, j, k);
         if(tileEntity != null)
         {
-            InventoryHandler.EjectInventoryContents(world, i, j, k, tileEntity);
+            InventoryHandler.ejectInventoryContents(world, i, j, k, tileEntity);
         }
         super.onBlockRemoved(world, i, j, k);
     }

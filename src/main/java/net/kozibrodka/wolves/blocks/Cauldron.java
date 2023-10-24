@@ -47,7 +47,7 @@ public class Cauldron extends TemplateBlockWithEntity
 
     public void onBlockRemoved(Level world, int i, int j, int k)
     {
-        InventoryHandler.EjectInventoryContents(world, i, j, k, (InventoryBase)world.getTileEntity(i, j, k));
+        InventoryHandler.ejectInventoryContents(world, i, j, k, (InventoryBase)world.getTileEntity(i, j, k));
         super.onBlockRemoved(world, i, j, k);
     }
 
@@ -112,7 +112,7 @@ public class Cauldron extends TemplateBlockWithEntity
                 {
                     continue;
                 }
-                if(InventoryHandler.AddItemInstanceToInventory(tileEntityCauldron, targetEntityItem.item))
+                if(InventoryHandler.addItemInstanceToInventory(tileEntityCauldron, targetEntityItem.item))
                 {
                      world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.pop", 0.25F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                     targetEntityItem.remove();

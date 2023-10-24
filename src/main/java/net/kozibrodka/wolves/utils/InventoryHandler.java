@@ -19,96 +19,96 @@ public class InventoryHandler
     {
     }
 
-    public static void ClearInventoryContents(InventoryBase inventory)
+    public static void clearInventoryContents(InventoryBase inventory)
     {
-        for(int iSlot = 0; iSlot < inventory.getInventorySize(); iSlot++)
+        for(int slot = 0; slot < inventory.getInventorySize(); slot++)
         {
-            ItemInstance ItemInstance = inventory.getInventoryItem(iSlot);
+            ItemInstance ItemInstance = inventory.getInventoryItem(slot);
             if(ItemInstance != null)
             {
-                inventory.setInventoryItem(iSlot, null);
+                inventory.setInventoryItem(slot, null);
             }
         }
 
     }
 
-    public static void EjectInventoryContents(Level world, int i, int j, int k, InventoryBase inventory)
+    public static void ejectInventoryContents(Level world, int x, int y, int z, InventoryBase inventory)
     {
-label0:
-        for(int l = 0; l < inventory.getInventorySize(); l++)
+slotLoop:
+        for(int slot = 0; slot < inventory.getInventorySize(); slot++)
         {
-            ItemInstance ItemInstance = inventory.getInventoryItem(l);
-            if(ItemInstance == null)
+            ItemInstance itemInstance = inventory.getInventoryItem(slot);
+            if(itemInstance == null)
             {
                 continue;
             }
-            float f = world.rand.nextFloat() * 0.7F + 0.15F;
-            float f1 = world.rand.nextFloat() * 0.7F + 0.15F;
-            float f2 = world.rand.nextFloat() * 0.7F + 0.15F;
+            float xOffset = world.rand.nextFloat() * 0.7F + 0.15F;
+            float yOffset = world.rand.nextFloat() * 0.7F + 0.15F;
+            float zOffset = world.rand.nextFloat() * 0.7F + 0.15F;
             do
             {
-                if(ItemInstance.count <= 0)
+                if(itemInstance.count <= 0)
                 {
-                    continue label0;
+                    continue slotLoop;
                 }
-                int i1 = world.rand.nextInt(21) + 10;
-                if(i1 > ItemInstance.count)
+                int randomStackSize = world.rand.nextInt(21) + 10;
+                if(randomStackSize > itemInstance.count)
                 {
-                    i1 = ItemInstance.count;
+                    randomStackSize = itemInstance.count;
                 }
-                ItemInstance.count -= i1;
-                Item entityitem = new Item(world, (float)i + f, (float)j + f1, (float)k + f2, new ItemInstance(ItemInstance.itemId, i1, ItemInstance.getDamage()));
-                float f3 = 0.05F;
-                entityitem.velocityX = (float)world.rand.nextGaussian() * f3;
-                entityitem.velocityY = (float)world.rand.nextGaussian() * f3 + 0.2F;
-                entityitem.velocityZ = (float)world.rand.nextGaussian() * f3;
-                entityitem.pickupDelay = 10;
-                world.spawnEntity(entityitem);
+                itemInstance.count -= randomStackSize;
+                Item itemEntity = new Item(world, (float)x + xOffset, (float)y + yOffset, (float)z + zOffset, new ItemInstance(itemInstance.itemId, randomStackSize, itemInstance.getDamage()));
+                float randomVelocityFactor = 0.05F;
+                itemEntity.velocityX = (float)world.rand.nextGaussian() * randomVelocityFactor;
+                itemEntity.velocityY = (float)world.rand.nextGaussian() * randomVelocityFactor + 0.2F;
+                itemEntity.velocityZ = (float)world.rand.nextGaussian() * randomVelocityFactor;
+                itemEntity.pickupDelay = 10;
+                world.spawnEntity(itemEntity);
             } while(true);
         }
 
     }
 
-    public static boolean ConsumeItemsInInventory(InventoryBase inventory, int iShiftedItemIndex, int iItemDamage, int iItemCount)
+    public static boolean consumeItemsInInventory(InventoryBase inventory, int itemId, int itemDamage, int itemCount)
     {
-        for(int iSlot = 0; iSlot < inventory.getInventorySize(); iSlot++)
+        for(int slot = 0; slot < inventory.getInventorySize(); slot++)
         {
-            ItemInstance tempItemInstance = inventory.getInventoryItem(iSlot);
+            ItemInstance tempItemInstance = inventory.getInventoryItem(slot);
             if(tempItemInstance == null)
             {
                 continue;
             }
             ItemBase tempItem = tempItemInstance.getType();
-            if(tempItem.id != iShiftedItemIndex || iItemDamage != -1 && tempItemInstance.getDamage() != iItemDamage)
+            if(tempItem.id != itemId || itemDamage != -1 && tempItemInstance.getDamage() != itemDamage)
             {
                 continue;
             }
-            if(tempItemInstance.count >= iItemCount)
+            if(tempItemInstance.count >= itemCount)
             {
-                DecrStackSize(inventory, iSlot, iItemCount);
+                decreaseStackSize(inventory, slot, itemCount);
                 return true;
             }
-            iItemCount -= tempItemInstance.count;
-            inventory.setInventoryItem(iSlot, null);
+            itemCount -= tempItemInstance.count;
+            inventory.setInventoryItem(slot, null);
         }
 
         return false;
     }
 
-    public static ItemInstance DecrStackSize(InventoryBase inventory, int iSlot, int iAmount)
+    public static ItemInstance decreaseStackSize(InventoryBase inventory, int slot, int amount)
     {
-        if(inventory.getInventoryItem(iSlot) != null)
+        if(inventory.getInventoryItem(slot) != null)
         {
-            if(inventory.getInventoryItem(iSlot).count <= iAmount)
+            if(inventory.getInventoryItem(slot).count <= amount)
             {
-                ItemInstance ItemInstance = inventory.getInventoryItem(iSlot);
-                inventory.setInventoryItem(iSlot, null);
-                return ItemInstance;
+                ItemInstance itemInstance = inventory.getInventoryItem(slot);
+                inventory.setInventoryItem(slot, null);
+                return itemInstance;
             }
-            ItemInstance splitStack = inventory.getInventoryItem(iSlot).split(iAmount);
-            if(inventory.getInventoryItem(iSlot).count == 0)
+            ItemInstance splitStack = inventory.getInventoryItem(slot).split(amount);
+            if(inventory.getInventoryItem(slot).count == 0)
             {
-                inventory.setInventoryItem(iSlot, null);
+                inventory.setInventoryItem(slot, null);
             } else
             {
                 inventory.markDirty();
@@ -120,94 +120,94 @@ label0:
         }
     }
 
-    public static int GetFirstOccupiedStack(InventoryBase inventory)
+    public static int getFirstOccupiedStack(InventoryBase inventory)
     {
-        for(int i = 0; i < inventory.getInventorySize(); i++)
+        for(int slot = 0; slot < inventory.getInventorySize(); slot++)
         {
-            if(inventory.getInventoryItem(i) != null)
+            if(inventory.getInventoryItem(slot) != null)
             {
-                return i;
+                return slot;
             }
         }
 
         return -1;
     }
 
-    public static int GetFirstOccupiedStackNotOfItem(InventoryBase inventory, int iNotItemID)
+    public static int getFirstOccupiedStackExcludingItem(InventoryBase inventory, int excludeditemId)
     {
-        for(int i = 0; i < inventory.getInventorySize(); i++)
+        for(int slot = 0; slot < inventory.getInventorySize(); slot++)
         {
-            if(inventory.getInventoryItem(i) != null && inventory.getInventoryItem(i).getType().id != iNotItemID)
+            if(inventory.getInventoryItem(slot) != null && inventory.getInventoryItem(slot).getType().id != excludeditemId)
             {
-                return i;
+                return slot;
             }
         }
 
         return -1;
     }
 
-    public static int GetFirstOccupiedStackOfItem(InventoryBase inventory, int iItemID)
+    public static int getFirstOccupiedStackOfItem(InventoryBase inventory, int itemId)
     {
-        for(int i = 0; i < inventory.getInventorySize(); i++)
+        for(int slot = 0; slot < inventory.getInventorySize(); slot++)
         {
-            if(inventory.getInventoryItem(i) != null && inventory.getInventoryItem(i).getType().id == iItemID)
+            if(inventory.getInventoryItem(slot) != null && inventory.getInventoryItem(slot).getType().id == itemId)
             {
-                return i;
+                return slot;
             }
         }
 
         return -1;
     }
 
-    public static int CountItemsInInventory(InventoryBase inventory, int iItemID, int iItemDamage)
+    public static int itemCountInInventory(InventoryBase inventory, int itemId, int itemDamage)
     {
         int itemCount = 0;
-        for(int i = 0; i < inventory.getInventorySize(); i++)
+        for(int slot = 0; slot < inventory.getInventorySize(); slot++)
         {
-            ItemInstance tempStack = inventory.getInventoryItem(i);
-            if(tempStack != null && tempStack.getType().id == iItemID && (iItemDamage == -1 || tempStack.getDamage() == iItemDamage))
+            ItemInstance tempStack = inventory.getInventoryItem(slot);
+            if(tempStack != null && tempStack.getType().id == itemId && (itemDamage == -1 || tempStack.getDamage() == itemDamage))
             {
-                itemCount += inventory.getInventoryItem(i).count;
+                itemCount += inventory.getInventoryItem(slot).count;
             }
         }
 
         return itemCount;
     }
 
-    public static int GetNumOccupiedStacks(InventoryBase inventory)
+    public static int getOccupiedStacksCount(InventoryBase inventory)
     {
-        int iCount = 0;
+        int count = 0;
         for(int i = 0; i < inventory.getInventorySize(); i++)
         {
             if(inventory.getInventoryItem(i) != null)
             {
-                iCount++;
+                count++;
             }
         }
 
-        return iCount;
+        return count;
     }
 
-    public static boolean AddSingleItemToInventory(InventoryBase inventory, int iItemShiftedIndex, int itemDamage)
+    public static boolean addSingleItemToInventory(InventoryBase inventory, int itemId, int itemDamage)
     {
-        ItemInstance ItemInstance = new ItemInstance(iItemShiftedIndex, 1, itemDamage);
-        return AddItemInstanceToInventory(inventory, ItemInstance);
+        ItemInstance ItemInstance = new ItemInstance(itemId, 1, itemDamage);
+        return addItemInstanceToInventory(inventory, ItemInstance);
     }
 
-    public static boolean AddItemInstanceToInventory(InventoryBase inventory, ItemInstance ItemInstance)
+    public static boolean addItemInstanceToInventory(InventoryBase inventory, ItemInstance itemInstance)
     {
-        if(!ItemInstance.isDamaged())
+        if(!itemInstance.isDamaged())
         {
-            ItemInstance.count = StorePartialItemInstance(inventory, ItemInstance);
-            if(ItemInstance.count == 0)
+            itemInstance.count = storePartialItemInstance(inventory, itemInstance);
+            if(itemInstance.count == 0)
             {
                 return true;
             }
         }
-        int i = GetFirstEmptyStack(inventory);
-        if(i >= 0)
+        int slot = getFirstEmptyStack(inventory);
+        if(slot >= 0)
         {
-            inventory.setInventoryItem(i, ItemInstance);
+            inventory.setInventoryItem(slot, itemInstance);
             return true;
         } else
         {
@@ -215,100 +215,100 @@ label0:
         }
     }
 
-    private static int GetFirstEmptyStack(InventoryBase inventory)
+    private static int getFirstEmptyStack(InventoryBase inventory)
     {
-        for(int i = 0; i < inventory.getInventorySize(); i++)
+        for(int slot = 0; slot < inventory.getInventorySize(); slot++)
         {
-            if(inventory.getInventoryItem(i) == null)
+            if(inventory.getInventoryItem(slot) == null)
             {
-                return i;
+                return slot;
             }
         }
 
         return -1;
     }
 
-    private static int StorePartialItemInstance(InventoryBase inventory, ItemInstance ItemInstance)
+    private static int storePartialItemInstance(InventoryBase inventory, ItemInstance itemInstance)
     {
-        int i = ItemInstance.itemId;
-        int j = ItemInstance.count;
-        int k = FindSlotToStoreItemInstance(inventory, ItemInstance);
-        if(k < 0)
+        int itemId = itemInstance.itemId;
+        int count = itemInstance.count;
+        int slot = findValidSlotForItem(inventory, itemInstance);
+        if(slot < 0)
         {
-            k = GetFirstEmptyStack(inventory);
+            slot = getFirstEmptyStack(inventory);
         }
-        if(k < 0)
+        if(slot < 0)
         {
-            return j;
+            return count;
         }
-        if(inventory.getInventoryItem(k) == null)
+        if(inventory.getInventoryItem(slot) == null)
         {
-            inventory.setInventoryItem(k, new ItemInstance(i, 0, ItemInstance.getDamage()));
+            inventory.setInventoryItem(slot, new ItemInstance(itemId, 0, itemInstance.getDamage()));
         }
-        int l = j;
-        ItemInstance tempStack = inventory.getInventoryItem(k);
-        if(l > tempStack.getMaxStackSize() - tempStack.count)
+        int insertedItems = count;
+        ItemInstance tempStack = inventory.getInventoryItem(slot);
+        if(insertedItems > tempStack.getMaxStackSize() - tempStack.count)
         {
-            l = tempStack.getMaxStackSize() - tempStack.count;
+            insertedItems = tempStack.getMaxStackSize() - tempStack.count;
         }
-        if(l > inventory.getMaxItemCount() - tempStack.count)
+        if(insertedItems > inventory.getMaxItemCount() - tempStack.count)
         {
-            l = inventory.getMaxItemCount() - tempStack.count;
+            insertedItems = inventory.getMaxItemCount() - tempStack.count;
         }
-        if(l == 0)
+        if(insertedItems == 0)
         {
-            return j;
+            return count;
         } else
         {
-            j -= l;
-            tempStack.count += l;
-            inventory.setInventoryItem(k, tempStack);
-            return j;
+            count -= insertedItems;
+            tempStack.count += insertedItems;
+            inventory.setInventoryItem(slot, tempStack);
+            return count;
         }
     }
 
-    private static int FindSlotToStoreItemInstance(InventoryBase inventory, ItemInstance ItemInstance)
+    private static int findValidSlotForItem(InventoryBase inventory, ItemInstance itemInstance)
     {
-        for(int i = 0; i < inventory.getInventorySize(); i++)
+        for(int slot = 0; slot < inventory.getInventorySize(); slot++)
         {
-            ItemInstance tempStack = inventory.getInventoryItem(i);
-            if(tempStack != null && tempStack.itemId == ItemInstance.itemId && tempStack.isStackable() && tempStack.count < tempStack.getMaxStackSize() && tempStack.count < inventory.getMaxItemCount() && (!tempStack.usesMeta() || tempStack.getDamage() == ItemInstance.getDamage()))
+            ItemInstance tempStack = inventory.getInventoryItem(slot);
+            if(tempStack != null && tempStack.itemId == itemInstance.itemId && tempStack.isStackable() && tempStack.count < tempStack.getMaxStackSize() && tempStack.count < inventory.getMaxItemCount() && (!tempStack.usesMeta() || tempStack.getDamage() == itemInstance.getDamage()))
             {
-                return i;
+                return slot;
             }
         }
 
         return -1;
     }
 
-    public static int GetNumOccupiedStacksInSlotRange(InventoryBase inventory, int iMinSlotIndex, int iMaxSlotIndex)
+    public static int getOccupiedSlotCountWithinBounds(InventoryBase inventory, int minimumSlot, int maximumSlot)
     {
-        int iCount = 0;
-        for(int i = iMinSlotIndex; i < inventory.getInventorySize() && i <= iMaxSlotIndex; i++)
+        int slotCount = 0;
+        for(int slot = minimumSlot; slot < inventory.getInventorySize() && slot <= maximumSlot; slot++)
         {
-            if(inventory.getInventoryItem(i) != null)
+            if(inventory.getInventoryItem(slot) != null)
             {
-                iCount++;
+                slotCount++;
             }
         }
 
-        return iCount;
+        return slotCount;
     }
 
-    public static boolean AddItemInstanceToInventoryInSlotRange(InventoryBase inventory, ItemInstance ItemInstance, int iMinSlotIndex, int iMaxSlotIndex)
+    public static boolean addItemWithinSlotBounds(InventoryBase inventory, ItemInstance itemInstance, int minimumSlot, int maximumSlot)
     {
-        if(!ItemInstance.isDamaged())
+        if(!itemInstance.isDamaged())
         {
-            ItemInstance.count = StorePartialItemInstanceInSlotRange(inventory, ItemInstance, iMinSlotIndex, iMaxSlotIndex);
-            if(ItemInstance.count == 0)
+            itemInstance.count = storePartialItemInstanceWithinSlotBounds(inventory, itemInstance, minimumSlot, maximumSlot);
+            if(itemInstance.count == 0)
             {
                 return true;
             }
         }
-        int i = GetFirstEmptyStackInSlotRange(inventory, iMinSlotIndex, iMaxSlotIndex);
-        if(i >= 0)
+        int slot = getFirstEmptySlotWithinBounds(inventory, minimumSlot, maximumSlot);
+        if(slot >= 0)
         {
-            inventory.setInventoryItem(i, ItemInstance);
+            inventory.setInventoryItem(slot, itemInstance);
             return true;
         } else
         {
@@ -316,66 +316,66 @@ label0:
         }
     }
 
-    private static int GetFirstEmptyStackInSlotRange(InventoryBase inventory, int iMinSlotIndex, int iMaxSlotIndex)
+    private static int getFirstEmptySlotWithinBounds(InventoryBase inventory, int minimumSlot, int maximumSlot)
     {
-        for(int i = iMinSlotIndex; i < inventory.getInventorySize() && i <= iMaxSlotIndex; i++)
+        for(int slot = minimumSlot; slot < inventory.getInventorySize() && slot <= maximumSlot; slot++)
         {
-            if(inventory.getInventoryItem(i) == null)
+            if(inventory.getInventoryItem(slot) == null)
             {
-                return i;
+                return slot;
             }
         }
 
         return -1;
     }
 
-    private static int StorePartialItemInstanceInSlotRange(InventoryBase inventory, ItemInstance ItemInstance, int iMinSlotIndex, int iMaxSlotIndex)
+    private static int storePartialItemInstanceWithinSlotBounds(InventoryBase inventory, ItemInstance itemInstance, int minimumSlot, int maximumSlot)
     {
-        int i = ItemInstance.itemId;
-        int j = ItemInstance.count;
-        int k = FindSlotToStoreItemInstanceInSlotRange(inventory, ItemInstance, iMinSlotIndex, iMaxSlotIndex);
-        if(k < 0)
+        int itemId = itemInstance.itemId;
+        int count = itemInstance.count;
+        int slot = findValidSlotWithinBounds(inventory, itemInstance, minimumSlot, maximumSlot);
+        if(slot < 0)
         {
-            k = GetFirstEmptyStackInSlotRange(inventory, iMinSlotIndex, iMaxSlotIndex);
+            slot = getFirstEmptySlotWithinBounds(inventory, minimumSlot, maximumSlot);
         }
-        if(k < 0)
+        if(slot < 0)
         {
-            return j;
+            return count;
         }
-        if(inventory.getInventoryItem(k) == null)
+        if(inventory.getInventoryItem(slot) == null)
         {
-            inventory.setInventoryItem(k, new ItemInstance(i, 0, ItemInstance.getDamage()));
+            inventory.setInventoryItem(slot, new ItemInstance(itemId, 0, itemInstance.getDamage()));
         }
-        int l = j;
-        ItemInstance tempStack = inventory.getInventoryItem(k);
-        if(l > tempStack.getMaxStackSize() - tempStack.count)
+        int insertedItems = count;
+        ItemInstance tempStack = inventory.getInventoryItem(slot);
+        if(insertedItems > tempStack.getMaxStackSize() - tempStack.count)
         {
-            l = tempStack.getMaxStackSize() - tempStack.count;
+            insertedItems = tempStack.getMaxStackSize() - tempStack.count;
         }
-        if(l > inventory.getMaxItemCount() - tempStack.count)
+        if(insertedItems > inventory.getMaxItemCount() - tempStack.count)
         {
-            l = inventory.getMaxItemCount() - tempStack.count;
+            insertedItems = inventory.getMaxItemCount() - tempStack.count;
         }
-        if(l == 0)
+        if(insertedItems == 0)
         {
-            return j;
+            return count;
         } else
         {
-            j -= l;
-            tempStack.count += l;
-            inventory.setInventoryItem(k, tempStack);
-            return j;
+            count -= insertedItems;
+            tempStack.count += insertedItems;
+            inventory.setInventoryItem(slot, tempStack);
+            return count;
         }
     }
 
-    private static int FindSlotToStoreItemInstanceInSlotRange(InventoryBase inventory, ItemInstance ItemInstance, int iMinSlotIndex, int iMaxSlotIndex)
+    private static int findValidSlotWithinBounds(InventoryBase inventory, ItemInstance itemInstance, int minimumSlot, int maximumSlot)
     {
-        for(int i = iMinSlotIndex; i < inventory.getInventorySize() && i <= iMaxSlotIndex; i++)
+        for(int slot = minimumSlot; slot < inventory.getInventorySize() && slot <= maximumSlot; slot++)
         {
-            ItemInstance tempStack = inventory.getInventoryItem(i);
-            if(tempStack != null && tempStack.itemId == ItemInstance.itemId && tempStack.isStackable() && tempStack.count < tempStack.getMaxStackSize() && tempStack.count < inventory.getMaxItemCount() && (!tempStack.usesMeta() || tempStack.getDamage() == ItemInstance.getDamage()))
+            ItemInstance tempStack = inventory.getInventoryItem(slot);
+            if(tempStack != null && tempStack.itemId == itemInstance.itemId && tempStack.isStackable() && tempStack.count < tempStack.getMaxStackSize() && tempStack.count < inventory.getMaxItemCount() && (!tempStack.usesMeta() || tempStack.getDamage() == itemInstance.getDamage()))
             {
-                return i;
+                return slot;
             }
         }
 

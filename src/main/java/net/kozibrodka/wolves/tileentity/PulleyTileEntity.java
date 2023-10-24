@@ -64,7 +64,7 @@ public class PulleyTileEntity extends TileEntityBase
 
     public ItemInstance takeInventoryItem(int iSlot, int iAmount)
     {
-        return InventoryHandler.DecrStackSize(this, iSlot, iAmount);
+        return InventoryHandler.decreaseStackSize(this, iSlot, iAmount);
     }
 
     public void readIdentifyingData(CompoundTag nbttagcompound)
@@ -151,7 +151,7 @@ public class PulleyTileEntity extends TileEntityBase
 
     public boolean IsLowering()
     {
-        return !IsRedstonePowered() && !IsMechanicallyPowered() && InventoryHandler.GetFirstOccupiedStackOfItem(this, ItemListener.ropeItem.id) >= 0;
+        return !IsRedstonePowered() && !IsMechanicallyPowered() && InventoryHandler.getFirstOccupiedStackOfItem(this, ItemListener.ropeItem.id) >= 0;
     }
 
     public void NotifyPulleyEntityOfBlockStateChange()
@@ -208,7 +208,7 @@ public class PulleyTileEntity extends TileEntityBase
 
     public boolean AttemptToDispenseRope()
     {
-        int iRopeSlot = InventoryHandler.GetFirstOccupiedStackOfItem(this, ItemListener.ropeItem.id);
+        int iRopeSlot = InventoryHandler.getFirstOccupiedStackOfItem(this, ItemListener.ropeItem.id);
         iUpdateRopeStateCounter = 20;
         if(iRopeSlot >= 0)
         {
@@ -248,7 +248,7 @@ public class PulleyTileEntity extends TileEntityBase
     {
         ItemInstance ropeStack = new ItemInstance(ItemListener.ropeItem);
         iUpdateRopeStateCounter = 20;
-        if(InventoryHandler.AddItemInstanceToInventory(this, ropeStack))
+        if(InventoryHandler.addItemInstanceToInventory(this, ropeStack))
         {
             level.playSound((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, "random.pop", 0.05F, (level.rand.nextFloat() - level.rand.nextFloat()) * 0.7F + 1.0F);
         } else
@@ -259,15 +259,15 @@ public class PulleyTileEntity extends TileEntityBase
 
     public int GetContainedRopeCount()
     {
-        return InventoryHandler.CountItemsInInventory(this, ItemListener.ropeItem.id, -1);
+        return InventoryHandler.itemCountInInventory(this, ItemListener.ropeItem.id, -1);
     }
 
     public void RemoveRopeFromInventory()
     {
-        int iRopeSlot = InventoryHandler.GetFirstOccupiedStackOfItem(this, ItemListener.ropeItem.id);
+        int iRopeSlot = InventoryHandler.getFirstOccupiedStackOfItem(this, ItemListener.ropeItem.id);
         if(iRopeSlot >= 0)
         {
-            InventoryHandler.DecrStackSize(this, iRopeSlot, 1);
+            InventoryHandler.decreaseStackSize(this, iRopeSlot, 1);
         }
     }
 

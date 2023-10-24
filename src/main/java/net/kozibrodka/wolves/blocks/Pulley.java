@@ -60,7 +60,7 @@ public class Pulley extends TemplateBlockWithEntity
     {
             TileEntityBase tileEntity = world.getTileEntity(i, j, k);
             if (tileEntity != null) {
-                InventoryHandler.EjectInventoryContents(world, i, j, k, (InventoryBase) tileEntity);
+                InventoryHandler.ejectInventoryContents(world, i, j, k, (InventoryBase) tileEntity);
             }
             super.onBlockRemoved(world, i, j, k);
     }

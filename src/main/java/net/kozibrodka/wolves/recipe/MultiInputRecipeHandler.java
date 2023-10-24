@@ -34,7 +34,7 @@ public class MultiInputRecipeHandler
             for(int listIndex = 0; listIndex < m_recipeInputStacks.size(); listIndex++)
             {
                 ItemInstance tempStack = (ItemInstance)m_recipeInputStacks.get(listIndex);
-                if(tempStack != null && InventoryHandler.CountItemsInInventory(inventory, tempStack.getType().id, tempStack.getDamage()) < tempStack.count)
+                if(tempStack != null && InventoryHandler.itemCountInInventory(inventory, tempStack.getType().id, tempStack.getDamage()) < tempStack.count)
                 {
                     return false;
                 }
@@ -54,7 +54,7 @@ public class MultiInputRecipeHandler
         {
             for (Object m_recipeInputStack : m_recipeInputStacks) {
                 ItemInstance tempStack = (ItemInstance) m_recipeInputStack;
-                if (tempStack != null && !InventoryHandler.ConsumeItemsInInventory(inventory, tempStack.getType().id, tempStack.getDamage(), tempStack.count)) {
+                if (tempStack != null && !InventoryHandler.consumeItemsInInventory(inventory, tempStack.getType().id, tempStack.getDamage(), tempStack.count)) {
                     bSuccessful = false;
                 }
             }

@@ -132,7 +132,7 @@ public class BlockDispenser extends TemplateBlockWithEntity
 
     public void onBlockRemoved(Level world, int i, int j, int k)
     {
-        InventoryHandler.EjectInventoryContents(world, i, j, k, (InventoryBase)world.getTileEntity(i, j, k));
+        InventoryHandler.ejectInventoryContents(world, i, j, k, (InventoryBase)world.getTileEntity(i, j, k));
         super.onBlockRemoved(world, i, j, k);
     }
 
@@ -269,7 +269,7 @@ public class BlockDispenser extends TemplateBlockWithEntity
         }
         if(iTargetidDropped > 0)
         {
-            return InventoryHandler.AddSingleItemToInventory(tileEentityDispenser, iTargetidDropped, itemDamage);
+            return InventoryHandler.addSingleItemToInventory(tileEentityDispenser, iTargetidDropped, itemDamage);
         } else
         {
             return false;
@@ -303,15 +303,15 @@ public class BlockDispenser extends TemplateBlockWithEntity
                     switch(minecartType)
                     {
                     case 0: // '\0'
-                        InventoryHandler.AddSingleItemToInventory(tileEentityDispenser, ItemBase.minecart.id, 0);
+                        InventoryHandler.addSingleItemToInventory(tileEentityDispenser, ItemBase.minecart.id, 0);
                         break;
 
                     case 1: // '\001'
-                        InventoryHandler.AddSingleItemToInventory(tileEentityDispenser, ItemBase.minecartChest.id, 0);
+                        InventoryHandler.addSingleItemToInventory(tileEentityDispenser, ItemBase.minecartChest.id, 0);
                         break;
 
                     default:
-                        InventoryHandler.AddSingleItemToInventory(tileEentityDispenser, ItemBase.minecartFurnace.id, 0);
+                        InventoryHandler.addSingleItemToInventory(tileEentityDispenser, ItemBase.minecartFurnace.id, 0);
                         break;
                     }
                      world.playSound(i, j, k, "random.click", 1.0F, 1.2F);
@@ -320,7 +320,7 @@ public class BlockDispenser extends TemplateBlockWithEntity
                 if(targetEntity instanceof Boat)
                 {
                     targetEntity.remove();
-                    InventoryHandler.AddSingleItemToInventory(tileEentityDispenser, ItemBase.boat.id, 0);
+                    InventoryHandler.addSingleItemToInventory(tileEentityDispenser, ItemBase.boat.id, 0);
                      world.playSound(i, j, k, "random.click", 1.0F, 1.2F);
                     return true;
                 }
@@ -329,7 +329,7 @@ public class BlockDispenser extends TemplateBlockWithEntity
                     Wolf targetWolf = (Wolf)targetEntity;
                     world.playSound(targetEntity, ((WolfAccessor) targetWolf).invokeGetHurtSound(), ((WolfAccessor) targetWolf).invokeGetSoundVolume(), (world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F + 1.0F);
                     targetEntity.remove();
-                    InventoryHandler.AddSingleItemToInventory(tileEentityDispenser, BlockListener.companionCube.id, 0);
+                    InventoryHandler.addSingleItemToInventory(tileEentityDispenser, BlockListener.companionCube.id, 0);
                     for(int tempCount = 0; tempCount < 2; tempCount++)
                     {
                         SpitOutItem(world, i, j, k, new ItemInstance(ItemBase.string), world.rand);
@@ -342,7 +342,7 @@ public class BlockDispenser extends TemplateBlockWithEntity
                     Chicken targetChicken = (Chicken)targetEntity;
                     world.playSound(targetEntity, ((ChickenAccessor) targetChicken).invokeGetHurtSound(), 1.0F, (world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F + 1.0F);
                     targetEntity.remove();
-                    InventoryHandler.AddSingleItemToInventory(tileEentityDispenser, ItemBase.egg.id, 0);
+                    InventoryHandler.addSingleItemToInventory(tileEentityDispenser, ItemBase.egg.id, 0);
                     SpitOutItem(world, i, j, k, new ItemInstance(ItemBase.feather), world.rand);
                     return true;
                 }
@@ -367,7 +367,7 @@ public class BlockDispenser extends TemplateBlockWithEntity
                 if(iTargetid == id)
                 {
                     BlockDispenserTileEntity targetTileEentityDispenser = (BlockDispenserTileEntity)world.getTileEntity(targetPos.i, targetPos.j, targetPos.k);
-                    InventoryHandler.ClearInventoryContents(targetTileEentityDispenser);
+                    InventoryHandler.clearInventoryContents(targetTileEentityDispenser);
                 }
                 if(AddBlockToInventory(world, i, j, k, targetBlock, iTargetMetaData))
                 {
@@ -555,7 +555,7 @@ public class BlockDispenser extends TemplateBlockWithEntity
                     iteminstance.count++;
                     if(!iteminstance.getType().useOnTile(iteminstance, null, world, targetPos.i, targetPos.j - 1, targetPos.k, 1))
                     {
-                        InventoryHandler.AddSingleItemToInventory(tileEntityBlockDispenser, iteminstance.itemId, 0);
+                        InventoryHandler.addSingleItemToInventory(tileEntityBlockDispenser, iteminstance.itemId, 0);
                     } else
                     {
                         BlockBase newBlock = BlockBase.CROPS;
@@ -603,7 +603,7 @@ public class BlockDispenser extends TemplateBlockWithEntity
                             bSuccessfullyDispensed = true;
                         } else
                         {
-                            InventoryHandler.AddSingleItemToInventory(tileEntityBlockDispenser, iteminstance.itemId, iteminstance.getDamage());
+                            InventoryHandler.addSingleItemToInventory(tileEntityBlockDispenser, iteminstance.itemId, iteminstance.getDamage());
                         }
                     } else
                     if(world.isAir(targetPos.i, targetPos.j, targetPos.k))
@@ -613,7 +613,7 @@ public class BlockDispenser extends TemplateBlockWithEntity
                         bSuccessfullyDispensed = true;
                     } else
                     {
-                        InventoryHandler.AddSingleItemToInventory(tileEntityBlockDispenser, iteminstance.itemId, iteminstance.getDamage());
+                        InventoryHandler.addSingleItemToInventory(tileEntityBlockDispenser, iteminstance.itemId, iteminstance.getDamage());
                     }
                 }
             }

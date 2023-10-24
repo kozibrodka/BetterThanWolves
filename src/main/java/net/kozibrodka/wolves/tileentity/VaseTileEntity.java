@@ -38,7 +38,7 @@ public class VaseTileEntity extends TileEntityBase
 
     public ItemInstance takeInventoryItem(int iSlot, int iAmount)
     {
-        return InventoryHandler.DecrStackSize(this, iSlot, iAmount);
+        return InventoryHandler.decreaseStackSize(this, iSlot, iAmount);
     }
 
     public void setInventoryItem(int iSlot, ItemInstance ItemInstance)

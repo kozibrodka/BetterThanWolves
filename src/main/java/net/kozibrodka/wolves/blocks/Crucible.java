@@ -84,7 +84,7 @@ public class Crucible extends TemplateBlockWithEntity
 
     public void onBlockRemoved(Level world, int i, int j, int k)
     {
-        InventoryHandler.EjectInventoryContents(world, i, j, k, (InventoryBase)world.getTileEntity(i, j, k));
+        InventoryHandler.ejectInventoryContents(world, i, j, k, (InventoryBase)world.getTileEntity(i, j, k));
         super.onBlockRemoved(world, i, j, k);
     }
 
@@ -107,7 +107,7 @@ public class Crucible extends TemplateBlockWithEntity
                 {
                     continue;
                 }
-                if(InventoryHandler.AddItemInstanceToInventory(tileEntityCrucible, targetEntityItem.item))
+                if(InventoryHandler.addItemInstanceToInventory(tileEntityCrucible, targetEntityItem.item))
                 {
                      world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.pop", 0.25F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                     targetEntityItem.remove();
@@ -184,7 +184,7 @@ public class Crucible extends TemplateBlockWithEntity
         this.setBoundingBox(0.125F, 0.125F, 0.0F, 1.0F, 0.875F, 0.125F);
         tileRenderer.renderStandardBlock(this, x, y, z);
         CrucibleTileEntity fctileentitycrucible = (CrucibleTileEntity)tileView.getTileEntity(x, y, z);
-        int l = InventoryHandler.GetNumOccupiedStacks(fctileentitycrucible);
+        int l = InventoryHandler.getOccupiedStacksCount(fctileentitycrucible);
         if(l > 0)
         {
             float f = (float)l / 27F;
