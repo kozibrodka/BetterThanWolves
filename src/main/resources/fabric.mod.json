@@ -22,6 +22,7 @@
       "net.kozibrodka.wolves.events.mod_FCBetterThanWolves",
       "net.kozibrodka.wolves.events.BlockListener",
       "net.kozibrodka.wolves.events.ItemListener",
+      "net.kozibrodka.wolves.events.TileEntityListener",
       "net.kozibrodka.wolves.events.RecipeListener"
     ],
     "stationapi:event_bus_client": [

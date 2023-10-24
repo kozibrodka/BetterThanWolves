@@ -62,20 +62,6 @@ public class mod_FCBetterThanWolves {
     }
 
 
-    @EventListener
-    private static void registerTileEntities(TileEntityRegisterEvent event) {
-        event.register(MillStoneTileEntity.class, String.valueOf(Identifier.of(MOD_ID, "TileMillStone")));
-        event.register(CrucibleTileEntity.class, String.valueOf(Identifier.of(MOD_ID, "TileCrucible")));
-        event.register(CauldronTileEntity.class, String.valueOf(Identifier.of(MOD_ID, "TileCauldron")));
-        event.register(PulleyTileEntity.class, String.valueOf(Identifier.of(MOD_ID, "TilePulley")));
-        event.register(TurntableTileEntity.class, String.valueOf(Identifier.of(MOD_ID, "TileTurntable")));
-        event.register(HopperTileEntity.class, String.valueOf(Identifier.of(MOD_ID, "TileHooper")));
-        event.register(BlockDispenserTileEntity.class, String.valueOf(Identifier.of(MOD_ID, "TileDispenser")));
-        event.register(UnfiredPotteryTileEntity.class, String.valueOf(Identifier.of(MOD_ID, "TilePottery")));
-        event.register(VaseTileEntity.class, String.valueOf(Identifier.of(MOD_ID, "TileVase")));
-        event.register(CementTileEntity.class, String.valueOf(Identifier.of(MOD_ID, "TileCement")));
-    }
-
     //TODO EXTRA: Saw animated, Anvil gravity, PANELS/options
 
     //TODO: NEW
