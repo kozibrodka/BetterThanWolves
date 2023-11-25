@@ -1,5 +1,7 @@
 package net.kozibrodka.wolves.entity;
 
+import net.kozibrodka.wolves.blocks.Axle;
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.minecraft.block.Wool;
 import net.minecraft.entity.EntityBase;
@@ -40,7 +42,7 @@ public class FCEntityTEST extends EntityBase implements EntitySpawnDataProvider 
             return true;
         }
         System.out.println(dataTracker.getByte(16) & 15);
-        remove();
+//        remove();
         return true;
     }
 
@@ -89,6 +91,28 @@ public class FCEntityTEST extends EntityBase implements EntitySpawnDataProvider 
         return !removed;
     }
 
+    public void tick()
+    {
+        if(removed)
+        {
+            return;
+        }
+        iFullUpdateTickCount--;
+        if(iFullUpdateTickCount <= 0) {
+            iFullUpdateTickCount = 20;
+            int iCenterI = (int) (x - 0.5D);
+            int iCenterJ = (int) (y - 0.5D);
+            int iCenterK = (int) (z - 0.5D);
+            int iCenterid = level.getTileId(iCenterI, iCenterJ, iCenterK);
+            if (iCenterid != BlockListener.axleBlock.id) {
+                if(!level.isServerSide){
+                    remove();
+                }
+                return;
+            }
+        }
+    }
+
     @Override
     protected void initDataTracker() {
         dataTracker.startTracking(16, (byte) 0); //Color
@@ -115,4 +139,6 @@ public class FCEntityTEST extends EntityBase implements EntitySpawnDataProvider 
     public Identifier getHandlerIdentifier() {
         return Identifier.of(mod_FCBetterThanWolves.MOD_ID, "StapiTEST");
     }
+
+    public int iFullUpdateTickCount;
 }
