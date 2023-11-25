@@ -1,19 +1,15 @@
 package net.kozibrodka.wolves.entity;
 
-import net.kozibrodka.wolves.blocks.Axle;
 import net.kozibrodka.wolves.events.BlockListener;
-import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
+import net.kozibrodka.wolves.events.ConfigListener;
 import net.minecraft.block.Wool;
 import net.minecraft.entity.EntityBase;
-import net.minecraft.entity.Living;
-import net.minecraft.entity.animal.Sheep;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.item.ItemBase;
 import net.minecraft.item.ItemInstance;
 import net.minecraft.level.Level;
 import net.minecraft.util.io.CompoundTag;
 import net.minecraft.util.maths.Box;
-import net.modificationstation.stationapi.api.item.Items;
 import net.modificationstation.stationapi.api.registry.Identifier;
 import net.modificationstation.stationapi.api.server.entity.EntitySpawnDataProvider;
 import net.modificationstation.stationapi.api.server.entity.HasTrackingParameters;
@@ -137,7 +133,7 @@ public class FCEntityTEST extends EntityBase implements EntitySpawnDataProvider 
 
     @Override
     public Identifier getHandlerIdentifier() {
-        return Identifier.of(mod_FCBetterThanWolves.MOD_ID, "StapiTEST");
+        return Identifier.of(ConfigListener.MOD_ID, "StapiTEST");
     }
 
     public int iFullUpdateTickCount;

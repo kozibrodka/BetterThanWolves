@@ -19,7 +19,8 @@
   "environment": "*",
   "entrypoints": {
     "stationapi:event_bus": [
-      "net.kozibrodka.wolves.events.mod_FCBetterThanWolves",
+      "net.kozibrodka.wolves.events.ConfigListener",
+      "net.kozibrodka.wolves.events.EntityListener",
       "net.kozibrodka.wolves.events.BlockListener",
       "net.kozibrodka.wolves.events.ItemListener",
       "net.kozibrodka.wolves.events.TileEntityListener",
@@ -34,7 +35,7 @@
 
     ],
     "gcapi": [
-      "net.kozibrodka.wolves.events.mod_FCBetterThanWolves"
+      "net.kozibrodka.wolves.events.ConfigListener"
     ]
   },
   "mixins": [

@@ -6,7 +6,7 @@
 package net.kozibrodka.wolves.blocks;
 
 import net.kozibrodka.wolves.events.TextureListener;
-import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
+import net.kozibrodka.wolves.events.ConfigListener;
 import net.kozibrodka.wolves.tileentity.CementTileEntity;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.material.Material;
@@ -31,7 +31,7 @@ public class Cement extends TemplateBlockWithEntity
 
     public Cement(Identifier iid)
     {
-        super(iid, mod_FCBetterThanWolves.fcCementMaterial);
+        super(iid, ConfigListener.fcCementMaterial);
         setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         setHardness(100F);
         setLightOpacity(255);
@@ -745,12 +745,12 @@ public class Cement extends TemplateBlockWithEntity
             int j1 = i - (i1 & 1);
             int k1 = j;
             int l1 = k - (i1 >> 1 & 1);
-            if(iblockaccess.getMaterial(j1, k1 + 1, l1) == mod_FCBetterThanWolves.fcCementMaterial)
+            if(iblockaccess.getMaterial(j1, k1 + 1, l1) == ConfigListener.fcCementMaterial)
             {
                 return 1.0F;
             }
             Material material = iblockaccess.getMaterial(j1, k1, l1);
-            if(material == mod_FCBetterThanWolves.fcCementMaterial)
+            if(material == ConfigListener.fcCementMaterial)
             {
                 if(iblockaccess.isFullOpaque(j1, k1 + 1, l1))
                 {

@@ -1,13 +1,10 @@
 
 package net.kozibrodka.wolves.items;
-import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
+import net.kozibrodka.wolves.events.ConfigListener;
 import net.minecraft.item.armour.Armour;
 import net.modificationstation.stationapi.api.client.item.ArmourTextureProvider;
-import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
 import net.modificationstation.stationapi.api.registry.Identifier;
-import net.modificationstation.stationapi.api.registry.ModID;
 import net.modificationstation.stationapi.api.template.item.armour.TemplateArmour;
-import net.modificationstation.stationapi.api.util.Null;
 
 public class RefinedArmour extends TemplateArmour implements ArmourTextureProvider
 {
@@ -21,7 +18,7 @@ public class RefinedArmour extends TemplateArmour implements ArmourTextureProvid
 
     @Override
     public Identifier getTexture(Armour armour) {
-        return mod_FCBetterThanWolves.MOD_ID.id("plate");
+        return ConfigListener.MOD_ID.id("plate");
     }
 
     /**

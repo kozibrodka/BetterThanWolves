@@ -4,7 +4,7 @@ package net.kozibrodka.wolves.blocks;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.events.TextureListener;
-import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
+import net.kozibrodka.wolves.events.ConfigListener;
 import net.kozibrodka.wolves.mixin.LevelAccessor;
 import net.kozibrodka.wolves.utils.BlockPosition;
 import net.kozibrodka.wolves.utils.RotatableBlock;
@@ -75,14 +75,16 @@ public class GearBox extends TemplateBlockBase
     public void afterPlaced(Level world, int i, int j, int k, Living entityLiving) //onBlockPlacedBy
     {
         int iFacing = UnsortedUtils.ConvertPlacingEntityOrientationToBlockFacing(entityLiving);
-        if(mod_FCBetterThanWolves.fcFaceGearBoxAwayFromPlayer)
+        if(ConfigListener.fcFaceGearBoxAwayFromPlayer)
         {
             iFacing = UnsortedUtils.GetOppositeFacing(iFacing);
         }
         SetFacing(world, i, j, k, iFacing);
     }
 
-    public void onBlockPlaced(Level world, int i, int j, int k)  //TODO był błąd LOL czy coś to zmieni?
+    //TODO translate the TODO below to English
+    //TODO był błąd LOL czy coś to zmieni?
+    public void onBlockPlaced(Level world, int i, int j, int k)
     {
         super.onBlockPlaced(world, i, j, k);
         world.method_216(i, j, k, id, getTickrate());

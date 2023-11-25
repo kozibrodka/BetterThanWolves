@@ -4,7 +4,6 @@ import net.glasslauncher.hmifabric.Utils;
 import net.glasslauncher.hmifabric.tabs.TabWithTexture;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ItemListener;
-import net.kozibrodka.wolves.events.mod_FCBetterThanWolves;
 import net.kozibrodka.wolves.gui.HopperGUI;
 import net.kozibrodka.wolves.recipe.HopperHauntingRecipeRegistry;
 import net.minecraft.block.BlockBase;
