@@ -37,8 +37,6 @@ public class BlockListener {
         detectorRailWood = (TemplateDetectorRail) new DetectorRailVariants(Identifier.of(MOD_ID, "detectorRailWood"), 22).setTranslationKey(MOD_ID, "detector_rail_wood");
         detectorRailObsidian = (TemplateDetectorRail) new DetectorRailVariants(Identifier.of(MOD_ID, "detectorRailObsidian"), 23).setTranslationKey(MOD_ID, "detector_rail_obsidian");
         companionCube = (TemplateBlockBase) new CompanionCube(Identifier.of(MOD_ID, "companionCube")).setTranslationKey(MOD_ID, "companion_cube").setHardness(0.4F).setSounds(BlockBase.WOOL_SOUNDS);
-        blockDetector = (TemplateBlockBase) new DetectorBlock(Identifier.of(MOD_ID, "blockDetector")).setTranslationKey(MOD_ID, "block_detector").setHardness(3.5F).setSounds(BlockBase.STONE_SOUNDS);
-        blockDetectorLogic = (TemplateBlockBase) new DetectorLogic(Identifier.of(MOD_ID, "blockDetectorLogic")).setTranslationKey(MOD_ID, "block_detector_logic");
         hempCrop = (TemplatePlant) new HempCrop(Identifier.of(MOD_ID, "hempCrop")).setTranslationKey(MOD_ID, "hemp_crop");
         handCrank = (TemplateBlockBase) new HandCrank(Identifier.of(MOD_ID, "handCrank")).setTranslationKey(MOD_ID, "hand_crank");
         millStone = (TemplateBlockWithEntity) new MillStone(Identifier.of(MOD_ID, "millStone")).setTranslationKey(MOD_ID, "mill_stone");
@@ -54,7 +52,7 @@ public class BlockListener {
         crucible = (TemplateBlockWithEntity) new Crucible(Identifier.of(MOD_ID, "crucible")).setTranslationKey(MOD_ID, "crucible");
         planter = (TemplateBlockBase) new Planter(Identifier.of(MOD_ID, "planter")).setTranslationKey(MOD_ID, "planter");
         vase = (TemplateBlockWithEntity) new Vase(Identifier.of(MOD_ID, "vase")).setTranslationKey(MOD_ID, "vase");
-        superiorDetectorBlock = new DetectorBlockButNotCompletelyAwful(Identifier.of(MOD_ID, "superior_detector_block"), Material.DOODADS);
+        detectorBlock = new DetectorBlock(Identifier.of(MOD_ID, "detector_block"), Material.DOODADS);
 
         //TODO: Extra (test) - later move into expansion probably
         //TODO: My idea: remove crafting of stone omni plates/ corners, moulding and add grinder as a saw for "stone type" blocks
@@ -99,7 +97,7 @@ public class BlockListener {
     public static TemplateBlockWithEntity crucible;
     public static TemplateBlockBase planter;
     public static TemplateBlockWithEntity vase;
-    public static DetectorBlockButNotCompletelyAwful superiorDetectorBlock;
+    public static DetectorBlock detectorBlock;
 
     public static TemplateBlockBase blockOfWicker; //Mango Pack Addon
     public static TemplateBlockBase panelNumber1;

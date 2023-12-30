@@ -92,7 +92,7 @@ public class RecipeListener {
         CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.cauldron), "#Y#", "#X#", "###", '#', ItemBase.ironIngot, 'X', ItemBase.bone, 'Y', ItemBase.waterBucket);
         CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.detectorRailWood, 6), "X X", "X#X", "XRX", 'X', ItemBase.ironIngot, 'R', ItemBase.redstoneDust, '#', BlockBase.WOODEN_PRESSURE_PLATE);
         CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.detectorRailObsidian, 6), "X X", "X#X", "XRX", 'X', ItemBase.ironIngot, 'R', ItemBase.redstoneDust, '#', BlockListener.pressurePlateObsidian);
-        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.blockDetector), "X#X", "###", "ZYZ", '#', BlockBase.COBBLESTONE, 'X', new ItemInstance(ItemBase.dyePowder, 1, 4), 'Y', ItemBase.redstoneDust, 'Z',
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.detectorBlock), "X#X", "###", "ZYZ", '#', BlockBase.COBBLESTONE, 'X', new ItemInstance(ItemBase.dyePowder, 1, 4), 'Y', ItemBase.redstoneDust, 'Z',
                 BlockBase.STONE);
         CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.handCrank), "  Y", " Y ", "#X#", '#', BlockBase.COBBLESTONE, 'X', ItemListener.gear, 'Y', ItemBase.stick);
         CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.millStone), "YYY", "YYY", "YXY", 'X', ItemListener.gear, 'Y', BlockBase.STONE);

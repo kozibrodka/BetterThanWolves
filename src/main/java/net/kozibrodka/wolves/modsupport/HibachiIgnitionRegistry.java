@@ -9,7 +9,7 @@ import java.util.Map;
 public class HibachiIgnitionRegistry {
 
     private static final HibachiIgnitionRegistry INSTANCE = new HibachiIgnitionRegistry();
-    private Map recipes = new HashMap();
+    private Map<Integer, Integer> recipes = new HashMap<>();
 
     public static final HibachiIgnitionRegistry getInstance() {
         return INSTANCE;
