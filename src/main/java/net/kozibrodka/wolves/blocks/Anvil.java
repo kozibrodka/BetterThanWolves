@@ -5,15 +5,13 @@
 
 package net.kozibrodka.wolves.blocks;
 
-import net.fabricmc.loader.api.FabricLoader;
+import net.kozibrodka.wolves.container.AnvilContainer;
 import net.kozibrodka.wolves.events.TextureListener;
-import net.kozibrodka.wolves.gui.AnvilGUI;
 import net.kozibrodka.wolves.mixin.LevelAccessor;
 import net.kozibrodka.wolves.utils.RotatableBlock;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.kozibrodka.wolves.utils.CustomBlockRendering;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.render.block.BlockRenderer;
 import net.minecraft.entity.Living;
 import net.minecraft.entity.player.PlayerBase;
@@ -22,37 +20,32 @@ import net.minecraft.level.Level;
 import net.minecraft.util.maths.Box;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithInventoryRenderer;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
+import net.modificationstation.stationapi.api.gui.screen.container.GuiHelper;
 import net.modificationstation.stationapi.api.template.block.TemplateBlock;
 import net.modificationstation.stationapi.api.util.Identifier;
 
 public class Anvil extends TemplateBlock
-    implements RotatableBlock, BlockWithWorldRenderer, BlockWithInventoryRenderer
-{
+    implements RotatableBlock, BlockWithWorldRenderer, BlockWithInventoryRenderer {
 
-    public Anvil(Identifier iid)
-    {
+    public Anvil(Identifier iid) {
         super(iid, Material.METAL);
         setHardness(3.5F);
         setSounds(METAL_SOUNDS);
     }
 
-    public int getTextureForSide(int iSide)
-    {
+    public int getTextureForSide(int iSide) {
         return TextureListener.anvil;
     }
 
-    public boolean isFullOpaque()
-    {
+    public boolean isFullOpaque() {
         return false;
     }
 
-    public boolean isFullCube()
-    {
+    public boolean isFullCube() {
         return false;
     }
 
-    public void onBlockPlaced(Level world, int i, int j, int k, int iFacing)
-    {
+    public void onBlockPlaced(Level world, int i, int j, int k, int iFacing) {
         if(iFacing < 2)
         {
             iFacing = 2;
@@ -63,79 +56,54 @@ public class Anvil extends TemplateBlock
         SetFacing(world, i, j, k, iFacing);
     }
 
-    public void afterPlaced(Level world, int i, int j, int k, Living entityLiving)
-    {
+    public void afterPlaced(Level world, int i, int j, int k, Living entityLiving) {
         int iFacing = UnsortedUtils.ConvertPlacingEntityOrientationToFlatBlockFacing(entityLiving);
         SetFacing(world, i, j, k, iFacing);
     }
 
-    public boolean canUse(Level world, int i, int j, int k, PlayerBase entityplayer)
-    {
-        if(world.isServerSide)
-        {
-            return true;
-        } else
-        {
-//            Minecraft minecraft = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance());
-//            minecraft.openScreen(new AnvilGUI(entityplayer.inventory, world, i, j, k));
-            //ModLoader.getMinecraftInstance().displayGuiScreen(new FCGuiCraftingAnvil(entityplayer.inventory, world, i, j, k));
-        	return true;
-        }
-
-//        GuiHelper.openGUI(entityplayer, Identifier.of("sltest:freezer"), (InventoryBase) tileentityFreezer, new FCGuiCraftingAnvil(entityplayer.inventory, (TileEntityFreezer) tileentityFreezer));
-//        return true;
+    public boolean canUse(Level world, int i, int j, int k, PlayerBase entityplayer) {
+        GuiHelper.openGUI(entityplayer, Identifier.of("wolves:openAnvil"), entityplayer.inventory, new AnvilContainer(entityplayer.inventory, world, i, j, k));
+        return true;
     }
 
-    public Box getCollisionShape(Level world, int i, int j, int k)
-    {
+    public Box getCollisionShape(Level world, int i, int j, int k) {
         int iFacing = GetFacing(world, i, j, k);
-        if(iFacing == 2 || iFacing == 3)
-        {
+        if(iFacing == 2 || iFacing == 3) {
             return Box.createButWasteMemory(((float)i + 0.5F) - 0.25F, (float)j, (float)k, (float)i + 0.5F + 0.25F, (float)j + 1.0F, (float)k + 1.0F);
-        } else
-        {
+        } else {
             return Box.createButWasteMemory((float)i, (float)j, ((float)k + 0.5F) - 0.25F, (float)i + 1.0F, (float)j + 1.0F, (float)k + 0.5F + 0.25F);
         }
     }
 
-    public void updateBoundingBox(BlockView iblockaccess, int i, int j, int k)
-    {
+    public void updateBoundingBox(BlockView iblockaccess, int i, int j, int k) {
         int iFacing = GetFacing(iblockaccess, i, j, k);
-        if(iFacing == 2 || iFacing == 3)
-        {
+        if(iFacing == 2 || iFacing == 3) {
             setBoundingBox(0.25F, 0.0F, 0.0F, 0.75F, 1.0F, 1.0F);
-        } else
-        {
+        } else {
             setBoundingBox(0.0F, 0.0F, 0.25F, 1.0F, 1.0F, 0.75F);
         }
     }
 
-    public int GetFacing(BlockView iBlockAccess, int i, int j, int k)
-    {
+    public int GetFacing(BlockView iBlockAccess, int i, int j, int k) {
         return iBlockAccess.getTileMeta(i, j, k);
     }
 
-    public void SetFacing(Level world, int i, int j, int k, int iFacing)
-    {
+    public void SetFacing(Level world, int i, int j, int k, int iFacing) {
         world.setTileMeta(i, j, k, iFacing);
     }
 
-    public boolean CanRotate(BlockView iBlockAccess, int i, int j, int l)
-    {
+    public boolean CanRotate(BlockView iBlockAccess, int i, int j, int l) {
         return true;
     }
 
-    public boolean CanTransmitRotation(BlockView iBlockAccess, int i, int j, int l)
-    {
+    public boolean CanTransmitRotation(BlockView iBlockAccess, int i, int j, int l) {
         return true;
     }
 
-    public void Rotate(Level world, int i, int j, int k, boolean bReverse)
-    {
+    public void Rotate(Level world, int i, int j, int k, boolean bReverse) {
         int iFacing = GetFacing(world, i, j, k);
         int iNewFacing = UnsortedUtils.RotateFacingAroundJ(iFacing, bReverse);
-        if(iNewFacing != iFacing)
-        {
+        if(iNewFacing != iFacing) {
             SetFacing(world, i, j, k, iNewFacing);
             world.method_202(i, j, k, i, j, k);
             world.method_216(i, j, k, id, getTickrate());

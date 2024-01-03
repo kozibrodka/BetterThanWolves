@@ -106,20 +106,8 @@ public class Hopper extends TemplateBlockWithEntity
 
     public boolean canUse(Level world, int i, int j, int k, PlayerBase entityplayer)
     {
-//        if(world.isServerSide)
-//        {
-//            return true;
-//        } else
-//        {
-//            FCTileEntityHopper tileEntityHopper = (FCTileEntityHopper)world.getTileEntity(i, j, k);
-//            Minecraft minecraft = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance());
-//            minecraft.openScreen(new FCGuiHopper(entityplayer.inventory, tileEntityHopper));
-//            //ModLoader.OpenGUI(entityplayer, new FCGuiHopper(entityplayer.inventory, tileEntityHopper));
-//            return true;
-//        }
-
         HopperTileEntity tileEntityHopper = (HopperTileEntity)world.getTileEntity(i, j, k);
-        GuiHelper.openGUI(entityplayer, Identifier.of("wolves:openHooper"), (InventoryBase) tileEntityHopper, new HopperContainer(entityplayer.inventory, (HopperTileEntity) tileEntityHopper));
+        GuiHelper.openGUI(entityplayer, Identifier.of("wolves:openHopper"), tileEntityHopper, new HopperContainer(entityplayer.inventory, tileEntityHopper));
         return true;
     }
 
