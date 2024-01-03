@@ -8,7 +8,7 @@ import net.kozibrodka.wolves.recipe.CauldronCraftingManager;
 import net.minecraft.block.BlockBase;
 import net.minecraft.client.gui.screen.container.ContainerBase;
 import net.minecraft.item.ItemInstance;
-import net.modificationstation.stationapi.api.registry.ModID;
+import net.modificationstation.stationapi.api.util.Namespace;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,15 +23,15 @@ public class CauldronDoubleRecipeTab extends TabWithTexture {
     private final BlockBase tabBlock;
     private final List<ItemInstance[]> recipesReady;
 
-    public CauldronDoubleRecipeTab(ModID tabCreator) {
+    public CauldronDoubleRecipeTab(Namespace tabCreator) {
         this(tabCreator, new ArrayList<ItemInstance[]>(CauldronCraftingManager.getInstance().getDoubleRecipes()), BlockListener.cauldron);
     }
 
-    public CauldronDoubleRecipeTab(ModID tabCreator, List<ItemInstance[]> recipesReady, BlockBase tabBlock) {
+    public CauldronDoubleRecipeTab(Namespace tabCreator, List<ItemInstance[]> recipesReady, BlockBase tabBlock) {
         this(tabCreator, 3, recipesReady, tabBlock, "assets/wolves/stationapi/gui/hmi_tabs/two_in_one_out.png", 140, 56, 22, 15);
     }
 
-    public CauldronDoubleRecipeTab(ModID tabCreator, int slotsPerRecipe, List<ItemInstance[]> recipesReady, BlockBase tabBlock, String texturePath, int width, int height, int textureX, int textureY) {
+    public CauldronDoubleRecipeTab(Namespace tabCreator, int slotsPerRecipe, List<ItemInstance[]> recipesReady, BlockBase tabBlock, String texturePath, int width, int height, int textureX, int textureY) {
         super(tabCreator, slotsPerRecipe, texturePath, width, height, 3, 4, textureX, textureY);
         this.recipesReady = recipesReady;
         this.tabBlock = tabBlock;

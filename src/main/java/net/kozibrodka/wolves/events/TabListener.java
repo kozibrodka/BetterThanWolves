@@ -4,7 +4,8 @@ import net.glasslauncher.hmifabric.event.HMITabRegistryEvent;
 import net.kozibrodka.wolves.tabs.*;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.minecraft.item.ItemInstance;
-import net.modificationstation.stationapi.api.registry.Identifier;
+import net.modificationstation.stationapi.api.util.Identifier;
+import net.modificationstation.stationapi.api.util.Namespace;
 
 public class TabListener {
     @EventListener

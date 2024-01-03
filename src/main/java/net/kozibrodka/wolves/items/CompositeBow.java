@@ -8,10 +8,10 @@ import net.minecraft.entity.projectile.Arrow;
 import net.minecraft.item.ItemBase;
 import net.minecraft.item.ItemInstance;
 import net.minecraft.level.Level;
-import net.modificationstation.stationapi.api.registry.Identifier;
-import net.modificationstation.stationapi.api.template.item.TemplateItemBase;
+import net.modificationstation.stationapi.api.util.Identifier;
+import net.modificationstation.stationapi.api.template.item.TemplateItem;
 
-public class CompositeBow extends TemplateItemBase
+public class CompositeBow extends TemplateItem
 
 {
     public CompositeBow(Identifier i)

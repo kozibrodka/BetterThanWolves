@@ -5,11 +5,12 @@ import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.item.ItemBase;
 import net.minecraft.item.ItemInstance;
 import net.minecraft.level.Level;
-import net.modificationstation.stationapi.api.registry.Identifier;
-import net.modificationstation.stationapi.api.template.item.tool.TemplateBucket;
+import net.modificationstation.stationapi.api.template.item.TemplateBucketItem;
+import net.modificationstation.stationapi.api.util.Identifier;
 
 
-public class BucketCement extends TemplateBucket
+
+public class BucketCement extends TemplateBucketItem
 {
     public BucketCement(Identifier iid, int iFullOfid)
     {

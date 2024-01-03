@@ -13,13 +13,13 @@ import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.minecraft.util.maths.Box;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
-import net.modificationstation.stationapi.api.registry.Identifier;
-import net.modificationstation.stationapi.api.template.block.TemplateBlockBase;
+import net.modificationstation.stationapi.api.template.block.TemplateBlock;
+import net.modificationstation.stationapi.api.util.Identifier;
 
 import java.util.Random;
 
 
-public class Rope extends TemplateBlockBase implements BlockWithWorldRenderer
+public class Rope extends TemplateBlock implements BlockWithWorldRenderer
 {
 
     public Rope(Identifier iid)

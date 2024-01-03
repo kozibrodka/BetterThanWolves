@@ -5,7 +5,8 @@ import net.kozibrodka.wolves.glasscfg.BetterThanWolvesCFG;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColour;
 import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
-import net.modificationstation.stationapi.api.registry.ModID;
+import net.modificationstation.stationapi.api.util.Identifier;
+import net.modificationstation.stationapi.api.util.Namespace;
 import net.modificationstation.stationapi.api.util.Null;
 
 public class ConfigListener {
@@ -13,8 +14,8 @@ public class ConfigListener {
     @GConfig(value = "BetterThanWolvesCFG", visibleName = "Better Than Wolves Config")
     public static final BetterThanWolvesCFG wolvesGlass = new BetterThanWolvesCFG();
 
-    @Entrypoint.ModID
-    public static final ModID MOD_ID = Null.get();
+    @Entrypoint.Namespace
+    public static final Namespace MOD_ID = Null.get();
 
 
     //TODO EXTRA: Saw animated, Anvil gravity, PANELS/options

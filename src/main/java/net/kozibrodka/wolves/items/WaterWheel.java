@@ -8,10 +8,10 @@ import net.kozibrodka.wolves.events.BlockListener;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.item.ItemInstance;
 import net.minecraft.level.Level;
-import net.modificationstation.stationapi.api.registry.Identifier;
-import net.modificationstation.stationapi.api.template.item.TemplateItemBase;
+import net.modificationstation.stationapi.api.util.Identifier;
+import net.modificationstation.stationapi.api.template.item.TemplateItem;
 
-public class WaterWheel extends TemplateItemBase
+public class WaterWheel extends TemplateItem
 {
 
     public WaterWheel(Identifier iItemID)

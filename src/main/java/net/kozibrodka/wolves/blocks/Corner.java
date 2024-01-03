@@ -1,7 +1,3 @@
-// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) braces deadcode 
-// Source File Name:   FCBlockCorner.java
 
 package net.kozibrodka.wolves.blocks;
 
@@ -9,14 +5,10 @@ import net.minecraft.block.material.Material;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.minecraft.util.maths.Box;
-import net.modificationstation.stationapi.api.registry.Identifier;
-import net.modificationstation.stationapi.api.template.block.TemplateBlockBase;
+import net.modificationstation.stationapi.api.template.block.TemplateBlock;
+import net.modificationstation.stationapi.api.util.Identifier;
 
-// Referenced classes of package net.minecraft.src:
-//            Block, Material, World, Box, 
-//            IBlockAccess
-
-public class Corner extends TemplateBlockBase
+public class Corner extends TemplateBlock
 {
 
     public Corner(Identifier iid)

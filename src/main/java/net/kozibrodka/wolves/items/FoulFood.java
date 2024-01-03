@@ -5,17 +5,17 @@ import net.minecraft.block.BlockBase;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.item.ItemInstance;
 import net.minecraft.level.Level;
-import net.modificationstation.stationapi.api.registry.Identifier;
-import net.modificationstation.stationapi.api.template.block.TemplateCrops;
-import net.modificationstation.stationapi.api.template.block.TemplateSapling;
-import net.modificationstation.stationapi.api.template.item.TemplateItemBase;
+import net.modificationstation.stationapi.api.template.block.TemplateCropBlock;
+import net.modificationstation.stationapi.api.template.block.TemplateSaplingBlock;
+import net.modificationstation.stationapi.api.template.item.TemplateFoodItem;
+import net.modificationstation.stationapi.api.util.Identifier;
+import net.modificationstation.stationapi.api.template.item.TemplateItem;
 
-public class FoulFood extends TemplateItemBase
+public class FoulFood extends TemplateFoodItem
 
 {
-    public FoulFood(Identifier iItemID)
-    {
-        super(iItemID);
+    public FoulFood(Identifier identifier, int healAmount, boolean isWolfFood) {
+        super(identifier, healAmount, isWolfFood);
         maxStackSize = 64;
     }
 
@@ -26,7 +26,7 @@ public class FoulFood extends TemplateItemBase
         {
             if(!world.isServerSide)
             {
-                ((TemplateSapling)BlockBase.SAPLING).growTree(world, i, j, k, world.rand);
+                ((TemplateSaplingBlock)BlockBase.SAPLING).growTree(world, i, j, k, world.rand);
                 ItemInstance.count--;
             }
             return true;
@@ -35,7 +35,7 @@ public class FoulFood extends TemplateItemBase
         {
             if(!world.isServerSide)
             {
-                ((TemplateCrops)BlockBase.CROPS).growCropInstantly(world, i, j, k);
+                ((TemplateCropBlock)BlockBase.CROPS).growCropInstantly(world, i, j, k);
                 ItemInstance.count--;
             }
             return true;

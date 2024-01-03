@@ -5,10 +5,10 @@ import net.kozibrodka.wolves.events.TextureListener;
 import net.minecraft.client.render.block.BlockRenderer;
 import net.minecraft.level.BlockView;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithInventoryRenderer;
-import net.modificationstation.stationapi.api.registry.Identifier;
-import net.modificationstation.stationapi.api.template.block.TemplateDetectorRail;
+import net.modificationstation.stationapi.api.template.block.TemplateDetectorRailBlock;
+import net.modificationstation.stationapi.api.util.Identifier;
 
-public class DetectorRailVariants extends TemplateDetectorRail implements BlockWithInventoryRenderer
+public class DetectorRailVariants extends TemplateDetectorRailBlock implements BlockWithInventoryRenderer
         /* implements ITextureProvider */ //MAYBE FOR FAKE LATER
 {
 

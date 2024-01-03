@@ -8,13 +8,13 @@ import net.minecraft.block.BlockBase;
 import net.minecraft.block.Fluid;
 import net.minecraft.block.material.Material;
 import net.minecraft.level.Level;
-import net.modificationstation.stationapi.api.registry.Identifier;
-import net.modificationstation.stationapi.api.template.block.TemplateBlockBase;
+import net.modificationstation.stationapi.api.template.block.TemplateBlock;
+import net.modificationstation.stationapi.api.util.Identifier;
 
 import java.util.Random;
 
 
-public class Hibachi extends TemplateBlockBase
+public class Hibachi extends TemplateBlock
 
 {
     public Hibachi(Identifier iid)

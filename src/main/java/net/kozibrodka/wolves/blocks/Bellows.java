@@ -17,13 +17,13 @@ import net.minecraft.entity.Living;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.minecraft.util.maths.Box;
-import net.modificationstation.stationapi.api.registry.Identifier;
-import net.modificationstation.stationapi.api.template.block.TemplateBlockBase;
+import net.modificationstation.stationapi.api.template.block.TemplateBlock;
+import net.modificationstation.stationapi.api.util.Identifier;
 
 import java.util.List;
 import java.util.Random;
 
-public class Bellows extends TemplateBlockBase
+public class Bellows extends TemplateBlock
     implements MechanicalDevice, RotatableBlock
 {
 

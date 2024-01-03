@@ -10,13 +10,13 @@ import net.minecraft.level.Level;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
 import net.modificationstation.stationapi.api.client.texture.atlas.Atlas;
 import net.modificationstation.stationapi.api.client.texture.atlas.Atlases;
-import net.modificationstation.stationapi.api.registry.Identifier;
-import net.modificationstation.stationapi.api.template.block.TemplateFire;
+import net.modificationstation.stationapi.api.util.Identifier;
+import net.modificationstation.stationapi.api.template.block.TemplateFireBlock;
 
 import java.util.Random;
 
 
-public class StokedFire extends TemplateFire implements BlockWithWorldRenderer
+public class StokedFire extends TemplateFireBlock implements BlockWithWorldRenderer
 {
     public StokedFire(Identifier iid)
     {

@@ -9,12 +9,12 @@ import net.minecraft.block.BlockBase;
 import net.minecraft.entity.Item;
 import net.minecraft.item.ItemInstance;
 import net.minecraft.level.Level;
-import net.modificationstation.stationapi.api.registry.Identifier;
-import net.modificationstation.stationapi.api.template.block.TemplatePlant;
+import net.modificationstation.stationapi.api.util.Identifier;
+import net.modificationstation.stationapi.api.template.block.TemplatePlantBlock;
 
 import java.util.Random;
 
-public class HempCrop extends TemplatePlant
+public class HempCrop extends TemplatePlantBlock
 
 {
 

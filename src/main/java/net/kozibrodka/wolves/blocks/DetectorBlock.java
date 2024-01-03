@@ -11,16 +11,15 @@ import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.minecraft.level.biome.Biome;
 import net.minecraft.util.maths.Box;
-import net.modificationstation.stationapi.api.registry.Identifier;
-import net.modificationstation.stationapi.api.template.block.TemplateBlockBase;
+import net.modificationstation.stationapi.api.template.block.TemplateBlock;
+import net.modificationstation.stationapi.api.util.Identifier;
 
 import java.util.List;
 import java.util.Random;
 
-public class DetectorBlock extends TemplateBlockBase {
+public class DetectorBlock extends TemplateBlock {
     public DetectorBlock(Identifier identifier, Material material) {
         super(identifier, material);
-        setTranslationKey(identifier.modID, identifier.id);
         setTicksRandomly(true);
         setHardness(1.5F);
     }

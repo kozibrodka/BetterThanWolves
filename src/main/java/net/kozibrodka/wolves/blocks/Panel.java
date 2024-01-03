@@ -13,13 +13,13 @@ import net.minecraft.level.Level;
 import net.minecraft.util.maths.Box;
 import net.minecraft.util.maths.MathHelper;
 import net.minecraft.util.maths.Vec3f;
-import net.modificationstation.stationapi.api.registry.Identifier;
-import net.modificationstation.stationapi.api.template.block.TemplateBlockBase;
+import net.modificationstation.stationapi.api.template.block.TemplateBlock;
+import net.modificationstation.stationapi.api.util.Identifier;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Panel extends TemplateBlockBase {
+public class Panel extends TemplateBlock {
 
     private BlockBase template;
 

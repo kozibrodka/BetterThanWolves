@@ -10,13 +10,13 @@ import net.minecraft.item.ItemBase;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.minecraft.util.maths.Box;
-import net.modificationstation.stationapi.api.registry.Identifier;
-import net.modificationstation.stationapi.api.template.block.TemplateBlockBase;
+import net.modificationstation.stationapi.api.template.block.TemplateBlock;
+import net.modificationstation.stationapi.api.util.Identifier;
 
 import java.util.Random;
 
 
-public class Axle extends TemplateBlockBase
+public class Axle extends TemplateBlock
 {
     public Axle(Identifier iid)
     {

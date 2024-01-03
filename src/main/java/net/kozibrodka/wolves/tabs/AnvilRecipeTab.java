@@ -20,7 +20,7 @@ import net.minecraft.entity.player.AbstractClientPlayer;
 import net.minecraft.inventory.InventoryBase;
 import net.minecraft.item.ItemInstance;
 import net.modificationstation.stationapi.api.recipe.StationRecipe;
-import net.modificationstation.stationapi.api.registry.ModID;
+import net.modificationstation.stationapi.api.util.Namespace;
 import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
@@ -36,18 +36,18 @@ public class AnvilRecipeTab extends TabWithTexture {
     public ArrayList<Class<? extends ContainerBase>> guiCraftingStations = new ArrayList<>();
     public int recipeIndex;
 
-    public AnvilRecipeTab(ModID tabCreator) {
+    public AnvilRecipeTab(Namespace tabCreator) {
         this(tabCreator, new ArrayList<Object>(AnvilCraftingManager.getInstance().getRecipeList()), BlockListener.anvil);
         isVanillaWorkbench = true;
         guiCraftingStations.add(Crafting.class);
     }
 
-    public AnvilRecipeTab(ModID tabCreator, List<Object> recipesComplete, BlockBase tabBlock) {
+    public AnvilRecipeTab(Namespace tabCreator, List<Object> recipesComplete, BlockBase tabBlock) {
         this(tabCreator, 26, recipesComplete, tabBlock, "/assets/wolves/stationapi/gui/hmi_tabs/giant_grid.png", 154, 92, 10, 15, 56, 46, 5);
         slots[0] = new Integer[]{132, 41};
     }
 
-    public AnvilRecipeTab(ModID tabCreator, int slotsPerRecipe, List<Object> recipesComplete, BlockBase tabBlock, String texturePath, int width, int height, int textureX, int textureY, int buttonX, int buttonY, int slotsWidth) {
+    public AnvilRecipeTab(Namespace tabCreator, int slotsPerRecipe, List<Object> recipesComplete, BlockBase tabBlock, String texturePath, int width, int height, int textureX, int textureY, int buttonX, int buttonY, int slotsWidth) {
         super(tabCreator, slotsPerRecipe, texturePath, width, height, 3, 4, textureX, textureY, buttonX, buttonY);
         this.recipesComplete = recipesComplete;
         this.tabBlock = tabBlock;

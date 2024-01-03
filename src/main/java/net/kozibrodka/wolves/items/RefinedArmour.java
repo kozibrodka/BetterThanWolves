@@ -2,11 +2,13 @@
 package net.kozibrodka.wolves.items;
 import net.kozibrodka.wolves.events.ConfigListener;
 import net.minecraft.item.armour.Armour;
-import net.modificationstation.stationapi.api.client.item.ArmourTextureProvider;
-import net.modificationstation.stationapi.api.registry.Identifier;
-import net.modificationstation.stationapi.api.template.item.armour.TemplateArmour;
+import net.modificationstation.stationapi.api.util.Identifier;
+import net.modificationstation.stationapi.api.client.item.ArmorTextureProvider;
 
-public class RefinedArmour extends TemplateArmour implements ArmourTextureProvider
+import net.modificationstation.stationapi.api.template.item.TemplateArmorItem;
+import net.modificationstation.stationapi.api.util.Identifier;
+
+public class RefinedArmour extends TemplateArmorItem implements ArmorTextureProvider
 {
 
     public RefinedArmour(Identifier iItemID, int iArmorType)

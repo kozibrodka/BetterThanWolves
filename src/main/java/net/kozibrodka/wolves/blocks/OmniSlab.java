@@ -7,11 +7,11 @@ import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.minecraft.util.maths.Box;
 import net.modificationstation.stationapi.api.block.HasCustomBlockItemFactory;
-import net.modificationstation.stationapi.api.registry.Identifier;
-import net.modificationstation.stationapi.api.template.block.TemplateBlockBase;
+import net.modificationstation.stationapi.api.template.block.TemplateBlock;
+import net.modificationstation.stationapi.api.util.Identifier;
 
 @HasCustomBlockItemFactory(OmniSlabItemBlock.class)
-public class OmniSlab extends TemplateBlockBase
+public class OmniSlab extends TemplateBlock
 {
 
     public OmniSlab(Identifier iid)
