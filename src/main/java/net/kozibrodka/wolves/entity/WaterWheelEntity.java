@@ -2,7 +2,9 @@ package net.kozibrodka.wolves.entity;
 
 import net.kozibrodka.wolves.blocks.Axle;
 import net.kozibrodka.wolves.events.BlockListener;
+import net.kozibrodka.wolves.events.EntityListener;
 import net.kozibrodka.wolves.events.ItemListener;
+import net.kozibrodka.wolves.mixin.DataTrackerAccessor;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.Fluid;
 import net.minecraft.entity.EntityBase;
@@ -11,16 +13,21 @@ import net.minecraft.level.Level;
 import net.minecraft.util.io.CompoundTag;
 import net.minecraft.util.maths.Box;
 import net.minecraft.util.maths.Vec3f;
+import net.modificationstation.stationapi.api.server.entity.EntitySpawnDataProvider;
+import net.modificationstation.stationapi.api.server.entity.HasTrackingParameters;
+import net.modificationstation.stationapi.api.server.entity.MobSpawnDataProvider;
+import net.modificationstation.stationapi.api.util.Identifier;
 
-public class WaterWheelEntity extends EntityBase
+@HasTrackingParameters(trackingDistance = 160, updatePeriod = 2)
+public class WaterWheelEntity extends EntityBase implements EntitySpawnDataProvider
 {
 
     public WaterWheelEntity(Level world)
     {
         super(world);
-        bWaterWheelIAligned = true;
-        fRotation = 0.0F;
-        bProvidingPower = false;
+        setProvidingPower(false);
+        setWheelRotation(0.0F);
+        setAligned(true);
         iWaterWheelCurrentDamage = 0;
         iWaterWheelTimeSinceHit = 0;
         iWaterWheelRockDirection = 1;
@@ -37,7 +44,7 @@ public class WaterWheelEntity extends EntityBase
     {
         this(world);
         setPosition(x, y, z);
-        bWaterWheelIAligned = bJAligned;
+        setAligned(bJAligned);
         AlignBoundingBoxWithAxis();
     }
 
@@ -47,7 +54,7 @@ public class WaterWheelEntity extends EntityBase
 
     private void AlignBoundingBoxWithAxis()
     {
-        if(bWaterWheelIAligned)
+        if(getAligned())
         {
             boundingBox.method_99(x - 0.40000000596046448D, y - 2.4000000953674316D, z - 2.4000000953674316D, x + 0.40000000596046448D, y + 2.4000000953674316D, z + 2.4000000953674316D);
         } else
@@ -58,20 +65,23 @@ public class WaterWheelEntity extends EntityBase
 
     protected void initDataTracker()
     {
+        dataTracker.startTracking(16, (byte) 0); //ALIGNED
+        dataTracker.startTracking(17, (int) 0); //WHEEL ROTATION
+        dataTracker.startTracking(18, (byte) 0); //PROVIDING POWER
     }
 
     protected void writeCustomDataToTag(CompoundTag nbttagcompound)
     {
-        nbttagcompound.put("bWaterWheelIAligned", bWaterWheelIAligned);
-        nbttagcompound.put("fRotation", fRotation);
-        nbttagcompound.put("bProvidingPower", bProvidingPower);
+        nbttagcompound.put("bWaterWheelIAligned", getAligned());
+        nbttagcompound.put("fRotation", getWheelRotation());
+        nbttagcompound.put("bProvidingPower", getProvidingPower());
     }
 
     protected void readCustomDataFromTag(CompoundTag nbttagcompound)
     {
-        bWaterWheelIAligned = nbttagcompound.getBoolean("bWaterWheelIAligned");
-        fRotation = nbttagcompound.getFloat("fRotation");
-        bProvidingPower = nbttagcompound.getBoolean("bProvidingPower");
+        setAligned(nbttagcompound.getBoolean("bWaterWheelIAligned"));
+        setWheelRotation(nbttagcompound.getFloat("fRotation"));
+        setProvidingPower(nbttagcompound.getBoolean("bProvidingPower"));
         AlignBoundingBoxWithAxis();
     }
 
@@ -126,7 +136,7 @@ public class WaterWheelEntity extends EntityBase
 
     public void remove()
     {
-        if(bProvidingPower)
+        if(getProvidingPower())
         {
             int iCenterI = (int)(x - 0.5D);
             int iCenterJ = (int)(y - 0.5D);
@@ -151,7 +161,7 @@ public class WaterWheelEntity extends EntityBase
 
     public void tick()
     {
-        if(removed)
+        if(removed || level.isServerSide)
         {
             return;
         }
@@ -168,12 +178,12 @@ public class WaterWheelEntity extends EntityBase
                 DestroyWithDrop();
                 return;
             }
-            if(!WaterWheelValidateAreaAroundBlock(level, iCenterI, iCenterJ, iCenterK, bWaterWheelIAligned))
+            if(!WaterWheelValidateAreaAroundBlock(level, iCenterI, iCenterJ, iCenterK, getAligned()))
             {
                 DestroyWithDrop();
                 return;
             }
-            if(!bProvidingPower && ((Axle)BlockListener.axleBlock).GetPowerLevel(level, iCenterI, iCenterJ, iCenterK) > 0)
+            if(!getProvidingPower() && ((Axle)BlockListener.axleBlock).GetPowerLevel(level, iCenterI, iCenterJ, iCenterK) > 0)
             {
                 DestroyWithDrop();
                 return;
@@ -188,14 +198,14 @@ public class WaterWheelEntity extends EntityBase
 //            }
             if(fWaterWheelCurrentRotationSpeed > 0.01F || fWaterWheelCurrentRotationSpeed < -0.01F)
             {
-                if(!bProvidingPower)
+                if(!getProvidingPower())
                 {
-                    bProvidingPower = true;
+                    setProvidingPower(true);
                     ((Axle)BlockListener.axleBlock).SetPowerLevel(level, iCenterI, iCenterJ, iCenterK, 3);
                 }
             } else
-                if (bProvidingPower) {
-                    bProvidingPower = false;
+                if (getProvidingPower()) {
+                    setProvidingPower(false);
                     ((Axle) BlockListener.axleBlock).SetPowerLevel(level, iCenterI, iCenterJ, iCenterK, 0);
                 }
 
@@ -208,14 +218,15 @@ public class WaterWheelEntity extends EntityBase
         {
             iWaterWheelCurrentDamage--;
         }
-        fRotation += fWaterWheelCurrentRotationSpeed;
-        if(fRotation > 360F)
+
+        setWheelRotation(getWheelRotation()+fWaterWheelCurrentRotationSpeed);
+        if(getWheelRotation() > 360F)
         {
-            fRotation -= 360F;
+            setWheelRotation(getWheelRotation()-360F);
         } else
-        if(fRotation < -360F)
+        if(getWheelRotation() < -360F)
         {
-            fRotation += 360F;
+            setWheelRotation(getWheelRotation()+360F);
         }
     }
 
@@ -293,7 +304,7 @@ public class WaterWheelEntity extends EntityBase
         {
             Fluid fluidBlock = (Fluid)BlockBase.BY_ID[iFlowid];
             Vec3f flowVector = getFlowVector(fluidBlock, level, iCenterI, iFlowJ, iCenterK);
-            if(bWaterWheelIAligned)
+            if(getAligned())
             {
                 if(flowVector.z > 0.33000001311302185D)
                 {
@@ -315,7 +326,7 @@ public class WaterWheelEntity extends EntityBase
         }
         int iOffset;
         int kOffset;
-        if(bWaterWheelIAligned)
+        if(getAligned())
         {
             iOffset = 0;
             kOffset = 2;
@@ -458,9 +469,6 @@ public class WaterWheelEntity extends EntityBase
     public static final int iWaterWheelMaxDamage = 40;
     public static final float fWaterWheelRotationPerTick = 0.25F;
     public static final int iWaterWheelTicksPerFullUpdate = 20;
-    public boolean bWaterWheelIAligned;
-    public float fRotation;
-    public boolean bProvidingPower;
     public int iWaterWheelCurrentDamage;
     public int iWaterWheelTimeSinceHit;
     public int iWaterWheelRockDirection;
@@ -468,4 +476,62 @@ public class WaterWheelEntity extends EntityBase
     public int iFullUpdateTickCount;
     private float sentRotationSpeed;
     public int waterTick;
+
+//    public boolean bWaterWheelIAligned;
+//    public float fRotation;
+//    public boolean bProvidingPower;
+
+    @Override
+    public Identifier getHandlerIdentifier() {
+        return Identifier.of(EntityListener.MOD_ID, "WaterWheel");
+    }
+
+    //ALIGNED
+    public boolean getAligned()
+    {
+        return (dataTracker.getByte(16) & 1) != 0;
+    }
+
+    public void setAligned(boolean flag)
+    {
+        if(flag)
+        {
+            dataTracker.setInt(16, (byte) 1);
+        } else
+        {
+            dataTracker.setInt(16, (byte) 0);
+        }
+    }
+
+    //ROTATION (FLOAT)
+    public float getWheelRotation()
+    {
+//        return ((float) dataTracker.getByte(17)) / 100F;
+//        return (float) ((DataTrackerAccessor) dataTracker).getData().get(17).method_963();
+        return Float.intBitsToFloat(dataTracker.getInt(17));
+    }
+
+    public void setWheelRotation(float age)
+    {
+//        dataTracker.setInt(17, (byte) ((int) 100F * age));
+        dataTracker.setInt(17, Float.floatToRawIntBits(age));
+    }
+
+    //POWER
+    public boolean getProvidingPower()
+    {
+        return (dataTracker.getByte(18) & 1) != 0;
+    }
+
+    public void setProvidingPower(boolean flag)
+    {
+        if(flag)
+        {
+            dataTracker.setInt(18, (byte) 1);
+        } else
+        {
+            dataTracker.setInt(18, (byte) 0);
+        }
+    }
+
 }

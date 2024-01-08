@@ -36,14 +36,14 @@ public class WaterWheelRender extends EntityRenderer
         {
             f4 = ((MathHelper.sin(f2) * f2 * f3) / 40F) * (float)fcentitywaterwheel.iWaterWheelRockDirection;
         }
-        if(fcentitywaterwheel.bWaterWheelIAligned)
+        if(fcentitywaterwheel.getAligned())
         {
-            GL11.glRotatef(fcentitywaterwheel.fRotation, 1.0F, 0.0F, 0.0F);
+            GL11.glRotatef(fcentitywaterwheel.getWheelRotation(), 1.0F, 0.0F, 0.0F);
             GL11.glRotatef(f4, 0.0F, 0.0F, 1.0F);
             GL11.glRotatef(90F, 0.0F, 1.0F, 0.0F);
         } else
         {
-            GL11.glRotatef(fcentitywaterwheel.fRotation, 0.0F, 0.0F, 1.0F);
+            GL11.glRotatef(fcentitywaterwheel.getWheelRotation(), 0.0F, 0.0F, 1.0F);
             GL11.glRotatef(f4, 1.0F, 0.0F, 0.0F);
         }
         modelWaterWheel.render(0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
