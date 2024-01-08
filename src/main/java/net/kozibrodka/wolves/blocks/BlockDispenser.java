@@ -4,6 +4,8 @@
 // Source File Name:   FCBlockBlockDispenser.java
 
 package net.kozibrodka.wolves.blocks;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
 import net.kozibrodka.wolves.container.BlockDispenserContainer;
 import net.kozibrodka.wolves.entity.BroadheadArrowEntity;
@@ -104,21 +106,23 @@ public class BlockDispenser extends TemplateBlockWithEntity
     public void onBlockPlaced(Level world, int i, int j, int k, int iFacing)
     {
         SetFacing(world, i, j, k, UnsortedUtils.GetOppositeFacing(iFacing));
-        world.method_216(i, j, k, id, getTickrate());
+        world.method_216(i, j, k, BlockListener.blockDispenser.id, getTickrate());
     }
 
     public void afterPlaced(Level world, int i, int j, int k, Living entityLiving)
     {
         int iFacing = UnsortedUtils.ConvertPlacingEntityOrientationToBlockFacing(entityLiving);
         SetFacing(world, i, j, k, iFacing);
-        world.method_216(i, j, k, id, getTickrate());
+        world.method_216(i, j, k, BlockListener.blockDispenser.id, getTickrate());
     }
 
-    public boolean canUse(Level world, int i, int j, int k, PlayerBase entityplayer)
-    {
-            BlockDispenserTileEntity tileEntityBlockDispenser = (BlockDispenserTileEntity)world.getTileEntity(i, j, k);
-            GuiHelper.openGUI(entityplayer, Identifier.of("wolves:openBlockDispenser"), (InventoryBase) tileEntityBlockDispenser, new BlockDispenserContainer(entityplayer.inventory, (BlockDispenserTileEntity) tileEntityBlockDispenser));
+    public boolean canUse(Level world, int i, int j, int k, PlayerBase entityplayer) {
+        if (world == null) {
             return true;
+        }
+        BlockDispenserTileEntity tileEntityBlockDispenser = (BlockDispenserTileEntity)world.getTileEntity(i, j, k);
+        GuiHelper.openGUI(entityplayer, Identifier.of("wolves:openBlockDispenser"), (InventoryBase) tileEntityBlockDispenser, new BlockDispenserContainer(entityplayer.inventory, (BlockDispenserTileEntity) tileEntityBlockDispenser));
+        return true;
     }
 
     protected TileEntityBase createTileEntity()
@@ -128,7 +132,7 @@ public class BlockDispenser extends TemplateBlockWithEntity
 
     public void onAdjacentBlockUpdate(Level world, int i, int j, int k, int iChangedid)
     {
-        world.method_216(i, j, k, id, getTickrate());
+        world.method_216(i, j, k, BlockListener.blockDispenser.id, getTickrate());
     }
 
     public void onBlockRemoved(Level world, int i, int j, int k)
@@ -373,8 +377,9 @@ public class BlockDispenser extends TemplateBlockWithEntity
                 if(AddBlockToInventory(world, i, j, k, targetBlock, iTargetMetaData))
                 {
 //                    ModLoader.getMinecraftInstance().effectRenderer.addBlockDestroyEffects(targetPos.i, targetPos.j, targetPos.k, iTargetid, iTargetMetaData);
-                    Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).particleManager.addTileBreakParticles(targetPos.i, targetPos.j, targetPos.k, iTargetid, iTargetMetaData);
-                    Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).soundHelper.playSound(targetBlock.sounds.getWalkSound(), (float)targetPos.i + 0.5F, (float)targetPos.j + 0.5F, (float)targetPos.k + 0.5F, (targetBlock.sounds.getVolume() + 1.0F) / 2.0F, targetBlock.sounds.getPitch() * 0.8F);
+                    // TODO: Replace this code with something that does not crash the server
+                    //Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).particleManager.addTileBreakParticles(targetPos.i, targetPos.j, targetPos.k, iTargetid, iTargetMetaData);
+                    //Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).soundHelper.playSound(targetBlock.sounds.getWalkSound(), (float)targetPos.i + 0.5F, (float)targetPos.j + 0.5F, (float)targetPos.k + 0.5F, (targetBlock.sounds.getVolume() + 1.0F) / 2.0F, targetBlock.sounds.getPitch() * 0.8F);
                 	world.setTile(targetPos.i, targetPos.j, targetPos.k, 0);
                 }
             }

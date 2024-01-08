@@ -351,6 +351,9 @@ public class MillStoneTileEntity extends TileEntityBase
 
     public void markDirty()
     {
+        if (level == null) {
+            return;
+        }
         if(IsWholeCompanionCubeInInventory())
         {
             level.playSound((float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F, "mob.wolf.whine", 0.5F, 2.6F + (level.rand.nextFloat() - level.rand.nextFloat()) * 0.8F);

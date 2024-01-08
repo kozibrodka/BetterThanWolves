@@ -89,7 +89,7 @@ public class Bellows extends TemplateBlock
     public void onBlockPlaced(Level world, int i, int j, int k)
     {
         super.onBlockPlaced(world, i, j, k);
-        world.method_216(i, j, k, id, getTickrate());
+        world.method_216(i, j, k, BlockListener.bellows.id, getTickrate());
     }
 
     public boolean isFullOpaque()
@@ -126,7 +126,7 @@ public class Bellows extends TemplateBlock
 
     public void onAdjacentBlockUpdate(Level world, int i, int j, int k, int iid)
     {
-        world.method_216(i, j, k, id, getTickrate());
+        world.method_216(i, j, k, BlockListener.bellows.id, getTickrate());
     }
 
     public void onScheduledTick(Level world, int i, int j, int k, Random random)
@@ -187,8 +187,8 @@ public class Bellows extends TemplateBlock
         {
             SetFacing(world, i, j, k, iNewFacing);
             world.method_202(i, j, k, i, j, k);
-            world.method_216(i, j, k, id, getTickrate());
-            ((LevelAccessor) world).invokeMethod_235(i, j, k, id);
+            world.method_216(i, j, k, BlockListener.bellows.id, getTickrate());
+            ((LevelAccessor) world).invokeMethod_235(i, j, k, BlockListener.bellows.id);
         }
         UnsortedUtils.DestroyHorizontallyAttachedAxles(world, i, j, k);
     }

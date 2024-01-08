@@ -39,8 +39,7 @@ public class WaterWheelEntity extends EntityBase implements EntitySpawnDataProvi
         waterTick = 0;
     }
 
-    public WaterWheelEntity(Level world, double x, double y, double z,
-                            boolean bJAligned)
+    public WaterWheelEntity(Level world, double x, double y, double z, boolean bJAligned)
     {
         this(world);
         setPosition(x, y, z);

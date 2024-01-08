@@ -100,7 +100,7 @@ public class Axle extends TemplateBlock
     {
         super.onBlockPlaced(world, i, j, k);
         SetPowerLevel(world, i, j, k, 0);
-        world.method_216(i, j, k, id, getTickrate());
+        world.method_216(i, j, k, BlockListener.axleBlock.id, getTickrate());
     }
 
     public void onScheduledTick(Level world, int i, int j, int k, Random random)
@@ -263,7 +263,7 @@ public class Axle extends TemplateBlock
             do
             {
                 int iTempid = world.getTileId(tempPos.i, tempPos.j, tempPos.k);
-                if(iTempid != id)
+                if(iTempid != BlockListener.axleBlock.id)
                 {
                     break;
                 }
@@ -303,7 +303,7 @@ public class Axle extends TemplateBlock
 
     public void BreakAxle(Level world, int i, int j, int k)
     {
-        if(world.getTileId(i, j, k) == id)
+        if(world.getTileId(i, j, k) == BlockListener.axleBlock.id)
         {
             for(int iTemp = 0; iTemp < 5; iTemp++)
             {
@@ -351,7 +351,7 @@ public class Axle extends TemplateBlock
             for(int tempSource = 0; tempSource < 2; tempSource++)
             {
                 int iTempid = world.getTileId(potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
-                if(iTempid != id)
+                if(iTempid != BlockListener.axleBlock.id)
                 {
                     continue;
                 }
@@ -436,7 +436,7 @@ public class Axle extends TemplateBlock
         for(int tempSource = 0; tempSource < 2; tempSource++)
         {
             int iTempid = world.getTileId(potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
-            if(iTempid == id)
+            if(iTempid == BlockListener.axleBlock.id)
             {
                 int iTempAxis = GetAxisAlignment(world, potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
                 if(iTempAxis != iAxis)

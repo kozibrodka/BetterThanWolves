@@ -1,5 +1,6 @@
 package net.kozibrodka.wolves.blocks;
 
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.utils.BlockPosition;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
@@ -84,7 +85,7 @@ public class DetectorBlock extends TemplateBlock {
         }
         for(int listIndex = 0; listIndex < list.size(); listIndex++) {
             EntityBase targetEntity = (EntityBase)list.get(listIndex);
-            if((targetEntity instanceof ParticleBase)) continue;
+            if(targetEntity == null) continue;
             activateDetector(level, x, y, z);
             return;
         }
@@ -101,27 +102,27 @@ public class DetectorBlock extends TemplateBlock {
 
     private void activateDetector(Level level, int x, int y, int z) {
         if (isBlockOn(level, x, y, z)) {
-            level.method_216(x, y, z, id, getTickrate());
+            level.method_216(x, y, z, BlockListener.detectorBlock.id, getTickrate());
             return;
         }
         level.playSound((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, "random.click", 0.75F, 2.0F);
         int metadata = level.getTileMeta(x, y, z);
         metadata++;
         level.placeBlockWithMetaData(x, y, z, this.id, metadata);
-        level.updateAdjacentBlocks(x, y, z, id);
-        level.method_216(x, y, z, id, getTickrate());
+        level.updateAdjacentBlocks(x, y, z, BlockListener.detectorBlock.id);
+        level.method_216(x, y, z, BlockListener.detectorBlock.id, getTickrate());
     }
 
     private void deactivateDetector(Level level, int x, int y, int z) {
         if (!isBlockOn(level, x, y, z)) {
-            level.method_216(x, y, z, id, getTickrate());
+            level.method_216(x, y, z, BlockListener.detectorBlock.id, getTickrate());
             return;
         }
         int metadata = level.getTileMeta(x, y, z);
         metadata--;
-        level.placeBlockWithMetaData(x, y, z, this.id, metadata);
-        level.updateAdjacentBlocks(x, y, z, id);
-        level.method_216(x, y, z, id, getTickrate());
+        level.placeBlockWithMetaData(x, y, z, BlockListener.detectorBlock.id, metadata);
+        level.updateAdjacentBlocks(x, y, z, BlockListener.detectorBlock.id);
+        level.method_216(x, y, z, BlockListener.detectorBlock.id, getTickrate());
     }
 
     private boolean isObstructed(Level level, int x, int y, int z) {
@@ -138,7 +139,7 @@ public class DetectorBlock extends TemplateBlock {
     @Override
     public void onBlockPlaced(Level level, int x, int y, int z) {
         super.onBlockPlaced(level, x, y, z);
-        level.method_216(x, y, z, id, getTickrate());
+        level.method_216(x, y, z, BlockListener.detectorBlock.id, getTickrate());
     }
 
     @Override

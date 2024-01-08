@@ -1,6 +1,7 @@
 
 package net.kozibrodka.wolves.blocks;
 
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.utils.BlockPosition;
@@ -41,7 +42,7 @@ public class HandCrank extends TemplateBlock
 
     public int getTickrate()
     {
-        return iHandCrankTickRate;
+        return handCrankTickRate;
     }
 
     public int getTextureForSide(int iSide)
@@ -61,7 +62,7 @@ public class HandCrank extends TemplateBlock
 
     public Box getCollisionShape(Level world, int i, int j, int k)
     {
-        return Box.createButWasteMemory((float)i, (float)j, (float)k, (float)i + 1.0F, (float)j + fHandCrankBaseHeight, (float)k + 1.0F);
+        return Box.createButWasteMemory((float)i, (float)j, (float)k, (float)i + 1.0F, (float)j + handCrankBaseHeight, (float)k + 1.0F);
     }
 
     public boolean isFullOpaque()
@@ -91,22 +92,18 @@ public class HandCrank extends TemplateBlock
 
     public boolean canUse(Level world, int i, int j, int k, PlayerBase entityPlayer)
     {
-        if(world.isServerSide)
-        {
+        if(world == null) {
             return true;
         }
         int iMetaData = world.getTileMeta(i, j, k);
-        if(iMetaData == 0)
-        {
-            if(!CheckForOverpower(world, i, j, k))
-            {
+        if(iMetaData == 0) {
+            if(!CheckForOverpower(world, i, j, k)) {
                 world.setTileMeta(i, j, k, 1);
                 world.method_202(i, j, k, i, j, k);
                 world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.click", 1.0F, 2.0F);
-                world.updateAdjacentBlocks(i, j, k, id);
-                world.method_216(i, j, k, id, getTickrate());
-            } else
-            {
+                world.updateAdjacentBlocks(i, j, k, BlockListener.handCrank.id);
+                world.method_216(i, j, k, BlockListener.handCrank.id, getTickrate());
+            } else {
                 BreakCrankWithDrop(world, i, j, k);
             }
         }
@@ -126,10 +123,10 @@ public class HandCrank extends TemplateBlock
                 }
                 if(iMetaData <= 5)
                 {
-                    world.method_216(i, j, k, id, getTickrate() + iMetaData);
+                    world.method_216(i, j, k, BlockListener.handCrank.id, getTickrate() + iMetaData);
                 } else
                 {
-                    world.method_216(i, j, k, id, iHandCrankDelayBeforeReset);
+                    world.method_216(i, j, k, BlockListener.handCrank.id, handCrankDelayBeforeReset);
                 }
                 world.setTileMeta(i, j, k, iMetaData + 1);
             } else
@@ -210,7 +207,7 @@ public class HandCrank extends TemplateBlock
         Tessellator tessellator = Tessellator.INSTANCE;
         float f = 0.5F;
         float f1 = 0.5F;
-        float f2 = fHandCrankBaseHeight;
+        float f2 = handCrankBaseHeight;
         this.setBoundingBox(0.5F - f1, 0.0F, 0.5F - f, 0.5F + f1, f2, 0.5F + f);
         tileRenderer.renderStandardBlock(this, x, y, z);
         float f3 = this.getBrightness(tileView, x, y, z);
@@ -347,19 +344,15 @@ public class HandCrank extends TemplateBlock
         return true;
     }
 
-    private static int iHandCrankTickRate = 3;
-    private static int iHandCrankDelayBeforeReset = 15;
-    public static float fHandCrankBaseHeight = 0.25F;
-    private final int iHandCrankShaftTextureIndex = 28;
-    private final int iHandCrankBaseTopTextureIndex = 29;
-    private final int iHandCrankBaseSideTextureIndex = 30;
-    private final int iHandCrankBaseBottomTextureIndex = 31;
+    private static int handCrankTickRate = 3;
+    private static int handCrankDelayBeforeReset = 15;
+    public static float handCrankBaseHeight = 0.25F;
 
     @Override
     public void renderInventory(BlockRenderer tileRenderer, int meta) {
         float f = 0.5F;
         float f1 = 0.5F;
-        float f2 = fHandCrankBaseHeight;
+        float f2 = handCrankBaseHeight;
         this.setBoundingBox(0.5F - f1, 0.0F, 0.5F - f, 0.5F + f1, f2, 0.5F + f);
         CustomBlockRendering.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
         f = 0.0625F;

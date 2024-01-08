@@ -110,13 +110,10 @@ public class HopperTileEntity extends TileEntityBase
         return 64;
     }
 
-    public boolean canPlayerUse(PlayerBase entityplayer)
-    {
-        if(level.getTileEntity(x, y, z) != this)
-        {
+    public boolean canPlayerUse(PlayerBase entityplayer) {
+        if(level.getTileEntity(x, y, z) != this) {
             return false;
-        } else
-        {
+        } else {
             return entityplayer.squaredDistanceTo((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D) <= 64D;
         }
     }
@@ -201,6 +198,9 @@ public class HopperTileEntity extends TileEntityBase
 
     public void markDirty()
     {
+        if (level == null) {
+            return;
+        }
         level.method_202(x, y, z, x, y, z);
         hopperEjectBlocked = false;
         int iOccupiedStacks = InventoryHandler.getOccupiedSlotCountWithinBounds(this, 0, 17);

@@ -56,7 +56,7 @@ public class MillStone extends TemplateBlockWithEntity
     public void onBlockPlaced(Level world, int i, int j, int k)
     {
         super.onBlockPlaced(world, i, j, k);
-        world.method_216(i, j, k, id, getTickrate());
+        world.method_216(i, j, k, BlockListener.millStone.id, getTickrate());
     }
 
     public void onAdjacentBlockUpdate(Level world, int i, int j, int k, int iid)
@@ -64,7 +64,7 @@ public class MillStone extends TemplateBlockWithEntity
         boolean bReceivingPower = IsInputtingMechanicalPower(world, i, j, k);
         if(IsBlockOn(world, i, j, k) != bReceivingPower)
         {
-            world.method_216(i, j, k, id, getTickrate());
+            world.method_216(i, j, k, BlockListener.millStone.id, getTickrate());
         }
     }
 

@@ -155,8 +155,10 @@ public class CrucibleTileEntity extends TileEntityBase
         }
     }
 
-    public void markDirty()
-    {
+    public void markDirty() {
+        if (level == null) {
+            return;
+        }
         level.method_202(x, y, z, x, y, z);
     }
 

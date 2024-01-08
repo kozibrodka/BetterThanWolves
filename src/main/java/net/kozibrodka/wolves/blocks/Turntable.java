@@ -7,6 +7,7 @@ import net.kozibrodka.wolves.utils.BlockPosition;
 import net.kozibrodka.wolves.utils.RotatableBlock;
 import net.kozibrodka.wolves.utils.MechanicalDevice;
 import net.kozibrodka.wolves.utils.CustomBlockRendering;
+import net.minecraft.block.BlockBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.render.block.BlockRenderer;
 import net.minecraft.entity.player.PlayerBase;
@@ -54,12 +55,15 @@ public class Turntable extends TemplateBlockWithEntity
     public void onBlockPlaced(Level world, int i, int j, int k)
     {
         super.onBlockPlaced(world, i, j, k);
-        world.method_216(i, j, k, id, getTickrate());
+        world.method_216(i, j, k, BlockListener.turntable.id, getTickrate());
     }
 
     public void onAdjacentBlockUpdate(Level world, int i, int j, int k, int iid)
     {
-        world.method_216(i, j, k, id, getTickrate());
+        if (iid != BlockListener.axleBlock.id) {
+            return;
+        }
+        world.method_216(i, j, k, BlockListener.turntable.id, getTickrate());
     }
 
     public void onScheduledTick(Level world, int i, int j, int k, Random random)
@@ -89,8 +93,7 @@ public class Turntable extends TemplateBlockWithEntity
 
     public boolean canUse(Level world, int i, int j, int k, PlayerBase entityPlayer)
     {
-        if(world.isServerSide)
-        {
+        if(world == null) {
             return true;
         }
         ItemInstance playerEquippedItem = entityPlayer.getHeldItem();

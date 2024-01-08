@@ -175,6 +175,9 @@ public class Pulley extends TemplateBlockWithEntity
 
     public boolean IsBlockOn(BlockView iBlockAccess, int i, int j, int k)
     {
+        if (iBlockAccess == null) {
+            return false;
+        }
         return (iBlockAccess.getTileMeta(i, j, k) & 1) > 0;
     }
 

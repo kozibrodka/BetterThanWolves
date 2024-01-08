@@ -176,19 +176,19 @@ public class CauldronTileEntity extends TileEntityBase
         return 64;
     }
 
-    public void markDirty()
-    {
+    public void markDirty() {
+        if (level == null) {
+            return;
+        }
         int iFireUnderState = ((Cauldron)BlockListener.cauldron).GetFireUnderState(level, x, y, z);
         ValidateContentsForState(iFireUnderState);
     }
 
     public boolean canPlayerUse(PlayerBase entityPlayer)
     {
-        if(level.getTileEntity(x, y, z) != this)
-        {
+        if(level.getTileEntity(x, y, z) != this) {
             return false;
-        } else
-        {
+        } else {
             return entityPlayer.squaredDistanceTo((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D) <= 64D;
         }
     }
