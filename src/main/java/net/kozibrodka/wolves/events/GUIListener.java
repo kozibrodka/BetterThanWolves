@@ -7,6 +7,7 @@ import net.kozibrodka.wolves.tileentity.*;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.minecraft.client.gui.screen.ScreenBase;
 import net.minecraft.entity.player.PlayerBase;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.InventoryBase;
 import net.modificationstation.stationapi.api.event.registry.GuiHandlerRegistryEvent;
 import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
@@ -26,7 +27,7 @@ public class GUIListener {
     public void registerGuiHandlers(GuiHandlerRegistryEvent event) {
         GuiHandlerRegistry registry = event.registry;
         registry.registerValueNoMessage(Identifier.of(MOD_ID, "openAnvil"), BiTuple.of(this::openAnvil, null)); //BAD ONE
-        registry.registerValueNoMessage(Identifier.of(MOD_ID, "openHooper"), BiTuple.of(this::openHooper, HopperTileEntity::new));
+        registry.registerValueNoMessage(Identifier.of(MOD_ID, "openHopper"), BiTuple.of(this::openHopper, HopperTileEntity::new));
         registry.registerValueNoMessage(Identifier.of(MOD_ID, "openCrucible"), BiTuple.of(this::openCrucible, CrucibleTileEntity::new));
         registry.registerValueNoMessage(Identifier.of(MOD_ID, "openMillStone"), BiTuple.of(this::openMillStone, MillStoneTileEntity::new));
         registry.registerValueNoMessage(Identifier.of(MOD_ID, "openCauldron"), BiTuple.of(this::openCauldron, CauldronTileEntity::new));
@@ -39,7 +40,7 @@ public class GUIListener {
         return new AnvilGUI(player.inventory, player.level, player.clientX, player.clientY, player.clientZ);
     }
     @Environment(EnvType.CLIENT)
-    public ScreenBase openHooper(PlayerBase player, InventoryBase inventoryBase) {
+    public ScreenBase openHopper(PlayerBase player, InventoryBase inventoryBase) {
         return new HopperGUI(player.inventory, (HopperTileEntity) inventoryBase);
     }
     @Environment(EnvType.CLIENT)
