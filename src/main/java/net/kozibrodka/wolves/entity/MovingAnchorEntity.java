@@ -3,6 +3,7 @@ package net.kozibrodka.wolves.entity;
 import net.kozibrodka.wolves.blocks.Anchor;
 import net.kozibrodka.wolves.blocks.Rope;
 import net.kozibrodka.wolves.events.BlockListener;
+import net.kozibrodka.wolves.events.EntityListener;
 import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.mixin.EntityBaseAccessor;
 import net.kozibrodka.wolves.tileentity.PulleyTileEntity;
@@ -18,11 +19,14 @@ import net.minecraft.level.Level;
 import net.minecraft.util.io.CompoundTag;
 import net.minecraft.util.maths.Box;
 import net.minecraft.util.maths.MathHelper;
+import net.modificationstation.stationapi.api.server.entity.EntitySpawnDataProvider;
+import net.modificationstation.stationapi.api.server.entity.HasTrackingParameters;
+import net.modificationstation.stationapi.api.util.Identifier;
 
 import java.util.List;
 
-
-public class MovingAnchorEntity extends EntityBase
+@HasTrackingParameters(trackingDistance = 160, updatePeriod = 2)
+public class MovingAnchorEntity extends EntityBase implements EntitySpawnDataProvider
 {
 
     public MovingAnchorEntity(Level world)
@@ -406,4 +410,9 @@ public class MovingAnchorEntity extends EntityBase
     public static final float fMovementSpeed = 0.05F;
     private BlockPosition associatedPulleyPos;
     private double sentVel;
+
+    @Override
+    public Identifier getHandlerIdentifier() {
+        return Identifier.of(EntityListener.MOD_ID, "MovingAnchor");
+    }
 }

@@ -3,6 +3,7 @@ package net.kozibrodka.wolves.entity;
 
 import net.kozibrodka.wolves.blocks.Axle;
 import net.kozibrodka.wolves.events.BlockListener;
+import net.kozibrodka.wolves.events.EntityListener;
 import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.Wool;
@@ -13,8 +14,12 @@ import net.minecraft.item.ItemInstance;
 import net.minecraft.level.Level;
 import net.minecraft.util.io.CompoundTag;
 import net.minecraft.util.maths.Box;
+import net.modificationstation.stationapi.api.server.entity.EntitySpawnDataProvider;
+import net.modificationstation.stationapi.api.server.entity.HasTrackingParameters;
+import net.modificationstation.stationapi.api.util.Identifier;
 
-public class WindMillEntity extends EntityBase
+@HasTrackingParameters(trackingDistance = 160, updatePeriod = 2)
+public class WindMillEntity extends EntityBase implements EntitySpawnDataProvider
 {
 
     public WindMillEntity(Level world)
@@ -384,4 +389,9 @@ public class WindMillEntity extends EntityBase
     public float fWindMillCurrentRotationSpeed;
     public int iCurrentBladeColoringIndex;
     public int iFullUpdateTickCount;
+
+    @Override
+    public Identifier getHandlerIdentifier() {
+        return Identifier.of(EntityListener.MOD_ID, "WindMill");
+    }
 }

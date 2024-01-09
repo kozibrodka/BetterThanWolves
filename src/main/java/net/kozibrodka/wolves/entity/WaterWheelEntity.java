@@ -8,6 +8,7 @@ import net.kozibrodka.wolves.mixin.DataTrackerAccessor;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.Fluid;
 import net.minecraft.entity.EntityBase;
+import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.minecraft.util.io.CompoundTag;
@@ -27,7 +28,7 @@ public class WaterWheelEntity extends EntityBase implements EntitySpawnDataProvi
         super(world);
         setProvidingPower(false);
         setWheelRotation(0.0F);
-        setAligned(true);
+//        setAligned(true);
         iWaterWheelCurrentDamage = 0;
         iWaterWheelTimeSinceHit = 0;
         iWaterWheelRockDirection = 1;
@@ -64,7 +65,7 @@ public class WaterWheelEntity extends EntityBase implements EntitySpawnDataProvi
 
     protected void initDataTracker()
     {
-        dataTracker.startTracking(16, (byte) 0); //ALIGNED
+        dataTracker.startTracking(16, (int) 0); //ALIGNED
         dataTracker.startTracking(17, (int) 0); //WHEEL ROTATION
         dataTracker.startTracking(18, (byte) 0); //PROVIDING POWER
     }
@@ -160,6 +161,11 @@ public class WaterWheelEntity extends EntityBase implements EntitySpawnDataProvi
 
     public void tick()
     {
+//        if(!typechoosen && level.isServerSide)
+//        {
+//            typechoosen = true;
+//            System.out.println("KLIENT SPRAWDZA: "  + getAligned());
+//        }
         if(removed || level.isServerSide)
         {
             return;
@@ -199,11 +205,13 @@ public class WaterWheelEntity extends EntityBase implements EntitySpawnDataProvi
             {
                 if(!getProvidingPower())
                 {
+                    System.out.println("SERVI+ " + getAligned());
                     setProvidingPower(true);
                     ((Axle)BlockListener.axleBlock).SetPowerLevel(level, iCenterI, iCenterJ, iCenterK, 3);
                 }
             } else
                 if (getProvidingPower()) {
+                    System.out.println("SERVI+ " + getAligned());
                     setProvidingPower(false);
                     ((Axle) BlockListener.axleBlock).SetPowerLevel(level, iCenterI, iCenterJ, iCenterK, 0);
                 }
@@ -462,6 +470,16 @@ public class WaterWheelEntity extends EntityBase implements EntitySpawnDataProvi
         return l;
     }
 
+    public boolean interact(PlayerBase entityplayer)
+    {
+        if(level.isServerSide){
+            System.out.println("KLIENT: " + getAligned());
+        }else{
+            System.out.println("SERVER: " + getAligned());
+        }
+        return false;
+    }
+
     public static final float fWaterWheelHeight = 4.8F;
     public static final float fWaterWheelWidth = 4.8F;
     public static final float fWaterWheelDepth = 0.8F;
@@ -475,6 +493,7 @@ public class WaterWheelEntity extends EntityBase implements EntitySpawnDataProvi
     public int iFullUpdateTickCount;
     private float sentRotationSpeed;
     public int waterTick;
+    public boolean typechoosen;
 
 //    public boolean bWaterWheelIAligned;
 //    public float fRotation;
@@ -488,17 +507,17 @@ public class WaterWheelEntity extends EntityBase implements EntitySpawnDataProvi
     //ALIGNED
     public boolean getAligned()
     {
-        return (dataTracker.getByte(16) & 1) != 0;
+        return (dataTracker.getInt(16) & 1) != 0;
     }
 
     public void setAligned(boolean flag)
     {
         if(flag)
         {
-            dataTracker.setInt(16, (byte) 1);
+            dataTracker.setInt(16,  1);
         } else
         {
-            dataTracker.setInt(16, (byte) 0);
+            dataTracker.setInt(16,  0);
         }
     }
 

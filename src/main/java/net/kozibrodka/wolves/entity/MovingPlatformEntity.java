@@ -1,6 +1,7 @@
 package net.kozibrodka.wolves.entity;
 
 import net.kozibrodka.wolves.events.BlockListener;
+import net.kozibrodka.wolves.events.EntityListener;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.kozibrodka.wolves.utils.ReplaceableBlockChecker;
 import net.minecraft.block.BlockBase;
@@ -12,11 +13,14 @@ import net.minecraft.level.Level;
 import net.minecraft.util.io.CompoundTag;
 import net.minecraft.util.maths.Box;
 import net.minecraft.util.maths.MathHelper;
+import net.modificationstation.stationapi.api.server.entity.EntitySpawnDataProvider;
+import net.modificationstation.stationapi.api.server.entity.HasTrackingParameters;
+import net.modificationstation.stationapi.api.util.Identifier;
 
 import java.util.List;
 
-
-public class MovingPlatformEntity extends EntityBase
+@HasTrackingParameters(trackingDistance = 160, updatePeriod = 2)
+public class MovingPlatformEntity extends EntityBase implements EntitySpawnDataProvider
 {
 
     public MovingPlatformEntity(Level world)
@@ -335,4 +339,9 @@ public class MovingPlatformEntity extends EntityBase
     private double m_AssociatedAnchorLastKnownXPos;
     private double m_AssociatedAnchorLastKnownYPos;
     private double m_AssociatedAnchorLastKnownZPos;
+
+    @Override
+    public Identifier getHandlerIdentifier() {
+        return Identifier.of(EntityListener.MOD_ID, "MovingPlatform");
+    }
 }

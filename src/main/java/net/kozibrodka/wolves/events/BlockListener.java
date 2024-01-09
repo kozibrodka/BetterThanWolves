@@ -57,7 +57,7 @@ public class BlockListener {
 
         //TODO: Extra (test) - later move into expansion probably
         //TODO: My idea: remove crafting of stone omni plates/ corners, moulding and add grinder as a saw for "stone type" blocks
-        //TODO: Omni slabs are really cursed and kinda bad, especially with possible mods that upgrade slabs/stairs to modern (i actually have one in development). I suggest panels instead - would be great addon btw brings.
+        //TODO: Omni slabs are really cursed and kinda bad, especially with possible mods that upgrade slabs/stairs to modern . I suggest panels instead - would be great addon btw brings.
 
         //TODO: update, with new vanilla enhacked by pauldevs i dont see a point
 //        panelNumber1 = (TemplateBlock) new Panel(Identifier.of(MOD_ID, "fcPanel1"), BlockBase.SAND).setTranslationKey(MOD_ID, "fc_panel_1"); //test panels later hide

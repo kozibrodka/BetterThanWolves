@@ -1,6 +1,7 @@
 package net.kozibrodka.wolves.entity;
 
 import net.kozibrodka.wolves.events.BlockListener;
+import net.kozibrodka.wolves.events.EntityListener;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.kozibrodka.wolves.utils.ReplaceableBlockChecker;
 import net.minecraft.block.BlockBase;
@@ -10,10 +11,14 @@ import net.minecraft.level.Level;
 import net.minecraft.util.io.CompoundTag;
 import net.minecraft.util.maths.Box;
 import net.minecraft.util.maths.MathHelper;
+import net.modificationstation.stationapi.api.server.entity.EntitySpawnDataProvider;
+import net.modificationstation.stationapi.api.server.entity.HasTrackingParameters;
+import net.modificationstation.stationapi.api.util.Identifier;
 
 import java.util.List;
 
-public class LiftedBlockEntity extends EntityBase
+@HasTrackingParameters(trackingDistance = 160, updatePeriod = 2)
+public class LiftedBlockEntity extends EntityBase implements EntitySpawnDataProvider
 {
 
     public LiftedBlockEntity(Level world)
@@ -195,4 +200,9 @@ public class LiftedBlockEntity extends EntityBase
 
     public int m_iid;
     public int m_iBlockMetaData;
+
+    @Override
+    public Identifier getHandlerIdentifier() {
+        return Identifier.of(EntityListener.MOD_ID, "BlockLiftedByPlatform");
+    }
 }
