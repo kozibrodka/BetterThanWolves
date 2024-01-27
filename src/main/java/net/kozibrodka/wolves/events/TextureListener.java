@@ -141,6 +141,7 @@ public class TextureListener {
         event.renderers.put(LiftedBlockEntity.class, new LiftedBlockRender());
         event.renderers.put(MovingPlatformEntity.class, new MovingPlatformRender());
         event.renderers.put(MovingAnchorEntity.class, new MovingAnchorRender());
+        event.renderers.put(FallingAnvil.class, new FallingAnvilRender());
         event.renderers.put(FCEntityTEST.class, new FCEntityTestRender());
     }
 

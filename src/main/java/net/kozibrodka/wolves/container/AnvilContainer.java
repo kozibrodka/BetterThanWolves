@@ -68,14 +68,13 @@ public class AnvilContainer extends ContainerBase
     }
 
     public boolean canUse(PlayerBase entityplayer) {
-        /* TODO: Fix this condition (something seems to be wrong with the coordinates, not sure)
+//        System.out.println(anvilX + "  " + anvilY + " " + anvilZ);
         if(localWorld.getTileId(anvilX, anvilY, anvilZ) != BlockListener.anvil.id) {
             return false;
         } else {
             return entityplayer.squaredDistanceTo((double) anvilX + 0.5D, (double) anvilY + 0.5D, (double) anvilZ + 0.5D) <= 64D;
         }
-        */
-        return true;
+//        return true;
     }
 
     public ItemInstance transferSlot(int i) {

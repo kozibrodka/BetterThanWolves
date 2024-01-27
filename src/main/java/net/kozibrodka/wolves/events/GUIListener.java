@@ -37,8 +37,12 @@ public class GUIListener {
 
     @Environment(EnvType.CLIENT)
     public ScreenBase openAnvil(PlayerBase player, InventoryBase inventoryBase) {
-        return new AnvilGUI(player.inventory, player.level, player.clientX, player.clientY, player.clientZ);
+        return new AnvilGUI(player.inventory, player.level, TempAnvilX, TempAnvilY, TempAnvilZ);
     }
+    public static int TempAnvilX;
+    public static int TempAnvilY;
+    public static int TempAnvilZ;
+
     @Environment(EnvType.CLIENT)
     public ScreenBase openHopper(PlayerBase player, InventoryBase inventoryBase) {
         return new HopperGUI(player.inventory, (HopperTileEntity) inventoryBase);

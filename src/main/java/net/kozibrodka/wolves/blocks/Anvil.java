@@ -6,13 +6,17 @@
 package net.kozibrodka.wolves.blocks;
 
 import net.kozibrodka.wolves.container.AnvilContainer;
+import net.kozibrodka.wolves.entity.FallingAnvil;
+import net.kozibrodka.wolves.events.GUIListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.mixin.LevelAccessor;
 import net.kozibrodka.wolves.utils.RotatableBlock;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.kozibrodka.wolves.utils.CustomBlockRendering;
+import net.minecraft.block.BlockBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.render.block.BlockRenderer;
+import net.minecraft.entity.FallingBlock;
 import net.minecraft.entity.Living;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.level.BlockView;
@@ -23,6 +27,8 @@ import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldR
 import net.modificationstation.stationapi.api.gui.screen.container.GuiHelper;
 import net.modificationstation.stationapi.api.template.block.TemplateBlock;
 import net.modificationstation.stationapi.api.util.Identifier;
+
+import java.util.Random;
 
 public class Anvil extends TemplateBlock
     implements RotatableBlock, BlockWithWorldRenderer, BlockWithInventoryRenderer {
@@ -54,6 +60,7 @@ public class Anvil extends TemplateBlock
             iFacing = UnsortedUtils.GetOppositeFacing(iFacing);
         }
         SetFacing(world, i, j, k, iFacing);
+        world.method_216(i, j, k, this.id, this.getTickrate());
     }
 
     public void afterPlaced(Level world, int i, int j, int k, Living entityLiving) {
@@ -62,6 +69,9 @@ public class Anvil extends TemplateBlock
     }
 
     public boolean canUse(Level world, int i, int j, int k, PlayerBase entityplayer) {
+        GUIListener.TempAnvilX = i;
+        GUIListener.TempAnvilY = j;
+        GUIListener.TempAnvilZ = k;
         GuiHelper.openGUI(entityplayer, Identifier.of("wolves:openAnvil"), entityplayer.inventory, new AnvilContainer(entityplayer.inventory, world, i, j, k));
         return true;
     }
@@ -146,6 +156,57 @@ public class Anvil extends TemplateBlock
         }
         setBoundingBox(rotatedX1, y1, rotatedZ1, rotatedX2, y2, rotatedZ2);
     }
+
+    public void onAdjacentBlockUpdate(Level arg, int i, int j, int k, int l) {
+        arg.method_216(i, j, k, this.id, this.getTickrate());
+    }
+
+    public void onScheduledTick(Level arg, int i, int j, int k, Random random) {
+        this.method_436(arg, i, j, k);
+    }
+
+    private void method_436(Level arg, int i, int j, int k) {
+        if (method_435(arg, i, j - 1, k) && j >= 0) {
+            int facing = arg.getTileMeta(i,j,k);
+            byte var8 = 32;
+            if (!fallInstantly && arg.method_155(i - var8, j - var8, k - var8, i + var8, j + var8, k + var8)) {
+                FallingAnvil var9 = new FallingAnvil(arg, (double)((float)i + 0.5F), (double)((float)j + 0.5F), (double)((float)k + 0.5F), this.id, facing);
+                arg.spawnEntity(var9);
+            } else {
+                arg.setTile(i, j, k, 0);
+
+                while(method_435(arg, i, j - 1, k) && j > 0) {
+                    --j;
+                }
+
+                if (j > 0) {
+                    arg.setTileWithMetadata(i, j, k, this.id, facing);
+                }
+            }
+        }
+
+    }
+
+    public static boolean method_435(Level arg, int i, int j, int k) {
+        int var4 = arg.getTileId(i, j, k);
+        if (var4 == 0) {
+            return true;
+        } else if (var4 == BlockBase.FIRE.id) {
+            return true;
+        } else {
+            Material var5 = BlockBase.BY_ID[var4].material;
+            if (var5 == Material.WATER) {
+                return true;
+            } else {
+                return var5 == Material.LAVA;
+            }
+        }
+    }
+    public int getTickrate() {
+        return 3;
+    }
+
+    public static boolean fallInstantly = false;
 
     @Override
     public boolean renderWorld(BlockRenderer tileRenderer, BlockView tileView, int x, int y, int z) {
