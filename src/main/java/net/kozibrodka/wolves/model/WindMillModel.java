@@ -41,7 +41,7 @@ public class WindMillModel extends EntityModelBase
         float f6 = fcentitywindmill.getBrightnessAtEyes(f);
         for(int j = 4; j < 8; j++)
         {
-            int k = fcentitywindmill.iBladeColors[j - 4];
+            int k = fcentitywindmill.getBladeColor(j - 4);
             GL11.glColor3f(f6 * Sheep.field_2698[k][0], f6 * Sheep.field_2698[k][1], f6 * Sheep.field_2698[k][2]);
             windMillComponents[j].method_1815(f5);
         }

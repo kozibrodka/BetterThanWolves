@@ -86,6 +86,9 @@ public class TurntableTileEntity extends TileEntityBase
     private void RotateTurntable()
     {
         level.playSound((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, "random.click", 0.05F, 1.0F);
+        if(level.isServerSide){
+            return;
+        }
         boolean bReverseDirection = ((Turntable)BlockListener.turntable).IsBlockRedstoneOn(level, x, y, z);
         m_bPotteryRotated = false;
         int iTempJ = y + 1;
@@ -480,7 +483,11 @@ public class TurntableTileEntity extends TileEntityBase
     private void RotateClay(int i, int j, int k, boolean bReverseDirection)
     {
         BlockBase targetBlock = BlockBase.CLAY;
-        Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).soundHelper.playSound(targetBlock.sounds.getWalkSound(), (float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F, (targetBlock.sounds.getVolume() + 1.0F) / 2.0F, targetBlock.sounds.getPitch() * 0.8F);
+//        level.playSound(targetBlock.sounds.getWalkSound(), (float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F, (targetBlock.sounds.getVolume() + 1.0F) / 2.0F, targetBlock.sounds.getPitch() * 0.8F);
+//        if(level.isServerSide) {
+//            Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).soundHelper.playSound(targetBlock.sounds.getWalkSound(), (float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, (targetBlock.sounds.getVolume() + 1.0F) / 2.0F, targetBlock.sounds.getPitch() * 0.8F);
+//        }
+        level.playSound((float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, targetBlock.sounds.getWalkSound(), (targetBlock.sounds.getVolume() + 1.0F) / 5.0F, targetBlock.sounds.getPitch() * 0.8F);
         m_iPotteryRotationCount++;
         if(m_iPotteryRotationCount >= 8)
         {
@@ -495,7 +502,10 @@ public class TurntableTileEntity extends TileEntityBase
     {
 //        BlockBase targetBlock = mod_FCBetterThanWolves.fcUnfiredPottery_crucible;
         BlockBase targetBlock = BlockBase.CLAY;
-        Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).soundHelper.playSound(targetBlock.sounds.getWalkSound(), (float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F, (targetBlock.sounds.getVolume() + 1.0F) / 2.0F, targetBlock.sounds.getPitch() * 0.8F);
+//        if(level.isServerSide) {
+//            Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).soundHelper.playSound(targetBlock.sounds.getWalkSound(), (float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, (targetBlock.sounds.getVolume() + 1.0F) / 2.0F, targetBlock.sounds.getPitch() * 0.8F);
+//        }
+        level.playSound((float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, targetBlock.sounds.getWalkSound(), (targetBlock.sounds.getVolume() + 1.0F) / 5.0F, targetBlock.sounds.getPitch() * 0.8F);
         m_iPotteryRotationCount++;
         if(m_iPotteryRotationCount >= 8)
         {
@@ -508,11 +518,13 @@ public class TurntableTileEntity extends TileEntityBase
                 }
                 iMetaData++;
                 level.setTileMeta(i, j, k, iMetaData);
+                level.method_243(i, j, k);
                 level.method_202(i, j, k, i, j, k);
 //                mod_FCBetterThanWolves.sendData(this, level, i, j, k);
             } else
             {
                 level.setTile(i, j, k, 0);
+                level.method_202(i, j, k, i, j, k);
                 for(int iTemp = 0; iTemp < 2; iTemp++)
                 {
                     UnsortedUtils.EjectSingleItemWithRandomOffset(level, i, j, k, ItemBase.clay.id, 0);

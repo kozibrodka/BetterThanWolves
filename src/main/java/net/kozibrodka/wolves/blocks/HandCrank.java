@@ -129,14 +129,22 @@ public class HandCrank extends TemplateBlock
                     world.method_216(i, j, k, BlockListener.handCrank.id, handCrankDelayBeforeReset);
                 }
                 world.setTileMeta(i, j, k, iMetaData + 1);
+                world.method_243(i, j, k);
+                world.method_202(i, j, k, i, j, k);
             } else
             {
                 world.setTileMeta(i, j, k, 0);
+                world.method_243(i, j, k);
                 world.method_202(i, j, k, i, j, k);
                 world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.click", 0.3F, 0.7F);
             }
         }
     }
+
+//    public void randomDisplayTick(Level world, int i, int j, int k, Random random)
+//    {
+//        world.method_202(i, j, k, i, j, k);
+//    }
 
     public void onAdjacentBlockUpdate(Level world, int i, int j, int k, int iid)
     {

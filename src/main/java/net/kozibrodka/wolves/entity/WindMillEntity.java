@@ -25,15 +25,15 @@ public class WindMillEntity extends EntityBase implements EntitySpawnDataProvide
     public WindMillEntity(Level world)
     {
         super(world);
-        bWindMillIAligned = true;
-        fRotation = 0.0F;
-        bProvidingPower = false;
-        iOverpowerTimer = -1;
-        iBladeColors = new int[4];
-        for(int iTempIndex = 0; iTempIndex < 4; iTempIndex++)
-        {
-            iBladeColors[iTempIndex] = 0;
-        }
+//        bWindMillIAligned = true;
+//        fRotation = 0.0F;
+//        bProvidingPower = false;
+//        iOverpowerTimer = -1;
+//        iBladeColors = new int[4];
+//        for(int iTempIndex = 0; iTempIndex < 4; iTempIndex++)
+//        {
+//            iBladeColors[iTempIndex] = 0;
+//        }
 
         iWindMillCurrentDamage = 0;
         iWindMillTimeSinceHit = 0;
@@ -51,7 +51,7 @@ public class WindMillEntity extends EntityBase implements EntitySpawnDataProvide
     {
         this(world);
         setPosition(x, y, z);
-        bWindMillIAligned = bIAligned;
+        setAligned(bIAligned);
         AlignBoundingBoxWithAxis();
     }
 
@@ -61,7 +61,7 @@ public class WindMillEntity extends EntityBase implements EntitySpawnDataProvide
 
     private void AlignBoundingBoxWithAxis()
     {
-        if(bWindMillIAligned)
+        if(getAligned())
         {
             boundingBox.method_99(x - 0.40000000596046448D, y - 6.4000000953674316D, z - 6.4000000953674316D, x + 0.40000000596046448D, y + 6.4000000953674316D, z + 6.4000000953674316D);
         } else
@@ -72,30 +72,38 @@ public class WindMillEntity extends EntityBase implements EntitySpawnDataProvide
 
     protected void initDataTracker()
     {
+        dataTracker.startTracking(16, (byte) 0); //ALIGNED
+        dataTracker.startTracking(17, (int) 0); //WHEEL ROTATION
+        dataTracker.startTracking(18, (byte) 0); //PROVIDING POWER
+        dataTracker.startTracking(19, (byte) 0); //OVERPOWER TIMER
+        dataTracker.startTracking(20, (byte) 0); //BLADE COLOR 0
+        dataTracker.startTracking(21, (byte) 0); //BLADE COLOR 1
+        dataTracker.startTracking(22, (byte) 0); //BLADE COLOR 2
+        dataTracker.startTracking(23, (byte) 0); //BLADE COLOR 3
     }
 
     public void writeCustomDataToTag(CompoundTag nbttagcompound)
     {
-        nbttagcompound.put("bWindMillIAligned", bWindMillIAligned);
-        nbttagcompound.put("fRotation", fRotation);
-        nbttagcompound.put("bProvidingPower", bProvidingPower);
-        nbttagcompound.put("iOverpowerTimer", iOverpowerTimer);
-        nbttagcompound.put("iBladeColors0", iBladeColors[0]);
-        nbttagcompound.put("iBladeColors1", iBladeColors[1]);
-        nbttagcompound.put("iBladeColors2", iBladeColors[2]);
-        nbttagcompound.put("iBladeColors3", iBladeColors[3]);
+        nbttagcompound.put("bWindMillIAligned", getAligned());
+        nbttagcompound.put("fRotation", getMillRotation());
+        nbttagcompound.put("bProvidingPower", getProvidingPower());
+        nbttagcompound.put("iOverpowerTimer", getOverpowerTimer());
+        nbttagcompound.put("iBladeColors0", getBladeColor(0));
+        nbttagcompound.put("iBladeColors1", getBladeColor(1));
+        nbttagcompound.put("iBladeColors2", getBladeColor(2));
+        nbttagcompound.put("iBladeColors3", getBladeColor(3));
     }
 
     public void readCustomDataFromTag(CompoundTag nbttagcompound)
     {
-        bWindMillIAligned = nbttagcompound.getBoolean("bWindMillIAligned");
-        fRotation = nbttagcompound.getFloat("fRotation");
-        bProvidingPower = nbttagcompound.getBoolean("bProvidingPower");
-        iOverpowerTimer = nbttagcompound.getInt("iOverpowerTimer");
-        iBladeColors[0] = nbttagcompound.getInt("iBladeColors0");
-        iBladeColors[1] = nbttagcompound.getInt("iBladeColors1");
-        iBladeColors[2] = nbttagcompound.getInt("iBladeColors2");
-        iBladeColors[3] = nbttagcompound.getInt("iBladeColors3");
+        setAligned(nbttagcompound.getBoolean("bWindMillIAligned"));
+        setMillRotation(nbttagcompound.getFloat("fRotation"));
+        setProvidingPower(nbttagcompound.getBoolean("bProvidingPower"));
+        setOverpowerTimer(nbttagcompound.getInt("iOverpowerTimer"));
+        setBladeColor(0, nbttagcompound.getInt("iBladeColors0"));
+        setBladeColor(1, nbttagcompound.getInt("iBladeColors1"));
+        setBladeColor(2, nbttagcompound.getInt("iBladeColors2"));
+        setBladeColor(3, nbttagcompound.getInt("iBladeColors3"));
         AlignBoundingBoxWithAxis();
     }
 
@@ -150,7 +158,7 @@ public class WindMillEntity extends EntityBase implements EntitySpawnDataProvide
 
     public void remove()
     {
-        if(bProvidingPower)
+        if(getProvidingPower())
         {
             int iCenterI = (int)(x - 0.5D);
             int iCenterJ = (int)(y - 0.5D);
@@ -175,7 +183,7 @@ public class WindMillEntity extends EntityBase implements EntitySpawnDataProvide
 
     public void tick()
     {
-    	if(removed)
+    	if(removed || level.isServerSide)
         {
             return;
         }
@@ -192,12 +200,12 @@ public class WindMillEntity extends EntityBase implements EntitySpawnDataProvide
                 DestroyWithDrop();
                 return;
             }
-            if(!WindMillValidateAreaAroundBlock(level, iCenterI, iCenterJ, iCenterK, bWindMillIAligned))
+            if(!WindMillValidateAreaAroundBlock(level, iCenterI, iCenterJ, iCenterK, getAligned()))
             {
                 DestroyWithDrop();
                 return;
             }
-            if(!bProvidingPower && ((Axle)BlockListener.axleBlock).GetPowerLevel(level, iCenterI, iCenterJ, iCenterK) > 0)
+            if(!getProvidingPower() && ((Axle)BlockListener.axleBlock).GetPowerLevel(level, iCenterI, iCenterJ, iCenterK) > 0)
             {
                 DestroyWithDrop();
                 return;
@@ -205,24 +213,24 @@ public class WindMillEntity extends EntityBase implements EntitySpawnDataProvide
             fWindMillCurrentRotationSpeed = ComputeRotation(iCenterI, iCenterJ, iCenterK);
             if(fWindMillCurrentRotationSpeed > 0.01F || fWindMillCurrentRotationSpeed < -0.01F)
             {
-                if(!bProvidingPower)
+                if(!getProvidingPower())
                 {
-                    bProvidingPower = true;
+                    setProvidingPower(true);
                     ((Axle)BlockListener.axleBlock).SetPowerLevel(level, iCenterI, iCenterJ, iCenterK, 3);
                 }
             } else
-            if(bProvidingPower)
+            if(getProvidingPower())
             {
-                bProvidingPower = false;
+                setProvidingPower(false);
                 ((Axle)BlockListener.axleBlock).SetPowerLevel(level, iCenterI, iCenterJ, iCenterK, 0);
             }
-            if(iOverpowerTimer >= 0)
+            if(getOverpowerTimer() >= 0)
             {
-                if(iOverpowerTimer > 0)
+                if(getOverpowerTimer() > 0)
                 {
-                    iOverpowerTimer--;
+                    setOverpowerTimer(getOverpowerTimer()-1);
                 }
-                if(iOverpowerTimer <= 0)
+                if(getOverpowerTimer() <= 0)
                 {
                     ((Axle)BlockListener.axleBlock).Overpower(level, iCenterI, iCenterJ, iCenterK);
                 }
@@ -236,14 +244,14 @@ public class WindMillEntity extends EntityBase implements EntitySpawnDataProvide
         {
             iWindMillCurrentDamage--;
         }
-        fRotation += fWindMillCurrentRotationSpeed;
-        if(fRotation > 360F)
+        setMillRotation(getMillRotation()+fWindMillCurrentRotationSpeed);
+        if(getMillRotation() > 360F)
         {
-            fRotation -= 360F;
+            setMillRotation(getMillRotation()-360F);
         } else
-        if(fRotation < -360F)
+        if(getMillRotation() < -360F)
         {
-            fRotation += 360F;
+            setMillRotation(getMillRotation()+360F);
         }
     }
 
@@ -277,7 +285,7 @@ public class WindMillEntity extends EntityBase implements EntitySpawnDataProvide
             {
                 iColor = 12;
             }
-            iBladeColors[iCurrentBladeColoringIndex] = iColor;
+            setBladeColor(iCurrentBladeColoringIndex, iColor);
             iCurrentBladeColoringIndex++;
             if(iCurrentBladeColoringIndex >= 4)
             {
@@ -349,21 +357,21 @@ public class WindMillEntity extends EntityBase implements EntitySpawnDataProvide
         if(level.dimension.evaporatesWater)
         {
             fRotationAmount = -0.0675F;
-            iOverpowerTimer = -1;
+            setOverpowerTimer(-1);
         } else
         if(level.isAboveGroundCached(iCenterI, iCenterJ, iCenterK))
         {
             if(UnsortedUtils.IsBlockBeingPrecipitatedOn(level, iCenterI, 128, iCenterK))
             {
                 fRotationAmount = -2F;
-                if(iOverpowerTimer < 0)
+                if(getOverpowerTimer() < 0)
                 {
-                    iOverpowerTimer = 30;
+                    setOverpowerTimer(30);
                 }
             } else
             {
                 fRotationAmount = -0.125F;
-                iOverpowerTimer = -1;
+                setOverpowerTimer(-1);
             }
         }
         return fRotationAmount;
@@ -378,11 +386,11 @@ public class WindMillEntity extends EntityBase implements EntitySpawnDataProvide
     public static final float fWindMillRotationPerTickInHell = -0.0675F;
     public static final int iWindMillTicksPerFullUpdate = 20;
     public static final int iWindMillUpdatesToOverpower = 30;
-    public boolean bWindMillIAligned;
-    public float fRotation;
-    public boolean bProvidingPower;
-    public int iOverpowerTimer;
-    public int iBladeColors[];
+//    public boolean bWindMillIAligned;
+//    public float fRotation;
+//    public boolean bProvidingPower;
+//    public int iOverpowerTimer;
+//    public int iBladeColors[];
     public int iWindMillCurrentDamage;
     public int iWindMillTimeSinceHit;
     public int iWindMillRockDirection;
@@ -393,5 +401,83 @@ public class WindMillEntity extends EntityBase implements EntitySpawnDataProvide
     @Override
     public Identifier getHandlerIdentifier() {
         return Identifier.of(EntityListener.MOD_ID, "WindMill");
+    }
+
+    //ALIGNED
+    public boolean getAligned()
+    {
+        return (dataTracker.getByte(16) & 1) != 0;
+    }
+
+    public void setAligned(boolean flag)
+    {
+        if(flag)
+        {
+            dataTracker.setInt(16,  (byte)1);
+        } else
+        {
+            dataTracker.setInt(16,  (byte)0);
+        }
+    }
+
+    //ROTATION (FLOAT)
+    public float getMillRotation()
+    {
+        return Float.intBitsToFloat(dataTracker.getInt(17));
+    }
+
+    public void setMillRotation(float age)
+    {
+        dataTracker.setInt(17, Float.floatToRawIntBits(age));
+    }
+
+    //POWER
+    public boolean getProvidingPower()
+    {
+        return (dataTracker.getByte(18) & 1) != 0;
+    }
+
+    public void setProvidingPower(boolean flag)
+    {
+        if(flag)
+        {
+            dataTracker.setInt(18, (byte) 1);
+        } else
+        {
+            dataTracker.setInt(18, (byte) 0);
+        }
+    }
+
+    //OVERPOWER
+    public int getOverpowerTimer()
+    {
+        return dataTracker.getByte(19);
+    }
+
+    public void setOverpowerTimer(int i)
+    {
+        dataTracker.setInt(19, (byte) i);
+    }
+
+    //COLORS
+    public int getBladeColor(int blade)
+    {
+        return switch (blade) {
+            case 0 -> dataTracker.getByte(20);
+            case 1 -> dataTracker.getByte(21);
+            case 2 -> dataTracker.getByte(22);
+            case 3 -> dataTracker.getByte(23);
+            default -> 15;
+        };
+    }
+
+    public void setBladeColor(int blade, int color)
+    {
+        switch (blade){
+            case 0 -> dataTracker.setInt(20, (byte) color);
+            case 1 -> dataTracker.setInt(21, (byte) color);
+            case 2 -> dataTracker.setInt(22, (byte) color);
+            case 3 -> dataTracker.setInt(23, (byte) color);
+        }
     }
 }

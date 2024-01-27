@@ -81,8 +81,6 @@ public class GearBox extends TemplateBlock
         SetFacing(world, i, j, k, iFacing);
     }
 
-    //TODO translate the TODO below to English
-    //TODO był błąd LOL czy coś to zmieni?
     public void onBlockPlaced(Level world, int i, int j, int k)
     {
         super.onBlockPlaced(world, i, j, k);

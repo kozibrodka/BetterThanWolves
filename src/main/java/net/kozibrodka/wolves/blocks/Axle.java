@@ -106,6 +106,10 @@ public class Axle extends TemplateBlock
     public void onScheduledTick(Level world, int i, int j, int k, Random random)
     {
         ValidatePowerLevel(world, i, j, k);
+//        if(GetPowerLevel(world, i, j, k) > 0)
+//        {
+//            EmitAxleParticles(world, i, j, k, random);
+//        }
     }
 
     public Box getCollisionShape(Level world, int i, int j, int k) //getCollisionBoundingBoxFromPool
@@ -203,6 +207,7 @@ public class Axle extends TemplateBlock
         iMetaData |= iPowerLevel;
         world.setTileMeta(i, j, k, iMetaData);
         world.method_243(i, j, k);
+//        world.method_202(i, j, k, i, j, k);
     }
 
     public boolean IsAxleOrientedTowardsFacing(BlockView iBlockAccess, int i, int j, int k, int iFacing)
@@ -393,6 +398,8 @@ public class Axle extends TemplateBlock
             {
 //                System.out.println("ZNIAMIA");
                 SetPowerLevel(world, i, j, k, iNewPower);
+//                world.method_243(i, j, k);
+//                world.method_202(i, j, k, i, j, k);
             }
         }
     }

@@ -144,6 +144,9 @@ public class Hopper extends TemplateBlockWithEntity
     public void onEntityCollision(Level world, int i, int j, int k, EntityBase entity)
     {
         List collisionList = null;
+        if(world.isServerSide){
+            return;
+        }
         boolean bHasFilter = HasFilter(world, i, j, k);
         float fHopperHeight;
         if(!bHasFilter)

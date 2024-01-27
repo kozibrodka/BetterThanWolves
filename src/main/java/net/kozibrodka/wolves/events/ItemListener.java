@@ -67,6 +67,8 @@ public class ItemListener {
         broadHeadArrow = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "broadHeadArrow")).setTranslationKey(MOD_ID, "broad_head_arrow");
         coalDust = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "coalDust")).setTranslationKey(MOD_ID, "coal_dust");
         soulFilter = (TemplateItem) new SoulFilter(Identifier.of(MOD_ID, "soul_filter")).setTranslationKey(MOD_ID, "soul_filter");;
+
+        //TODO: ADDON IDEA: Refined Steel Minecarts - they would be X times faster than normal ones, great way to give more purpose for rail usage.
     }
 
     public static TemplateBucketItem bucketCement;

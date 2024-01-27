@@ -65,7 +65,7 @@ public class WaterWheelEntity extends EntityBase implements EntitySpawnDataProvi
 
     protected void initDataTracker()
     {
-        dataTracker.startTracking(16, (int) 0); //ALIGNED
+        dataTracker.startTracking(16, (byte) 0); //ALIGNED
         dataTracker.startTracking(17, (int) 0); //WHEEL ROTATION
         dataTracker.startTracking(18, (byte) 0); //PROVIDING POWER
     }
@@ -205,13 +205,13 @@ public class WaterWheelEntity extends EntityBase implements EntitySpawnDataProvi
             {
                 if(!getProvidingPower())
                 {
-                    System.out.println("SERVI+ " + getAligned());
+//                    System.out.println("SERVI+ " + getAligned());
                     setProvidingPower(true);
                     ((Axle)BlockListener.axleBlock).SetPowerLevel(level, iCenterI, iCenterJ, iCenterK, 3);
                 }
             } else
                 if (getProvidingPower()) {
-                    System.out.println("SERVI+ " + getAligned());
+//                    System.out.println("SERVI+ " + getAligned());
                     setProvidingPower(false);
                     ((Axle) BlockListener.axleBlock).SetPowerLevel(level, iCenterI, iCenterJ, iCenterK, 0);
                 }
@@ -507,17 +507,17 @@ public class WaterWheelEntity extends EntityBase implements EntitySpawnDataProvi
     //ALIGNED
     public boolean getAligned()
     {
-        return (dataTracker.getInt(16) & 1) != 0;
+        return (dataTracker.getByte(16) & 1) != 0;
     }
 
     public void setAligned(boolean flag)
     {
         if(flag)
         {
-            dataTracker.setInt(16,  1);
+            dataTracker.setInt(16,  (byte)1);
         } else
         {
-            dataTracker.setInt(16,  0);
+            dataTracker.setInt(16,  (byte)0);
         }
     }
 

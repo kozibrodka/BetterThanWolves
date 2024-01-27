@@ -4,11 +4,14 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.events.TextureListener;
+import net.kozibrodka.wolves.mixin.EntityBaseAccessor;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.kozibrodka.wolves.utils.CustomBlockRendering;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.render.block.BlockRenderer;
+import net.minecraft.entity.EntityBase;
+import net.minecraft.entity.Living;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.minecraft.util.maths.Box;
@@ -27,6 +30,8 @@ public class Rope extends TemplateBlock implements BlockWithWorldRenderer
         super(iid, Material.DOODADS);
         setHardness(0.5F);
         setSounds(GRASS_SOUNDS);
+        descensionSpeed = -0.15F;
+        ascensionSpeed = 0.2F;
     }
 
     public int getTextureForSide(int iSide)
@@ -75,10 +80,26 @@ public class Rope extends TemplateBlock implements BlockWithWorldRenderer
         setBoundingBox(0.4375F, 0.0F, 0.4375F, 0.5625F, 1.0F, 0.5625F);
     }
 
-    //TODO
-    public boolean isLadder()
+//    //TODO
+//    public boolean isLadder()
+//    {
+//        return true;
+//    }
+
+    public void onEntityCollision(Level world, int i, int j, int k, EntityBase entity)
     {
-        return true;
+        if(entity instanceof Living)
+        {
+            ((EntityBaseAccessor)entity).setFallDistance(0.0F);
+            if(entity.velocityY < (double)descensionSpeed)
+            {
+                entity.velocityY = descensionSpeed;
+            }
+            if(entity.field_1624)
+            {
+                entity.velocityY = ascensionSpeed;
+            }
+        }
     }
 
     public void BreakRope(Level world, int i, int j, int k)
@@ -89,6 +110,8 @@ public class Rope extends TemplateBlock implements BlockWithWorldRenderer
     }
 
     public static final float fRopeWidth = 0.125F;
+    public float descensionSpeed;
+    public float ascensionSpeed;
 
     @Override
     public boolean renderWorld(BlockRenderer tileRenderer, BlockView tileView, int x, int y, int z) {

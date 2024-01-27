@@ -35,14 +35,14 @@ public class WindMillRender extends EntityRenderer
         {
             f4 = ((MathHelper.sin(f2) * f2 * f3) / 40F) * (float)fcentitywindmill.iWindMillRockDirection;
         }
-        if(fcentitywindmill.bWindMillIAligned)
+        if(fcentitywindmill.getAligned())
         {
-            GL11.glRotatef(fcentitywindmill.fRotation, 1.0F, 0.0F, 0.0F);
+            GL11.glRotatef(fcentitywindmill.getMillRotation(), 1.0F, 0.0F, 0.0F);
             GL11.glRotatef(f4, 0.0F, 0.0F, 1.0F);
             GL11.glRotatef(90F, 0.0F, 1.0F, 0.0F);
         } else
         {
-            GL11.glRotatef(fcentitywindmill.fRotation, 0.0F, 0.0F, 1.0F);
+            GL11.glRotatef(fcentitywindmill.getMillRotation(), 0.0F, 0.0F, 1.0F);
             GL11.glRotatef(f4, 1.0F, 0.0F, 0.0F);
         }
         modelWindMill.render(0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F, fcentitywindmill);
