@@ -13,6 +13,7 @@ group = project.maven_group
 loom {
 	gluedMinecraftJar()
 	customMinecraftManifest.set("https://babric.github.io/manifest-polyfill/${minecraft_version}.json")
+	intermediaryUrl.set("https://maven.glass-launcher.net/babric/babric/intermediary/%1\$s/intermediary-%1\$s-v2.jar")
 }
 
 repositories {
@@ -84,6 +85,7 @@ dependencies {
 	modImplementation("net.glasslauncher:HowManyItems-Fabric-Unofficial:${project.howmanyitems_version}") {
 		transitive false
 	}
+//	modImplementation files("lib/mojangfix.jar")
 }
 
 processResources {

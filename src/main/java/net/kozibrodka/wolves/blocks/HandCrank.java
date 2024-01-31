@@ -4,6 +4,7 @@ package net.kozibrodka.wolves.blocks;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.events.TextureListener;
+import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.utils.BlockPosition;
 import net.kozibrodka.wolves.utils.MechanicalDevice;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
@@ -22,6 +23,7 @@ import net.modificationstation.stationapi.api.client.model.block.BlockWithInvent
 import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
 import net.modificationstation.stationapi.api.client.texture.atlas.Atlas;
 import net.modificationstation.stationapi.api.client.texture.atlas.Atlases;
+import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import net.modificationstation.stationapi.api.template.block.TemplateBlock;
 import net.modificationstation.stationapi.api.util.Identifier;
 
@@ -120,6 +122,10 @@ public class HandCrank extends TemplateBlock
                 if(iMetaData <= 6)
                 {
                     world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.click", 1.0F, 2.0F);
+                    if(!world.isServerSide) {
+                        PacketHelper.send(new SoundPacket("random.click"));
+                        System.out.println("WYSYLAM PAKIET");
+                    }
                 }
                 if(iMetaData <= 5)
                 {
