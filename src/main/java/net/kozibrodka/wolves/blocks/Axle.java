@@ -193,6 +193,7 @@ public class Axle extends TemplateBlock
         int iMetaData = world.getTileMeta(i, j, k) & 3;
         iMetaData |= iAxis << 2;
         world.setTileMeta(i, j, k, iMetaData);
+        world.method_243(i, j, k);
     }
 
     public int GetPowerLevel(BlockView iBlockAccess, int i, int j, int k)

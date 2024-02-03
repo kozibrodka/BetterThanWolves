@@ -10,11 +10,13 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.kozibrodka.wolves.container.BlockDispenserContainer;
 import net.kozibrodka.wolves.entity.BroadheadArrowEntity;
 import net.kozibrodka.wolves.events.BlockListener;
+import net.kozibrodka.wolves.events.GUIListener;
 import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.mixin.BlockBaseAccessor;
 import net.kozibrodka.wolves.mixin.ChickenAccessor;
 import net.kozibrodka.wolves.mixin.WolfAccessor;
+import net.kozibrodka.wolves.network.GuiPacket;
 import net.kozibrodka.wolves.tileentity.BlockDispenserTileEntity;
 import net.kozibrodka.wolves.utils.*;
 import net.minecraft.block.BlockBase;
@@ -37,6 +39,7 @@ import net.minecraft.tileentity.TileEntityBase;
 import net.minecraft.tileentity.TileEntityDispenser;
 import net.minecraft.util.maths.Box;
 import net.modificationstation.stationapi.api.gui.screen.container.GuiHelper;
+import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import net.modificationstation.stationapi.api.template.block.TemplateBlock;
 import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockWithEntity;
@@ -121,6 +124,12 @@ public class BlockDispenser extends TemplateBlockWithEntity
             return true;
         }
         BlockDispenserTileEntity tileEntityBlockDispenser = (BlockDispenserTileEntity)world.getTileEntity(i, j, k);
+        GUIListener.TempGuiX = i;
+        GUIListener.TempGuiY = j;
+        GUIListener.TempGuiZ = k;
+        if(world.isServerSide){
+            PacketHelper.send(new GuiPacket("dispenser",0, i, j, k));
+        }
         GuiHelper.openGUI(entityplayer, Identifier.of("wolves:openBlockDispenser"), (InventoryBase) tileEntityBlockDispenser, new BlockDispenserContainer(entityplayer.inventory, (BlockDispenserTileEntity) tileEntityBlockDispenser));
         return true;
     }

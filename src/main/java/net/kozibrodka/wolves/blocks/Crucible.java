@@ -6,7 +6,9 @@
 package net.kozibrodka.wolves.blocks;
 
 import net.kozibrodka.wolves.container.CrucibleContainer;
+import net.kozibrodka.wolves.events.GUIListener;
 import net.kozibrodka.wolves.events.TextureListener;
+import net.kozibrodka.wolves.network.GuiPacket;
 import net.kozibrodka.wolves.tileentity.CrucibleTileEntity;
 import net.kozibrodka.wolves.utils.RotatableBlock;
 import net.kozibrodka.wolves.utils.InventoryHandler;
@@ -25,6 +27,7 @@ import net.minecraft.util.maths.Box;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithInventoryRenderer;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
 import net.modificationstation.stationapi.api.gui.screen.container.GuiHelper;
+import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import net.modificationstation.stationapi.api.template.block.TemplateBlock;
 import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockWithEntity;
@@ -63,17 +66,13 @@ public class Crucible extends TemplateBlockWithEntity
 
     public boolean canUse(Level world, int i, int j, int k, PlayerBase entityPlayer)
     {
-//        if(world.isServerSide)
-//        {
-//            return true;
-//        } else
-//        {
-//            Minecraft minecraft = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance());
-//            minecraft.openScreen(new FCGuiCraftingAnvil(entityPlayer.inventory, world, i, j, k));
-//            //ModLoader.getMinecraftInstance().displayGuiScreen(new FCGuiCraftingAnvil(entityplayer.inventory, world, i, j, k));
-//        	return true;
-//        }
         CrucibleTileEntity tileEntityCrucible = (CrucibleTileEntity)world.getTileEntity(i, j, k);
+        GUIListener.TempGuiX = i;
+        GUIListener.TempGuiY = j;
+        GUIListener.TempGuiZ = k;
+        if(world.isServerSide){
+            PacketHelper.send(new GuiPacket("crucible",0, i, j, k));
+        }
         GuiHelper.openGUI(entityPlayer, Identifier.of("wolves:openCrucible"), (InventoryBase) tileEntityCrucible, new CrucibleContainer(entityPlayer.inventory, (CrucibleTileEntity) tileEntityCrucible));
         return true;
     }

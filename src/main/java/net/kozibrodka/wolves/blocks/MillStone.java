@@ -2,7 +2,9 @@ package net.kozibrodka.wolves.blocks;
 
 import net.kozibrodka.wolves.container.MillStoneContainer;
 import net.kozibrodka.wolves.events.BlockListener;
+import net.kozibrodka.wolves.events.GUIListener;
 import net.kozibrodka.wolves.events.TextureListener;
+import net.kozibrodka.wolves.network.GuiPacket;
 import net.kozibrodka.wolves.tileentity.MillStoneTileEntity;
 import net.kozibrodka.wolves.utils.BlockPosition;
 import net.kozibrodka.wolves.utils.MechanicalDevice;
@@ -14,6 +16,7 @@ import net.minecraft.inventory.InventoryBase;
 import net.minecraft.level.Level;
 import net.minecraft.tileentity.TileEntityBase;
 import net.modificationstation.stationapi.api.gui.screen.container.GuiHelper;
+import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import net.modificationstation.stationapi.api.template.block.TemplateBlock;
 import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockWithEntity;
@@ -71,6 +74,12 @@ public class MillStone extends TemplateBlockWithEntity
     public boolean canUse(Level world, int i, int j, int k, PlayerBase entityplayer)
     {
         MillStoneTileEntity tileEntityMillStone = (MillStoneTileEntity)world.getTileEntity(i, j, k);
+        GUIListener.TempGuiX = i;
+        GUIListener.TempGuiY = j;
+        GUIListener.TempGuiZ = k;
+        if(world.isServerSide){
+            PacketHelper.send(new GuiPacket("mill",0, i, j, k));
+        }
         GuiHelper.openGUI(entityplayer, Identifier.of("wolves:openMillStone"), (InventoryBase) tileEntityMillStone, new MillStoneContainer(entityplayer.inventory, (MillStoneTileEntity) tileEntityMillStone));
         return true;
     }
@@ -131,9 +140,11 @@ public class MillStone extends TemplateBlockWithEntity
         if(bOn)
         {
             world.setTileMeta(i, j, k, 1);
+            world.method_243(i, j, k);
         } else
         {
             world.setTileMeta(i, j, k, 0);
+            world.method_243(i, j, k);
         }
     }
 

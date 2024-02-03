@@ -5,19 +5,25 @@
 package net.kozibrodka.wolves.gui;
 
 import net.kozibrodka.wolves.container.HopperContainer;
+import net.kozibrodka.wolves.network.ClientGuiData;
+import net.kozibrodka.wolves.network.GuiPacket;
 import net.kozibrodka.wolves.tileentity.HopperTileEntity;
 import net.minecraft.client.gui.screen.container.ContainerBase;
 import net.minecraft.entity.player.PlayerInventory;
+import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import org.lwjgl.opengl.GL11;
 
 public class HopperGUI extends ContainerBase
 {
 
-    public HopperGUI(PlayerInventory inventoryplayer, HopperTileEntity fctileentityhopper)
+    public HopperGUI(PlayerInventory inventoryplayer, HopperTileEntity fctileentityhopper, int locX, int locY, int locZ)
     {
         super(new HopperContainer(inventoryplayer, fctileentityhopper));
         containerHeight = 193;
         associatedTileEntityHopper = fctileentityhopper;
+        guiX = locX;
+        guiY = locY;
+        guiZ = locZ;
     }
 
     protected void renderForeground()
@@ -34,13 +40,25 @@ public class HopperGUI extends ContainerBase
         int j = (width - containerWidth) / 2;
         int k = (height - containerHeight) / 2;
         blit(j, k, 0, 0, containerWidth, containerHeight);
-        if(associatedTileEntityHopper.IsEjecting())
-        {
-            blit(j + 80, k + 18, 176, 0, 14, 14);
+
+        if(associatedTileEntityHopper.level == null){
+            PacketHelper.send(new GuiPacket("hopper",0, guiX, guiY, guiZ));
+            if(ClientGuiData.isPowered())
+            {
+                blit(j + 80, k + 18, 176, 0, 14, 14);
+            }
+        }else{
+            if(associatedTileEntityHopper.IsEjecting())
+            {
+                blit(j + 80, k + 18, 176, 0, 14, 14);
+            }
         }
     }
 
     static final int iHopperGuiHeight = 193;
     static final int iHopperMachineIconHeight = 14;
     private HopperTileEntity associatedTileEntityHopper;
+    private int guiX;
+    private int guiY;
+    private int guiZ;
 }

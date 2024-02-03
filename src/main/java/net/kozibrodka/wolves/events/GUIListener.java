@@ -43,28 +43,32 @@ public class GUIListener {
     public static int TempAnvilY;
     public static int TempAnvilZ;
 
+    public static int TempGuiX;
+    public static int TempGuiY;
+    public static int TempGuiZ;
+
     @Environment(EnvType.CLIENT)
     public ScreenBase openHopper(PlayerBase player, InventoryBase inventoryBase) {
-        return new HopperGUI(player.inventory, (HopperTileEntity) inventoryBase);
+        return new HopperGUI(player.inventory, (HopperTileEntity) inventoryBase, TempGuiX, TempGuiY, TempGuiZ);
     }
     @Environment(EnvType.CLIENT)
     public ScreenBase openCrucible(PlayerBase player, InventoryBase inventoryBase) {
-        return new CrucibleGUI(player.inventory, (CrucibleTileEntity) inventoryBase);
+        return new CrucibleGUI(player.inventory, (CrucibleTileEntity) inventoryBase, TempGuiX, TempGuiY, TempGuiZ);
     }
     @Environment(EnvType.CLIENT)
     public ScreenBase openMillStone(PlayerBase player, InventoryBase inventoryBase) {
-        return new MillStoneGUI(player.inventory, (MillStoneTileEntity) inventoryBase);
+        return new MillStoneGUI(player.inventory, (MillStoneTileEntity) inventoryBase, TempGuiX, TempGuiY, TempGuiZ);
     }
     @Environment(EnvType.CLIENT)
     public ScreenBase openCauldron(PlayerBase player, InventoryBase inventoryBase) {
-        return new CauldronGUI(player.inventory, (CauldronTileEntity) inventoryBase);
+        return new CauldronGUI(player.inventory, (CauldronTileEntity) inventoryBase, TempGuiX, TempGuiY, TempGuiZ);
     }
     @Environment(EnvType.CLIENT)
     public ScreenBase openBlockDispenser(PlayerBase player, InventoryBase inventoryBase) {
-        return new BlockDispenserGUI(player.inventory, (BlockDispenserTileEntity) inventoryBase);
+        return new BlockDispenserGUI(player.inventory, (BlockDispenserTileEntity) inventoryBase, TempGuiX, TempGuiY, TempGuiZ);
     }
     @Environment(EnvType.CLIENT)
     public ScreenBase openPulley(PlayerBase player, InventoryBase inventoryBase) {
-        return new PulleyGUI(player.inventory, (PulleyTileEntity) inventoryBase);
+        return new PulleyGUI(player.inventory, (PulleyTileEntity) inventoryBase, TempGuiX, TempGuiY, TempGuiZ);
     }
 }

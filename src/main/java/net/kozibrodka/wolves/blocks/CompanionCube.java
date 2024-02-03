@@ -223,6 +223,7 @@ public class CompanionCube extends TemplateBlock
             iMetaData |= 8;
         }
         world.setTileMeta(i, j, k, iMetaData);
+        world.method_243(i, j, k);
     }
 
     public static void SpawnHearts(Level world, int i, int j, int k)

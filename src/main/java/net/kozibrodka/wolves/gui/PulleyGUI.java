@@ -5,19 +5,25 @@
 package net.kozibrodka.wolves.gui;
 
 import net.kozibrodka.wolves.container.PulleyContainer;
+import net.kozibrodka.wolves.network.ClientGuiData;
+import net.kozibrodka.wolves.network.GuiPacket;
 import net.kozibrodka.wolves.tileentity.PulleyTileEntity;
 import net.minecraft.client.gui.screen.container.ContainerBase;
 import net.minecraft.entity.player.PlayerInventory;
+import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import org.lwjgl.opengl.GL11;
 
 public class PulleyGUI extends ContainerBase
 {
 
-    public PulleyGUI(PlayerInventory inventoryplayer, PulleyTileEntity fctileentitypulley)
+    public PulleyGUI(PlayerInventory inventoryplayer, PulleyTileEntity fctileentitypulley, int locX, int locY, int locZ)
     {
         super(new PulleyContainer(inventoryplayer, fctileentitypulley));
         containerHeight = 174;
         associatedTileEntityPulley = fctileentitypulley;
+        guiX = locX;
+        guiY = locY;
+        guiZ = locZ;
     }
 
     protected void renderForeground()
@@ -34,9 +40,18 @@ public class PulleyGUI extends ContainerBase
         int j = (width - containerWidth) / 2;
         int k = (height - containerHeight) / 2;
         blit(j, k, 0, 0, containerWidth, containerHeight);
-        if(associatedTileEntityPulley.IsMechanicallyPowered())
-        {
-            blit(j + 80, k + 18, 176, 0, 14, 14);
+
+        if(associatedTileEntityPulley.level == null){
+            PacketHelper.send(new GuiPacket("pulley",0, guiX, guiY, guiZ));
+            if(ClientGuiData.isPowered())
+            {
+                blit(j + 80, k + 18, 176, 0, 14, 14);
+            }
+        }else{
+            if(associatedTileEntityPulley.IsMechanicallyPowered())
+            {
+                blit(j + 80, k + 18, 176, 0, 14, 14);
+            }
         }
     }
 
@@ -44,4 +59,7 @@ public class PulleyGUI extends ContainerBase
     static final int iPulleyMachineIconWidth = 14;
     static final int iPulleyMachineIconHeight = 14;
     private PulleyTileEntity associatedTileEntityPulley;
+    private int guiX;
+    private int guiY;
+    private int guiZ;
 }

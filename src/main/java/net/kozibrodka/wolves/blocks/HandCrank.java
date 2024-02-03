@@ -1,9 +1,13 @@
 
 package net.kozibrodka.wolves.blocks;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.events.TextureListener;
+import net.kozibrodka.wolves.mixin.ServerPlayerAccessor;
 import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.utils.BlockPosition;
 import net.kozibrodka.wolves.utils.MechanicalDevice;
@@ -13,7 +17,9 @@ import net.minecraft.block.BlockBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.block.BlockRenderer;
+import net.minecraft.entity.EntityBase;
 import net.minecraft.entity.player.PlayerBase;
+import net.minecraft.entity.player.ServerPlayer;
 import net.minecraft.item.ItemBase;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
@@ -27,6 +33,8 @@ import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import net.modificationstation.stationapi.api.template.block.TemplateBlock;
 import net.modificationstation.stationapi.api.util.Identifier;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Random;
 
 
@@ -122,9 +130,8 @@ public class HandCrank extends TemplateBlock
                 if(iMetaData <= 6)
                 {
                     world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.click", 1.0F, 2.0F);
-                    if(!world.isServerSide) {
-                        PacketHelper.send(new SoundPacket("random.click"));
-                        System.out.println("WYSYLAM PAKIET");
+                    if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+                        voicePacket(world, i, j, k, 1.0F, 2.0F);
                     }
                 }
                 if(iMetaData <= 5)
@@ -143,6 +150,30 @@ public class HandCrank extends TemplateBlock
                 world.method_243(i, j, k);
                 world.method_202(i, j, k, i, j, k);
                 world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.click", 0.3F, 0.7F);
+                if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+                    voicePacket(world, i, j, k, 0.3F, 0.7F);
+                }
+            }
+        }
+    }
+
+    @Environment(EnvType.SERVER)
+    public void voicePacket(Level world, int x, int y, int z, float g, float h){
+
+//        List list1 = world.getEntities(ServerPlayer.class, Box.createButWasteMemory(x - 4D, y - 4D, z - 4D, x + 4D, y + 4D, z + 4D));
+//        if(list1.size() != 0) {
+//            ServerPlayer player1 = (ServerPlayer) list1.get(0);
+//            PacketHelper.sendTo(player1, new SoundPacket("random.click"));
+//            System.out.println("WYSYLAM PAKIET");
+//        }
+
+        List list2 = world.players;
+        if(list2.size() != 0) {
+            for(int k = 0; k < list2.size(); k++)
+            {
+                ServerPlayer player1 = (ServerPlayer) list2.get(k);
+                PacketHelper.sendTo(player1, new SoundPacket("random.click", x, y, z, g,h));
+                System.out.println("WYSYLAM PAKIET");
             }
         }
     }

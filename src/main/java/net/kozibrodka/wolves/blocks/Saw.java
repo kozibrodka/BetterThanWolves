@@ -289,6 +289,7 @@ public class Saw extends TemplateBlock
             iMetaData |= 8;
         }
         world.setTileMeta(i, j, k, iMetaData);
+        world.method_243(i, j, k);
     }
 
     void EmitSawParticles(Level world, int i, int j, int k, Random random)

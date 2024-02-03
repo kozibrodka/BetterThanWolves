@@ -244,6 +244,7 @@ public class GearBox extends TemplateBlock
             {
                 axleBlock.SetPowerLevel(world, tempPos.i, tempPos.j, tempPos.k, 0);
             }
+//            world.method_243(tempPos.i, tempPos.j, tempPos.k);
         }
 
     }

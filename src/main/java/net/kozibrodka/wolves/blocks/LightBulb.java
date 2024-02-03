@@ -88,7 +88,6 @@ public class LightBulb extends TemplateBlock
     {
 //        return ModLoader.getMinecraftInstance().theWorld.isBlockGettingPowered(i, j, k);
         return ((Minecraft) FabricLoader.getInstance().getGameInstance()).level.method_263(i, j, k);
-
     }
 
 

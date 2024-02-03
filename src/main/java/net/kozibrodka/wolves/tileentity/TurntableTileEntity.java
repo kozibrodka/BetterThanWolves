@@ -5,19 +5,27 @@
 
 package net.kozibrodka.wolves.tileentity;
 
-import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.blocks.Turntable;
 import net.kozibrodka.wolves.blocks.UnfiredPottery;
 import net.kozibrodka.wolves.events.BlockListener;
+import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.utils.BlockPosition;
 import net.kozibrodka.wolves.utils.RotatableBlock;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.kozibrodka.wolves.utils.ReplaceableBlockChecker;
 import net.minecraft.block.*;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.ServerPlayer;
 import net.minecraft.item.ItemBase;
+import net.minecraft.level.Level;
 import net.minecraft.tileentity.TileEntityBase;
 import net.minecraft.util.io.CompoundTag;
+import net.modificationstation.stationapi.api.network.packet.PacketHelper;
+
+import java.util.List;
 
 
 // Referenced classes of package net.minecraft.src:
@@ -85,9 +93,12 @@ public class TurntableTileEntity extends TileEntityBase
 
     private void RotateTurntable()
     {
-        level.playSound((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, "random.click", 0.05F, 1.0F);
         if(level.isServerSide){
             return;
+        }
+        level.playSound((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, "random.click", 0.05F, 1.0F);
+        if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+            voicePacket(level, "random.click", x, y, z, 0.05F, 1.0F);
         }
         boolean bReverseDirection = ((Turntable)BlockListener.turntable).IsBlockRedstoneOn(level, x, y, z);
         m_bPotteryRotated = false;
@@ -483,11 +494,10 @@ public class TurntableTileEntity extends TileEntityBase
     private void RotateClay(int i, int j, int k, boolean bReverseDirection)
     {
         BlockBase targetBlock = BlockBase.CLAY;
-//        level.playSound(targetBlock.sounds.getWalkSound(), (float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F, (targetBlock.sounds.getVolume() + 1.0F) / 2.0F, targetBlock.sounds.getPitch() * 0.8F);
-//        if(level.isServerSide) {
-//            Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).soundHelper.playSound(targetBlock.sounds.getWalkSound(), (float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, (targetBlock.sounds.getVolume() + 1.0F) / 2.0F, targetBlock.sounds.getPitch() * 0.8F);
-//        }
         level.playSound((float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, targetBlock.sounds.getWalkSound(), (targetBlock.sounds.getVolume() + 1.0F) / 5.0F, targetBlock.sounds.getPitch() * 0.8F);
+        if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+            voicePacket(level, targetBlock.sounds.getWalkSound(), i, j, k, (targetBlock.sounds.getVolume() + 1.0F) / 5.0F, targetBlock.sounds.getPitch() * 0.8F);
+        }
         m_iPotteryRotationCount++;
         if(m_iPotteryRotationCount >= 8)
         {
@@ -500,12 +510,11 @@ public class TurntableTileEntity extends TileEntityBase
 
     private void RotateUnfiredPottery(int i, int j, int k, boolean bReverseDirection)
     {
-//        BlockBase targetBlock = mod_FCBetterThanWolves.fcUnfiredPottery_crucible;
         BlockBase targetBlock = BlockBase.CLAY;
-//        if(level.isServerSide) {
-//            Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).soundHelper.playSound(targetBlock.sounds.getWalkSound(), (float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, (targetBlock.sounds.getVolume() + 1.0F) / 2.0F, targetBlock.sounds.getPitch() * 0.8F);
-//        }
         level.playSound((float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, targetBlock.sounds.getWalkSound(), (targetBlock.sounds.getVolume() + 1.0F) / 5.0F, targetBlock.sounds.getPitch() * 0.8F);
+        if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+            voicePacket(level, targetBlock.sounds.getWalkSound(), i, j, k, (targetBlock.sounds.getVolume() + 1.0F) / 5.0F, targetBlock.sounds.getPitch() * 0.8F);
+        }
         m_iPotteryRotationCount++;
         if(m_iPotteryRotationCount >= 8)
         {
@@ -532,6 +541,18 @@ public class TurntableTileEntity extends TileEntityBase
 
             }
             m_iPotteryRotationCount = 0;
+        }
+    }
+
+    @Environment(EnvType.SERVER)
+    public void voicePacket(Level world, String name, int x, int y, int z, float g, float h){
+        List list2 = world.players;
+        if(list2.size() != 0) {
+            for(int k = 0; k < list2.size(); k++)
+            {
+                ServerPlayer player1 = (ServerPlayer) list2.get(k);
+                PacketHelper.sendTo(player1, new SoundPacket(name, x, y, z, g,h));
+            }
         }
     }
 

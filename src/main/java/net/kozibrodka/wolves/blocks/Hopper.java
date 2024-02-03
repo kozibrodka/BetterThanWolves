@@ -7,9 +7,11 @@ package net.kozibrodka.wolves.blocks;
 
 import net.kozibrodka.wolves.container.HopperContainer;
 import net.kozibrodka.wolves.events.BlockListener;
+import net.kozibrodka.wolves.events.GUIListener;
 import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.modsupport.AffectedByBellows;
+import net.kozibrodka.wolves.network.GuiPacket;
 import net.kozibrodka.wolves.tileentity.HopperTileEntity;
 import net.kozibrodka.wolves.utils.*;
 import net.minecraft.block.BlockBase;
@@ -28,6 +30,7 @@ import net.minecraft.util.maths.Box;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithInventoryRenderer;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
 import net.modificationstation.stationapi.api.gui.screen.container.GuiHelper;
+import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import net.modificationstation.stationapi.api.template.block.TemplateBlock;
 import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockWithEntity;
@@ -107,6 +110,12 @@ public class Hopper extends TemplateBlockWithEntity
     public boolean canUse(Level world, int i, int j, int k, PlayerBase entityplayer)
     {
         HopperTileEntity tileEntityHopper = (HopperTileEntity)world.getTileEntity(i, j, k);
+        GUIListener.TempGuiX = i;
+        GUIListener.TempGuiY = j;
+        GUIListener.TempGuiZ = k;
+        if(world.isServerSide){
+            PacketHelper.send(new GuiPacket("hopper",0, i, j, k));
+        }
         GuiHelper.openGUI(entityplayer, Identifier.of("wolves:openHopper"), tileEntityHopper, new HopperContainer(entityplayer.inventory, tileEntityHopper));
         return true;
     }
@@ -297,6 +306,7 @@ public class Hopper extends TemplateBlockWithEntity
             iMetaData &= -5;
         }
         world.setTileMeta(i, j, k, iMetaData);
+        world.method_243(i, j, k);
     }
 
     public boolean HasFilter(BlockView iBlockAccess, int i, int j, int k)
@@ -315,6 +325,7 @@ public class Hopper extends TemplateBlockWithEntity
             iMetaData &= -9;
         }
         world.setTileMeta(i, j, k, iMetaData);
+        world.method_243(i, j, k);
     }
 
     void EmitHopperParticles(Level world, int i, int j, int k, Random random)

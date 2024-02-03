@@ -5,20 +5,26 @@
 package net.kozibrodka.wolves.gui;
 
 import net.kozibrodka.wolves.container.CauldronContainer;
+import net.kozibrodka.wolves.network.ClientGuiData;
+import net.kozibrodka.wolves.network.GuiPacket;
 import net.kozibrodka.wolves.tileentity.CauldronTileEntity;
 import net.minecraft.client.gui.screen.container.ContainerBase;
 import net.minecraft.entity.player.PlayerInventory;
+import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import org.lwjgl.opengl.GL11;
 
 
 public class CauldronGUI extends ContainerBase
 {
 
-    public CauldronGUI(PlayerInventory inventoryplayer, CauldronTileEntity fctileentitycauldron)
+    public CauldronGUI(PlayerInventory inventoryplayer, CauldronTileEntity fctileentitycauldron, int locX, int locY, int locZ)
     {
         super(new CauldronContainer(inventoryplayer, fctileentitycauldron));
         containerHeight = 193;
         associatedTileEntityCauldron = fctileentitycauldron;
+        guiX = locX;
+        guiY = locY;
+        guiZ = locZ;
     }
 
     protected void renderForeground()
@@ -35,14 +41,28 @@ public class CauldronGUI extends ContainerBase
         int j = (width - containerWidth) / 2;
         int k = (height - containerHeight) / 2;
         blit(j, k, 0, 0, containerWidth, containerHeight);
-        if(associatedTileEntityCauldron.IsCooking())
-        {
-            int l = associatedTileEntityCauldron.getCookProgressScaled(12);
-            blit(j + 81, (k + 19 + 12) - l, 176, 12 - l, 14, l + 2);
+        if(associatedTileEntityCauldron.level == null){
+            {
+                PacketHelper.send(new GuiPacket("cauldron",0, guiX, guiY, guiZ));
+                if(ClientGuiData.IsCooking())
+                {
+                    int l = ClientGuiData.getCookProgressScaled(12);
+                    blit(j + 81, (k + 19 + 12) - l, 176, 12 - l, 14, l + 2);
+                }
+            }
+        }else{
+            if(associatedTileEntityCauldron.IsCooking())
+            {
+                int l = associatedTileEntityCauldron.getCookProgressScaled(12);
+                blit(j + 81, (k + 19 + 12) - l, 176, 12 - l, 14, l + 2);
+            }
         }
     }
 
     static final int iCauldronGuiHeight = 193;
     static final int iCauldronFireIconHeight = 12;
     private CauldronTileEntity associatedTileEntityCauldron;
+    private int guiX;
+    private int guiY;
+    private int guiZ;
 }

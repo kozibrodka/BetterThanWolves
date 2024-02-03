@@ -7,7 +7,9 @@ package net.kozibrodka.wolves.blocks;
 
 import net.kozibrodka.wolves.container.CauldronContainer;
 import net.kozibrodka.wolves.events.BlockListener;
+import net.kozibrodka.wolves.events.GUIListener;
 import net.kozibrodka.wolves.events.TextureListener;
+import net.kozibrodka.wolves.network.GuiPacket;
 import net.kozibrodka.wolves.tileentity.CauldronTileEntity;
 import net.kozibrodka.wolves.utils.RotatableBlock;
 import net.kozibrodka.wolves.utils.InventoryHandler;
@@ -22,6 +24,7 @@ import net.minecraft.level.Level;
 import net.minecraft.tileentity.TileEntityBase;
 import net.minecraft.util.maths.Box;
 import net.modificationstation.stationapi.api.gui.screen.container.GuiHelper;
+import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import net.modificationstation.stationapi.api.template.block.TemplateBlock;
 import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockWithEntity;
@@ -70,6 +73,12 @@ public class Cauldron extends TemplateBlockWithEntity
     public boolean canUse(Level world, int i, int j, int k, PlayerBase entityPlayer)
     {
         CauldronTileEntity tileentitycauldron = (CauldronTileEntity)world.getTileEntity(i, j, k);
+        GUIListener.TempGuiX = i;
+        GUIListener.TempGuiY = j;
+        GUIListener.TempGuiZ = k;
+        if(world.isServerSide){
+            PacketHelper.send(new GuiPacket("cauldron",0, i, j, k));
+        }
         GuiHelper.openGUI(entityPlayer, Identifier.of("wolves:openCauldron"), (InventoryBase) tileentitycauldron, new CauldronContainer(entityPlayer.inventory, (CauldronTileEntity) tileentitycauldron));
         return true;
     }
@@ -178,6 +187,7 @@ public class Cauldron extends TemplateBlockWithEntity
         int iMetaData = world.getTileMeta(i, j, k) & -4;
         iMetaData |= iState & 3;
         world.setTileMeta(i, j, k, iMetaData);
+        world.method_243(i, j, k);
     }
 
     private void ValidateFireUnderState(Level world, int i, int j, int k)

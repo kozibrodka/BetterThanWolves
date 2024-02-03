@@ -5,19 +5,25 @@
 package net.kozibrodka.wolves.gui;
 
 import net.kozibrodka.wolves.container.CrucibleContainer;
+import net.kozibrodka.wolves.network.ClientGuiData;
+import net.kozibrodka.wolves.network.GuiPacket;
 import net.kozibrodka.wolves.tileentity.CrucibleTileEntity;
 import net.minecraft.client.gui.screen.container.ContainerBase;
 import net.minecraft.entity.player.PlayerInventory;
+import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import org.lwjgl.opengl.GL11;
 
 public class CrucibleGUI extends ContainerBase
 {
 
-    public CrucibleGUI(PlayerInventory inventoryplayer, CrucibleTileEntity fctileentitycrucible)
+    public CrucibleGUI(PlayerInventory inventoryplayer, CrucibleTileEntity fctileentitycrucible, int locX, int locY, int locZ)
     {
         super(new CrucibleContainer(inventoryplayer, fctileentitycrucible));
         containerHeight = 193;
         associatedTileEntityCrucible = fctileentitycrucible;
+        guiX = locX;
+        guiY = locY;
+        guiZ = locZ;
     }
 
     protected void renderForeground()
@@ -34,14 +40,29 @@ public class CrucibleGUI extends ContainerBase
         int j = (width - containerWidth) / 2;
         int k = (height - containerHeight) / 2;
         blit(j, k, 0, 0, containerWidth, containerHeight);
-        if(associatedTileEntityCrucible.IsCooking())
-        {
-            int l = associatedTileEntityCrucible.getCookProgressScaled(12);
-            blit(j + 81, (k + 19 + 12) - l, 176, 12 - l, 14, l + 2);
+
+        if(associatedTileEntityCrucible.level == null){
+            {
+                PacketHelper.send(new GuiPacket("crucible",0, guiX, guiY, guiZ));
+                if(ClientGuiData.IsCooking())
+                {
+                    int l = ClientGuiData.getCookProgressScaled(12);
+                    blit(j + 81, (k + 19 + 12) - l, 176, 12 - l, 14, l + 2);
+                }
+            }
+        }else{
+            if(associatedTileEntityCrucible.IsCooking())
+            {
+                int l = associatedTileEntityCrucible.getCookProgressScaled(12);
+                blit(j + 81, (k + 19 + 12) - l, 176, 12 - l, 14, l + 2);
+            }
         }
     }
 
     static final int iCrucibleGuiHeight = 193;
     static final int iCrucibleFireIconHeight = 12;
     private CrucibleTileEntity associatedTileEntityCrucible;
+    private int guiX;
+    private int guiY;
+    private int guiZ;
 }
