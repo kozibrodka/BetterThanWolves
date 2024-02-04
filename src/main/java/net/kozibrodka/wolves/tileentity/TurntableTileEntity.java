@@ -72,6 +72,9 @@ public class TurntableTileEntity extends TileEntityBase
 
     public void tick()
     {
+        if(level.isServerSide){
+            return;
+        }
         if(((Turntable) BlockListener.turntable).IsBlockMechanicalOn(level, x, y, z))
         {
             m_iRotationCount++;
@@ -93,9 +96,6 @@ public class TurntableTileEntity extends TileEntityBase
 
     private void RotateTurntable()
     {
-        if(level.isServerSide){
-            return;
-        }
         level.playSound((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, "random.click", 0.05F, 1.0F);
         if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
             voicePacket(level, "random.click", x, y, z, 0.05F, 1.0F);

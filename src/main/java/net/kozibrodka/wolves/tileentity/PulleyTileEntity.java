@@ -4,22 +4,30 @@
 // Source File Name:   FCTileEntityPulley.java
 
 package net.kozibrodka.wolves.tileentity;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
 import net.kozibrodka.wolves.blocks.Anchor;
 import net.kozibrodka.wolves.blocks.Pulley;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ItemListener;
+import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.utils.InventoryHandler;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.kozibrodka.wolves.utils.ReplaceableBlockChecker;
 import net.minecraft.block.BlockBase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerBase;
+import net.minecraft.entity.player.ServerPlayer;
 import net.minecraft.inventory.InventoryBase;
 import net.minecraft.item.ItemInstance;
+import net.minecraft.level.Level;
 import net.minecraft.tileentity.TileEntityBase;
 import net.minecraft.util.io.CompoundTag;
 import net.minecraft.util.io.ListTag;
+import net.modificationstation.stationapi.api.network.packet.PacketHelper;
+
+import java.util.List;
 
 
 public class PulleyTileEntity extends TileEntityBase
@@ -115,6 +123,9 @@ public class PulleyTileEntity extends TileEntityBase
 
     public void tick()
     {
+        if(level.isServerSide){
+            return;
+        }
         iUpdateRopeStateCounter--;
         if(iUpdateRopeStateCounter <= 0)
         {
@@ -193,7 +204,9 @@ public class PulleyTileEntity extends TileEntityBase
                 {
                     AddRopeToInventory();
                     BlockBase targetBlock = BlockListener.rope;
-                    Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).soundHelper.playSound(targetBlock.sounds.getWalkSound(), (float)x + 0.5F, (float)tempj + 0.5F, (float)z + 0.5F, targetBlock.sounds.getVolume() / 4F, targetBlock.sounds.getPitch() * 0.8F);
+                    if(net.fabricmc.loader.FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER){
+                        voicePacket(level, targetBlock.sounds.getWalkSound(), x, tempj, z, targetBlock.sounds.getVolume() / 4F, targetBlock.sounds.getPitch() * 0.8F);
+                    }
                     level.setTile(x, tempj, z, 0);
                     return true;
                 }
@@ -221,7 +234,9 @@ public class PulleyTileEntity extends TileEntityBase
                     {
                         BlockListener.rope.onBlockPlaced(level, x, tempj, z, 0);
                         BlockBase targetBlock = BlockListener.rope;
-                        Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).soundHelper.playSound(targetBlock.sounds.getWalkSound(), (float)x + 0.5F, (float)tempj + 0.5F, (float)z + 0.5F, targetBlock.sounds.getVolume() / 4F, targetBlock.sounds.getPitch() * 0.8F);
+                        if(net.fabricmc.loader.FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER){
+                            voicePacket(level, targetBlock.sounds.getWalkSound(), x, tempj, z, targetBlock.sounds.getVolume() / 4F, targetBlock.sounds.getPitch() * 0.8F);
+                        }
                         RemoveRopeFromInventory();
                         int iBlockBelowTargetID = level.getTileId(x, tempj - 1, z);
                         if(iBlockBelowTargetID == BlockListener.anchor.id && ((Anchor)BlockListener.anchor).GetAnchorFacing(level, x, tempj - 1, z) == 1)
@@ -242,6 +257,18 @@ public class PulleyTileEntity extends TileEntityBase
 
         }
         return false;
+    }
+
+    @Environment(EnvType.SERVER)
+    public void voicePacket(Level world, String name, int x, int y, int z, float g, float h){
+        List list2 = world.players;
+        if(list2.size() != 0) {
+            for(int k = 0; k < list2.size(); k++)
+            {
+                ServerPlayer player1 = (ServerPlayer) list2.get(k);
+                PacketHelper.sendTo(player1, new SoundPacket(name, x, y, z, g,h));
+            }
+        }
     }
 
     public void AddRopeToInventory()

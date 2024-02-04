@@ -82,7 +82,7 @@ public class FallingAnvil extends EntityBase implements EntitySpawnDataProvider 
                 if (!this.level.isServerSide) {
                     this.level.setTileWithMetadata(var1, var2, var3, this.tile, this.facing);
                 }
-            } else if (this.field_848 > 100 && !this.level.isServerSide) { //TODO: czy po 100 tickach zniszczyc?
+            } else if (this.field_848 > 100 && !this.level.isServerSide) { //TODO: destroy after 100 ticks??
                 this.dropItem(this.tile, 1);
                 this.remove();
             }

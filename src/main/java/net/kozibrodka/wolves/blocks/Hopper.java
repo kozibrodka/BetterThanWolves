@@ -5,6 +5,9 @@
 
 package net.kozibrodka.wolves.blocks;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.container.HopperContainer;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.GUIListener;
@@ -12,14 +15,17 @@ import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.modsupport.AffectedByBellows;
 import net.kozibrodka.wolves.network.GuiPacket;
+import net.kozibrodka.wolves.network.RenderPacket;
 import net.kozibrodka.wolves.tileentity.HopperTileEntity;
 import net.kozibrodka.wolves.utils.*;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.render.block.BlockRenderer;
 import net.minecraft.entity.EntityBase;
 import net.minecraft.entity.Item;
 import net.minecraft.entity.player.PlayerBase;
+import net.minecraft.entity.player.ServerPlayer;
 import net.minecraft.inventory.InventoryBase;
 import net.minecraft.item.ItemBase;
 import net.minecraft.item.ItemInstance;
@@ -227,7 +233,23 @@ public class Hopper extends TemplateBlockWithEntity
                     targetEntityItem.setPosition(targetEntityItem.x, targetEntityItem.y + offset, targetEntityItem.z);
                 }
             }
+//            if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER){
+//                renderPacket(world, tileEntityHopper.x, tileEntityHopper.y, tileEntityHopper.z, tileEntityHopper.GetFilterType(), InventoryHandler.getOccupiedSlotCountWithinBounds(tileEntityHopper, 0, 17));
+//            }
+//            world.method_243(i, j, k);
+        }
+    }
 
+    @Environment(EnvType.SERVER)
+    public void renderPacket(Level world, int x, int y, int z, int i, int j){
+        List list2 = world.players;
+        if(list2.size() != 0) {
+            for(int k = 0; k < list2.size(); k++)
+            {
+                ServerPlayer player1 = (ServerPlayer) list2.get(k);
+                PacketHelper.sendTo(player1, new RenderPacket(2, x, y, z, i, j));
+                System.out.println("WYSYLAM PAKIET");
+            }
         }
     }
 
@@ -265,6 +287,7 @@ public class Hopper extends TemplateBlockWithEntity
             iMetaData &= -2;
         }
         world.setTileMeta(i, j, k, iMetaData);
+        world.method_243(i, j, k);
     }
 
     public boolean IsHopperFull(BlockView iBlockAccess, int i, int j, int k)
@@ -286,6 +309,7 @@ public class Hopper extends TemplateBlockWithEntity
                 iMetaData &= -3;
             }
             world.setTileMeta(i, j, k, iMetaData);
+            world.method_243(i, j, k);
             world.method_216(i, j, k, id, getTickrate());
         }
     }
@@ -443,7 +467,18 @@ public class Hopper extends TemplateBlockWithEntity
         this.setBoundingBox(0.3125F, 0.0F, 0.3125F, 0.6875F, 0.25F, 0.6875F);
         tileRenderer.renderStandardBlock(this, x, y, z);
         HopperTileEntity fctileentityhopper = (HopperTileEntity)tileView.getTileEntity(x, y, z);
-        int l = InventoryHandler.getOccupiedSlotCountWithinBounds(fctileentityhopper, 0, 17);
+        int l;
+        int i1;
+        Minecraft mc = (Minecraft) FabricLoader.INSTANCE.getGameInstance();
+        if(mc.level.isServerSide){
+//            System.out.println("RENDER CLIENT");
+            PacketHelper.send(new RenderPacket(2, x, y, z, 0, 0)); //UPDATES AFTER 1 tick when joining server.
+            l = fctileentityhopper.clientOccupiedSlots;
+            i1 = fctileentityhopper.clientFilterType;
+        }else{
+            l = InventoryHandler.getOccupiedSlotCountWithinBounds(fctileentityhopper, 0, 17);
+            i1 = fctileentityhopper.GetFilterType();
+        }
         if(l > 0)
         {
             float f = (float)l / 18F;
@@ -452,7 +487,6 @@ public class Hopper extends TemplateBlockWithEntity
             this.setBoundingBox(0.125F, f1, 0.125F, 0.875F, f2, 0.875F);
             CustomBlockRendering.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, TextureListener.filler);
         }
-        int i1 = fctileentityhopper.GetFilterType();
         if(i1 > 0)
         {
 //            boolean flag = FCUtilsRender.GetOverrideBlockTexture(tileRenderer) >= 0;

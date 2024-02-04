@@ -1,8 +1,13 @@
 package net.kozibrodka.wolves.tileentity;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.blocks.Hopper;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ItemListener;
+import net.kozibrodka.wolves.network.RenderPacket;
+import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.recipe.HopperHauntingRecipeRegistry;
 import net.kozibrodka.wolves.utils.BlockPosition;
 import net.kozibrodka.wolves.utils.InventoryHandler;
@@ -13,6 +18,7 @@ import net.minecraft.entity.Item;
 import net.minecraft.entity.Living;
 import net.minecraft.entity.Minecart;
 import net.minecraft.entity.player.PlayerBase;
+import net.minecraft.entity.player.ServerPlayer;
 import net.minecraft.inventory.InventoryBase;
 import net.minecraft.item.ItemBase;
 import net.minecraft.item.ItemInstance;
@@ -20,6 +26,7 @@ import net.minecraft.tileentity.TileEntityBase;
 import net.minecraft.util.io.CompoundTag;
 import net.minecraft.util.io.ListTag;
 import net.minecraft.util.maths.Box;
+import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 
 import java.util.List;
 
@@ -57,7 +64,24 @@ public class HopperTileEntity extends TileEntityBase
         {
             ItemInstance.count = getMaxItemCount();
         }
+//        if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER)
+//        {
+//            renderPacket();
+//        }
         markDirty();
+    }
+
+    @Environment(EnvType.SERVER)
+    public void renderPacket(){
+        List list2 = level.players;
+        if(list2.size() != 0) {
+            for(int k = 0; k < list2.size(); k++)
+            {
+                ServerPlayer player1 = (ServerPlayer) list2.get(k);
+                PacketHelper.sendTo(player1, new RenderPacket(2, x, y, z, GetFilterType() ,InventoryHandler.getOccupiedSlotCountWithinBounds(this, 0, 17)));
+                System.out.println("WYSYLAM PAKIET");
+            }
+        }
     }
 
     public String getContainerName()
@@ -120,6 +144,9 @@ public class HopperTileEntity extends TileEntityBase
 
     public void tick()
     {
+        if(level.isServerSide){
+            return;
+        }
         if(!((Hopper) BlockListener.hopper).IsBlockOn(level, x, y, z)) return;
         if(hopperEjectBlocked)
         {
@@ -198,6 +225,7 @@ public class HopperTileEntity extends TileEntityBase
 
     public void markDirty()
     {
+//        System.out.println("KURWA 2");
         if (level == null) {
             return;
         }
@@ -554,4 +582,6 @@ public class HopperTileEntity extends TileEntityBase
     private ItemInstance[] hopperContents;
     private int ejectCounter;
     public boolean hopperEjectBlocked;
+    public int clientOccupiedSlots;
+    public int clientFilterType;
 }

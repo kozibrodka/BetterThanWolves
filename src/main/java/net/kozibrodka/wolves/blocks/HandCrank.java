@@ -245,8 +245,6 @@ public class HandCrank extends TemplateBlock
         world.setTile(i, j, k, 0);
     }
 
-
-    //TODO: render this correctly
     @Override
     public boolean renderWorld(BlockRenderer tileRenderer, BlockView tileView, int x, int y, int z) {
         Tessellator tessellator = Tessellator.INSTANCE;
@@ -262,17 +260,7 @@ public class HandCrank extends TemplateBlock
         }
         tessellator.colour(f3, f3, f3);
         int l = TextureListener.handcrack_lever;
-//        if(FCUtilsRender.GetOverrideBlockTexture(tileRenderer) >= 0)
-//        {
-//            l = FCUtilsRender.GetOverrideBlockTexture(tileRenderer);
-//        }
-//        int i1 = (l & 0xf) << 4;
-//        int j1 = l & 0xf0;
         Atlas.Sprite testTex =  Atlases.getTerrain().getTexture(l);
-//        float f4 = (float)i1 / 256F;
-//        float f5 = ((float)i1 + 15.99F) / 256F;
-//        float f6 = (float)j1 / 256F;
-//        float f7 = ((float)j1 + 15.99F) / 256F;
         float f4 = (float)(testTex.getStartU());
         float f5 = (float)(testTex.getEndU());
         float f6 = (float)(testTex.getStartV());
@@ -316,10 +304,6 @@ public class HandCrank extends TemplateBlock
         {
             if(l1 == 0)
             {
-//                f4 = (float)(i1 + 7) / 256F;
-//                f5 = ((float)(i1 + 9) - 0.01F) / 256F;
-//                f6 = (float)(j1 + 0) / 256F;
-//                f7 = ((float)(j1 + 2) - 0.01F) / 256F;
                 f4 = (float)(testTex.getStartU() + (7/512F));
                 f5 = (float)(testTex.getEndU() - (7/512F));
                 f6 = (float)(testTex.getStartV());
@@ -328,10 +312,6 @@ public class HandCrank extends TemplateBlock
             } else
             if(l1 == 2)
             {
-//                f4 = (float)(i1 + 7) / 256F;
-//                f5 = ((float)(i1 + 9) - 0.01F) / 256F;
-//                f6 = (float)(j1 + 0) / 256F;
-//                f7 = ((float)(j1 + 16) - 0.01F) / 256F;
                 f4 = (float)(testTex.getStartU() + (7/512F));
                 f5 = (float)(testTex.getEndU() - (7/512F));
                 f6 = (float)(testTex.getStartV());

@@ -158,18 +158,6 @@ public class StokedFire extends TemplateFireBlock implements BlockWithWorldRende
         }
     }
 
-
-    //TODO: forge methods?
-    public boolean isBlockReplaceable(Level world, int i, int j, int l)
-    {
-        return true;
-    }
-
-    public boolean isBlockBurning(Level world, int i, int j, int l)
-    {
-        return true;
-    }
-
     // TODO: Replace this messy code. And make the top stoked fire visually connect better to the bottom block.
     @Override
     public boolean renderWorld(BlockRenderer tileRenderer, BlockView blockView, int i, int j, int k) {

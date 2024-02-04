@@ -1,7 +1,7 @@
 
 package net.kozibrodka.wolves.blocks;
 
-import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.utils.RotatableBlock;
@@ -9,6 +9,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
+import net.minecraft.server.MinecraftServer;
 import net.modificationstation.stationapi.api.template.block.TemplateBlock;
 import net.modificationstation.stationapi.api.util.Identifier;
 
@@ -86,8 +87,29 @@ public class LightBulb extends TemplateBlock
 
     public boolean isPowered(BlockView iBlockAccess, int i, int j, int k, int l) //isPoweringTo
     {
-//        return ModLoader.getMinecraftInstance().theWorld.isBlockGettingPowered(i, j, k);
-        return ((Minecraft) FabricLoader.getInstance().getGameInstance()).level.method_263(i, j, k);
+//        return ((Minecraft) net.fabricmc.loader.FabricLoader.INSTANCE.getGameInstance()).level.method_263(i, j, k);
+
+//        return ((MinecraftServer) FabricLoader.getInstance().getGameInstance()).getLevel(0).method_263(i, j, k);
+//        FabricLoader.getInstance().getGameInstance();
+//        return iBlockAccess.getTileId(i, j, k) == BlockListener.lightBulbOn.id;
+        switch (FabricLoader.INSTANCE.getEnvironmentType()){
+            case CLIENT -> {
+                return powerClient(iBlockAccess, i, j, k, l);
+            }
+            case SERVER -> {
+                return powerServer(iBlockAccess, i, j, k, l);
+            }
+        }
+        return false;
+    }
+
+    public boolean powerClient(BlockView iBlockAccess, int i, int j, int k, int l){
+        return ((Minecraft) FabricLoader.INSTANCE.getGameInstance()).level.method_263(i, j, k);
+    }
+
+    public boolean powerServer(BlockView iBlockAccess, int i, int j, int k, int l){
+        return ((MinecraftServer) net.fabricmc.loader.api.FabricLoader.getInstance().getGameInstance()).getLevel(0).method_263(i, j, k);
+        //TODO: It gets the overworld always.
     }
 
 

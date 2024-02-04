@@ -43,7 +43,7 @@ public class ItemListener {
         tannedLeather = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "tannedLeather")).setTranslationKey(MOD_ID, "tanned_leather");
         strap = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "strap")).setTranslationKey(MOD_ID, "strap");
         belt = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "belt")).setTranslationKey(MOD_ID, "belt");
-        foulFood = (TemplateFoodItem) new FoulFood(Identifier.of(MOD_ID, "foulFood"),1,false).setTranslationKey(MOD_ID, "foul_food"); //TODO: how much healt point?
+        foulFood = (TemplateFoodItem) new FoulFood(Identifier.of(MOD_ID, "foulFood"),0,false).setTranslationKey(MOD_ID, "foul_food"); //TODO: how much healt point?
         woodBlade = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "woodBlade")).setTranslationKey(MOD_ID, "wood_blade");
         glue = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "glue")).setTranslationKey(MOD_ID, "glue");
         tallow = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "tallow")).setTranslationKey(MOD_ID, "tallow");

@@ -80,12 +80,6 @@ public class Rope extends TemplateBlock implements BlockWithWorldRenderer
         setBoundingBox(0.4375F, 0.0F, 0.4375F, 0.5625F, 1.0F, 0.5625F);
     }
 
-//    //TODO
-//    public boolean isLadder()
-//    {
-//        return true;
-//    }
-
     public void onEntityCollision(Level world, int i, int j, int k, EntityBase entity)
     {
         if(entity instanceof Living)

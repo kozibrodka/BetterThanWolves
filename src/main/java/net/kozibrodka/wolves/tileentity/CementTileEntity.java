@@ -12,7 +12,7 @@ package net.kozibrodka.wolves.tileentity;
 import net.minecraft.tileentity.TileEntityBase;
 import net.minecraft.util.io.CompoundTag;
 
-// TODO: Replace this whole thing with BlockStates
+
 public class CementTileEntity extends TileEntityBase
 {
 

@@ -1,9 +1,14 @@
 package net.kozibrodka.wolves.blocks;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.mixin.LevelAccessor;
+import net.kozibrodka.wolves.network.ParticlePacket;
+import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.recipe.SawingRecipeRegistry;
 import net.kozibrodka.wolves.utils.*;
 import net.minecraft.block.BlockBase;
@@ -11,6 +16,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.render.block.BlockRenderer;
 import net.minecraft.entity.EntityBase;
 import net.minecraft.entity.Living;
+import net.minecraft.entity.player.ServerPlayer;
 import net.minecraft.item.ItemBase;
 import net.minecraft.item.ItemInstance;
 import net.minecraft.level.BlockView;
@@ -18,6 +24,7 @@ import net.minecraft.level.Level;
 import net.minecraft.util.maths.Box;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithInventoryRenderer;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
+import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import net.modificationstation.stationapi.api.template.block.TemplateBlock;
 import net.modificationstation.stationapi.api.util.Identifier;
 
@@ -156,7 +163,10 @@ public class Saw extends TemplateBlock
         boolean bOn = IsBlockOn(world, i, j, k);
         if(bOn != bReceivingPower)
         {
-             world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.explode", 0.2F, 1.25F);
+            world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.explode", 0.2F, 1.25F);
+            if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+                voicePacket(world, "random.explode", i, j, k, 0.2F, 1.25F);
+            }
             EmitSawParticles(world, i, j, k, random);
             SetBlockOn(world, i, j, k, bReceivingPower);
             if(bReceivingPower)
@@ -229,7 +239,10 @@ public class Saw extends TemplateBlock
                     Living tempTargetEntity = (Living)collisionList.get(iTempListIndex);
                     if(tempTargetEntity.damage(null, 4))
                     {
-                         world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.explode", 0.2F, 1.25F);
+                        world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.explode", 0.2F, 1.25F);
+                        if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+                            voicePacket(world, "random.explode", i, j, k, 0.2F, 1.25F);
+                        }
                         EmitBloodParticles(world, i, j, k, world.rand);
                     }
                 }
@@ -362,8 +375,34 @@ public class Saw extends TemplateBlock
             float smokeY = (float)iTargetPos.j + random.nextFloat();
             float smokeZ = (float)iTargetPos.k + random.nextFloat();
             world.addParticle("reddust", smokeX, smokeY, smokeZ, 0.0D, 0.0D, 0.0D);
+            if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+                particlePacket(world, "reddust", smokeX, smokeY, smokeZ);
+            }
         }
+    }
 
+    @Environment(EnvType.SERVER)
+    public void voicePacket(Level world, String name, int x, int y, int z, float g, float h){
+        List list2 = world.players;
+        if(list2.size() != 0) {
+            for(int k = 0; k < list2.size(); k++)
+            {
+                ServerPlayer player1 = (ServerPlayer) list2.get(k);
+                PacketHelper.sendTo(player1, new SoundPacket(name, x, y, z, g,h));
+            }
+        }
+    }
+
+    @Environment(EnvType.SERVER)
+    public void particlePacket(Level world, String name, float x, float y, float z){
+        List list2 = world.players;
+        if(list2.size() != 0) {
+            for(int k1 = 0; k1 < list2.size(); k1++)
+            {
+                ServerPlayer player1 = (ServerPlayer) list2.get(k1);
+                PacketHelper.sendTo(player1, new ParticlePacket(name, x, y, z));
+            }
+        }
     }
 
     boolean AttemptToSawBlock(Level world, int i, int j, int k, Random random, int iSawFacing)
@@ -417,6 +456,9 @@ public class Saw extends TemplateBlock
                     bloodPos.AddFacingAsOffset(UnsortedUtils.GetOppositeFacing(iSawFacing));
                     EmitBloodParticles(world, bloodPos.i, bloodPos.j, bloodPos.k, world.rand);
                     world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "mob.wolf.hurt", 5F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
+                    if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+                        voicePacket(world, "mob.wolf.hurt", i, j, k, 5F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
+                    }
                     bSawedBlock = true;
                 } else
                 if(iSawFacing == 0 || iSawFacing == 1)
@@ -453,6 +495,9 @@ public class Saw extends TemplateBlock
             if(bSawedBlock)
             {
                 world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.explode", 0.2F, 1.25F);
+                if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+                    voicePacket(world, "random.explode", i, j, k, 0.2F, 1.25F);
+                }
                 EmitSawParticles(world, i, j, k, random);
                 if(bRemoveOriginalBlockIfSawed)
                 {
@@ -485,7 +530,10 @@ public class Saw extends TemplateBlock
             UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, ItemListener.belt.id, 0);
         }
 
-         world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.explode", 0.2F, 1.25F);
+        world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.explode", 0.2F, 1.25F);
+        if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+            voicePacket(world, "random.explode", i, j, k, 0.2F, 1.25F);
+        }
         world.setTile(i, j, k, 0);
     }
 

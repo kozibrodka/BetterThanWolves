@@ -106,6 +106,9 @@ public class CauldronTileEntity extends TileEntityBase
 
     public void tick()
     {
+        if(level.isServerSide){
+            return;
+        }
         int iFireUnderState = ((Cauldron) BlockListener.cauldron).GetFireUnderState(level, x, y, z);
         if(iFireUnderState > 0)
         {

@@ -155,6 +155,9 @@ public class MillStoneTileEntity extends TileEntityBase
 
     public void tick() // updateEntity
     {
+        if(level.isServerSide){
+            return;
+        }
         int iUnmilledItemIndex = GetUnmilledItemInventoryIndex();
 
         if(iUnmilledItemIndex < 0)

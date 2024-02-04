@@ -273,7 +273,6 @@ public class WindMillEntity extends EntityBase implements EntitySpawnDataProvide
 
     public boolean interact(PlayerBase entityplayer)
     {
-        //TODO ItemBase to Items and possibly there will be now get.damage()
         ItemInstance ItemInstance = entityplayer.inventory.getHeldItem();
         if(ItemInstance != null && (ItemInstance.itemId == ItemBase.dyePowder.id || ItemInstance.itemId == ItemListener.dung.id))
         {

@@ -124,6 +124,9 @@ public class CrucibleTileEntity extends TileEntityBase
 
     public void tick()
     {
+        if(level.isServerSide){
+            return;
+        }
         int iStokedFireFactor = GetStokedFireFactor();
         if(iStokedFireFactor > 0)
         {

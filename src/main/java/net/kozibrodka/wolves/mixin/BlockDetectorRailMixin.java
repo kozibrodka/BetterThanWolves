@@ -22,9 +22,6 @@ public class BlockDetectorRailMixin extends Rail {
         super(i, j, bl);
     }
 
-    //TODO Redirrect method call "method_1144" - make detector rail call other method instead of methord1144 (2 injections)
-
-
     @Redirect(method = "onEntityCollision", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/DetectorRail;method_1144(Lnet/minecraft/level/Level;IIII)V"))
     private void injected(DetectorRail instance, Level i, int j, int k, int l, int var6) {
         railCheck(i,j,k,l,var6);
@@ -34,11 +31,6 @@ public class BlockDetectorRailMixin extends Rail {
     private void injected2(DetectorRail instance, Level i, int j, int k, int l, int var6) {
         railCheck(i,j,k,l,var6);
     }
-
-//    @Inject(method = "method_1144", at = @At("HEAD"), cancellable = true)
-//    private void injected(Level arg, int i, int j, int k, int l, CallbackInfo ci) {
-//        break;
-//    }
 
     private void railCheck(Level arg, int i, int j, int k, int l) {
         boolean var6 = (l & 8) != 0;

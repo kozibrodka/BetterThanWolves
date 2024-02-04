@@ -37,6 +37,9 @@ public class UnfiredPotteryTileEntity extends TileEntityBase
 
     public void tick()
     {
+        if(level.isServerSide){
+            return;
+        }
         m_iStateUpdateTickCount++;
         if(m_iStateUpdateTickCount >= 20)
         {

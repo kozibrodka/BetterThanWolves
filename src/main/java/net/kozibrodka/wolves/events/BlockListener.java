@@ -55,8 +55,7 @@ public class BlockListener {
         vase = (TemplateBlockWithEntity) new Vase(Identifier.of(MOD_ID, "vase")).setTranslationKey(MOD_ID, "vase");
         detectorBlock = (TemplateBlock) new DetectorBlock(Identifier.of(MOD_ID, "detector_block"), Material.DOODADS).setTranslationKey(MOD_ID, "detector_block");;
 
-        //TODO: Extra (test) - later move into expansion probably
-        //TODO: My idea: remove crafting of stone omni plates/ corners, moulding and add grinder as a saw for "stone type" blocks
+
         //TODO: Omni slabs are really cursed and kinda bad. Also applies to Cornets/Moudlings - should be option in CFG to remove them
 
         //TODO: I like the idea of Vanilla providing SLABS (can be placed only horizontally - with fixed placement (basically modern slabs)) & BTW providing PANELS

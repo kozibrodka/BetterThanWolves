@@ -86,6 +86,7 @@ public class HempCrop extends TemplatePlantBlock
                     {
                         l++;
                         world.placeBlockWithMetaData(i, j, k, this.id, l);
+//                        world.method_243(i, j, k);     ??? Is this needed for serve?
                     }
                 } else
                 {
@@ -102,6 +103,7 @@ public class HempCrop extends TemplatePlantBlock
                             if(world.isAir(i, targetj, k) && random.nextInt(60) == 0)
                             {
                                 world.placeBlockWithMetaData(i, targetj, k, id, 7);
+                                //                        world.method_243(i, j, k);     ??? Is this needed for serve?
                             }
                             break;
                         }

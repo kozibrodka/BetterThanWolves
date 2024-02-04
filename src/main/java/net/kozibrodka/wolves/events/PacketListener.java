@@ -1,6 +1,8 @@
 package net.kozibrodka.wolves.events;
 import net.kozibrodka.wolves.items.*;
 import net.kozibrodka.wolves.network.GuiPacket;
+import net.kozibrodka.wolves.network.ParticlePacket;
+import net.kozibrodka.wolves.network.RenderPacket;
 import net.kozibrodka.wolves.network.SoundPacket;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.minecraft.item.tool.ToolMaterial;
@@ -23,6 +25,8 @@ public class PacketListener {
     public void registerPacket(PacketRegisterEvent event) {
         SoundPacket.register();
         GuiPacket.register();
+        RenderPacket.register();
+        ParticlePacket.register();
 //        IdentifiablePacket.register(MOD_ID.id("btw_sound"), true, true, SoundPacket::new);
     }
 

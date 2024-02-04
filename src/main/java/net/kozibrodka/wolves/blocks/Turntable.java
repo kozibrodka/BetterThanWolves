@@ -1,7 +1,11 @@
 package net.kozibrodka.wolves.blocks;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
+import net.kozibrodka.wolves.network.GuiPacket;
+import net.kozibrodka.wolves.network.RenderPacket;
 import net.kozibrodka.wolves.tileentity.TurntableTileEntity;
 import net.kozibrodka.wolves.utils.BlockPosition;
 import net.kozibrodka.wolves.utils.RotatableBlock;
@@ -9,6 +13,7 @@ import net.kozibrodka.wolves.utils.MechanicalDevice;
 import net.kozibrodka.wolves.utils.CustomBlockRendering;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.render.block.BlockRenderer;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.item.ItemInstance;
@@ -16,6 +21,7 @@ import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.minecraft.tileentity.TileEntityBase;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
+import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import net.modificationstation.stationapi.api.template.block.TemplateBlock;
 import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockWithEntity;
@@ -224,6 +230,11 @@ public class Turntable extends TemplateBlockWithEntity
     public boolean renderWorld(BlockRenderer tileRenderer, BlockView tileView, int x, int y, int z) {
         tileRenderer.renderStandardBlock(this, x, y, z);
         TurntableTileEntity fctileentityturntable = (TurntableTileEntity)tileView.getTileEntity(x, y, z);
+            Minecraft mc = (Minecraft) FabricLoader.INSTANCE.getGameInstance();
+            if(mc.level.isServerSide){
+                PacketHelper.send(new RenderPacket(1, x, y, z, 0, 0)); //UPDATES AFTER 1 tick when joining server.
+            }
+
         int l = fctileentityturntable.m_iSwitchSetting;
         float f = 0.25F + (float)l * 0.125F;
         this.setBoundingBox(f, 0.3125F, 0.0625F, f + 0.125F, 0.4375F, 1.0625F);
