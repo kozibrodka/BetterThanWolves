@@ -55,7 +55,7 @@ public class ItemListener {
         refinedAxe = (TemplateAxeItem) new TemplateAxeItem(Identifier.of(MOD_ID, "refinedAxe"), ToolMaterial.valueOf("STEEL")).setTranslationKey(MOD_ID, "refined_axe");
         refinedSword = (TemplateSwordItem) new TemplateSwordItem(Identifier.of(MOD_ID, "refinedSword"), ToolMaterial.valueOf("STEEL")).setTranslationKey(MOD_ID, "refined_sword");
         groundNetherrack = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "groundNetherrack")).setTranslationKey(MOD_ID, "ground_netherrack");
-        hellfireDust = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "hellfireDust")).setTranslationKey(MOD_ID, "hellfireDust");
+        hellfireDust = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "hellfireDust")).setTranslationKey(MOD_ID, "hellfire_dust");
         concentratedHellfire = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "concentratedHellfire")).setTranslationKey(MOD_ID, "concentrated_hellfire");
         armourPlateSteel = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "armourPlateSteel")).setTranslationKey(MOD_ID, "armour_plate_steel");
         helmetSteel = (TemplateArmorItem) new RefinedArmour(Identifier.of(MOD_ID, "helmetSteel"), 0).setTranslationKey(MOD_ID, "helmet_steel");

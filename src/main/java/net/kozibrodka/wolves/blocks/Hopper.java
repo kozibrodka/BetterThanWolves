@@ -33,10 +33,14 @@ import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.minecraft.tileentity.TileEntityBase;
 import net.minecraft.util.maths.Box;
+import net.modificationstation.stationapi.api.block.BlockState;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithInventoryRenderer;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
 import net.modificationstation.stationapi.api.gui.screen.container.GuiHelper;
 import net.modificationstation.stationapi.api.network.packet.PacketHelper;
+import net.modificationstation.stationapi.api.state.StateManager;
+import net.modificationstation.stationapi.api.state.property.BooleanProperty;
+import net.modificationstation.stationapi.api.state.property.IntProperty;
 import net.modificationstation.stationapi.api.template.block.TemplateBlock;
 import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockWithEntity;
@@ -55,6 +59,12 @@ public class Hopper extends TemplateBlockWithEntity
         setSounds(WOOD_SOUNDS);
         setTicksRandomly(true);
         setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+        setDefaultState(getDefaultState()
+                .with(REDOUTPUT, false)
+                .with(POWER, false)
+                .with(FULL, 0)
+                .with(FILTER, 0)
+        );
     }
 
     public int getTickrate()
@@ -255,7 +265,8 @@ public class Hopper extends TemplateBlockWithEntity
 
     public boolean isPowered(BlockView iBlockAccess, int i, int j, int k, int l)
     {
-        return IsRedstoneOutputOn(iBlockAccess, i, j, k);
+        Level level = Minecraft.class.cast(FabricLoader.INSTANCE.getGameInstance()).level;
+        return IsRedstoneOutputOn(level, i, j, k);
     }
 
     public boolean indirectlyPowered(Level world, int i, int j, int i1, int j1)
@@ -268,88 +279,116 @@ public class Hopper extends TemplateBlockWithEntity
         return true;
     }
 
-    public boolean IsBlockOn(BlockView iBlockAccess, int i, int j, int k)
+    public boolean IsBlockOn(Level world, int i, int j, int k)
     {
-        if (iBlockAccess == null) {
+//        if (iBlockAccess == null) {
+//            return false;
+//        }
+//        return (iBlockAccess.getTileMeta(i, j, k) & 1) > 0;
+        if(world.getTileId(i,j,k) == BlockListener.hopper.id) {
+            return (world.getBlockState(i, j, k).get(POWER));
+        }else{
             return false;
         }
-        return (iBlockAccess.getTileMeta(i, j, k) & 1) > 0;
     }
 
     public void SetBlockOn(Level world, int i, int j, int k, boolean bOn)
     {
-        int iMetaData = world.getTileMeta(i, j, k);
-        if(bOn)
-        {
-            iMetaData |= 1;
-        } else
-        {
-            iMetaData &= -2;
-        }
-        world.setTileMeta(i, j, k, iMetaData);
-        world.method_243(i, j, k);
+//        int iMetaData = world.getTileMeta(i, j, k);
+//        if(bOn)
+//        {
+//            iMetaData |= 1;
+//        } else
+//        {
+//            iMetaData &= -2;
+//        }
+//        world.setTileMeta(i, j, k, iMetaData);
+//        world.method_243(i, j, k);
+        BlockState currentState = world.getBlockState(i, j, k);
+        world.setBlockStateWithNotify(i,j,k, currentState.with(POWER, bOn));
     }
 
-    public boolean IsHopperFull(BlockView iBlockAccess, int i, int j, int k)
+    public boolean IsHopperFull(Level world, int i, int j, int k)
     {
-        return (iBlockAccess.getTileMeta(i, j, k) & 2) > 0;
-    }
-
-    public void SetHopperFull(Level world, int i, int j, int k, boolean bOn)
-    {
-        boolean bOldOn = IsHopperFull(world, i, j, k);
-        if(bOldOn != bOn)
-        {
-            int iMetaData = world.getTileMeta(i, j, k);
-            if(bOn)
-            {
-                iMetaData |= 2;
-            } else
-            {
-                iMetaData &= -3;
-            }
-            world.setTileMeta(i, j, k, iMetaData);
-            world.method_243(i, j, k);
-            world.method_216(i, j, k, id, getTickrate());
+//        return (iBlockAccess.getTileMeta(i, j, k) & 2) > 0;
+        if(world.getTileId(i,j,k) == BlockListener.hopper.id) {
+            return (world.getBlockState(i, j, k).get(FULL)) == 18;
+        }else{
+            return false;
         }
     }
 
-    public boolean IsRedstoneOutputOn(BlockView iBlockAccess, int i, int j, int k)
+    public void SetHopperFull(Level world, int i, int j, int k, int bOn)
     {
-        return (iBlockAccess.getTileMeta(i, j, k) & 4) > 0;
+//        boolean bOldOn = IsHopperFull(world, i, j, k);
+//        if(bOldOn != bOn)
+//        {
+//            int iMetaData = world.getTileMeta(i, j, k);
+//            if(bOn)
+//            {
+//                iMetaData |= 2;
+//            } else
+//            {
+//                iMetaData &= -3;
+//            }
+//            world.setTileMeta(i, j, k, iMetaData);
+//            world.method_243(i, j, k);
+//            world.method_216(i, j, k, id, getTickrate());
+//        }
+        BlockState currentState = world.getBlockState(i, j, k);
+        world.setBlockStateWithNotify(i,j,k, currentState.with(FULL, bOn));
+    }
+
+    public boolean IsRedstoneOutputOn(Level world, int i, int j, int k)
+    {
+//        return (iBlockAccess.getTileMeta(i, j, k) & 4) > 0;
+        if(world.getTileId(i,j,k) == BlockListener.hopper.id) {
+            return (world.getBlockState(i, j, k).get(REDOUTPUT));
+        }else{
+            return false;
+        }
     }
 
     public void SetRedstoneOutputOn(Level world, int i, int j, int k, boolean bOn)
     {
-        int iMetaData = world.getTileMeta(i, j, k);
-        if(bOn)
-        {
-            iMetaData |= 4;
-        } else
-        {
-            iMetaData &= -5;
-        }
-        world.setTileMeta(i, j, k, iMetaData);
-        world.method_243(i, j, k);
+//        int iMetaData = world.getTileMeta(i, j, k);
+//        if(bOn)
+//        {
+//            iMetaData |= 4;
+//        } else
+//        {
+//            iMetaData &= -5;
+//        }
+//        world.setTileMeta(i, j, k, iMetaData);
+//        world.method_243(i, j, k);
+        BlockState currentState = world.getBlockState(i, j, k);
+        world.setBlockStateWithNotify(i,j,k, currentState.with(REDOUTPUT, bOn));
     }
 
-    public boolean HasFilter(BlockView iBlockAccess, int i, int j, int k)
+    public boolean HasFilter(Level world, int i, int j, int k)
     {
-        return (iBlockAccess.getTileMeta(i, j, k) & 8) > 0;
+//        return (iBlockAccess.getTileMeta(i, j, k) & 8) > 0;
+        if(world.getTileId(i,j,k) == BlockListener.hopper.id) {
+            return (world.getBlockState(i, j, k).get(FILTER)) > 0;
+        }else{
+            return false;
+        }
     }
 
-    public void SetHasFilter(Level world, int i, int j, int k, boolean bOn)
+    public void SetHasFilter(Level world, int i, int j, int k, int bOn)
     {
-        int iMetaData = world.getTileMeta(i, j, k);
-        if(bOn)
-        {
-            iMetaData |= 8;
-        } else
-        {
-            iMetaData &= -9;
-        }
-        world.setTileMeta(i, j, k, iMetaData);
-        world.method_243(i, j, k);
+//        int iMetaData = world.getTileMeta(i, j, k);
+//        if(bOn)
+//        {
+//            iMetaData |= 8;
+//        } else
+//        {
+//            iMetaData &= -9;
+//        }
+//        world.setTileMeta(i, j, k, iMetaData);
+//        world.method_243(i, j, k);
+        BlockState currentState = world.getBlockState(i, j, k);
+        world.setBlockStateWithNotify(i,j,k, currentState.with(FILTER, bOn));
     }
 
     void EmitHopperParticles(Level world, int i, int j, int k, Random random)
@@ -550,5 +589,17 @@ public class Hopper extends TemplateBlockWithEntity
         if (!(tileEntityHopper instanceof HopperTileEntity)) return;
         if (((HopperTileEntity) tileEntityHopper).GetFilterType() != 6) return;
         ((HopperTileEntity) tileEntityHopper).setInventoryItem(18, new ItemInstance(ItemListener.soulFilter, 1));
+    }
+
+    public static final BooleanProperty POWER = BooleanProperty.of("power");
+    public static final BooleanProperty REDOUTPUT = BooleanProperty.of("redoutput");
+    public static final IntProperty FULL = IntProperty.of("full",0,18);
+    public static final IntProperty FILTER = IntProperty.of("filter",0,6);
+
+    public void appendProperties(StateManager.Builder<BlockBase, BlockState> builder) {
+        builder.add(REDOUTPUT);
+        builder.add(POWER);
+        builder.add(FULL);
+        builder.add(FILTER);
     }
 }

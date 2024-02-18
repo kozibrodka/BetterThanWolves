@@ -232,8 +232,10 @@ public class HopperTileEntity extends TileEntityBase
         level.method_202(x, y, z, x, y, z);
         hopperEjectBlocked = false;
         int iOccupiedStacks = InventoryHandler.getOccupiedSlotCountWithinBounds(this, 0, 17);
-        ((Hopper)BlockListener.hopper).SetHopperFull(level, x, y, z, iOccupiedStacks == 18);
-        ((Hopper)BlockListener.hopper).SetHasFilter(level, x, y, z, GetFilterType() > 0);
+//        ((Hopper)BlockListener.hopper).SetHopperFull(level, x, y, z, iOccupiedStacks == 18);
+        ((Hopper)BlockListener.hopper).SetHopperFull(level, x, y, z, iOccupiedStacks);
+//        ((Hopper)BlockListener.hopper).SetHasFilter(level, x, y, z, GetFilterType() > 0);
+        ((Hopper)BlockListener.hopper).SetHasFilter(level, x, y, z, GetFilterType());
     }
 
     public int GetFilterType()

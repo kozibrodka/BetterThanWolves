@@ -8,6 +8,7 @@ package net.kozibrodka.wolves.tileentity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.FabricLoader;
+import net.kozibrodka.wolves.blocks.Pulley;
 import net.kozibrodka.wolves.blocks.Turntable;
 import net.kozibrodka.wolves.blocks.UnfiredPottery;
 import net.kozibrodka.wolves.events.BlockListener;

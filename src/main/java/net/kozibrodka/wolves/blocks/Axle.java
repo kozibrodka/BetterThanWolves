@@ -156,6 +156,7 @@ public class Axle extends TemplateBlock
     public void onAdjacentBlockUpdate(Level world, int i, int j, int k, int iid) //onNeighborBlockChange
     {
         ValidatePowerLevel(world, i, j, k);
+        world.method_216(i, j, k, id, getTickrate());
     }
 
     public void randomDisplayTick(Level world, int i, int j, int k, Random random)
@@ -203,6 +204,10 @@ public class Axle extends TemplateBlock
 
     public void SetPowerLevel(Level world, int i, int j, int k, int iPowerLevel)
     {
+        if(world.isServerSide){
+            return;
+            //TODO: Maybe more of those conditions in other blocks
+        }
         iPowerLevel &= 3;
         int iMetaData = world.getTileMeta(i, j, k) & 0xc;
         iMetaData |= iPowerLevel;

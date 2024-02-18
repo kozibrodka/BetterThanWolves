@@ -209,6 +209,9 @@ public class GearBox extends TemplateBlock
     {
         int iBlockFacing = GetFacing(world, i, j, k);
         boolean bIsOn = IsGearBoxOn(world, i, j, k);
+//        if(world.isServerSide){
+//            return;
+//        }
         for(int iFacing = 0; iFacing <= 5; iFacing++)
         {
             if(iFacing == iBlockFacing)

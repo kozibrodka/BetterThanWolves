@@ -217,6 +217,7 @@ public class Pulley extends TemplateBlockWithEntity
             iMetaData |= 2;
         }
         world.setTileMeta(i, j, k, iMetaData);
+        world.method_243(i, j, k);
     }
 
     void EmitPulleyParticles(Level world, int i, int j, int k, Random random)

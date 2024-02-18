@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "click=0": { "model": "wolves:block/fcBlockTurntable_0"},
+    "click=1": { "model": "wolves:block/fcBlockTurntable_1"},
+    "click=2": { "model": "wolves:block/fcBlockTurntable_2"},
+    "click=3": { "model": "wolves:block/fcBlockTurntable_3"}
+  }
+}
