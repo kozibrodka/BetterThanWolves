@@ -2,9 +2,9 @@
   "credit": "Made with Blockbench",
   "parent": "block/block",
   "textures": {
-    "0": "wolves:block/fcBlockGearBox_out",
-    "1": "block/oak_planks",
-    "particle": "wolves:block/fcBlockGearBox_out"
+    "0": "wolves:block/fcBlockHopper_top",
+    "1": "wolves:block/fcBlockHopper_side",
+    "particle": "wolves:block/fcBlockHopper_top"
   },
   "elements": [
     {

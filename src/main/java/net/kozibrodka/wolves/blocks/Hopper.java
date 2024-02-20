@@ -50,7 +50,7 @@ import java.util.Random;
 
 
 public class Hopper extends TemplateBlockWithEntity
-    implements MechanicalDevice, RotatableBlock, BlockWithWorldRenderer, BlockWithInventoryRenderer, AffectedByBellows
+    implements MechanicalDevice, RotatableBlock, BlockWithInventoryRenderer, AffectedByBellows
 {
     public Hopper(Identifier iid)
     {
@@ -162,7 +162,9 @@ public class Hopper extends TemplateBlockWithEntity
 
     public void onBlockRemoved(Level world, int i, int j, int k)
     {
+        if (!SETTING_TILE) {
         InventoryHandler.ejectInventoryContents(world, i, j, k, (InventoryBase)world.getTileEntity(i, j, k));
+        }
         super.onBlockRemoved(world, i, j, k);
     }
 
@@ -250,19 +252,6 @@ public class Hopper extends TemplateBlockWithEntity
         }
     }
 
-    @Environment(EnvType.SERVER)
-    public void renderPacket(Level world, int x, int y, int z, int i, int j){
-        List list2 = world.players;
-        if(list2.size() != 0) {
-            for(int k = 0; k < list2.size(); k++)
-            {
-                ServerPlayer player1 = (ServerPlayer) list2.get(k);
-                PacketHelper.sendTo(player1, new RenderPacket(2, x, y, z, i, j));
-                System.out.println("WYSYLAM PAKIET");
-            }
-        }
-    }
-
     public boolean isPowered(BlockView iBlockAccess, int i, int j, int k, int l)
     {
         Level level = Minecraft.class.cast(FabricLoader.INSTANCE.getGameInstance()).level;
@@ -281,10 +270,6 @@ public class Hopper extends TemplateBlockWithEntity
 
     public boolean IsBlockOn(Level world, int i, int j, int k)
     {
-//        if (iBlockAccess == null) {
-//            return false;
-//        }
-//        return (iBlockAccess.getTileMeta(i, j, k) & 1) > 0;
         if(world.getTileId(i,j,k) == BlockListener.hopper.id) {
             return (world.getBlockState(i, j, k).get(POWER));
         }else{
@@ -294,23 +279,19 @@ public class Hopper extends TemplateBlockWithEntity
 
     public void SetBlockOn(Level world, int i, int j, int k, boolean bOn)
     {
-//        int iMetaData = world.getTileMeta(i, j, k);
-//        if(bOn)
-//        {
-//            iMetaData |= 1;
-//        } else
-//        {
-//            iMetaData &= -2;
-//        }
-//        world.setTileMeta(i, j, k, iMetaData);
-//        world.method_243(i, j, k);
+        TileEntityBase tileEntityBase = world.getTileEntity(i, j, k);
+        SETTING_TILE = true;
+
         BlockState currentState = world.getBlockState(i, j, k);
         world.setBlockStateWithNotify(i,j,k, currentState.with(POWER, bOn));
+
+        SETTING_TILE = false;
+        tileEntityBase.validate();
+        world.setTileEntity(i, j, k, tileEntityBase);
     }
 
     public boolean IsHopperFull(Level world, int i, int j, int k)
     {
-//        return (iBlockAccess.getTileMeta(i, j, k) & 2) > 0;
         if(world.getTileId(i,j,k) == BlockListener.hopper.id) {
             return (world.getBlockState(i, j, k).get(FULL)) == 18;
         }else{
@@ -320,28 +301,19 @@ public class Hopper extends TemplateBlockWithEntity
 
     public void SetHopperFull(Level world, int i, int j, int k, int bOn)
     {
-//        boolean bOldOn = IsHopperFull(world, i, j, k);
-//        if(bOldOn != bOn)
-//        {
-//            int iMetaData = world.getTileMeta(i, j, k);
-//            if(bOn)
-//            {
-//                iMetaData |= 2;
-//            } else
-//            {
-//                iMetaData &= -3;
-//            }
-//            world.setTileMeta(i, j, k, iMetaData);
-//            world.method_243(i, j, k);
-//            world.method_216(i, j, k, id, getTickrate());
-//        }
+        TileEntityBase tileEntityBase = world.getTileEntity(i, j, k);
+        SETTING_TILE = true;
+
         BlockState currentState = world.getBlockState(i, j, k);
         world.setBlockStateWithNotify(i,j,k, currentState.with(FULL, bOn));
+
+        SETTING_TILE = false;
+        tileEntityBase.validate();
+        world.setTileEntity(i, j, k, tileEntityBase);
     }
 
     public boolean IsRedstoneOutputOn(Level world, int i, int j, int k)
     {
-//        return (iBlockAccess.getTileMeta(i, j, k) & 4) > 0;
         if(world.getTileId(i,j,k) == BlockListener.hopper.id) {
             return (world.getBlockState(i, j, k).get(REDOUTPUT));
         }else{
@@ -351,23 +323,19 @@ public class Hopper extends TemplateBlockWithEntity
 
     public void SetRedstoneOutputOn(Level world, int i, int j, int k, boolean bOn)
     {
-//        int iMetaData = world.getTileMeta(i, j, k);
-//        if(bOn)
-//        {
-//            iMetaData |= 4;
-//        } else
-//        {
-//            iMetaData &= -5;
-//        }
-//        world.setTileMeta(i, j, k, iMetaData);
-//        world.method_243(i, j, k);
+        TileEntityBase tileEntityBase = world.getTileEntity(i, j, k);
+        SETTING_TILE = true;
+
         BlockState currentState = world.getBlockState(i, j, k);
         world.setBlockStateWithNotify(i,j,k, currentState.with(REDOUTPUT, bOn));
+
+        SETTING_TILE = false;
+        tileEntityBase.validate();
+        world.setTileEntity(i, j, k, tileEntityBase);
     }
 
     public boolean HasFilter(Level world, int i, int j, int k)
     {
-//        return (iBlockAccess.getTileMeta(i, j, k) & 8) > 0;
         if(world.getTileId(i,j,k) == BlockListener.hopper.id) {
             return (world.getBlockState(i, j, k).get(FILTER)) > 0;
         }else{
@@ -377,18 +345,15 @@ public class Hopper extends TemplateBlockWithEntity
 
     public void SetHasFilter(Level world, int i, int j, int k, int bOn)
     {
-//        int iMetaData = world.getTileMeta(i, j, k);
-//        if(bOn)
-//        {
-//            iMetaData |= 8;
-//        } else
-//        {
-//            iMetaData &= -9;
-//        }
-//        world.setTileMeta(i, j, k, iMetaData);
-//        world.method_243(i, j, k);
+        TileEntityBase tileEntityBase = world.getTileEntity(i, j, k);
+        SETTING_TILE = true;
+
         BlockState currentState = world.getBlockState(i, j, k);
         world.setBlockStateWithNotify(i,j,k, currentState.with(FILTER, bOn));
+
+        SETTING_TILE = false;
+        tileEntityBase.validate();
+        world.setTileEntity(i, j, k, tileEntityBase);
     }
 
     void EmitHopperParticles(Level world, int i, int j, int k, Random random)
@@ -490,8 +455,8 @@ public class Hopper extends TemplateBlockWithEntity
     }
 
     private static int hopperTickRate = 10;
+    private static boolean SETTING_TILE = false;
 
-    @Override
     public boolean renderWorld(BlockRenderer tileRenderer, BlockView tileView, int x, int y, int z) {
         this.setBoundingBox(0.0F, 0.25F, 0.0F, 0.125F, 1.0F, 0.875F);
         tileRenderer.renderStandardBlock(this, x, y, z);

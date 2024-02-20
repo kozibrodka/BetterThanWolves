@@ -1,0 +1,79 @@
+{
+  "multipart": [
+    {
+      "apply": { "model": "wolves:block/fcHooper_base"}
+    },
+    {   "when": { "filter": 1 },
+      "apply": { "model": "wolves:block/hopper_filler_1"}
+    },
+    {   "when": { "filter": 2 },
+      "apply": { "model": "wolves:block/hopper_filler_2"}
+    },
+    {   "when": { "filter": 3 },
+      "apply": { "model": "wolves:block/hopper_filler_3"}
+    },
+    {   "when": { "filter": 4 },
+      "apply": { "model": "wolves:block/hopper_filler_4"}
+    },
+    {   "when": { "filter": 5 },
+      "apply": { "model": "wolves:block/hopper_filler_5"}
+    },
+    {   "when": { "filter": 6 },
+      "apply": { "model": "wolves:block/hopper_filler_6"}
+    },
+    {   "when": { "full": 18 },
+      "apply": { "model": "wolves:block/hopper_gravel_18"}
+    },
+    {   "when": { "full": 17 },
+      "apply": { "model": "wolves:block/hopper_gravel_17"}
+    },
+    {   "when": { "full": 16 },
+      "apply": { "model": "wolves:block/hopper_gravel_16"}
+    },
+    {   "when": { "full": 15 },
+      "apply": { "model": "wolves:block/hopper_gravel_15"}
+    },
+    {   "when": { "full": 14 },
+      "apply": { "model": "wolves:block/hopper_gravel_14"}
+    },
+    {   "when": { "full": 13 },
+      "apply": { "model": "wolves:block/hopper_gravel_13"}
+    },
+    {   "when": { "full": 12 },
+      "apply": { "model": "wolves:block/hopper_gravel_12"}
+    },
+    {   "when": { "full": 11 },
+      "apply": { "model": "wolves:block/hopper_gravel_11"}
+    },
+    {   "when": { "full": 10 },
+      "apply": { "model": "wolves:block/hopper_gravel_10"}
+    },
+    {   "when": { "full": 9 },
+      "apply": { "model": "wolves:block/hopper_gravel_9"}
+    },
+    {   "when": { "full": 8 },
+      "apply": { "model": "wolves:block/hopper_gravel_8"}
+    },
+    {   "when": { "full": 7 },
+      "apply": { "model": "wolves:block/hopper_gravel_7"}
+    },
+    {   "when": { "full": 6 },
+      "apply": { "model": "wolves:block/hopper_gravel_6"}
+    },
+    {   "when": { "full": 5 },
+      "apply": { "model": "wolves:block/hopper_gravel_5"}
+    },
+    {   "when": { "full": 4 },
+      "apply": { "model": "wolves:block/hopper_gravel_4"}
+    },
+    {   "when": { "full": 3 },
+      "apply": { "model": "wolves:block/hopper_gravel_3"}
+    },
+    {   "when": { "full": 2 },
+      "apply": { "model": "wolves:block/hopper_gravel_2"}
+    },
+    {   "when": { "full": 1 },
+      "apply": { "model": "wolves:block/hopper_gravel_1"}
+    }
+  ]
+}
