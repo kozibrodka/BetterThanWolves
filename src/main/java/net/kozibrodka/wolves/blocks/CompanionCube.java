@@ -234,6 +234,7 @@ public class CompanionCube extends TemplateBlock
             double d = world.rand.nextGaussian() * 0.02D;
             double d1 = world.rand.nextGaussian() * 0.02D;
             double d2 = world.rand.nextGaussian() * 0.02D;
+            //TODO: particle packets
             world.addParticle(s, (double)i + (double)world.rand.nextFloat(), (double)(j + 1) + (double)world.rand.nextFloat(), (double)k + (double)world.rand.nextFloat(), d, d1, d2);
         }
 

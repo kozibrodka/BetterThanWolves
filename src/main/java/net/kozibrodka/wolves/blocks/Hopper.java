@@ -16,6 +16,7 @@ import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.modsupport.AffectedByBellows;
 import net.kozibrodka.wolves.network.GuiPacket;
 import net.kozibrodka.wolves.network.RenderPacket;
+import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.tileentity.HopperTileEntity;
 import net.kozibrodka.wolves.utils.*;
 import net.minecraft.block.BlockBase;
@@ -31,6 +32,7 @@ import net.minecraft.item.ItemBase;
 import net.minecraft.item.ItemInstance;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntityBase;
 import net.minecraft.util.maths.Box;
 import net.modificationstation.stationapi.api.block.BlockState;
@@ -150,13 +152,31 @@ public class Hopper extends TemplateBlockWithEntity
         if(bOn != bReceivingPower)
         {
              world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.explode", 0.2F, 1.25F);
+            if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+                voicePacket(world, "random.explode", i, j, k, 0.2F, 1.25F);
+            }
             EmitHopperParticles(world, i, j, k, random);
             SetBlockOn(world, i, j, k, bReceivingPower);
         }
         if(bFull != bRedstone)
         {
              world.playSound(i, j, k, "random.click", 0.25F, 1.2F);
+            if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+                voicePacket(world, "random.click", i, j, k, 0.25F, 1.2F);
+            }
             SetRedstoneOutputOn(world, i, j, k, bFull);
+        }
+    }
+
+    @Environment(EnvType.SERVER)
+    public void voicePacket(Level world, String name, int x, int y, int z, float g, float h){
+        List list2 = world.players;
+        if(list2.size() != 0) {
+            for(int k = 0; k < list2.size(); k++)
+            {
+                ServerPlayer player1 = (ServerPlayer) list2.get(k);
+                PacketHelper.sendTo(player1, new SoundPacket(name, x, y, z, g,h));
+            }
         }
     }
 
@@ -215,6 +235,9 @@ public class Hopper extends TemplateBlockWithEntity
                             if(iSandSwallowed > 0)
                             {
                                 world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.pop", 0.25F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                                if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+                                    voicePacket(world, "random.pop", i, j, k, 0.25F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                                }
                                 ItemInstance flintItemInstance = new ItemInstance(ItemBase.flint.id, iSandSwallowed, 0);
                                 Item flintEntityitem = new Item(world, targetEntityItem.x, targetEntityItem.y, targetEntityItem.z, flintItemInstance);
                                 flintEntityitem.pickupDelay = 10;
@@ -224,6 +247,9 @@ public class Hopper extends TemplateBlockWithEntity
                         if(InventoryHandler.addItemWithinSlotBounds(tileEntityHopper, targetEntityItem.item, 0, 17))
                         {
                             world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.pop", 0.25F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                            if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+                                voicePacket(world, "random.pop", i, j, k, 0.25F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                            }
                             targetEntityItem.remove();
                             bSwallowed = true;
                         }
@@ -254,8 +280,28 @@ public class Hopper extends TemplateBlockWithEntity
 
     public boolean isPowered(BlockView iBlockAccess, int i, int j, int k, int l)
     {
+        switch (FabricLoader.INSTANCE.getEnvironmentType()){
+            case CLIENT -> {
+                return powerClient(iBlockAccess, i, j, k, l);
+            }
+            case SERVER -> {
+                return powerServer(iBlockAccess, i, j, k, l);
+            }
+        }
+        return false;
+    }
+
+    @Environment(EnvType.CLIENT)
+    public boolean powerClient(BlockView iBlockAccess, int i, int j, int k, int l){
         Level level = Minecraft.class.cast(FabricLoader.INSTANCE.getGameInstance()).level;
         return IsRedstoneOutputOn(level, i, j, k);
+    }
+
+    @Environment(EnvType.SERVER)
+    public boolean powerServer(BlockView iBlockAccess, int i, int j, int k, int l){
+        Level level = ((MinecraftServer) net.fabricmc.loader.api.FabricLoader.getInstance().getGameInstance()).getLevel(0);
+        return IsRedstoneOutputOn(level, i, j, k);
+        //TODO: dimension?
     }
 
     public boolean indirectlyPowered(Level world, int i, int j, int i1, int j1)
@@ -381,6 +427,9 @@ public class Hopper extends TemplateBlockWithEntity
         }
 
          world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.explode", 1.0F, 1.25F);
+        if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+        voicePacket(world, "random.explode", i, j, k, 0.2F, 1.25F);
+        }
         world.setTile(i, j, k, 0);
     }
 

@@ -1,0 +1,169 @@
+{
+  "multipart": [
+    {
+      "apply": { "model": "wolves:block/fcCrucible"}
+    },
+    {   "when": { "full": 1, "lava": true },
+      "apply": { "model": "wolves:block/crucible_lava_1"}
+    },
+    {   "when": { "full": 1, "lava": false },
+      "apply": { "model": "wolves:block/crucible_gravel_1"}
+    },
+    {   "when": { "full": 2, "lava": true },
+      "apply": { "model": "wolves:block/crucible_lava_2"}
+    },
+    {   "when": { "full": 2, "lava": false },
+      "apply": { "model": "wolves:block/crucible_gravel_2"}
+    },
+    {   "when": { "full": 3, "lava": true },
+      "apply": { "model": "wolves:block/crucible_lava_3"}
+    },
+    {   "when": { "full": 3, "lava": false },
+      "apply": { "model": "wolves:block/crucible_gravel_3"}
+    },
+    {   "when": { "full": 4, "lava": true },
+      "apply": { "model": "wolves:block/crucible_lava_4"}
+    },
+    {   "when": { "full": 4, "lava": false },
+      "apply": { "model": "wolves:block/crucible_gravel_4"}
+    },
+    {   "when": { "full": 5, "lava": true },
+      "apply": { "model": "wolves:block/crucible_lava_5"}
+    },
+    {   "when": { "full": 5, "lava": false },
+      "apply": { "model": "wolves:block/crucible_gravel_5"}
+    },
+    {   "when": { "full": 6, "lava": true },
+      "apply": { "model": "wolves:block/crucible_lava_6"}
+    },
+    {   "when": { "full": 6, "lava": false },
+      "apply": { "model": "wolves:block/crucible_gravel_6"}
+    },
+    {   "when": { "full": 7, "lava": true },
+      "apply": { "model": "wolves:block/crucible_lava_7"}
+    },
+    {   "when": { "full": 7, "lava": false },
+      "apply": { "model": "wolves:block/crucible_gravel_7"}
+    },
+    {   "when": { "full": 8, "lava": true },
+      "apply": { "model": "wolves:block/crucible_lava_8"}
+    },
+    {   "when": { "full": 8, "lava": false },
+      "apply": { "model": "wolves:block/crucible_gravel_8"}
+    },
+    {   "when": { "full": 9, "lava": true },
+      "apply": { "model": "wolves:block/crucible_lava_9"}
+    },
+    {   "when": { "full": 9, "lava": false },
+      "apply": { "model": "wolves:block/crucible_gravel_9"}
+    },
+    {   "when": { "full": 10, "lava": true },
+      "apply": { "model": "wolves:block/crucible_lava_10"}
+    },
+    {   "when": { "full": 10, "lava": false },
+      "apply": { "model": "wolves:block/crucible_gravel_10"}
+    },
+    {   "when": { "full": 11, "lava": true },
+      "apply": { "model": "wolves:block/crucible_lava_11"}
+    },
+    {   "when": { "full": 11, "lava": false },
+      "apply": { "model": "wolves:block/crucible_gravel_11"}
+    },
+    {   "when": { "full": 12, "lava": true },
+      "apply": { "model": "wolves:block/crucible_lava_12"}
+    },
+    {   "when": { "full": 12, "lava": false },
+      "apply": { "model": "wolves:block/crucible_gravel_12"}
+    },
+    {   "when": { "full": 13, "lava": true },
+      "apply": { "model": "wolves:block/crucible_lava_13"}
+    },
+    {   "when": { "full": 13, "lava": false },
+      "apply": { "model": "wolves:block/crucible_gravel_13"}
+    },
+    {   "when": { "full": 14, "lava": true },
+      "apply": { "model": "wolves:block/crucible_lava_14"}
+    },
+    {   "when": { "full": 14, "lava": false },
+      "apply": { "model": "wolves:block/crucible_gravel_14"}
+    },
+    {   "when": { "full": 15, "lava": true },
+      "apply": { "model": "wolves:block/crucible_lava_15"}
+    },
+    {   "when": { "full": 15, "lava": false },
+      "apply": { "model": "wolves:block/crucible_gravel_15"}
+    },
+    {   "when": { "full": 16, "lava": true },
+      "apply": { "model": "wolves:block/crucible_lava_16"}
+    },
+    {   "when": { "full": 16, "lava": false },
+      "apply": { "model": "wolves:block/crucible_gravel_16"}
+    },
+    {   "when": { "full": 17, "lava": true },
+      "apply": { "model": "wolves:block/crucible_lava_17"}
+    },
+    {   "when": { "full": 17, "lava": false },
+      "apply": { "model": "wolves:block/crucible_gravel_17"}
+    },
+    {   "when": { "full": 18, "lava": true },
+      "apply": { "model": "wolves:block/crucible_lava_18"}
+    },
+    {   "when": { "full": 18, "lava": false },
+      "apply": { "model": "wolves:block/crucible_gravel_18"}
+    },
+    {   "when": { "full": 19, "lava": true },
+      "apply": { "model": "wolves:block/crucible_lava_19"}
+    },
+    {   "when": { "full": 19, "lava": false },
+      "apply": { "model": "wolves:block/crucible_gravel_19"}
+    },
+    {   "when": { "full": 20, "lava": true },
+      "apply": { "model": "wolves:block/crucible_lava_20"}
+    },
+    {   "when": { "full": 20, "lava": false },
+      "apply": { "model": "wolves:block/crucible_gravel_20"}
+    },
+    {   "when": { "full": 21, "lava": true },
+      "apply": { "model": "wolves:block/crucible_lava_21"}
+    },
+    {   "when": { "full": 21, "lava": false },
+      "apply": { "model": "wolves:block/crucible_gravel_21"}
+    },
+    {   "when": { "full": 22, "lava": true },
+      "apply": { "model": "wolves:block/crucible_lava_22"}
+    },
+    {   "when": { "full": 22, "lava": false },
+      "apply": { "model": "wolves:block/crucible_gravel_22"}
+    },
+    {   "when": { "full": 23, "lava": true },
+      "apply": { "model": "wolves:block/crucible_lava_23"}
+    },
+    {   "when": { "full": 23, "lava": false },
+      "apply": { "model": "wolves:block/crucible_gravel_23"}
+    },
+    {   "when": { "full": 24, "lava": true },
+      "apply": { "model": "wolves:block/crucible_lava_24"}
+    },
+    {   "when": { "full": 24, "lava": false },
+      "apply": { "model": "wolves:block/crucible_gravel_24"}
+    },
+    {   "when": { "full": 25, "lava": true },
+      "apply": { "model": "wolves:block/crucible_lava_25"}
+    },
+    {   "when": { "full": 25, "lava": false },
+      "apply": { "model": "wolves:block/crucible_gravel_25"}
+    },
+    {   "when": { "full": 26, "lava": true },
+      "apply": { "model": "wolves:block/crucible_lava_26"}
+    },
+    {   "when": { "full": 26, "lava": false },
+      "apply": { "model": "wolves:block/crucible_gravel_26"}
+    },
+    {   "when": { "full": 27, "lava": true },
+      "apply": { "model": "wolves:block/crucible_lava_27"}
+    },
+    {   "when": { "full": 27, "lava": false },
+      "apply": { "model": "wolves:block/crucible_gravel_27"}
+    }
+  ]
+}

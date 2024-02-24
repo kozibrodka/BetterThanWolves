@@ -12,6 +12,8 @@ package net.kozibrodka.wolves.tileentity;
 //            mod_FCBetterThanWolves, Block, FoodBase, FurnaceRecipes, 
 //            Item, FCUtilsMisc, ItemMap, ItemShears
 
+import net.kozibrodka.wolves.blocks.Crucible;
+import net.kozibrodka.wolves.blocks.Hopper;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.recipe.CrucibleCraftingManager;
@@ -133,6 +135,7 @@ public class CrucibleTileEntity extends TileEntityBase
             if(!m_bOverStokedFire)
             {
                 m_bOverStokedFire = true;
+                ((Crucible)BlockListener.crucible).SetHasLava(level, x, y, z, true);
                 level.method_202(x, y, z, x, y, z);
             }
             if(DoesCrucibleContainUncookedItems())
@@ -152,6 +155,7 @@ public class CrucibleTileEntity extends TileEntityBase
             if(m_bOverStokedFire)
             {
                 m_bOverStokedFire = false;
+                ((Crucible)BlockListener.crucible).SetHasLava(level, x, y, z, false);
                 level.method_202(x, y, z, x, y, z);
             }
             m_iCrucibleCookCounter = 0;
@@ -163,6 +167,8 @@ public class CrucibleTileEntity extends TileEntityBase
             return;
         }
         level.method_202(x, y, z, x, y, z);
+        int iOccupiedStacks = InventoryHandler.getOccupiedSlotCountWithinBounds(this, 0, 26);
+        ((Crucible)BlockListener.crucible).SetHasFull(level, x, y, z, iOccupiedStacks);
     }
 
     public int GetStokedFireFactor()

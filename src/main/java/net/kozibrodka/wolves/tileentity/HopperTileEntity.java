@@ -64,25 +64,9 @@ public class HopperTileEntity extends TileEntityBase
         {
             ItemInstance.count = getMaxItemCount();
         }
-//        if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER)
-//        {
-//            renderPacket();
-//        }
         markDirty();
     }
 
-    @Environment(EnvType.SERVER)
-    public void renderPacket(){
-        List list2 = level.players;
-        if(list2.size() != 0) {
-            for(int k = 0; k < list2.size(); k++)
-            {
-                ServerPlayer player1 = (ServerPlayer) list2.get(k);
-                PacketHelper.sendTo(player1, new RenderPacket(2, x, y, z, GetFilterType() ,InventoryHandler.getOccupiedSlotCountWithinBounds(this, 0, 17)));
-                System.out.println("WYSYLAM PAKIET");
-            }
-        }
-    }
 
     public String getContainerName()
     {
@@ -225,7 +209,6 @@ public class HopperTileEntity extends TileEntityBase
 
     public void markDirty()
     {
-//        System.out.println("KURWA 2");
         if (level == null) {
             return;
         }

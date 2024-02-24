@@ -5,10 +5,14 @@
 
 package net.kozibrodka.wolves.blocks;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.container.CrucibleContainer;
 import net.kozibrodka.wolves.events.GUIListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.network.GuiPacket;
+import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.tileentity.CrucibleTileEntity;
 import net.kozibrodka.wolves.utils.RotatableBlock;
 import net.kozibrodka.wolves.utils.InventoryHandler;
@@ -19,15 +23,20 @@ import net.minecraft.client.render.block.BlockRenderer;
 import net.minecraft.entity.EntityBase;
 import net.minecraft.entity.Item;
 import net.minecraft.entity.player.PlayerBase;
+import net.minecraft.entity.player.ServerPlayer;
 import net.minecraft.inventory.InventoryBase;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.minecraft.tileentity.TileEntityBase;
 import net.minecraft.util.maths.Box;
+import net.modificationstation.stationapi.api.block.BlockState;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithInventoryRenderer;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
 import net.modificationstation.stationapi.api.gui.screen.container.GuiHelper;
 import net.modificationstation.stationapi.api.network.packet.PacketHelper;
+import net.modificationstation.stationapi.api.state.StateManager;
+import net.modificationstation.stationapi.api.state.property.BooleanProperty;
+import net.modificationstation.stationapi.api.state.property.IntProperty;
 import net.modificationstation.stationapi.api.template.block.TemplateBlock;
 import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockWithEntity;
@@ -35,7 +44,7 @@ import net.modificationstation.stationapi.api.template.block.TemplateBlockWithEn
 import java.util.List;
 
 public class Crucible extends TemplateBlockWithEntity
-    implements RotatableBlock, BlockWithWorldRenderer, BlockWithInventoryRenderer
+    implements RotatableBlock, BlockWithInventoryRenderer
 {
 
     public Crucible(Identifier iid)
@@ -43,6 +52,10 @@ public class Crucible extends TemplateBlockWithEntity
         super(iid, Material.GLASS);
         setHardness(0.6F);
         setSounds(GLASS_SOUNDS);
+        setDefaultState(getDefaultState()
+                .with(LAVA, false)
+                .with(FULL, 0)
+        );
     }
 
     public boolean isFullOpaque()
@@ -84,7 +97,9 @@ public class Crucible extends TemplateBlockWithEntity
 
     public void onBlockRemoved(Level world, int i, int j, int k)
     {
-        InventoryHandler.ejectInventoryContents(world, i, j, k, (InventoryBase)world.getTileEntity(i, j, k));
+        if (!SETTING_TILE) {
+            InventoryHandler.ejectInventoryContents(world, i, j, k, (InventoryBase) world.getTileEntity(i, j, k));
+        }
         super.onBlockRemoved(world, i, j, k);
     }
 
@@ -110,6 +125,9 @@ public class Crucible extends TemplateBlockWithEntity
                 if(InventoryHandler.addItemInstanceToInventory(tileEntityCrucible, targetEntityItem.item))
                 {
                      world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.pop", 0.25F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                    if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+                        voicePacket(world, "random.pop", i, j, k, 0.25F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                    }
                     targetEntityItem.remove();
                     continue;
                 }
@@ -126,6 +144,18 @@ public class Crucible extends TemplateBlockWithEntity
                 }
             }
 
+        }
+    }
+
+    @Environment(EnvType.SERVER)
+    public void voicePacket(Level world, String name, int x, int y, int z, float g, float h){
+        List list2 = world.players;
+        if(list2.size() != 0) {
+            for(int k = 0; k < list2.size(); k++)
+            {
+                ServerPlayer player1 = (ServerPlayer) list2.get(k);
+                PacketHelper.sendTo(player1, new SoundPacket(name, x, y, z, g,h));
+            }
         }
     }
 
@@ -162,8 +192,8 @@ public class Crucible extends TemplateBlockWithEntity
     private final int m_iCrucibleBottomTextureID = 44;
     private final int m_iCrucibleContentsTextureID = 45;
     public static final double m_dCrucibleCollisionBoxHeight = 0.99000000953674316D;
+    private static boolean SETTING_TILE = false;
 
-    @Override
     public boolean renderWorld(BlockRenderer tileRenderer, BlockView tileView, int x, int y, int z) {
         this.setBoundingBox(0.0625F, 0.0F, 0.0625F, 0.1875F, 1.0F, 0.8125F);
         tileRenderer.renderStandardBlock(this, x, y, z);
@@ -227,4 +257,39 @@ public class Crucible extends TemplateBlockWithEntity
         CustomBlockRendering.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
         setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
     }
+
+    public void SetHasFull(Level world, int i, int j, int k, int slots)
+    {
+        TileEntityBase tileEntityBase = world.getTileEntity(i, j, k);
+        SETTING_TILE = true;
+
+        BlockState currentState = world.getBlockState(i, j, k);
+        world.setBlockStateWithNotify(i,j,k, currentState.with(FULL, slots));
+
+        SETTING_TILE = false;
+        tileEntityBase.validate();
+        world.setTileEntity(i, j, k, tileEntityBase);
+    }
+
+    public void SetHasLava(Level world, int i, int j, int k, boolean bOn)
+    {
+        TileEntityBase tileEntityBase = world.getTileEntity(i, j, k);
+        SETTING_TILE = true;
+
+        BlockState currentState = world.getBlockState(i, j, k);
+        world.setBlockStateWithNotify(i,j,k, currentState.with(LAVA, bOn));
+
+        SETTING_TILE = false;
+        tileEntityBase.validate();
+        world.setTileEntity(i, j, k, tileEntityBase);
+    }
+
+    public static final BooleanProperty LAVA = BooleanProperty.of("lava");
+    public static final IntProperty FULL = IntProperty.of("full",0,27);
+
+    public void appendProperties(StateManager.Builder<BlockBase, BlockState> builder) {
+        builder.add(LAVA);
+        builder.add(FULL);
+    }
+
 }

@@ -43,14 +43,14 @@ public class AnvilContainer extends ContainerBase
     }
 
     public void onContentsChanged(InventoryBase iinventory) {
-        //TODO: in my opinion anvil should not do regular recipes
         ItemInstance craftedStack = RecipeRegistry.getInstance().getCraftingOutput(craftMatrix);
-//        System.out.println("SPRAWDZAM RECIpe v0");
         if(craftedStack == null) {
             craftedStack = AnvilCraftingManager.getInstance().findMatchingRecipe(craftMatrix);
-//            System.out.println("SPRAWDZAM RECIOE");
         }
         craftResult.setInventoryItem(0, craftedStack);
+        //TODO: in my opinion anvil should not do regular recipes
+//        ItemInstance craftedStac2k = AnvilCraftingManager.getInstance().findMatchingRecipe(craftMatrix);
+//        craftResult.setInventoryItem(0, craftedStac2k);
     }
 
     public void onClosed(PlayerBase entityplayer) {

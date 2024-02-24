@@ -1,6 +1,8 @@
 
 package net.kozibrodka.wolves.blocks;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
@@ -103,10 +105,12 @@ public class LightBulb extends TemplateBlock
         return false;
     }
 
+    @Environment(EnvType.CLIENT)
     public boolean powerClient(BlockView iBlockAccess, int i, int j, int k, int l){
         return ((Minecraft) FabricLoader.INSTANCE.getGameInstance()).level.method_263(i, j, k);
     }
 
+    @Environment(EnvType.SERVER)
     public boolean powerServer(BlockView iBlockAccess, int i, int j, int k, int l){
         return ((MinecraftServer) net.fabricmc.loader.api.FabricLoader.getInstance().getGameInstance()).getLevel(0).method_263(i, j, k);
         //TODO: It gets the overworld always.

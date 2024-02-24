@@ -265,6 +265,7 @@ public class Cement extends TemplateBlockWithEntity
                 iMetaData &= -2;
             }
             world.setTileMeta(i, j, k, iMetaData);
+            world.method_243(i, j, k);
         }
     }
 
@@ -580,6 +581,7 @@ public class Cement extends TemplateBlockWithEntity
 
     @Override
     public boolean renderWorld(BlockRenderer tileRenderer, BlockView tileView, int x, int y, int z) {
+        //TODO: How to make it work on server? ...
         boolean flag = false;
         Tessellator tessellator = Tessellator.INSTANCE;
         boolean flag1 = this.isSideRendered(tileView, x, y + 1, z, 1);

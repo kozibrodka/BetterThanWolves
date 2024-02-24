@@ -25,7 +25,7 @@ public class PacketListener {
     public void registerPacket(PacketRegisterEvent event) {
         SoundPacket.register();
         GuiPacket.register();
-        RenderPacket.register();
+//        RenderPacket.register();
         ParticlePacket.register();
 //        IdentifiablePacket.register(MOD_ID.id("btw_sound"), true, true, SoundPacket::new);
     }

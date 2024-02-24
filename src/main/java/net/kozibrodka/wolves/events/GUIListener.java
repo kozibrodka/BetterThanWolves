@@ -26,7 +26,7 @@ public class GUIListener {
     @EventListener
     public void registerGuiHandlers(GuiHandlerRegistryEvent event) {
         GuiHandlerRegistry registry = event.registry;
-        registry.registerValueNoMessage(Identifier.of(MOD_ID, "openAnvil"), BiTuple.of(this::openAnvil, null)); //BAD ONE
+        registry.registerValueNoMessage(Identifier.of(MOD_ID, "openAnvil"), BiTuple.of(this::openAnvil, () -> null)); //BAD ONE
         registry.registerValueNoMessage(Identifier.of(MOD_ID, "openHopper"), BiTuple.of(this::openHopper, HopperTileEntity::new));
         registry.registerValueNoMessage(Identifier.of(MOD_ID, "openCrucible"), BiTuple.of(this::openCrucible, CrucibleTileEntity::new));
         registry.registerValueNoMessage(Identifier.of(MOD_ID, "openMillStone"), BiTuple.of(this::openMillStone, MillStoneTileEntity::new));

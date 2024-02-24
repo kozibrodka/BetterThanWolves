@@ -69,9 +69,6 @@ public class Anvil extends TemplateBlock
     }
 
     public boolean canUse(Level world, int i, int j, int k, PlayerBase entityplayer) {
-        if(world.isServerSide){
-            return false;
-        }
         GUIListener.TempAnvilX = i;
         GUIListener.TempAnvilY = j;
         GUIListener.TempAnvilZ = k;
