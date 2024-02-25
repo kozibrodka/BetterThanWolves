@@ -1,15 +1,20 @@
 package net.kozibrodka.wolves.blocks;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.container.PulleyContainer;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.GUIListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.network.GuiPacket;
+import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.tileentity.PulleyTileEntity;
 import net.kozibrodka.wolves.utils.*;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerBase;
+import net.minecraft.entity.player.ServerPlayer;
 import net.minecraft.inventory.InventoryBase;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
@@ -20,6 +25,7 @@ import net.modificationstation.stationapi.api.template.block.TemplateBlock;
 import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockWithEntity;
 
+import java.util.List;
 import java.util.Random;
 
 public class Pulley extends TemplateBlockWithEntity
@@ -93,6 +99,9 @@ public class Pulley extends TemplateBlockWithEntity
         if(bOn != bReceivingPower)
         {
              world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.explode", 0.2F, 1.25F);
+            if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+                voicePacket(world, "random.explode", i, j, k, 0.2F, 1.25F);
+            }
             EmitPulleyParticles(world, i, j, k, random);
             SetBlockOn(world, i, j, k, bReceivingPower);
             bStateChanged = true;
@@ -102,6 +111,9 @@ public class Pulley extends TemplateBlockWithEntity
         if(bRedstoneOn != bReceivingRedstone)
         {
              world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.explode", 0.2F, 1.25F);
+            if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+                voicePacket(world, "random.explode", i, j, k, 0.2F, 1.25F);
+            }
             EmitPulleyParticles(world, i, j, k, random);
             SetRedstoneOn(world, i, j, k, bReceivingRedstone);
             bStateChanged = true;
@@ -109,6 +121,18 @@ public class Pulley extends TemplateBlockWithEntity
         if(bStateChanged)
         {
             ((PulleyTileEntity)world.getTileEntity(i, j, k)).NotifyPulleyEntityOfBlockStateChange();
+        }
+    }
+
+    @Environment(EnvType.SERVER)
+    public void voicePacket(Level world, String name, int x, int y, int z, float g, float h){
+        List list2 = world.players;
+        if(list2.size() != 0) {
+            for(int k = 0; k < list2.size(); k++)
+            {
+                ServerPlayer player1 = (ServerPlayer) list2.get(k);
+                PacketHelper.sendTo(player1, new SoundPacket(name, x, y, z, g,h));
+            }
         }
     }
 

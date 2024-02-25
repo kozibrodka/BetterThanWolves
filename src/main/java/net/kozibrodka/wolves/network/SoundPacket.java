@@ -19,12 +19,6 @@ import java.io.IOException;
 
 public class SoundPacket extends AbstractPacket implements IdentifiablePacket{
 
-    //MIXIN "https://resourceproxy.pymcl.net/MinecraftResources/"
-
-    //     "DestroyStupidResource404Errors",
-    //    "MixinFixDepthBuffer",
-    //    "MixinFixThreadCheckHasPaid"
-
     private String soundToPlay;
     private int x;
     private int y;

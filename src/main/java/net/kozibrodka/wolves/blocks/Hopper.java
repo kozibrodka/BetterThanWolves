@@ -276,6 +276,7 @@ public class Hopper extends TemplateBlockWithEntity
 //            }
 //            world.method_243(i, j, k);
         }
+        //TODO: Interaction with minecarts
     }
 
     public boolean isPowered(BlockView iBlockAccess, int i, int j, int k, int l)

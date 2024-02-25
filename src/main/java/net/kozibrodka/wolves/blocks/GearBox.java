@@ -1,11 +1,15 @@
 
 package net.kozibrodka.wolves.blocks;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.ConfigListener;
 import net.kozibrodka.wolves.mixin.LevelAccessor;
+import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.utils.BlockPosition;
 import net.kozibrodka.wolves.utils.RotatableBlock;
 import net.kozibrodka.wolves.utils.MechanicalDevice;
@@ -13,12 +17,15 @@ import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Living;
+import net.minecraft.entity.player.ServerPlayer;
 import net.minecraft.item.ItemBase;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
+import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import net.modificationstation.stationapi.api.template.block.TemplateBlock;
 import net.modificationstation.stationapi.api.util.Identifier;
 
+import java.util.List;
 import java.util.Random;
 
 public class GearBox extends TemplateBlock
@@ -115,20 +122,33 @@ public class GearBox extends TemplateBlock
         {
             if(bOn)
             {
-//                System.out.println("ustawiam false: " + bReceivingPower + bOn);
                 SetGearBoxOnState(world, i, j, k, false);
                 ValidateOutputs(world, i, j, k, false);
             } else
             {
                 world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.explode", 0.05F, 1.0F);
+                if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+                    voicePacket(world, "random.explode", i, j, k, 0.05F, 1.0F);
+                }
                 EmitGearBoxParticles(world, i, j, k, random);
-//                System.out.println("ustawiam true: " + bReceivingPower + bOn);
                 SetGearBoxOnState(world, i, j, k, true);
                 ValidateOutputs(world, i, j, k, true);
             }
         } else
         {
             ValidateOutputs(world, i, j, k, false);
+        }
+    }
+
+    @Environment(EnvType.SERVER)
+    public void voicePacket(Level world, String name, int x, int y, int z, float g, float h){
+        List list2 = world.players;
+        if(list2.size() != 0) {
+            for(int k = 0; k < list2.size(); k++)
+            {
+                ServerPlayer player1 = (ServerPlayer) list2.get(k);
+                PacketHelper.sendTo(player1, new SoundPacket(name, x, y, z, g,h));
+            }
         }
     }
 
@@ -275,6 +295,9 @@ public class GearBox extends TemplateBlock
 
         UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, ItemBase.redstoneDust.id, 0);
         world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.explode", 0.2F, 1.25F);
+        if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+            voicePacket(world, "random.explode", i, j, k, 0.05F, 1.0F);
+        }
         world.setTile(i, j, k, 0);
     }
 

@@ -1,16 +1,23 @@
 
 package net.kozibrodka.wolves.blocks;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.modsupport.HibachiIgnitionRegistry;
+import net.kozibrodka.wolves.network.SoundPacket;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.Fluid;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.ServerPlayer;
 import net.minecraft.level.Level;
+import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import net.modificationstation.stationapi.api.template.block.TemplateBlock;
 import net.modificationstation.stationapi.api.util.Identifier;
 
+import java.util.List;
 import java.util.Random;
 
 
@@ -58,6 +65,9 @@ public class Hibachi extends TemplateBlock
                 if(iBlockAboveID != BlockBase.FIRE.id && iBlockAboveID != BlockListener.stokedFire.id && BBQShouldIgniteAbove(world, i, j, k))
                 {
                     world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "fire.ignite", 1.0F, world.rand.nextFloat() * 0.4F + 0.8F);
+                    if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+                        voicePacket(world, "fire.ignite", i, j, k, 1.0F, world.rand.nextFloat() * 0.4F + 0.8F);
+                    }
                     world.setTile(i, j + 1, k, FIRE.id);
                 }
             }
@@ -71,6 +81,18 @@ public class Hibachi extends TemplateBlock
             if(iBlockAboveID == BlockBase.FIRE.id || iBlockAboveID == BlockListener.stokedFire.id)
             {
                 world.setTile(i, j + 1, k, 0);
+            }
+        }
+    }
+
+    @Environment(EnvType.SERVER)
+    public void voicePacket(Level world, String name, int x, int y, int z, float g, float h){
+        List list2 = world.players;
+        if(list2.size() != 0) {
+            for(int k = 0; k < list2.size(); k++)
+            {
+                ServerPlayer player1 = (ServerPlayer) list2.get(k);
+                PacketHelper.sendTo(player1, new SoundPacket(name, x, y, z, g,h));
             }
         }
     }
@@ -147,7 +169,9 @@ public class Hibachi extends TemplateBlock
     {
         SetBBQLitFlag(world, i, j, k);
         world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "fire.ignite", 1.0F, world.rand.nextFloat() * 0.4F + 0.8F);
-
+        if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+            voicePacket(world, "fire.ignite", i, j, k, 1.0F, world.rand.nextFloat() * 0.4F + 0.8F);
+        }
         int ignitedBlockID = HibachiIgnitionRegistry.getInstance().getIgnitedID(world.getTileId(i, j + 1, k));
         if (ignitedBlockID != 0)
         {
@@ -163,6 +187,9 @@ public class Hibachi extends TemplateBlock
     {
         ClearBBQLitFlag(world, i, j, k);
         world.playSound((float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F, "random.fizz", 0.5F, 2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
+        if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+            voicePacket(world, "random.fizz", i, j, k, 0.5F, 2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
+        }
         boolean isFireAbove = world.getTileId(i, j + 1, k) == FIRE.id || world.getTileId(i, j + 1, k) == BlockListener.stokedFire.id;
         if(isFireAbove)
         {

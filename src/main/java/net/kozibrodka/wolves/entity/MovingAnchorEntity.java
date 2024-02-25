@@ -115,7 +115,7 @@ public class MovingAnchorEntity extends EntityBase implements EntitySpawnDataPro
 
     public void tick()
     {
-        if(removed)
+        if(removed || level.isServerSide)
         {
             return;
         }

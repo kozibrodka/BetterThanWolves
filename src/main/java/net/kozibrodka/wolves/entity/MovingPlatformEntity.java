@@ -105,7 +105,7 @@ public class MovingPlatformEntity extends EntityBase implements EntitySpawnDataP
 
     public void tick()
     {
-        if(removed)
+        if(removed || level.isServerSide)
         {
             return;
         }

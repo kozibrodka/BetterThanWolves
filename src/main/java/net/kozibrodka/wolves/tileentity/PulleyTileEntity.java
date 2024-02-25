@@ -6,7 +6,7 @@
 package net.kozibrodka.wolves.tileentity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.blocks.Anchor;
 import net.kozibrodka.wolves.blocks.Pulley;
 import net.kozibrodka.wolves.events.BlockListener;
@@ -278,6 +278,9 @@ public class PulleyTileEntity extends TileEntityBase
         if(InventoryHandler.addItemInstanceToInventory(this, ropeStack))
         {
             level.playSound((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, "random.pop", 0.05F, (level.rand.nextFloat() - level.rand.nextFloat()) * 0.7F + 1.0F);
+            if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+                voicePacket(level, "random.pop", x, y, z, 0.05F, (level.rand.nextFloat() - level.rand.nextFloat()) * 0.7F + 1.0F);
+            }
         } else
         {
             UnsortedUtils.EjectStackWithRandomOffset(level, x, y, z, ropeStack);
@@ -297,6 +300,7 @@ public class PulleyTileEntity extends TileEntityBase
             InventoryHandler.decreaseStackSize(this, iRopeSlot, 1);
         }
     }
+
 
     private final int iPulleyInventorySize = 2;
     private final int iPulleyStackSizeLimit = 64;

@@ -5,11 +5,14 @@
 
 package net.kozibrodka.wolves.blocks;
 
-import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.entity.MovingAnchorEntity;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.events.TextureListener;
+import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.tileentity.PulleyTileEntity;
 import net.kozibrodka.wolves.utils.BlockPosition;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
@@ -19,14 +22,18 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.render.block.BlockRenderer;
 import net.minecraft.entity.player.PlayerBase;
+import net.minecraft.entity.player.ServerPlayer;
 import net.minecraft.item.ItemInstance;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.minecraft.util.maths.Box;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithInventoryRenderer;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
+import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import net.modificationstation.stationapi.api.template.block.TemplateBlock;
 import net.modificationstation.stationapi.api.util.Identifier;
+
+import java.util.List;
 
 
 public class Anchor extends TemplateBlock implements BlockWithWorldRenderer, BlockWithInventoryRenderer
@@ -179,13 +186,27 @@ public class Anchor extends TemplateBlock implements BlockWithWorldRenderer, Blo
             {
                 AddRopeToPlayerInventory(world, i, j, k, entityPlayer);
                 BlockBase targetBlock = BlockListener.rope;
-//                Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).soundHelper.playSound(targetBlock.sounds.getWalkSound(), (float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F, (targetBlock.sounds.getVolume() + 1.0F) / 2.0F, targetBlock.sounds.getPitch() * 0.8F);
                 world.playSound((float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, targetBlock.sounds.getWalkSound(), (targetBlock.sounds.getVolume() + 1.0F) / 5.0F, targetBlock.sounds.getPitch() * 0.8F);
+                if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+                    voicePacket(world, targetBlock.sounds.getWalkSound(), i, j, k, (targetBlock.sounds.getVolume() + 1.0F) / 5.0F, targetBlock.sounds.getPitch() * 0.8F);
+                }
                 world.setTile(i, tempj, k, 0);
                 break;
             }
             tempj--;
         } while(true);
+    }
+
+    @Environment(EnvType.SERVER)
+    public void voicePacket(Level world, String name, int x, int y, int z, float g, float h){
+        List list2 = world.players;
+        if(list2.size() != 0) {
+            for(int k = 0; k < list2.size(); k++)
+            {
+                ServerPlayer player1 = (ServerPlayer) list2.get(k);
+                PacketHelper.sendTo(player1, new SoundPacket(name, x, y, z, g,h));
+            }
+        }
     }
 
     private void AddRopeToPlayerInventory(Level world, int i, int j, int k, PlayerBase entityPlayer)
@@ -194,6 +215,9 @@ public class Anchor extends TemplateBlock implements BlockWithWorldRenderer, Blo
         if(entityPlayer.inventory.addStack(ropeStack))
         {
             world.playSound(entityPlayer, "random.pop", 0.2F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+            if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+                voicePacket(world, "random.pop", i, j, k, 0.2F, ((world.rand.nextFloat() - world.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+            }
         } else
         {
             UnsortedUtils.EjectStackWithRandomOffset(world, i, j, k, ropeStack);

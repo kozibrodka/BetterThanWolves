@@ -1,17 +1,23 @@
 package net.kozibrodka.wolves.blocks;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
+import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.utils.BlockPosition;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityBase;
 import net.minecraft.entity.Living;
 import net.minecraft.entity.ParticleBase;
+import net.minecraft.entity.player.ServerPlayer;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.minecraft.level.biome.Biome;
 import net.minecraft.util.maths.Box;
+import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import net.modificationstation.stationapi.api.template.block.TemplateBlock;
 import net.modificationstation.stationapi.api.util.Identifier;
 
@@ -106,11 +112,26 @@ public class DetectorBlock extends TemplateBlock {
             return;
         }
         level.playSound((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, "random.click", 0.75F, 2.0F);
+        if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+            voicePacket(level, "random.click", x, y, z, 0.75F, 2.0F);
+        }
         int metadata = level.getTileMeta(x, y, z);
         metadata++;
         level.placeBlockWithMetaData(x, y, z, this.id, metadata);
         level.updateAdjacentBlocks(x, y, z, BlockListener.detectorBlock.id);
         level.method_216(x, y, z, BlockListener.detectorBlock.id, getTickrate());
+    }
+
+    @Environment(EnvType.SERVER)
+    public void voicePacket(Level world, String name, int x, int y, int z, float g, float h){
+        List list2 = world.players;
+        if(list2.size() != 0) {
+            for(int k = 0; k < list2.size(); k++)
+            {
+                ServerPlayer player1 = (ServerPlayer) list2.get(k);
+                PacketHelper.sendTo(player1, new SoundPacket(name, x, y, z, g,h));
+            }
+        }
     }
 
     private void deactivateDetector(Level level, int x, int y, int z) {

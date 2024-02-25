@@ -5,21 +5,29 @@
 
 package net.kozibrodka.wolves.blocks;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.itemblocks.CompanionCubeItemBlock;
+import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.utils.RotatableBlock;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.kozibrodka.wolves.utils.CustomBlockRendering;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.render.block.BlockRenderer;
 import net.minecraft.entity.Living;
+import net.minecraft.entity.player.ServerPlayer;
 import net.minecraft.level.BlockView;
 import net.minecraft.level.Level;
 import net.minecraft.util.maths.Box;
 import net.modificationstation.stationapi.api.block.HasCustomBlockItemFactory;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithInventoryRenderer;
+import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import net.modificationstation.stationapi.api.template.block.TemplateBlock;
 import net.modificationstation.stationapi.api.util.Identifier;
+
+import java.util.List;
 
 @HasCustomBlockItemFactory(CompanionCubeItemBlock.class)
 public class CompanionCube extends TemplateBlock
@@ -183,6 +191,7 @@ public class CompanionCube extends TemplateBlock
         int iMetaData = world.getTileMeta(i, j, k) & 8;
         iMetaData |= iFacing;
         world.setTileMeta(i, j, k, iMetaData);
+        world.method_243(i, j, k);
     }
 
     public boolean CanRotate(BlockView iBlockAccess, int i, int j, int l)
@@ -206,6 +215,21 @@ public class CompanionCube extends TemplateBlock
             if(world.rand.nextInt(12) == 0)
             {
                  world.playSound((float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F, "mob.wolf.whine", 0.5F, 2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
+                if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+                    voicePacket(world, "mob.wolf.whine", i, j, k, 0.5F, 2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
+                }
+            }
+        }
+    }
+
+    @Environment(EnvType.SERVER)
+    public void voicePacket(Level world, String name, int x, int y, int z, float g, float h){
+        List list2 = world.players;
+        if(list2.size() != 0) {
+            for(int k = 0; k < list2.size(); k++)
+            {
+                ServerPlayer player1 = (ServerPlayer) list2.get(k);
+                PacketHelper.sendTo(player1, new SoundPacket(name, x, y, z, g,h));
             }
         }
     }

@@ -22,6 +22,7 @@ import net.minecraft.entity.player.ServerPlayer;
 import net.minecraft.inventory.InventoryBase;
 import net.minecraft.item.ItemBase;
 import net.minecraft.item.ItemInstance;
+import net.minecraft.level.Level;
 import net.minecraft.tileentity.TileEntityBase;
 import net.minecraft.util.io.CompoundTag;
 import net.minecraft.util.io.ListTag;
@@ -464,6 +465,9 @@ public class HopperTileEntity extends TileEntityBase
                                 {
                                     takeInventoryItem(itemIndex, iNumItemsStored);
                                     level.playSound((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, "random.pop", 0.25F, ((level.rand.nextFloat() - level.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                                    if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+                                        voicePacket(level, "random.pop", x, y, z, 0.25F, ((level.rand.nextFloat() - level.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                                    }
                                 }
                             } else
                             {
@@ -503,6 +507,9 @@ public class HopperTileEntity extends TileEntityBase
                             {
                                 takeInventoryItem(itemIndex, iNumItemsStored);
                                 level.playSound((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, "random.pop", 0.25F, ((level.rand.nextFloat() - level.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                                if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+                                    voicePacket(level, "random.pop", x, y, z, 0.25F, ((level.rand.nextFloat() - level.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                                }
                             }
                             bEjectIntoWorld = false;
                             break;
@@ -537,6 +544,9 @@ public class HopperTileEntity extends TileEntityBase
         if(SpawnGhast())
         {
             level.playSound((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, "mob.ghast.scream", 1.0F, level.rand.nextFloat() * 0.4F + 0.8F);
+            if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+                voicePacket(level, "mob.ghast.scream", x, y, z, 1.0F, level.rand.nextFloat() * 0.4F + 0.8F);
+            }
         }
         ((Hopper)BlockListener.hopper).BreakHopper(level, x, y, z);
     }
@@ -562,6 +572,18 @@ public class HopperTileEntity extends TileEntityBase
         }
 
         return false;
+    }
+
+    @Environment(EnvType.SERVER)
+    public void voicePacket(Level world, String name, int x, int y, int z, float g, float h){
+        List list2 = world.players;
+        if(list2.size() != 0) {
+            for(int k = 0; k < list2.size(); k++)
+            {
+                ServerPlayer player1 = (ServerPlayer) list2.get(k);
+                PacketHelper.sendTo(player1, new SoundPacket(name, x, y, z, g,h));
+            }
+        }
     }
 
     private ItemInstance[] hopperContents;

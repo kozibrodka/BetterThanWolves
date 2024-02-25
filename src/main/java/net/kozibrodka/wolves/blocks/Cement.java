@@ -610,12 +610,6 @@ public class Cement extends TemplateBlockWithEntity
         {
             flag3 = true;
             int l = this.getTextureForSide(tileView, x, y, z, 1);
-//            int j1 = (l & 0xf) << 4;
-//            int l1 = l & 0xf0;
-//            double d2 = (double)j1 / 256D;
-//            double d3 = ((double)j1 + 15.99D) / 256D;
-//            double d4 = (double)l1 / 256D;
-//            double d5 = ((double)l1 + 15.99D) / 256D;
             Atlas.Sprite atlasTX =  Atlases.getTerrain().getTexture(l);
             double d2 = atlasTX.getStartU();
             double d3 = atlasTX.getEndU();
@@ -657,8 +651,6 @@ public class Cement extends TemplateBlockWithEntity
                 k1++;
             }
             int k2 = this.getTextureForSide(tileView, x, y, z, i1 + 2);
-//            int l2 = (k2 & 0xf) << 4;
-//            int i3 = k2 & 0xf0;
             Atlas.Sprite atlasTX2 =  Atlases.getTerrain().getTexture(k2);
             if(!flag && !aflag[i1])
             {
@@ -706,13 +698,6 @@ public class Cement extends TemplateBlockWithEntity
                 f15 = z + 1;
             }
             flag3 = true;
-
-//            double d6 = (float)(l2 + 0) / 256F;
-//            double d7 = ((double)(l2 + 16) - 0.01D) / 256D;
-//            double d8 = ((float)i3 + (1.0F - f9) * 16F) / 256F;
-//            double d9 = ((float)i3 + (1.0F - f10) * 16F) / 256F;
-//            double d10 = ((double)(i3 + 16) - 0.01D) / 256D;
-
             double d6 = atlasTX2.getStartU();
             double d7 = atlasTX2.getEndU();
             double d8 = atlasTX2.getStartV() + ((1.0F - f9) * 16F)/512F;

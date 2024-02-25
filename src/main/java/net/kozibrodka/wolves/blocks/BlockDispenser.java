@@ -1,11 +1,6 @@
-// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) braces deadcode 
-// Source File Name:   FCBlockBlockDispenser.java
 
 package net.kozibrodka.wolves.blocks;
 import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
 import net.kozibrodka.wolves.container.BlockDispenserContainer;
 import net.kozibrodka.wolves.entity.BroadheadArrowEntity;
@@ -22,6 +17,7 @@ import net.kozibrodka.wolves.utils.*;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.render.particle.Digging;
 import net.minecraft.entity.*;
 import net.minecraft.entity.animal.Chicken;
 import net.minecraft.entity.animal.Wolf;
@@ -211,6 +207,7 @@ public class BlockDispenser extends TemplateBlockWithEntity
         int iMetaData = world.getTileMeta(i, j, k);
         iMetaData |= 8;
         world.setTileMeta(i, j, k, iMetaData);
+        world.method_243(i, j, k);
         DispenseBlockOrItem(world, i, j, k, world.rand);
     }
 
@@ -219,6 +216,7 @@ public class BlockDispenser extends TemplateBlockWithEntity
         int iMetaData = world.getTileMeta(i, j, k);
         iMetaData &= -9;
         world.setTileMeta(i, j, k, iMetaData);
+        world.method_243(i, j, k);
         ConsumeFacingBlock(world, i, j, k);
     }
 
@@ -385,10 +383,14 @@ public class BlockDispenser extends TemplateBlockWithEntity
                 }
                 if(AddBlockToInventory(world, i, j, k, targetBlock, iTargetMetaData))
                 {
-//                    ModLoader.getMinecraftInstance().effectRenderer.addBlockDestroyEffects(targetPos.i, targetPos.j, targetPos.k, iTargetid, iTargetMetaData);
-                    // TODO: Replace this code with something that does not crash the server
-                    //Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).particleManager.addTileBreakParticles(targetPos.i, targetPos.j, targetPos.k, iTargetid, iTargetMetaData);
-                    //Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).soundHelper.playSound(targetBlock.sounds.getWalkSound(), (float)targetPos.i + 0.5F, (float)targetPos.j + 0.5F, (float)targetPos.k + 0.5F, (targetBlock.sounds.getVolume() + 1.0F) / 2.0F, targetBlock.sounds.getPitch() * 0.8F);
+                    if(net.fabricmc.loader.FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+//                        voicePacket(world, "random.explode", i, j, k, 0.2F, 1.25F);
+                        //packecik
+                    }else{
+                        Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).particleManager.addTileBreakParticles(targetPos.i, targetPos.j, targetPos.k, iTargetid, iTargetMetaData);
+                    }
+
+                    world.playSound((float)targetPos.i + 0.5F, (float)targetPos.j + 0.5F, (float)targetPos.k + 0.5F, targetBlock.sounds.getWalkSound(), (targetBlock.sounds.getVolume() + 1.0F) / 2.0F, targetBlock.sounds.getPitch() * 0.8F);
                 	world.setTile(targetPos.i, targetPos.j, targetPos.k, 0);
                 }
             }

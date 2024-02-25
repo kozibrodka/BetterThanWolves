@@ -1,5 +1,6 @@
 package net.kozibrodka.wolves.mixin;
 
+import net.kozibrodka.wolves.events.BlockListener;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.Rail;
 import net.minecraft.level.Level;
@@ -18,7 +19,12 @@ public class BlockRailMixin {
     }
 
     @Inject(method = "isRail", at = @At("RETURN"), cancellable = true)
-    private static void injected(int blockID, CallbackInfoReturnable<Boolean> tor) {
+    private static void injected2(int blockID, CallbackInfoReturnable<Boolean> tor) {
         tor.setReturnValue(BlockBase.BY_ID[blockID] instanceof Rail);
+    }
+
+    @Inject(method = "canPlaceAt", at = @At("RETURN"), cancellable = true)
+    private void injected3(Level arg, int i, int j, int k, CallbackInfoReturnable<Boolean> tor) {
+        tor.setReturnValue(arg.canSuffocate(i, j - 1, k) || arg.getTileId(i, j - 1, k) == BlockListener.hopper.id); //TODO: not enough
     }
 }

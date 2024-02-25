@@ -5,12 +5,17 @@ import net.fabricmc.api.Environment;
 import net.kozibrodka.wolves.events.ConfigListener;
 import net.minecraft.block.Sand;
 import net.minecraft.entity.EntityBase;
+import net.minecraft.entity.Living;
+import net.minecraft.entity.player.ServerPlayer;
 import net.minecraft.level.Level;
 import net.minecraft.util.io.CompoundTag;
+import net.minecraft.util.maths.Box;
 import net.minecraft.util.maths.MathHelper;
 import net.modificationstation.stationapi.api.server.entity.EntitySpawnDataProvider;
 import net.modificationstation.stationapi.api.server.entity.HasTrackingParameters;
 import net.modificationstation.stationapi.api.util.Identifier;
+
+import java.util.List;
 
 @HasTrackingParameters(trackingDistance = 160, updatePeriod = 2)
 public class FallingAnvil extends EntityBase implements EntitySpawnDataProvider {
@@ -78,16 +83,31 @@ public class FallingAnvil extends EntityBase implements EntitySpawnDataProvider 
                 this.velocityX *= 0.699999988079071D;
                 this.velocityZ *= 0.699999988079071D;
                 this.velocityY *= -0.5D;
-                this.remove(); //TODO DMG
+                List list1 = level.getEntities(Living.class, this.boundingBox);
+                if(!list1.isEmpty()) {
+                    for (int k = 0; k < list1.size(); k++) {
+                        Living playertohit = (Living) list1.get(k);
+                        playertohit.damage(this, 10); //TODO DMG
+                    }
+                }
+                level.playSound(this.x, this.y, this.z, "wolves:anvil_land", 1.0F, 1.2F);
+                this.remove();
                 if (!this.level.isServerSide) {
                     this.level.setTileWithMetadata(var1, var2, var3, this.tile, this.facing);
                 }
             } else if (this.field_848 > 100 && !this.level.isServerSide) { //TODO: destroy after 100 ticks??
                 this.dropItem(this.tile, 1);
+                List list1 = level.getEntities(Living.class, this.boundingBox);
+                if(!list1.isEmpty()) {
+                    for (int k = 0; k < list1.size(); k++) {
+                        Living playertohit = (Living) list1.get(k);
+                        playertohit.damage(this, 10); //TODO DMG
+                    }
+                }
+                level.playSound(this.x, this.y, this.z, "wolves:anvil_land", 1.0F, 1.2F);
                 this.remove();
             }
             level.method_243(var1, var2, var3);
-
         }
     }
 

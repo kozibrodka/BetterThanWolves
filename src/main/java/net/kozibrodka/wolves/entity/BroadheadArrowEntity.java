@@ -107,6 +107,12 @@ public class BroadheadArrowEntity extends EntityBase implements EntitySpawnDataP
 
     public void tick() {
         super.tick();
+        //ADDED
+        if(removed || level.isServerSide)
+        {
+            return;
+        }
+        //ADDED
         if (this.prevPitch == 0.0F && this.prevYaw == 0.0F) {
             float var1 = MathHelper.sqrt(this.velocityX * this.velocityX + this.velocityZ * this.velocityZ);
             this.prevYaw = this.yaw = (float)(Math.atan2(this.velocityX, this.velocityZ) * 180.0D / 3.1415927410125732D);

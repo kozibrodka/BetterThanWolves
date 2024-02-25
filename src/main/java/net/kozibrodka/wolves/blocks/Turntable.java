@@ -120,29 +120,12 @@ public class Turntable extends TemplateBlockWithEntity
             }
             world.setBlockStateWithNotify(i,j,k,currentState.with(CLICK, iClick));
             canUseTile(world,i,j,k,iClick);
-
-//            TurntableTileEntity tileEntityTurntable = (TurntableTileEntity)world.getTileEntity(i, j, k);
-//            int iSwitchSetting = tileEntityTurntable.m_iSwitchSetting;
-//            if(++iSwitchSetting > 3)
-//            {
-//                iSwitchSetting = 0;
-//            }
-//            tileEntityTurntable.m_iSwitchSetting = iSwitchSetting;
-//            world.method_202(i, j, k, i, j, k);
-//            world.method_243(i, j, k);
-
-
             return true;
         } else
         {
             return false;
         }
     }
-
-//    public void clickState(Level world,  int i, int j, int k, int click){
-//        BlockState currentState = world.getBlockState(i, j, k);
-//        world.setBlockStateWithNotify(i,j,k,currentState.with(CLICK, click));
-//    }
 
     public boolean canUseTile(Level world, int i, int j, int k, int click)
     {
@@ -178,8 +161,6 @@ public class Turntable extends TemplateBlockWithEntity
 
     public boolean IsBlockMechanicalOn(Level world, int i, int j, int k)
     {
-//        return (world.getTileMeta(i, j, k) & 1) > 0;
-
         if(world.getTileId(i,j,k) == BlockListener.turntable.id) {
             return (world.getBlockState(i, j, k).get(POWER));
         }else{
@@ -189,22 +170,12 @@ public class Turntable extends TemplateBlockWithEntity
 
     public void SetBlockMechanicalOn(Level world, int i, int j, int k, boolean bOn)
     {
-//        int iMetaData = world.getTileMeta(i, j, k) & -2;
-//        if(bOn)
-//        {
-//            iMetaData |= 1;
-//        }
-//        world.setTileMeta(i, j, k, iMetaData);
-//        world.method_243(i, j, k);
-
         BlockState currentState = world.getBlockState(i, j, k);
         world.setBlockStateWithNotify(i,j,k,currentState.with(POWER, bOn));
     }
 
     public boolean IsBlockRedstoneOn(Level world, int i, int j, int k)
     {
-//        return (world.getTileMeta(i, j, k) & 2) > 0;
-
         if(world.getTileId(i,j,k) == BlockListener.turntable.id) {
             return (world.getBlockState(i, j, k).get(REDSTONE));
         }else{
@@ -214,14 +185,6 @@ public class Turntable extends TemplateBlockWithEntity
 
     public void SetBlockRedstoneOn(Level world, int i, int j, int k, boolean bOn)
     {
-//        int iMetaData = world.getTileMeta(i, j, k) & -3;
-//        if(bOn)
-//        {
-//            iMetaData |= 2;
-//        }
-//        world.setTileMeta(i, j, k, iMetaData);
-//        world.method_243(i, j, k);
-
         BlockState currentState = world.getBlockState(i, j, k);
         world.setBlockStateWithNotify(i,j,k,currentState.with(REDSTONE, bOn));
     }
@@ -274,6 +237,7 @@ public class Turntable extends TemplateBlockWithEntity
     private final int iTurntableBottomTextureIndex = 67;
     private final int iTurntableSwitchTextureIndex = 1;
     private static final int iTurntableTickRate = 10;
+    private static boolean SETTING_TILE = false;
 
 //    @Override
 //    public boolean renderWorld(BlockRenderer tileRenderer, BlockView tileView, int x, int y, int z) {

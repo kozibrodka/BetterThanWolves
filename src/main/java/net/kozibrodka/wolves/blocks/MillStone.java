@@ -1,10 +1,14 @@
 package net.kozibrodka.wolves.blocks;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.container.MillStoneContainer;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.GUIListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.network.GuiPacket;
+import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.tileentity.MillStoneTileEntity;
 import net.kozibrodka.wolves.utils.BlockPosition;
 import net.kozibrodka.wolves.utils.MechanicalDevice;
@@ -12,6 +16,7 @@ import net.kozibrodka.wolves.utils.InventoryHandler;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerBase;
+import net.minecraft.entity.player.ServerPlayer;
 import net.minecraft.inventory.InventoryBase;
 import net.minecraft.level.Level;
 import net.minecraft.tileentity.TileEntityBase;
@@ -22,6 +27,7 @@ import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockWithEntity;
 
 
+import java.util.List;
 import java.util.Random;
 
 public class MillStone extends TemplateBlockWithEntity
@@ -104,10 +110,28 @@ public class MillStone extends TemplateBlockWithEntity
                 if(tileEntityMillStone.IsWholeCompanionCubeNextToBeProcessed())
                 {
                     world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "mob.wolf.hurt", 5F, (world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F + 1.0F);
+                    if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+                        voicePacket(world, "mob.wolf.hurt", i, j, k, 5F, (world.rand.nextFloat() - world.rand.nextFloat()) * 0.2F + 1.0F);
+                    }
                 }
-                 world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.explode", 0.2F, 1.25F);
+                world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.explode", 0.2F, 1.25F);
+                if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+                    voicePacket(world, "random.explode", i, j, k, 0.2F, 1.25F);
+                }
                 EmitMillingParticles(world, i, j, k, random);
                 SetBlockOn(world, i, j, k, true);
+            }
+        }
+    }
+
+    @Environment(EnvType.SERVER)
+    public void voicePacket(Level world, String name, int x, int y, int z, float g, float h){
+        List list2 = world.players;
+        if(list2.size() != 0) {
+            for(int k = 0; k < list2.size(); k++)
+            {
+                ServerPlayer player1 = (ServerPlayer) list2.get(k);
+                PacketHelper.sendTo(player1, new SoundPacket(name, x, y, z, g,h));
             }
         }
     }

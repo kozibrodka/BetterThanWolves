@@ -64,6 +64,7 @@ public class Anvil extends TemplateBlock
     }
 
     public void afterPlaced(Level world, int i, int j, int k, Living entityLiving) {
+        world.playSound(i,j,k, "wolves:anvil_place", 1.0F, 1.2F);
         int iFacing = UnsortedUtils.ConvertPlacingEntityOrientationToFlatBlockFacing(entityLiving);
         SetFacing(world, i, j, k, iFacing);
     }

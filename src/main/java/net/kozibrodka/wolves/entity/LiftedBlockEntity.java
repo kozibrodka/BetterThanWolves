@@ -112,7 +112,7 @@ public class LiftedBlockEntity extends EntityBase implements EntitySpawnDataProv
 
     public void tick()
     {
-        if(removed)
+        if(removed || level.isServerSide)
         {
             return;
         }

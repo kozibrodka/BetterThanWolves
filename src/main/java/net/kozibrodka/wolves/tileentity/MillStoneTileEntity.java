@@ -5,22 +5,31 @@
 
 package net.kozibrodka.wolves.tileentity;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.blocks.CompanionCube;
 import net.kozibrodka.wolves.blocks.MillStone;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ItemListener;
+import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.recipe.MillingRecipeRegistry;
 import net.kozibrodka.wolves.utils.BlockPosition;
 import net.kozibrodka.wolves.utils.InventoryHandler;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.BlockBase;
 import net.minecraft.entity.player.PlayerBase;
+import net.minecraft.entity.player.ServerPlayer;
 import net.minecraft.inventory.InventoryBase;
 import net.minecraft.item.ItemBase;
 import net.minecraft.item.ItemInstance;
+import net.minecraft.level.Level;
 import net.minecraft.tileentity.TileEntityBase;
 import net.minecraft.util.io.CompoundTag;
 import net.minecraft.util.io.ListTag;
+import net.modificationstation.stationapi.api.network.packet.PacketHelper;
+
+import java.util.List;
 
 
 public class MillStoneTileEntity extends TileEntityBase
@@ -177,6 +186,9 @@ public class MillStoneTileEntity extends TileEntityBase
             if(millStoneContents[iUnmilledItemIndex].getDamage() == 0 && level.rand.nextInt(10) == 0)
             {
                 level.playSound((float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F, "mob.wolf.hurt", 2.0F, (level.rand.nextFloat() - level.rand.nextFloat()) * 0.2F + 1.0F);
+                if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+                    voicePacket(level, "mob.wolf.hurt", x, y, z, 2.0F, (level.rand.nextFloat() - level.rand.nextFloat()) * 0.2F + 1.0F);
+                }
             }
             if(level.rand.nextInt(20) == 0)
             {
@@ -192,6 +204,9 @@ public class MillStoneTileEntity extends TileEntityBase
         else if(iUnmilledItemID == BlockBase.NETHERRACK.id && level.rand.nextInt(10) == 0) // Random scream when there is netherrack
         {
             level.playSound((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, "mob.ghast.scream", 0.25F, level.rand.nextFloat() * 0.4F + 0.8F);
+            if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+                voicePacket(level, "mob.ghast.scream", x, y, z, 0.25F, level.rand.nextFloat() * 0.4F + 0.8F);
+            }
         }
 
         if(iMillStoneGrindCounter < 200) return;
@@ -213,6 +228,9 @@ public class MillStoneTileEntity extends TileEntityBase
             if(millStoneContents[iUnmilledItemIndex].getDamage() == 0)
             {
                 level.playSound((float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F, "mob.wolf.whine", 0.5F, 2.6F + (level.rand.nextFloat() - level.rand.nextFloat()) * 0.8F);
+                if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+                    voicePacket(level, "mob.wolf.whine", x, y, z, 0.5F, 2.6F + (level.rand.nextFloat() - level.rand.nextFloat()) * 0.8F);
+                }
             }
             takeInventoryItem(iUnmilledItemIndex, 1);
         }
@@ -360,6 +378,21 @@ public class MillStoneTileEntity extends TileEntityBase
         if(IsWholeCompanionCubeInInventory())
         {
             level.playSound((float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F, "mob.wolf.whine", 0.5F, 2.6F + (level.rand.nextFloat() - level.rand.nextFloat()) * 0.8F);
+            if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+                voicePacket(level, "mob.wolf.whine", x, y, z, 0.5F, 2.6F + (level.rand.nextFloat() - level.rand.nextFloat()) * 0.8F);
+            }
+        }
+    }
+
+    @Environment(EnvType.SERVER)
+    public void voicePacket(Level world, String name, int x, int y, int z, float g, float h){
+        List list2 = world.players;
+        if(list2.size() != 0) {
+            for(int k = 0; k < list2.size(); k++)
+            {
+                ServerPlayer player1 = (ServerPlayer) list2.get(k);
+                PacketHelper.sendTo(player1, new SoundPacket(name, x, y, z, g,h));
+            }
         }
     }
 
