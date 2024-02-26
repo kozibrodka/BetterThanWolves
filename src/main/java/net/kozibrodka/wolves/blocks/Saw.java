@@ -394,13 +394,13 @@ public class Saw extends TemplateBlock
     }
 
     @Environment(EnvType.SERVER)
-    public void particlePacket(Level world, String name, float x, float y, float z){
+    public void particlePacket(Level world, String name, double x, double y, double z){
         List list2 = world.players;
         if(list2.size() != 0) {
             for(int k1 = 0; k1 < list2.size(); k1++)
             {
                 ServerPlayer player1 = (ServerPlayer) list2.get(k1);
-                PacketHelper.sendTo(player1, new ParticlePacket(name, x, y, z));
+                PacketHelper.sendTo(player1, new ParticlePacket(name, x, y, z,0,0,0));
             }
         }
     }

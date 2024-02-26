@@ -18,27 +18,36 @@ import java.io.IOException;
 public class ParticlePacket extends AbstractPacket implements IdentifiablePacket{
 
     private String particleToPlay;
-    private float x;
-    private float y;
-    private float z;
+    private double x;
+    private double y;
+    private double z;
+    private double a1;
+    private double a2;
+    private double a3;
 
     public ParticlePacket() {
     }
 
-    public ParticlePacket(String particleName, float posX, float posY, float posZ) {
+    public ParticlePacket(String particleName, double posX, double posY, double posZ, double argX, double argY, double argZ) {
         this.particleToPlay = particleName;
         this.x = posX;
         this.y = posY;
         this.z = posZ;
+        this.a1 = argX;
+        this.a2 = argY;
+        this.a3 = argZ;
     }
 
     @Override
     public void read(DataInputStream stream) {
         try {
         this.particleToPlay = readString(stream, 16);
-        this.x = stream.readFloat();
-        this.y = stream.readFloat();
-        this.z = stream.readFloat();
+        this.x = stream.readDouble();
+        this.y = stream.readDouble();
+        this.z = stream.readDouble();
+        this.a1 = stream.readDouble();
+        this.a2 = stream.readDouble();
+        this.a3 = stream.readDouble();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -48,9 +57,12 @@ public class ParticlePacket extends AbstractPacket implements IdentifiablePacket
     public void write(DataOutputStream stream) {
         try {
         writeString(this.particleToPlay, stream);
-        stream.writeFloat(this.x);
-        stream.writeFloat(this.y);
-        stream.writeFloat(this.z);
+        stream.writeDouble(this.x);
+        stream.writeDouble(this.y);
+        stream.writeDouble(this.z);
+        stream.writeDouble(this.a1);
+        stream.writeDouble(this.a2);
+        stream.writeDouble(this.a3);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -68,7 +80,7 @@ public class ParticlePacket extends AbstractPacket implements IdentifiablePacket
     public void handleClient(PacketHandler networkHandler){
         ClientPlayerAccessor accessor = (ClientPlayerAccessor) networkHandler;
         Minecraft minecraft = accessor.getMinecraft();
-        minecraft.level.addParticle(this.particleToPlay, this.x, this.y, this.z, 0.0D, 0.0D, 0.0D);
+        minecraft.level.addParticle(this.particleToPlay, this.x, this.y, this.z, this.a1, this.a2, this.a3);
     }
 
     @Environment(EnvType.SERVER)
@@ -77,7 +89,7 @@ public class ParticlePacket extends AbstractPacket implements IdentifiablePacket
 
     @Override
     public int length() {
-        return 4;
+        return 6;
     }
 
     @Override

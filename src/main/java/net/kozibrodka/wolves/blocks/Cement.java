@@ -5,6 +5,7 @@
 
 package net.kozibrodka.wolves.blocks;
 
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.events.ConfigListener;
 import net.kozibrodka.wolves.tileentity.CementTileEntity;
@@ -32,7 +33,7 @@ public class Cement extends TemplateBlockWithEntity
 
     public Cement(Identifier iid)
     {
-        super(iid, ConfigListener.fcCementMaterial);
+        super(iid, BlockListener.fcCementMaterial);
         setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         setHardness(100F);
         setLightOpacity(255);
@@ -733,12 +734,12 @@ public class Cement extends TemplateBlockWithEntity
             int j1 = i - (i1 & 1);
             int k1 = j;
             int l1 = k - (i1 >> 1 & 1);
-            if(iblockaccess.getMaterial(j1, k1 + 1, l1) == ConfigListener.fcCementMaterial)
+            if(iblockaccess.getMaterial(j1, k1 + 1, l1) == BlockListener.fcCementMaterial)
             {
                 return 1.0F;
             }
             Material material = iblockaccess.getMaterial(j1, k1, l1);
-            if(material == ConfigListener.fcCementMaterial)
+            if(material == BlockListener.fcCementMaterial)
             {
                 if(iblockaccess.isFullOpaque(j1, k1 + 1, l1))
                 {

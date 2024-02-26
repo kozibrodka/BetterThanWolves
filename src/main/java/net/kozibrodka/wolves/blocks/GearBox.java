@@ -81,7 +81,7 @@ public class GearBox extends TemplateBlock
     public void afterPlaced(Level world, int i, int j, int k, Living entityLiving) //onBlockPlacedBy
     {
         int iFacing = UnsortedUtils.ConvertPlacingEntityOrientationToBlockFacing(entityLiving);
-        if(ConfigListener.fcFaceGearBoxAwayFromPlayer)
+        if(ConfigListener.wolvesGlass.gameplay_settings.faceGearBoxAwayFromPlayer)
         {
             iFacing = UnsortedUtils.GetOppositeFacing(iFacing);
         }

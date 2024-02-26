@@ -17,15 +17,8 @@ public class ConfigListener {
     @Entrypoint.Namespace
     public static final Namespace MOD_ID = Null.get();
 
-
     //TODO EXTRA: Saw animated, Anvil gravity, PANELS/options
-
     //TODO: NEW
     //TODO: custom recipes xhmi, big tree mixin, some mixin so stoked fire deals dmg
 
-
-    public static boolean fcDisableAxeChanges = false;
-    public static boolean fcFaceGearBoxAwayFromPlayer = false;
-    public static boolean fcDisableMinecartChanges = false;
-    public static final Material fcCementMaterial = new net.kozibrodka.wolves.materials.Cement(MaterialColour.STONE);
 }

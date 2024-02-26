@@ -1,5 +1,5 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "item/cooked_porkchop"
+    "layer0": "wolves:item/fcWolfCooked"
 }}

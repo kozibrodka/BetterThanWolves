@@ -1,6 +1,7 @@
 package net.kozibrodka.wolves.container;
 
 import net.kozibrodka.wolves.events.BlockListener;
+import net.kozibrodka.wolves.events.ConfigListener;
 import net.kozibrodka.wolves.recipe.AnvilCraftingManager;
 import net.minecraft.container.ContainerBase;
 import net.minecraft.container.slot.CraftingResult;
@@ -43,14 +44,17 @@ public class AnvilContainer extends ContainerBase
     }
 
     public void onContentsChanged(InventoryBase iinventory) {
-        ItemInstance craftedStack = RecipeRegistry.getInstance().getCraftingOutput(craftMatrix);
-        if(craftedStack == null) {
-            craftedStack = AnvilCraftingManager.getInstance().findMatchingRecipe(craftMatrix);
+
+        if(ConfigListener.wolvesGlass.gameplay_settings.anvilVanillaRecipes){
+            ItemInstance craftedStack = RecipeRegistry.getInstance().getCraftingOutput(craftMatrix);
+            if(craftedStack == null) {
+                craftedStack = AnvilCraftingManager.getInstance().findMatchingRecipe(craftMatrix);
+            }
+            craftResult.setInventoryItem(0, craftedStack);
+        }else{
+            ItemInstance craftedStac2k = AnvilCraftingManager.getInstance().findMatchingRecipe(craftMatrix);
+            craftResult.setInventoryItem(0, craftedStac2k);
         }
-        craftResult.setInventoryItem(0, craftedStack);
-        //TODO: in my opinion anvil should not do regular recipes
-//        ItemInstance craftedStac2k = AnvilCraftingManager.getInstance().findMatchingRecipe(craftMatrix);
-//        craftResult.setInventoryItem(0, craftedStac2k);
     }
 
     public void onClosed(PlayerBase entityplayer) {

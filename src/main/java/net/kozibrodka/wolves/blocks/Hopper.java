@@ -276,7 +276,7 @@ public class Hopper extends TemplateBlockWithEntity
 //            }
 //            world.method_243(i, j, k);
         }
-        //TODO: Interaction with minecarts
+        //TODO: Interaction with minecarts?
     }
 
     public boolean isPowered(BlockView iBlockAccess, int i, int j, int k, int l)
@@ -526,7 +526,7 @@ public class Hopper extends TemplateBlockWithEntity
         Minecraft mc = (Minecraft) FabricLoader.INSTANCE.getGameInstance();
         if(mc.level.isServerSide){
 //            System.out.println("RENDER CLIENT");
-            PacketHelper.send(new RenderPacket(2, x, y, z, 0, 0)); //UPDATES AFTER 1 tick when joining server.
+//            PacketHelper.send(new RenderPacket(2, x, y, z, 0, 0)); //UPDATES AFTER 1 tick when joining server.
             l = fctileentityhopper.clientOccupiedSlots;
             i1 = fctileentityhopper.clientFilterType;
         }else{

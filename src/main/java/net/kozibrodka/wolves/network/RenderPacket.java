@@ -26,20 +26,18 @@ import java.util.Objects;
 
 public class RenderPacket extends AbstractPacket implements IdentifiablePacket {
 
-    private int block;
     private int x;
     private int y;
     private int z;
-    private int valueS;
-    private int valueF;
+    private int block;
+    private int meta;
 
-    public RenderPacket(int blockId, int posX, int posY, int posZ, int s, int f){
-        this.block = blockId;
+    public RenderPacket(int posX, int posY, int posZ, int blockId, int metaId){
         this.x = posX;
         this.y = posY;
         this.z = posZ;
-        this.valueS = s;
-        this.valueF = f;
+        this.block = blockId;
+        this.meta = metaId;
     }
 
     public RenderPacket() {
@@ -48,12 +46,11 @@ public class RenderPacket extends AbstractPacket implements IdentifiablePacket {
     @Override
     public void read(DataInputStream stream) {
         try {
-            this.block = stream.readInt();
             this.x = stream.readInt();
             this.y = stream.readInt();
             this.z = stream.readInt();
-            this.valueS = stream.readInt();
-            this.valueF = stream.readInt();
+            this.block = stream.readInt();
+            this.meta = stream.readInt();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -63,12 +60,11 @@ public class RenderPacket extends AbstractPacket implements IdentifiablePacket {
     @Override
     public void write(DataOutputStream stream) {
         try {
-            stream.writeInt(this.block);
             stream.writeInt(this.x);
             stream.writeInt(this.y);
             stream.writeInt(this.z);
-            stream.writeInt(this.valueS);
-            stream.writeInt(this.valueF);
+            stream.writeInt(this.block);
+            stream.writeInt(this.meta);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -86,42 +82,44 @@ public class RenderPacket extends AbstractPacket implements IdentifiablePacket {
     public void handleClient(PacketHandler networkHandler){
         ClientPlayerAccessor accessor = (ClientPlayerAccessor) networkHandler;
         Minecraft minecraft = accessor.getMinecraft();
-        if(block == 1){ //TURNTABLE
-            TurntableTileEntity tile = (TurntableTileEntity) minecraft.level.getTileEntity(this.x,this.y,this.z);
-            if(tile != null) {
-                tile.m_iSwitchSetting = this.valueS;
-            }
-        }
-        if(block == 2){ //HOPPER
-            HopperTileEntity tile = (HopperTileEntity) minecraft.level.getTileEntity(this.x,this.y,this.z);
-            if(tile != null){
-                tile.clientFilterType = this.valueS;
-                tile.clientOccupiedSlots = this.valueF;
-            }
-        }
+        minecraft.particleManager.addTileBreakParticles(x,y,z, block, meta);
+//        Minecraft.class.cast(net.fabricmc.loader.api.FabricLoader.getInstance().getGameInstance()).particleManager.addTileBreakParticles(targetPos.i, targetPos.j, targetPos.k, iTargetid, iTargetMetaData);
+//        if(block == 1){ //TURNTABLE
+//            TurntableTileEntity tile = (TurntableTileEntity) minecraft.level.getTileEntity(this.x,this.y,this.z);
+//            if(tile != null) {
+//                tile.m_iSwitchSetting = this.valueS;
+//            }
+//        }
+//        if(block == 2){ //HOPPER
+//            HopperTileEntity tile = (HopperTileEntity) minecraft.level.getTileEntity(this.x,this.y,this.z);
+//            if(tile != null){
+//                tile.clientFilterType = this.valueS;
+//                tile.clientOccupiedSlots = this.valueF;
+//            }
+//        }
     }
 
     @Environment(EnvType.SERVER)
     public void handleServer(PacketHandler networkHandler){
-        ServerPlayerAccessor accessor = (ServerPlayerAccessor) networkHandler;
-        ServerPlayer player = accessor.getServerPlayer();
-        if(block == 1){ //TURNTABLE
-            TurntableTileEntity tile = (TurntableTileEntity) player.level.getTileEntity(this.x,this.y,this.z);
-            int a = ((TurntableTileEntity) tile).m_iSwitchSetting;
-            PacketHelper.sendTo(player, new RenderPacket(1, this.x, this.y, this.z, a, 0));
-        }
-        if(block == 2){ //HOPPER
-            HopperTileEntity tile = (HopperTileEntity) player.level.getTileEntity(this.x,this.y,this.z);
-            int a = ((HopperTileEntity) tile).GetFilterType();
-            int b = InventoryHandler.getOccupiedSlotCountWithinBounds(tile, 0, 17);
-            PacketHelper.sendTo(player, new RenderPacket(2, this.x, this.y, this.z, a, b));
-        }
+//        ServerPlayerAccessor accessor = (ServerPlayerAccessor) networkHandler;
+//        ServerPlayer player = accessor.getServerPlayer();
+//        if(block == 1){ //TURNTABLE
+//            TurntableTileEntity tile = (TurntableTileEntity) player.level.getTileEntity(this.x,this.y,this.z);
+//            int a = ((TurntableTileEntity) tile).m_iSwitchSetting;
+//            PacketHelper.sendTo(player, new RenderPacket(1, this.x, this.y, this.z, a, 0));
+//        }
+//        if(block == 2){ //HOPPER
+//            HopperTileEntity tile = (HopperTileEntity) player.level.getTileEntity(this.x,this.y,this.z);
+//            int a = ((HopperTileEntity) tile).GetFilterType();
+//            int b = InventoryHandler.getOccupiedSlotCountWithinBounds(tile, 0, 17);
+//            PacketHelper.sendTo(player, new RenderPacket(2, this.x, this.y, this.z, a, b));
+//        }
 
     }
 
     @Override
     public int length() {
-        return 16;
+        return 8;
     }
 
     @Override
