@@ -90,4 +90,8 @@ public class AnvilShapedRecipe implements AnvilRecipeTemplate, StationRecipe {
     public ItemInstance[] getOutputs() {
         return new ItemInstance[] {output};
     }
+
+    public int getWidth() {
+        return width;
+    }
 }

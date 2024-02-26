@@ -4,6 +4,7 @@ import net.glasslauncher.hmifabric.Utils;
 import net.glasslauncher.hmifabric.tabs.TabWithTexture;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.gui.AnvilGUI;
+import net.kozibrodka.wolves.recipe.AnvilShapedRecipe;
 import net.kozibrodka.wolves.recipe.AnvilShapelessRecipe;
 import net.kozibrodka.wolves.recipe.AnvilCraftingManager;
 import net.kozibrodka.wolves.recipe.AnvilRecipeTemplate;
@@ -99,18 +100,26 @@ public class AnvilRecipeTab extends TabWithTexture {
                         ItemInstance[] list = recipe.getIngredients();
                         ItemInstance[] outputArray = recipe.getOutputs();
                         System.arraycopy(outputArray, 0, items[j], 0, outputArray.length);
+                        int width = 5;
+                        int skippedSlots = 0;
+                        if (recipeObj instanceof AnvilShapedRecipe) {
+                            width = Math.max(((AnvilShapedRecipe) recipeObj).getWidth(), 1); // Using max to prevent division by zero
+                        }
                         for (int j1 = 0; j1 < list.length; j1++) {
+                            if ((j1 + 1 + skippedSlots) % 5 > width || (j1 + skippedSlots) % 5 >= width && width == 4) { // Hideous condition that needs to handle an edge case for 4 width recipes
+                                skippedSlots += 5 - width;
+                            }
                             ItemInstance item = list[j1];
-                            items[j][j1 + 1] = item;
+                            items[j][skippedSlots + j1 + 1] = item;
                             if (item != null && item.getDamage() == -1) {
                                 if (item.usesMeta()) {
                                     if (filter != null && item.itemId == filter.itemId) {
-                                        items[j][j1 + 1] = new ItemInstance(item.getType(), 0, filter.getDamage());
+                                        items[j][skippedSlots + j1 + 1] = new ItemInstance(item.getType(), 0, filter.getDamage());
                                     } else {
-                                        items[j][j1 + 1] = new ItemInstance(item.getType());
+                                        items[j][skippedSlots + j1 + 1] = new ItemInstance(item.getType());
                                     }
                                 } else if (filter != null && item.itemId == filter.itemId) {
-                                    items[j][j1 + 1] = new ItemInstance(item.getType(), 0, filter.getDamage());
+                                    items[j][skippedSlots + j1 + 1] = new ItemInstance(item.getType(), 0, filter.getDamage());
                                 }
                             }
                         }
