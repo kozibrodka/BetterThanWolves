@@ -29,7 +29,7 @@ public class HopperHauntingRecipeTab extends TabWithTexture {
     }
 
     public HopperHauntingRecipeTab(Namespace tabCreator, List<ItemInstance[]> recipesReady, BlockBase tabBlock) {
-        this(tabCreator, 3, recipesReady, tabBlock, "assets/wolves/stationapi/gui/hmi_tabs/one_in_one_out_filtered.png", 140, 56, 22, 15);
+        this(tabCreator, 3, recipesReady, tabBlock, "/assets/wolves/stationapi/gui/hmi_tabs/one_in_one_out_filtered.png", 140, 56, 22, 15);
     }
 
     public HopperHauntingRecipeTab(Namespace tabCreator, int slotsPerRecipe, List<ItemInstance[]> recipesReady, BlockBase tabBlock, String texturePath, int width, int height, int textureX, int textureY) {

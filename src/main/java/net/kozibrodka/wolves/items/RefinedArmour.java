@@ -6,14 +6,12 @@ import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.client.item.ArmorTextureProvider;
 
 import net.modificationstation.stationapi.api.template.item.TemplateArmorItem;
-import net.modificationstation.stationapi.api.util.Identifier;
 
 public class RefinedArmour extends TemplateArmorItem implements ArmorTextureProvider
 {
 
-    public RefinedArmour(Identifier iItemID, int iArmorType)
-    {
-        super(iItemID, 1, 1, iArmorType);
+    public RefinedArmour(Identifier identifier, int armorType) {
+        super(identifier, 1, 1, armorType);
         setDurability(576);
     }
 
@@ -22,20 +20,4 @@ public class RefinedArmour extends TemplateArmorItem implements ArmorTextureProv
     public Identifier getTexture(Armour armour) {
         return ConfigListener.MOD_ID.id("plate");
     }
-
-    /**
-     *  How to set armor texture?
-     */
-
-//    public String getArmorTextureFile()
-//    {
-//        if(tier != 2)
-//        {
-//            return "/btwmodtex/plate_1.png";
-//        } else
-//        {
-//            return "/btwmodtex/plate_2.png";
-//        }
-//    }
-
 }

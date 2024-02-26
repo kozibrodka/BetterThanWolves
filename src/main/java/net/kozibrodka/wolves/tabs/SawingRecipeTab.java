@@ -28,7 +28,7 @@ public class SawingRecipeTab extends TabWithTexture {
     }
 
     public SawingRecipeTab(Namespace tabCreator, List<ItemInstance[]> recipesReady, BlockBase tabBlock) {
-        this(tabCreator, 2, recipesReady, tabBlock, "assets/wolves/stationapi/gui/hmi_tabs/one_in_one_out.png", 140, 56, 22, 15);
+        this(tabCreator, 2, recipesReady, tabBlock, "/assets/wolves/stationapi/gui/hmi_tabs/one_in_one_out.png", 140, 56, 22, 15);
     }
 
     public SawingRecipeTab(Namespace tabCreator, int slotsPerRecipe, List<ItemInstance[]> recipesReady, BlockBase tabBlock, String texturePath, int width, int height, int textureX, int textureY) {
