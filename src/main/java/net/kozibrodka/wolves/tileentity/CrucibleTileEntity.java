@@ -6,12 +6,6 @@
 package net.kozibrodka.wolves.tileentity;
 
 
-// Referenced classes of package net.minecraft.src:
-//            TileEntity, InventoryBase, ItemInstance, FCUtilsInventory, 
-//            World, EntityPlayer, NBTTagCompound, ListTag, 
-//            mod_FCBetterThanWolves, Block, FoodBase, FurnaceRecipes, 
-//            Item, FCUtilsMisc, ItemMap, ItemShears
-
 import net.kozibrodka.wolves.blocks.Crucible;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.recipe.CrucibleCraftingManager;
@@ -53,6 +47,19 @@ public class CrucibleTileEntity extends TileEntityBase implements InventoryBase 
         if(itemInstance != null && itemInstance.count > getMaxItemCount()) {
             itemInstance.count = getMaxItemCount();
         }
+        updateRenderFullness();
+    }
+
+    public void updateRenderFullness(){
+        if (level == null) {
+            return;
+        }
+        if(level.isServerSide){
+            return;
+        }
+//        level.method_202(x, y, z, x, y, z);
+        int iOccupiedStacks = InventoryHandler.getOccupiedSlotCountWithinBounds(this, 0, 26);
+        ((Crucible)BlockListener.crucible).SetHasFull(level, x, y, z, iOccupiedStacks);
     }
 
     public String getContainerName() {
