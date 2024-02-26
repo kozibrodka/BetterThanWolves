@@ -49,7 +49,7 @@ public class UnsortedUtils
         return iFacing;
     }
 
-    public static void EjectStackWithRandomOffset(Level world, int i, int j, int k, ItemInstance stack)
+    public static void ejectStackWithRandomOffset(Level world, int i, int j, int k, ItemInstance stack)
     {
         float xOffset = world.rand.nextFloat() * 0.7F + 0.15F;
         float yOffset = world.rand.nextFloat() * 0.2F + 0.1F;
@@ -66,7 +66,7 @@ public class UnsortedUtils
     public static void EjectSingleItemWithRandomOffset(Level world, int i, int j, int k, int iShiftedItemIndex, int iDamage)
     {
         ItemInstance ItemInstance = new ItemInstance(iShiftedItemIndex, 1, iDamage);
-        EjectStackWithRandomOffset(world, i, j, k, ItemInstance);
+        ejectStackWithRandomOffset(world, i, j, k, ItemInstance);
     }
 
     public static void DropStackAsIfBlockHarvested(Level world, int i, int j, int k, ItemInstance stack)

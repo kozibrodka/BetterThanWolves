@@ -19,7 +19,6 @@ import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.kozibrodka.wolves.utils.CustomBlockRendering;
 import net.minecraft.block.BlockBase;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.render.block.BlockRenderer;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.entity.player.ServerPlayer;
@@ -220,7 +219,7 @@ public class Anchor extends TemplateBlock implements BlockWithWorldRenderer, Blo
             }
         } else
         {
-            UnsortedUtils.EjectStackWithRandomOffset(world, i, j, k, ropeStack);
+            UnsortedUtils.ejectStackWithRandomOffset(world, i, j, k, ropeStack);
         }
     }
 

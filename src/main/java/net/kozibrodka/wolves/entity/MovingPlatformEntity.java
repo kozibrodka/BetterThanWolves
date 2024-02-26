@@ -239,7 +239,7 @@ public class MovingPlatformEntity extends EntityBase implements EntitySpawnDataP
         int j = MathHelper.floor(y);
         int k = MathHelper.floor(z);
         ItemInstance platformStack = new ItemInstance(BlockListener.platform);
-        UnsortedUtils.EjectStackWithRandomOffset(level, i, j, k, platformStack);
+        UnsortedUtils.ejectStackWithRandomOffset(level, i, j, k, platformStack);
         remove();
     }
 

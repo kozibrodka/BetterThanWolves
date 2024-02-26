@@ -15,6 +15,7 @@ public class TabListener {
         event.registry.register(Identifier.of(ConfigListener.MOD_ID, "cauldron_single"), new CauldronSingleRecipeTab(ConfigListener.MOD_ID), new ItemInstance(BlockListener.cauldron));
         event.registry.register(Identifier.of(ConfigListener.MOD_ID, "cauldron_stoked_single"), new CauldronStokedSingleRecipeTab(ConfigListener.MOD_ID), new ItemInstance(BlockListener.cauldron));
         event.registry.register(Identifier.of(ConfigListener.MOD_ID, "cauldron_double"), new CauldronDoubleRecipeTab(ConfigListener.MOD_ID), new ItemInstance(BlockListener.cauldron));
+        event.registry.register(Identifier.of(ConfigListener.MOD_ID, "crucible_single"), new CrucibleSingleRecipeTab(ConfigListener.MOD_ID), new ItemInstance(BlockListener.crucible));
         event.registry.register(Identifier.of(ConfigListener.MOD_ID, "crucible_triple"), new CrucibleTripleRecipeTab(ConfigListener.MOD_ID), new ItemInstance(BlockListener.crucible));
         event.registry.register(Identifier.of(ConfigListener.MOD_ID, "hopper_haunting"), new HopperHauntingRecipeTab(ConfigListener.MOD_ID), new ItemInstance(BlockListener.hopper));
         event.registry.register(Identifier.of(ConfigListener.MOD_ID, "anvil"), new AnvilRecipeTab(ConfigListener.MOD_ID), new ItemInstance(BlockListener.anvil));

@@ -264,7 +264,7 @@ public class MovingAnchorEntity extends EntityBase implements EntitySpawnDataPro
         int j = MathHelper.floor(y);
         int k = MathHelper.floor(z);
         ItemInstance anchorStack = new ItemInstance(BlockListener.anchor);
-        UnsortedUtils.EjectStackWithRandomOffset(level, i, j, k, anchorStack);
+        UnsortedUtils.ejectStackWithRandomOffset(level, i, j, k, anchorStack);
         remove();
     }
 

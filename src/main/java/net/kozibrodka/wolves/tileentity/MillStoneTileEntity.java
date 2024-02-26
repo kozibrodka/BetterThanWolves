@@ -242,7 +242,7 @@ public class MillStoneTileEntity extends TileEntityBase
         BlockPosition targetPos = new BlockPosition(x, y, z);
         int iDirection = 2 + level.rand.nextInt(4);
         targetPos.AddFacingAsOffset(iDirection);
-        UnsortedUtils.EjectStackWithRandomOffset(level, targetPos.i, targetPos.j, targetPos.k, stack);
+        UnsortedUtils.ejectStackWithRandomOffset(level, targetPos.i, targetPos.j, targetPos.k, stack);
     }
 
     public boolean AddSingleItemToInventory(int iItemShiftedIndex)

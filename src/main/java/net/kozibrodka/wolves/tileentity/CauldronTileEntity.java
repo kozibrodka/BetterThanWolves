@@ -207,7 +207,7 @@ public class CauldronTileEntity extends TileEntityBase
         m_bContainsValidIngrediantsForState = false;
         if(iFireUnderState == 1)
         {
-            if(CauldronCraftingManager.getInstance().GetCraftingResult(this) != null)
+            if(CauldronCraftingManager.getInstance().getCraftingResult(this) != null)
             {
                 m_bContainsValidIngrediantsForState = true;
             } else
@@ -234,7 +234,7 @@ public class CauldronTileEntity extends TileEntityBase
             {
                 m_bContainsValidIngrediantsForState = true;
             } else
-            if(CauldronStokedCraftingManager.getInstance().GetCraftingResult(this) != null)
+            if(CauldronStokedCraftingManager.getInstance().getCraftingResult(this) != null)
             {
                 m_bContainsValidIngrediantsForState = true;
             }
@@ -282,16 +282,16 @@ public class CauldronTileEntity extends TileEntityBase
                     m_iCauldronCookCounter = 0;
                     return;
                 }
-                if(CauldronCraftingManager.getInstance().GetCraftingResult(this) != null)
+                if(CauldronCraftingManager.getInstance().getCraftingResult(this) != null)
                 {
-                    ItemInstance cookedStack = CauldronCraftingManager.getInstance().ConsumeIngredientsAndReturnResult(this);
+                    ItemInstance cookedStack = CauldronCraftingManager.getInstance().consumeIngredientsAndReturnResult(this);
                     if(!$assertionsDisabled && cookedStack == null)
                     {
                         throw new AssertionError();
                     }
                     if(!InventoryHandler.addItemInstanceToInventory(this, cookedStack))
                     {
-                        UnsortedUtils.EjectStackWithRandomOffset(level, x, y + 1, z, cookedStack);
+                        UnsortedUtils.ejectStackWithRandomOffset(level, x, y + 1, z, cookedStack);
                     }
                 } else
                 {
@@ -316,16 +316,16 @@ public class CauldronTileEntity extends TileEntityBase
                 {
                     BlowUpCauldron();
                 } else
-                if(CauldronStokedCraftingManager.getInstance().GetCraftingResult(this) != null)
+                if(CauldronStokedCraftingManager.getInstance().getCraftingResult(this) != null)
                 {
-                    ItemInstance cookedStack = CauldronStokedCraftingManager.getInstance().ConsumeIngredientsAndReturnResult(this);
+                    ItemInstance cookedStack = CauldronStokedCraftingManager.getInstance().consumeIngredientsAndReturnResult(this);
                     if(!$assertionsDisabled && cookedStack == null)
                     {
                         throw new AssertionError();
                     }
                     if(!InventoryHandler.addItemInstanceToInventory(this, cookedStack))
                     {
-                        UnsortedUtils.EjectStackWithRandomOffset(level, x, y + 1, z, cookedStack);
+                        UnsortedUtils.ejectStackWithRandomOffset(level, x, y + 1, z, cookedStack);
                     }
                 }
                 m_iCauldronCookCounter = 0;
@@ -346,7 +346,7 @@ public class CauldronTileEntity extends TileEntityBase
             takeInventoryItem(iUncookedFoodIndex, 1);
             if(!InventoryHandler.addItemInstanceToInventory(this, cookedStack))
             {
-                UnsortedUtils.EjectStackWithRandomOffset(level, x, y + 1, z, cookedStack);
+                UnsortedUtils.ejectStackWithRandomOffset(level, x, y + 1, z, cookedStack);
             }
         }
     }

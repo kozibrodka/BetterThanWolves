@@ -16,7 +16,6 @@ import net.kozibrodka.wolves.utils.InventoryHandler;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.kozibrodka.wolves.utils.ReplaceableBlockChecker;
 import net.minecraft.block.BlockBase;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.entity.player.ServerPlayer;
 import net.minecraft.inventory.InventoryBase;
@@ -283,7 +282,7 @@ public class PulleyTileEntity extends TileEntityBase
             }
         } else
         {
-            UnsortedUtils.EjectStackWithRandomOffset(level, x, y, z, ropeStack);
+            UnsortedUtils.ejectStackWithRandomOffset(level, x, y, z, ropeStack);
         }
     }
 

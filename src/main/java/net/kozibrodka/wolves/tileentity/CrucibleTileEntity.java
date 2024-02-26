@@ -13,554 +13,158 @@ package net.kozibrodka.wolves.tileentity;
 //            Item, FCUtilsMisc, ItemMap, ItemShears
 
 import net.kozibrodka.wolves.blocks.Crucible;
-import net.kozibrodka.wolves.blocks.Hopper;
 import net.kozibrodka.wolves.events.BlockListener;
-import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.recipe.CrucibleCraftingManager;
 import net.kozibrodka.wolves.utils.InventoryHandler;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
-import net.minecraft.block.BlockBase;
 import net.minecraft.entity.player.PlayerBase;
 import net.minecraft.inventory.InventoryBase;
-import net.minecraft.item.ItemBase;
 import net.minecraft.item.ItemInstance;
-import net.minecraft.item.food.FoodBase;
-import net.minecraft.recipe.SmeltingRecipeRegistry;
 import net.minecraft.tileentity.TileEntityBase;
 import net.minecraft.util.io.CompoundTag;
 import net.minecraft.util.io.ListTag;
 
-public class CrucibleTileEntity extends TileEntityBase
-    implements InventoryBase
-{
+public class CrucibleTileEntity extends TileEntityBase implements InventoryBase {
 
-    public CrucibleTileEntity()
-    {
+    public CrucibleTileEntity() {
         crucibleContents = new ItemInstance[27];
-        m_iCrucibleCookCounter = 0;
-        m_bOverStokedFire = false;
+        crucibleCookCounter = 0;
+        overStokedFire = false;
     }
 
-    public int getInventorySize()
-    {
+    public int getInventorySize() {
         return 27;
     }
 
-    public int getMaxItemCount()
-    {
+    public int getMaxItemCount() {
         return 64;
     }
 
-    public ItemInstance getInventoryItem(int iSlot)
-    {
-        return crucibleContents[iSlot];
+    public ItemInstance getInventoryItem(int slot) {
+        return crucibleContents[slot];
     }
 
-    public ItemInstance takeInventoryItem(int iSlot, int iAmount)
-    {
-        return InventoryHandler.decreaseStackSize(this, iSlot, iAmount);
+    public ItemInstance takeInventoryItem(int slot, int amount) {
+        return InventoryHandler.decreaseStackSize(this, slot, amount);
     }
 
-    public void setInventoryItem(int iSlot, ItemInstance ItemInstance)
-    {
-        crucibleContents[iSlot] = ItemInstance;
-        if(ItemInstance != null && ItemInstance.count > getMaxItemCount())
-        {
-            ItemInstance.count = getMaxItemCount();
+    public void setInventoryItem(int slot, ItemInstance itemInstance) {
+        crucibleContents[slot] = itemInstance;
+        if(itemInstance != null && itemInstance.count > getMaxItemCount()) {
+            itemInstance.count = getMaxItemCount();
         }
-        markDirty();
     }
 
-    public String getContainerName()
-    {
+    public String getContainerName() {
         return "Crucible";
     }
 
-    public boolean canPlayerUse(PlayerBase entityplayer)
-    {
-        if(level.getTileEntity(x, y, z) != this)
-        {
+    public boolean canPlayerUse(PlayerBase player) {
+        if(level.getTileEntity(x, y, z) != this) {
             return false;
-        } else
-        {
-            return entityplayer.squaredDistanceTo((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D) <= 64D;
+        } else {
+            return player.squaredDistanceTo((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D) <= 64D;
         }
     }
 
-    public void readIdentifyingData(CompoundTag nbttagcompound)
-    {
-        super.readIdentifyingData(nbttagcompound);
-        ListTag nbttaglist = nbttagcompound.getListTag("Items");
+    public void readIdentifyingData(CompoundTag compoundTag) {
+        super.readIdentifyingData(compoundTag);
+        ListTag nbttaglist = compoundTag.getListTag("Items");
         crucibleContents = new ItemInstance[getInventorySize()];
-        for(int i = 0; i < nbttaglist.size(); i++)
-        {
-            CompoundTag nbttagcompound1 = (CompoundTag)nbttaglist.get(i);
-            int j = nbttagcompound1.getByte("Slot") & 0xff;
-            if(j >= 0 && j < crucibleContents.length)
-            {
-                crucibleContents[j] = new ItemInstance(nbttagcompound1);
+        for(int i = 0; i < nbttaglist.size(); i++) {
+            CompoundTag slotCompoundTag = (CompoundTag)nbttaglist.get(i);
+            int j = slotCompoundTag.getByte("Slot") & 0xff;
+            if(j < crucibleContents.length) {
+                crucibleContents[j] = new ItemInstance(slotCompoundTag);
             }
         }
 
-        m_iCrucibleCookCounter = nbttagcompound.getInt("m_iCrucibleCookCounter");
+        crucibleCookCounter = compoundTag.getInt("CrucibleCookCounter");
     }
 
-    public void writeIdentifyingData(CompoundTag nbttagcompound)
-    {
+    public void writeIdentifyingData(CompoundTag nbttagcompound) {
         super.writeIdentifyingData(nbttagcompound);
-        ListTag nbttaglist = new ListTag();
-        for(int i = 0; i < crucibleContents.length; i++)
-        {
-            if(crucibleContents[i] != null)
-            {
-                CompoundTag nbttagcompound1 = new CompoundTag();
-                nbttagcompound1.put("Slot", (byte)i);
-                crucibleContents[i].toTag(nbttagcompound1);
-                nbttaglist.add(nbttagcompound1);
+        ListTag listTag = new ListTag();
+        for(int i = 0; i < crucibleContents.length; i++) {
+            if(crucibleContents[i] != null) {
+                CompoundTag slotCompoundTag = new CompoundTag();
+                slotCompoundTag.put("Slot", (byte)i);
+                crucibleContents[i].toTag(slotCompoundTag);
+                listTag.add(slotCompoundTag);
             }
         }
 
-        nbttagcompound.put("Items", nbttaglist);
-        nbttagcompound.put("m_iCrucibleCookCounter", m_iCrucibleCookCounter);
+        nbttagcompound.put("Items", listTag);
+        nbttagcompound.put("CrucibleCookCounter", crucibleCookCounter);
     }
 
-    public void tick()
-    {
-        if(level.isServerSide){
+    public void tick() {
+        if(level.isServerSide) {
             return;
         }
-        int iStokedFireFactor = GetStokedFireFactor();
-        if(iStokedFireFactor > 0)
-        {
-            if(!m_bOverStokedFire)
-            {
-                m_bOverStokedFire = true;
+        int stokedFireFactor = getStokedFireFactor();
+        if(stokedFireFactor > 0) {
+            if(!overStokedFire) {
+                overStokedFire = true;
                 ((Crucible)BlockListener.crucible).SetHasLava(level, x, y, z, true);
                 level.method_202(x, y, z, x, y, z);
             }
-            if(DoesCrucibleContainUncookedItems())
-            {
-                m_iCrucibleCookCounter += iStokedFireFactor;
-                if(m_iCrucibleCookCounter >= 1950)
-                {
-                    CookContents();
-                    m_iCrucibleCookCounter = 0;
+            if(areItemsInRegistry()) {
+                crucibleCookCounter += stokedFireFactor;
+                if(crucibleCookCounter >= 1950) {
+                    craftFromRegistry();
+                    crucibleCookCounter = 0;
                 }
-            } else
-            {
-                m_iCrucibleCookCounter = 0;
+            } else {
+                crucibleCookCounter = 0;
             }
-        } else
-        {
-            if(m_bOverStokedFire)
-            {
-                m_bOverStokedFire = false;
+        } else {
+            if(overStokedFire) {
+                overStokedFire = false;
                 ((Crucible)BlockListener.crucible).SetHasLava(level, x, y, z, false);
                 level.method_202(x, y, z, x, y, z);
             }
-            m_iCrucibleCookCounter = 0;
+            crucibleCookCounter = 0;
         }
     }
 
-    public void markDirty() {
-        if (level == null) {
-            return;
-        }
-        level.method_202(x, y, z, x, y, z);
-        int iOccupiedStacks = InventoryHandler.getOccupiedSlotCountWithinBounds(this, 0, 26);
-        ((Crucible)BlockListener.crucible).SetHasFull(level, x, y, z, iOccupiedStacks);
-    }
-
-    public int GetStokedFireFactor()
-    {
+    public int getStokedFireFactor() {
         int fireFactor = 0;
-        if(level.getTileId(x, y - 1, z) == BlockListener.stokedFire.id && level.getTileId(x, y - 2, z) == BlockListener.stokedFire.id)
-        {
+        if(level.getTileId(x, y - 1, z) == BlockListener.stokedFire.id && level.getTileId(x, y - 2, z) == BlockListener.stokedFire.id) {
             fireFactor += 5;
             int tempY = y - 1;
-            for(int tempX = x - 1; tempX <= x + 1; tempX++)
-            {
-                for(int tempZ = z - 1; tempZ <= z + 1; tempZ++)
-                {
-                    if((tempX != x || tempZ != z) && level.getTileId(tempX, tempY, tempZ) == BlockListener.stokedFire.id && level.getTileId(tempX, tempY - 1, tempZ) == BlockListener.stokedFire.id)
-                    {
+            for(int tempX = x - 1; tempX <= x + 1; tempX++) {
+                for(int tempZ = z - 1; tempZ <= z + 1; tempZ++) {
+                    if((tempX != x || tempZ != z) && level.getTileId(tempX, tempY, tempZ) == BlockListener.stokedFire.id && level.getTileId(tempX, tempY - 1, tempZ) == BlockListener.stokedFire.id) {
                         fireFactor++;
                     }
                 }
-
             }
-
         }
         return fireFactor;
     }
 
-    public int getCookProgressScaled(int iScale)
-    {
-        return (m_iCrucibleCookCounter * iScale) / 1950;
+    public int getCookProgressScaled(int scale) {
+        return (crucibleCookCounter * scale) / 1950;
     }
 
-    public boolean IsCooking()
-    {
-        return m_iCrucibleCookCounter > 0;
+    public boolean isCooking() {
+        return crucibleCookCounter > 0;
     }
 
-    public boolean DoesCrucibleContainUncookedItems()
-    {
-        return DoesCrucibleContainMeltableItems() || areItemsInRegistry();
+    public boolean areItemsInRegistry() {
+        return CrucibleCraftingManager.getInstance().getCraftingResult(this) != null;
     }
 
-    private void CookContents()
-    {
-        if(DoesCrucibleContainMeltableItems())
-        {
-            MeltContents();
-        }
-        else
-        {
-            craftFromRegistry();
-        }
+    public void craftFromRegistry() {
+        if (CrucibleCraftingManager.getInstance().getCraftingResult(this) == null) return;
+        ItemInstance outputStack = CrucibleCraftingManager.getInstance().consumeIngredientsAndReturnResult(this);
+        if(!InventoryHandler.addItemInstanceToInventory(this, outputStack)) UnsortedUtils.ejectStackWithRandomOffset(level, x, y + 1, z, outputStack);
     }
 
-    public boolean DoesCrucibleContainSmeltableItems()
-    {
-        for(int tempIndex = 0; tempIndex < 27; tempIndex++)
-        {
-            if(crucibleContents[tempIndex] == null)
-            {
-                continue;
-            }
-            ItemBase tempItem = crucibleContents[tempIndex].getType();
-            if(CanItemBeSmeltedInCrucible(tempItem))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public boolean CanItemBeSmeltedInCrucible(ItemBase item)
-    {
-        if (item == null) return false;
-        if (item instanceof FoodBase) return false;
-        ItemInstance smeltingResult = SmeltingRecipeRegistry.getInstance().getResult(item.id);
-        if(smeltingResult != null && !(smeltingResult.getType() instanceof FoodBase) && smeltingResult.getType().id != BlockListener.unfiredPottery.id)
-        {
-            return true;
-        }
-        return false;
-    }
-
-    public boolean areItemsInRegistry()
-    {
-        return CrucibleCraftingManager.getInstance().GetCraftingResult(this) != null;
-    }
-
-    // Why is this not used?
-    private void SmeltContents()
-    {
-        for(int tempIndex = 0; tempIndex < 27; tempIndex++)
-        {
-            if(crucibleContents[tempIndex] == null)
-            {
-                continue;
-            }
-            ItemBase tempItem = crucibleContents[tempIndex].getType();
-            if(!CanItemBeSmeltedInCrucible(tempItem))
-            {
-                continue;
-            }
-            ItemInstance cookedStack = SmeltingRecipeRegistry.getInstance().getResult(crucibleContents[tempIndex].getType().id).copy();
-            takeInventoryItem(tempIndex, 1);
-            if(!InventoryHandler.addItemInstanceToInventory(this, cookedStack))
-            {
-                UnsortedUtils.EjectStackWithRandomOffset(level, x, y + 1, z, cookedStack);
-            }
-            return;
-        }
-
-    }
-
-    public boolean DoesCrucibleContainMeltableItems()
-    {
-        int iRailCount = 0;
-        int iBroadheadArrowheadCount = 0;
-        int iBroadheadArrowCount = 0;
-        for(int tempIndex = 0; tempIndex < 27; tempIndex++)
-        {
-            if(crucibleContents[tempIndex] == null)
-            {
-                continue;
-            }
-            ItemBase tempItem = crucibleContents[tempIndex].getType();
-            if(GetMeltingResult(tempItem) != null)
-            {
-                return true;
-            }
-            if(tempItem.id == BlockBase.RAIL.id)
-            {
-                iRailCount += crucibleContents[tempIndex].count;
-                if(iRailCount >= 16)
-                {
-                    return true;
-                }
-                continue;
-            }
-            if(tempItem.id == ItemListener.broadHeadArrowhead.id)
-            {
-                iBroadheadArrowheadCount += crucibleContents[tempIndex].count;
-                if(iBroadheadArrowheadCount >= 4)
-                {
-                    return true;
-                }
-                continue;
-            }
-            if(tempItem.id != ItemListener.broadHeadArrow.id)
-            {
-                continue;
-            }
-            iBroadheadArrowCount += crucibleContents[tempIndex].count;
-            if(iBroadheadArrowCount >= 16)
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private void MeltContents()
-    {
-        int iRailCount = 0;
-        int iBroadheadArrowheadCount = 0;
-        int iBroadheadArrowCount = 0;
-        for(int tempIndex = 0; tempIndex < 27; tempIndex++)
-        {
-            if(crucibleContents[tempIndex] == null)
-            {
-                continue;
-            }
-            ItemBase tempItem = crucibleContents[tempIndex].getType();
-            ItemInstance cookedStack = GetMeltingResult(tempItem);
-            if(cookedStack != null)
-            {
-                takeInventoryItem(tempIndex, 1);
-                if(!InventoryHandler.addItemInstanceToInventory(this, cookedStack))
-                {
-                    UnsortedUtils.EjectStackWithRandomOffset(level, x, y + 1, z, cookedStack);
-                }
-                return;
-            }
-            if(tempItem.id == BlockBase.RAIL.id)
-            {
-                iRailCount += crucibleContents[tempIndex].count;
-                if(iRailCount < 16)
-                {
-                    continue;
-                }
-                InventoryHandler.consumeItemsInInventory(this, BlockBase.RAIL.id, -1, 16);
-                cookedStack = new ItemInstance(ItemBase.ironIngot, 6);
-                if(!InventoryHandler.addItemInstanceToInventory(this, cookedStack))
-                {
-                    UnsortedUtils.EjectStackWithRandomOffset(level, x, y + 1, z, cookedStack);
-                }
-                return;
-            }
-            if(tempItem.id == ItemListener.broadHeadArrowhead.id)
-            {
-                iBroadheadArrowheadCount += crucibleContents[tempIndex].count;
-                if(iBroadheadArrowheadCount < 4)
-                {
-                    continue;
-                }
-                InventoryHandler.consumeItemsInInventory(this, ItemListener.broadHeadArrowhead.id, -1, 4);
-                cookedStack = new ItemInstance(ItemListener.steel, 1);
-                if(!InventoryHandler.addItemInstanceToInventory(this, cookedStack))
-                {
-                    UnsortedUtils.EjectStackWithRandomOffset(level, x, y + 1, z, cookedStack);
-                }
-                return;
-            }
-            if(tempItem.id != ItemListener.broadHeadArrow.id)
-            {
-                continue;
-            }
-            iBroadheadArrowCount += crucibleContents[tempIndex].count;
-            if(iBroadheadArrowCount < 16)
-            {
-                continue;
-            }
-            InventoryHandler.consumeItemsInInventory(this, ItemListener.broadHeadArrow.id, -1, 16);
-            cookedStack = new ItemInstance(ItemListener.steel, 1);
-            if(!InventoryHandler.addItemInstanceToInventory(this, cookedStack))
-            {
-                UnsortedUtils.EjectStackWithRandomOffset(level, x, y + 1, z, cookedStack);
-            }
-            return;
-        }
-
-    }
-
-    /**
-     * THIS IS BEYOND HORRENDOUS!!! TODO: Add these recipes to the registry and say goodbye to this abomination.
-     */
-    ItemInstance GetMeltingResult(ItemBase item)
-    {
-        ItemInstance tempStack = null;
-        int iShiftedIndex = item.id;
-        if(iShiftedIndex == ItemBase.bucket.id || iShiftedIndex == ItemBase.lavaBucket.id || iShiftedIndex == ItemBase.waterBucket.id || iShiftedIndex == ItemBase.milk.id || iShiftedIndex == ItemListener.bucketCement.id)
-        {
-            tempStack = new ItemInstance(ItemBase.ironIngot, 3);
-        } else
-        if(iShiftedIndex == ItemBase.ironPickaxe.id || iShiftedIndex == ItemBase.ironAxe.id)
-        {
-            tempStack = new ItemInstance(ItemBase.ironIngot, 3);
-        } else
-        if(iShiftedIndex == ItemBase.ironSword.id || iShiftedIndex == ItemBase.ironHoe.id)
-        {
-            tempStack = new ItemInstance(ItemBase.ironIngot, 2);
-        } else
-        if(iShiftedIndex == ItemBase.ironShovel.id)
-        {
-            tempStack = new ItemInstance(ItemBase.ironIngot, 1);
-        } else
-        if(iShiftedIndex == ItemBase.ironHelmet.id)
-        {
-            tempStack = new ItemInstance(ItemBase.ironIngot, 5);
-        } else
-        if(iShiftedIndex == ItemBase.ironChestplate.id)
-        {
-            tempStack = new ItemInstance(ItemBase.ironIngot, 8);
-        } else
-        if(iShiftedIndex == ItemBase.ironLeggings.id)
-        {
-            tempStack = new ItemInstance(ItemBase.ironIngot, 7);
-        } else
-        if(iShiftedIndex == ItemBase.ironBoots.id)
-        {
-            tempStack = new ItemInstance(ItemBase.ironIngot, 4);
-        } else
-        if(iShiftedIndex == ItemBase.compass.id)
-        {
-            tempStack = new ItemInstance(ItemBase.ironIngot, 4);
-        } else
-        if(iShiftedIndex == ItemBase.flintAndSteel.id)
-        {
-            tempStack = new ItemInstance(ItemBase.ironIngot, 1);
-        } else
-        if(iShiftedIndex == ItemBase.ironDoor.id)
-        {
-            tempStack = new ItemInstance(ItemBase.ironIngot, 6);
-        } else
-        if(iShiftedIndex == ItemBase.map.id)
-        {
-            tempStack = new ItemInstance(ItemBase.ironIngot, 4);
-        } else
-        if(iShiftedIndex == ItemBase.shears.id)
-        {
-            tempStack = new ItemInstance(ItemBase.ironIngot, 2);
-        } else
-        if(iShiftedIndex == BlockBase.DETECTOR_RAIL.id || iShiftedIndex == BlockListener.detectorRailWood.id || iShiftedIndex == BlockListener.detectorRailObsidian.id)
-        {
-            tempStack = new ItemInstance(ItemBase.ironIngot, 1);
-        } else
-        if(iShiftedIndex == BlockBase.IRON_BLOCK.id)
-        {
-            tempStack = new ItemInstance(ItemBase.ironIngot, 9);
-        } else
-        if(iShiftedIndex == ItemBase.minecart.id || iShiftedIndex == ItemBase.minecartChest.id || iShiftedIndex == ItemBase.minecartFurnace.id)
-        {
-            tempStack = new ItemInstance(ItemBase.ironIngot, 5);
-        } else
-        if(iShiftedIndex == ItemBase.goldPickaxe.id || iShiftedIndex == ItemBase.goldAxe.id)
-        {
-            tempStack = new ItemInstance(ItemBase.goldIngot, 3);
-        } else
-        if(iShiftedIndex == ItemBase.goldSword.id || iShiftedIndex == ItemBase.goldHoe.id)
-        {
-            tempStack = new ItemInstance(ItemBase.goldIngot, 2);
-        } else
-        if(iShiftedIndex == ItemBase.goldShovel.id)
-        {
-            tempStack = new ItemInstance(ItemBase.goldIngot, 1);
-        } else
-        if(iShiftedIndex == ItemBase.goldHelmet.id)
-        {
-            tempStack = new ItemInstance(ItemBase.goldIngot, 5);
-        } else
-        if(iShiftedIndex == ItemBase.goldChestplate.id)
-        {
-            tempStack = new ItemInstance(ItemBase.goldIngot, 8);
-        } else
-        if(iShiftedIndex == ItemBase.goldLeggings.id)
-        {
-            tempStack = new ItemInstance(ItemBase.goldIngot, 7);
-        } else
-        if(iShiftedIndex == ItemBase.goldBoots.id)
-        {
-            tempStack = new ItemInstance(ItemBase.goldIngot, 4);
-        } else
-        if(iShiftedIndex == ItemBase.clock.id)
-        {
-            tempStack = new ItemInstance(ItemBase.goldIngot, 4);
-        } else
-        if(iShiftedIndex == BlockBase.GOLDEN_RAIL.id)
-        {
-            tempStack = new ItemInstance(ItemBase.goldIngot, 1);
-        } else
-        if(iShiftedIndex == BlockBase.GOLD_BLOCK.id)
-        {
-            tempStack = new ItemInstance(ItemBase.goldIngot, 9);
-        } else
-        if(iShiftedIndex == ItemListener.refinedPickAxe.id || iShiftedIndex == ItemListener.refinedAxe.id)
-        {
-            tempStack = new ItemInstance(ItemListener.steel, 3);
-        } else
-        if(iShiftedIndex == ItemListener.refinedSword.id || iShiftedIndex == ItemListener.refinedHoe.id)
-        {
-            tempStack = new ItemInstance(ItemListener.steel, 2);
-        } else
-        if(iShiftedIndex == ItemListener.refinedShovel.id)
-        {
-            tempStack = new ItemInstance(ItemListener.steel, 1);
-        } else
-        if(iShiftedIndex == BlockListener.anvil.id)
-        {
-            tempStack = new ItemInstance(ItemListener.steel, 7);
-        } else
-        if(iShiftedIndex == ItemListener.armourPlateSteel.id)
-        {
-            tempStack = new ItemInstance(ItemListener.steel, 1);
-        } else
-        if(iShiftedIndex == ItemListener.helmetSteel.id)
-        {
-            tempStack = new ItemInstance(ItemListener.steel, 5);
-        } else
-        if(iShiftedIndex == ItemListener.chestPlateSteel.id)
-        {
-            tempStack = new ItemInstance(ItemListener.steel, 8);
-        } else
-        if(iShiftedIndex == ItemListener.leggingsSteel.id)
-        {
-            tempStack = new ItemInstance(ItemListener.steel, 7);
-        } else
-        if(iShiftedIndex == ItemListener.bootsSteel.id)
-        {
-            tempStack = new ItemInstance(ItemListener.steel, 4);
-        }
-        return tempStack;
-    }
-
-    public void craftFromRegistry()
-    {
-        if (CrucibleCraftingManager.getInstance().GetCraftingResult(this) == null) return;
-        ItemInstance outputStack = CrucibleCraftingManager.getInstance().ConsumeIngredientsAndReturnResult(this);
-        if(!InventoryHandler.addItemInstanceToInventory(this, outputStack)) UnsortedUtils.EjectStackWithRandomOffset(level, x, y + 1, z, outputStack);
-    }
-
-    private ItemInstance crucibleContents[];
-    public int m_iCrucibleCookCounter;
-    public boolean m_bOverStokedFire;
+    private ItemInstance[] crucibleContents;
+    public int crucibleCookCounter;
+    public boolean overStokedFire;
 
     /*
         ---- Crucible Stats ----

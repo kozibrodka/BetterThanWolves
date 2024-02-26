@@ -51,7 +51,7 @@ public class CrucibleGUI extends ContainerBase
                 }
             }
         }else{
-            if(associatedTileEntityCrucible.IsCooking())
+            if(associatedTileEntityCrucible.isCooking())
             {
                 int l = associatedTileEntityCrucible.getCookProgressScaled(12);
                 blit(j + 81, (k + 19 + 12) - l, 176, 12 - l, 14, l + 2);

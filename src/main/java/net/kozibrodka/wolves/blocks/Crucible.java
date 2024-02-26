@@ -31,13 +31,11 @@ import net.minecraft.tileentity.TileEntityBase;
 import net.minecraft.util.maths.Box;
 import net.modificationstation.stationapi.api.block.BlockState;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithInventoryRenderer;
-import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
 import net.modificationstation.stationapi.api.gui.screen.container.GuiHelper;
 import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import net.modificationstation.stationapi.api.state.StateManager;
 import net.modificationstation.stationapi.api.state.property.BooleanProperty;
 import net.modificationstation.stationapi.api.state.property.IntProperty;
-import net.modificationstation.stationapi.api.template.block.TemplateBlock;
 import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockWithEntity;
 
@@ -221,7 +219,7 @@ public class Crucible extends TemplateBlockWithEntity
             float f1 = 0.125F;
             float f2 = f1 + 0.0625F + (0.875F - (f1 + 0.0625F)) * f;
             this.setBoundingBox(0.125F, f1, 0.125F, 0.875F, f2, 0.875F);
-            if(fctileentitycrucible.m_bOverStokedFire)
+            if(fctileentitycrucible.overStokedFire)
             {
 //                MinecraftForgeClient.unbindTexture();
                 CustomBlockRendering.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, 237);

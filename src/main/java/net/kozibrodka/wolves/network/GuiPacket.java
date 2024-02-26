@@ -7,14 +7,11 @@ import net.kozibrodka.wolves.blocks.Hopper;
 import net.kozibrodka.wolves.blocks.Pulley;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.PacketListener;
-import net.kozibrodka.wolves.gui.CauldronGUI;
-import net.kozibrodka.wolves.mixin.ClientPlayerAccessor;
 import net.kozibrodka.wolves.mixin.ServerPlayerAccessor;
 import net.kozibrodka.wolves.tileentity.BlockDispenserTileEntity;
 import net.kozibrodka.wolves.tileentity.CauldronTileEntity;
 import net.kozibrodka.wolves.tileentity.CrucibleTileEntity;
 import net.kozibrodka.wolves.tileentity.MillStoneTileEntity;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.ServerPlayer;
 import net.minecraft.network.PacketHandler;
 import net.minecraft.packet.AbstractPacket;
@@ -100,7 +97,7 @@ public class GuiPacket extends AbstractPacket implements IdentifiablePacket {
         if(Objects.equals(tile, "crucible")){
             CrucibleTileEntity tile = (CrucibleTileEntity) player.level.getTileEntity(this.x,this.y,this.z);
             if(tile != null) {
-                int a = ((CrucibleTileEntity) tile).m_iCrucibleCookCounter;
+                int a = ((CrucibleTileEntity) tile).crucibleCookCounter;
                 PacketHelper.sendTo(player, new GuiPacket("crucible", a, this.x, this.y, this.z));
             }
         }
