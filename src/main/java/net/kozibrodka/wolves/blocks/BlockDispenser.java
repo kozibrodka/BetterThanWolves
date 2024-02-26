@@ -386,6 +386,7 @@ public class BlockDispenser extends TemplateBlockWithEntity
                     if(net.fabricmc.loader.FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
 //                        voicePacket(world, "random.explode", i, j, k, 0.2F, 1.25F);
                         //packecik
+//                        nowy pakiet + dzwieki
                     }else{
                         Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).particleManager.addTileBreakParticles(targetPos.i, targetPos.j, targetPos.k, iTargetid, iTargetMetaData);
                     }

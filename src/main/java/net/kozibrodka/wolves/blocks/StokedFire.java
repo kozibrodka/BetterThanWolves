@@ -158,7 +158,7 @@ public class StokedFire extends TemplateFireBlock implements BlockWithWorldRende
         }
     }
 
-    // TODO: Replace this messy code. And make the top stoked fire visually connect better to the bottom block.
+    // TODO: Replace this messy code. And make the top stoked fire visually connect better to the bottom block. - think its done?
     @Override
     public boolean renderWorld(BlockRenderer tileRenderer, BlockView blockView, int i, int j, int k) {
         Tessellator var5 = Tessellator.INSTANCE;
