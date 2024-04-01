@@ -21,6 +21,7 @@
     "HempSeedDrop",
     "ItemSeedsMixin",
     "LevelAccessor",
+    "OakTreeMixin",
     "ServerPlayerAccessor",
     "SpruceTreeMixin",
     "WolfAccessor",
