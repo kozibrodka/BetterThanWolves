@@ -1,5 +1,5 @@
 plugins {
-	id 'babric-loom' version '1.5.3'
+	id 'babric-loom' version '1.4.2'
 	id 'maven-publish'
 }
 
