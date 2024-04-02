@@ -3,16 +3,16 @@ package net.kozibrodka.wolves.entity;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.EntityListener;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
+import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.ItemEntity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
 import net.kozibrodka.wolves.utils.ReplaceableBlockChecker;
-import net.minecraft.block.BlockBase;
-import net.minecraft.entity.EntityBase;
-import net.minecraft.entity.Item;
-import net.minecraft.entity.Living;
-import net.minecraft.item.ItemInstance;
-import net.minecraft.level.Level;
-import net.minecraft.util.io.CompoundTag;
-import net.minecraft.util.maths.Box;
-import net.minecraft.util.maths.MathHelper;
 import net.modificationstation.stationapi.api.server.entity.EntitySpawnDataProvider;
 import net.modificationstation.stationapi.api.server.entity.HasTrackingParameters;
 import net.modificationstation.stationapi.api.util.Identifier;
@@ -20,15 +20,15 @@ import net.modificationstation.stationapi.api.util.Identifier;
 import java.util.List;
 
 @HasTrackingParameters(trackingDistance = 160, updatePeriod = 2)
-public class MovingPlatformEntity extends EntityBase implements EntitySpawnDataProvider
+public class MovingPlatformEntity extends Entity implements EntitySpawnDataProvider
 {
 
-    public MovingPlatformEntity(Level world)
+    public MovingPlatformEntity(World world)
     {
         super(world);
         field_1593 = true;
-        setSize(0.98F, 0.98F);
-        standingEyeHeight = height / 2.0F;
+        setBoundingBoxSpacing(0.98F, 0.98F);
+        eyeHeight = spacingY / 2.0F;
         velocityX = 0.0D;
         velocityY = 0.0D;
         velocityZ = 0.0D;
@@ -37,7 +37,7 @@ public class MovingPlatformEntity extends EntityBase implements EntitySpawnDataP
         m_AssociatedAnchorLastKnownZPos = 0.0D;
     }
 
-    public MovingPlatformEntity(Level world, double x, double y, double z,
+    public MovingPlatformEntity(World world, double x, double y, double z,
                                 MovingAnchorEntity entityMovingAnchor)
     {
         this(world);
@@ -45,13 +45,13 @@ public class MovingPlatformEntity extends EntityBase implements EntitySpawnDataP
         m_AssociatedAnchorLastKnownYPos = entityMovingAnchor.y;
         m_AssociatedAnchorLastKnownZPos = entityMovingAnchor.z;
         velocityY = entityMovingAnchor.velocityY;
-        setPosition(x, y, z);
-        prevRenderX = prevX = x;
-        prevRenderY = prevY = y;
-        prevRenderZ = prevZ = z;
+        method_1340(x, y, z);
+        field_1637 = prevX = x;
+        field_1638 = prevY = y;
+        field_1639 = prevZ = z;
     }
 
-    public MovingPlatformEntity(Level level, Double aDouble, Double aDouble1, Double aDouble2) {
+    public MovingPlatformEntity(World level, Double aDouble, Double aDouble1, Double aDouble2) {
         this(level);
     }
 
@@ -59,26 +59,26 @@ public class MovingPlatformEntity extends EntityBase implements EntitySpawnDataP
     {
     }
 
-    protected void writeCustomDataToTag(CompoundTag nbttagcompound)
+    protected void writeNbt(NbtCompound nbttagcompound)
     {
-        nbttagcompound.put("m_AssociatedAnchorLastKnownXPos", m_AssociatedAnchorLastKnownXPos);
-        nbttagcompound.put("m_AssociatedAnchorLastKnownYPos", m_AssociatedAnchorLastKnownYPos);
-        nbttagcompound.put("m_AssociatedAnchorLastKnownZPos", m_AssociatedAnchorLastKnownZPos);
+        nbttagcompound.putDouble("m_AssociatedAnchorLastKnownXPos", m_AssociatedAnchorLastKnownXPos);
+        nbttagcompound.putDouble("m_AssociatedAnchorLastKnownYPos", m_AssociatedAnchorLastKnownYPos);
+        nbttagcompound.putDouble("m_AssociatedAnchorLastKnownZPos", m_AssociatedAnchorLastKnownZPos);
     }
 
-    protected void readCustomDataFromTag(CompoundTag nbttagcompound)
+    protected void readNbt(NbtCompound nbttagcompound)
     {
         m_AssociatedAnchorLastKnownXPos = nbttagcompound.getDouble("m_AssociatedAnchorLastKnownXPos");
         m_AssociatedAnchorLastKnownYPos = nbttagcompound.getDouble("m_AssociatedAnchorLastKnownYPos");
         m_AssociatedAnchorLastKnownZPos = nbttagcompound.getDouble("m_AssociatedAnchorLastKnownZPos");
     }
 
-    protected boolean canClimb()
+    protected boolean bypassesSteppingEffects()
     {
         return false;
     }
 
-    public Box getBoundingBox(EntityBase entity)
+    public Box method_1379(Entity entity)
     {
         return entity.boundingBox;
     }
@@ -95,17 +95,17 @@ public class MovingPlatformEntity extends EntityBase implements EntitySpawnDataP
 
     public boolean method_1356()
     {
-        return !removed;
+        return !dead;
     }
 
-    public float getEyeHeight()
+    public float method_1366()
     {
         return 0.0F;
     }
 
     public void tick()
     {
-        if(removed || level.isServerSide)
+        if(dead || world.isRemote)
         {
             return;
         }
@@ -113,11 +113,11 @@ public class MovingPlatformEntity extends EntityBase implements EntitySpawnDataP
         int oldCentreJ = MathHelper.floor(y);
         int k = MathHelper.floor(z);
         MovingAnchorEntity associatedMovingAnchor = null;
-        List list = level.getEntities(MovingAnchorEntity.class, Box.createButWasteMemory(m_AssociatedAnchorLastKnownXPos - 0.25D, m_AssociatedAnchorLastKnownYPos - 0.25D, m_AssociatedAnchorLastKnownZPos - 0.25D, m_AssociatedAnchorLastKnownXPos + 0.25D, m_AssociatedAnchorLastKnownYPos + 0.25D, m_AssociatedAnchorLastKnownZPos + 0.25D));
+        List list = world.method_175(MovingAnchorEntity.class, Box.createCached(m_AssociatedAnchorLastKnownXPos - 0.25D, m_AssociatedAnchorLastKnownYPos - 0.25D, m_AssociatedAnchorLastKnownZPos - 0.25D, m_AssociatedAnchorLastKnownXPos + 0.25D, m_AssociatedAnchorLastKnownYPos + 0.25D, m_AssociatedAnchorLastKnownZPos + 0.25D));
         if(list != null && list.size() > 0)
         {
             associatedMovingAnchor = (MovingAnchorEntity)list.get(0);
-            if(!associatedMovingAnchor.removed)
+            if(!associatedMovingAnchor.dead)
             {
                 velocityY = associatedMovingAnchor.velocityY;
                 m_AssociatedAnchorLastKnownXPos = associatedMovingAnchor.x;
@@ -131,18 +131,18 @@ public class MovingPlatformEntity extends EntityBase implements EntitySpawnDataP
         double oldPosY = y;
         MoveEntityInternal(velocityX, velocityY, velocityZ);
         double newPosY = y;
-        list = level.getEntities(this, boundingBox.expand(0.0D, 0.14999999999999999D, 0.0D));
+        list = world.getEntities(this, boundingBox.expand(0.0D, 0.14999999999999999D, 0.0D));
         if(list != null && list.size() > 0)
         {
             for(int j1 = 0; j1 < list.size(); j1++)
             {
-                EntityBase entity = (EntityBase)list.get(j1);
-                if(entity.method_1380() || (entity instanceof Item))
+                Entity entity = (Entity)list.get(j1);
+                if(entity.method_1380() || (entity instanceof ItemEntity))
                 {
                     PushEntity(entity);
                     continue;
                 }
-                if(entity.removed)
+                if(entity.dead)
                 {
                     continue;
                 }
@@ -171,22 +171,22 @@ public class MovingPlatformEntity extends EntityBase implements EntitySpawnDataP
             int oldTopJ = MathHelper.floor(oldPosY + 0.49000000953674316D);
             if(newTopJ != oldTopJ)
             {
-                int iTargetid = level.getTileId(i, newTopJ, k);
-                if(!ReplaceableBlockChecker.IsReplaceableBlock(level, i, newTopJ, k))
+                int iTargetid = world.getBlockId(i, newTopJ, k);
+                if(!ReplaceableBlockChecker.IsReplaceableBlock(world, i, newTopJ, k))
                 {
-                    if(!BlockBase.BY_ID[iTargetid].material.isSolid())
+                    if(!Block.BLOCKS[iTargetid].material.method_905())
                     {
                         if(iTargetid == BlockListener.rope.id)
                         {
                             if(!associatedMovingAnchor.ReturnRopeToPulley())
                             {
-                                BlockBase.BY_ID[iTargetid].drop(level, i, newTopJ, k, level.getTileMeta(i, newTopJ, k));
+                                Block.BLOCKS[iTargetid].dropStacks(world, i, newTopJ, k, world.getBlockMeta(i, newTopJ, k));
                             }
                         } else
                         {
-                            BlockBase.BY_ID[iTargetid].drop(level, i, newTopJ, k, level.getTileMeta(i, newTopJ, k));
+                            Block.BLOCKS[iTargetid].dropStacks(world, i, newTopJ, k, world.getBlockMeta(i, newTopJ, k));
                         }
-                        level.setTile(i, newTopJ, k, 0);
+                        world.setBlock(i, newTopJ, k, 0);
                     } else
                     {
                         ConvertToBlock(i, oldTopJ, k, associatedMovingAnchor);
@@ -201,22 +201,22 @@ public class MovingPlatformEntity extends EntityBase implements EntitySpawnDataP
             int oldBottomJ = MathHelper.floor(oldPosY - 0.49000000953674316D);
             if(oldBottomJ != newBottomJ)
             {
-                int iTargetid = level.getTileId(i, newBottomJ, k);
-                if(!ReplaceableBlockChecker.IsReplaceableBlock(level, i, newBottomJ, k))
+                int iTargetid = world.getBlockId(i, newBottomJ, k);
+                if(!ReplaceableBlockChecker.IsReplaceableBlock(world, i, newBottomJ, k))
                 {
-                    if(!BlockBase.BY_ID[iTargetid].material.isSolid())
+                    if(!Block.BLOCKS[iTargetid].material.method_905())
                     {
                         if(iTargetid == BlockListener.rope.id)
                         {
                             if(!associatedMovingAnchor.ReturnRopeToPulley())
                             {
-                                BlockBase.BY_ID[iTargetid].drop(level, i, newBottomJ, k, level.getTileMeta(i, newBottomJ, k));
+                                Block.BLOCKS[iTargetid].dropStacks(world, i, newBottomJ, k, world.getBlockMeta(i, newBottomJ, k));
                             }
                         } else
                         {
-                            BlockBase.BY_ID[iTargetid].drop(level, i, newBottomJ, k, level.getTileMeta(i, newBottomJ, k));
+                            Block.BLOCKS[iTargetid].dropStacks(world, i, newBottomJ, k, world.getBlockMeta(i, newBottomJ, k));
                         }
-                        level.setTile(i, newBottomJ, k, 0);
+                        world.setBlock(i, newBottomJ, k, 0);
                     } else
                     {
                         ConvertToBlock(i, oldBottomJ, k, associatedMovingAnchor);
@@ -238,9 +238,9 @@ public class MovingPlatformEntity extends EntityBase implements EntitySpawnDataP
         int i = MathHelper.floor(x);
         int j = MathHelper.floor(y);
         int k = MathHelper.floor(z);
-        ItemInstance platformStack = new ItemInstance(BlockListener.platform);
-        UnsortedUtils.ejectStackWithRandomOffset(level, i, j, k, platformStack);
-        remove();
+        ItemStack platformStack = new ItemStack(BlockListener.platform);
+        UnsortedUtils.ejectStackWithRandomOffset(world, i, j, k, platformStack);
+        markDead();
     }
 
     private void MoveEntityInternal(double deltaX, double deltaY, double deltaZ)
@@ -251,7 +251,7 @@ public class MovingPlatformEntity extends EntityBase implements EntitySpawnDataP
         prevX = x;
         prevY = y;
         prevZ = z;
-        setPosition(newPosX, newPosY, newPosZ);
+        method_1340(newPosX, newPosY, newPosZ);
         TestForBlockCollisions();
     }
 
@@ -263,7 +263,7 @@ public class MovingPlatformEntity extends EntityBase implements EntitySpawnDataP
         int k3 = MathHelper.floor(boundingBox.maxX - 0.001D);
         int l3 = MathHelper.floor(boundingBox.maxY - 0.001D);
         int i4 = MathHelper.floor(boundingBox.maxZ - 0.001D);
-        if(level.method_155(i1, k1, i2, k3, l3, i4))
+        if(world.method_155(i1, k1, i2, k3, l3, i4))
         {
             for(int j4 = i1; j4 <= k3; j4++)
             {
@@ -271,10 +271,10 @@ public class MovingPlatformEntity extends EntityBase implements EntitySpawnDataP
                 {
                     for(int l4 = i2; l4 <= i4; l4++)
                     {
-                        int i5 = level.getTileId(j4, k4, l4);
+                        int i5 = world.getBlockId(j4, k4, l4);
                         if(i5 > 0)
                         {
-                            BlockBase.BY_ID[i5].onEntityCollision(level, j4, k4, l4, this);
+                            Block.BLOCKS[i5].onEntityCollision(world, j4, k4, l4, this);
                         }
                     }
                 }
@@ -282,7 +282,7 @@ public class MovingPlatformEntity extends EntityBase implements EntitySpawnDataP
         }
     }
 
-    private void PushEntity(EntityBase entity)
+    private void PushEntity(Entity entity)
     {
         // if(true)return;
     	double platformMaxY = boundingBox.maxY + 0.074999999999999997D;
@@ -292,9 +292,9 @@ public class MovingPlatformEntity extends EntityBase implements EntitySpawnDataP
             if(entityMinY > platformMaxY - 0.25D)
             {
                 double entityYOffset = platformMaxY - entityMinY;
-                entity.setPosition(entity.x, entity.y + entityYOffset, entity.z);
+                entity.method_1340(entity.x, entity.y + entityYOffset, entity.z);
             } else
-            if((entity instanceof Living) && velocityY < 0.0D)
+            if((entity instanceof LivingEntity) && velocityY < 0.0D)
             {
                 double entityMaxY = entity.boundingBox.maxY;
                 double platformMinY = boundingBox.minY;
@@ -309,31 +309,31 @@ public class MovingPlatformEntity extends EntityBase implements EntitySpawnDataP
     private void ConvertToBlock(int i, int j, int k, MovingAnchorEntity associatedAnchor)
     {
         boolean moveEntities = true;
-        int iTargetid = level.getTileId(i, j, k);
-        if(ReplaceableBlockChecker.IsReplaceableBlock(level, i, j, k))
+        int iTargetid = world.getBlockId(i, j, k);
+        if(ReplaceableBlockChecker.IsReplaceableBlock(world, i, j, k))
         {
-            level.setTile(i, j, k, BlockListener.platform.id);
+            world.setBlock(i, j, k, BlockListener.platform.id);
         } else
-        if(!BlockBase.BY_ID[iTargetid].material.isSolid())
+        if(!Block.BLOCKS[iTargetid].material.method_905())
         {
             if(iTargetid == BlockListener.rope.id && associatedAnchor != null)
             {
                 if(!associatedAnchor.ReturnRopeToPulley())
                 {
-                    BlockBase.BY_ID[iTargetid].drop(level, i, j, k, level.getTileMeta(i, j, k));
+                    Block.BLOCKS[iTargetid].dropStacks(world, i, j, k, world.getBlockMeta(i, j, k));
                 }
             } else
             {
-                BlockBase.BY_ID[iTargetid].drop(level, i, j, k, level.getTileMeta(i, j, k));
+                Block.BLOCKS[iTargetid].dropStacks(world, i, j, k, world.getBlockMeta(i, j, k));
             }
-            level.setTile(i, j, k, BlockListener.platform.id);
+            world.setBlock(i, j, k, BlockListener.platform.id);
         } else
         {
-            UnsortedUtils.EjectSingleItemWithRandomOffset(level, i, j, k, BlockListener.platform.id, 0);
+            UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, BlockListener.platform.id, 0);
             moveEntities = false;
         }
-        UnsortedUtils.PositionAllMoveableEntitiesOutsideOfLocation(level, i, j, k);
-        remove();
+        UnsortedUtils.PositionAllMoveableEntitiesOutsideOfLocation(world, i, j, k);
+        markDead();
     }
 
     private double m_AssociatedAnchorLastKnownXPos;

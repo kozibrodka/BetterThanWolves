@@ -23,14 +23,14 @@
       "net.kozibrodka.wolves.events.EntityListener",
       "net.kozibrodka.wolves.events.BlockListener",
       "net.kozibrodka.wolves.events.ItemListener",
-      "net.kozibrodka.wolves.events.TileEntityListener",
+      "net.kozibrodka.wolves.events.BlockEntityListener",
       "net.kozibrodka.wolves.events.RecipeListener",
       "net.kozibrodka.wolves.events.PacketListener"
     ],
     "stationapi:event_bus_client": [
       "net.kozibrodka.wolves.events.TabListener",
       "net.kozibrodka.wolves.events.TextureListener",
-      "net.kozibrodka.wolves.events.GUIListener"
+      "net.kozibrodka.wolves.events.ScreenHandlerListener"
     ],
     "stationapi:event_bus_server": [
 

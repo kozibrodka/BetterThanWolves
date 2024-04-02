@@ -1,17 +1,17 @@
 package net.kozibrodka.wolves.recipe;
 
-import net.minecraft.inventory.Crafting;
-import net.minecraft.item.ItemInstance;
+import net.minecraft.inventory.CraftingInventory;
+import net.minecraft.item.ItemStack;
 import net.modificationstation.stationapi.api.recipe.StationRecipe;
 
 public class AnvilShapedRecipe implements AnvilRecipeTemplate, StationRecipe {
     private int width;
     private int height;
-    private ItemInstance[] ingredients;
-    private ItemInstance output;
+    private ItemStack[] ingredients;
+    private ItemStack output;
     public final int outputId;
 
-    public AnvilShapedRecipe(int i, int j, ItemInstance[] args, ItemInstance arg) {
+    public AnvilShapedRecipe(int i, int j, ItemStack[] args, ItemStack arg) {
         this.outputId = arg.itemId;
         this.width = i;
         this.height = j;
@@ -19,11 +19,11 @@ public class AnvilShapedRecipe implements AnvilRecipeTemplate, StationRecipe {
         this.output = arg;
     }
 
-    public ItemInstance getOutput() {
+    public ItemStack getOutput() {
         return this.output;
     }
 
-    public boolean canCraft(Crafting arg) {
+    public boolean canCraft(CraftingInventory arg) {
         for(int var2 = 0; var2 <= 5 - this.width; ++var2) {
             for(int var3 = 0; var3 <= 5 - this.height; ++var3) {
                 if (this.matches(arg, var2, var3, true)) {
@@ -39,12 +39,12 @@ public class AnvilShapedRecipe implements AnvilRecipeTemplate, StationRecipe {
         return false;
     }
 
-    private boolean matches(Crafting arg, int i, int j, boolean bl) {
+    private boolean matches(CraftingInventory arg, int i, int j, boolean bl) {
         for(int var5 = 0; var5 < 5; ++var5) {
             for(int var6 = 0; var6 < 5; ++var6) {
                 int var7 = var5 - i;
                 int var8 = var6 - j;
-                ItemInstance var9 = null;
+                ItemStack var9 = null;
                 if (var7 >= 0 && var8 >= 0 && var7 < this.width && var8 < this.height) {
                     if (bl) {
                         var9 = this.ingredients[this.width - var7 - 1 + var8 * this.width];
@@ -53,7 +53,7 @@ public class AnvilShapedRecipe implements AnvilRecipeTemplate, StationRecipe {
                     }
                 }
 
-                ItemInstance var10 = arg.getInventoryItemXY(var5, var6);
+                ItemStack var10 = arg.getStack(var5, var6);
                 if (var10 != null || var9 != null) {
                     if (var10 == null && var9 != null || var10 != null && var9 == null) {
                         return false;
@@ -73,8 +73,8 @@ public class AnvilShapedRecipe implements AnvilRecipeTemplate, StationRecipe {
         return true;
     }
 
-    public ItemInstance craft(Crafting arg) {
-        return new ItemInstance(this.output.itemId, this.output.count, this.output.getDamage());
+    public ItemStack craft(CraftingInventory arg) {
+        return new ItemStack(this.output.itemId, this.output.count, this.output.getDamage());
     }
 
     public int getIngredientCount() {
@@ -82,13 +82,13 @@ public class AnvilShapedRecipe implements AnvilRecipeTemplate, StationRecipe {
     }
 
     @Override
-    public ItemInstance[] getIngredients() {
+    public ItemStack[] getIngredients() {
         return ingredients;
     }
 
     @Override
-    public ItemInstance[] getOutputs() {
-        return new ItemInstance[] {output};
+    public ItemStack[] getOutputs() {
+        return new ItemStack[] {output};
     }
 
     public int getWidth() {

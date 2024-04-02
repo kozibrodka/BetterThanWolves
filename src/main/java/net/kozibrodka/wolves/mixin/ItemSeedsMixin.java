@@ -1,34 +1,34 @@
 package net.kozibrodka.wolves.mixin;
 
 import net.kozibrodka.wolves.utils.UnsortedUtils;
-import net.minecraft.block.BlockBase;
-import net.minecraft.entity.player.PlayerBase;
-import net.minecraft.item.ItemBase;
-import net.minecraft.item.ItemInstance;
-import net.minecraft.item.Seeds;
-import net.minecraft.level.Level;
+import net.minecraft.block.Block;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.SeedsItem;
+import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
-@Mixin(Seeds.class)
-public class ItemSeedsMixin extends ItemBase{
+@Mixin(SeedsItem.class)
+public class ItemSeedsMixin extends Item{
     public ItemSeedsMixin(int i) {
         super(i);
     }
 
     @Shadow
-    private int cropTileId;
+    private int cropBlockId;
 
     //TODO: maybe better mixin design
 
     @Override
-    public boolean useOnTile(ItemInstance arg, PlayerBase arg2, Level arg3, int i, int j, int k, int l) {
+    public boolean useOnBlock(ItemStack arg, PlayerEntity arg2, World arg3, int i, int j, int k, int l) {
         if (l != 1) {
             return false;
         } else {
-            int var8 = arg3.getTileId(i, j, k);
-            if ((var8 == BlockBase.FARMLAND.id || UnsortedUtils.CanPlantGrowOnBlock(arg3, i, j, k, null)) && arg3.isAir(i, j + 1, k)) {
-                arg3.setTile(i, j + 1, k, this.cropTileId);
+            int var8 = arg3.getBlockId(i, j, k);
+            if ((var8 == Block.FARMLAND.id || UnsortedUtils.CanPlantGrowOnBlock(arg3, i, j, k, null)) && arg3.method_234(i, j + 1, k)) {
+                arg3.setBlock(i, j + 1, k, this.cropBlockId);
                 --arg.count;
                 return true;
             } else {
