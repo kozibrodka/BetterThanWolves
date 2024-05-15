@@ -1,13 +1,12 @@
 package net.kozibrodka.wolves.mixin;
 
-import net.minecraft.entity.animal.Chicken;
-import net.minecraft.entity.animal.Wolf;
+import net.minecraft.entity.passive.ChickenEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
-@Mixin(Chicken.class)
+@Mixin(ChickenEntity.class)
 public interface ChickenAccessor {
-    @Invoker
+    @Invoker("method_912")
     String invokeGetHurtSound();
 
 }

@@ -1,10 +1,9 @@
 package net.kozibrodka.wolves.recipe;
 
-import net.minecraft.inventory.InventoryBase;
-import net.minecraft.item.ItemInstance;
-
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.item.ItemStack;
 
 
 public abstract class MultiInputCraftingManager
@@ -15,7 +14,7 @@ public abstract class MultiInputCraftingManager
         m_recipes = new ArrayList();
     }
 
-    public void addRecipe(ItemInstance outputStack, ItemInstance inputStacks[])
+    public void addRecipe(ItemStack outputStack, ItemStack inputStacks[])
     {
         ArrayList arraylist = new ArrayList();
         int iInputStacksArrayLength = inputStacks.length;
@@ -27,7 +26,7 @@ public abstract class MultiInputCraftingManager
         m_recipes.add(new MultiInputRecipeHandler(outputStack, arraylist));
     }
 
-    public ItemInstance getCraftingResult(InventoryBase inventory)
+    public ItemStack getCraftingResult(Inventory inventory)
     {
         for(int i = 0; i < m_recipes.size(); i++)
         {
@@ -41,7 +40,7 @@ public abstract class MultiInputCraftingManager
         return null;
     }
 
-    public ItemInstance consumeIngredientsAndReturnResult(InventoryBase inventory)
+    public ItemStack consumeIngredientsAndReturnResult(Inventory inventory)
     {
         for(int i = 0; i < m_recipes.size(); i++)
         {

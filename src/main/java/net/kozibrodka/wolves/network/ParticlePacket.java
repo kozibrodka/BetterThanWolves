@@ -6,8 +6,8 @@ import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.events.PacketListener;
 import net.kozibrodka.wolves.mixin.ClientPlayerAccessor;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.PacketHandler;
-import net.minecraft.packet.AbstractPacket;
+import net.minecraft.network.NetworkHandler;
+import net.minecraft.network.packet.Packet;
 import net.modificationstation.stationapi.api.network.packet.IdentifiablePacket;
 import net.modificationstation.stationapi.api.util.Identifier;
 
@@ -15,7 +15,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class ParticlePacket extends AbstractPacket implements IdentifiablePacket{
+public class ParticlePacket extends Packet implements IdentifiablePacket{
 
     private String particleToPlay;
     private double x;
@@ -69,7 +69,7 @@ public class ParticlePacket extends AbstractPacket implements IdentifiablePacket
     }
 
     @Override
-    public void apply(PacketHandler arg) {
+    public void apply(NetworkHandler arg) {
         switch (FabricLoader.INSTANCE.getEnvironmentType()){
             case CLIENT -> handleClient(arg);
             case SERVER -> handleServer(arg);
@@ -77,18 +77,18 @@ public class ParticlePacket extends AbstractPacket implements IdentifiablePacket
     }
 
     @Environment(EnvType.CLIENT)
-    public void handleClient(PacketHandler networkHandler){
+    public void handleClient(NetworkHandler networkHandler){
         ClientPlayerAccessor accessor = (ClientPlayerAccessor) networkHandler;
         Minecraft minecraft = accessor.getMinecraft();
-        minecraft.level.addParticle(this.particleToPlay, this.x, this.y, this.z, this.a1, this.a2, this.a3);
+        minecraft.world.addParticle(this.particleToPlay, this.x, this.y, this.z, this.a1, this.a2, this.a3);
     }
 
     @Environment(EnvType.SERVER)
-    public void handleServer(PacketHandler networkHandler){
+    public void handleServer(NetworkHandler networkHandler){
     }
 
     @Override
-    public int length() {
+    public int size() {
         return 6;
     }
 

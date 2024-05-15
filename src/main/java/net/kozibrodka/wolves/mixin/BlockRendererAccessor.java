@@ -1,36 +1,35 @@
 package net.kozibrodka.wolves.mixin;
 
-import net.minecraft.client.render.block.BlockRenderer;
-import net.minecraft.level.BlockView;
-import net.minecraft.level.Level;
+import net.minecraft.client.render.block.BlockRenderManager;
+import net.minecraft.world.BlockView;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
-@Mixin(BlockRenderer.class)
+@Mixin(BlockRenderManager.class)
 public interface BlockRendererAccessor {
 
     @Accessor
     void setBlockView(BlockView blockView);
 
-    @Accessor
+    @Accessor("flipTextureHorizontally")
     boolean getMirrorTexture();
 
-    @Accessor
+    @Accessor("eastFaceRotation")
     int getEastFaceRotation();
 
-    @Accessor
+    @Accessor("textureOverride")
     int getTextureOverride();
 
-    @Accessor
+    @Accessor("useAo")
     boolean getShadeTopFace();
 
-    @Accessor
+    @Accessor("firstVertexRed")
     float getColourRed00();
-    @Accessor
+    @Accessor("secondVertexRed")
     float getColourRed01();
-    @Accessor
+    @Accessor("fourthVertexRed")
     float getColourRed10();
-    @Accessor
+    @Accessor("thirdVertexRed")
     float getColurRed11();
 }
