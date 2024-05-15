@@ -1,8 +1,8 @@
 package net.kozibrodka.wolves.utils;
 
 
-import net.minecraft.block.BlockBase;
-import net.minecraft.level.Level;
+import net.minecraft.block.Block;
+import net.minecraft.world.World;
 
 /**
  * This util seems unnecessary and is very limited in its capabilities. Perhaps replace this with a Station API solution?
@@ -14,10 +14,10 @@ public class ReplaceableBlockChecker
     {
     }
 
-    public static boolean IsReplaceableBlock(Level world, int i, int j, int k)
+    public static boolean IsReplaceableBlock(World world, int i, int j, int k)
     {
-        int l = world.getTileId(i, j, k);
-        BlockBase block = BlockBase.BY_ID[l];
-        return l <= 0 || l == BlockBase.FLOWING_WATER.id || l == BlockBase.STILL_WATER.id || l == BlockBase.FLOWING_LAVA.id || l == BlockBase.STILL_LAVA.id || l == BlockBase.FIRE.id || l == BlockBase.SNOW.id;
+        int l = world.getBlockId(i, j, k);
+        Block block = Block.BLOCKS[l];
+        return l <= 0 || l == Block.FLOWING_WATER.id || l == Block.WATER.id || l == Block.FLOWING_LAVA.id || l == Block.LAVA.id || l == Block.FIRE.id || l == Block.SNOW.id;
     }
 }

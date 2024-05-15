@@ -2,38 +2,38 @@ package net.kozibrodka.wolves.entity;
 
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ConfigListener;
-import net.minecraft.block.Wool;
-import net.minecraft.entity.EntityBase;
-import net.minecraft.entity.player.PlayerBase;
-import net.minecraft.item.ItemBase;
-import net.minecraft.item.ItemInstance;
-import net.minecraft.level.Level;
-import net.minecraft.util.io.CompoundTag;
-import net.minecraft.util.maths.Box;
+import net.minecraft.block.WoolBlock;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.math.Box;
+import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.server.entity.EntitySpawnDataProvider;
 import net.modificationstation.stationapi.api.server.entity.HasTrackingParameters;
 import net.modificationstation.stationapi.api.util.Identifier;
 
 @HasTrackingParameters(trackingDistance = 160, updatePeriod = 2)
-public class FCEntityTEST extends EntityBase implements EntitySpawnDataProvider {
-    public FCEntityTEST(Level arg) {
+public class FCEntityTEST extends Entity implements EntitySpawnDataProvider {
+    public FCEntityTEST(World arg) {
         super(arg);
-        setSize(2F, 2F);
+        setBoundingBoxSpacing(2F, 2F);
     }
 
-    public FCEntityTEST(Level world, double x, double y, double z, int type) {
+    public FCEntityTEST(World world, double x, double y, double z, int type) {
         this(world);
-        setPosition(x, y, z);
+        method_1340(x, y, z);
         setColour(type);
     }
 
-    public FCEntityTEST(Level level, Double aDouble, Double aDouble1, Double aDouble2) {
+    public FCEntityTEST(World level, Double aDouble, Double aDouble1, Double aDouble2) {
         this(level);
     }
 
-    public boolean damage(EntityBase entity, int i)
+    public boolean damage(Entity entity, int i)
     {
-        if(level.isServerSide || removed)
+        if(world.isRemote || dead)
         {
             return true;
         }
@@ -42,15 +42,15 @@ public class FCEntityTEST extends EntityBase implements EntitySpawnDataProvider 
         return true;
     }
 
-    public boolean interact(PlayerBase entityplayer){
-        ItemInstance itemstack = entityplayer.inventory.getHeldItem();
-        if(itemstack !=null && itemstack.itemId == ItemBase.dyePowder.id)
+    public boolean method_1323(PlayerEntity entityplayer){
+        ItemStack itemstack = entityplayer.inventory.getSelectedItem();
+        if(itemstack !=null && itemstack.itemId == Item.DYE.id)
         {
-            int var4 = Wool.getColour(itemstack.getDamage());
+            int var4 = WoolBlock.method_1(itemstack.getDamage());
             setColour(var4);
             return true;
         }
-        if(level.isServerSide){
+        if(world.isRemote){
 //            System.out.println("client: " + y + " " + clientY);
 //            y = (double) clientY/32D;
             System.out.println(dataTracker.getByte(16) & 15);
@@ -62,12 +62,12 @@ public class FCEntityTEST extends EntityBase implements EntitySpawnDataProvider 
     }
 
 
-    protected boolean canClimb()
+    protected boolean bypassesSteppingEffects()
     {
         return false;
     }
 
-    public Box getBoundingBox(EntityBase entity)
+    public Box method_1379(Entity entity)
     {
         return entity.boundingBox;
     }
@@ -84,12 +84,12 @@ public class FCEntityTEST extends EntityBase implements EntitySpawnDataProvider 
 
     public boolean method_1356()
     {
-        return !removed;
+        return !dead;
     }
 
     public void tick()
     {
-        if(removed)
+        if(dead)
         {
             return;
         }
@@ -99,10 +99,10 @@ public class FCEntityTEST extends EntityBase implements EntitySpawnDataProvider 
             int iCenterI = (int) (x - 0.5D);
             int iCenterJ = (int) (y - 0.5D);
             int iCenterK = (int) (z - 0.5D);
-            int iCenterid = level.getTileId(iCenterI, iCenterJ, iCenterK);
+            int iCenterid = world.getBlockId(iCenterI, iCenterJ, iCenterK);
             if (iCenterid != BlockListener.axleBlock.id) {
-                if(!level.isServerSide){
-                    remove();
+                if(!world.isRemote){
+                    markDead();
                 }
                 return;
             }
@@ -114,11 +114,11 @@ public class FCEntityTEST extends EntityBase implements EntitySpawnDataProvider 
         dataTracker.startTracking(16, (byte) 0); //Color
     }
 
-    public void writeCustomDataToTag(CompoundTag arg) {
-        arg.put("Color", (byte)this.getColour());
+    public void writeNbt(NbtCompound arg) {
+        arg.putByte("Color", (byte)this.getColour());
     }
 
-    public void readCustomDataFromTag(CompoundTag arg) {
+    public void readNbt(NbtCompound arg) {
         this.setColour(arg.getByte("Color"));
     }
 
@@ -128,7 +128,7 @@ public class FCEntityTEST extends EntityBase implements EntitySpawnDataProvider 
 
     public void setColour(int i) {
         byte var2 = this.dataTracker.getByte(16);
-        this.dataTracker.setInt(16, (byte)(var2 & 240 | i & 15));
+        this.dataTracker.set(16, (byte)(var2 & 240 | i & 15));
     }
 
     @Override

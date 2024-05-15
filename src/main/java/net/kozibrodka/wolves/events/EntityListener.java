@@ -23,7 +23,7 @@ public class EntityListener {
         event.register(LiftedBlockEntity.class, String.valueOf(Identifier.of(MOD_ID, "BlockLiftedByPlatform")));
         event.register(MovingPlatformEntity.class, String.valueOf(Identifier.of(MOD_ID, "MovingPlatform")));
         event.register(MovingAnchorEntity.class, String.valueOf(Identifier.of(MOD_ID, "MovingAnchor")));
-        event.register(FallingAnvil.class, String.valueOf(Identifier.of(MOD_ID, "FallingAnvil")));
+        event.register(FallingAnvilEntity.class, String.valueOf(Identifier.of(MOD_ID, "FallingAnvil")));
         event.register(FCEntityTEST.class, String.valueOf(Identifier.of(MOD_ID, "StapiTEST")));
     }
 
@@ -35,7 +35,7 @@ public class EntityListener {
         Registry.register(event.registry, MOD_ID.id("BlockLiftedByPlatform") , LiftedBlockEntity::new);
         Registry.register(event.registry, MOD_ID.id("MovingPlatform") , MovingPlatformEntity::new);
         Registry.register(event.registry, MOD_ID.id("MovingAnchor") , MovingAnchorEntity::new);
-        Registry.register(event.registry, MOD_ID.id("FallingAnvil") , FallingAnvil::new);
+        Registry.register(event.registry, MOD_ID.id("FallingAnvil") , FallingAnvilEntity::new);
         Registry.register(event.registry, MOD_ID.id("StapiTEST") , FCEntityTEST::new);
     }
 }
