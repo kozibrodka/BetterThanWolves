@@ -1,8 +1,9 @@
 package net.kozibrodka.wolves.recipe;
 
+import net.minecraft.item.ItemInstance;
+
 import java.util.ArrayList;
 import java.util.List;
-import net.minecraft.item.ItemStack;
 
 public class CrucibleCraftingManager extends MultiInputCraftingManager {
 
@@ -17,12 +18,12 @@ public class CrucibleCraftingManager extends MultiInputCraftingManager {
     private static final CrucibleCraftingManager instance = new CrucibleCraftingManager();
 
     public List getTripleRecipes() {
-        ArrayList<ItemStack[]> recipeList = new ArrayList<>();
+        ArrayList<ItemInstance[]> recipeList = new ArrayList<>();
 
         for (int i = 0; i < m_recipes.size(); i++) {
             MultiInputRecipeHandler bulkRecipe = (MultiInputRecipeHandler) m_recipes.get(i);
             if (bulkRecipe.getNumberOfInputStacks() != 3) continue;
-            ItemStack[] recipeArray = new ItemStack[4];
+            ItemInstance[] recipeArray = new ItemInstance[4];
             recipeArray[0] = bulkRecipe.getOutputStack();
             recipeArray[1] = bulkRecipe.getInputStack(0);
             recipeArray[2] = bulkRecipe.getInputStack(1);
@@ -34,12 +35,12 @@ public class CrucibleCraftingManager extends MultiInputCraftingManager {
     }
 
     public List getSingleRecipes() {
-        ArrayList<ItemStack[]> recipeList = new ArrayList<>();
+        ArrayList<ItemInstance[]> recipeList = new ArrayList<>();
 
         for (int i = 0; i < m_recipes.size(); i++) {
             MultiInputRecipeHandler bulkRecipe = (MultiInputRecipeHandler) m_recipes.get(i);
             if (bulkRecipe.getNumberOfInputStacks() > 1) continue;
-            ItemStack[] recipeArray = new ItemStack[2];
+            ItemInstance[] recipeArray = new ItemInstance[2];
             recipeArray[0] = bulkRecipe.getOutputStack();
             recipeArray[1] = bulkRecipe.getInputStack(0);
             recipeList.add(recipeArray);

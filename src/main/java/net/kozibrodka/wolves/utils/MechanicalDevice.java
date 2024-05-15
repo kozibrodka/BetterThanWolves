@@ -1,7 +1,7 @@
 
 package net.kozibrodka.wolves.utils;
 
-import net.minecraft.world.World;
+import net.minecraft.level.Level;
 
 public interface MechanicalDevice
 {
@@ -10,7 +10,7 @@ public interface MechanicalDevice
 
     boolean CanInputMechanicalPower();
 
-    boolean IsInputtingMechanicalPower(World world, int i, int j, int k);
+    boolean IsInputtingMechanicalPower(Level world, int i, int j, int k);
 
-    boolean IsOutputtingMechanicalPower(World world, int i, int j, int k);
+    boolean IsOutputtingMechanicalPower(Level world, int i, int j, int k);
 }

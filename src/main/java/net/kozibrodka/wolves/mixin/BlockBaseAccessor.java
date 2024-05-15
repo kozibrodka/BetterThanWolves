@@ -1,14 +1,14 @@
 package net.kozibrodka.wolves.mixin;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.BlockBase;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
-@Mixin(Block.class)
+@Mixin(BlockBase.class)
 public interface BlockBaseAccessor {
 
-    @Invoker("getDroppedItemMeta")
+    @Invoker
     int invokeDroppedMeta(int meta);
 
     @Accessor

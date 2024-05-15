@@ -1,14 +1,14 @@
 package net.kozibrodka.wolves.recipe;
 
-import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.inventory.Crafting;
+import net.minecraft.item.ItemInstance;
 
 public interface AnvilRecipeTemplate {
-    boolean canCraft(CraftingInventory arg);
+    boolean canCraft(Crafting arg);
 
-    ItemStack craft(CraftingInventory arg);
+    ItemInstance craft(Crafting arg);
 
     int getIngredientCount();
 
-    ItemStack getOutput();
+    ItemInstance getOutput();
 }

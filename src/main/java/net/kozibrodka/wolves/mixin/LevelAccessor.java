@@ -4,7 +4,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
 
-@Mixin(net.minecraft.world.World.class)
+@Mixin(net.minecraft.level.Level.class)
 public interface LevelAccessor {
 
     @Invoker

@@ -2,10 +2,10 @@ package net.kozibrodka.wolves.events;
 
 import net.kozibrodka.wolves.recipe.*;
 import net.mine_diver.unsafeevents.listener.EventListener;
-import net.minecraft.block.Block;
-import net.minecraft.block.WoolBlock;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.block.BlockBase;
+import net.minecraft.block.Wool;
+import net.minecraft.item.ItemBase;
+import net.minecraft.item.ItemInstance;
 import net.modificationstation.stationapi.api.event.recipe.RecipeRegisterEvent;
 import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
 import net.modificationstation.stationapi.api.recipe.CraftingRegistry;
@@ -47,338 +47,338 @@ public class RecipeListener {
         addHopperRecipes();
     }
 
-    private static void addAnvilRecipe(ItemStack output, Object[] inputs) {
+    private static void addAnvilRecipe(ItemInstance output, Object[] inputs) {
         AnvilCraftingManager.getInstance().addRecipe(output, inputs);
     }
 
-    private static void addShapelessAnvilRecipe(ItemStack output, Object[] inputs) {
+    private static void addShapelessAnvilRecipe(ItemInstance output, Object[] inputs) {
         AnvilCraftingManager.getInstance().addShapelessRecipe(output, inputs);
     }
 
-    public static void addCauldronRecipe(ItemStack output, ItemStack[] inputs) {
+    public static void addCauldronRecipe(ItemInstance output, ItemInstance[] inputs) {
         CauldronCraftingManager.getInstance().addRecipe(output, inputs);
     }
 
-    public static void addStokedCauldronRecipe(ItemStack output, ItemStack[] inputs) {
+    public static void addStokedCauldronRecipe(ItemInstance output, ItemInstance[] inputs) {
         CauldronStokedCraftingManager.getInstance().addRecipe(output, inputs);
     }
 
-    public static void addCrucibleRecipe(ItemStack output, ItemStack[] inputs) {
+    public static void addCrucibleRecipe(ItemInstance output, ItemInstance[] inputs) {
         CrucibleCraftingManager.getInstance().addRecipe(output, inputs);
     }
 
     private static void addBlockRecipes() {
-        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.anvil, 1), "###", " # ", "###", '#', ItemListener.steel);
-        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.lightBulbOff, 1), " # ", "#X#", " Y ", '#', Block.GLASS, 'X', Item.GLOWSTONE_DUST, 'Y', Item.REDSTONE);
-        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.hibachi), "XXX", "#Z#", "#Y#", '#', Block.STONE, 'X', ItemListener.concentratedHellfire, 'Y', Item.REDSTONE, 'Z',
-                Item.GLOWSTONE_DUST);
-        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.hopper), "# #", "XYX", " Z ", '#', new ItemStack(BlockListener.omniSlab.id, 1, 1), 'X', ItemListener.gear, 'Y', Block.STONE_PRESSURE_PLATE, 'Z',
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.anvil, 1), "###", " # ", "###", '#', ItemListener.steel);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.lightBulbOff, 1), " # ", "#X#", " Y ", '#', BlockBase.GLASS, 'X', ItemBase.glowstoneDust, 'Y', ItemBase.redstoneDust);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.hibachi), "XXX", "#Z#", "#Y#", '#', BlockBase.STONE, 'X', ItemListener.concentratedHellfire, 'Y', ItemBase.redstoneDust, 'Z',
+                ItemBase.glowstoneDust);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.hopper), "# #", "XYX", " Z ", '#', new ItemInstance(BlockListener.omniSlab.id, 1, 1), 'X', ItemListener.gear, 'Y', BlockBase.WOODEN_PRESSURE_PLATE, 'Z',
                 BlockListener.corner);
-        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.saw), "YYY", "XZX", "#X#", '#', Block.PLANKS, 'X', ItemListener.gear, 'Y', Item.IRON_INGOT, 'Z',
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.saw), "YYY", "XZX", "#X#", '#', BlockBase.WOOD, 'X', ItemListener.gear, 'Y', ItemBase.ironIngot, 'Z',
                 ItemListener.belt);
-        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.platform), "#X#", " # ", "#X#", '#', Block.PLANKS, 'X', ItemListener.wicker);
-        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.platform), "X#X", " X ", "X#X", '#', ItemListener.wicker, 'X', BlockListener.moulding);
-        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.pulley), "#Y#", "XZX", "#Y#", '#', Block.PLANKS, 'X', ItemListener.gear, 'Y', Item.IRON_INGOT, 'Z',
-                Item.REDSTONE);
-        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.pressurePlateObsidian, 1), "##", '#', Block.OBSIDIAN);
-        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.blockDispenser), "###", "# #", "YXY", '#', Block.MOSSY_COBBLESTONE, 'X', Item.REDSTONE, 'Y', Block.STONE);
-        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.cauldron), "#Y#", "#X#", "###", '#', Item.IRON_INGOT, 'X', Item.BONE, 'Y', Item.WATER_BUCKET);
-        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.detectorRailWood, 6), "X X", "X#X", "XRX", 'X', Item.IRON_INGOT, 'R', Item.REDSTONE, '#', Block.STONE_PRESSURE_PLATE);
-        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.detectorRailObsidian, 6), "X X", "X#X", "XRX", 'X', Item.IRON_INGOT, 'R', Item.REDSTONE, '#', BlockListener.pressurePlateObsidian);
-        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.detectorBlock), "X#X", "###", "ZYZ", '#', Block.COBBLESTONE, 'X', new ItemStack(Item.DYE, 1, 4), 'Y', Item.REDSTONE, 'Z',
-                Block.STONE);
-        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.handCrank), "  Y", " Y ", "#X#", '#', Block.COBBLESTONE, 'X', ItemListener.gear, 'Y', Item.STICK);
-        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.millStone), "YYY", "YYY", "YXY", 'X', ItemListener.gear, 'Y', Block.STONE);
-        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.axleBlock), "#", "X", "#", '#', Block.PLANKS, 'X', ItemListener.ropeItem);
-        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.axleBlock), "#", "X", "#", '#', BlockListener.moulding, 'X', ItemListener.ropeItem);
-        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.gearBox), "#X#", "XYX", "#X#", '#', Block.PLANKS, 'X', ItemListener.gear, 'Y', Item.REDSTONE);
-        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.gearBox), "#X#", "XYX", "#X#", '#', new ItemStack(BlockListener.omniSlab.id, 1, 1), 'X', ItemListener.gear, 'Y', Item.REDSTONE);
-        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.turntable), "###", "ZXZ", "ZYZ", '#', new ItemStack(BlockListener.omniSlab.id, 1, 1), 'X', Item.REDSTONE, 'Y', ItemListener.gear, 'Z',
-                Block.STONE);
-        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.bellows), "###", "XXX", "YZY", '#', new ItemStack(BlockListener.omniSlab.id, 1, 1), 'X', ItemListener.tannedLeather, 'Y', ItemListener.gear, 'Z',
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.platform), "#X#", " # ", "#X#", '#', BlockBase.WOOD, 'X', ItemListener.wicker);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.platform), "X#X", " X ", "X#X", '#', ItemListener.wicker, 'X', BlockListener.moulding);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.pulley), "#Y#", "XZX", "#Y#", '#', BlockBase.WOOD, 'X', ItemListener.gear, 'Y', ItemBase.ironIngot, 'Z',
+                ItemBase.redstoneDust);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.pressurePlateObsidian, 1), "##", '#', BlockBase.OBSIDIAN);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.blockDispenser), "###", "# #", "YXY", '#', BlockBase.MOSSY_COBBLESTONE, 'X', ItemBase.redstoneDust, 'Y', BlockBase.STONE);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.cauldron), "#Y#", "#X#", "###", '#', ItemBase.ironIngot, 'X', ItemBase.bone, 'Y', ItemBase.waterBucket);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.detectorRailWood, 6), "X X", "X#X", "XRX", 'X', ItemBase.ironIngot, 'R', ItemBase.redstoneDust, '#', BlockBase.WOODEN_PRESSURE_PLATE);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.detectorRailObsidian, 6), "X X", "X#X", "XRX", 'X', ItemBase.ironIngot, 'R', ItemBase.redstoneDust, '#', BlockListener.pressurePlateObsidian);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.detectorBlock), "X#X", "###", "ZYZ", '#', BlockBase.COBBLESTONE, 'X', new ItemInstance(ItemBase.dyePowder, 1, 4), 'Y', ItemBase.redstoneDust, 'Z',
+                BlockBase.STONE);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.handCrank), "  Y", " Y ", "#X#", '#', BlockBase.COBBLESTONE, 'X', ItemListener.gear, 'Y', ItemBase.stick);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.millStone), "YYY", "YYY", "YXY", 'X', ItemListener.gear, 'Y', BlockBase.STONE);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.axleBlock), "#", "X", "#", '#', BlockBase.WOOD, 'X', ItemListener.ropeItem);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.axleBlock), "#", "X", "#", '#', BlockListener.moulding, 'X', ItemListener.ropeItem);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.gearBox), "#X#", "XYX", "#X#", '#', BlockBase.WOOD, 'X', ItemListener.gear, 'Y', ItemBase.redstoneDust);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.gearBox), "#X#", "XYX", "#X#", '#', new ItemInstance(BlockListener.omniSlab.id, 1, 1), 'X', ItemListener.gear, 'Y', ItemBase.redstoneDust);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.turntable), "###", "ZXZ", "ZYZ", '#', new ItemInstance(BlockListener.omniSlab.id, 1, 1), 'X', ItemBase.redstoneDust, 'Y', ItemListener.gear, 'Z',
+                BlockBase.STONE);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.bellows), "###", "XXX", "YZY", '#', new ItemInstance(BlockListener.omniSlab.id, 1, 1), 'X', ItemListener.tannedLeather, 'Y', ItemListener.gear, 'Z',
                 ItemListener.belt);
-        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.planter, 1, 1), "Y", "X", "#", '#', new ItemStack(BlockListener.planter, 1, 0), 'X', Item.WATER_BUCKET, 'Y', Block.DIRT);
-        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.blockOfWicker, 1), "XX", "XX", 'X', ItemListener.wicker);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.planter, 1, 1), "Y", "X", "#", '#', new ItemInstance(BlockListener.planter, 1, 0), 'X', ItemBase.waterBucket, 'Y', BlockBase.DIRT);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.blockOfWicker, 1), "XX", "XX", 'X', ItemListener.wicker);
     }
 
     private static void addItemRecipes() {
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.bucketCement, 1), "#YX", " Z ", Character.valueOf('#'), Block.SOUL_SAND, Character.valueOf('X'), Block.GRAVEL, Character.valueOf('Y'), Item.WATER_BUCKET, Character.valueOf('Z'), Item.BUCKET);
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.gear, 2), " X ", "X#X", " X ", Character.valueOf('#'), Block.PLANKS, Character.valueOf('X'), Item.STICK);
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.ropeItem, 1), "##", "##", "##", Character.valueOf('#'), ItemListener.hempFibers);
-        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.anchor), " X ", "###", Character.valueOf('#'), Block.STONE, Character.valueOf('X'), Item.IRON_INGOT);
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.waterWheelItem), "###", "# #", "###", Character.valueOf('#'), ItemListener.woodBlade);
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.windMillBladeItem), "###", "###", "XXX", Character.valueOf('#'), ItemListener.hempCloth, Character.valueOf('X'), BlockListener.moulding);
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.windMillBladeItem), "###", "###", "XXX", Character.valueOf('#'), ItemListener.hempCloth, Character.valueOf('X'), Block.PLANKS);
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.windMillItem), " # ", "# #", " # ", Character.valueOf('#'), ItemListener.windMillBladeItem);
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.hempCloth, 1), "###", "###", "###", Character.valueOf('#'), ItemListener.hempFibers);
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.grate, 1), "###", "###", "###", Character.valueOf('#'), Item.STICK);
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.wicker, 1), "###", "###", "###", Character.valueOf('#'), Item.SUGAR_CANE);
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.rollersItem, 1), "###", "###", "###", Character.valueOf('#'), BlockListener.moulding);
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.strap, 8), "#", Character.valueOf('#'), ItemListener.tannedLeather);
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.belt, 1), " # ", "# #", " # ", Character.valueOf('#'), ItemListener.strap);
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.woodBlade, 1), "#  ", "#X#", "#  ", Character.valueOf('#'), new ItemStack(BlockListener.omniSlab.id, 1, 1), Character.valueOf('X'), Item.SLIMEBALL);
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.woodBlade, 1), "#  ", "#X#", "#  ", Character.valueOf('#'), new ItemStack(BlockListener.omniSlab.id, 1, 1), Character.valueOf('X'), ItemListener.glue);
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.haft, 1), "Y", "X", "#", Character.valueOf('#'), BlockListener.moulding, Character.valueOf('X'), ItemListener.glue, Character.valueOf('Y'), ItemListener.strap);
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.haft, 1), "Y", "X", "#", Character.valueOf('#'), BlockListener.moulding, Character.valueOf('X'), Item.SLIMEBALL, Character.valueOf('Y'), ItemListener.strap);
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.compositeBow, 1), "X#Y", "ZX#", "X#Y", Character.valueOf('#'), BlockListener.moulding, Character.valueOf('X'), Item.BONE, Character.valueOf('Y'), Item.SLIMEBALL, Character.valueOf('Z'),
-                Item.STRING);
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.compositeBow, 1), "X#Y", "ZX#", "X#Y", Character.valueOf('#'), BlockListener.moulding, Character.valueOf('X'), Item.BONE, Character.valueOf('Y'), ItemListener.glue, Character.valueOf('Z'),
-                Item.STRING);
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.broadHeadArrow, 4), "#", "X", "Y", Character.valueOf('#'), ItemListener.broadHeadArrowhead, Character.valueOf('X'), BlockListener.moulding, Character.valueOf('Y'), Item.FEATHER);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemListener.bucketCement, 1), "#YX", " Z ", Character.valueOf('#'), BlockBase.SOUL_SAND, Character.valueOf('X'), BlockBase.GRAVEL, Character.valueOf('Y'), ItemBase.waterBucket, Character.valueOf('Z'), ItemBase.bucket);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemListener.gear, 2), " X ", "X#X", " X ", Character.valueOf('#'), BlockBase.WOOD, Character.valueOf('X'), ItemBase.stick);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemListener.ropeItem, 1), "##", "##", "##", Character.valueOf('#'), ItemListener.hempFibers);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockListener.anchor), " X ", "###", Character.valueOf('#'), BlockBase.STONE, Character.valueOf('X'), ItemBase.ironIngot);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemListener.waterWheelItem), "###", "# #", "###", Character.valueOf('#'), ItemListener.woodBlade);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemListener.windMillBladeItem), "###", "###", "XXX", Character.valueOf('#'), ItemListener.hempCloth, Character.valueOf('X'), BlockListener.moulding);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemListener.windMillBladeItem), "###", "###", "XXX", Character.valueOf('#'), ItemListener.hempCloth, Character.valueOf('X'), BlockBase.WOOD);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemListener.windMillItem), " # ", "# #", " # ", Character.valueOf('#'), ItemListener.windMillBladeItem);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemListener.hempCloth, 1), "###", "###", "###", Character.valueOf('#'), ItemListener.hempFibers);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemListener.grate, 1), "###", "###", "###", Character.valueOf('#'), ItemBase.stick);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemListener.wicker, 1), "###", "###", "###", Character.valueOf('#'), ItemBase.sugarCanes);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemListener.rollersItem, 1), "###", "###", "###", Character.valueOf('#'), BlockListener.moulding);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemListener.strap, 8), "#", Character.valueOf('#'), ItemListener.tannedLeather);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemListener.belt, 1), " # ", "# #", " # ", Character.valueOf('#'), ItemListener.strap);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemListener.woodBlade, 1), "#  ", "#X#", "#  ", Character.valueOf('#'), new ItemInstance(BlockListener.omniSlab.id, 1, 1), Character.valueOf('X'), ItemBase.slimeball);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemListener.woodBlade, 1), "#  ", "#X#", "#  ", Character.valueOf('#'), new ItemInstance(BlockListener.omniSlab.id, 1, 1), Character.valueOf('X'), ItemListener.glue);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemListener.haft, 1), "Y", "X", "#", Character.valueOf('#'), BlockListener.moulding, Character.valueOf('X'), ItemListener.glue, Character.valueOf('Y'), ItemListener.strap);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemListener.haft, 1), "Y", "X", "#", Character.valueOf('#'), BlockListener.moulding, Character.valueOf('X'), ItemBase.slimeball, Character.valueOf('Y'), ItemListener.strap);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemListener.compositeBow, 1), "X#Y", "ZX#", "X#Y", Character.valueOf('#'), BlockListener.moulding, Character.valueOf('X'), ItemBase.bone, Character.valueOf('Y'), ItemBase.slimeball, Character.valueOf('Z'),
+                ItemBase.string);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemListener.compositeBow, 1), "X#Y", "ZX#", "X#Y", Character.valueOf('#'), BlockListener.moulding, Character.valueOf('X'), ItemBase.bone, Character.valueOf('Y'), ItemListener.glue, Character.valueOf('Z'),
+                ItemBase.string);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemListener.broadHeadArrow, 4), "#", "X", "Y", Character.valueOf('#'), ItemListener.broadHeadArrowhead, Character.valueOf('X'), BlockListener.moulding, Character.valueOf('Y'), ItemBase.feather);
     }
 
     private static void addDyeRecipes() {
         for(int i = 0; i < 15; i++) {
-            CraftingRegistry.addShapelessRecipe(new ItemStack(BlockListener.vase, 1, WoolBlock.method_1(i)), new ItemStack(Item.DYE, 1, i), new ItemStack(BlockListener.vase.id, 1, 0));
+            CraftingRegistry.addShapelessRecipe(new ItemInstance(BlockListener.vase, 1, Wool.getColour(i)), new ItemInstance(ItemBase.dyePowder, 1, i), new ItemInstance(BlockListener.vase.id, 1, 0));
         }
 
-        CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 12), new ItemStack(ItemListener.dung), new ItemStack(Block.WOOL.id, 1, 0));
-        CraftingRegistry.addShapelessRecipe(new ItemStack(BlockListener.vase, 1, 12), new ItemStack(ItemListener.dung), new ItemStack(BlockListener.vase.id, 1, 0));
+        CraftingRegistry.addShapelessRecipe(new ItemInstance(BlockBase.WOOL, 1, 12), new ItemInstance(ItemListener.dung), new ItemInstance(BlockBase.WOOL.id, 1, 0));
+        CraftingRegistry.addShapelessRecipe(new ItemInstance(BlockListener.vase, 1, 12), new ItemInstance(ItemListener.dung), new ItemInstance(BlockListener.vase.id, 1, 0));
     }
 
     private static void addAlternateVanillaRecipes() {
-        CraftingRegistry.addShapedRecipe(new ItemStack(Block.STICKY_PISTON, 1), "#", "X", Character.valueOf('#'), ItemListener.glue, Character.valueOf('X'), Block.PISTON);
-        CraftingRegistry.addShapedRecipe(new ItemStack(Block.FENCE, 2), "###", Character.valueOf('#'), BlockListener.moulding);
-        CraftingRegistry.addShapedRecipe(new ItemStack(Block.WOODEN_STAIRS, 1), "# ", "##", Character.valueOf('#'), BlockListener.moulding);
-        CraftingRegistry.addShapedRecipe(new ItemStack(Item.SIGN, 1), "###", "###", " X ", Character.valueOf('#'), new ItemStack(BlockListener.omniSlab.id, 1, 1), Character.valueOf('X'), Item.STICK);
-        CraftingRegistry.addShapedRecipe(new ItemStack(Item.WOODEN_DOOR, 1), "##", "##", "##", Character.valueOf('#'), new ItemStack(BlockListener.omniSlab.id, 1, 1));
-        CraftingRegistry.addShapedRecipe(new ItemStack(Block.TRAPDOOR, 2), "###", "###", Character.valueOf('#'), new ItemStack(BlockListener.omniSlab.id, 1, 1));
-        CraftingRegistry.addShapedRecipe(new ItemStack(Item.CAKE, 1), "AAA", "BEB", "CCC", Character.valueOf('A'), Item.SUGAR, Character.valueOf('B'), Item.MILK_BUCKET, Character.valueOf('C'), ItemListener.flour, Character.valueOf('E'),
-                Item.EGG);
-        CraftingRegistry.addShapedRecipe(new ItemStack(Block.TORCH, 4), "#", "X", Character.valueOf('#'), ItemListener.netherCoal, Character.valueOf('X'), Item.STICK);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockBase.STICKY_PISTON, 1), "#", "X", Character.valueOf('#'), ItemListener.glue, Character.valueOf('X'), BlockBase.PISTON);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockBase.FENCE, 2), "###", Character.valueOf('#'), BlockListener.moulding);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockBase.WOOD_STAIRS, 1), "# ", "##", Character.valueOf('#'), BlockListener.moulding);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemBase.sign, 1), "###", "###", " X ", Character.valueOf('#'), new ItemInstance(BlockListener.omniSlab.id, 1, 1), Character.valueOf('X'), ItemBase.stick);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemBase.woodDoor, 1), "##", "##", "##", Character.valueOf('#'), new ItemInstance(BlockListener.omniSlab.id, 1, 1));
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockBase.TRAPDOOR, 2), "###", "###", Character.valueOf('#'), new ItemInstance(BlockListener.omniSlab.id, 1, 1));
+        CraftingRegistry.addShapedRecipe(new ItemInstance(ItemBase.cake, 1), "AAA", "BEB", "CCC", Character.valueOf('A'), ItemBase.sugar, Character.valueOf('B'), ItemBase.milk, Character.valueOf('C'), ItemListener.flour, Character.valueOf('E'),
+                ItemBase.egg);
+        CraftingRegistry.addShapedRecipe(new ItemInstance(BlockBase.TORCH, 4), "#", "X", Character.valueOf('#'), ItemListener.netherCoal, Character.valueOf('X'), ItemBase.stick);
     }
 
     private static void addConversionRecipes() {
-        CraftingRegistry.addShapelessRecipe(new ItemStack(Block.PLANKS), new ItemStack(BlockListener.omniSlab.id, 1, 1), new ItemStack(BlockListener.omniSlab.id, 1, 1));
-        CraftingRegistry.addShapelessRecipe(new ItemStack(Block.STONE), new ItemStack(BlockListener.omniSlab.id, 1, 0), new ItemStack(BlockListener.omniSlab.id, 1, 0));
-        CraftingRegistry.addShapelessRecipe(new ItemStack(BlockListener.omniSlab.id, 1, 1), new ItemStack(BlockListener.moulding.id,1,0), new ItemStack(BlockListener.moulding.id,1,0));
-        CraftingRegistry.addShapelessRecipe(new ItemStack(BlockListener.moulding.id,1,0), new ItemStack(BlockListener.corner.id,1,0), new ItemStack(BlockListener.corner.id,1,0));
-        CraftingRegistry.addShapelessRecipe(new ItemStack(Item.STRING), new ItemStack(ItemListener.hempFibers), new ItemStack(ItemListener.hempFibers));
+        CraftingRegistry.addShapelessRecipe(new ItemInstance(BlockBase.WOOD), new ItemInstance(BlockListener.omniSlab.id, 1, 1), new ItemInstance(BlockListener.omniSlab.id, 1, 1));
+        CraftingRegistry.addShapelessRecipe(new ItemInstance(BlockBase.STONE), new ItemInstance(BlockListener.omniSlab.id, 1, 0), new ItemInstance(BlockListener.omniSlab.id, 1, 0));
+        CraftingRegistry.addShapelessRecipe(new ItemInstance(BlockListener.omniSlab.id, 1, 1), new ItemInstance(BlockListener.moulding.id,1,0), new ItemInstance(BlockListener.moulding.id,1,0));
+        CraftingRegistry.addShapelessRecipe(new ItemInstance(BlockListener.moulding.id,1,0), new ItemInstance(BlockListener.corner.id,1,0), new ItemInstance(BlockListener.corner.id,1,0));
+        CraftingRegistry.addShapelessRecipe(new ItemInstance(ItemBase.string), new ItemInstance(ItemListener.hempFibers), new ItemInstance(ItemListener.hempFibers));
     }
 
     private static void AddSmeltingRecipes() {
-        SmeltingRegistry.addSmeltingRecipe(ItemListener.wolfRaw.id, new ItemStack(ItemListener.wolfCooked));
-        SmeltingRegistry.addSmeltingRecipe(ItemListener.flour.id, new ItemStack(Item.BREAD));
+        SmeltingRegistry.addSmeltingRecipe(ItemListener.wolfRaw.id, new ItemInstance(ItemListener.wolfCooked));
+        SmeltingRegistry.addSmeltingRecipe(ItemListener.flour.id, new ItemInstance(ItemBase.bread));
 //        ModLoader.AddSmelting(mod_FCBetterThanWolves.wolfRaw.id, new ItemInstance(mod_FCBetterThanWolves.wolfCooked));
 //        ModLoader.AddSmelting(mod_FCBetterThanWolves.flour.id, new ItemInstance(ItemBase.bread));
     }
 
     private static void addAnvilRecipes() {
-        addAnvilRecipe(new ItemStack(ItemListener.refinedPickAxe, 1), new Object[] {
+        addAnvilRecipe(new ItemInstance(ItemListener.refinedPickAxe, 1), new Object[] {
                 "###", " X ", " X ", '#', ItemListener.steel, 'X', ItemListener.haft
         });
-        addAnvilRecipe(new ItemStack(ItemListener.refinedShovel, 1), new Object[] {
+        addAnvilRecipe(new ItemInstance(ItemListener.refinedShovel, 1), new Object[] {
                 "#", "X", "X", '#', ItemListener.steel, 'X', ItemListener.haft
         });
-        addAnvilRecipe(new ItemStack(ItemListener.refinedHoe, 1), new Object[] {
+        addAnvilRecipe(new ItemInstance(ItemListener.refinedHoe, 1), new Object[] {
                 "##", " X", " X", '#', ItemListener.steel, 'X', ItemListener.haft
         });
-        addAnvilRecipe(new ItemStack(ItemListener.refinedAxe, 1), new Object[] {
+        addAnvilRecipe(new ItemInstance(ItemListener.refinedAxe, 1), new Object[] {
                 "###", "#X#", " X ", '#', ItemListener.steel, 'X', ItemListener.haft
         });
-        addAnvilRecipe(new ItemStack(ItemListener.refinedSword, 1), new Object[] {
+        addAnvilRecipe(new ItemInstance(ItemListener.refinedSword, 1), new Object[] {
                 "#", "#", "X", '#', ItemListener.steel, 'X', ItemListener.haft
         });
-        addAnvilRecipe(new ItemStack(ItemListener.armourPlateSteel, 1), new Object[] {
+        addAnvilRecipe(new ItemInstance(ItemListener.armourPlateSteel, 1), new Object[] {
                 "#X#", '#', ItemListener.strap, 'X', ItemListener.steel
         });
-        addAnvilRecipe(new ItemStack(ItemListener.helmetSteel, 1), new Object[] {
+        addAnvilRecipe(new ItemInstance(ItemListener.helmetSteel, 1), new Object[] {
                 "###", "#X#", '#', ItemListener.steel, 'X', ItemListener.armourPlateSteel
         });
-        addAnvilRecipe(new ItemStack(ItemListener.chestPlateSteel, 1), new Object[] {
+        addAnvilRecipe(new ItemInstance(ItemListener.chestPlateSteel, 1), new Object[] {
                 "X X", "###", "###", '#', ItemListener.steel, 'X', ItemListener.armourPlateSteel
         });
-        addAnvilRecipe(new ItemStack(ItemListener.leggingsSteel, 1), new Object[] {
+        addAnvilRecipe(new ItemInstance(ItemListener.leggingsSteel, 1), new Object[] {
                 "###", "X X", "X X", '#', ItemListener.steel, 'X', ItemListener.armourPlateSteel
         });
-        addAnvilRecipe(new ItemStack(ItemListener.bootsSteel, 1), new Object[] {
+        addAnvilRecipe(new ItemInstance(ItemListener.bootsSteel, 1), new Object[] {
                 "# #", "# #", '#', ItemListener.steel, 'X', ItemListener.armourPlateSteel
         });
-        addShapelessAnvilRecipe(new ItemStack(ItemListener.broadHeadArrowhead, 4), new Object[] {
+        addShapelessAnvilRecipe(new ItemInstance(ItemListener.broadHeadArrowhead, 4), new Object[] {
                 ItemListener.steel
         });
-        addShapelessAnvilRecipe(new ItemStack(BlockListener.omniSlab.id, 1, 0), new Object[] {
-                Block.STONE
+        addShapelessAnvilRecipe(new ItemInstance(BlockListener.omniSlab.id, 1, 0), new Object[] {
+                BlockBase.STONE
         });
     }
 
     private static void addCauldronRecipes() {
-        addCauldronRecipe(new ItemStack(ItemListener.netherCoal, 2), new ItemStack[] {
-                new ItemStack(ItemListener.hellfireDust, 4), new ItemStack(ItemListener.coalDust, 1)
+        addCauldronRecipe(new ItemInstance(ItemListener.netherCoal, 2), new ItemInstance[] {
+                new ItemInstance(ItemListener.hellfireDust, 4), new ItemInstance(ItemListener.coalDust, 1)
         });
-        addCauldronRecipe(new ItemStack(ItemListener.concentratedHellfire, 1), new ItemStack[] {
-                new ItemStack(ItemListener.hellfireDust, 8)
+        addCauldronRecipe(new ItemInstance(ItemListener.concentratedHellfire, 1), new ItemInstance[] {
+                new ItemInstance(ItemListener.hellfireDust, 8)
         });
-        addCauldronRecipe(new ItemStack(ItemListener.tannedLeather, 1), new ItemStack[] {
-                new ItemStack(ItemListener.dung, 1), new ItemStack(ItemListener.scouredLeather, 1)
+        addCauldronRecipe(new ItemInstance(ItemListener.tannedLeather, 1), new ItemInstance[] {
+                new ItemInstance(ItemListener.dung, 1), new ItemInstance(ItemListener.scouredLeather, 1)
         });
-        addCauldronRecipe(new ItemStack(ItemListener.donut, 4), new ItemStack[] {
-                new ItemStack(ItemListener.flour, 1)
+        addCauldronRecipe(new ItemInstance(ItemListener.donut, 4), new ItemInstance[] {
+                new ItemInstance(ItemListener.flour, 1)
         });
         for(int i = 0; i < 15; i++) {
-            addCauldronRecipe(new ItemStack(Block.WOOL, 8, WoolBlock.method_1(i)), new ItemStack[] {
-                    new ItemStack(Item.DYE, 1, i), new ItemStack(Block.WOOL, 8, 0)
+            addCauldronRecipe(new ItemInstance(BlockBase.WOOL, 8, Wool.getColour(i)), new ItemInstance[] {
+                    new ItemInstance(ItemBase.dyePowder, 1, i), new ItemInstance(BlockBase.WOOL, 8, 0)
             });
         }
-        addCauldronRecipe(new ItemStack(Block.WOOL, 8, 12), new ItemStack[] {
-                new ItemStack(ItemListener.dung, 1), new ItemStack(Block.WOOL.id, 8, 0)
+        addCauldronRecipe(new ItemInstance(BlockBase.WOOL, 8, 12), new ItemInstance[] {
+                new ItemInstance(ItemListener.dung, 1), new ItemInstance(BlockBase.WOOL.id, 8, 0)
         });
-        addCauldronRecipe(new ItemStack(Block.TNT), new ItemStack[] {
-                new ItemStack(Block.SAND, 4), new ItemStack(Item.GUNPOWDER, 5)
+        addCauldronRecipe(new ItemInstance(BlockBase.TNT), new ItemInstance[] {
+                new ItemInstance(BlockBase.SAND, 4), new ItemInstance(ItemBase.gunpowder, 5)
         });
-        addCauldronRecipe(new ItemStack(Block.WOOL), new ItemStack[] {
-                new ItemStack(Item.STRING, 4)
+        addCauldronRecipe(new ItemInstance(BlockBase.WOOL), new ItemInstance[] {
+                new ItemInstance(ItemBase.string, 4)
         });
-        addCauldronRecipe(new ItemStack(Item.DYE, 1, 2), new ItemStack[] {
-                new ItemStack(Block.CACTUS)
+        addCauldronRecipe(new ItemInstance(ItemBase.dyePowder, 1, 2), new ItemInstance[] {
+                new ItemInstance(BlockBase.CACTUS)
         });
-        addCauldronRecipe(new ItemStack(ItemListener.soulFilter, 1), new ItemStack[] {
-                new ItemStack(ItemListener.hempCloth, 2), new ItemStack(Block.SOUL_SAND, 1)
+        addCauldronRecipe(new ItemInstance(ItemListener.soulFilter, 1), new ItemInstance[] {
+                new ItemInstance(ItemListener.hempCloth, 2), new ItemInstance(BlockBase.SOUL_SAND, 1)
         });
-        addStokedCauldronRecipe(new ItemStack(ItemListener.glue, 1), new ItemStack[] {
-                new ItemStack(Item.LEATHER, 1)
+        addStokedCauldronRecipe(new ItemInstance(ItemListener.glue, 1), new ItemInstance[] {
+                new ItemInstance(ItemBase.leather, 1)
         });
-        addStokedCauldronRecipe(new ItemStack(ItemListener.glue, 1), new ItemStack[] {
-                new ItemStack(ItemListener.tannedLeather, 1)
+        addStokedCauldronRecipe(new ItemInstance(ItemListener.glue, 1), new ItemInstance[] {
+                new ItemInstance(ItemListener.tannedLeather, 1)
         });
-        addStokedCauldronRecipe(new ItemStack(ItemListener.glue, 1), new ItemStack[] {
-                new ItemStack(ItemListener.scouredLeather, 1)
+        addStokedCauldronRecipe(new ItemInstance(ItemListener.glue, 1), new ItemInstance[] {
+                new ItemInstance(ItemListener.scouredLeather, 1)
         });
-        addStokedCauldronRecipe(new ItemStack(ItemListener.glue, 1), new ItemStack[] {
-                new ItemStack(ItemListener.belt, 2)
+        addStokedCauldronRecipe(new ItemInstance(ItemListener.glue, 1), new ItemInstance[] {
+                new ItemInstance(ItemListener.belt, 2)
         });
-        addStokedCauldronRecipe(new ItemStack(ItemListener.glue, 1), new ItemStack[] {
-                new ItemStack(Item.BONE, 8)
+        addStokedCauldronRecipe(new ItemInstance(ItemListener.glue, 1), new ItemInstance[] {
+                new ItemInstance(ItemBase.bone, 8)
         });
-        addStokedCauldronRecipe(new ItemStack(ItemListener.glue, 1), new ItemStack[] {
-                new ItemStack(ItemListener.strap, 8)
+        addStokedCauldronRecipe(new ItemInstance(ItemListener.glue, 1), new ItemInstance[] {
+                new ItemInstance(ItemListener.strap, 8)
         });
-        addStokedCauldronRecipe(new ItemStack(ItemListener.glue, 1), new ItemStack[] {
-                new ItemStack(Block.WOOL, 16)
+        addStokedCauldronRecipe(new ItemInstance(ItemListener.glue, 1), new ItemInstance[] {
+                new ItemInstance(BlockBase.WOOL, 16)
         });
-        addStokedCauldronRecipe(new ItemStack(ItemListener.glue, 1), new ItemStack[] {
-                new ItemStack(Item.FEATHER, 16)
+        addStokedCauldronRecipe(new ItemInstance(ItemListener.glue, 1), new ItemInstance[] {
+                new ItemInstance(ItemBase.feather, 16)
         });
-        addStokedCauldronRecipe(new ItemStack(ItemListener.glue, 1), new ItemStack[] {
-                new ItemStack(Item.STRING, 64)
+        addStokedCauldronRecipe(new ItemInstance(ItemListener.glue, 1), new ItemInstance[] {
+                new ItemInstance(ItemBase.string, 64)
         });
-        addStokedCauldronRecipe(new ItemStack(ItemListener.glue, 5), new ItemStack[] {
-                new ItemStack(Item.LEATHER_HELMET, 1)
+        addStokedCauldronRecipe(new ItemInstance(ItemListener.glue, 5), new ItemInstance[] {
+                new ItemInstance(ItemBase.leatherHelmet, 1)
         });
-        addStokedCauldronRecipe(new ItemStack(ItemListener.glue, 8), new ItemStack[] {
-                new ItemStack(Item.LEATHER_CHESTPLATE, 1)
+        addStokedCauldronRecipe(new ItemInstance(ItemListener.glue, 8), new ItemInstance[] {
+                new ItemInstance(ItemBase.leatherChestplate, 1)
         });
-        addStokedCauldronRecipe(new ItemStack(ItemListener.glue, 7), new ItemStack[] {
-                new ItemStack(Item.LEATHER_LEGGINGS, 1)
+        addStokedCauldronRecipe(new ItemInstance(ItemListener.glue, 7), new ItemInstance[] {
+                new ItemInstance(ItemBase.leatherLeggings, 1)
         });
-        addStokedCauldronRecipe(new ItemStack(ItemListener.glue, 4), new ItemStack[] {
-                new ItemStack(Item.LEATHER_BOOTS, 1)
+        addStokedCauldronRecipe(new ItemInstance(ItemListener.glue, 4), new ItemInstance[] {
+                new ItemInstance(ItemBase.leatherBoots, 1)
         });
-        addStokedCauldronRecipe(new ItemStack(ItemListener.tallow, 1), new ItemStack[] {
-                new ItemStack(Item.COOKED_PORKCHOP, 1)
+        addStokedCauldronRecipe(new ItemInstance(ItemListener.tallow, 1), new ItemInstance[] {
+                new ItemInstance(ItemBase.cookedPorkchop, 1)
         });
-        addStokedCauldronRecipe(new ItemStack(ItemListener.tallow, 1), new ItemStack[] {
-                new ItemStack(Item.RAW_PORKCHOP, 1)
+        addStokedCauldronRecipe(new ItemInstance(ItemListener.tallow, 1), new ItemInstance[] {
+                new ItemInstance(ItemBase.rawPorkchop, 1)
         });
-        addStokedCauldronRecipe(new ItemStack(ItemListener.tallow, 1), new ItemStack[] {
-                new ItemStack(ItemListener.wolfCooked, 1)
+        addStokedCauldronRecipe(new ItemInstance(ItemListener.tallow, 1), new ItemInstance[] {
+                new ItemInstance(ItemListener.wolfCooked, 1)
         });
-        addStokedCauldronRecipe(new ItemStack(ItemListener.tallow, 1), new ItemStack[] {
-                new ItemStack(ItemListener.wolfRaw, 1)
+        addStokedCauldronRecipe(new ItemInstance(ItemListener.tallow, 1), new ItemInstance[] {
+                new ItemInstance(ItemListener.wolfRaw, 1)
         });
     }
 
     private static void addMillingRecipes() {
-        MillingRecipeRegistry.getInstance().addMillingRecipe(Item.WHEAT.id, new ItemStack(ItemListener.flour, 1));
-        MillingRecipeRegistry.getInstance().addMillingRecipe(Item.LEATHER.id, new ItemStack(ItemListener.scouredLeather, 1));
-        MillingRecipeRegistry.getInstance().addMillingRecipe(ItemListener.hemp.id, new ItemStack(ItemListener.hempFibers, 4));
-        MillingRecipeRegistry.getInstance().addMillingRecipe(Item.SUGAR_CANE.id, new ItemStack(Item.SUGAR, 1));
-        MillingRecipeRegistry.getInstance().addMillingRecipe(Block.NETHERRACK.id, new ItemStack(ItemListener.groundNetherrack, 1));
-        MillingRecipeRegistry.getInstance().addMillingRecipe(Item.BONE.id, new ItemStack(Item.DYE, 3, 15));
-        MillingRecipeRegistry.getInstance().addMillingRecipe(Item.COAL.id, new ItemStack(ItemListener.coalDust, 1));
-        MillingRecipeRegistry.getInstance().addMillingRecipe(Block.ROSE.id, new ItemStack(Item.DYE, 2, 1));
-        MillingRecipeRegistry.getInstance().addMillingRecipe(Block.DANDELION.id, new ItemStack(Item.DYE, 2, 11));
+        MillingRecipeRegistry.getInstance().addMillingRecipe(ItemBase.wheat.id, new ItemInstance(ItemListener.flour, 1));
+        MillingRecipeRegistry.getInstance().addMillingRecipe(ItemBase.leather.id, new ItemInstance(ItemListener.scouredLeather, 1));
+        MillingRecipeRegistry.getInstance().addMillingRecipe(ItemListener.hemp.id, new ItemInstance(ItemListener.hempFibers, 4));
+        MillingRecipeRegistry.getInstance().addMillingRecipe(ItemBase.sugarCanes.id, new ItemInstance(ItemBase.sugar, 1));
+        MillingRecipeRegistry.getInstance().addMillingRecipe(BlockBase.NETHERRACK.id, new ItemInstance(ItemListener.groundNetherrack, 1));
+        MillingRecipeRegistry.getInstance().addMillingRecipe(ItemBase.bone.id, new ItemInstance(ItemBase.dyePowder, 3, 15));
+        MillingRecipeRegistry.getInstance().addMillingRecipe(ItemBase.coal.id, new ItemInstance(ItemListener.coalDust, 1));
+        MillingRecipeRegistry.getInstance().addMillingRecipe(BlockBase.ROSE.id, new ItemInstance(ItemBase.dyePowder, 2, 1));
+        MillingRecipeRegistry.getInstance().addMillingRecipe(BlockBase.DANDELION.id, new ItemInstance(ItemBase.dyePowder, 2, 11));
     }
 
     private static void addTurntableRecipes() {
-        TurntableRecipeRegistry.getInstance().addTurntableRecipe(Block.CLAY.id, new ItemStack(BlockListener.unfiredPottery));
-        TurntableRecipeRegistry.getInstance().addTurntableRecipe(BlockListener.unfiredPottery.id, new ItemStack(BlockListener.unfiredPottery, 1, 1));
+        TurntableRecipeRegistry.getInstance().addTurntableRecipe(BlockBase.CLAY.id, new ItemInstance(BlockListener.unfiredPottery));
+        TurntableRecipeRegistry.getInstance().addTurntableRecipe(BlockListener.unfiredPottery.id, new ItemInstance(BlockListener.unfiredPottery, 1, 1));
     }
 
     private static void addCrucibleRecipes() {
         // Material processing
-        addCrucibleRecipe(new ItemStack(ItemListener.steel, 4), new ItemStack[] { new ItemStack(Item.IRON_INGOT, 3), new ItemStack(ItemListener.concentratedHellfire), new ItemStack(ItemListener.coalDust) });
+        addCrucibleRecipe(new ItemInstance(ItemListener.steel, 4), new ItemInstance[] { new ItemInstance(ItemBase.ironIngot, 3), new ItemInstance(ItemListener.concentratedHellfire), new ItemInstance(ItemListener.coalDust) });
 
         // Recycling (iron)
-        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 9), new ItemStack[] { new ItemStack(Block.IRON_BLOCK) });
-        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 8), new ItemStack[] { new ItemStack(Item.IRON_CHESTPLATE) });
-        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 7), new ItemStack[] { new ItemStack(Item.IRON_LEGGINGS) });
-        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 6), new ItemStack[] { new ItemStack(Item.IRON_DOOR) });
-        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 6), new ItemStack[] { new ItemStack(Block.RAIL, 16) });
-        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 5), new ItemStack[] { new ItemStack(Item.IRON_HELMET) });
-        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 5), new ItemStack[] { new ItemStack(Item.MINECART) });
-        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 5), new ItemStack[] { new ItemStack(Item.CHEST_MINECART) });
-        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 5), new ItemStack[] { new ItemStack(Item.FURNACE_MINECART) });
-        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 4), new ItemStack[] { new ItemStack(Item.IRON_BOOTS) });
-        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 4), new ItemStack[] { new ItemStack(Item.COMPASS) });
-        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 4), new ItemStack[] { new ItemStack(Item.MAP) });
-        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 3), new ItemStack[] { new ItemStack(Item.BUCKET) });
-        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 3), new ItemStack[] { new ItemStack(Item.LAVA_BUCKET) });
-        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 3), new ItemStack[] { new ItemStack(Item.WATER_BUCKET) });
-        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 3), new ItemStack[] { new ItemStack(Item.MILK_BUCKET) });
-        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 3), new ItemStack[] { new ItemStack(ItemListener.bucketCement) });
-        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 3), new ItemStack[] { new ItemStack(Item.IRON_PICKAXE) });
-        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 3), new ItemStack[] { new ItemStack(Item.IRON_AXE) });
-        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 2), new ItemStack[] { new ItemStack(Item.IRON_SWORD) });
-        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 2), new ItemStack[] { new ItemStack(Item.IRON_HOE) });
-        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 2), new ItemStack[] { new ItemStack(Item.SHEARS) });
-        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 1), new ItemStack[] { new ItemStack(Item.IRON_SHOVEL) });
-        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 1), new ItemStack[] { new ItemStack(Item.FLINT_AND_STEEL) });
-        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 1), new ItemStack[] { new ItemStack(Block.DETECTOR_RAIL) });
-        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 1), new ItemStack[] { new ItemStack(BlockListener.detectorRailWood) });
-        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 1), new ItemStack[] { new ItemStack(BlockListener.detectorRailObsidian) });
+        addCrucibleRecipe(new ItemInstance(ItemBase.ironIngot, 9), new ItemInstance[] { new ItemInstance(BlockBase.IRON_BLOCK) });
+        addCrucibleRecipe(new ItemInstance(ItemBase.ironIngot, 8), new ItemInstance[] { new ItemInstance(ItemBase.ironChestplate) });
+        addCrucibleRecipe(new ItemInstance(ItemBase.ironIngot, 7), new ItemInstance[] { new ItemInstance(ItemBase.ironLeggings) });
+        addCrucibleRecipe(new ItemInstance(ItemBase.ironIngot, 6), new ItemInstance[] { new ItemInstance(ItemBase.ironDoor) });
+        addCrucibleRecipe(new ItemInstance(ItemBase.ironIngot, 6), new ItemInstance[] { new ItemInstance(BlockBase.RAIL, 16) });
+        addCrucibleRecipe(new ItemInstance(ItemBase.ironIngot, 5), new ItemInstance[] { new ItemInstance(ItemBase.ironHelmet) });
+        addCrucibleRecipe(new ItemInstance(ItemBase.ironIngot, 5), new ItemInstance[] { new ItemInstance(ItemBase.minecart) });
+        addCrucibleRecipe(new ItemInstance(ItemBase.ironIngot, 5), new ItemInstance[] { new ItemInstance(ItemBase.minecartChest) });
+        addCrucibleRecipe(new ItemInstance(ItemBase.ironIngot, 5), new ItemInstance[] { new ItemInstance(ItemBase.minecartFurnace) });
+        addCrucibleRecipe(new ItemInstance(ItemBase.ironIngot, 4), new ItemInstance[] { new ItemInstance(ItemBase.ironBoots) });
+        addCrucibleRecipe(new ItemInstance(ItemBase.ironIngot, 4), new ItemInstance[] { new ItemInstance(ItemBase.compass) });
+        addCrucibleRecipe(new ItemInstance(ItemBase.ironIngot, 4), new ItemInstance[] { new ItemInstance(ItemBase.map) });
+        addCrucibleRecipe(new ItemInstance(ItemBase.ironIngot, 3), new ItemInstance[] { new ItemInstance(ItemBase.bucket) });
+        addCrucibleRecipe(new ItemInstance(ItemBase.ironIngot, 3), new ItemInstance[] { new ItemInstance(ItemBase.lavaBucket) });
+        addCrucibleRecipe(new ItemInstance(ItemBase.ironIngot, 3), new ItemInstance[] { new ItemInstance(ItemBase.waterBucket) });
+        addCrucibleRecipe(new ItemInstance(ItemBase.ironIngot, 3), new ItemInstance[] { new ItemInstance(ItemBase.milk) });
+        addCrucibleRecipe(new ItemInstance(ItemBase.ironIngot, 3), new ItemInstance[] { new ItemInstance(ItemListener.bucketCement) });
+        addCrucibleRecipe(new ItemInstance(ItemBase.ironIngot, 3), new ItemInstance[] { new ItemInstance(ItemBase.ironPickaxe) });
+        addCrucibleRecipe(new ItemInstance(ItemBase.ironIngot, 3), new ItemInstance[] { new ItemInstance(ItemBase.ironAxe) });
+        addCrucibleRecipe(new ItemInstance(ItemBase.ironIngot, 2), new ItemInstance[] { new ItemInstance(ItemBase.ironSword) });
+        addCrucibleRecipe(new ItemInstance(ItemBase.ironIngot, 2), new ItemInstance[] { new ItemInstance(ItemBase.ironHoe) });
+        addCrucibleRecipe(new ItemInstance(ItemBase.ironIngot, 2), new ItemInstance[] { new ItemInstance(ItemBase.shears) });
+        addCrucibleRecipe(new ItemInstance(ItemBase.ironIngot, 1), new ItemInstance[] { new ItemInstance(ItemBase.ironShovel) });
+        addCrucibleRecipe(new ItemInstance(ItemBase.ironIngot, 1), new ItemInstance[] { new ItemInstance(ItemBase.flintAndSteel) });
+        addCrucibleRecipe(new ItemInstance(ItemBase.ironIngot, 1), new ItemInstance[] { new ItemInstance(BlockBase.DETECTOR_RAIL) });
+        addCrucibleRecipe(new ItemInstance(ItemBase.ironIngot, 1), new ItemInstance[] { new ItemInstance(BlockListener.detectorRailWood) });
+        addCrucibleRecipe(new ItemInstance(ItemBase.ironIngot, 1), new ItemInstance[] { new ItemInstance(BlockListener.detectorRailObsidian) });
 
         // Recycling (gold)
-        addCrucibleRecipe(new ItemStack(Item.GOLD_INGOT, 9), new ItemStack[] { new ItemStack(Block.GOLD_BLOCK) });
-        addCrucibleRecipe(new ItemStack(Item.GOLD_INGOT, 8), new ItemStack[] { new ItemStack(Item.GOLDEN_CHESTPLATE) });
-        addCrucibleRecipe(new ItemStack(Item.GOLD_INGOT, 7), new ItemStack[] { new ItemStack(Item.GOLDEN_LEGGINGS) });
-        addCrucibleRecipe(new ItemStack(Item.GOLD_INGOT, 5), new ItemStack[] { new ItemStack(Item.GOLDEN_HELMET) });
-        addCrucibleRecipe(new ItemStack(Item.GOLD_INGOT, 4), new ItemStack[] { new ItemStack(Item.GOLDEN_BOOTS) });
-        addCrucibleRecipe(new ItemStack(Item.GOLD_INGOT, 4), new ItemStack[] { new ItemStack(Item.CLOCK) });
-        addCrucibleRecipe(new ItemStack(Item.GOLD_INGOT, 3), new ItemStack[] { new ItemStack(Item.GOLDEN_PICKAXE) });
-        addCrucibleRecipe(new ItemStack(Item.GOLD_INGOT, 3), new ItemStack[] { new ItemStack(Item.GOLDEN_AXE) });
-        addCrucibleRecipe(new ItemStack(Item.GOLD_INGOT, 2), new ItemStack[] { new ItemStack(Item.GOLDEN_SWORD) });
-        addCrucibleRecipe(new ItemStack(Item.GOLD_INGOT, 2), new ItemStack[] { new ItemStack(Item.GOLDEN_HOE) });
-        addCrucibleRecipe(new ItemStack(Item.GOLD_INGOT, 1), new ItemStack[] { new ItemStack(Item.GOLDEN_SHOVEL) });
-        addCrucibleRecipe(new ItemStack(Item.GOLD_INGOT, 1), new ItemStack[] { new ItemStack(Block.POWERED_RAIL) });
+        addCrucibleRecipe(new ItemInstance(ItemBase.goldIngot, 9), new ItemInstance[] { new ItemInstance(BlockBase.GOLD_BLOCK) });
+        addCrucibleRecipe(new ItemInstance(ItemBase.goldIngot, 8), new ItemInstance[] { new ItemInstance(ItemBase.goldChestplate) });
+        addCrucibleRecipe(new ItemInstance(ItemBase.goldIngot, 7), new ItemInstance[] { new ItemInstance(ItemBase.goldLeggings) });
+        addCrucibleRecipe(new ItemInstance(ItemBase.goldIngot, 5), new ItemInstance[] { new ItemInstance(ItemBase.goldHelmet) });
+        addCrucibleRecipe(new ItemInstance(ItemBase.goldIngot, 4), new ItemInstance[] { new ItemInstance(ItemBase.goldBoots) });
+        addCrucibleRecipe(new ItemInstance(ItemBase.goldIngot, 4), new ItemInstance[] { new ItemInstance(ItemBase.clock) });
+        addCrucibleRecipe(new ItemInstance(ItemBase.goldIngot, 3), new ItemInstance[] { new ItemInstance(ItemBase.goldPickaxe) });
+        addCrucibleRecipe(new ItemInstance(ItemBase.goldIngot, 3), new ItemInstance[] { new ItemInstance(ItemBase.goldAxe) });
+        addCrucibleRecipe(new ItemInstance(ItemBase.goldIngot, 2), new ItemInstance[] { new ItemInstance(ItemBase.goldSword) });
+        addCrucibleRecipe(new ItemInstance(ItemBase.goldIngot, 2), new ItemInstance[] { new ItemInstance(ItemBase.goldHoe) });
+        addCrucibleRecipe(new ItemInstance(ItemBase.goldIngot, 1), new ItemInstance[] { new ItemInstance(ItemBase.goldShovel) });
+        addCrucibleRecipe(new ItemInstance(ItemBase.goldIngot, 1), new ItemInstance[] { new ItemInstance(BlockBase.GOLDEN_RAIL) });
 
         // Recycling (steel)
-        addCrucibleRecipe(new ItemStack(ItemListener.steel, 8), new ItemStack[] { new ItemStack(ItemListener.chestPlateSteel) });
-        addCrucibleRecipe(new ItemStack(ItemListener.steel, 7), new ItemStack[] { new ItemStack(BlockListener.anvil) });
-        addCrucibleRecipe(new ItemStack(ItemListener.steel, 7), new ItemStack[] { new ItemStack(ItemListener.leggingsSteel) });
-        addCrucibleRecipe(new ItemStack(ItemListener.steel, 5), new ItemStack[] { new ItemStack(ItemListener.helmetSteel) });
-        addCrucibleRecipe(new ItemStack(ItemListener.steel, 4), new ItemStack[] { new ItemStack(ItemListener.bootsSteel) });
-        addCrucibleRecipe(new ItemStack(ItemListener.steel, 3), new ItemStack[] { new ItemStack(ItemListener.refinedPickAxe) });
-        addCrucibleRecipe(new ItemStack(ItemListener.steel, 3), new ItemStack[] { new ItemStack(ItemListener.refinedAxe) });
-        addCrucibleRecipe(new ItemStack(ItemListener.steel, 2), new ItemStack[] { new ItemStack(ItemListener.refinedSword) });
-        addCrucibleRecipe(new ItemStack(ItemListener.steel, 2), new ItemStack[] { new ItemStack(ItemListener.refinedHoe) });
-        addCrucibleRecipe(new ItemStack(ItemListener.steel, 1), new ItemStack[] { new ItemStack(ItemListener.refinedShovel) });
-        addCrucibleRecipe(new ItemStack(ItemListener.steel, 1), new ItemStack[] { new ItemStack(ItemListener.armourPlateSteel) });
-        addCrucibleRecipe(new ItemStack(ItemListener.steel, 1), new ItemStack[] { new ItemStack(ItemListener.broadHeadArrowhead, 4) });
-        addCrucibleRecipe(new ItemStack(ItemListener.steel, 1), new ItemStack[] { new ItemStack(ItemListener.broadHeadArrow, 16) });
+        addCrucibleRecipe(new ItemInstance(ItemListener.steel, 8), new ItemInstance[] { new ItemInstance(ItemListener.chestPlateSteel) });
+        addCrucibleRecipe(new ItemInstance(ItemListener.steel, 7), new ItemInstance[] { new ItemInstance(BlockListener.anvil) });
+        addCrucibleRecipe(new ItemInstance(ItemListener.steel, 7), new ItemInstance[] { new ItemInstance(ItemListener.leggingsSteel) });
+        addCrucibleRecipe(new ItemInstance(ItemListener.steel, 5), new ItemInstance[] { new ItemInstance(ItemListener.helmetSteel) });
+        addCrucibleRecipe(new ItemInstance(ItemListener.steel, 4), new ItemInstance[] { new ItemInstance(ItemListener.bootsSteel) });
+        addCrucibleRecipe(new ItemInstance(ItemListener.steel, 3), new ItemInstance[] { new ItemInstance(ItemListener.refinedPickAxe) });
+        addCrucibleRecipe(new ItemInstance(ItemListener.steel, 3), new ItemInstance[] { new ItemInstance(ItemListener.refinedAxe) });
+        addCrucibleRecipe(new ItemInstance(ItemListener.steel, 2), new ItemInstance[] { new ItemInstance(ItemListener.refinedSword) });
+        addCrucibleRecipe(new ItemInstance(ItemListener.steel, 2), new ItemInstance[] { new ItemInstance(ItemListener.refinedHoe) });
+        addCrucibleRecipe(new ItemInstance(ItemListener.steel, 1), new ItemInstance[] { new ItemInstance(ItemListener.refinedShovel) });
+        addCrucibleRecipe(new ItemInstance(ItemListener.steel, 1), new ItemInstance[] { new ItemInstance(ItemListener.armourPlateSteel) });
+        addCrucibleRecipe(new ItemInstance(ItemListener.steel, 1), new ItemInstance[] { new ItemInstance(ItemListener.broadHeadArrowhead, 4) });
+        addCrucibleRecipe(new ItemInstance(ItemListener.steel, 1), new ItemInstance[] { new ItemInstance(ItemListener.broadHeadArrow, 16) });
 
     }
 
     private static void addHopperRecipes() {
-        HopperHauntingRecipeRegistry.getInstance().addHopperHauntingRecipe(ItemListener.groundNetherrack.id, new ItemStack(ItemListener.hellfireDust, 1));
+        HopperHauntingRecipeRegistry.getInstance().addHopperHauntingRecipe(ItemListener.groundNetherrack.id, new ItemInstance(ItemListener.hellfireDust, 1));
     }
 
     private static void addSawingRecipes() {
-        SawingRecipeRegistry.getInstance().addSawingRecipe(Block.LOG.id, new ItemStack(Block.PLANKS, 4));
-        SawingRecipeRegistry.getInstance().addSawingRecipe(Block.PLANKS.id, new ItemStack(BlockListener.omniSlab, 2, 1));
-        SawingRecipeRegistry.getInstance().addSawingRecipe(BlockListener.omniSlab.id, new ItemStack(BlockListener.moulding, 2));
-        SawingRecipeRegistry.getInstance().addSawingRecipe(BlockListener.moulding.id, new ItemStack(BlockListener.corner, 2));
-        SawingRecipeRegistry.getInstance().addSawingRecipe(BlockListener.corner.id, new ItemStack(ItemListener.gear, 2));
+        SawingRecipeRegistry.getInstance().addSawingRecipe(BlockBase.LOG.id, new ItemInstance(BlockBase.WOOD, 4));
+        SawingRecipeRegistry.getInstance().addSawingRecipe(BlockBase.WOOD.id, new ItemInstance(BlockListener.omniSlab, 2, 1));
+        SawingRecipeRegistry.getInstance().addSawingRecipe(BlockListener.omniSlab.id, new ItemInstance(BlockListener.moulding, 2));
+        SawingRecipeRegistry.getInstance().addSawingRecipe(BlockListener.moulding.id, new ItemInstance(BlockListener.corner, 2));
+        SawingRecipeRegistry.getInstance().addSawingRecipe(BlockListener.corner.id, new ItemInstance(ItemListener.gear, 2));
     }
 
     private static void addDebugRecipes() {

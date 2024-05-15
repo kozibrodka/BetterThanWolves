@@ -4,17 +4,17 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.kozibrodka.wolves.events.EntityListener;
 import net.kozibrodka.wolves.events.ItemListener;
-import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
+import net.minecraft.block.BlockBase;
+import net.minecraft.entity.EntityBase;
+import net.minecraft.entity.Living;
+import net.minecraft.entity.player.PlayerBase;
+import net.minecraft.item.ItemInstance;
+import net.minecraft.level.Level;
 import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
+import net.minecraft.util.io.CompoundTag;
+import net.minecraft.util.maths.Box;
+import net.minecraft.util.maths.MathHelper;
+import net.minecraft.util.maths.Vec3f;
 import net.modificationstation.stationapi.api.server.entity.EntitySpawnDataProvider;
 import net.modificationstation.stationapi.api.server.entity.HasTrackingParameters;
 import net.modificationstation.stationapi.api.util.Identifier;
@@ -22,7 +22,7 @@ import net.modificationstation.stationapi.api.util.Identifier;
 import java.util.List;
 
 @HasTrackingParameters(trackingDistance = 160, updatePeriod = 2)
-public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvider {
+public class BroadheadArrowEntity extends EntityBase implements EntitySpawnDataProvider {
 
     private int xTile = -1;
     private int yTile = -1;
@@ -32,33 +32,33 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
     private boolean inGround = false;
     public boolean spawnedByPlayer = false;
     public int shake = 0;
-    public LivingEntity owner;
+    public Living owner;
     private int ticksInGround;
     private int ticksFlying = 0;
 
-    public BroadheadArrowEntity(World arg) {
+    public BroadheadArrowEntity(Level arg) {
         super(arg);
-        this.setBoundingBoxSpacing(0.5F, 0.5F);
+        this.setSize(0.5F, 0.5F);
     }
 
-    public BroadheadArrowEntity(World arg, double d, double e, double f) {
+    public BroadheadArrowEntity(Level arg, double d, double e, double f) {
         super(arg);
-        this.setBoundingBoxSpacing(0.5F, 0.5F);
-        this.method_1340(d, e, f);
-        this.eyeHeight = 0.0F;
+        this.setSize(0.5F, 0.5F);
+        this.setPosition(d, e, f);
+        this.standingEyeHeight = 0.0F;
     }
 
-    public BroadheadArrowEntity(World arg, LivingEntity arg2) {
+    public BroadheadArrowEntity(Level arg, Living arg2) {
         super(arg);
         this.owner = arg2;
-        this.spawnedByPlayer = arg2 instanceof PlayerEntity;
-        this.setBoundingBoxSpacing(0.5F, 0.5F);
-        this.method_1341(arg2.x, arg2.y + (double)arg2.method_1378(), arg2.z, arg2.yaw, arg2.pitch);
+        this.spawnedByPlayer = arg2 instanceof PlayerBase;
+        this.setSize(0.5F, 0.5F);
+        this.setPositionAndAngles(arg2.x, arg2.y + (double)arg2.getStandingEyeHeight(), arg2.z, arg2.yaw, arg2.pitch);
         this.x -= (double)(MathHelper.cos(this.yaw / 180.0F * 3.1415927F) * 0.16F);
         this.y -= 0.10000000149011612D;
         this.z -= (double)(MathHelper.sin(this.yaw / 180.0F * 3.1415927F) * 0.16F);
-        this.method_1340(this.x, this.y, this.z);
-        this.eyeHeight = 0.0F;
+        this.setPosition(this.x, this.y, this.z);
+        this.standingEyeHeight = 0.0F;
         this.velocityX = (double)(-MathHelper.sin(this.yaw / 180.0F * 3.1415927F) * MathHelper.cos(this.pitch / 180.0F * 3.1415927F));
         this.velocityZ = (double)(MathHelper.cos(this.yaw / 180.0F * 3.1415927F) * MathHelper.cos(this.pitch / 180.0F * 3.1415927F));
         this.velocityY = (double)(-MathHelper.sin(this.pitch / 180.0F * 3.1415927F));
@@ -73,9 +73,9 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
         d /= (double)var9;
         e /= (double)var9;
         f /= (double)var9;
-        d += this.random.nextGaussian() * 0.007499999832361937D * (double)h;
-        e += this.random.nextGaussian() * 0.007499999832361937D * (double)h;
-        f += this.random.nextGaussian() * 0.007499999832361937D * (double)h;
+        d += this.rand.nextGaussian() * 0.007499999832361937D * (double)h;
+        e += this.rand.nextGaussian() * 0.007499999832361937D * (double)h;
+        f += this.rand.nextGaussian() * 0.007499999832361937D * (double)h;
         d *= (double)g;
         e *= (double)g;
         f *= (double)g;
@@ -89,7 +89,7 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
     }
 
     @Environment(EnvType.CLIENT)
-    public void method_1365(double d, double e, double f) {
+    public void setVelocity(double d, double e, double f) {
         this.velocityX = d;
         this.velocityY = e;
         this.velocityZ = f;
@@ -99,7 +99,7 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
             this.prevPitch = this.pitch = (float)(Math.atan2(e, (double)var7) * 180.0D / 3.1415927410125732D);
             this.prevPitch = this.pitch;
             this.prevYaw = this.yaw;
-            this.method_1341(this.x, this.y, this.z, this.yaw, this.pitch);
+            this.setPositionAndAngles(this.x, this.y, this.z, this.yaw, this.pitch);
             this.ticksInGround = 0;
         }
 
@@ -108,7 +108,7 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
     public void tick() {
         super.tick();
         //ADDED
-        if(dead || world.isRemote)
+        if(removed || level.isServerSide)
         {
             return;
         }
@@ -119,11 +119,11 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
             this.prevPitch = this.pitch = (float)(Math.atan2(this.velocityY, (double)var1) * 180.0D / 3.1415927410125732D);
         }
 
-        int var15 = this.world.getBlockId(this.xTile, this.yTile, this.zTile);
+        int var15 = this.level.getTileId(this.xTile, this.yTile, this.zTile);
         if (var15 > 0) {
-            Block.BLOCKS[var15].updateBoundingBox(this.world, this.xTile, this.yTile, this.zTile);
-            Box var2 = Block.BLOCKS[var15].getCollisionShape(this.world, this.xTile, this.yTile, this.zTile);
-            if (var2 != null && var2.contains(Vec3d.createCached(this.x, this.y, this.z))) {
+            BlockBase.BY_ID[var15].updateBoundingBox(this.level, this.xTile, this.yTile, this.zTile);
+            Box var2 = BlockBase.BY_ID[var15].getCollisionShape(this.level, this.xTile, this.yTile, this.zTile);
+            if (var2 != null && var2.method_88(Vec3f.from(this.x, this.y, this.z))) {
                 this.inGround = true;
             }
         }
@@ -133,46 +133,46 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
         }
 
         if (this.inGround) {
-            var15 = this.world.getBlockId(this.xTile, this.yTile, this.zTile);
-            int var18 = this.world.getBlockMeta(this.xTile, this.yTile, this.zTile);
+            var15 = this.level.getTileId(this.xTile, this.yTile, this.zTile);
+            int var18 = this.level.getTileMeta(this.xTile, this.yTile, this.zTile);
             if (var15 == this.inTile && var18 == this.inData) {
                 ++this.ticksInGround;
                 if (this.ticksInGround == 1200) {
-                    this.markDead();
+                    this.remove();
                 }
 
             } else {
                 this.inGround = false;
-                this.velocityX *= (double)(this.random.nextFloat() * 0.2F);
-                this.velocityY *= (double)(this.random.nextFloat() * 0.2F);
-                this.velocityZ *= (double)(this.random.nextFloat() * 0.2F);
+                this.velocityX *= (double)(this.rand.nextFloat() * 0.2F);
+                this.velocityY *= (double)(this.rand.nextFloat() * 0.2F);
+                this.velocityZ *= (double)(this.rand.nextFloat() * 0.2F);
                 this.ticksInGround = 0;
                 this.ticksFlying = 0;
             }
         } else {
             ++this.ticksFlying;
-            Vec3d var16 = Vec3d.createCached(this.x, this.y, this.z);
-            Vec3d var17 = Vec3d.createCached(this.x + this.velocityX, this.y + this.velocityY, this.z + this.velocityZ);
-            HitResult var3 = this.world.method_162(var16, var17, false, true);
-            var16 = Vec3d.createCached(this.x, this.y, this.z);
-            var17 = Vec3d.createCached(this.x + this.velocityX, this.y + this.velocityY, this.z + this.velocityZ);
+            Vec3f var16 = Vec3f.from(this.x, this.y, this.z);
+            Vec3f var17 = Vec3f.from(this.x + this.velocityX, this.y + this.velocityY, this.z + this.velocityZ);
+            HitResult var3 = this.level.method_162(var16, var17, false, true);
+            var16 = Vec3f.from(this.x, this.y, this.z);
+            var17 = Vec3f.from(this.x + this.velocityX, this.y + this.velocityY, this.z + this.velocityZ);
             if (var3 != null) {
-                var17 = Vec3d.createCached(var3.pos.x, var3.pos.y, var3.pos.z);
+                var17 = Vec3f.from(var3.field_1988.x, var3.field_1988.y, var3.field_1988.z);
             }
 
-            Entity var4 = null;
-            List var5 = this.world.getEntities(this, this.boundingBox.stretch(this.velocityX, this.velocityY, this.velocityZ).expand(1.0D, 1.0D, 1.0D));
+            EntityBase var4 = null;
+            List var5 = this.level.getEntities(this, this.boundingBox.method_86(this.velocityX, this.velocityY, this.velocityZ).expand(1.0D, 1.0D, 1.0D));
             double var6 = 0.0D;
 
             float var10;
             for(int var8 = 0; var8 < var5.size(); ++var8) {
-                Entity var9 = (Entity)var5.get(var8);
+                EntityBase var9 = (EntityBase)var5.get(var8);
                 if (var9.method_1356() && (var9 != this.owner || this.ticksFlying >= 5)) {
                     var10 = 0.3F;
                     Box var11 = var9.boundingBox.expand((double)var10, (double)var10, (double)var10);
-                    HitResult var12 = var11.raycast(var16, var17);
+                    HitResult var12 = var11.method_89(var16, var17);
                     if (var12 != null) {
-                        double var13 = var16.distanceTo(var12.pos);
+                        double var13 = var16.method_1294(var12.field_1988);
                         if (var13 < var6 || var6 == 0.0D) {
                             var4 = var9;
                             var6 = var13;
@@ -187,10 +187,10 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
 
             float var19;
             if (var3 != null) {
-                if (var3.entity != null) {
-                    if (var3.entity.damage(this.owner, 10)) {
-                        this.world.playSound(this, "random.drr", 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
-                        this.markDead();
+                if (var3.field_1989 != null) {
+                    if (var3.field_1989.damage(this.owner, 10)) {
+                        this.level.playSound(this, "random.drr", 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
+                        this.remove();
                     } else {
                         this.velocityX *= -0.10000000149011612D;
                         this.velocityY *= -0.10000000149011612D;
@@ -200,19 +200,19 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
                         this.ticksFlying = 0;
                     }
                 } else {
-                    this.xTile = var3.blockX;
-                    this.yTile = var3.blockY;
-                    this.zTile = var3.blockZ;
-                    this.inTile = this.world.getBlockId(this.xTile, this.yTile, this.zTile);
-                    this.inData = this.world.getBlockMeta(this.xTile, this.yTile, this.zTile);
-                    this.velocityX = (double)((float)(var3.pos.x - this.x));
-                    this.velocityY = (double)((float)(var3.pos.y - this.y));
-                    this.velocityZ = (double)((float)(var3.pos.z - this.z));
+                    this.xTile = var3.x;
+                    this.yTile = var3.y;
+                    this.zTile = var3.z;
+                    this.inTile = this.level.getTileId(this.xTile, this.yTile, this.zTile);
+                    this.inData = this.level.getTileMeta(this.xTile, this.yTile, this.zTile);
+                    this.velocityX = (double)((float)(var3.field_1988.x - this.x));
+                    this.velocityY = (double)((float)(var3.field_1988.y - this.y));
+                    this.velocityZ = (double)((float)(var3.field_1988.z - this.z));
                     var19 = MathHelper.sqrt(this.velocityX * this.velocityX + this.velocityY * this.velocityY + this.velocityZ * this.velocityZ);
                     this.x -= this.velocityX / (double)var19 * 0.05000000074505806D;
                     this.y -= this.velocityY / (double)var19 * 0.05000000074505806D;
                     this.z -= this.velocityZ / (double)var19 * 0.05000000074505806D;
-                    this.world.playSound(this, "random.drr", 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
+                    this.level.playSound(this, "random.drr", 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
                     this.inGround = true;
                     this.shake = 7;
                 }
@@ -246,7 +246,7 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
             if (this.method_1334()) {
                 for(int var21 = 0; var21 < 4; ++var21) {
                     float var22 = 0.25F;
-                    this.world.addParticle("bubble", this.x - this.velocityX * (double)var22, this.y - this.velocityY * (double)var22, this.z - this.velocityZ * (double)var22, this.velocityX, this.velocityY, this.velocityZ);
+                    this.level.addParticle("bubble", this.x - this.velocityX * (double)var22, this.y - this.velocityY * (double)var22, this.z - this.velocityZ * (double)var22, this.velocityX, this.velocityY, this.velocityZ);
                 }
 
                 var20 = 0.8F;
@@ -256,22 +256,22 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
             this.velocityY *= (double)var20;
             this.velocityZ *= (double)var20;
             this.velocityY -= (double)var10;
-            this.method_1340(this.x, this.y, this.z);
+            this.setPosition(this.x, this.y, this.z);
         }
     }
 
-    public void writeNbt(NbtCompound arg) {
-        arg.putShort("xTile", (short)this.xTile);
-        arg.putShort("yTile", (short)this.yTile);
-        arg.putShort("zTile", (short)this.zTile);
-        arg.putByte("inTile", (byte)this.inTile);
-        arg.putByte("inData", (byte)this.inData);
-        arg.putByte("shake", (byte)this.shake);
-        arg.putByte("inGround", (byte)(this.inGround ? 1 : 0));
-        arg.putBoolean("player", this.spawnedByPlayer);
+    public void writeCustomDataToTag(CompoundTag arg) {
+        arg.put("xTile", (short)this.xTile);
+        arg.put("yTile", (short)this.yTile);
+        arg.put("zTile", (short)this.zTile);
+        arg.put("inTile", (byte)this.inTile);
+        arg.put("inData", (byte)this.inData);
+        arg.put("shake", (byte)this.shake);
+        arg.put("inGround", (byte)(this.inGround ? 1 : 0));
+        arg.put("player", this.spawnedByPlayer);
     }
 
-    public void readNbt(NbtCompound arg) {
+    public void readCustomDataFromTag(CompoundTag arg) {
         this.xTile = arg.getShort("xTile");
         this.yTile = arg.getShort("yTile");
         this.zTile = arg.getShort("zTile");
@@ -282,19 +282,19 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
         this.spawnedByPlayer = arg.getBoolean("player");
     }
 
-    public void onPlayerInteraction(PlayerEntity arg) {
-        if (!this.world.isRemote) {
-            if (this.inGround && this.spawnedByPlayer && this.shake <= 0 && arg.inventory.method_671(new ItemStack(ItemListener.broadHeadArrow, 1))) {
-                this.world.playSound(this, "random.pop", 0.2F, ((this.random.nextFloat() - this.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-                arg.method_491(this, 1);
-                this.markDead();
+    public void onPlayerCollision(PlayerBase arg) {
+        if (!this.level.isServerSide) {
+            if (this.inGround && this.spawnedByPlayer && this.shake <= 0 && arg.inventory.addStack(new ItemInstance(ItemListener.broadHeadArrow, 1))) {
+                this.level.playSound(this, "random.pop", 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                arg.onItemPickup(this, 1);
+                this.remove();
             }
 
         }
     }
 
     @Environment(EnvType.CLIENT)
-    public float method_1366() {
+    public float getEyeHeight() {
         return 0.0F;
     }
 

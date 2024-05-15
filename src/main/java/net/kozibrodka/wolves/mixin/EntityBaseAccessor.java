@@ -1,12 +1,12 @@
 package net.kozibrodka.wolves.mixin;
 
-import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityBase;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-@Mixin(Entity.class)
+@Mixin(EntityBase.class)
 public interface EntityBaseAccessor {
 
-    @Accessor("field_1636")
+    @Accessor
     void setFallDistance(float distance);
 }

@@ -1,15 +1,15 @@
 package net.kozibrodka.wolves.utils;
 
-import net.minecraft.block.Block;
-import net.minecraft.world.World;
+import net.minecraft.block.BlockBase;
+import net.minecraft.level.Level;
 
 
 public interface SoilTemplate
 {
 
-    boolean CanPlantGrowOnBlock(World world, int i, int j, int k, Block block);
+    boolean CanPlantGrowOnBlock(Level world, int i, int j, int k, BlockBase block);
 
-    boolean IsBlockHydrated(World world, int i, int j, int k);
+    boolean IsBlockHydrated(Level world, int i, int j, int k);
 
-    boolean IsBlockConsideredNeighbouringWater(World world, int i, int j, int k);
+    boolean IsBlockConsideredNeighbouringWater(Level world, int i, int j, int k);
 }

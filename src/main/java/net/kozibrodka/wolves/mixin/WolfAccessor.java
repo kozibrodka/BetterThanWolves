@@ -1,14 +1,14 @@
 package net.kozibrodka.wolves.mixin;
 
-import net.minecraft.entity.passive.WolfEntity;
+import net.minecraft.entity.animal.Wolf;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
-@Mixin(WolfEntity.class)
+@Mixin(Wolf.class)
 public interface WolfAccessor {
-    @Invoker("method_912")
+    @Invoker
     String invokeGetHurtSound();
 
-    @Invoker("method_915")
+    @Invoker
     float invokeGetSoundVolume();
 }

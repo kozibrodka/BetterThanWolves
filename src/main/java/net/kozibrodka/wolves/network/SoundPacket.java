@@ -6,9 +6,9 @@ import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.events.PacketListener;
 import net.kozibrodka.wolves.mixin.ClientPlayerAccessor;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.NetworkHandler;
-import net.minecraft.network.packet.Packet;
+import net.minecraft.network.PacketHandler;
 import net.kozibrodka.wolves.events.ItemListener;
+import net.minecraft.packet.AbstractPacket;
 import net.modificationstation.stationapi.api.network.packet.IdentifiablePacket;
 import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import net.modificationstation.stationapi.api.util.Identifier;
@@ -17,7 +17,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class SoundPacket extends Packet implements IdentifiablePacket{
+public class SoundPacket extends AbstractPacket implements IdentifiablePacket{
 
     private String soundToPlay;
     private int x;
@@ -73,7 +73,7 @@ public class SoundPacket extends Packet implements IdentifiablePacket{
     }
 
     @Override
-    public void apply(NetworkHandler arg) {
+    public void apply(PacketHandler arg) {
 //        System.out.println("Packet Received = Sound : " + this.soundToPlay + "  " + this.x);
 
         switch (FabricLoader.INSTANCE.getEnvironmentType()){
@@ -83,22 +83,22 @@ public class SoundPacket extends Packet implements IdentifiablePacket{
     }
 
     @Environment(EnvType.CLIENT)
-    public void handleClient(NetworkHandler networkHandler){
+    public void handleClient(PacketHandler networkHandler){
 //        System.out.println("Handle Client");
         ClientPlayerAccessor accessor = (ClientPlayerAccessor) networkHandler;
         Minecraft minecraft = accessor.getMinecraft();
 //        minecraft.level.playSound((double)minecraft.player.x + 0.5D, (double)minecraft.player.y + 0.5D, (double)minecraft.player.z + 0.5D, this.soundToPlay, 1.0F, 2.0F);
-        minecraft.world.playSound((double)this.x + 0.5D, (double)this.y + 0.5D, (double)this.z + 0.5D, this.soundToPlay, this.g, this.h);
+        minecraft.level.playSound((double)this.x + 0.5D, (double)this.y + 0.5D, (double)this.z + 0.5D, this.soundToPlay, this.g, this.h);
     }
 
     @Environment(EnvType.SERVER)
-    public void handleServer(NetworkHandler networkHandler){
+    public void handleServer(PacketHandler networkHandler){
 //        System.out.println("Handle Server HELLO");
 //        PacketHelper.send(new SoundPacket("twuj.stary"));
     }
 
     @Override
-    public int size() {
+    public int length() {
         return 16;
     }
 

@@ -3,19 +3,28 @@ package net.kozibrodka.wolves.network;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.FabricLoader;
+import net.kozibrodka.wolves.blocks.Hopper;
+import net.kozibrodka.wolves.blocks.Pulley;
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.PacketListener;
 import net.kozibrodka.wolves.mixin.ClientPlayerAccessor;
+import net.kozibrodka.wolves.mixin.ServerPlayerAccessor;
+import net.kozibrodka.wolves.tileentity.*;
+import net.kozibrodka.wolves.utils.InventoryHandler;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.NetworkHandler;
-import net.minecraft.network.packet.Packet;
+import net.minecraft.entity.player.ServerPlayer;
+import net.minecraft.network.PacketHandler;
+import net.minecraft.packet.AbstractPacket;
 import net.modificationstation.stationapi.api.network.packet.IdentifiablePacket;
+import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import net.modificationstation.stationapi.api.util.Identifier;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.Objects;
 
-public class RenderPacket extends Packet implements IdentifiablePacket {
+public class RenderPacket extends AbstractPacket implements IdentifiablePacket {
 
     private int x;
     private int y;
@@ -62,7 +71,7 @@ public class RenderPacket extends Packet implements IdentifiablePacket {
     }
 
     @Override
-    public void apply(NetworkHandler arg) {
+    public void apply(PacketHandler arg) {
         switch (FabricLoader.INSTANCE.getEnvironmentType()){
             case CLIENT -> handleClient(arg);
             case SERVER -> handleServer(arg);
@@ -70,10 +79,10 @@ public class RenderPacket extends Packet implements IdentifiablePacket {
     }
 
     @Environment(EnvType.CLIENT) //TODO: NOT QUITE WOTKING ;(
-    public void handleClient(NetworkHandler networkHandler){
+    public void handleClient(PacketHandler networkHandler){
         ClientPlayerAccessor accessor = (ClientPlayerAccessor) networkHandler;
         Minecraft minecraft = accessor.getMinecraft();
-        minecraft.field_2808.method_322(x,y,z, block, meta);
+        minecraft.particleManager.addTileBreakParticles(x,y,z, block, meta);
 //        Minecraft.class.cast(net.fabricmc.loader.api.FabricLoader.getInstance().getGameInstance()).particleManager.addTileBreakParticles(targetPos.i, targetPos.j, targetPos.k, iTargetid, iTargetMetaData);
 //        if(block == 1){ //TURNTABLE
 //            TurntableTileEntity tile = (TurntableTileEntity) minecraft.level.getTileEntity(this.x,this.y,this.z);
@@ -91,7 +100,7 @@ public class RenderPacket extends Packet implements IdentifiablePacket {
     }
 
     @Environment(EnvType.SERVER)
-    public void handleServer(NetworkHandler networkHandler){
+    public void handleServer(PacketHandler networkHandler){
 //        ServerPlayerAccessor accessor = (ServerPlayerAccessor) networkHandler;
 //        ServerPlayer player = accessor.getServerPlayer();
 //        if(block == 1){ //TURNTABLE
@@ -109,7 +118,7 @@ public class RenderPacket extends Packet implements IdentifiablePacket {
     }
 
     @Override
-    public int size() {
+    public int length() {
         return 8;
     }
 

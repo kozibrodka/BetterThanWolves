@@ -3,11 +3,11 @@ package net.kozibrodka.wolves.tabs;
 import net.glasslauncher.hmifabric.Utils;
 import net.glasslauncher.hmifabric.tabs.TabWithTexture;
 import net.kozibrodka.wolves.events.BlockListener;
-import net.kozibrodka.wolves.gui.CauldronScreen;
+import net.kozibrodka.wolves.gui.CauldronGUI;
 import net.kozibrodka.wolves.recipe.CauldronCraftingManager;
-import net.minecraft.block.Block;
-import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.item.ItemStack;
+import net.minecraft.block.BlockBase;
+import net.minecraft.client.gui.screen.container.ContainerBase;
+import net.minecraft.item.ItemInstance;
 import net.modificationstation.stationapi.api.util.Namespace;
 
 import java.util.ArrayList;
@@ -19,19 +19,19 @@ import static net.kozibrodka.wolves.utils.ItemUtil.compare;
 public class CauldronSingleRecipeTab extends TabWithTexture {
 
     private static final Random RANDOM = new Random();
-    protected List<ItemStack[]> recipes;
-    private final Block tabBlock;
-    private final List<ItemStack[]> recipesReady;
+    protected List<ItemInstance[]> recipes;
+    private final BlockBase tabBlock;
+    private final List<ItemInstance[]> recipesReady;
 
     public CauldronSingleRecipeTab(Namespace tabCreator) {
-        this(tabCreator, new ArrayList<ItemStack[]>(CauldronCraftingManager.getInstance().getSingleRecipes()), BlockListener.cauldron);
+        this(tabCreator, new ArrayList<ItemInstance[]>(CauldronCraftingManager.getInstance().getSingleRecipes()), BlockListener.cauldron);
     }
 
-    public CauldronSingleRecipeTab(Namespace tabCreator, List<ItemStack[]> recipesReady, Block tabBlock) {
+    public CauldronSingleRecipeTab(Namespace tabCreator, List<ItemInstance[]> recipesReady, BlockBase tabBlock) {
         this(tabCreator, 2, recipesReady, tabBlock, "/assets/wolves/stationapi/gui/hmi_tabs/one_in_one_out.png", 140, 56, 22, 15);
     }
 
-    public CauldronSingleRecipeTab(Namespace tabCreator, int slotsPerRecipe, List<ItemStack[]> recipesReady, Block tabBlock, String texturePath, int width, int height, int textureX, int textureY) {
+    public CauldronSingleRecipeTab(Namespace tabCreator, int slotsPerRecipe, List<ItemInstance[]> recipesReady, BlockBase tabBlock, String texturePath, int width, int height, int textureX, int textureY) {
         super(tabCreator, slotsPerRecipe, texturePath, width, height, 3, 4, textureX, textureY);
         this.recipesReady = recipesReady;
         this.tabBlock = tabBlock;
@@ -47,17 +47,17 @@ public class CauldronSingleRecipeTab extends TabWithTexture {
     @Override
     public void draw(int x, int y, int recipeOnThisPageIndex, int cursorX, int cursorY) {
         super.draw(x, y, recipeOnThisPageIndex, cursorX, cursorY);
-        Utils.drawScaledItem(new ItemStack(BlockListener.cauldron), x + 54, y + 12, 34);
+        Utils.drawScaledItem(new ItemInstance(BlockListener.cauldron), x + 54, y + 12, 34);
     }
 
     @Override
-    public ItemStack[][] getItems(int index, ItemStack filter) {
-        ItemStack[][] items = new ItemStack[recipesPerPage][];
+    public ItemInstance[][] getItems(int index, ItemInstance filter) {
+        ItemInstance[][] items = new ItemInstance[recipesPerPage][];
         for (int j = 0; j < recipesPerPage; j++) {
-            items[j] = new ItemStack[slots.length];
+            items[j] = new ItemInstance[slots.length];
             int k = index + j;
             if (k < recipes.size()) try {
-                ItemStack[] recipe = recipes.get(k);
+                ItemInstance[] recipe = recipes.get(k);
                 items[j][1] = recipe[0];
                 items[j][0] = recipe[1];
             } catch (Throwable throwable) {
@@ -77,17 +77,17 @@ public class CauldronSingleRecipeTab extends TabWithTexture {
     }
 
     @Override
-    public void updateRecipes(ItemStack filter, Boolean getUses) {
+    public void updateRecipes(ItemInstance filter, Boolean getUses) {
         recipes.clear();
         updateRecipesWithoutClear(filter, getUses);
     }
 
-    public void updateRecipesWithoutClear(ItemStack filter, Boolean getUses) {
+    public void updateRecipesWithoutClear(ItemInstance filter, Boolean getUses) {
         lastIndex = 0;
         recipesReady.forEach(recipe -> {
-            ItemStack input = recipe[1];
-            ItemStack output = recipe[0];
-            if (filter == null || (!getUses && compare(filter, output)) || (getUses && compare(filter, input)) || filter.isItemEqual(new ItemStack(tabBlock))) {
+            ItemInstance input = recipe[1];
+            ItemInstance output = recipe[0];
+            if (filter == null || (!getUses && compare(filter, output)) || (getUses && compare(filter, input)) || filter.isDamageAndIDIdentical(new ItemInstance(tabBlock))) {
                 recipes.add(recipe);
             }
         });
@@ -95,12 +95,12 @@ public class CauldronSingleRecipeTab extends TabWithTexture {
     }
 
     @Override
-    public Class<? extends HandledScreen> getGuiClass() {
-        return CauldronScreen.class;
+    public Class<? extends ContainerBase> getGuiClass() {
+        return CauldronGUI.class;
     }
 
     @Override
-    public ItemStack getTabItem() {
-        return new ItemStack(tabBlock);
+    public ItemInstance getTabItem() {
+        return new ItemInstance(tabBlock);
     }
 }

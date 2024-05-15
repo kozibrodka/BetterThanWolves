@@ -2,6 +2,8 @@ package net.kozibrodka.wolves.events;
 
 import net.glasslauncher.mods.api.gcapi.api.GConfig;
 import net.kozibrodka.wolves.glasscfg.BetterThanWolvesCFG;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.material.MaterialColour;
 import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
 import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.util.Namespace;

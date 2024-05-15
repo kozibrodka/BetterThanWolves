@@ -1,17 +1,18 @@
 package net.kozibrodka.wolves.utils;
 
 
-import net.kozibrodka.wolves.block.AxleBlock;
+import net.kozibrodka.wolves.blocks.Axle;
 import net.kozibrodka.wolves.events.BlockListener;
-import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.block.BlockBase;
+import net.minecraft.entity.EntityBase;
+import net.minecraft.entity.Item;
+import net.minecraft.entity.Living;
+import net.minecraft.item.ItemInstance;
+import net.minecraft.level.Level;
+import net.minecraft.level.biome.Biome;
+import net.minecraft.util.maths.Box;
+import net.minecraft.util.maths.MathHelper;
+
 import java.util.List;
 
 /**
@@ -48,44 +49,44 @@ public class UnsortedUtils
         return iFacing;
     }
 
-    public static void ejectStackWithRandomOffset(World world, int i, int j, int k, ItemStack stack)
+    public static void ejectStackWithRandomOffset(Level world, int i, int j, int k, ItemInstance stack)
     {
-        float xOffset = world.field_214.nextFloat() * 0.7F + 0.15F;
-        float yOffset = world.field_214.nextFloat() * 0.2F + 0.1F;
-        float zOffset = world.field_214.nextFloat() * 0.7F + 0.15F;
-        ItemEntity entityitem = new ItemEntity(world, (float)i + xOffset, (float)j + yOffset, (float)k + zOffset, stack);
+        float xOffset = world.rand.nextFloat() * 0.7F + 0.15F;
+        float yOffset = world.rand.nextFloat() * 0.2F + 0.1F;
+        float zOffset = world.rand.nextFloat() * 0.7F + 0.15F;
+        Item entityitem = new Item(world, (float)i + xOffset, (float)j + yOffset, (float)k + zOffset, stack);
         float velocityFactor = 0.05F;
-        entityitem.velocityX = (float)world.field_214.nextGaussian() * velocityFactor;
-        entityitem.velocityY = (float)world.field_214.nextGaussian() * velocityFactor + 0.2F;
-        entityitem.velocityZ = (float)world.field_214.nextGaussian() * velocityFactor;
+        entityitem.velocityX = (float)world.rand.nextGaussian() * velocityFactor;
+        entityitem.velocityY = (float)world.rand.nextGaussian() * velocityFactor + 0.2F;
+        entityitem.velocityZ = (float)world.rand.nextGaussian() * velocityFactor;
         entityitem.pickupDelay = 10;
-        world.method_210(entityitem);
+        world.spawnEntity(entityitem);
     }
 
-    public static void EjectSingleItemWithRandomOffset(World world, int i, int j, int k, int iShiftedItemIndex, int iDamage)
+    public static void EjectSingleItemWithRandomOffset(Level world, int i, int j, int k, int iShiftedItemIndex, int iDamage)
     {
-        ItemStack ItemInstance = new ItemStack(iShiftedItemIndex, 1, iDamage);
+        ItemInstance ItemInstance = new ItemInstance(iShiftedItemIndex, 1, iDamage);
         ejectStackWithRandomOffset(world, i, j, k, ItemInstance);
     }
 
-    public static void DropStackAsIfBlockHarvested(World world, int i, int j, int k, ItemStack stack)
+    public static void DropStackAsIfBlockHarvested(Level world, int i, int j, int k, ItemInstance stack)
     {
         float f1 = 0.7F;
-        double d = (double)(world.field_214.nextFloat() * f1) + (double)(1.0F - f1) * 0.5D;
-        double d1 = (double)(world.field_214.nextFloat() * f1) + (double)(1.0F - f1) * 0.5D;
-        double d2 = (double)(world.field_214.nextFloat() * f1) + (double)(1.0F - f1) * 0.5D;
-        ItemEntity entityitem = new ItemEntity(world, (double)i + d, (double)j + d1, (double)k + d2, stack);
+        double d = (double)(world.rand.nextFloat() * f1) + (double)(1.0F - f1) * 0.5D;
+        double d1 = (double)(world.rand.nextFloat() * f1) + (double)(1.0F - f1) * 0.5D;
+        double d2 = (double)(world.rand.nextFloat() * f1) + (double)(1.0F - f1) * 0.5D;
+        Item entityitem = new Item(world, (double)i + d, (double)j + d1, (double)k + d2, stack);
         entityitem.pickupDelay = 10;
-        world.method_210(entityitem);
+        world.spawnEntity(entityitem);
     }
 
-    public static void DropSingleItemAsIfBlockHarvested(World world, int i, int j, int k, int iShiftedItemIndex, int iDamage)
+    public static void DropSingleItemAsIfBlockHarvested(Level world, int i, int j, int k, int iShiftedItemIndex, int iDamage)
     {
-        ItemStack ItemInstance = new ItemStack(iShiftedItemIndex, 1, iDamage);
+        ItemInstance ItemInstance = new ItemInstance(iShiftedItemIndex, 1, iDamage);
         DropStackAsIfBlockHarvested(world, i, j, k, ItemInstance);
     }
 
-    public static int ConvertPlacingEntityOrientationToBlockFacing(LivingEntity entityLiving)
+    public static int ConvertPlacingEntityOrientationToBlockFacing(Living entityLiving)
     {
         float pitch = entityLiving.pitch;
         if(pitch > 60F)
@@ -101,7 +102,7 @@ public class UnsortedUtils
         }
     }
 
-    public static int ConvertPlacingEntityOrientationToFlatBlockFacing(LivingEntity entityLiving)
+    public static int ConvertPlacingEntityOrientationToFlatBlockFacing(Living entityLiving)
     {
         float pitch = entityLiving.pitch;
         int l = MathHelper.floor((double)((entityLiving.yaw * 4F) / 360F) + 0.5D) & 3;
@@ -124,7 +125,7 @@ public class UnsortedUtils
         return iFacing;
     }
 
-    public static int ConvertPlacingEntityOrientationToBlockFlatFacing(LivingEntity entityLiving)
+    public static int ConvertPlacingEntityOrientationToBlockFlatFacing(Living entityLiving)
     {
         int l = MathHelper.floor((double)((entityLiving.yaw * 4F) / 360F) + 0.5D) & 3;
         int iFacing;
@@ -146,13 +147,13 @@ public class UnsortedUtils
         return iFacing;
     }
 
-    public static boolean IsBlockBeingPrecipitatedOn(World world, int i, int j, int k)
+    public static boolean IsBlockBeingPrecipitatedOn(Level world, int i, int j, int k)
     {
-        if(!world.method_270())
+        if(!world.isRaining())
         {
             return false;
         }
-        if(!world.method_249(i, j, k))
+        if(!world.isAboveGroundCached(i, j, k))
         {
             return false;
         }
@@ -160,7 +161,7 @@ public class UnsortedUtils
         {
             return false;
         }
-        Biome biomegenbase = world.method_1781().method_1787(i, k);
+        Biome biomegenbase = world.getBiomeSource().getBiome(i, k);
         if(biomegenbase.canSnow())
         {
             return true;
@@ -168,15 +169,15 @@ public class UnsortedUtils
         return biomegenbase.canRain();
     }
 
-    public static void PositionAllMoveableEntitiesOutsideOfLocation(World world, int i, int j, int k)
+    public static void PositionAllMoveableEntitiesOutsideOfLocation(Level world, int i, int j, int k)
     {
-        List list = world.getEntities((Entity)null, Box.createCached(i, j, k, (double)i + 1.0D, (double)j + 1.0D, (double)k + 1.0D));
+        List list = world.getEntities((EntityBase)null, Box.createButWasteMemory(i, j, k, (double)i + 1.0D, (double)j + 1.0D, (double)k + 1.0D));
         if(list != null && list.size() > 0)
         {
             for(int listIndex = 0; listIndex < list.size(); listIndex++)
             {
-                Entity entity = (Entity)list.get(listIndex);
-                if(entity.method_1380() || (entity instanceof ItemEntity))
+                EntityBase entity = (EntityBase)list.get(listIndex);
+                if(entity.method_1380() || (entity instanceof Item))
                 {
                     PositionEntityOutsideOfLocation(world, entity, i, j, k);
                 }
@@ -185,7 +186,7 @@ public class UnsortedUtils
         }
     }
 
-    private static void PositionEntityOutsideOfLocation(World world, Entity entity, int i, int j, int k)
+    private static void PositionEntityOutsideOfLocation(Level world, EntityBase entity, int i, int j, int k)
     {
         double minPosX = (float)i;
         double minPosY = (float)j;
@@ -247,7 +248,7 @@ public class UnsortedUtils
         {
             entityZ += zOffset;
         }
-        entity.method_1340(entityX, entityY, entityZ);
+        entity.setPosition(entityX, entityY, entityZ);
     }
 
 //    public static void ServerPositionAllPlayerEntitiesOutsideOfLocation(Level var0, int var1, int var2, int var3)
@@ -326,17 +327,17 @@ public class UnsortedUtils
 //        var1.packetHandler.send(new PlayerPositionAndLook0xDC2SPacket(var26, var28 + 1.6200000047683716D, var28, var30, var1.yaw, var1.pitch, false));
 //    }
 
-    public static void DestroyHorizontallyAttachedAxles(World world, int i, int j, int k)
+    public static void DestroyHorizontallyAttachedAxles(Level world, int i, int j, int k)
     {
         for(int iFacing = 2; iFacing <= 5; iFacing++)
         {
             BlockPosition tempPos = new BlockPosition(i, j, k);
             tempPos.AddFacingAsOffset(iFacing);
-            if(world.getBlockId(tempPos.i, tempPos.j, tempPos.k) != BlockListener.axleBlock.id)
+            if(world.getTileId(tempPos.i, tempPos.j, tempPos.k) != BlockListener.axleBlock.id)
             {
                 continue;
             }
-            AxleBlock axleBlock = (AxleBlock)BlockListener.axleBlock;
+            Axle axleBlock = (Axle)BlockListener.axleBlock;
             if(axleBlock.IsAxleOrientedTowardsFacing(world, tempPos.i, tempPos.j, tempPos.k, iFacing))
             {
                 axleBlock.BreakAxle(world, tempPos.i, tempPos.j, tempPos.k);
@@ -345,10 +346,10 @@ public class UnsortedUtils
 
     }
 
-    public static boolean CanPlantGrowOnBlock(World world, int i, int j, int k, Block plantBlock)
+    public static boolean CanPlantGrowOnBlock(Level world, int i, int j, int k, BlockBase plantBlock)
     {
-        int iTargetid = world.getBlockId(i, j, k);
-        Block block = Block.BLOCKS[iTargetid];
+        int iTargetid = world.getTileId(i, j, k);
+        BlockBase block = BlockBase.BY_ID[iTargetid];
         if(block != null && (block instanceof SoilTemplate))
         {
             return ((SoilTemplate)block).CanPlantGrowOnBlock(world, i, j, k, plantBlock);
