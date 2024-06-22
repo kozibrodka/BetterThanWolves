@@ -201,23 +201,23 @@ public class UnfiredPotteryBlock extends TemplateBlockWithEntity
     public boolean RenderUnfiredCrucible(BlockRenderManager renderblocks, BlockView iblockaccess, int i, int j, int k, int l)
     {
         this.setBoundingBox(0.0625F, 0.0F, 0.0625F, 0.1875F, 1.0F, 0.8125F);
-        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.renderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         this.setBoundingBox(0.0625F, 0.0F, 0.8125F, 0.8125F, 1.0F, 0.9375F);
-        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.renderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         this.setBoundingBox(0.8125F, 0.0F, 0.1875F, 0.9375F, 1.0F, 0.9375F);
-        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.renderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         this.setBoundingBox(0.1875F, 0.0F, 0.0625F, 0.9375F, 1.0F, 0.1875F);
-        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.renderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         this.setBoundingBox(0.1875F, 0.0F, 0.1875F, 0.8125F, 0.125F, 0.8125F);
-        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.renderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         this.setBoundingBox(0.0F, 0.125F, 0.0F, 0.125F, 0.875F, 0.875F);
-        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.renderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         this.setBoundingBox(0.0F, 0.125F, 0.875F, 0.875F, 0.875F, 1.0F);
-        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.renderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         this.setBoundingBox(0.875F, 0.125F, 0.125F, 1.0F, 0.875F, 1.0F);
-        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.renderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         this.setBoundingBox(0.125F, 0.125F, 0.0F, 1.0F, 0.875F, 0.125F);
-        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.renderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         updateBoundingBox(iblockaccess, i, j, k);
         return true;
     }
@@ -225,23 +225,23 @@ public class UnfiredPotteryBlock extends TemplateBlockWithEntity
     public boolean RenderUnfiredPot(BlockRenderManager renderblocks, BlockView iblockaccess, int i, int j, int k, int l)
     {
         this.setBoundingBox(0.125F, 0.0F, 0.125F, 0.25F, 0.6875F, 0.75F);
-        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.renderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         this.setBoundingBox(0.125F, 0.0F, 0.75F, 0.75F, 0.6875F, 0.875F);
-        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.renderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         this.setBoundingBox(0.75F, 0.0F, 0.25F, 0.875F, 0.6875F, 0.875F);
-        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.renderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         this.setBoundingBox(0.25F, 0.0F, 0.125F, 0.875F, 0.6875F, 0.25F);
-        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.renderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         this.setBoundingBox(0.25F, 0.0F, 0.25F, 0.75F, 0.125F, 0.75F);
-        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.renderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         this.setBoundingBox(0.0F, 0.6875F, 0.0F, 0.125F, 1.0F, 0.875F);
-        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.renderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         this.setBoundingBox(0.0F, 0.6875F, 0.875F, 0.875F, 1.0F, 1.0F);
-        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.renderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         this.setBoundingBox(0.875F, 0.6875F, 0.125F, 1.0F, 1.0F, 1.0F);
-        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.renderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         this.setBoundingBox(0.125F, 0.6875F, 0.0F, 1.0F, 1.0F, 0.125F);
-        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.renderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         updateBoundingBox(iblockaccess, i, j, k);
         return true;
     }
@@ -249,15 +249,15 @@ public class UnfiredPotteryBlock extends TemplateBlockWithEntity
     public boolean RenderUnfiredVase(BlockRenderManager renderblocks, BlockView iblockaccess, int i, int j, int k, int l)
     {
         this.setBoundingBox(0.25F, 0.0F, 0.25F, 0.75F, 0.0625F, 0.75F);
-        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.renderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         this.setBoundingBox(0.1875F, 0.0625F, 0.1875F, 0.8125F, 0.4375F, 0.8125F);
-        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.renderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         this.setBoundingBox(0.25F, 0.4375F, 0.25F, 0.75F, 0.5F, 0.75F);
-        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.renderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         this.setBoundingBox(0.375F, 0.5F, 0.375F, 0.625F, 0.9375F, 0.625F);
-        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.renderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         this.setBoundingBox(0.3125F, 0.9375F, 0.3125F, 0.6875F, 1.0F, 0.6875F);
-        CustomBlockRendering.RenderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
+        CustomBlockRendering.renderStandardBlockWithTexture(renderblocks, this, i, j, k, l);
         updateBoundingBox(iblockaccess, i, j, k);
         return true;
     }

@@ -6,7 +6,6 @@ package net.kozibrodka.wolves.utils;
 
 import java.lang.reflect.Field;
 
-import net.kozibrodka.wolves.events.TextureListener;
 import net.minecraft.block.Block;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.block.BlockRenderManager;
@@ -62,7 +61,7 @@ public class CustomBlockRendering
         return i;
     }
 
-    public static void RenderStandardBlockWithTexture(BlockRenderManager renderblocks, Block block, int i, int j, int k, int l)
+    public static void renderStandardBlockWithTexture(BlockRenderManager renderblocks, Block block, int i, int j, int k, int l)
     {
         int i1 = GetOverrideBlockTexture(renderblocks);
         if(i1 < 0)

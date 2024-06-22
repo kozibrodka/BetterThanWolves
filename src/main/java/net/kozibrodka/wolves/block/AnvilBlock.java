@@ -56,7 +56,7 @@ public class AnvilBlock extends TemplateBlock
             iFacing = 2;
         } else
         {
-            iFacing = UnsortedUtils.GetOppositeFacing(iFacing);
+            iFacing = UnsortedUtils.getOppositeFacing(iFacing);
         }
         SetFacing(world, i, j, k, iFacing);
         world.method_216(i, j, k, this.id, this.getTickRate());

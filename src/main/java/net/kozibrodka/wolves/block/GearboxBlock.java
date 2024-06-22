@@ -75,7 +75,7 @@ public class GearboxBlock extends TemplateBlock
 
     public void onPlaced(World world, int i, int j, int k, int iFacing)
     {
-        SetFacing(world, i, j, k, UnsortedUtils.GetOppositeFacing(iFacing));
+        SetFacing(world, i, j, k, UnsortedUtils.getOppositeFacing(iFacing));
     }
 
     public void onPlaced(World world, int i, int j, int k, LivingEntity entityLiving) //onBlockPlacedBy
@@ -83,7 +83,7 @@ public class GearboxBlock extends TemplateBlock
         int iFacing = UnsortedUtils.ConvertPlacingEntityOrientationToBlockFacing(entityLiving);
         if(ConfigListener.wolvesGlass.gameplay_settings.faceGearBoxAwayFromPlayer)
         {
-            iFacing = UnsortedUtils.GetOppositeFacing(iFacing);
+            iFacing = UnsortedUtils.getOppositeFacing(iFacing);
         }
         SetFacing(world, i, j, k, iFacing);
     }

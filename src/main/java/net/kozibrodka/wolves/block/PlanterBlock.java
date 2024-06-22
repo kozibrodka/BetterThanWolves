@@ -173,7 +173,7 @@ public class PlanterBlock extends TemplateBlock
         if(DoesPlanterContainSoil(tileView, x, y, z))
         {
             this.setBoundingBox(0.125F, 0.9F, 0.125F, 0.875F, 1.0F, 0.875F);
-            CustomBlockRendering.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, TextureListener.planter_soil);
+            CustomBlockRendering.renderStandardBlockWithTexture(tileRenderer, this, x, y, z, TextureListener.planter_soil);
         }
         setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         return true;

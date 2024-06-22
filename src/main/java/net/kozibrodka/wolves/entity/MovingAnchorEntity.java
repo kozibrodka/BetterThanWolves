@@ -34,7 +34,7 @@ public class MovingAnchorEntity extends Entity implements EntitySpawnDataProvide
         super(world);
         associatedPulleyPos = new BlockPosition();
         field_1593 = true;
-        setBoundingBoxSpacing(0.98F, AnchorBlock.fAnchorBaseHeight - 0.02F);
+        setBoundingBoxSpacing(0.98F, AnchorBlock.anchorBaseHeight - 0.02F);
         eyeHeight = spacingY / 2.0F;
         velocityX = 0.0D;
         velocityY = 0.0D;
@@ -131,7 +131,7 @@ public class MovingAnchorEntity extends Entity implements EntitySpawnDataProvide
             tileEntityPulley = (PulleyBlockEntity)world.getBlockEntity(associatedPulleyPos.i, associatedPulleyPos.j, associatedPulleyPos.k);
             if(velocityY > 0.0D)
             {
-                if(tileEntityPulley.IsLowering())
+                if(tileEntityPulley.isLowering())
                 {
                     velocityY = -velocityY;
                 }
@@ -208,7 +208,7 @@ public class MovingAnchorEntity extends Entity implements EntitySpawnDataProvide
                 }
                 int iTargetid = world.getBlockId(i, newJ, k);
                 boolean bStop = false;
-                if(tileEntityPulley == null || !tileEntityPulley.IsLowering() || !bEnoughRope)
+                if(tileEntityPulley == null || !tileEntityPulley.isLowering() || !bEnoughRope)
                 {
                     bStop = true;
                 } else
@@ -384,7 +384,7 @@ public class MovingAnchorEntity extends Entity implements EntitySpawnDataProvide
         if(bCanPlace)
         {
             world.setBlock(i, j, k, BlockListener.anchor.id);
-            ((AnchorBlock)BlockListener.anchor).SetAnchorFacing(world, i, j, k, 1);
+            ((AnchorBlock)BlockListener.anchor).setAnchorFacing(world, i, j, k, 1);
         } else
         {
             UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, BlockListener.anchor.id, 0);

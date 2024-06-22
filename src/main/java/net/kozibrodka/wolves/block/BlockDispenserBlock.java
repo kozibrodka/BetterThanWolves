@@ -109,7 +109,7 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
 
     public void onPlaced(World world, int i, int j, int k, int iFacing)
     {
-        SetFacing(world, i, j, k, UnsortedUtils.GetOppositeFacing(iFacing));
+        SetFacing(world, i, j, k, UnsortedUtils.getOppositeFacing(iFacing));
         world.method_216(i, j, k, BlockListener.blockDispenser.id, getTickRate());
     }
 
@@ -660,7 +660,7 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
                     if(newBlock != null)
                     {
                         int iNewid = newBlock.id;
-                        int iTargetDirection = UnsortedUtils.GetOppositeFacing(iFacing);
+                        int iTargetDirection = UnsortedUtils.getOppositeFacing(iFacing);
                         if(world.method_156(iNewid, targetPos.i, targetPos.j, targetPos.k, true, iTargetDirection))
                         {
                             if(iNewid == Block.PISTON.id || iNewid == Block.STICKY_PISTON.id)

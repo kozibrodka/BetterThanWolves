@@ -536,7 +536,7 @@ public class HopperBlock extends TemplateBlockWithEntity
             float f1 = 0.375F;
             float f2 = f1 + 0.0625F + (0.875F - (f1 + 0.0625F)) * f;
             this.setBoundingBox(0.125F, f1, 0.125F, 0.875F, f2, 0.875F);
-            CustomBlockRendering.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, TextureListener.filler);
+            CustomBlockRendering.renderStandardBlockWithTexture(tileRenderer, this, x, y, z, TextureListener.filler);
         }
         if(i1 > 0)
         {
@@ -567,7 +567,7 @@ public class HopperBlock extends TemplateBlockWithEntity
                 byte0 = TextureListener.hopper_soulsand; //55
             }
             this.setBoundingBox(0.125F, 0.875F, 0.125F, 0.875F, 0.9375F, 0.875F);
-            CustomBlockRendering.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, byte0);
+            CustomBlockRendering.renderStandardBlockWithTexture(tileRenderer, this, x, y, z, byte0);
         }
         setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         return true;

@@ -164,7 +164,7 @@ public class DetectorBlock extends TemplateBlock {
 
     @Override
     public void onPlaced(World level, int x, int y, int z, int facing) {
-        setFacing(level, x, y, z, UnsortedUtils.GetOppositeFacing(facing));
+        setFacing(level, x, y, z, UnsortedUtils.getOppositeFacing(facing));
     }
 
     @Override

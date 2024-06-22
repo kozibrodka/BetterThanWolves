@@ -222,11 +222,11 @@ public class CrucibleBlock extends TemplateBlockWithEntity
             if(fctileentitycrucible.overStokedFire)
             {
 //                MinecraftForgeClient.unbindTexture();
-                CustomBlockRendering.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, 237);
+                CustomBlockRendering.renderStandardBlockWithTexture(tileRenderer, this, x, y, z, 237);
 //                MinecraftForgeClient.bindTexture(getTextureFile());
             } else
             {
-                CustomBlockRendering.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, TextureListener.filler);
+                CustomBlockRendering.renderStandardBlockWithTexture(tileRenderer, this, x, y, z, TextureListener.filler);
             }
         }
         setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 0.99F, 1.0F);

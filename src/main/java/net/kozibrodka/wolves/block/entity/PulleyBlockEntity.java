@@ -159,7 +159,7 @@ public class PulleyBlockEntity extends BlockEntity
         return !IsRedstonePowered() && IsMechanicallyPowered();
     }
 
-    public boolean IsLowering()
+    public boolean isLowering()
     {
         return !IsRedstonePowered() && !IsMechanicallyPowered() && InventoryHandler.getFirstOccupiedStackOfItem(this, ItemListener.ropeItem.id) >= 0;
     }
@@ -177,11 +177,11 @@ public class PulleyBlockEntity extends BlockEntity
             int iTempid = world.getBlockId(x, tempj, z);
             if(iTempid == BlockListener.anchor.id)
             {
-                if(((AnchorBlock)BlockListener.anchor).GetAnchorFacing(world, x, tempj, z) != 1)
+                if(((AnchorBlock)BlockListener.anchor).getAnchorFacing(world, x, tempj, z) != 1)
                 {
                     break;
                 }
-                ((AnchorBlock)BlockListener.anchor).NotifyAnchorBlockOfAttachedPulleyStateChange(this, world, x, tempj, z);
+                ((AnchorBlock)BlockListener.anchor).notifyAnchorBlockOfAttachedPulleyStateChange(this, world, x, tempj, z);
                 continue;
             }
             if(iTempid != BlockListener.rope.id)
@@ -238,9 +238,9 @@ public class PulleyBlockEntity extends BlockEntity
                         }
                         RemoveRopeFromInventory();
                         int iBlockBelowTargetID = world.getBlockId(x, tempj - 1, z);
-                        if(iBlockBelowTargetID == BlockListener.anchor.id && ((AnchorBlock)BlockListener.anchor).GetAnchorFacing(world, x, tempj - 1, z) == 1)
+                        if(iBlockBelowTargetID == BlockListener.anchor.id && ((AnchorBlock)BlockListener.anchor).getAnchorFacing(world, x, tempj - 1, z) == 1)
                         {
-                            ((AnchorBlock)BlockListener.anchor).NotifyAnchorBlockOfAttachedPulleyStateChange(this, world, x, tempj - 1, z);
+                            ((AnchorBlock)BlockListener.anchor).notifyAnchorBlockOfAttachedPulleyStateChange(this, world, x, tempj - 1, z);
                         }
                         return true;
                     } else

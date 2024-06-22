@@ -62,7 +62,7 @@ public class SawBlock extends TemplateBlock
 
     public void onPlaced(World world, int i, int j, int k, int iFacing)
     {
-        SetFacing(world, i, j, k, UnsortedUtils.GetOppositeFacing(iFacing));
+        SetFacing(world, i, j, k, UnsortedUtils.getOppositeFacing(iFacing));
     }
 
     public void onPlaced(World world, int i, int j, int k, LivingEntity entityLiving)
@@ -453,7 +453,7 @@ public class SawBlock extends TemplateBlock
                         bRemoveOriginalBlockIfSawed = false;
                     }
                     BlockPosition bloodPos = new BlockPosition(i, j, k);
-                    bloodPos.AddFacingAsOffset(UnsortedUtils.GetOppositeFacing(iSawFacing));
+                    bloodPos.AddFacingAsOffset(UnsortedUtils.getOppositeFacing(iSawFacing));
                     EmitBloodParticles(world, bloodPos.i, bloodPos.j, bloodPos.k, world.field_214);
                     world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "mob.wolf.hurt", 5F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
                     if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
@@ -646,7 +646,7 @@ public class SawBlock extends TemplateBlock
                 this.setBoundingBox(1.0F - f2, 0.5F - f1, 0.5F - f, 1.0F, 0.5F + f1, 0.5F + f);
                 break;
         }
-        CustomBlockRendering.RenderStandardBlockWithTexture(tileRenderer, this, x, y, z, TextureListener.saw_saw);
+        CustomBlockRendering.renderStandardBlockWithTexture(tileRenderer, this, x, y, z, TextureListener.saw_saw);
         return true;
     }
 

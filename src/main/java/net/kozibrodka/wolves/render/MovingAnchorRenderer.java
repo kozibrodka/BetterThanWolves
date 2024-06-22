@@ -43,14 +43,14 @@ public class MovingAnchorRenderer extends EntityRenderer
         Block block = BlockListener.anchor;
         float f3 = 0.5F;
         float f5 = 0.5F;
-        float f7 = AnchorBlock.fAnchorBaseHeight;
+        float f7 = AnchorBlock.anchorBaseHeight;
         block.setBoundingBox(0.5F - f5, 0.0F, 0.5F - f3, 0.5F + f5, f7, 0.5F + f3);
 //        this.localRenderBlocks.method_53(block, world, i, j, k);
         CustomBlockRendering.RenderMovingBlockWithMetadata(localRenderBlocks, block, world, i, j, k, 1);
         f3 = 0.125F;
         f5 = 0.125F;
         f7 = 0.25F;
-        block.setBoundingBox(0.5F - f5, AnchorBlock.fAnchorBaseHeight, 0.5F - f3, 0.5F + f5, AnchorBlock.fAnchorBaseHeight + f7, 0.5F + f3);
+        block.setBoundingBox(0.5F - f5, AnchorBlock.anchorBaseHeight, 0.5F - f3, 0.5F + f5, AnchorBlock.anchorBaseHeight + f7, 0.5F + f3);
         ((AnchorBlock)BlockListener.anchor).getClass();
 //        this.localRenderBlocks.method_53(block,world, i, j, k);
         CustomBlockRendering.RenderMovingBlockWithTexture(localRenderBlocks, block, world, i, j, k, TextureListener.anchor_button);
@@ -59,7 +59,7 @@ public class MovingAnchorRenderer extends EntityRenderer
             float f4 = 0.062375F;
             float f6 = 0.062375F;
             float f8 = 1.0F;
-            block.setBoundingBox(0.5F - f6, AnchorBlock.fAnchorBaseHeight, 0.5F - f4, 0.5F + f6, 1.99F, 0.5F + f4);
+            block.setBoundingBox(0.5F - f6, AnchorBlock.anchorBaseHeight, 0.5F - f4, 0.5F + f6, 1.99F, 0.5F + f4);
             ((AnchorBlock)BlockListener.anchor).getClass();
 //            this.localRenderBlocks.method_53(block, world, i, j, k);
             CustomBlockRendering.RenderMovingBlockWithTexture(localRenderBlocks, block, world, i, j, k, TextureListener.rope);

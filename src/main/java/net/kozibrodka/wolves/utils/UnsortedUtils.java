@@ -25,7 +25,7 @@ public class UnsortedUtils
     {
     }
 
-    public static int GetOppositeFacing(int iFacing)
+    public static int getOppositeFacing(int iFacing)
     {
         return iFacing ^ 1;
     }
@@ -42,7 +42,7 @@ public class UnsortedUtils
             }
             if(!bReverse)
             {
-                iFacing = GetOppositeFacing(iFacing);
+                iFacing = getOppositeFacing(iFacing);
             }
         }
         return iFacing;

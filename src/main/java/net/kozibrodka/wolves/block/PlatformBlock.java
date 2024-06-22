@@ -110,7 +110,7 @@ public class PlatformBlock extends TemplateBlock
                         continue;
                     }
                     int iUpwardsid = world.getBlockId(tempI, tempJ + 1, tempK);
-                    if(iUpwardsid != BlockListener.anchor.id || ((AnchorBlock)BlockListener.anchor).GetAnchorFacing(world, tempI, tempJ + 1, tempK) != 1 || !IsPlatformConnectedToAnchorPoint(world, i, j, k, tempI, tempJ, tempK))
+                    if(iUpwardsid != BlockListener.anchor.id || ((AnchorBlock)BlockListener.anchor).getAnchorFacing(world, tempI, tempJ + 1, tempK) != 1 || !IsPlatformConnectedToAnchorPoint(world, i, j, k, tempI, tempJ, tempK))
                     {
                         continue;
                     }
@@ -203,7 +203,7 @@ public class PlatformBlock extends TemplateBlock
         }
     }
 
-    public void CovertToEntitiesFromThisPlatform(World world, int i, int j, int k, MovingAnchorEntity associatedAnchorEntity)
+    public void covertToEntitiesFromThisPlatform(World world, int i, int j, int k, MovingAnchorEntity associatedAnchorEntity)
     {
         ResetPlatformConsideredForEntityConversionArray();
         PropogateCovertToEntity(world, i, j, k, associatedAnchorEntity, i, j, k);
