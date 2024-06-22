@@ -1,0 +1,23 @@
+Station API and mappings:
+- Update to the newest Station API version
+- Move to BINY-Mappings
+
+API improvements:
+- Rework rotational force
+    - Get rid of outdated notation
+    - Clean up the logic
+    - Add easy integration for other mods
+- Convert hopper filters to registries
+
+Compatibility:
+- Less intrusive tree mixin
+
+Game mechanics:
+- Make wolf dumping rate depend on feeding
+- Feature to stop wolves from dumping
+
+Configurable content:
+- Animated saw
+- Chisel tool and related content
+- Creeper oyster shearing
+- Diamond ingots
