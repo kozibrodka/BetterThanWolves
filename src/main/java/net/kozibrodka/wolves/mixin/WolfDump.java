@@ -38,9 +38,9 @@ public abstract class WolfDump extends AnimalBase {
             float yOffset = 0.25F;
             Item entityitem = new Item(this.level, this.x + (double)xOffset, this.y + (double)yOffset, this.z + (double)zOffset, new ItemInstance(ItemListener.dung));
             float velocityFactor = 0.05F;
-            entityitem.velocityX = (double)(-(-MathHelper.sin(this.yaw / 180.0F * 3.141593F) * MathHelper.cos(this.pitch / 180.0F * 3.141593F)) * 10.0F * velocityFactor);
-            entityitem.velocityY = (double)(-(MathHelper.cos(this.yaw / 180.0F * 3.141593F) * MathHelper.cos(this.pitch / 180.0F * 3.141593F)) * 10.0F * velocityFactor);
-            entityitem.velocityZ = (double)((float)this.level.rand.nextGaussian() * velocityFactor + 0.2F);
+            entityitem.velocityX = (double)((MathHelper.sin(this.yaw / 180.0F * 3.141593F) * MathHelper.cos(this.pitch / 180.0F * 3.141593F)) * 10.0F * velocityFactor) + rand.nextFloat() * 0.2F - 0.1F;
+            entityitem.velocityY = (double)(-(MathHelper.cos(this.yaw / 180.0F * 3.141593F) * MathHelper.cos(this.pitch / 180.0F * 3.141593F)) * 10.0F * velocityFactor) + rand.nextFloat() * 0.2F - 0.1F;
+            entityitem.velocityZ = (double)((-MathHelper.cos(this.yaw / 180.0F * 3.141593F) * MathHelper.cos(this.pitch / 180.0F * 3.141593F)) * 10.0F * velocityFactor) + rand.nextFloat() * 0.2F - 0.1F;
             entityitem.pickupDelay = 10;
             this.level.spawnEntity(entityitem);
         }
