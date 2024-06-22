@@ -14,12 +14,14 @@ public class OmniSlabBlockItem extends BlockItem
         setTranslationKey("omniSlab");
     }
 
+    @Override
     public int getTextureId(int i)
     {
         return BlockListener.omniSlab.getTexture(2, i);
     }
 
-    public int method_470(int i)
+    @Override
+    public int getPlacementMetadata(int i)
     {
         return i;
     }

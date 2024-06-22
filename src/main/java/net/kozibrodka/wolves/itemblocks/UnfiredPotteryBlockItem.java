@@ -14,12 +14,14 @@ public class UnfiredPotteryBlockItem extends BlockItem
         setTranslationKey("unfiredPottery");
     }
 
-    public int method_470(int i)
+    @Override
+    public int getPlacementMetadata(int i)
     {
         return i;
     }
 
     //EXTRA
+    @Override
     public String getTranslationKey(ItemStack itemstack) //getItemNameIS
     {
         if(itemstack.getDamage() == 0)

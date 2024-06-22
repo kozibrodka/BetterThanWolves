@@ -341,10 +341,7 @@ public class RecipeListener {
     }
 
     private static void addTurntableRecipes() {
-        TurntableRecipeRegistry.getInstance().addTurntableRecipe(Block.CLAY, 0, new ItemStack(Block.CLAY, 4, 1));
-        TurntableRecipeRegistry.getInstance().addTurntableRecipe(Block.CLAY, 1, new ItemStack(Block.CLAY, 4, 2));
-        TurntableRecipeRegistry.getInstance().addTurntableRecipe(Block.CLAY, 2, new ItemStack(Block.CLAY, 4, 3));
-        TurntableRecipeRegistry.getInstance().addTurntableRecipe(Block.CLAY, 3, new ItemStack(BlockListener.unfiredPottery, 4), new ItemStack(Item.CLAY, 1));
+        TurntableRecipeRegistry.getInstance().addTurntableRecipe(Block.CLAY, 0, new ItemStack(BlockListener.unfiredPottery, 16), new ItemStack(Item.CLAY, 1));
         TurntableRecipeRegistry.getInstance().addTurntableRecipe(BlockListener.unfiredPottery, 0, new ItemStack(BlockListener.unfiredPottery, 4, 1), new ItemStack(Item.CLAY, 1));
         TurntableRecipeRegistry.getInstance().addTurntableRecipe(BlockListener.unfiredPottery, 1, new ItemStack(BlockListener.unfiredPottery, 4, 2));
         TurntableRecipeRegistry.getInstance().addTurntableRecipe(BlockListener.unfiredPottery, 2, new ItemStack(ItemListener.nothing, 4, 0), new ItemStack(Item.CLAY, 2));
@@ -375,15 +372,15 @@ public class RecipeListener {
 
         // Recycling (iron)
         addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 9), new ItemStack[] { new ItemStack(Block.IRON_BLOCK) });
-        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 8), new ItemStack[] { new ItemStack(Item.IRON_CHESTPLATE) });
-        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 7), new ItemStack[] { new ItemStack(Item.IRON_LEGGINGS) });
+        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 8), new ItemStack[] { new ItemStack(Item.IRON_CHESTPLATE, 1, -1) });
+        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 7), new ItemStack[] { new ItemStack(Item.IRON_LEGGINGS, 1, -1) });
         addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 6), new ItemStack[] { new ItemStack(Item.IRON_DOOR) });
         addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 6), new ItemStack[] { new ItemStack(Block.RAIL, 16) });
-        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 5), new ItemStack[] { new ItemStack(Item.IRON_HELMET) });
+        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 5), new ItemStack[] { new ItemStack(Item.IRON_HELMET, 1, -1) });
         addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 5), new ItemStack[] { new ItemStack(Item.MINECART) });
         addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 5), new ItemStack[] { new ItemStack(Item.CHEST_MINECART) });
         addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 5), new ItemStack[] { new ItemStack(Item.FURNACE_MINECART) });
-        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 4), new ItemStack[] { new ItemStack(Item.IRON_BOOTS) });
+        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 4), new ItemStack[] { new ItemStack(Item.IRON_BOOTS, 1, -1) });
         addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 4), new ItemStack[] { new ItemStack(Item.COMPASS) });
         addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 4), new ItemStack[] { new ItemStack(Item.MAP) });
         addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 3), new ItemStack[] { new ItemStack(Item.BUCKET) });
@@ -391,57 +388,56 @@ public class RecipeListener {
         addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 3), new ItemStack[] { new ItemStack(Item.WATER_BUCKET) });
         addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 3), new ItemStack[] { new ItemStack(Item.MILK_BUCKET) });
         addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 3), new ItemStack[] { new ItemStack(ItemListener.bucketCement) });
-        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 3), new ItemStack[] { new ItemStack(Item.IRON_PICKAXE) });
-        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 3), new ItemStack[] { new ItemStack(Item.IRON_AXE) });
-        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 2), new ItemStack[] { new ItemStack(Item.IRON_SWORD) });
-        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 2), new ItemStack[] { new ItemStack(Item.IRON_HOE) });
+        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 3), new ItemStack[] { new ItemStack(Item.IRON_PICKAXE, 1, -1) });
+        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 3), new ItemStack[] { new ItemStack(Item.IRON_AXE, 1, -1) });
+        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 2), new ItemStack[] { new ItemStack(Item.IRON_SWORD, 1, -1) });
+        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 2), new ItemStack[] { new ItemStack(Item.IRON_HOE, 1, -1) });
         addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 2), new ItemStack[] { new ItemStack(Item.SHEARS) });
-        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 1), new ItemStack[] { new ItemStack(Item.IRON_SHOVEL) });
-        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 1), new ItemStack[] { new ItemStack(Item.FLINT_AND_STEEL) });
+        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 1), new ItemStack[] { new ItemStack(Item.IRON_SHOVEL, 1, -1) });
+        addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 1), new ItemStack[] { new ItemStack(Item.FLINT_AND_STEEL, 1, -1) });
         addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 1), new ItemStack[] { new ItemStack(Block.DETECTOR_RAIL) });
         addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 1), new ItemStack[] { new ItemStack(BlockListener.detectorRailWood) });
         addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 1), new ItemStack[] { new ItemStack(BlockListener.detectorRailObsidian) });
 
         // Recycling (gold)
         addCrucibleRecipe(new ItemStack(Item.GOLD_INGOT, 9), new ItemStack[] { new ItemStack(Block.GOLD_BLOCK) });
-        addCrucibleRecipe(new ItemStack(Item.GOLD_INGOT, 8), new ItemStack[] { new ItemStack(Item.GOLDEN_CHESTPLATE) });
-        addCrucibleRecipe(new ItemStack(Item.GOLD_INGOT, 7), new ItemStack[] { new ItemStack(Item.GOLDEN_LEGGINGS) });
-        addCrucibleRecipe(new ItemStack(Item.GOLD_INGOT, 5), new ItemStack[] { new ItemStack(Item.GOLDEN_HELMET) });
-        addCrucibleRecipe(new ItemStack(Item.GOLD_INGOT, 4), new ItemStack[] { new ItemStack(Item.GOLDEN_BOOTS) });
+        addCrucibleRecipe(new ItemStack(Item.GOLD_INGOT, 8), new ItemStack[] { new ItemStack(Item.GOLDEN_CHESTPLATE, 1, -1) });
+        addCrucibleRecipe(new ItemStack(Item.GOLD_INGOT, 7), new ItemStack[] { new ItemStack(Item.GOLDEN_LEGGINGS, 1, -1) });
+        addCrucibleRecipe(new ItemStack(Item.GOLD_INGOT, 5), new ItemStack[] { new ItemStack(Item.GOLDEN_HELMET, 1, -1) });
+        addCrucibleRecipe(new ItemStack(Item.GOLD_INGOT, 4), new ItemStack[] { new ItemStack(Item.GOLDEN_BOOTS, 1, -1) });
         addCrucibleRecipe(new ItemStack(Item.GOLD_INGOT, 4), new ItemStack[] { new ItemStack(Item.CLOCK) });
-        addCrucibleRecipe(new ItemStack(Item.GOLD_INGOT, 3), new ItemStack[] { new ItemStack(Item.GOLDEN_PICKAXE) });
-        addCrucibleRecipe(new ItemStack(Item.GOLD_INGOT, 3), new ItemStack[] { new ItemStack(Item.GOLDEN_AXE) });
-        addCrucibleRecipe(new ItemStack(Item.GOLD_INGOT, 2), new ItemStack[] { new ItemStack(Item.GOLDEN_SWORD) });
-        addCrucibleRecipe(new ItemStack(Item.GOLD_INGOT, 2), new ItemStack[] { new ItemStack(Item.GOLDEN_HOE) });
-        addCrucibleRecipe(new ItemStack(Item.GOLD_INGOT, 1), new ItemStack[] { new ItemStack(Item.GOLDEN_SHOVEL) });
+        addCrucibleRecipe(new ItemStack(Item.GOLD_INGOT, 3), new ItemStack[] { new ItemStack(Item.GOLDEN_PICKAXE, 1, -1) });
+        addCrucibleRecipe(new ItemStack(Item.GOLD_INGOT, 3), new ItemStack[] { new ItemStack(Item.GOLDEN_AXE, 1, -1) });
+        addCrucibleRecipe(new ItemStack(Item.GOLD_INGOT, 2), new ItemStack[] { new ItemStack(Item.GOLDEN_SWORD, 1, -1) });
+        addCrucibleRecipe(new ItemStack(Item.GOLD_INGOT, 2), new ItemStack[] { new ItemStack(Item.GOLDEN_HOE, 1, -1) });
+        addCrucibleRecipe(new ItemStack(Item.GOLD_INGOT, 1), new ItemStack[] { new ItemStack(Item.GOLDEN_SHOVEL, 1, -1) });
         addCrucibleRecipe(new ItemStack(Item.GOLD_INGOT, 1), new ItemStack[] { new ItemStack(Block.POWERED_RAIL) });
 
         // Recycling (diamond)
-        addCrucibleRecipe(new ItemStack(ItemListener.diamondIngot, 8), new ItemStack[] { new ItemStack(Item.DIAMOND_CHESTPLATE) });
-        addCrucibleRecipe(new ItemStack(ItemListener.diamondIngot, 7), new ItemStack[] { new ItemStack(Item.DIAMOND_LEGGINGS) });
-        addCrucibleRecipe(new ItemStack(ItemListener.diamondIngot, 5), new ItemStack[] { new ItemStack(Item.DIAMOND_HELMET) });
-        addCrucibleRecipe(new ItemStack(ItemListener.diamondIngot, 4), new ItemStack[] { new ItemStack(Item.DIAMOND_BOOTS) });
-        addCrucibleRecipe(new ItemStack(ItemListener.diamondIngot, 3), new ItemStack[] { new ItemStack(Item.DIAMOND_PICKAXE) });
-        addCrucibleRecipe(new ItemStack(ItemListener.diamondIngot, 3), new ItemStack[] { new ItemStack(Item.DIAMOND_AXE) });
-        addCrucibleRecipe(new ItemStack(ItemListener.diamondIngot, 2), new ItemStack[] { new ItemStack(Item.DIAMOND_SWORD) });
-        addCrucibleRecipe(new ItemStack(ItemListener.diamondIngot, 2), new ItemStack[] { new ItemStack(Item.DIAMOND_HOE) });
-        addCrucibleRecipe(new ItemStack(ItemListener.diamondIngot, 1), new ItemStack[] { new ItemStack(Item.DIAMOND_SHOVEL) });
+        addCrucibleRecipe(new ItemStack(ItemListener.diamondIngot, 8), new ItemStack[] { new ItemStack(Item.DIAMOND_CHESTPLATE, 1, -1) });
+        addCrucibleRecipe(new ItemStack(ItemListener.diamondIngot, 7), new ItemStack[] { new ItemStack(Item.DIAMOND_LEGGINGS, 1, -1) });
+        addCrucibleRecipe(new ItemStack(ItemListener.diamondIngot, 5), new ItemStack[] { new ItemStack(Item.DIAMOND_HELMET, 1, -1) });
+        addCrucibleRecipe(new ItemStack(ItemListener.diamondIngot, 4), new ItemStack[] { new ItemStack(Item.DIAMOND_BOOTS, 1, -1) });
+        addCrucibleRecipe(new ItemStack(ItemListener.diamondIngot, 3), new ItemStack[] { new ItemStack(Item.DIAMOND_PICKAXE, 1, -1) });
+        addCrucibleRecipe(new ItemStack(ItemListener.diamondIngot, 3), new ItemStack[] { new ItemStack(Item.DIAMOND_AXE, 1, -1) });
+        addCrucibleRecipe(new ItemStack(ItemListener.diamondIngot, 2), new ItemStack[] { new ItemStack(Item.DIAMOND_SWORD, 1, -1) });
+        addCrucibleRecipe(new ItemStack(ItemListener.diamondIngot, 2), new ItemStack[] { new ItemStack(Item.DIAMOND_HOE, 1, -1) });
+        addCrucibleRecipe(new ItemStack(ItemListener.diamondIngot, 1), new ItemStack[] { new ItemStack(Item.DIAMOND_SHOVEL, 1, -1) });
 
         // Recycling (steel)
-        addCrucibleRecipe(new ItemStack(ItemListener.steel, 8), new ItemStack[] { new ItemStack(ItemListener.chestPlateSteel) });
+        addCrucibleRecipe(new ItemStack(ItemListener.steel, 8), new ItemStack[] { new ItemStack(ItemListener.chestPlateSteel, 1, -1) });
         addCrucibleRecipe(new ItemStack(ItemListener.steel, 7), new ItemStack[] { new ItemStack(BlockListener.anvil) });
-        addCrucibleRecipe(new ItemStack(ItemListener.steel, 7), new ItemStack[] { new ItemStack(ItemListener.leggingsSteel) });
-        addCrucibleRecipe(new ItemStack(ItemListener.steel, 5), new ItemStack[] { new ItemStack(ItemListener.helmetSteel) });
-        addCrucibleRecipe(new ItemStack(ItemListener.steel, 4), new ItemStack[] { new ItemStack(ItemListener.bootsSteel) });
-        addCrucibleRecipe(new ItemStack(ItemListener.steel, 3), new ItemStack[] { new ItemStack(ItemListener.refinedPickAxe) });
-        addCrucibleRecipe(new ItemStack(ItemListener.steel, 3), new ItemStack[] { new ItemStack(ItemListener.refinedAxe) });
-        addCrucibleRecipe(new ItemStack(ItemListener.steel, 2), new ItemStack[] { new ItemStack(ItemListener.refinedSword) });
-        addCrucibleRecipe(new ItemStack(ItemListener.steel, 2), new ItemStack[] { new ItemStack(ItemListener.refinedHoe) });
-        addCrucibleRecipe(new ItemStack(ItemListener.steel, 1), new ItemStack[] { new ItemStack(ItemListener.refinedShovel) });
+        addCrucibleRecipe(new ItemStack(ItemListener.steel, 7), new ItemStack[] { new ItemStack(ItemListener.leggingsSteel, 1, -1) });
+        addCrucibleRecipe(new ItemStack(ItemListener.steel, 5), new ItemStack[] { new ItemStack(ItemListener.helmetSteel, 1, -1) });
+        addCrucibleRecipe(new ItemStack(ItemListener.steel, 4), new ItemStack[] { new ItemStack(ItemListener.bootsSteel, 1, -1) });
+        addCrucibleRecipe(new ItemStack(ItemListener.steel, 3), new ItemStack[] { new ItemStack(ItemListener.refinedPickAxe, 1, -1) });
+        addCrucibleRecipe(new ItemStack(ItemListener.steel, 3), new ItemStack[] { new ItemStack(ItemListener.refinedAxe, 1, -1) });
+        addCrucibleRecipe(new ItemStack(ItemListener.steel, 2), new ItemStack[] { new ItemStack(ItemListener.refinedSword, 1, -1) });
+        addCrucibleRecipe(new ItemStack(ItemListener.steel, 2), new ItemStack[] { new ItemStack(ItemListener.refinedHoe, 1, -1) });
+        addCrucibleRecipe(new ItemStack(ItemListener.steel, 1), new ItemStack[] { new ItemStack(ItemListener.refinedShovel, 1, -1) });
         addCrucibleRecipe(new ItemStack(ItemListener.steel, 1), new ItemStack[] { new ItemStack(ItemListener.armourPlateSteel) });
         addCrucibleRecipe(new ItemStack(ItemListener.steel, 1), new ItemStack[] { new ItemStack(ItemListener.broadHeadArrowhead, 4) });
         addCrucibleRecipe(new ItemStack(ItemListener.steel, 1), new ItemStack[] { new ItemStack(ItemListener.broadHeadArrow, 16) });
-
     }
 
     private static void addHopperRecipes() {

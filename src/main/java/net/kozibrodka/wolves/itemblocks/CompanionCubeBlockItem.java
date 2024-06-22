@@ -14,11 +14,13 @@ public class CompanionCubeBlockItem extends BlockItem
         setTranslationKey("companionCube");
     }
 
-    public int method_470(int i) //getPlacedBlockMetadata
+    @Override
+    public int getPlacementMetadata(int i)
     {
         return i <= 0 ? 0 : 8;
     }
 
+    @Override
     public String getTranslationKey(ItemStack itemstack) //getItemNameIS
     {
         if(itemstack.getDamage() > 0)

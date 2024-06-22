@@ -1,6 +1,6 @@
 Station API and mappings:
-- Update to the newest Station API version
-- Move to BINY-Mappings
+- Update to the newest Station API version (Done=
+- Move to BINY-Mappings (Done)
 
 API improvements:
 - Rework rotational force
@@ -27,3 +27,4 @@ Notation changes:
 - Completely get rid of Hungarian notation
 - Switch all methods to camel casing
 - Remove "fc" prefix from textures
+- Add @Override annotations to everything

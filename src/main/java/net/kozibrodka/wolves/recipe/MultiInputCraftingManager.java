@@ -11,7 +11,7 @@ public abstract class MultiInputCraftingManager
 
     protected MultiInputCraftingManager()
     {
-        m_recipes = new ArrayList();
+        recipes = new ArrayList();
     }
 
     public void addRecipe(ItemStack outputStack, ItemStack inputStacks[])
@@ -23,14 +23,14 @@ public abstract class MultiInputCraftingManager
             arraylist.add(inputStacks[iTempIndex].copy());
         }
 
-        m_recipes.add(new MultiInputRecipeHandler(outputStack, arraylist));
+        recipes.add(new MultiInputRecipeHandler(outputStack, arraylist));
     }
 
     public ItemStack getCraftingResult(Inventory inventory)
     {
-        for(int i = 0; i < m_recipes.size(); i++)
+        for(int i = 0; i < recipes.size(); i++)
         {
-            MultiInputRecipeHandler tempRecipe = (MultiInputRecipeHandler)m_recipes.get(i);
+            MultiInputRecipeHandler tempRecipe = (MultiInputRecipeHandler) recipes.get(i);
             if(tempRecipe.DoesInventoryContainIngredients(inventory))
             {
                 return tempRecipe.getCopyOfOutputStack();
@@ -42,9 +42,9 @@ public abstract class MultiInputCraftingManager
 
     public ItemStack consumeIngredientsAndReturnResult(Inventory inventory)
     {
-        for(int i = 0; i < m_recipes.size(); i++)
+        for(int i = 0; i < recipes.size(); i++)
         {
-            MultiInputRecipeHandler tempRecipe = (MultiInputRecipeHandler)m_recipes.get(i);
+            MultiInputRecipeHandler tempRecipe = (MultiInputRecipeHandler) recipes.get(i);
             if(tempRecipe.DoesInventoryContainIngredients(inventory))
             {
                 tempRecipe.ConsumeInventoryIngredients(inventory);
@@ -55,5 +55,5 @@ public abstract class MultiInputCraftingManager
         return null;
     }
 
-    protected List m_recipes;
+    protected List recipes;
 }

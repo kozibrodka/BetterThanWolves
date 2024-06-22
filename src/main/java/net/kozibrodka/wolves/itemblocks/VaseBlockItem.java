@@ -14,12 +14,14 @@ public class VaseBlockItem extends BlockItem
         setTranslationKey("vase");
     }
 
-    public int method_470(int i)
+    @Override
+    public int getPlacementMetadata(int i)
     {
         return i;
     }
 
     //EXTRA
+    @Override
     public String getTranslationKey(ItemStack itemstack) //getItemNameIS
     {
         return switch (itemstack.getDamage()) {

@@ -23,8 +23,8 @@ public class CauldronCraftingManager extends MultiInputCraftingManager
     {
         ArrayList<ItemStack[]> recipeList = new ArrayList<>();
 
-        for (int i = 0; i < m_recipes.size(); i++) {
-            MultiInputRecipeHandler bulkRecipe = (MultiInputRecipeHandler) m_recipes.get(i);
+        for (int i = 0; i < recipes.size(); i++) {
+            MultiInputRecipeHandler bulkRecipe = (MultiInputRecipeHandler) recipes.get(i);
             if (bulkRecipe.getNumberOfInputStacks() < 2) continue;
             ItemStack[] recipeArray = new ItemStack[3];
             recipeArray[0] = bulkRecipe.getOutputStack();
@@ -40,8 +40,8 @@ public class CauldronCraftingManager extends MultiInputCraftingManager
     {
         ArrayList<ItemStack[]> recipeList = new ArrayList<>();
 
-        for (int i = 0; i < m_recipes.size(); i++) {
-            MultiInputRecipeHandler bulkRecipe = (MultiInputRecipeHandler) m_recipes.get(i);
+        for (int i = 0; i < recipes.size(); i++) {
+            MultiInputRecipeHandler bulkRecipe = (MultiInputRecipeHandler) recipes.get(i);
             if (bulkRecipe.getNumberOfInputStacks() != 1) continue;
             ItemStack[] recipeArray = new ItemStack[2];
             recipeArray[0] = bulkRecipe.getOutputStack();

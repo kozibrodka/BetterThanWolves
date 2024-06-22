@@ -12,7 +12,7 @@ public class MultiInputRecipeHandler
     public MultiInputRecipeHandler(ItemStack recipeOutputStack, List recipeInputStacks)
     {
         m_recipeOutputStack = recipeOutputStack;
-        m_recipeInputStacks = recipeInputStacks;
+        this.recipeInputStacks = recipeInputStacks;
     }
 
     public ItemStack getCopyOfOutputStack()
@@ -28,11 +28,11 @@ public class MultiInputRecipeHandler
 
     public boolean DoesInventoryContainIngredients(Inventory inventory)
     {
-        if(m_recipeInputStacks != null && m_recipeInputStacks.size() > 0)
+        if(recipeInputStacks != null && !recipeInputStacks.isEmpty())
         {
-            for(int listIndex = 0; listIndex < m_recipeInputStacks.size(); listIndex++)
+            for(int listIndex = 0; listIndex < recipeInputStacks.size(); listIndex++)
             {
-                ItemStack tempStack = (ItemStack)m_recipeInputStacks.get(listIndex);
+                ItemStack tempStack = (ItemStack) recipeInputStacks.get(listIndex);
                 if(tempStack != null && InventoryHandler.itemCountInInventory(inventory, tempStack.getItem().id, tempStack.getDamage()) < tempStack.count)
                 {
                     return false;
@@ -49,9 +49,9 @@ public class MultiInputRecipeHandler
     public boolean ConsumeInventoryIngredients(Inventory inventory)
     {
         boolean bSuccessful = true;
-        if(m_recipeInputStacks != null && m_recipeInputStacks.size() > 0)
+        if(recipeInputStacks != null && recipeInputStacks.size() > 0)
         {
-            for (Object m_recipeInputStack : m_recipeInputStacks) {
+            for (Object m_recipeInputStack : recipeInputStacks) {
                 ItemStack tempStack = (ItemStack) m_recipeInputStack;
                 if (tempStack != null && !InventoryHandler.consumeItemsInInventory(inventory, tempStack.getItem().id, tempStack.getDamage(), tempStack.count)) {
                     bSuccessful = false;
@@ -64,12 +64,12 @@ public class MultiInputRecipeHandler
 
     public ItemStack getInputStack(int index)
     {
-        return (ItemStack) m_recipeInputStacks.get(index);
+        return (ItemStack) recipeInputStacks.get(index);
     }
 
     public int getNumberOfInputStacks()
     {
-        return m_recipeInputStacks.size();
+        return recipeInputStacks.size();
     }
 
     public ItemStack getOutputStack()
@@ -78,5 +78,5 @@ public class MultiInputRecipeHandler
     }
 
     private final ItemStack m_recipeOutputStack;
-    private final List m_recipeInputStacks;
+    private final List recipeInputStacks;
 }

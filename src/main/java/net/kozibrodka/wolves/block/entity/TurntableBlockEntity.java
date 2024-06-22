@@ -11,6 +11,7 @@ import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.block.TurntableBlock;
 import net.kozibrodka.wolves.block.UnfiredPotteryBlock;
 import net.kozibrodka.wolves.events.BlockListener;
+import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.recipe.TurntableRecipeRegistry;
 import net.kozibrodka.wolves.utils.BlockPosition;
@@ -44,7 +45,6 @@ public class TurntableBlockEntity extends BlockEntity
     {
         rotationCount = 0;
         switchSetting = 0;
-        craftingRotationCount = 0;
     }
 
     public void readNbt(NbtCompound nbttagcompound)
@@ -100,7 +100,6 @@ public class TurntableBlockEntity extends BlockEntity
             voicePacket(world, "random.click", x, y, z, 0.05F, 1.0F);
         }
         boolean reverseDirection = ((TurntableBlock)BlockListener.turntable).IsBlockRedstoneOn(world, x, y, z);
-        m_bPotteryRotated = false;
         int iTempJ = y + 1;
         do
         {
@@ -123,10 +122,6 @@ public class TurntableBlockEntity extends BlockEntity
             }
             iTempJ++;
         } while(true);
-        if(!m_bPotteryRotated)
-        {
-            craftingRotationCount = 0;
-        }
     }
 
     private void rotateBlock(int i, int j, int k, boolean reverseDirection) {
@@ -192,15 +187,21 @@ public class TurntableBlockEntity extends BlockEntity
     }
 
     private void rotateRegisteredBlock(int x, int y, int z, ItemStack[] outputs) {
+        outputs[0] = outputs[0].copy();
         if (craftingRotationCount < outputs[0].count) {
             craftingRotationCount++;
             return;
         }
         craftingRotationCount = 0;
-        world.method_154(x, y, z, outputs[0].itemId, outputs[0].getDamage());
+        System.out.println("Bigger than count");
+        if (outputs[0].itemId != ItemListener.nothing.id) {
+            world.method_154(x, y, z, outputs[0].itemId, outputs[0].getDamage());
+        } else {
+            world.setBlock(x, y, z, 0);
+        }
         world.method_202(x, y, z, x, y, z);
         if (outputs[1] != null) {
-            UnsortedUtils.ejectStackWithRandomOffset(world, x, y + 1, z, outputs[1]);
+            UnsortedUtils.ejectStackWithRandomOffset(world, x, y + 1, z, outputs[1].copy());
         }
     }
 
@@ -507,59 +508,6 @@ public class TurntableBlockEntity extends BlockEntity
         world.method_202(i, j, k, i, j, k);
     }
 
-    private void RotateClay(int i, int j, int k, boolean bReverseDirection)
-    {
-        Block targetBlock = Block.CLAY;
-        world.playSound((float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, targetBlock.soundGroup.getSound(), (targetBlock.soundGroup.method_1976() + 1.0F) / 5.0F, targetBlock.soundGroup.method_1977() * 0.8F);
-        if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-            voicePacket(world, targetBlock.soundGroup.getSound(), i, j, k, (targetBlock.soundGroup.method_1976() + 1.0F) / 5.0F, targetBlock.soundGroup.method_1977() * 0.8F);
-        }
-        craftingRotationCount++;
-        if(craftingRotationCount >= 8)
-        {
-            world.setBlock(i, j, k, BlockListener.unfiredPottery.id);
-            world.method_202(i, j, k, i, j, k);
-            UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j + 1, k, Item.CLAY.id, 0);
-            craftingRotationCount = 0;
-        }
-    }
-
-    private void RotateUnfiredPottery(int i, int j, int k, boolean bReverseDirection)
-    {
-        Block targetBlock = Block.CLAY;
-        world.playSound((float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, targetBlock.soundGroup.getSound(), (targetBlock.soundGroup.method_1976() + 1.0F) / 5.0F, targetBlock.soundGroup.method_1977() * 0.8F);
-        if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-            voicePacket(world, targetBlock.soundGroup.getSound(), i, j, k, (targetBlock.soundGroup.method_1976() + 1.0F) / 5.0F, targetBlock.soundGroup.method_1977() * 0.8F);
-        }
-        craftingRotationCount++;
-        if(craftingRotationCount >= 8)
-        {
-            int iMetaData = world.getBlockMeta(i, j, k);
-            if(iMetaData < 2)
-            {
-                if(iMetaData == 1)
-                {
-                    UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j + 1, k, Item.CLAY.id, 0);
-                }
-                iMetaData++;
-                world.method_215(i, j, k, iMetaData);
-                world.method_243(i, j, k);
-                world.method_202(i, j, k, i, j, k);
-//                mod_FCBetterThanWolves.sendData(this, level, i, j, k);
-            } else
-            {
-                world.setBlock(i, j, k, 0);
-                world.method_202(i, j, k, i, j, k);
-                for(int iTemp = 0; iTemp < 2; iTemp++)
-                {
-                    UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, Item.CLAY.id, 0);
-                }
-
-            }
-            craftingRotationCount = 0;
-        }
-    }
-
     @Environment(EnvType.SERVER)
     public void voicePacket(World world, String name, int x, int y, int z, float g, float h){
         List list2 = world.field_200;
@@ -577,7 +525,6 @@ public class TurntableBlockEntity extends BlockEntity
     private int rotationCount;
     public int switchSetting;
     public int craftingRotationCount;
-    private boolean m_bPotteryRotated;
     private static int TICKS_TO_ROTATE[] = {
         10, 20, 40, 80, 200, 600, 1200, 2400, 6000, 12000, 
         24000
