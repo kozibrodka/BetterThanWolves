@@ -4,6 +4,7 @@ import net.minecraft.item.ItemInstance;
 
 public class ItemUtil {
     public static boolean compare(ItemInstance filter, ItemInstance item) {
+        if (item == null) return false;
         boolean sameId = filter.itemId == item.itemId;
         if(!item.getStationNbt().values().isEmpty() && !filter.getStationNbt().values().isEmpty()) {
             boolean sameNBT = item.getStationNbt().getString("material")

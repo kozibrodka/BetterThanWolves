@@ -42,7 +42,7 @@ public class RecipeListener {
         addDebugRecipes();
         addMillingRecipes();
         addSawingRecipes();
-        addTurntableRecipes(); // Only used for tabs right now. TODO: Integrate this registry into the TileEntity of the turntable
+        addTurntableRecipes();
         addCrucibleRecipes();
         addHopperRecipes();
     }
@@ -301,8 +301,32 @@ public class RecipeListener {
     }
 
     private static void addTurntableRecipes() {
-        TurntableRecipeRegistry.getInstance().addTurntableRecipe(BlockBase.CLAY.id, new ItemInstance(BlockListener.unfiredPottery));
-        TurntableRecipeRegistry.getInstance().addTurntableRecipe(BlockListener.unfiredPottery.id, new ItemInstance(BlockListener.unfiredPottery, 1, 1));
+        TurntableRecipeRegistry.getInstance().addTurntableRecipe(BlockBase.CLAY, 0, new ItemInstance(BlockBase.CLAY, 4, 1));
+        TurntableRecipeRegistry.getInstance().addTurntableRecipe(BlockBase.CLAY, 1, new ItemInstance(BlockBase.CLAY, 4, 2));
+        TurntableRecipeRegistry.getInstance().addTurntableRecipe(BlockBase.CLAY, 2, new ItemInstance(BlockBase.CLAY, 4, 3));
+        TurntableRecipeRegistry.getInstance().addTurntableRecipe(BlockBase.CLAY, 3, new ItemInstance(BlockListener.unfiredPottery, 4), new ItemInstance(ItemBase.clay, 1));
+        TurntableRecipeRegistry.getInstance().addTurntableRecipe(BlockListener.unfiredPottery, 0, new ItemInstance(BlockListener.unfiredPottery, 4, 1), new ItemInstance(ItemBase.clay, 1));
+        TurntableRecipeRegistry.getInstance().addTurntableRecipe(BlockListener.unfiredPottery, 1, new ItemInstance(BlockListener.unfiredPottery, 4, 2));
+        TurntableRecipeRegistry.getInstance().addTurntableRecipe(BlockListener.unfiredPottery, 2, new ItemInstance(0, 4, 0), new ItemInstance(ItemBase.clay, 2));
+        TurntableRecipeRegistry.getInstance().addRotation(BlockBase.PUMPKIN.id, new Integer[][] {new Integer[] {0, 1, 2, 3}});
+        TurntableRecipeRegistry.getInstance().addRotation(BlockBase.JACK_O_LANTERN.id, new Integer[][] {new Integer[] {0, 1, 2, 3}});
+        TurntableRecipeRegistry.getInstance().addRotation(BlockBase.REDSTONE_REPEATER.id, new Integer[][] {
+                new Integer[] {0, 1, 2, 3},
+                new Integer[] {4, 5, 6, 7},
+                new Integer[] {8, 9, 10, 11},
+                new Integer[] {12, 13, 14, 15}
+        });
+        TurntableRecipeRegistry.getInstance().addRotation(BlockBase.REDSTONE_REPEATER_LIT.id, new Integer[][] {
+                new Integer[] {0, 1, 2, 3},
+                new Integer[] {4, 5, 6, 7},
+                new Integer[] {8, 9, 10, 11},
+                new Integer[] {12, 13, 14, 15}
+        });
+        TurntableRecipeRegistry.getInstance().addRotation(BlockBase.PISTON.id, new Integer[][] {new Integer[] {4, 2, 5, 3}});
+        TurntableRecipeRegistry.getInstance().addRotation(BlockBase.STICKY_PISTON.id, new Integer[][] {new Integer[] {4, 2, 5, 3}});
+        TurntableRecipeRegistry.getInstance().addRotation(BlockBase.FURNACE.id, new Integer[][] {new Integer[] {4, 2, 5, 3}});
+        TurntableRecipeRegistry.getInstance().addRotation(BlockBase.FURNACE_LIT.id, new Integer[][] {new Integer[] {4, 2, 5, 3}});
+        TurntableRecipeRegistry.getInstance().addRotation(BlockBase.DISPENSER.id, new Integer[][] {new Integer[] {4, 2, 5, 3}});
     }
 
     private static void addCrucibleRecipes() {

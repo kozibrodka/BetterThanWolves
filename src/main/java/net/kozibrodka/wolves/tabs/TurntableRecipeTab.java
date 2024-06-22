@@ -28,7 +28,7 @@ public class TurntableRecipeTab extends TabWithTexture {
     }
 
     public TurntableRecipeTab(Namespace tabCreator, List<ItemInstance[]> recipesReady, BlockBase tabBlock) {
-        this(tabCreator, 2, recipesReady, tabBlock, "/assets/wolves/stationapi/gui/hmi_tabs/one_in_one_out.png", 140, 56, 22, 15);
+        this(tabCreator, 3, recipesReady, tabBlock, "/assets/wolves/stationapi/gui/hmi_tabs/one_in_one_out_byproduct.png", 140, 56, 22, 15);
     }
 
     public TurntableRecipeTab(Namespace tabCreator, int slotsPerRecipe, List<ItemInstance[]> recipesReady, BlockBase tabBlock, String texturePath, int width, int height, int textureX, int textureY) {
@@ -42,6 +42,7 @@ public class TurntableRecipeTab extends TabWithTexture {
 
         slots[0] = new Integer[] {32 + xOffset, 35 + yOffset};
         slots[1] = new Integer[] {148 + xOffset, 35 + yOffset};
+        slots[2] = new Integer[] {148 + xOffset, 53 + yOffset};
     }
 
     @Override
@@ -60,6 +61,7 @@ public class TurntableRecipeTab extends TabWithTexture {
                 ItemInstance[] recipe = recipes.get(k);
                 items[j][0] = recipe[0];
                 items[j][1] = recipe[1];
+                items[j][2] = recipe[2];
             } catch (Throwable throwable) {
                 throwable.printStackTrace();
             }
@@ -87,7 +89,9 @@ public class TurntableRecipeTab extends TabWithTexture {
         recipesReady.forEach(recipe -> {
             ItemInstance input = recipe[0];
             ItemInstance output = recipe[1];
-            if (filter == null || (!getUses && compare(filter, output)) || (getUses && compare(filter, input)) || filter.isDamageAndIDIdentical(new ItemInstance(tabBlock))) {
+            output.count = 1;
+            ItemInstance byproduct = recipe[2];
+            if (filter == null || (!getUses && compare(filter, output)) || (!getUses && compare(filter, byproduct)) || (getUses && compare(filter, input)) || filter.isDamageAndIDIdentical(new ItemInstance(tabBlock))) {
                 recipes.add(recipe);
             }
         });

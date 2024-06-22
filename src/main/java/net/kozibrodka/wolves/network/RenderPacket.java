@@ -87,7 +87,7 @@ public class RenderPacket extends AbstractPacket implements IdentifiablePacket {
 //        if(block == 1){ //TURNTABLE
 //            TurntableTileEntity tile = (TurntableTileEntity) minecraft.level.getTileEntity(this.x,this.y,this.z);
 //            if(tile != null) {
-//                tile.m_iSwitchSetting = this.valueS;
+//                tile.switchSetting = this.valueS;
 //            }
 //        }
 //        if(block == 2){ //HOPPER
@@ -105,7 +105,7 @@ public class RenderPacket extends AbstractPacket implements IdentifiablePacket {
 //        ServerPlayer player = accessor.getServerPlayer();
 //        if(block == 1){ //TURNTABLE
 //            TurntableTileEntity tile = (TurntableTileEntity) player.level.getTileEntity(this.x,this.y,this.z);
-//            int a = ((TurntableTileEntity) tile).m_iSwitchSetting;
+//            int a = ((TurntableTileEntity) tile).switchSetting;
 //            PacketHelper.sendTo(player, new RenderPacket(1, this.x, this.y, this.z, a, 0));
 //        }
 //        if(block == 2){ //HOPPER

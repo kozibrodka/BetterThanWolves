@@ -8,19 +8,17 @@ package net.kozibrodka.wolves.tileentity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.FabricLoader;
-import net.kozibrodka.wolves.blocks.Pulley;
 import net.kozibrodka.wolves.blocks.Turntable;
-import net.kozibrodka.wolves.blocks.UnfiredPottery;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.network.SoundPacket;
+import net.kozibrodka.wolves.recipe.TurntableRecipeRegistry;
 import net.kozibrodka.wolves.utils.BlockPosition;
 import net.kozibrodka.wolves.utils.RotatableBlock;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.kozibrodka.wolves.utils.ReplaceableBlockChecker;
 import net.minecraft.block.*;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.ServerPlayer;
-import net.minecraft.item.ItemBase;
+import net.minecraft.item.ItemInstance;
 import net.minecraft.level.Level;
 import net.minecraft.tileentity.TileEntityBase;
 import net.minecraft.util.io.CompoundTag;
@@ -42,33 +40,32 @@ public class TurntableTileEntity extends TileEntityBase
 
     public TurntableTileEntity()
     {
-        m_iRotationCount = 0;
-        m_iSwitchSetting = 0;
-        m_iPotteryRotationCount = 0;
-        m_bPotteryRotated = false;
+        rotationCount = 0;
+        switchSetting = 0;
+        craftingRotationCount = 0;
     }
 
     public void readIdentifyingData(CompoundTag nbttagcompound)
     {
         super.readIdentifyingData(nbttagcompound);
-        m_iRotationCount = nbttagcompound.getInt("m_iRotationCount");
-        m_iSwitchSetting = nbttagcompound.getInt("m_iSwitchSetting");
-        if(m_iSwitchSetting > 3)
+        rotationCount = nbttagcompound.getInt("rotationCount");
+        switchSetting = nbttagcompound.getInt("switchSetting");
+        if(switchSetting > 3)
         {
-            m_iSwitchSetting = 3;
+            switchSetting = 3;
         }
-        if(nbttagcompound.containsKey("m_iPotteryRotationCount"))
+        if(nbttagcompound.containsKey("craftingRotationCount"))
         {
-            m_iPotteryRotationCount = nbttagcompound.getInt("m_iPotteryRotationCount");
+            craftingRotationCount = nbttagcompound.getInt("craftingRotationCount");
         }
     }
 
     public void writeIdentifyingData(CompoundTag nbttagcompound)
     {
         super.writeIdentifyingData(nbttagcompound);
-        nbttagcompound.put("m_iRotationCount", m_iRotationCount);
-        nbttagcompound.put("m_iSwitchSetting", m_iSwitchSetting);
-        nbttagcompound.put("m_iPotteryRotationCount", m_iSwitchSetting);
+        nbttagcompound.put("rotationCount", rotationCount);
+        nbttagcompound.put("switchSetting", switchSetting);
+        nbttagcompound.put("craftingRotationCount", switchSetting);
     }
 
     public void tick()
@@ -78,31 +75,29 @@ public class TurntableTileEntity extends TileEntityBase
         }
         if(((Turntable) BlockListener.turntable).IsBlockMechanicalOn(level, x, y, z))
         {
-            m_iRotationCount++;
-            if(m_iRotationCount >= GetTicksToRotate())
+            rotationCount++;
+            if(rotationCount >= GetTicksToRotate())
             {
-                RotateTurntable();
-                m_iRotationCount = 0;
+                rotateTurntable();
+                rotationCount = 0;
             }
         } else
         {
-            m_iRotationCount = 0;
+            rotationCount = 0;
         }
     }
 
     private int GetTicksToRotate()
     {
-        return m_iTicksToRotate[m_iSwitchSetting];
+        return TICKS_TO_ROTATE[switchSetting];
     }
 
-    private void RotateTurntable()
-    {
+    private void rotateTurntable() {
         level.playSound((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, "random.click", 0.05F, 1.0F);
         if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
             voicePacket(level, "random.click", x, y, z, 0.05F, 1.0F);
         }
-        boolean bReverseDirection = ((Turntable)BlockListener.turntable).IsBlockRedstoneOn(level, x, y, z);
-        m_bPotteryRotated = false;
+        boolean reverseDirection = ((Turntable)BlockListener.turntable).IsBlockRedstoneOn(level, x, y, z);
         int iTempJ = y + 1;
         do
         {
@@ -110,82 +105,95 @@ public class TurntableTileEntity extends TileEntityBase
             {
                 break;
             }
-            RotateBlock(x, iTempJ, z, bReverseDirection);
+            rotateBlock(x, iTempJ, z, reverseDirection);
             if(CanBlockTransmitRotation(x, iTempJ, z))
             {
-                RotateBlocksAttachedToBlock(x, iTempJ, z, bReverseDirection);
+                RotateBlocksAttachedToBlock(x, iTempJ, z, reverseDirection);
             } else
             {
                 int iTempid = level.getTileId(x, iTempJ, z);
                 if(iTempid == BlockBase.CLAY.id)
                 {
-                    RotateBlocksAttachedToBlock(x, iTempJ, z, bReverseDirection);
+                    RotateBlocksAttachedToBlock(x, iTempJ, z, reverseDirection);
                 }
                 break;
             }
             iTempJ++;
         } while(true);
-        if(!m_bPotteryRotated)
-        {
-            m_iPotteryRotationCount = 0;
-        }
     }
 
-    private void RotateBlock(int i, int j, int k, boolean bReverseDirection)
-    {
-        int iTargetid = level.getTileId(i, j, k);
-        BlockBase targetBlock = BlockBase.BY_ID[iTargetid];
-        if(iTargetid == BlockBase.CLAY.id)
-        {
-            RotateClay(i, j, k, bReverseDirection);
-            m_bPotteryRotated = true;
+    private void rotateBlock(int i, int j, int k, boolean reverseDirection) {
+        int targetId = level.getTileId(i, j, k);
+        int targetMeta = level.getTileMeta(i, j, k);
+        BlockBase targetBlock = BlockBase.BY_ID[targetId];
+        ItemInstance[] outputs = TurntableRecipeRegistry.getInstance().getResult(new ItemInstance(targetBlock, 1, targetMeta));
+        if (outputs != null) {
+            level.playSound((float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, targetBlock.sounds.getWalkSound(), (targetBlock.sounds.getVolume() + 1.0F) / 5.0F, targetBlock.sounds.getPitch() * 0.8F);
+            if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+                voicePacket(level, targetBlock.sounds.getWalkSound(), i, j, k, (targetBlock.sounds.getVolume() + 1.0F) / 5.0F, targetBlock.sounds.getPitch() * 0.8F);
+            }
+            rotateRegisteredBlock(i, j, k, outputs.clone());
             return;
         }
-        if(targetBlock instanceof UnfiredPottery) //if(iTargetid == mod_FCBetterThanWolves.unfiredPottery.id)
-        {
-            RotateUnfiredPottery(i, j, k, bReverseDirection);
-            m_bPotteryRotated = true;
-            return;
+        Integer[][] rotationMeta = TurntableRecipeRegistry.getInstance().getRotationValue(targetId);
+        if (rotationMeta != null) {
+            int matrixIndex = 0;
+            int currentIndex = 0;
+            boolean foundMeta = false;
+            for (; matrixIndex < rotationMeta.length; matrixIndex++) {
+                for (currentIndex = 0; currentIndex < rotationMeta[matrixIndex].length; currentIndex++) {
+                    if (rotationMeta[matrixIndex][currentIndex] == targetMeta) {
+                        foundMeta = true;
+                        break;
+                    }
+                }
+                if (foundMeta) break;
+            }
+            if (foundMeta) {
+                if (reverseDirection) {
+                    currentIndex++;
+                } else {
+                    currentIndex--;
+                }
+                if (currentIndex < 0) {
+                    currentIndex = rotationMeta[matrixIndex].length - 1;
+                } else if (currentIndex >= rotationMeta[matrixIndex].length) {
+                    currentIndex = 0;
+                }
+                level.setTileMeta(i, j, k, rotationMeta[matrixIndex][currentIndex]);
+                level.method_202(i, j, k, i, j, k);
+                return;
+            }
         }
         if(targetBlock instanceof RotatableBlock)
         {
             RotatableBlock targetFCBlock = (RotatableBlock)targetBlock;
             if(targetFCBlock.CanRotate(level, i, j, k))
             {
-                targetFCBlock.Rotate(level, i, j, k, bReverseDirection);
+                targetFCBlock.Rotate(level, i, j, k, reverseDirection);
             }
         } else
         if(targetBlock instanceof Rail)
         {
             Rail targetRail = (Rail)targetBlock;
-            RotateRail(targetRail, i, j, k, bReverseDirection);
-        } else
-        if(iTargetid == BlockBase.REDSTONE_REPEATER_LIT.id || iTargetid == BlockBase.REDSTONE_REPEATER.id)
-        {
-            RedstoneRepeater targetRepeater = (RedstoneRepeater)targetBlock;
-            RotateRepeater(targetRepeater, i, j, k, bReverseDirection);
-        } else
-        if(targetBlock instanceof Piston)
-        {
-            Piston targetPiston = (Piston)targetBlock;
-            RotatePiston(targetPiston, i, j, k, bReverseDirection);
-        } else
-        if(iTargetid == BlockBase.DISPENSER.id)
-        {
-            RotateDispenser(i, j, k, bReverseDirection);
-        } else
-        if(targetBlock instanceof Furnace)
-        {
-            Furnace targetFurnace = (Furnace)targetBlock;
-            RotateFurnace(i, j, k, bReverseDirection);
+            RotateRail(targetRail, i, j, k, reverseDirection);
         } else
         if(targetBlock instanceof Stairs)
         {
-            RotateStairs(i, j, k, bReverseDirection);
-        } else
-        if(targetBlock instanceof Pumpkin)
-        {
-            RotatePumpkin(i, j, k, bReverseDirection);
+            RotateStairs(i, j, k, reverseDirection);
+        }
+    }
+
+    private void rotateRegisteredBlock(int x, int y, int z, ItemInstance[] outputs) {
+        if (craftingRotationCount < outputs[0].count) {
+            craftingRotationCount++;
+            return;
+        }
+        craftingRotationCount = 0;
+        level.setTileWithMetadata(x, y, z, outputs[0].itemId, outputs[0].getDamage());
+        level.method_202(x, y, z, x, y, z);
+        if (outputs[1] != null) {
+            UnsortedUtils.ejectStackWithRandomOffset(level, x, y + 1, z, outputs[1]);
         }
     }
 
@@ -334,44 +342,6 @@ public class TurntableTileEntity extends TileEntityBase
 
     }
 
-    private void RotatePiston(Piston blockPiston, int i, int j, int k, boolean bReverseDirection)
-    {
-        int iMetaData = level.getTileMeta(i, j, k);
-        Piston _tmp = blockPiston;
-        if(!Piston.isExtendedByMeta(iMetaData))
-        {
-            int iDirection = iMetaData & 7;
-            int iNewDirection = UnsortedUtils.RotateFacingAroundJ(iDirection, bReverseDirection);
-            if(iDirection != iNewDirection)
-            {
-                iMetaData = iMetaData & -8 | iNewDirection;
-                level.setTileMeta(i, j, k, iMetaData);
-                level.method_202(i, j, k, i, j, k);
-            }
-        }
-    }
-
-    private void RotateRepeater(RedstoneRepeater blockRepeater, int i, int j, int k, boolean bReverseDirection)
-    {
-        int iMetaData = level.getTileMeta(i, j, k);
-        int iDirection = iMetaData & 3;
-        if(bReverseDirection)
-        {
-            if(++iDirection > 3)
-            {
-                iDirection = 0;
-            }
-        } else
-        if(--iDirection < 0)
-        {
-            iDirection = 3;
-        }
-        iMetaData = iMetaData & -4 | iDirection;
-        level.setTileMeta(i, j, k, iMetaData);
-        level.method_202(i, j, k, i, j, k);
-        blockRepeater.onAdjacentBlockUpdate(level, i, j, k, 0);
-    }
-
     private void RotateRail(Rail blockRail, int i, int j, int k, boolean bReverseDirection)
     {
         int iMetaData = level.getTileMeta(i, j, k);
@@ -442,26 +412,6 @@ public class TurntableTileEntity extends TileEntityBase
         level.method_202(i, j, k, i, j, k);
     }
 
-    private void RotateDispenser(int i, int j, int k, boolean bReverseDirection)
-    {
-        int iMetaData = level.getTileMeta(i, j, k);
-        int iDirection = iMetaData;
-        iDirection = UnsortedUtils.RotateFacingAroundJ(iDirection, bReverseDirection);
-        iMetaData = iDirection;
-        level.setTileMeta(i, j, k, iMetaData);
-        level.method_202(i, j, k, i, j, k);
-    }
-
-    private void RotateFurnace(int i, int j, int k, boolean bReverseDirection)
-    {
-        int iMetaData = level.getTileMeta(i, j, k);
-        int iDirection = iMetaData;
-        iDirection = UnsortedUtils.RotateFacingAroundJ(iDirection, bReverseDirection);
-        iMetaData = iDirection;
-        level.setTileMeta(i, j, k, iMetaData);
-        level.method_202(i, j, k, i, j, k);
-    }
-
     private void RotateStairs(int i, int j, int k, boolean bReverseDirection)
     {
         int iMetaData = level.getTileMeta(i, j, k);
@@ -470,79 +420,6 @@ public class TurntableTileEntity extends TileEntityBase
         iMetaData = iDirection - 2;
         level.setTileMeta(i, j, k, iMetaData);
         level.method_202(i, j, k, i, j, k);
-    }
-
-    private void RotatePumpkin(int i, int j, int k, boolean bReverseDirection)
-    {
-        int iMetaData = level.getTileMeta(i, j, k);
-        int iDirection = iMetaData;
-        if(bReverseDirection)
-        {
-            if(++iDirection > 3)
-            {
-                iDirection = 0;
-            }
-        } else
-        if(--iDirection < 0)
-        {
-            iDirection = 3;
-        }
-        iMetaData = iDirection;
-        level.setTileMeta(i, j, k, iMetaData);
-        level.method_202(i, j, k, i, j, k);
-    }
-
-    private void RotateClay(int i, int j, int k, boolean bReverseDirection)
-    {
-        BlockBase targetBlock = BlockBase.CLAY;
-        level.playSound((float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, targetBlock.sounds.getWalkSound(), (targetBlock.sounds.getVolume() + 1.0F) / 5.0F, targetBlock.sounds.getPitch() * 0.8F);
-        if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-            voicePacket(level, targetBlock.sounds.getWalkSound(), i, j, k, (targetBlock.sounds.getVolume() + 1.0F) / 5.0F, targetBlock.sounds.getPitch() * 0.8F);
-        }
-        m_iPotteryRotationCount++;
-        if(m_iPotteryRotationCount >= 8)
-        {
-            level.setTile(i, j, k, BlockListener.unfiredPottery.id);
-            level.method_202(i, j, k, i, j, k);
-            UnsortedUtils.EjectSingleItemWithRandomOffset(level, i, j + 1, k, ItemBase.clay.id, 0);
-            m_iPotteryRotationCount = 0;
-        }
-    }
-
-    private void RotateUnfiredPottery(int i, int j, int k, boolean bReverseDirection)
-    {
-        BlockBase targetBlock = BlockBase.CLAY;
-        level.playSound((float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, targetBlock.sounds.getWalkSound(), (targetBlock.sounds.getVolume() + 1.0F) / 5.0F, targetBlock.sounds.getPitch() * 0.8F);
-        if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-            voicePacket(level, targetBlock.sounds.getWalkSound(), i, j, k, (targetBlock.sounds.getVolume() + 1.0F) / 5.0F, targetBlock.sounds.getPitch() * 0.8F);
-        }
-        m_iPotteryRotationCount++;
-        if(m_iPotteryRotationCount >= 8)
-        {
-            int iMetaData = level.getTileMeta(i, j, k);
-            if(iMetaData < 2)
-            {
-                if(iMetaData == 1)
-                {
-                    UnsortedUtils.EjectSingleItemWithRandomOffset(level, i, j + 1, k, ItemBase.clay.id, 0);
-                }
-                iMetaData++;
-                level.setTileMeta(i, j, k, iMetaData);
-                level.method_243(i, j, k);
-                level.method_202(i, j, k, i, j, k);
-//                mod_FCBetterThanWolves.sendData(this, level, i, j, k);
-            } else
-            {
-                level.setTile(i, j, k, 0);
-                level.method_202(i, j, k, i, j, k);
-                for(int iTemp = 0; iTemp < 2; iTemp++)
-                {
-                    UnsortedUtils.EjectSingleItemWithRandomOffset(level, i, j, k, ItemBase.clay.id, 0);
-                }
-
-            }
-            m_iPotteryRotationCount = 0;
-        }
     }
 
     @Environment(EnvType.SERVER)
@@ -557,13 +434,11 @@ public class TurntableTileEntity extends TileEntityBase
         }
     }
 
-    private final int m_iMaxHeightOfBlocksRotated = 2;
-    private final int m_iRotationsToSpinPottery = 8;
-    private int m_iRotationCount;
-    public int m_iSwitchSetting;
-    public int m_iPotteryRotationCount;
-    private boolean m_bPotteryRotated;
-    private static int m_iTicksToRotate[] = {
+    // Maximum rotation height: 2
+    private int rotationCount;
+    public int switchSetting;
+    public int craftingRotationCount;
+    private static final int[] TICKS_TO_ROTATE = {
         10, 20, 40, 80, 200, 600, 1200, 2400, 6000, 12000, 
         24000
     };
