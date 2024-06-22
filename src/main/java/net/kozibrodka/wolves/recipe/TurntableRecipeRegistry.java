@@ -1,15 +1,15 @@
 package net.kozibrodka.wolves.recipe;
 
-import net.minecraft.block.BlockBase;
-import net.minecraft.item.ItemInstance;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+
 public class TurntableRecipeRegistry {
     private static final TurntableRecipeRegistry INSTANCE = new TurntableRecipeRegistry();
-    private ArrayList<ItemInstance[]> recipes = new ArrayList<>();
+    private ArrayList<ItemStack[]> recipes = new ArrayList<>();
     private Map<Integer, Integer[][]> rotations = new HashMap<>();
 
     public static final TurntableRecipeRegistry getInstance() {
@@ -24,28 +24,28 @@ public class TurntableRecipeRegistry {
         return this.rotations.get(blockId);
     }
 
-    public void addTurntableRecipe(BlockBase block, ItemInstance output) {
-        this.recipes.add(new ItemInstance[] {new ItemInstance(block, 1, 0), output, null});
+    public void addTurntableRecipe(Block block, ItemStack output) {
+        this.recipes.add(new ItemStack[] {new ItemStack(block, 1, 0), output, null});
     }
 
-    public void addTurntableRecipe(BlockBase block, int meta, ItemInstance output) {
-        this.recipes.add(new ItemInstance[] {new ItemInstance(block, 1, meta), output, null});
+    public void addTurntableRecipe(Block block, int meta, ItemStack output) {
+        this.recipes.add(new ItemStack[] {new ItemStack(block, 1, meta), output, null});
     }
 
-    public void addTurntableRecipe(BlockBase block, int meta, ItemInstance output, ItemInstance byproduct) {
-        this.recipes.add(new ItemInstance[] {new ItemInstance(block, 1, meta), output, byproduct});
+    public void addTurntableRecipe(Block block, int meta, ItemStack output, ItemStack byproduct) {
+        this.recipes.add(new ItemStack[] {new ItemStack(block, 1, meta), output, byproduct});
     }
 
-    public ItemInstance[] getResult(ItemInstance item) {
-        for (ItemInstance[] items : recipes) {
-            if (items[0].isDamageAndIDIdentical(item)) {
-                return new ItemInstance[]{items[1], items[2]};
+    public ItemStack[] getResult(ItemStack item) {
+        for (ItemStack[] items : recipes) {
+            if (items[0].isItemEqual(item)) {
+                return new ItemStack[]{items[1], items[2]};
             }
         }
         return null;
     }
 
-    public ArrayList<ItemInstance[]> getRecipes() {
+    public ArrayList<ItemStack[]> getRecipes() {
         return recipes;
     }
 }

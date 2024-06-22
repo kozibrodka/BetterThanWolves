@@ -121,11 +121,12 @@ public class TextureListener {
         ItemListener.soulFilter.setTexture(Identifier.of(MOD_ID, "item/soulFilter"));
         ItemListener.diamondIngot.setTexture(Identifier.of(MOD_ID, "item/diamondIngot"));
         ItemListener.rawDiamondIngot.setTexture(Identifier.of(MOD_ID, "item/rawDiamondIngot"));
+        ItemListener.nothing.setTexture(Identifier.of(MOD_ID, "item/nothing"));
 
-        BlockListener.detectorRailObsidian.asItem().setTexturePosition(registerBlockTexture("block/fcRailDetector_obsidian"));
-        BlockListener.detectorRailWood.asItem().setTexturePosition(registerBlockTexture("block/fcRailDetector_wood"));
-        BlockListener.cement.asItem().setTexturePosition(cement);
-        BlockListener.hempCrop.asItem().setTexturePosition(registerBlockTexture("block/fcBlockHemp_7"));
+        BlockListener.detectorRailObsidian.asItem().setTextureId(registerBlockTexture("block/fcRailDetector_obsidian"));
+        BlockListener.detectorRailWood.asItem().setTextureId(registerBlockTexture("block/fcRailDetector_wood"));
+        BlockListener.cement.asItem().setTextureId(cement);
+        BlockListener.hempCrop.asItem().setTextureId(registerBlockTexture("block/fcBlockHemp_7"));
     }
 
     private int registerBlockTexture(String s) {
@@ -137,14 +138,14 @@ public class TextureListener {
 
     @EventListener
     private static void registerEntityRenderers(EntityRendererRegisterEvent event) {
-        event.renderers.put(WaterWheelEntity.class, new WaterWheelRender());
-        event.renderers.put(WindMillEntity.class, new WindMillRender());
-        event.renderers.put(BroadheadArrowEntity.class, new BroadHeadArrowRender());
-        event.renderers.put(LiftedBlockEntity.class, new LiftedBlockRender());
-        event.renderers.put(MovingPlatformEntity.class, new MovingPlatformRender());
-        event.renderers.put(MovingAnchorEntity.class, new MovingAnchorRender());
-        event.renderers.put(FallingAnvil.class, new FallingAnvilRender());
-        event.renderers.put(FCEntityTEST.class, new FCEntityTestRender());
+        event.renderers.put(WaterWheelEntity.class, new WaterWheelRenderer());
+        event.renderers.put(WindMillEntity.class, new WindMillRenderer());
+        event.renderers.put(BroadheadArrowEntity.class, new BroadHeadArrowRenderer());
+        event.renderers.put(LiftedBlockEntity.class, new LiftedBlockRenderer());
+        event.renderers.put(MovingPlatformEntity.class, new MovingPlatformRenderer());
+        event.renderers.put(MovingAnchorEntity.class, new MovingAnchorRenderer());
+        event.renderers.put(FallingAnvilEntity.class, new FallingAnvilRenderer());
+        event.renderers.put(FCEntityTEST.class, new FCEntityTestRenderer());
     }
 
     public static int axle_vertical;

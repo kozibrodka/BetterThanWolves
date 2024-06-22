@@ -3,14 +3,14 @@ package net.kozibrodka.wolves.entity;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.EntityListener;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
+import net.minecraft.block.Block;
+import net.minecraft.block.RailBlock;
+import net.minecraft.entity.Entity;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
 import net.kozibrodka.wolves.utils.ReplaceableBlockChecker;
-import net.minecraft.block.BlockBase;
-import net.minecraft.block.Rail;
-import net.minecraft.entity.EntityBase;
-import net.minecraft.level.Level;
-import net.minecraft.util.io.CompoundTag;
-import net.minecraft.util.maths.Box;
-import net.minecraft.util.maths.MathHelper;
 import net.modificationstation.stationapi.api.server.entity.EntitySpawnDataProvider;
 import net.modificationstation.stationapi.api.server.entity.HasTrackingParameters;
 import net.modificationstation.stationapi.api.util.Identifier;
@@ -18,15 +18,15 @@ import net.modificationstation.stationapi.api.util.Identifier;
 import java.util.List;
 
 @HasTrackingParameters(trackingDistance = 160, updatePeriod = 2)
-public class LiftedBlockEntity extends EntityBase implements EntitySpawnDataProvider
+public class LiftedBlockEntity extends Entity implements EntitySpawnDataProvider
 {
 
-    public LiftedBlockEntity(Level world)
+    public LiftedBlockEntity(World world)
     {
         super(world);
         field_1593 = true;
-        setSize(0.98F, 0.98F);
-        standingEyeHeight = height / 2.0F;
+        setBoundingBoxSpacing(0.98F, 0.98F);
+        eyeHeight = spacingY / 2.0F;
         velocityX = 0.0D;
         velocityY = 0.0D;
         velocityZ = 0.0D;
@@ -34,28 +34,28 @@ public class LiftedBlockEntity extends EntityBase implements EntitySpawnDataProv
         m_iBlockMetaData = 0;
     }
 
-    public LiftedBlockEntity(Level world, int i, int j, int k)
+    public LiftedBlockEntity(World world, int i, int j, int k)
     {
         this(world);
-        m_iid = world.getTileId(i, j, k);
-        m_iBlockMetaData = world.getTileMeta(i, j, k);
-        if(m_iid == BlockBase.GOLDEN_RAIL.id || m_iid == BlockBase.DETECTOR_RAIL.id || m_iid == BlockListener.detectorRailWood.id || m_iid == BlockListener.detectorRailObsidian.id)
+        m_iid = world.getBlockId(i, j, k);
+        m_iBlockMetaData = world.getBlockMeta(i, j, k);
+        if(m_iid == Block.POWERED_RAIL.id || m_iid == Block.DETECTOR_RAIL.id || m_iid == BlockListener.detectorRailWood.id || m_iid == BlockListener.detectorRailObsidian.id)
         {
             m_iBlockMetaData &= 7;
         } else
-        if(m_iid == BlockBase.REDSTONE_DUST.id)
+        if(m_iid == Block.REDSTONE_WIRE.id)
         {
             m_iBlockMetaData = 0;
         }
-        setPosition((float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F);
-        prevRenderX = prevX = x;
-        prevRenderY = prevY = y;
-        prevRenderZ = prevZ = z;
-        world.spawnEntity(this);
-        world.setTile(i, j, k, 0);
+        method_1340((float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F);
+        field_1637 = prevX = x;
+        field_1638 = prevY = y;
+        field_1639 = prevZ = z;
+        world.method_210(this);
+        world.setBlock(i, j, k, 0);
     }
 
-    public LiftedBlockEntity(Level level, Double aDouble, Double aDouble1, Double aDouble2) {
+    public LiftedBlockEntity(World level, Double aDouble, Double aDouble1, Double aDouble2) {
         this(level);
     }
 
@@ -64,24 +64,24 @@ public class LiftedBlockEntity extends EntityBase implements EntitySpawnDataProv
     {
     }
 
-    protected void writeCustomDataToTag(CompoundTag nbttagcompound)
+    protected void writeNbt(NbtCompound nbttagcompound)
     {
-        nbttagcompound.put("m_iid", m_iid);
-        nbttagcompound.put("m_iBlockMetaData", m_iBlockMetaData);
+        nbttagcompound.putInt("m_iid", m_iid);
+        nbttagcompound.putInt("m_iBlockMetaData", m_iBlockMetaData);
     }
 
-    protected void readCustomDataFromTag(CompoundTag nbttagcompound)
+    protected void readNbt(NbtCompound nbttagcompound)
     {
         m_iid = nbttagcompound.getInt("m_iid");
         m_iBlockMetaData = nbttagcompound.getInt("m_iBlockMetaData");
     }
 
-    protected boolean canClimb()
+    protected boolean bypassesSteppingEffects()
     {
         return false;
     }
 
-    public Box getBoundingBox(EntityBase entity)
+    public Box method_1379(Entity entity)
     {
         return null;
     }
@@ -101,27 +101,27 @@ public class LiftedBlockEntity extends EntityBase implements EntitySpawnDataProv
         return false;
     }
 
-    public void method_1353(EntityBase entity1)
+    public void method_1353(Entity entity1)
     {
     }
 
-    public float getEyeHeight()
+    public float method_1366()
     {
         return 0.0F;
     }
 
     public void tick()
     {
-        if(removed || level.isServerSide)
+        if(dead || world.isRemote)
         {
             return;
         }
         MovingPlatformEntity associatedMovingPlatform = null;
-        List collisionList = level.getEntities(MovingPlatformEntity.class, Box.createButWasteMemory(x - 0.25D, y - 1.25D, z - 0.25D, x + 0.25D, y - 0.75D, z + 0.25D));
+        List collisionList = world.method_175(MovingPlatformEntity.class, Box.createCached(x - 0.25D, y - 1.25D, z - 0.25D, x + 0.25D, y - 0.75D, z + 0.25D));
         if(collisionList != null && collisionList.size() > 0)
         {
             associatedMovingPlatform = (MovingPlatformEntity)collisionList.get(0);
-            if(!associatedMovingPlatform.removed)
+            if(!associatedMovingPlatform.dead)
             {
                 double newPosX = associatedMovingPlatform.x;
                 double newPosY = associatedMovingPlatform.y + 1.0D;
@@ -129,7 +129,7 @@ public class LiftedBlockEntity extends EntityBase implements EntitySpawnDataProv
                 prevX = x;
                 prevY = y;
                 prevZ = z;
-                setPosition(newPosX, newPosY, newPosZ);
+                method_1340(newPosX, newPosY, newPosZ);
             } else
             {
                 associatedMovingPlatform = null;
@@ -154,20 +154,20 @@ public class LiftedBlockEntity extends EntityBase implements EntitySpawnDataProv
         int i = MathHelper.floor(x);
         int j = MathHelper.floor(y);
         int k = MathHelper.floor(z);
-        int idDropped = BlockBase.BY_ID[m_iid].getDropId(0, level.rand);
+        int idDropped = Block.BLOCKS[m_iid].getDroppedItemId(0, world.field_214);
         if(idDropped > 0)
         {
-            UnsortedUtils.EjectSingleItemWithRandomOffset(level, i, j, k, idDropped, 0);
+            UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, idDropped, 0);
         }
-        remove();
+        markDead();
     }
 
     private void ConvertToBlock(int i, int j, int k)
     {
         boolean bDestroyBlock = true;
-        if(level.getTileId(i, j - 1, k) == BlockListener.platform.id && ReplaceableBlockChecker.IsReplaceableBlock(level, i, j, k))
+        if(world.getBlockId(i, j - 1, k) == BlockListener.platform.id && ReplaceableBlockChecker.IsReplaceableBlock(world, i, j, k))
         {
-            level.placeBlockWithMetaData(i, j, k, m_iid, m_iBlockMetaData);
+            world.method_201(i, j, k, m_iid, m_iBlockMetaData);
             bDestroyBlock = false;
         }
         if(bDestroyBlock)
@@ -175,22 +175,22 @@ public class LiftedBlockEntity extends EntityBase implements EntitySpawnDataProv
             DestroyBlockWithDrop();
         } else
         {
-            remove();
+            markDead();
         }
     }
 
-    public static boolean CanBlockBeConvertedToEntity(Level world, int i, int j, int k)
+    public static boolean CanBlockBeConvertedToEntity(World world, int i, int j, int k)
     {
-        int iTargetid = world.getTileId(i, j, k);
-        BlockBase targetBlock = BlockBase.BY_ID[iTargetid];
+        int iTargetid = world.getBlockId(i, j, k);
+        Block targetBlock = Block.BLOCKS[iTargetid];
         if(targetBlock != null)
         {
-            if(targetBlock instanceof Rail)
+            if(targetBlock instanceof RailBlock)
             {
-                int iTargetMetaData = world.getTileMeta(i, j, k);
+                int iTargetMetaData = world.getBlockMeta(i, j, k);
                 return !((iTargetMetaData >= 2) & (iTargetMetaData <= 5));
             }
-            if(iTargetid == BlockBase.REDSTONE_DUST.id)
+            if(iTargetid == Block.REDSTONE_WIRE.id)
             {
                 return true;
             }

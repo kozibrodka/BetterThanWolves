@@ -3,23 +3,23 @@ package net.kozibrodka.wolves.tabs;
 import net.glasslauncher.hmifabric.Utils;
 import net.glasslauncher.hmifabric.tabs.TabWithTexture;
 import net.kozibrodka.wolves.events.BlockListener;
-import net.kozibrodka.wolves.gui.AnvilGUI;
+import net.kozibrodka.wolves.gui.AnvilScreen;
 import net.kozibrodka.wolves.recipe.AnvilShapedRecipe;
 import net.kozibrodka.wolves.recipe.AnvilShapelessRecipe;
 import net.kozibrodka.wolves.recipe.AnvilCraftingManager;
 import net.kozibrodka.wolves.recipe.AnvilRecipeTemplate;
-import net.minecraft.block.BlockBase;
-import net.minecraft.client.BaseClientInteractionManager;
-import net.minecraft.client.gui.screen.ScreenBase;
-import net.minecraft.client.gui.screen.container.ContainerBase;
-import net.minecraft.client.gui.screen.container.Crafting;
-import net.minecraft.client.gui.screen.container.PlayerInventory;
+import net.minecraft.block.Block;
+import net.minecraft.class_564;
+import net.minecraft.client.InteractionManager;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.ingame.CraftingScreen;
+import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.util.ScreenScaler;
-import net.minecraft.container.slot.Slot;
-import net.minecraft.entity.player.AbstractClientPlayer;
-import net.minecraft.inventory.InventoryBase;
-import net.minecraft.item.ItemInstance;
+import net.minecraft.entity.player.ClientPlayerEntity;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.screen.slot.Slot;
 import net.modificationstation.stationapi.api.recipe.StationRecipe;
 import net.modificationstation.stationapi.api.util.Namespace;
 import org.lwjgl.input.Keyboard;
@@ -32,23 +32,23 @@ public class AnvilRecipeTab extends TabWithTexture {
 
     protected List<Object> recipesComplete;
     protected List<Object> recipes;
-    private final BlockBase tabBlock;
+    private final Block tabBlock;
     private boolean isVanillaWorkbench = false; //THIS IS LAZY
-    public ArrayList<Class<? extends ContainerBase>> guiCraftingStations = new ArrayList<>();
+    public ArrayList<Class<? extends HandledScreen>> guiCraftingStations = new ArrayList<>();
     public int recipeIndex;
 
     public AnvilRecipeTab(Namespace tabCreator) {
         this(tabCreator, new ArrayList<Object>(AnvilCraftingManager.getInstance().getRecipeList()), BlockListener.anvil);
         isVanillaWorkbench = true;
-        guiCraftingStations.add(Crafting.class);
+        guiCraftingStations.add(CraftingScreen.class);
     }
 
-    public AnvilRecipeTab(Namespace tabCreator, List<Object> recipesComplete, BlockBase tabBlock) {
+    public AnvilRecipeTab(Namespace tabCreator, List<Object> recipesComplete, Block tabBlock) {
         this(tabCreator, 26, recipesComplete, tabBlock, "/assets/wolves/stationapi/gui/hmi_tabs/giant_grid.png", 154, 92, 10, 15, 56, 46, 5);
         slots[0] = new Integer[]{132, 41};
     }
 
-    public AnvilRecipeTab(Namespace tabCreator, int slotsPerRecipe, List<Object> recipesComplete, BlockBase tabBlock, String texturePath, int width, int height, int textureX, int textureY, int buttonX, int buttonY, int slotsWidth) {
+    public AnvilRecipeTab(Namespace tabCreator, int slotsPerRecipe, List<Object> recipesComplete, Block tabBlock, String texturePath, int width, int height, int textureX, int textureY, int buttonX, int buttonY, int slotsWidth) {
         super(tabCreator, slotsPerRecipe, texturePath, width, height, 3, 4, textureX, textureY, buttonX, buttonY);
         this.recipesComplete = recipesComplete;
         this.tabBlock = tabBlock;
@@ -71,7 +71,7 @@ public class AnvilRecipeTab extends TabWithTexture {
             x += 80;
             y += 16;
             Tessellator tess = Tessellator.INSTANCE;
-            tess.start();
+            tess.startQuads();
             tess.vertex(x, y + size, 0, 0, 1);
             tess.vertex(x + size, y + size, 0, 1, 1);
             tess.vertex(x + size, y, 0, 1, 0);
@@ -81,24 +81,24 @@ public class AnvilRecipeTab extends TabWithTexture {
     }
 
     @Override
-    public Class<? extends ContainerBase> getGuiClass() {
-        return AnvilGUI.class;
+    public Class<? extends HandledScreen> getGuiClass() {
+        return AnvilScreen.class;
     }
 
     @Override
-    public ItemInstance[][] getItems(int index, ItemInstance filter) {
+    public ItemStack[][] getItems(int index, ItemStack filter) {
         recipeIndex = index;
-        ItemInstance[][] items = new ItemInstance[recipesPerPage][];
+        ItemStack[][] items = new ItemStack[recipesPerPage][];
         for (int j = 0; j < recipesPerPage; j++) {
-            items[j] = new ItemInstance[slots.length];
+            items[j] = new ItemStack[slots.length];
             int k = index + j;
             if (k < recipes.size()) {
                 try {
                     Object recipeObj = recipes.get(k);
                     if (recipeObj instanceof StationRecipe) {
                         StationRecipe recipe = (StationRecipe) recipes.get(k);
-                        ItemInstance[] list = recipe.getIngredients();
-                        ItemInstance[] outputArray = recipe.getOutputs();
+                        ItemStack[] list = recipe.getIngredients();
+                        ItemStack[] outputArray = recipe.getOutputs();
                         System.arraycopy(outputArray, 0, items[j], 0, outputArray.length);
                         int width = 5;
                         int skippedSlots = 0;
@@ -109,17 +109,17 @@ public class AnvilRecipeTab extends TabWithTexture {
                             if ((j1 + 1 + skippedSlots) % 5 > width || (j1 + skippedSlots) % 5 >= width && width == 4) { // Hideous condition that needs to handle an edge case for 4 width recipes
                                 skippedSlots += 5 - width;
                             }
-                            ItemInstance item = list[j1];
+                            ItemStack item = list[j1];
                             items[j][skippedSlots + j1 + 1] = item;
                             if (item != null && item.getDamage() == -1) {
-                                if (item.usesMeta()) {
+                                if (item.hasSubtypes()) {
                                     if (filter != null && item.itemId == filter.itemId) {
-                                        items[j][skippedSlots + j1 + 1] = new ItemInstance(item.getType(), 0, filter.getDamage());
+                                        items[j][skippedSlots + j1 + 1] = new ItemStack(item.getItem(), 0, filter.getDamage());
                                     } else {
-                                        items[j][skippedSlots + j1 + 1] = new ItemInstance(item.getType());
+                                        items[j][skippedSlots + j1 + 1] = new ItemStack(item.getItem());
                                     }
                                 } else if (filter != null && item.itemId == filter.itemId) {
-                                    items[j][skippedSlots + j1 + 1] = new ItemInstance(item.getType(), 0, filter.getDamage());
+                                    items[j][skippedSlots + j1 + 1] = new ItemStack(item.getItem(), 0, filter.getDamage());
                                 }
                             }
                         }
@@ -145,7 +145,7 @@ public class AnvilRecipeTab extends TabWithTexture {
 
 
     @Override
-    public void updateRecipes(ItemInstance filter, Boolean getUses) {
+    public void updateRecipes(ItemStack filter, Boolean getUses) {
         List<Object> arraylist = new ArrayList<>();
         if (filter == null) {
             recipes = recipesComplete;
@@ -154,14 +154,14 @@ public class AnvilRecipeTab extends TabWithTexture {
                 if (o instanceof AnvilRecipeTemplate) {
                     StationRecipe recipe = (StationRecipe) o;
                     if (!getUses) {
-                        if (Arrays.stream(recipe.getOutputs()).anyMatch(itemInstance -> filter.itemId == itemInstance.itemId && (itemInstance.getDamage() == filter.getDamage() || itemInstance.getDamage() < 0 || !itemInstance.usesMeta()))) {
+                        if (Arrays.stream(recipe.getOutputs()).anyMatch(itemInstance -> filter.itemId == itemInstance.itemId && (itemInstance.getDamage() == filter.getDamage() || itemInstance.getDamage() < 0 || !itemInstance.hasSubtypes()))) {
                             arraylist.add(o);
                         }
                     } else {
                         try {
-                            ItemInstance[] aitemstack = recipe.getIngredients();
-                            for (ItemInstance itemstack1 : aitemstack) {
-                                if (itemstack1 == null || filter.itemId != itemstack1.itemId || (itemstack1.usesMeta() && itemstack1.getDamage() != filter.getDamage()) && itemstack1.getDamage() >= 0) {
+                            ItemStack[] aitemstack = recipe.getIngredients();
+                            for (ItemStack itemstack1 : aitemstack) {
+                                if (itemstack1 == null || filter.itemId != itemstack1.itemId || (itemstack1.hasSubtypes() && itemstack1.getDamage() != filter.getDamage()) && itemstack1.getDamage() >= 0) {
                                     continue;
                                 }
                                 arraylist.add(o);
@@ -182,13 +182,13 @@ public class AnvilRecipeTab extends TabWithTexture {
     }
 
     @Override
-    public ItemInstance getTabItem() {
-        return new ItemInstance(tabBlock);
+    public ItemStack getTabItem() {
+        return new ItemStack(tabBlock);
     }
 
     @Override
-    public Boolean drawSetupRecipeButton(ScreenBase parent, ItemInstance[] recipeItems) {
-        for (Class<? extends ContainerBase> gui : guiCraftingStations) {
+    public Boolean drawSetupRecipeButton(Screen parent, ItemStack[] recipeItems) {
+        for (Class<? extends HandledScreen> gui : guiCraftingStations) {
             if (gui.isInstance(parent)) return true;
         }
         if (isVanillaWorkbench && (parent == null || isInv(parent))) {
@@ -202,32 +202,32 @@ public class AnvilRecipeTab extends TabWithTexture {
     }
 
     @Override
-    public Boolean[] itemsInInventory(ScreenBase parent, ItemInstance[] recipeItems) {
+    public Boolean[] itemsInInventory(Screen parent, ItemStack[] recipeItems) {
         Boolean[] itemsInInv = new Boolean[slots.length - 1];
         List<Object> list;
-        if (parent instanceof ContainerBase)
+        if (parent instanceof HandledScreen)
             //noinspection unchecked
-            list = ((ContainerBase) parent).container.slots;
+            list = ((HandledScreen) parent).container.slots;
         else
             //noinspection unchecked
             list = Utils.getMC().player.container.slots;
-        ItemInstance[] aslot = new ItemInstance[list.size()];
+        ItemStack[] aslot = new ItemStack[list.size()];
         for (int i = 0; i < list.size(); i++) {
-            if (((Slot) list.get(i)).hasItem())
-                aslot[i] = ((Slot) list.get(i)).getItem().copy();
+            if (((Slot) list.get(i)).hasStack())
+                aslot[i] = ((Slot) list.get(i)).getStack().copy();
         }
 
         aslot[0] = null;
         recipe:
         for (int i = 1; i < recipeItems.length; i++) {
-            ItemInstance item = recipeItems[i];
+            ItemStack item = recipeItems[i];
             if (item == null) {
                 itemsInInv[i - 1] = true;
                 continue;
             }
 
-            for (ItemInstance slot : aslot) {
-                if (slot != null && slot.count > 0 && slot.itemId == item.itemId && (slot.getDamage() == item.getDamage() || item.getDamage() < 0 || !item.usesMeta())) {
+            for (ItemStack slot : aslot) {
+                if (slot != null && slot.count > 0 && slot.itemId == item.itemId && (slot.getDamage() == item.getDamage() || item.getDamage() < 0 || !item.hasSubtypes())) {
                     slot.count -= 1;
                     itemsInInv[i - 1] = true;
                     continue recipe;
@@ -238,49 +238,49 @@ public class AnvilRecipeTab extends TabWithTexture {
         return itemsInInv;
     }
 
-    private int recipeStackSize(List<Object> list, ItemInstance[] recipeItems) {
+    private int recipeStackSize(List<Object> list, ItemStack[] recipeItems) {
 
         int[] itemStackSize = new int[recipeItems.length - 1];
 
         for (int i = 1; i < recipeItems.length; i++) {
-            ItemInstance[] aslot = new ItemInstance[list.size()];
+            ItemStack[] aslot = new ItemStack[list.size()];
             for (int k = 0; k < list.size(); k++) {
-                if (((Slot) list.get(k)).hasItem())
-                    aslot[k] = ((Slot) list.get(k)).getItem().copy();
+                if (((Slot) list.get(k)).hasStack())
+                    aslot[k] = ((Slot) list.get(k)).getStack().copy();
             }
             aslot[0] = null;
 
-            ItemInstance item = recipeItems[i];
+            ItemStack item = recipeItems[i];
             itemStackSize[i - 1] = 0;
             if (item == null) {
                 itemStackSize[i - 1] = -1;
                 continue;
             }
             int count = 0;
-            for (ItemInstance slot : aslot) {
-                if (slot != null && slot.count > 0 && slot.itemId == item.itemId && (slot.getDamage() == item.getDamage() || item.getDamage() < 0 || !item.usesMeta())) {
+            for (ItemStack slot : aslot) {
+                if (slot != null && slot.count > 0 && slot.itemId == item.itemId && (slot.getDamage() == item.getDamage() || item.getDamage() < 0 || !item.hasSubtypes())) {
                     count += slot.count;
                     slot.count = 0;
                 }
             }
             int prevEqualItemCount = 1;
             for (int j = 1; j < i; j++) {
-                if (recipeItems[j] != null && recipeItems[j].isDamageAndIDIdentical(item)) {
+                if (recipeItems[j] != null && recipeItems[j].isItemEqual(item)) {
                     prevEqualItemCount++;
                 }
             }
             for (int j = 1; j < recipeItems.length; j++) {
-                if (recipeItems[j] != null && recipeItems[j].isDamageAndIDIdentical(item)) {
+                if (recipeItems[j] != null && recipeItems[j].isItemEqual(item)) {
                     itemStackSize[j - 1] = count / prevEqualItemCount;
                 }
             }
         }
         int finalItemStackSize = -1;
         for (int i = 0; i < itemStackSize.length; i++) {
-            ItemInstance item = recipeItems[i + 1];
-            if (itemStackSize[i] == -1 || item.getMaxStackSize() == 1) continue;
-            if (finalItemStackSize == -1 || itemStackSize[i] < finalItemStackSize || finalItemStackSize > item.getMaxStackSize()) {
-                finalItemStackSize = Math.min(itemStackSize[i], item.getMaxStackSize());
+            ItemStack item = recipeItems[i + 1];
+            if (itemStackSize[i] == -1 || item.getMaxCount() == 1) continue;
+            if (finalItemStackSize == -1 || itemStackSize[i] < finalItemStackSize || finalItemStackSize > item.getMaxCount()) {
+                finalItemStackSize = Math.min(itemStackSize[i], item.getMaxCount());
             }
         }
         if (finalItemStackSize > 0) return finalItemStackSize;
@@ -288,18 +288,18 @@ public class AnvilRecipeTab extends TabWithTexture {
     }
 
     @Override
-    public void setupRecipe(ScreenBase parent, ItemInstance[] recipeItems) {
+    public void setupRecipe(Screen parent, ItemStack[] recipeItems) {
         if (parent == null) {
             Utils.getMC().method_2134();
-            ScreenScaler scaledresolution = new ScreenScaler(Utils.getMC().options, Utils.getMC().actualWidth, Utils.getMC().actualHeight);
-            int i = scaledresolution.getScaledWidth();
-            int j = scaledresolution.getScaledHeight();
-            parent = new PlayerInventory(Utils.getMC().player);
+            class_564 scaledresolution = new class_564(Utils.getMC().options, Utils.getMC().displayWidth, Utils.getMC().displayHeight);
+            int i = scaledresolution.method_1857();
+            int j = scaledresolution.method_1858();
+            parent = new InventoryScreen(Utils.getMC().player);
             Utils.getMC().currentScreen = parent;
             parent.init(Utils.getMC(), i, j);
-            Utils.getMC().skipGameRender = false;
+            Utils.getMC().field_2821 = false;
         }
-        ContainerBase container = ((ContainerBase) parent);
+        HandledScreen container = ((HandledScreen) parent);
         //noinspection unchecked
         List<Object> inventorySlots = container.container.slots;
 
@@ -310,7 +310,7 @@ public class AnvilRecipeTab extends TabWithTexture {
 
         this.player = Utils.getMC().player;
         this.inv = Utils.getMC().interactionManager;
-        this.windowId = container.container.currentContainerId;
+        this.windowId = container.container.syncId;
         for (int recipeSlotIndex = 1; recipeSlotIndex < recipeItems.length; recipeSlotIndex++) {
             if (isInv(parent) && recipeSlotIndex > 5)
                 break;
@@ -320,20 +320,20 @@ public class AnvilRecipeTab extends TabWithTexture {
             }
             Slot recipeSlot = (Slot) inventorySlots.get(slotid);
             //clear recipe slot
-            if (recipeSlot.hasItem()) {
+            if (recipeSlot.hasStack()) {
                 this.clickSlot(slotid, true, true);
 
-                if (recipeSlot.hasItem()) {
+                if (recipeSlot.hasStack()) {
                     this.clickSlot(slotid, true, false);
-                    if (player.inventory.getCursorItem() != null) {
+                    if (player.inventory.getCursorStack() != null) {
                         for (int j = slotid + 1; j < inventorySlots.size(); j++) {
                             Slot slot = (Slot) inventorySlots.get(j);
-                            if (!slot.hasItem()) {
+                            if (!slot.hasStack()) {
                                 this.clickSlot(j, true, false);
                                 break;
                             }
                         }
-                        if (player.inventory.getCursorItem() != null) {
+                        if (player.inventory.getCursorStack() != null) {
                             this.clickSlot(-999, true, false);
                         }
                     }
@@ -341,16 +341,16 @@ public class AnvilRecipeTab extends TabWithTexture {
             }
 
             //if recipe slot should be empty, continue
-            ItemInstance item = recipeItems[recipeSlotIndex];
+            ItemStack item = recipeItems[recipeSlotIndex];
             if (item == null) {
                 continue;
             }
 
             //locate correct item and put in recipe slot
-            while (!recipeSlot.hasItem() || (recipeSlot.getItem().count < recipeStackSize && recipeSlot.getItem().getMaxStackSize() > 1))
+            while (!recipeSlot.hasStack() || (recipeSlot.getStack().count < recipeStackSize && recipeSlot.getStack().getMaxCount() > 1))
                 for (int inventorySlotIndex = recipeSlotIndex + 1; inventorySlotIndex < inventorySlots.size(); inventorySlotIndex++) {
                     Slot inventorySlot = (Slot) inventorySlots.get(inventorySlotIndex);
-                    if (inventorySlot.hasItem() && inventorySlot.getItem().itemId == item.itemId && (inventorySlot.getItem().getDamage() == item.getDamage() || item.getDamage() < 0 || !item.usesMeta())) {
+                    if (inventorySlot.hasStack() && inventorySlot.getStack().itemId == item.itemId && (inventorySlot.getStack().getDamage() == item.getDamage() || item.getDamage() < 0 || !item.hasSubtypes())) {
                         this.clickSlot(inventorySlotIndex, true, false);
                         if (isInv(parent) && recipeSlotIndex > 3) {
                             this.clickSlot(recipeSlotIndex - 1, false, false);
@@ -365,16 +365,16 @@ public class AnvilRecipeTab extends TabWithTexture {
 
     }
 
-    BaseClientInteractionManager inv;
-    AbstractClientPlayer player;
+    InteractionManager inv;
+    ClientPlayerEntity player;
     int windowId;
 
     void clickSlot(int slotIndex, boolean leftClick, boolean shiftClick) {
         inv.clickSlot(windowId, slotIndex, leftClick ? 0 : 1, shiftClick, player);
     }
 
-    boolean isInv(ScreenBase screen) {
-        return screen instanceof InventoryBase;
+    boolean isInv(Screen screen) {
+        return screen instanceof Inventory;
     }
 
 }

@@ -1,29 +1,27 @@
 package net.kozibrodka.wolves.entity;
 
-import net.kozibrodka.wolves.blocks.Axle;
+import net.kozibrodka.wolves.block.AxleBlock;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.EntityListener;
 import net.kozibrodka.wolves.events.ItemListener;
-import net.kozibrodka.wolves.mixin.DataTrackerAccessor;
-import net.minecraft.block.BlockBase;
-import net.minecraft.block.Fluid;
-import net.minecraft.entity.EntityBase;
-import net.minecraft.entity.player.PlayerBase;
-import net.minecraft.level.BlockView;
-import net.minecraft.level.Level;
-import net.minecraft.util.io.CompoundTag;
-import net.minecraft.util.maths.Box;
-import net.minecraft.util.maths.Vec3f;
+import net.minecraft.block.Block;
+import net.minecraft.block.LiquidBlock;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.BlockView;
+import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.server.entity.EntitySpawnDataProvider;
 import net.modificationstation.stationapi.api.server.entity.HasTrackingParameters;
-import net.modificationstation.stationapi.api.server.entity.MobSpawnDataProvider;
 import net.modificationstation.stationapi.api.util.Identifier;
 
 @HasTrackingParameters(trackingDistance = 160, updatePeriod = 2)
-public class WaterWheelEntity extends EntityBase implements EntitySpawnDataProvider
+public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
 {
 
-    public WaterWheelEntity(Level world)
+    public WaterWheelEntity(World world)
     {
         super(world);
         setProvidingPower(false);
@@ -35,20 +33,20 @@ public class WaterWheelEntity extends EntityBase implements EntitySpawnDataProvi
         fWaterWheelCurrentRotationSpeed = 0.0F;
         iFullUpdateTickCount = 0;
         field_1593 = true;
-        setSize(4.8F, 4.8F);
-        standingEyeHeight = height / 2.0F;
+        setBoundingBoxSpacing(4.8F, 4.8F);
+        eyeHeight = spacingY / 2.0F;
         waterTick = 0;
     }
 
-    public WaterWheelEntity(Level world, double x, double y, double z, boolean bJAligned)
+    public WaterWheelEntity(World world, double x, double y, double z, boolean bJAligned)
     {
         this(world);
-        setPosition(x, y, z);
+        method_1340(x, y, z);
         setAligned(bJAligned);
         AlignBoundingBoxWithAxis();
     }
 
-    public WaterWheelEntity(Level level, Double aDouble, Double aDouble1, Double aDouble2) {
+    public WaterWheelEntity(World level, Double aDouble, Double aDouble1, Double aDouble2) {
         this(level);
     }
 
@@ -56,10 +54,10 @@ public class WaterWheelEntity extends EntityBase implements EntitySpawnDataProvi
     {
         if(getAligned())
         {
-            boundingBox.method_99(x - 0.40000000596046448D, y - 2.4000000953674316D, z - 2.4000000953674316D, x + 0.40000000596046448D, y + 2.4000000953674316D, z + 2.4000000953674316D);
+            boundingBox.set(x - 0.40000000596046448D, y - 2.4000000953674316D, z - 2.4000000953674316D, x + 0.40000000596046448D, y + 2.4000000953674316D, z + 2.4000000953674316D);
         } else
         {
-            boundingBox.method_99(x - 2.4000000953674316D, y - 2.4000000953674316D, z - 0.40000000596046448D, x + 2.4000000953674316D, y + 2.4000000953674316D, z + 0.40000000596046448D);
+            boundingBox.set(x - 2.4000000953674316D, y - 2.4000000953674316D, z - 0.40000000596046448D, x + 2.4000000953674316D, y + 2.4000000953674316D, z + 0.40000000596046448D);
         }
     }
 
@@ -70,14 +68,14 @@ public class WaterWheelEntity extends EntityBase implements EntitySpawnDataProvi
         dataTracker.startTracking(18, (byte) 0); //PROVIDING POWER
     }
 
-    protected void writeCustomDataToTag(CompoundTag nbttagcompound)
+    protected void writeNbt(NbtCompound nbttagcompound)
     {
-        nbttagcompound.put("bWaterWheelIAligned", getAligned());
-        nbttagcompound.put("fRotation", getWheelRotation());
-        nbttagcompound.put("bProvidingPower", getProvidingPower());
+        nbttagcompound.putBoolean("bWaterWheelIAligned", getAligned());
+        nbttagcompound.putFloat("fRotation", getWheelRotation());
+        nbttagcompound.putBoolean("bProvidingPower", getProvidingPower());
     }
 
-    protected void readCustomDataFromTag(CompoundTag nbttagcompound)
+    protected void readNbt(NbtCompound nbttagcompound)
     {
         setAligned(nbttagcompound.getBoolean("bWaterWheelIAligned"));
         setWheelRotation(nbttagcompound.getFloat("fRotation"));
@@ -85,12 +83,12 @@ public class WaterWheelEntity extends EntityBase implements EntitySpawnDataProvi
         AlignBoundingBoxWithAxis();
     }
 
-    protected boolean canClimb()
+    protected boolean bypassesSteppingEffects()
     {
         return false;
     }
 
-    public Box getBoundingBox(EntityBase entity)
+    public Box method_1379(Entity entity)
     {
         return entity.boundingBox;
     }
@@ -107,12 +105,12 @@ public class WaterWheelEntity extends EntityBase implements EntitySpawnDataProvi
 
     public boolean method_1356()
     {
-        return !removed;
+        return !dead;
     }
 
-    public boolean damage(EntityBase entity, int i)
+    public boolean damage(Entity entity, int i)
     {
-        if(level.isServerSide || removed)
+        if(world.isRemote || dead)
         {
             return true;
         }
@@ -134,28 +132,28 @@ public class WaterWheelEntity extends EntityBase implements EntitySpawnDataProvi
         iWaterWheelCurrentDamage += iWaterWheelCurrentDamage * 5;
     }
 
-    public void remove()
+    public void markDead()
     {
         if(getProvidingPower())
         {
             int iCenterI = (int)(x - 0.5D);
             int iCenterJ = (int)(y - 0.5D);
             int iCenterK = (int)(z - 0.5D);
-            int iCenterid = level.getTileId(iCenterI, iCenterJ, iCenterK);
+            int iCenterid = world.getBlockId(iCenterI, iCenterJ, iCenterK);
             if(iCenterid == BlockListener.axleBlock.id)
             {
-                ((Axle)BlockListener.axleBlock).SetPowerLevel(level, iCenterI, iCenterJ, iCenterK, 0);
+                ((AxleBlock)BlockListener.axleBlock).SetPowerLevel(world, iCenterI, iCenterJ, iCenterK, 0);
             }
         }
-        super.remove();
+        super.markDead();
     }
 
     public void DestroyWithDrop()
     {
-        if(!removed)
+        if(!dead)
         {
-            dropItem(ItemListener.waterWheelItem.id, 1, 0.0F);
-            remove();
+            method_1325(ItemListener.waterWheelItem.id, 1, 0.0F);
+            markDead();
         }
     }
 
@@ -166,7 +164,7 @@ public class WaterWheelEntity extends EntityBase implements EntitySpawnDataProvi
 //            typechoosen = true;
 //            System.out.println("KLIENT SPRAWDZA: "  + getAligned());
 //        }
-        if(removed || level.isServerSide)
+        if(dead || world.isRemote)
         {
             return;
         }
@@ -177,18 +175,18 @@ public class WaterWheelEntity extends EntityBase implements EntitySpawnDataProvi
             int iCenterI = (int)(x - 0.5D);
             int iCenterJ = (int)(y - 0.5D);
             int iCenterK = (int)(z - 0.5D);
-            int iCenterid = level.getTileId(iCenterI, iCenterJ, iCenterK);
+            int iCenterid = world.getBlockId(iCenterI, iCenterJ, iCenterK);
             if(iCenterid != BlockListener.axleBlock.id)
             {
                 DestroyWithDrop();
                 return;
             }
-            if(!WaterWheelValidateAreaAroundBlock(level, iCenterI, iCenterJ, iCenterK, getAligned()))
+            if(!WaterWheelValidateAreaAroundBlock(world, iCenterI, iCenterJ, iCenterK, getAligned()))
             {
                 DestroyWithDrop();
                 return;
             }
-            if(!getProvidingPower() && ((Axle)BlockListener.axleBlock).GetPowerLevel(level, iCenterI, iCenterJ, iCenterK) > 0)
+            if(!getProvidingPower() && ((AxleBlock)BlockListener.axleBlock).GetPowerLevel(world, iCenterI, iCenterJ, iCenterK) > 0)
             {
                 DestroyWithDrop();
                 return;
@@ -207,13 +205,13 @@ public class WaterWheelEntity extends EntityBase implements EntitySpawnDataProvi
                 {
 //                    System.out.println("SERVI+ " + getAligned());
                     setProvidingPower(true);
-                    ((Axle)BlockListener.axleBlock).SetPowerLevel(level, iCenterI, iCenterJ, iCenterK, 3);
+                    ((AxleBlock)BlockListener.axleBlock).SetPowerLevel(world, iCenterI, iCenterJ, iCenterK, 3);
                 }
             } else
                 if (getProvidingPower()) {
 //                    System.out.println("SERVI+ " + getAligned());
                     setProvidingPower(false);
-                    ((Axle) BlockListener.axleBlock).SetPowerLevel(level, iCenterI, iCenterJ, iCenterK, 0);
+                    ((AxleBlock) BlockListener.axleBlock).SetPowerLevel(world, iCenterI, iCenterJ, iCenterK, 0);
                 }
 
         }
@@ -237,20 +235,20 @@ public class WaterWheelEntity extends EntityBase implements EntitySpawnDataProvi
         }
     }
 
-    public float getEyeHeight()
+    public float method_1366()
     {
         return 0.0F;
     }
 
     public void move(double deltaX, double deltaY, double deltaZ)
     {
-        if(!removed)
+        if(!dead)
         {
             DestroyWithDrop();
         }
     }
 
-    public static boolean WaterWheelValidateAreaAroundBlock(Level world, int i, int j, int k, boolean bIAligned)
+    public static boolean WaterWheelValidateAreaAroundBlock(World world, int i, int j, int k, boolean bIAligned)
     {
         if(j + 2 >= 128)
         {
@@ -289,12 +287,12 @@ public class WaterWheelEntity extends EntityBase implements EntitySpawnDataProvi
         return true;
     }
 
-    public static boolean IsValidBlockForWaterWheelToOccupy(Level world, int i, int j, int k)
+    public static boolean IsValidBlockForWaterWheelToOccupy(World world, int i, int j, int k)
     {
-        if(!world.isAir(i, j, k))
+        if(!world.method_234(i, j, k))
         {
-            int iid = world.getTileId(i, j, k);
-            if(iid != BlockBase.FLOWING_WATER.id && iid != BlockBase.STILL_WATER.id)
+            int iid = world.getBlockId(i, j, k);
+            if(iid != Block.FLOWING_WATER.id && iid != Block.WATER.id)
             {
                 return false;
             }
@@ -306,11 +304,11 @@ public class WaterWheelEntity extends EntityBase implements EntitySpawnDataProvi
     {
         float fRotationAmount = 0.0F;
         int iFlowJ = iCenterJ - 2;
-        int iFlowid = level.getTileId(iCenterI, iFlowJ, iCenterK);
-        if(iFlowid == BlockBase.FLOWING_WATER.id || iFlowid == BlockBase.STILL_WATER.id)
+        int iFlowid = world.getBlockId(iCenterI, iFlowJ, iCenterK);
+        if(iFlowid == Block.FLOWING_WATER.id || iFlowid == Block.WATER.id)
         {
-            Fluid fluidBlock = (Fluid)BlockBase.BY_ID[iFlowid];
-            Vec3f flowVector = getFlowVector(fluidBlock, level, iCenterI, iFlowJ, iCenterK);
+            LiquidBlock fluidBlock = (LiquidBlock)Block.BLOCKS[iFlowid];
+            Vec3d flowVector = getFlowVector(fluidBlock, world, iCenterI, iFlowJ, iCenterK);
             if(getAligned())
             {
                 if(flowVector.z > 0.33000001311302185D)
@@ -342,16 +340,16 @@ public class WaterWheelEntity extends EntityBase implements EntitySpawnDataProvi
             iOffset = 2;
             kOffset = 0;
         }
-        iFlowid = level.getTileId(iCenterI + iOffset, iCenterJ, iCenterK - kOffset);
-        if(iFlowid == BlockBase.FLOWING_WATER.id || iFlowid == BlockBase.STILL_WATER.id)
+        iFlowid = world.getBlockId(iCenterI + iOffset, iCenterJ, iCenterK - kOffset);
+        if(iFlowid == Block.FLOWING_WATER.id || iFlowid == Block.WATER.id)
         {
-            Fluid fluidBlock = (Fluid)BlockBase.BY_ID[iFlowid];
+            LiquidBlock fluidBlock = (LiquidBlock)Block.BLOCKS[iFlowid];
             fRotationAmount -= 0.25F;
         }
-        iFlowid = level.getTileId(iCenterI - iOffset, iCenterJ, iCenterK + kOffset);
-        if(iFlowid == BlockBase.FLOWING_WATER.id || iFlowid == BlockBase.STILL_WATER.id)
+        iFlowid = world.getBlockId(iCenterI - iOffset, iCenterJ, iCenterK + kOffset);
+        if(iFlowid == Block.FLOWING_WATER.id || iFlowid == Block.WATER.id)
         {
-            Fluid fluidBlock = (Fluid)BlockBase.BY_ID[iFlowid];
+            LiquidBlock fluidBlock = (LiquidBlock)Block.BLOCKS[iFlowid];
             fRotationAmount += 0.25F;
         }
         if(fRotationAmount > 0.25F)
@@ -365,9 +363,9 @@ public class WaterWheelEntity extends EntityBase implements EntitySpawnDataProvi
         return fRotationAmount;
     }
 
-    public Vec3f getFlowVector(Fluid fluidBlock, BlockView iblockaccess, int i, int j, int k)
+    public Vec3d getFlowVector(LiquidBlock fluidBlock, BlockView iblockaccess, int i, int j, int k)
     {
-        Vec3f vec3d = Vec3f.from(0.0D, 0.0D, 0.0D);
+        Vec3d vec3d = Vec3d.createCached(0.0D, 0.0D, 0.0D);
         int l = getEffectiveFlowDecay(fluidBlock, iblockaccess, i, j, k);
         for(int i1 = 0; i1 < 4; i1++)
         {
@@ -393,7 +391,7 @@ public class WaterWheelEntity extends EntityBase implements EntitySpawnDataProvi
             int i2 = getEffectiveFlowDecay(fluidBlock, iblockaccess, j1, k1, l1);
             if(i2 < 0)
             {
-                if(iblockaccess.getMaterial(j1, k1, l1).blocksMovement())
+                if(iblockaccess.method_1779(j1, k1, l1).method_907())
                 {
                     continue;
                 }
@@ -401,68 +399,68 @@ public class WaterWheelEntity extends EntityBase implements EntitySpawnDataProvi
                 if(i2 >= 0)
                 {
                     int j2 = i2 - (l - 8);
-                    vec3d = vec3d.method_1301((j1 - i) * j2, (k1 - j) * j2, (l1 - k) * j2);
+                    vec3d = vec3d.add((j1 - i) * j2, (k1 - j) * j2, (l1 - k) * j2);
                 }
                 continue;
             }
             if(i2 >= 0)
             {
                 int k2 = i2 - l;
-                vec3d = vec3d.method_1301((j1 - i) * k2, (k1 - j) * k2, (l1 - k) * k2);
+                vec3d = vec3d.add((j1 - i) * k2, (k1 - j) * k2, (l1 - k) * k2);
             }
         }
 
-        if(iblockaccess.getTileMeta(i, j, k) >= 8)
+        if(iblockaccess.getBlockMeta(i, j, k) >= 8)
         {
             boolean flag = false;
-            if(flag || fluidBlock.isSolid(iblockaccess, i, j, k - 1, 2))
+            if(flag || fluidBlock.isSolidBlock(iblockaccess, i, j, k - 1, 2))
             {
                 flag = true;
             }
-            if(flag || fluidBlock.isSolid(iblockaccess, i, j, k + 1, 3))
+            if(flag || fluidBlock.isSolidBlock(iblockaccess, i, j, k + 1, 3))
             {
                 flag = true;
             }
-            if(flag || fluidBlock.isSolid(iblockaccess, i - 1, j, k, 4))
+            if(flag || fluidBlock.isSolidBlock(iblockaccess, i - 1, j, k, 4))
             {
                 flag = true;
             }
-            if(flag || fluidBlock.isSolid(iblockaccess, i + 1, j, k, 5))
+            if(flag || fluidBlock.isSolidBlock(iblockaccess, i + 1, j, k, 5))
             {
                 flag = true;
             }
-            if(flag || fluidBlock.isSolid(iblockaccess, i, j + 1, k - 1, 2))
+            if(flag || fluidBlock.isSolidBlock(iblockaccess, i, j + 1, k - 1, 2))
             {
                 flag = true;
             }
-            if(flag || fluidBlock.isSolid(iblockaccess, i, j + 1, k + 1, 3))
+            if(flag || fluidBlock.isSolidBlock(iblockaccess, i, j + 1, k + 1, 3))
             {
                 flag = true;
             }
-            if(flag || fluidBlock.isSolid(iblockaccess, i - 1, j + 1, k, 4))
+            if(flag || fluidBlock.isSolidBlock(iblockaccess, i - 1, j + 1, k, 4))
             {
                 flag = true;
             }
-            if(flag || fluidBlock.isSolid(iblockaccess, i + 1, j + 1, k, 5))
+            if(flag || fluidBlock.isSolidBlock(iblockaccess, i + 1, j + 1, k, 5))
             {
                 flag = true;
             }
             if(flag)
             {
-                vec3d = vec3d.method_1296().method_1301(0.0D, -6D, 0.0D);
+                vec3d = vec3d.normalize().add(0.0D, -6D, 0.0D);
             }
         }
-        vec3d = vec3d.method_1296();
+        vec3d = vec3d.normalize();
         return vec3d;
     }
 
-    protected int getEffectiveFlowDecay(Fluid fluidBlock, BlockView iblockaccess, int i, int j, int k)
+    protected int getEffectiveFlowDecay(LiquidBlock fluidBlock, BlockView iblockaccess, int i, int j, int k)
     {
-        if(iblockaccess.getMaterial(i, j, k) != fluidBlock.material)
+        if(iblockaccess.method_1779(i, j, k) != fluidBlock.material)
         {
             return -1;
         }
-        int l = iblockaccess.getTileMeta(i, j, k);
+        int l = iblockaccess.getBlockMeta(i, j, k);
         if(l >= 8)
         {
             l = 0;
@@ -470,9 +468,9 @@ public class WaterWheelEntity extends EntityBase implements EntitySpawnDataProvi
         return l;
     }
 
-    public boolean interact(PlayerBase entityplayer)
+    public boolean method_1323(PlayerEntity entityplayer)
     {
-        if(level.isServerSide){
+        if(world.isRemote){
             System.out.println("KLIENT: " + getAligned());
         }else{
             System.out.println("SERVER: " + getAligned());
@@ -514,10 +512,10 @@ public class WaterWheelEntity extends EntityBase implements EntitySpawnDataProvi
     {
         if(flag)
         {
-            dataTracker.setInt(16,  (byte)1);
+            dataTracker.set(16,  (byte)1);
         } else
         {
-            dataTracker.setInt(16,  (byte)0);
+            dataTracker.set(16,  (byte)0);
         }
     }
 
@@ -532,7 +530,7 @@ public class WaterWheelEntity extends EntityBase implements EntitySpawnDataProvi
     public void setWheelRotation(float age)
     {
 //        dataTracker.setInt(17, (byte) ((int) 100F * age));
-        dataTracker.setInt(17, Float.floatToRawIntBits(age));
+        dataTracker.set(17, Float.floatToRawIntBits(age));
     }
 
     //POWER
@@ -545,10 +543,10 @@ public class WaterWheelEntity extends EntityBase implements EntitySpawnDataProvi
     {
         if(flag)
         {
-            dataTracker.setInt(18, (byte) 1);
+            dataTracker.set(18, (byte) 1);
         } else
         {
-            dataTracker.setInt(18, (byte) 0);
+            dataTracker.set(18, (byte) 0);
         }
     }
 

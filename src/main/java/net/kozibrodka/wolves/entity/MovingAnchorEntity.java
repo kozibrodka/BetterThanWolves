@@ -1,24 +1,24 @@
 package net.kozibrodka.wolves.entity;
 
-import net.kozibrodka.wolves.blocks.Anchor;
-import net.kozibrodka.wolves.blocks.Rope;
+import net.kozibrodka.wolves.block.AnchorBlock;
+import net.kozibrodka.wolves.block.RopeBlock;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.EntityListener;
 import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.mixin.EntityBaseAccessor;
-import net.kozibrodka.wolves.tileentity.PulleyTileEntity;
+import net.kozibrodka.wolves.block.entity.PulleyBlockEntity;
 import net.kozibrodka.wolves.utils.BlockPosition;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
+import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.ItemEntity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
 import net.kozibrodka.wolves.utils.ReplaceableBlockChecker;
-import net.minecraft.block.BlockBase;
-import net.minecraft.entity.EntityBase;
-import net.minecraft.entity.Item;
-import net.minecraft.entity.Living;
-import net.minecraft.item.ItemInstance;
-import net.minecraft.level.Level;
-import net.minecraft.util.io.CompoundTag;
-import net.minecraft.util.maths.Box;
-import net.minecraft.util.maths.MathHelper;
 import net.modificationstation.stationapi.api.server.entity.EntitySpawnDataProvider;
 import net.modificationstation.stationapi.api.server.entity.HasTrackingParameters;
 import net.modificationstation.stationapi.api.util.Identifier;
@@ -26,22 +26,22 @@ import net.modificationstation.stationapi.api.util.Identifier;
 import java.util.List;
 
 @HasTrackingParameters(trackingDistance = 160, updatePeriod = 2)
-public class MovingAnchorEntity extends EntityBase implements EntitySpawnDataProvider
+public class MovingAnchorEntity extends Entity implements EntitySpawnDataProvider
 {
 
-    public MovingAnchorEntity(Level world)
+    public MovingAnchorEntity(World world)
     {
         super(world);
         associatedPulleyPos = new BlockPosition();
         field_1593 = true;
-        setSize(0.98F, Anchor.fAnchorBaseHeight - 0.02F);
-        standingEyeHeight = height / 2.0F;
+        setBoundingBoxSpacing(0.98F, AnchorBlock.fAnchorBaseHeight - 0.02F);
+        eyeHeight = spacingY / 2.0F;
         velocityX = 0.0D;
         velocityY = 0.0D;
         velocityZ = 0.0D;
     }
 
-    public MovingAnchorEntity(Level world, double x, double y, double z,
+    public MovingAnchorEntity(World world, double x, double y, double z,
                               BlockPosition pulleyPos, int iMovementDirection)
     {
         this(world);
@@ -55,13 +55,13 @@ public class MovingAnchorEntity extends EntityBase implements EntitySpawnDataPro
         {
             velocityY = -0.05000000074505806D;
         }
-        setPosition(x, y, z);
-        prevRenderX = prevX = x;
-        prevRenderY = prevY = y;
-        prevRenderZ = prevZ = z;
+        method_1340(x, y, z);
+        field_1637 = prevX = x;
+        field_1638 = prevY = y;
+        field_1639 = prevZ = z;
     }
 
-    public MovingAnchorEntity(Level level, Double aDouble, Double aDouble1, Double aDouble2) {
+    public MovingAnchorEntity(World level, Double aDouble, Double aDouble1, Double aDouble2) {
         this(level);
     }
 
@@ -69,26 +69,26 @@ public class MovingAnchorEntity extends EntityBase implements EntitySpawnDataPro
     {
     }
 
-    protected void writeCustomDataToTag(CompoundTag nbttagcompound)
+    protected void writeNbt(NbtCompound nbttagcompound)
     {
-        nbttagcompound.put("associatedPulleyPosI", associatedPulleyPos.i);
-        nbttagcompound.put("associatedPulleyPosJ", associatedPulleyPos.j);
-        nbttagcompound.put("associatedPulleyPosK", associatedPulleyPos.k);
+        nbttagcompound.putInt("associatedPulleyPosI", associatedPulleyPos.i);
+        nbttagcompound.putInt("associatedPulleyPosJ", associatedPulleyPos.j);
+        nbttagcompound.putInt("associatedPulleyPosK", associatedPulleyPos.k);
     }
 
-    protected void readCustomDataFromTag(CompoundTag nbttagcompound)
+    protected void readNbt(NbtCompound nbttagcompound)
     {
         associatedPulleyPos.i = nbttagcompound.getInt("associatedPulleyPosI");
         associatedPulleyPos.j = nbttagcompound.getInt("associatedPulleyPosJ");
         associatedPulleyPos.k = nbttagcompound.getInt("associatedPulleyPosK");
     }
 
-    protected boolean canClimb()
+    protected boolean bypassesSteppingEffects()
     {
         return false;
     }
 
-    public Box getBoundingBox(EntityBase entity)
+    public Box method_1379(Entity entity)
     {
         return entity.boundingBox;
     }
@@ -105,30 +105,30 @@ public class MovingAnchorEntity extends EntityBase implements EntitySpawnDataPro
 
     public boolean method_1356()
     {
-        return !removed;
+        return !dead;
     }
 
-    public float getEyeHeight()
+    public float method_1366()
     {
         return 0.0F;
     }
 
     public void tick()
     {
-        if(removed || level.isServerSide)
+        if(dead || world.isRemote)
         {
             return;
         }
-        PulleyTileEntity tileEntityPulley = null;
-        int oldJ = MathHelper.floor(y - (double)standingEyeHeight);
+        PulleyBlockEntity tileEntityPulley = null;
+        int oldJ = MathHelper.floor(y - (double)eyeHeight);
         int i = MathHelper.floor(x);
         int k = MathHelper.floor(z);
-        int associatedPulleyid = level.getTileId(associatedPulleyPos.i, associatedPulleyPos.j, associatedPulleyPos.k);
-        int iBlockAboveID = level.getTileId(i, oldJ + 1, k);
-        int i2BlockAboveID = level.getTileId(i, oldJ + 2, k);
+        int associatedPulleyid = world.getBlockId(associatedPulleyPos.i, associatedPulleyPos.j, associatedPulleyPos.k);
+        int iBlockAboveID = world.getBlockId(i, oldJ + 1, k);
+        int i2BlockAboveID = world.getBlockId(i, oldJ + 2, k);
         if(associatedPulleyid == BlockListener.pulley.id && (iBlockAboveID == BlockListener.pulley.id || iBlockAboveID == BlockListener.rope.id || i2BlockAboveID == BlockListener.pulley.id || i2BlockAboveID == BlockListener.rope.id))
         {
-            tileEntityPulley = (PulleyTileEntity)level.getTileEntity(associatedPulleyPos.i, associatedPulleyPos.j, associatedPulleyPos.k);
+            tileEntityPulley = (PulleyBlockEntity)world.getBlockEntity(associatedPulleyPos.i, associatedPulleyPos.j, associatedPulleyPos.k);
             if(velocityY > 0.0D)
             {
                 if(tileEntityPulley.IsLowering())
@@ -143,19 +143,19 @@ public class MovingAnchorEntity extends EntityBase implements EntitySpawnDataPro
         }
         MoveEntityInternal(velocityX, velocityY, velocityZ);
         double newPosY = y;
-        int newJ = MathHelper.floor(newPosY - (double)standingEyeHeight);
-        List list = level.getEntities(this, boundingBox.expand(0.0D, 0.14999999999999999D, 0.0D));
+        int newJ = MathHelper.floor(newPosY - (double)eyeHeight);
+        List list = world.getEntities(this, boundingBox.expand(0.0D, 0.14999999999999999D, 0.0D));
         if(list != null && list.size() > 0)
         {
             for(int j1 = 0; j1 < list.size(); j1++)
             {
-                EntityBase entity = (EntityBase)list.get(j1);
-                if(entity.method_1380() || (entity instanceof Item))
+                Entity entity = (Entity)list.get(j1);
+                if(entity.method_1380() || (entity instanceof ItemEntity))
                 {
                     PushEntity(entity);
                     continue;
                 }
-                if(entity.removed)
+                if(entity.dead)
                 {
                     continue;
                 }
@@ -177,7 +177,7 @@ public class MovingAnchorEntity extends EntityBase implements EntitySpawnDataPro
         {
             if(velocityY > 0.0D)
             {
-                int iTargetid = level.getTileId(i, newJ + 1, k);
+                int iTargetid = world.getBlockId(i, newJ + 1, k);
                 if(iTargetid != BlockListener.rope.id || tileEntityPulley == null || !tileEntityPulley.IsRaising())
                 {
                     ConvertToBlock(i, newJ, k);
@@ -192,7 +192,7 @@ public class MovingAnchorEntity extends EntityBase implements EntitySpawnDataPro
                     if(iBlockAboveID == BlockListener.pulley.id || iBlockAboveID == BlockListener.rope.id)
                     {
                         iRopeRequiredToDescend = 1;
-                        int iOldid = level.getTileId(i, oldJ, k);
+                        int iOldid = world.getBlockId(i, oldJ, k);
                         if(iOldid == BlockListener.pulley.id || iOldid == BlockListener.rope.id)
                         {
                             iRopeRequiredToDescend = 0;
@@ -206,33 +206,33 @@ public class MovingAnchorEntity extends EntityBase implements EntitySpawnDataPro
                         bEnoughRope = false;
                     }
                 }
-                int iTargetid = level.getTileId(i, newJ, k);
+                int iTargetid = world.getBlockId(i, newJ, k);
                 boolean bStop = false;
                 if(tileEntityPulley == null || !tileEntityPulley.IsLowering() || !bEnoughRope)
                 {
                     bStop = true;
                 } else
-                if(!ReplaceableBlockChecker.IsReplaceableBlock(level, i, newJ, k))
+                if(!ReplaceableBlockChecker.IsReplaceableBlock(world, i, newJ, k))
                 {
-                    if(!BlockBase.BY_ID[iTargetid].material.isSolid())
+                    if(!Block.BLOCKS[iTargetid].material.method_905())
                     {
                         if(iTargetid == BlockListener.rope.id)
                         {
                             if(!ReturnRopeToPulley())
                             {
-                                BlockBase.BY_ID[iTargetid].drop(level, i, newJ, k, level.getTileMeta(i, newJ, k));
+                                Block.BLOCKS[iTargetid].dropStacks(world, i, newJ, k, world.getBlockMeta(i, newJ, k));
                             }
                         } else
                         {
-                            BlockBase.BY_ID[iTargetid].drop(level, i, newJ, k, level.getTileMeta(i, newJ, k));
+                            Block.BLOCKS[iTargetid].dropStacks(world, i, newJ, k, world.getBlockMeta(i, newJ, k));
                         }
-                        level.setTile(i, newJ, k, 0);
+                        world.setBlock(i, newJ, k, 0);
                     } else
                     {
                         bStop = true;
                     }
                 }
-                if(tileEntityPulley != null && level.getTileId(i, oldJ + 1, k) != BlockListener.rope.id && level.getTileId(i, oldJ + 1, k) != BlockListener.pulley.id)
+                if(tileEntityPulley != null && world.getBlockId(i, oldJ + 1, k) != BlockListener.rope.id && world.getBlockId(i, oldJ + 1, k) != BlockListener.pulley.id)
                 {
                     tileEntityPulley.AttemptToDispenseRope();
                 }
@@ -263,9 +263,9 @@ public class MovingAnchorEntity extends EntityBase implements EntitySpawnDataPro
         int i = MathHelper.floor(x);
         int j = MathHelper.floor(y);
         int k = MathHelper.floor(z);
-        ItemInstance anchorStack = new ItemInstance(BlockListener.anchor);
-        UnsortedUtils.ejectStackWithRandomOffset(level, i, j, k, anchorStack);
-        remove();
+        ItemStack anchorStack = new ItemStack(BlockListener.anchor);
+        UnsortedUtils.ejectStackWithRandomOffset(world, i, j, k, anchorStack);
+        markDead();
     }
 
     private void MoveEntityInternal(double deltaX, double deltaY, double deltaZ)
@@ -276,7 +276,7 @@ public class MovingAnchorEntity extends EntityBase implements EntitySpawnDataPro
         prevX = x;
         prevY = y;
         prevZ = z;
-        setPosition(newPosX, newPosY, newPosZ);
+        method_1340(newPosX, newPosY, newPosZ);
         TestForBlockCollisions();
     }
 
@@ -288,7 +288,7 @@ public class MovingAnchorEntity extends EntityBase implements EntitySpawnDataPro
         int k3 = MathHelper.floor(boundingBox.maxX - 0.001D);
         int l3 = MathHelper.floor(boundingBox.maxY - 0.001D);
         int i4 = MathHelper.floor(boundingBox.maxZ - 0.001D);
-        if(level.method_155(i1, k1, i2, k3, l3, i4))
+        if(world.method_155(i1, k1, i2, k3, l3, i4))
         {
             for(int j4 = i1; j4 <= k3; j4++)
             {
@@ -296,10 +296,10 @@ public class MovingAnchorEntity extends EntityBase implements EntitySpawnDataPro
                 {
                     for(int l4 = i2; l4 <= i4; l4++)
                     {
-                        int i5 = level.getTileId(j4, k4, l4);
+                        int i5 = world.getBlockId(j4, k4, l4);
                         if(i5 > 0)
                         {
-                            BlockBase.BY_ID[i5].onEntityCollision(level, j4, k4, l4, this);
+                            Block.BLOCKS[i5].onEntityCollision(world, j4, k4, l4, this);
                         }
                     }
 
@@ -310,7 +310,7 @@ public class MovingAnchorEntity extends EntityBase implements EntitySpawnDataPro
         }
     }
 
-    private void PushEntity(EntityBase entity)
+    private void PushEntity(Entity entity)
     {
         double anchorMaxY = boundingBox.maxY + 0.074999999999999997D;
         double entityMinY = entity.boundingBox.minY;
@@ -319,10 +319,10 @@ public class MovingAnchorEntity extends EntityBase implements EntitySpawnDataPro
             if(entityMinY > anchorMaxY - 0.25D)
             {
                 double entityYOffset = anchorMaxY - entityMinY;
-                entity.setPosition(entity.x, entity.y + entityYOffset, entity.z);
+                entity.method_1340(entity.x, entity.y + entityYOffset, entity.z);
                 ((EntityBaseAccessor) entity).setFallDistance(0.0F);
             } else
-            if((entity instanceof Living) && velocityY < 0.0D)
+            if((entity instanceof LivingEntity) && velocityY < 0.0D)
             {
                 double entityMaxY = entity.boundingBox.maxY;
                 double anchorMinY = boundingBox.minY;
@@ -336,7 +336,7 @@ public class MovingAnchorEntity extends EntityBase implements EntitySpawnDataPro
 
     public void ForceStopByPlatform()
     {
-        if(removed)
+        if(dead)
         {
             return;
         }
@@ -347,10 +347,10 @@ public class MovingAnchorEntity extends EntityBase implements EntitySpawnDataPro
             i = MathHelper.floor(x);
             int jAbove = MathHelper.floor(y) + 1;
             k = MathHelper.floor(z);
-            int iBlockAboveID = level.getTileId(i, jAbove, k);
+            int iBlockAboveID = world.getBlockId(i, jAbove, k);
             if(iBlockAboveID == BlockListener.rope.id)
             {
-                ((Rope)BlockListener.rope).BreakRope(level, i, jAbove, k);
+                ((RopeBlock)BlockListener.rope).BreakRope(world, i, jAbove, k);
             }
         }
         i = MathHelper.floor(x);
@@ -362,20 +362,20 @@ public class MovingAnchorEntity extends EntityBase implements EntitySpawnDataPro
     private void ConvertToBlock(int i, int j, int k)
     {
         boolean bCanPlace = true;
-        int iTargetid = level.getTileId(i, j, k);
-        if(!ReplaceableBlockChecker.IsReplaceableBlock(level, i, j, k))
+        int iTargetid = world.getBlockId(i, j, k);
+        if(!ReplaceableBlockChecker.IsReplaceableBlock(world, i, j, k))
         {
             if(iTargetid == BlockListener.rope.id)
             {
                 if(!ReturnRopeToPulley())
                 {
-                    UnsortedUtils.EjectSingleItemWithRandomOffset(level, i, j, k, ItemListener.ropeItem.id, 0);
+                    UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, ItemListener.ropeItem.id, 0);
                 }
             } else
-            if(!BlockBase.BY_ID[iTargetid].material.isSolid())
+            if(!Block.BLOCKS[iTargetid].material.method_905())
             {
-                BlockBase.BY_ID[iTargetid].drop(level, i, j, k, level.getTileMeta(i, j, k));
-                level.setTile(i, j, k, BlockListener.platform.id);
+                Block.BLOCKS[iTargetid].dropStacks(world, i, j, k, world.getBlockMeta(i, j, k));
+                world.setBlock(i, j, k, BlockListener.platform.id);
             } else
             {
                 bCanPlace = false;
@@ -383,21 +383,21 @@ public class MovingAnchorEntity extends EntityBase implements EntitySpawnDataPro
         }
         if(bCanPlace)
         {
-            level.setTile(i, j, k, BlockListener.anchor.id);
-            ((Anchor)BlockListener.anchor).SetAnchorFacing(level, i, j, k, 1);
+            world.setBlock(i, j, k, BlockListener.anchor.id);
+            ((AnchorBlock)BlockListener.anchor).SetAnchorFacing(world, i, j, k, 1);
         } else
         {
-            UnsortedUtils.EjectSingleItemWithRandomOffset(level, i, j, k, BlockListener.anchor.id, 0);
+            UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, BlockListener.anchor.id, 0);
         }
-        remove();
+        markDead();
     }
 
     public boolean ReturnRopeToPulley()
     {
-        int associatedPulleyid = level.getTileId(associatedPulleyPos.i, associatedPulleyPos.j, associatedPulleyPos.k);
+        int associatedPulleyid = world.getBlockId(associatedPulleyPos.i, associatedPulleyPos.j, associatedPulleyPos.k);
         if(associatedPulleyid == BlockListener.pulley.id)
         {
-            PulleyTileEntity tileEntityPulley = (PulleyTileEntity)level.getTileEntity(associatedPulleyPos.i, associatedPulleyPos.j, associatedPulleyPos.k);
+            PulleyBlockEntity tileEntityPulley = (PulleyBlockEntity)world.getBlockEntity(associatedPulleyPos.i, associatedPulleyPos.j, associatedPulleyPos.k);
             if(tileEntityPulley != null)
             {
                 tileEntityPulley.AddRopeToInventory();

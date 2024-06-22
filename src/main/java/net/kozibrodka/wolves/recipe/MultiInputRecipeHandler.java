@@ -1,22 +1,21 @@
 package net.kozibrodka.wolves.recipe;
 
 import net.kozibrodka.wolves.utils.InventoryHandler;
-import net.minecraft.inventory.InventoryBase;
-import net.minecraft.item.ItemInstance;
-
+import net.minecraft.inventory.Inventory;
+import net.minecraft.item.ItemStack;
 import java.util.List;
 
 
 public class MultiInputRecipeHandler
 {
 
-    public MultiInputRecipeHandler(ItemInstance recipeOutputStack, List recipeInputStacks)
+    public MultiInputRecipeHandler(ItemStack recipeOutputStack, List recipeInputStacks)
     {
         m_recipeOutputStack = recipeOutputStack;
         m_recipeInputStacks = recipeInputStacks;
     }
 
-    public ItemInstance getCopyOfOutputStack()
+    public ItemStack getCopyOfOutputStack()
     {
         if(m_recipeOutputStack == null)
         {
@@ -27,14 +26,14 @@ public class MultiInputRecipeHandler
         }
     }
 
-    public boolean DoesInventoryContainIngredients(InventoryBase inventory)
+    public boolean DoesInventoryContainIngredients(Inventory inventory)
     {
         if(m_recipeInputStacks != null && m_recipeInputStacks.size() > 0)
         {
             for(int listIndex = 0; listIndex < m_recipeInputStacks.size(); listIndex++)
             {
-                ItemInstance tempStack = (ItemInstance)m_recipeInputStacks.get(listIndex);
-                if(tempStack != null && InventoryHandler.itemCountInInventory(inventory, tempStack.getType().id, tempStack.getDamage()) < tempStack.count)
+                ItemStack tempStack = (ItemStack)m_recipeInputStacks.get(listIndex);
+                if(tempStack != null && InventoryHandler.itemCountInInventory(inventory, tempStack.getItem().id, tempStack.getDamage()) < tempStack.count)
                 {
                     return false;
                 }
@@ -47,14 +46,14 @@ public class MultiInputRecipeHandler
         }
     }
 
-    public boolean ConsumeInventoryIngredients(InventoryBase inventory)
+    public boolean ConsumeInventoryIngredients(Inventory inventory)
     {
         boolean bSuccessful = true;
         if(m_recipeInputStacks != null && m_recipeInputStacks.size() > 0)
         {
             for (Object m_recipeInputStack : m_recipeInputStacks) {
-                ItemInstance tempStack = (ItemInstance) m_recipeInputStack;
-                if (tempStack != null && !InventoryHandler.consumeItemsInInventory(inventory, tempStack.getType().id, tempStack.getDamage(), tempStack.count)) {
+                ItemStack tempStack = (ItemStack) m_recipeInputStack;
+                if (tempStack != null && !InventoryHandler.consumeItemsInInventory(inventory, tempStack.getItem().id, tempStack.getDamage(), tempStack.count)) {
                     bSuccessful = false;
                 }
             }
@@ -63,9 +62,9 @@ public class MultiInputRecipeHandler
         return bSuccessful;
     }
 
-    public ItemInstance getInputStack(int index)
+    public ItemStack getInputStack(int index)
     {
-        return (ItemInstance) m_recipeInputStacks.get(index);
+        return (ItemStack) m_recipeInputStacks.get(index);
     }
 
     public int getNumberOfInputStacks()
@@ -73,11 +72,11 @@ public class MultiInputRecipeHandler
         return m_recipeInputStacks.size();
     }
 
-    public ItemInstance getOutputStack()
+    public ItemStack getOutputStack()
     {
         return m_recipeOutputStack;
     }
 
-    private final ItemInstance m_recipeOutputStack;
+    private final ItemStack m_recipeOutputStack;
     private final List m_recipeInputStacks;
 }

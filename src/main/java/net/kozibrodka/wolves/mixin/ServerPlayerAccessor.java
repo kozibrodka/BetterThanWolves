@@ -1,12 +1,12 @@
 package net.kozibrodka.wolves.mixin;
 
-import net.minecraft.entity.player.ServerPlayer;
-import net.minecraft.server.network.ServerPlayerPacketHandler;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.server.network.ServerPlayNetworkHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-@Mixin(ServerPlayerPacketHandler.class)
+@Mixin(ServerPlayNetworkHandler.class)
 public interface ServerPlayerAccessor {
-    @Accessor("serverPlayer")
-    ServerPlayer getServerPlayer();
+    @Accessor("player")
+    ServerPlayerEntity getServerPlayer();
 }

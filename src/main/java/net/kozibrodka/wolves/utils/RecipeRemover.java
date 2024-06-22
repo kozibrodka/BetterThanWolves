@@ -1,17 +1,17 @@
 package net.kozibrodka.wolves.utils;
 
-import net.minecraft.item.ItemBase;
-import net.minecraft.recipe.Recipe;
-import net.minecraft.recipe.RecipeRegistry;
+import net.minecraft.item.Item;
+import net.minecraft.recipe.CraftingRecipe;
+import net.minecraft.recipe.CraftingRecipeManager;
 
 import java.util.List;
 
 public class RecipeRemover {
     @SuppressWarnings({"unchecked"})
-    public static void removeRecipe(ItemBase item, int meta, boolean onlyRemoveFirst) {
-        List<Recipe> recipes = RecipeRegistry.getInstance().getRecipes();
+    public static void removeRecipe(Item item, int meta, boolean onlyRemoveFirst) {
+        List<CraftingRecipe> recipes = CraftingRecipeManager.getInstance().getRecipes();
         for (int i = 0; i < recipes.size(); i++) {
-            Recipe recipe = recipes.get(i);
+            CraftingRecipe recipe = recipes.get(i);
             if (recipe.getOutput().itemId == item.id) {
                 //noinspection SimplifiableConditionalExpression
                 if ((meta == -1) ? true : (recipe.getOutput().getDamage() == meta)) {
@@ -25,11 +25,11 @@ public class RecipeRemover {
         }
     }
 
-    public static void removeRecipe(ItemBase item, boolean onlyRemoveFirst) {
+    public static void removeRecipe(Item item, boolean onlyRemoveFirst) {
         removeRecipe(item, -1, onlyRemoveFirst);
     }
 
-    public static void removeRecipe(ItemBase item) {
+    public static void removeRecipe(Item item) {
         removeRecipe(item, -1, false);
     }
 }

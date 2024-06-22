@@ -1,25 +1,25 @@
 package net.kozibrodka.wolves.mixin;
 
 import net.kozibrodka.wolves.events.ItemListener;
-import net.minecraft.entity.Item;
-import net.minecraft.entity.animal.AnimalBase;
-import net.minecraft.entity.animal.Wolf;
-import net.minecraft.item.ItemInstance;
-import net.minecraft.level.Level;
-import net.minecraft.util.maths.MathHelper;
+import net.minecraft.entity.ItemEntity;
+import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.passive.WolfEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(Wolf.class)
-public abstract class WolfDump extends AnimalBase {
+@Mixin(WolfEntity.class)
+public abstract class WolfDump extends AnimalEntity {
 
     @Shadow
-    public abstract boolean isTamed();
+    public abstract boolean method_425(); // isTamed
 
-    public WolfDump(Level arg) {
+    public WolfDump(World arg) {
         super(arg);
     }
 
@@ -27,24 +27,24 @@ public abstract class WolfDump extends AnimalBase {
     private void tick(CallbackInfo callbackInfo)
     {
         int dungBooster = 1;
-        if (level.getLightLevel((int)x, (int)y, (int)z) < 5) dungBooster *= 2;
-        if (isTamed()) dungBooster *= 4;
-        if (level.rand.nextInt(9600) > dungBooster) return;
+        if (world.method_252((int)x, (int)y, (int)z) < 5) dungBooster *= 2;
+        if (method_425()) dungBooster *= 4;
+        if (world.field_214.nextInt(9600) > dungBooster) return;
         int turboDump = 1;
-        if (level.rand.nextInt(1000) == 0) turboDump = level.rand.nextInt(91) + 10;
+        if (world.field_214.nextInt(1000) == 0) turboDump = world.field_214.nextInt(91) + 10;
         for (; turboDump > 0; turboDump--) {
             float xOffset = -(-MathHelper.sin(this.yaw / 180.0F * 3.141593F) * MathHelper.cos(this.pitch / 180.0F * 3.141593F));
             float zOffset = -(MathHelper.cos(this.yaw / 180.0F * 3.141593F) * MathHelper.cos(this.pitch / 180.0F * 3.141593F));
             float yOffset = 0.25F;
-            Item entityitem = new Item(this.level, this.x + (double)xOffset, this.y + (double)yOffset, this.z + (double)zOffset, new ItemInstance(ItemListener.dung));
+            ItemEntity entityitem = new ItemEntity(this.world, this.x + (double)xOffset, this.y + (double)yOffset, this.z + (double)zOffset, new ItemStack(ItemListener.dung));
             float velocityFactor = 0.05F;
-            entityitem.velocityX = (double)((MathHelper.sin(this.yaw / 180.0F * 3.141593F) * MathHelper.cos(this.pitch / 180.0F * 3.141593F)) * 10.0F * velocityFactor) + rand.nextFloat() * 0.2F - 0.1F;
-            entityitem.velocityY = (double)(-(MathHelper.cos(this.yaw / 180.0F * 3.141593F) * MathHelper.cos(this.pitch / 180.0F * 3.141593F)) * 10.0F * velocityFactor) + rand.nextFloat() * 0.2F - 0.1F;
-            entityitem.velocityZ = (double)((-MathHelper.cos(this.yaw / 180.0F * 3.141593F) * MathHelper.cos(this.pitch / 180.0F * 3.141593F)) * 10.0F * velocityFactor) + rand.nextFloat() * 0.2F - 0.1F;
+            entityitem.velocityX = (double)((MathHelper.sin(this.yaw / 180.0F * 3.141593F) * MathHelper.cos(this.pitch / 180.0F * 3.141593F)) * 10.0F * velocityFactor) + random.nextFloat() * 0.2F - 0.1F;
+            entityitem.velocityY = (double)(-(MathHelper.cos(this.yaw / 180.0F * 3.141593F) * MathHelper.cos(this.pitch / 180.0F * 3.141593F)) * 10.0F * velocityFactor) + random.nextFloat() * 0.2F - 0.1F;
+            entityitem.velocityZ = (double)((-MathHelper.cos(this.yaw / 180.0F * 3.141593F) * MathHelper.cos(this.pitch / 180.0F * 3.141593F)) * 10.0F * velocityFactor) + random.nextFloat() * 0.2F - 0.1F;
             entityitem.pickupDelay = 10;
-            this.level.spawnEntity(entityitem);
+            this.world.method_210(entityitem);
         }
-        this.level.playSound(this, "random.explode", 0.2F, 1.25F);
-        this.level.playSound(this, "mob.wolf.growl", this.getSoundVolume(), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+        this.world.playSound(this, "random.explode", 0.2F, 1.25F);
+        this.world.playSound(this, "mob.wolf.growl", this.method_915(), (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
     }
 }
