@@ -46,6 +46,8 @@ item.broad_head_arrowhead.name=Broad Head
 item.broad_head_arrow.name=Broad Head Arrow
 item.coal_dust.name=Coal Dust
 item.soul_filter.name=Soul Filter
+item.diamond_ingot.name=Diamond Ingot
+item.raw_diamond_ingot.name=Raw Diamond Ingot
 
 tile.anvil.name=Anvil
 tile.light_bulb_off.name=Light Block

@@ -15,9 +15,15 @@ Compatibility:
 Game mechanics:
 - Make wolf dumping rate depend on feeding
 - Feature to stop wolves from dumping
+- Make stoked fire set entities on fire
 
-Configurable content:
+Configurable content (Move some content to separate add-on):
 - Animated saw
 - Chisel tool and related content
 - Creeper oyster shearing
-- Diamond ingots
+- Diamond ingots (Done)
+
+Notation changes:
+- Completely get rid of Hungarian notation
+- Switch all methods to camel casing
+- Remove "fc" prefix from textures

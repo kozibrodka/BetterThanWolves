@@ -67,7 +67,8 @@ public class ItemListener {
         broadHeadArrow = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "broadHeadArrow")).setTranslationKey(MOD_ID, "broad_head_arrow");
         coalDust = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "coalDust")).setTranslationKey(MOD_ID, "coal_dust");
         soulFilter = (TemplateItem) new SoulFilter(Identifier.of(MOD_ID, "soul_filter")).setTranslationKey(MOD_ID, "soul_filter");
-
+        diamondIngot = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "diamond_ingot")).setTranslationKey(MOD_ID, "diamond_ingot");
+        rawDiamondIngot = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "raw_diamond_ingot")).setTranslationKey(MOD_ID, "raw_diamond_ingot");
         //TODO: ADDON IDEA: Refined Steel Minecarts - they would be X times faster than normal ones, great way to give more purpose for rail usage.
     }
 
@@ -118,4 +119,6 @@ public class ItemListener {
     public static TemplateItem broadHeadArrow;
     public static TemplateItem coalDust;
     public static TemplateItem soulFilter;
+    public static TemplateItem diamondIngot;
+    public static TemplateItem rawDiamondIngot;
 }
