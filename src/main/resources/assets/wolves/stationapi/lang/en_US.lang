@@ -46,8 +46,6 @@ item.wolves.broad_head_arrowhead.name=Broad Head
 item.wolves.broad_head_arrow.name=Broad Head Arrow
 item.wolves.coal_dust.name=Coal Dust
 item.wolves.soul_filter.name=Soul Filter
-item.wolves.diamond_ingot.name=Diamond Ingot
-item.wolves.raw_diamond_ingot.name=Raw Diamond Ingot
 item.wolves.nothing.name=Nothing
 
 tile.wolves.anvil.name=Anvil

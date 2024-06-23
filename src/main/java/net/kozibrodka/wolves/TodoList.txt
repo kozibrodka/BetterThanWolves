@@ -1,5 +1,5 @@
 Station API and mappings:
-- Update to the newest Station API version (Done=
+- Update to the newest Station API version (Done)
 - Move to BINY-Mappings (Done)
 
 API improvements:
@@ -21,7 +21,7 @@ Configurable content (Move some content to separate add-on):
 - Animated saw
 - Chisel tool and related content
 - Creeper oyster shearing
-- Diamond ingots (Done)
+- Diamond ingots (Done) (Moved)
 
 Notation changes:
 - Completely get rid of Hungarian notation

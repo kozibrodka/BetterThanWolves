@@ -1,7 +1,6 @@
 package net.kozibrodka.wolves.events;
 
 import net.kozibrodka.wolves.recipe.*;
-import net.kozibrodka.wolves.utils.RecipeRemover;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.minecraft.block.Block;
 import net.minecraft.block.WoolBlock;
@@ -28,16 +27,13 @@ public class RecipeListener {
     public static void addAllModRecipes(RecipeRegisterEvent event) {
         Identifier type = event.recipeId;
         if (type == RecipeRegisterEvent.Vanilla.CRAFTING_SHAPED.type()) {
-            removeVanillaRecipes();
             addBlockRecipes();
             addItemRecipes();
             addAlternateVanillaRecipes();
-            addToolAndArmourRecipes();
         }
         if (type == RecipeRegisterEvent.Vanilla.CRAFTING_SHAPELESS.type()) {
             addDyeRecipes();
             addConversionRecipes();
-            addMetallurgyRecipes();
         }
         if (type == RecipeRegisterEvent.Vanilla.SMELTING.type()) AddSmeltingRecipes();
         // TODO: Add custom recipe types to the event bus and check for them like vanilla recipes to avoid redundant recipe creation
@@ -69,19 +65,6 @@ public class RecipeListener {
 
     public static void addCrucibleRecipe(ItemStack output, ItemStack[] inputs) {
         CrucibleCraftingManager.getInstance().addRecipe(output, inputs);
-    }
-
-    private static void removeVanillaRecipes() {
-        RecipeRemover.removeRecipe(Item.DIAMOND_PICKAXE);
-        RecipeRemover.removeRecipe(Item.DIAMOND_AXE);
-        RecipeRemover.removeRecipe(Item.DIAMOND_HOE);
-        RecipeRemover.removeRecipe(Item.DIAMOND_SHOVEL);
-        RecipeRemover.removeRecipe(Item.DIAMOND_SWORD);
-
-        RecipeRemover.removeRecipe(Item.DIAMOND_HELMET);
-        RecipeRemover.removeRecipe(Item.DIAMOND_CHESTPLATE);
-        RecipeRemover.removeRecipe(Item.DIAMOND_LEGGINGS);
-        RecipeRemover.removeRecipe(Item.DIAMOND_BOOTS);
     }
 
     private static void addBlockRecipes() {
@@ -165,32 +148,12 @@ public class RecipeListener {
         CraftingRegistry.addShapedRecipe(new ItemStack(Block.TORCH, 4), "#", "X", Character.valueOf('#'), ItemListener.netherCoal, Character.valueOf('X'), Item.STICK);
     }
 
-    private static void addToolAndArmourRecipes() {
-        // Tools
-        CraftingRegistry.addShapedRecipe(new ItemStack(Item.DIAMOND_PICKAXE, 1), "###", " X ", " X ", '#', ItemListener.diamondIngot, 'X', Item.STICK);
-        CraftingRegistry.addShapedRecipe(new ItemStack(Item.DIAMOND_AXE, 1), "## ", "#X ", " X ", '#', ItemListener.diamondIngot, 'X', Item.STICK);
-        CraftingRegistry.addShapedRecipe(new ItemStack(Item.DIAMOND_HOE, 1), "## ", " X ", " X ", '#', ItemListener.diamondIngot, 'X', Item.STICK);
-        CraftingRegistry.addShapedRecipe(new ItemStack(Item.DIAMOND_HOE, 1), " ##", " X ", " X ", '#', ItemListener.diamondIngot, 'X', Item.STICK);
-        CraftingRegistry.addShapedRecipe(new ItemStack(Item.DIAMOND_SHOVEL, 1), "#", "X", "X", '#', ItemListener.diamondIngot, 'X', Item.STICK);
-        CraftingRegistry.addShapedRecipe(new ItemStack(Item.DIAMOND_SWORD, 1), "#", "#", "X", '#', ItemListener.diamondIngot, 'X', Item.STICK);
-
-        // Armour
-        CraftingRegistry.addShapedRecipe(new ItemStack(Item.DIAMOND_HELMET, 1), "###", "# #", '#', ItemListener.diamondIngot);
-        CraftingRegistry.addShapedRecipe(new ItemStack(Item.DIAMOND_CHESTPLATE, 1), "# #", "###", "###", '#', ItemListener.diamondIngot);
-        CraftingRegistry.addShapedRecipe(new ItemStack(Item.DIAMOND_LEGGINGS, 1), "###", "# #", "# #", '#', ItemListener.diamondIngot);
-        CraftingRegistry.addShapedRecipe(new ItemStack(Item.DIAMOND_BOOTS, 1), "# #", "# #", '#', ItemListener.diamondIngot);
-    }
-
     private static void addConversionRecipes() {
         CraftingRegistry.addShapelessRecipe(new ItemStack(Block.PLANKS), new ItemStack(BlockListener.omniSlab.id, 1, 1), new ItemStack(BlockListener.omniSlab.id, 1, 1));
         CraftingRegistry.addShapelessRecipe(new ItemStack(Block.STONE), new ItemStack(BlockListener.omniSlab.id, 1, 0), new ItemStack(BlockListener.omniSlab.id, 1, 0));
         CraftingRegistry.addShapelessRecipe(new ItemStack(BlockListener.omniSlab.id, 1, 1), new ItemStack(BlockListener.moulding.id,1,0), new ItemStack(BlockListener.moulding.id,1,0));
         CraftingRegistry.addShapelessRecipe(new ItemStack(BlockListener.moulding.id,1,0), new ItemStack(BlockListener.corner.id,1,0), new ItemStack(BlockListener.corner.id,1,0));
         CraftingRegistry.addShapelessRecipe(new ItemStack(Item.STRING), new ItemStack(ItemListener.hempFibers), new ItemStack(ItemListener.hempFibers));
-    }
-
-    private static void addMetallurgyRecipes() {
-        CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.rawDiamondIngot), new ItemStack(ItemListener.coalDust), new ItemStack(Item.DIAMOND), new ItemStack(Item.IRON_INGOT));
     }
 
     private static void AddSmeltingRecipes() {
@@ -323,9 +286,6 @@ public class RecipeListener {
         addStokedCauldronRecipe(new ItemStack(ItemListener.tallow, 1), new ItemStack[] {
                 new ItemStack(ItemListener.wolfRaw, 1)
         });
-        addCauldronRecipe(new ItemStack(ItemListener.diamondIngot, 1), new ItemStack[] {
-                new ItemStack(ItemListener.rawDiamondIngot, 1), new ItemStack(Item.GUNPOWDER)
-        });
     }
 
     private static void addMillingRecipes() {
@@ -412,17 +372,6 @@ public class RecipeListener {
         addCrucibleRecipe(new ItemStack(Item.GOLD_INGOT, 2), new ItemStack[] { new ItemStack(Item.GOLDEN_HOE, 1, -1) });
         addCrucibleRecipe(new ItemStack(Item.GOLD_INGOT, 1), new ItemStack[] { new ItemStack(Item.GOLDEN_SHOVEL, 1, -1) });
         addCrucibleRecipe(new ItemStack(Item.GOLD_INGOT, 1), new ItemStack[] { new ItemStack(Block.POWERED_RAIL) });
-
-        // Recycling (diamond)
-        addCrucibleRecipe(new ItemStack(ItemListener.diamondIngot, 8), new ItemStack[] { new ItemStack(Item.DIAMOND_CHESTPLATE, 1, -1) });
-        addCrucibleRecipe(new ItemStack(ItemListener.diamondIngot, 7), new ItemStack[] { new ItemStack(Item.DIAMOND_LEGGINGS, 1, -1) });
-        addCrucibleRecipe(new ItemStack(ItemListener.diamondIngot, 5), new ItemStack[] { new ItemStack(Item.DIAMOND_HELMET, 1, -1) });
-        addCrucibleRecipe(new ItemStack(ItemListener.diamondIngot, 4), new ItemStack[] { new ItemStack(Item.DIAMOND_BOOTS, 1, -1) });
-        addCrucibleRecipe(new ItemStack(ItemListener.diamondIngot, 3), new ItemStack[] { new ItemStack(Item.DIAMOND_PICKAXE, 1, -1) });
-        addCrucibleRecipe(new ItemStack(ItemListener.diamondIngot, 3), new ItemStack[] { new ItemStack(Item.DIAMOND_AXE, 1, -1) });
-        addCrucibleRecipe(new ItemStack(ItemListener.diamondIngot, 2), new ItemStack[] { new ItemStack(Item.DIAMOND_SWORD, 1, -1) });
-        addCrucibleRecipe(new ItemStack(ItemListener.diamondIngot, 2), new ItemStack[] { new ItemStack(Item.DIAMOND_HOE, 1, -1) });
-        addCrucibleRecipe(new ItemStack(ItemListener.diamondIngot, 1), new ItemStack[] { new ItemStack(Item.DIAMOND_SHOVEL, 1, -1) });
 
         // Recycling (steel)
         addCrucibleRecipe(new ItemStack(ItemListener.steel, 8), new ItemStack[] { new ItemStack(ItemListener.chestPlateSteel, 1, -1) });

@@ -119,8 +119,6 @@ public class TextureListener {
 
         ItemListener.bucketCement.setTexture(Identifier.of(MOD_ID, "item/bucketCement"));
         ItemListener.soulFilter.setTexture(Identifier.of(MOD_ID, "item/soulFilter"));
-        ItemListener.diamondIngot.setTexture(Identifier.of(MOD_ID, "item/diamondIngot"));
-        ItemListener.rawDiamondIngot.setTexture(Identifier.of(MOD_ID, "item/rawDiamondIngot"));
         ItemListener.nothing.setTexture(Identifier.of(MOD_ID, "item/nothing"));
 
         BlockListener.detectorRailObsidian.asItem().setTextureId(registerBlockTexture("block/fcRailDetector_obsidian"));
