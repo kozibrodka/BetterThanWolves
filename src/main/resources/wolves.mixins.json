@@ -22,6 +22,8 @@
     "ItemSeedsMixin",
     "LevelAccessor",
     "OakTreeMixin",
+    "PlantBlockMixin",
+    "SeedsMixin",
     "ServerPlayerAccessor",
     "SpruceTreeMixin",
     "WolfAccessor",

@@ -13,13 +13,13 @@ Compatibility:
 - Less intrusive tree mixin
 
 Game mechanics:
-- Make wolf dumping rate depend on feeding
-- Feature to stop wolves from dumping
+- Make wolf dumping rate depend on feeding (Done)
+- Feature to stop wolves from dumping (Done, they will not dump without excessive feeding)
 - Make stoked fire set entities on fire
 
 Configurable content (Move some content to separate add-on):
 - Animated saw
-- Chisel tool and related content
+- Chisel tool and related content (Done) (Moved)
 - Creeper oyster shearing
 - Diamond ingots (Done) (Moved)
 
