@@ -12,7 +12,7 @@ import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.recipe.SawingRecipeRegistry;
 import net.kozibrodka.wolves.utils.*;
 import net.minecraft.block.Block;
-import net.minecraft.block.Material;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -74,7 +74,7 @@ public class SawBlock extends TemplateBlock
     public void onPlaced(World world, int i, int j, int k)
     {
         super.onPlaced(world, i, j, k);
-        world.method_216(i, j, k, id, getTickRate());
+        world.scheduleBlockUpdate(i, j, k, id, getTickRate());
     }
 
     public boolean isOpaque()
@@ -150,10 +150,10 @@ public class SawBlock extends TemplateBlock
     {
         if(iid == BlockListener.axleBlock.id || iid == BlockListener.handCrank.id)
         {
-            world.method_216(i, j, k, id, getTickRate());
+            world.scheduleBlockUpdate(i, j, k, id, getTickRate());
         } else
         {
-            world.method_216(i, j, k, id, getTickRate() + world.field_214.nextInt(6));
+            world.scheduleBlockUpdate(i, j, k, id, getTickRate() + world.random.nextInt(6));
         }
     }
 
@@ -171,7 +171,7 @@ public class SawBlock extends TemplateBlock
             SetBlockOn(world, i, j, k, bReceivingPower);
             if(bReceivingPower)
             {
-                world.method_216(i, j, k, id, getTickRate() + random.nextInt(6));
+                world.scheduleBlockUpdate(i, j, k, id, getTickRate() + random.nextInt(6));
             }
         } else
         if(bOn)
@@ -231,7 +231,7 @@ public class SawBlock extends TemplateBlock
             }
             sawBox = sawBox.offset(i, j, k);
             List collisionList = null;
-            collisionList = world.method_175(LivingEntity.class, sawBox);
+            collisionList = world.collectEntitiesByClass(LivingEntity.class, sawBox);
             if(collisionList != null && collisionList.size() > 0)
             {
                 for(int iTempListIndex = 0; iTempListIndex < collisionList.size(); iTempListIndex++)
@@ -243,7 +243,7 @@ public class SawBlock extends TemplateBlock
                         if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
                             voicePacket(world, "random.explode", i, j, k, 0.2F, 1.25F);
                         }
-                        EmitBloodParticles(world, i, j, k, world.field_214);
+                        EmitBloodParticles(world, i, j, k, world.random);
                     }
                 }
 
@@ -260,7 +260,7 @@ public class SawBlock extends TemplateBlock
     {
         int iMetaData = world.getBlockMeta(i, j, k) & -8;
         iMetaData |= iFacing;
-        world.method_215(i, j, k, iMetaData);
+        world.setBlockMeta(i, j, k, iMetaData);
     }
 
     public boolean CanRotate(BlockView iBlockAccess, int i, int j, int k)
@@ -282,9 +282,9 @@ public class SawBlock extends TemplateBlock
         if(iNewFacing != iFacing)
         {
             SetFacing(world, i, j, k, iNewFacing);
-            world.method_202(i, j, k, i, j, k);
-            world.method_216(i, j, k, id, getTickRate());
-            ((LevelAccessor) world).invokeMethod_235(i, j, k, id);
+            world.setBlocksDirty(i, j, k, i, j, k);
+            world.scheduleBlockUpdate(i, j, k, id, getTickRate());
+            ((LevelAccessor) world).invokeBlockUpdate(i, j, k, id);
         }
         UnsortedUtils.DestroyHorizontallyAttachedAxles(world, i, j, k);
     }
@@ -301,8 +301,8 @@ public class SawBlock extends TemplateBlock
         {
             iMetaData |= 8;
         }
-        world.method_215(i, j, k, iMetaData);
-        world.method_243(i, j, k);
+        world.setBlockMeta(i, j, k, iMetaData);
+        world.blockUpdateEvent(i, j, k);
     }
 
     void EmitSawParticles(World world, int i, int j, int k, Random random)
@@ -383,7 +383,7 @@ public class SawBlock extends TemplateBlock
 
     @Environment(EnvType.SERVER)
     public void voicePacket(World world, String name, int x, int y, int z, float g, float h){
-        List list2 = world.field_200;
+        List list2 = world.players;
         if(list2.size() != 0) {
             for(int k = 0; k < list2.size(); k++)
             {
@@ -395,7 +395,7 @@ public class SawBlock extends TemplateBlock
 
     @Environment(EnvType.SERVER)
     public void particlePacket(World world, String name, double x, double y, double z){
-        List list2 = world.field_200;
+        List list2 = world.players;
         if(list2.size() != 0) {
             for(int k1 = 0; k1 < list2.size(); k1++)
             {
@@ -407,7 +407,7 @@ public class SawBlock extends TemplateBlock
 
     boolean AttemptToSawBlock(World world, int i, int j, int k, Random random, int iSawFacing)
     {
-        if(!world.method_234(i, j, k))
+        if(!world.isAir(i, j, k))
         {
             int iTargetid = world.getBlockId(i, j, k);
             boolean bSawedBlock = false;
@@ -449,12 +449,12 @@ public class SawBlock extends TemplateBlock
                     {
                         UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, BlockListener.companionCube.id, 1);
                         cubeBlock.SetHalfCubeState(world, i, j, k, true);
-                        world.method_202(i, j, k, i, j, k);
+                        world.setBlocksDirty(i, j, k, i, j, k);
                         bRemoveOriginalBlockIfSawed = false;
                     }
                     BlockPosition bloodPos = new BlockPosition(i, j, k);
                     bloodPos.AddFacingAsOffset(UnsortedUtils.getOppositeFacing(iSawFacing));
-                    EmitBloodParticles(world, bloodPos.i, bloodPos.j, bloodPos.k, world.field_214);
+                    EmitBloodParticles(world, bloodPos.i, bloodPos.j, bloodPos.k, world.random);
                     world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "mob.wolf.hurt", 5F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
                     if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
                         voicePacket(world, "mob.wolf.hurt", i, j, k, 5F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
@@ -482,7 +482,7 @@ public class SawBlock extends TemplateBlock
                 Material targetMaterial = targetBlock.material;
                 if(targetMaterial != Material.WOOD)
                 {
-                    if(targetMaterial.method_905())
+                    if(targetMaterial.isSolid())
                     {
                         return false;
                     }

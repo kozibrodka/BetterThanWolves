@@ -13,7 +13,7 @@ import net.kozibrodka.wolves.mixin.LevelAccessor;
 import net.kozibrodka.wolves.utils.RotatableBlock;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.Material;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -59,7 +59,7 @@ public class AnvilBlock extends TemplateBlock
             iFacing = UnsortedUtils.getOppositeFacing(iFacing);
         }
         SetFacing(world, i, j, k, iFacing);
-        world.method_216(i, j, k, this.id, this.getTickRate());
+        world.scheduleBlockUpdate(i, j, k, this.id, this.getTickRate());
     }
 
     public void onPlaced(World world, int i, int j, int k, LivingEntity entityLiving) {
@@ -99,7 +99,7 @@ public class AnvilBlock extends TemplateBlock
     }
 
     public void SetFacing(World world, int i, int j, int k, int iFacing) {
-        world.method_215(i, j, k, iFacing);
+        world.setBlockMeta(i, j, k, iFacing);
     }
 
     public boolean CanRotate(BlockView iBlockAccess, int i, int j, int l) {
@@ -115,9 +115,9 @@ public class AnvilBlock extends TemplateBlock
         int iNewFacing = UnsortedUtils.RotateFacingAroundJ(iFacing, bReverse);
         if(iNewFacing != iFacing) {
             SetFacing(world, i, j, k, iNewFacing);
-            world.method_202(i, j, k, i, j, k);
-            world.method_216(i, j, k, id, getTickRate());
-            ((LevelAccessor) world).invokeMethod_235(i, j, j, id);
+            world.setBlocksDirty(i, j, k, i, j, k);
+            world.scheduleBlockUpdate(i, j, k, id, getTickRate());
+            ((LevelAccessor) world).invokeBlockUpdate(i, j, j, id);
         }
     }
 
@@ -158,7 +158,7 @@ public class AnvilBlock extends TemplateBlock
     }
 
     public void neighborUpdate(World arg, int i, int j, int k, int l) {
-        arg.method_216(i, j, k, this.id, this.getTickRate());
+        arg.scheduleBlockUpdate(i, j, k, this.id, this.getTickRate());
     }
 
     public void onTick(World arg, int i, int j, int k, Random random) {
@@ -169,9 +169,9 @@ public class AnvilBlock extends TemplateBlock
         if (method_435(arg, i, j - 1, k) && j >= 0) {
             int facing = arg.getBlockMeta(i,j,k);
             byte var8 = 32;
-            if (!fallInstantly && arg.method_155(i - var8, j - var8, k - var8, i + var8, j + var8, k + var8)) {
+            if (!fallInstantly && arg.isRegionLoaded(i - var8, j - var8, k - var8, i + var8, j + var8, k + var8)) {
                 FallingAnvilEntity var9 = new FallingAnvilEntity(arg, (double)((float)i + 0.5F), (double)((float)j + 0.5F), (double)((float)k + 0.5F), this.id, facing);
-                arg.method_210(var9);
+                arg.spawnEntity(var9);
             } else {
                 arg.setBlock(i, j, k, 0);
 
@@ -180,7 +180,7 @@ public class AnvilBlock extends TemplateBlock
                 }
 
                 if (j > 0) {
-                    arg.method_154(i, j, k, this.id, facing);
+                    arg.setBlock(i, j, k, this.id, facing);
                 }
             }
         }

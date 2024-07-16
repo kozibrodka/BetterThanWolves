@@ -70,7 +70,7 @@ public class CrucibleBlockEntity extends BlockEntity implements Inventory {
         if(world.getBlockEntity(x, y, z) != this) {
             return false;
         } else {
-            return player.method_1347((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D) <= 64D;
+            return player.getSquaredDistance((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D) <= 64D;
         }
     }
 
@@ -114,7 +114,7 @@ public class CrucibleBlockEntity extends BlockEntity implements Inventory {
             if(!overStokedFire) {
                 overStokedFire = true;
                 ((CrucibleBlock)BlockListener.crucible).SetHasLava(world, x, y, z, true);
-                world.method_202(x, y, z, x, y, z);
+                world.setBlocksDirty(x, y, z, x, y, z);
             }
             if(areItemsInRegistry()) {
                 crucibleCookCounter += stokedFireFactor;
@@ -129,7 +129,7 @@ public class CrucibleBlockEntity extends BlockEntity implements Inventory {
             if(overStokedFire) {
                 overStokedFire = false;
                 ((CrucibleBlock)BlockListener.crucible).SetHasLava(world, x, y, z, false);
-                world.method_202(x, y, z, x, y, z);
+                world.setBlocksDirty(x, y, z, x, y, z);
             }
             crucibleCookCounter = 0;
         }

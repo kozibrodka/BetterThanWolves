@@ -11,7 +11,7 @@ public class FCEntityTestRenderer extends EntityRenderer
 
     public FCEntityTestRenderer()
     {
-        shadowOpacity = 0.0F;
+        field_2679 = 0.0F;
         modelWindMill = new WindMillModelTEST();
     }
 

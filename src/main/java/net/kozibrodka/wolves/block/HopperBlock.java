@@ -19,7 +19,7 @@ import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.block.entity.HopperBlockEntity;
 import net.kozibrodka.wolves.utils.*;
 import net.minecraft.block.Block;
-import net.minecraft.block.Material;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.render.block.BlockRenderManager;
@@ -90,7 +90,7 @@ public class HopperBlock extends TemplateBlockWithEntity
     public void onPlaced(World world, int i, int j, int k)
     {
         super.onPlaced(world, i, j, k);
-        world.method_216(i, j, k, id, getTickRate());
+        world.scheduleBlockUpdate(i, j, k, id, getTickRate());
     }
 
     public int getTexture(int iSide)
@@ -117,7 +117,7 @@ public class HopperBlock extends TemplateBlockWithEntity
         boolean bReceivingPower = IsInputtingMechanicalPower(world, i, j, k);
         if(IsBlockOn(world, i, j, k) != bReceivingPower)
         {
-            world.method_216(i, j, k, id, getTickRate());
+            world.scheduleBlockUpdate(i, j, k, id, getTickRate());
         }
         ((HopperBlockEntity)world.getBlockEntity(i, j, k)).hopperEjectBlocked = false;
     }
@@ -167,7 +167,7 @@ public class HopperBlock extends TemplateBlockWithEntity
 
     @Environment(EnvType.SERVER)
     public void voicePacket(World world, String name, int x, int y, int z, float g, float h){
-        List list2 = world.field_200;
+        List list2 = world.players;
         if(list2.size() != 0) {
             for(int k = 0; k < list2.size(); k++)
             {
@@ -200,7 +200,7 @@ public class HopperBlock extends TemplateBlockWithEntity
         {
             fHopperHeight = 0.99F;
         }
-        collisionList = world.method_175(ItemEntity.class, Box.createCached((float)i, (float)j + fHopperHeight, (float)k, (float)(i + 1), (float)j + fHopperHeight + 0.05F, (float)(k + 1)));
+        collisionList = world.collectEntitiesByClass(ItemEntity.class, Box.createCached((float)i, (float)j + fHopperHeight, (float)k, (float)(i + 1), (float)j + fHopperHeight + 0.05F, (float)(k + 1)));
         if(collisionList != null && collisionList.size() > 0)
         {
             HopperBlockEntity tileEntityHopper = (HopperBlockEntity)world.getBlockEntity(i, j, k);
@@ -231,21 +231,21 @@ public class HopperBlock extends TemplateBlockWithEntity
                             }
                             if(iSandSwallowed > 0)
                             {
-                                world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.pop", 0.25F, ((world.field_214.nextFloat() - world.field_214.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                                world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.pop", 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                                 if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                                    voicePacket(world, "random.pop", i, j, k, 0.25F, ((world.field_214.nextFloat() - world.field_214.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                                    voicePacket(world, "random.pop", i, j, k, 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                                 }
                                 ItemStack flintItemInstance = new ItemStack(Item.FLINT.id, iSandSwallowed, 0);
                                 ItemEntity flintEntityitem = new ItemEntity(world, targetEntityItem.x, targetEntityItem.y, targetEntityItem.z, flintItemInstance);
                                 flintEntityitem.pickupDelay = 10;
-                                world.method_210(flintEntityitem);
+                                world.spawnEntity(flintEntityitem);
                             }
                         } else
                         if(InventoryHandler.addItemWithinSlotBounds(tileEntityHopper, targetEntityItem.stack, 0, 17))
                         {
-                            world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.pop", 0.25F, ((world.field_214.nextFloat() - world.field_214.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                            world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.pop", 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                             if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                                voicePacket(world, "random.pop", i, j, k, 0.25F, ((world.field_214.nextFloat() - world.field_214.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                                voicePacket(world, "random.pop", i, j, k, 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                             }
                             targetEntityItem.markDead();
                             bSwallowed = true;
@@ -265,13 +265,13 @@ public class HopperBlock extends TemplateBlockWithEntity
                 if(targetEntityItem.boundingBox.minY < fHopperFullBoxTop)
                 {
                     double offset = fHopperFullBoxTop - targetEntityItem.boundingBox.minY;
-                    targetEntityItem.method_1340(targetEntityItem.x, targetEntityItem.y + offset, targetEntityItem.z);
+                    targetEntityItem.setPos(targetEntityItem.x, targetEntityItem.y + offset, targetEntityItem.z);
                 }
             }
 //            if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER){
 //                renderPacket(world, tileEntityHopper.x, tileEntityHopper.y, tileEntityHopper.z, tileEntityHopper.GetFilterType(), InventoryHandler.getOccupiedSlotCountWithinBounds(tileEntityHopper, 0, 17));
 //            }
-//            world.method_243(i, j, k);
+//            world.blockUpdateEvent(i, j, k);
         }
         //TODO: Interaction with minecarts?
     }
@@ -331,7 +331,7 @@ public class HopperBlock extends TemplateBlockWithEntity
 
         SETTING_TILE = false;
         tileEntityBase.cancelRemoval();
-        world.method_157(i, j, k, tileEntityBase);
+        world.setBlockEntity(i, j, k, tileEntityBase);
     }
 
     public boolean IsHopperFull(World world, int i, int j, int k)
@@ -353,7 +353,7 @@ public class HopperBlock extends TemplateBlockWithEntity
 
         SETTING_TILE = false;
         tileEntityBase.cancelRemoval();
-        world.method_157(i, j, k, tileEntityBase);
+        world.setBlockEntity(i, j, k, tileEntityBase);
     }
 
     public boolean IsRedstoneOutputOn(World world, int i, int j, int k)
@@ -375,7 +375,7 @@ public class HopperBlock extends TemplateBlockWithEntity
 
         SETTING_TILE = false;
         tileEntityBase.cancelRemoval();
-        world.method_157(i, j, k, tileEntityBase);
+        world.setBlockEntity(i, j, k, tileEntityBase);
     }
 
     public boolean HasFilter(World world, int i, int j, int k)
@@ -397,7 +397,7 @@ public class HopperBlock extends TemplateBlockWithEntity
 
         SETTING_TILE = false;
         tileEntityBase.cancelRemoval();
-        world.method_157(i, j, k, tileEntityBase);
+        world.setBlockEntity(i, j, k, tileEntityBase);
     }
 
     void EmitHopperParticles(World world, int i, int j, int k, Random random)
@@ -594,7 +594,7 @@ public class HopperBlock extends TemplateBlockWithEntity
     public void affectBlock(World world, int i, int j, int k, BlockPosition tempTargetPos, int facing) {
         for (int l = 0; l < 2; l++) {
             tempTargetPos.AddFacingAsOffset(facing);
-            if (!world.method_234(tempTargetPos.i, tempTargetPos.j, tempTargetPos.k)) return;
+            if (!world.isAir(tempTargetPos.i, tempTargetPos.j, tempTargetPos.k)) return;
         }
         BlockEntity tileEntityHopper = world.getBlockEntity(i, j, k);
         if (tileEntityHopper == null) return;

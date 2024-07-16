@@ -25,7 +25,7 @@ public class MovingPlatformRenderer extends EntityRenderer
     public MovingPlatformRenderer()
     {
         localRenderBlocks = new BlockRenderManager();
-        shadowOpacity = 0.0F;
+        field_2679 = 0.0F;
     }
 
     public void render(Entity entity, double d, double d1, double d2,
@@ -41,28 +41,28 @@ public class MovingPlatformRenderer extends EntityRenderer
         int k = MathHelper.floor(entity.z);
         bindTexture("/terrain.png");
         Block block = BlockListener.platform;
-        List list = entity.world.method_175(MovingPlatformEntity.class, Box.createCached(entity.x - 1.0D, entity.y - 0.10000000149011612D, entity.z - 0.10000000149011612D, entity.x - 0.89999997615814209D, entity.y + 0.10000000149011612D, entity.z + 0.10000000149011612D));
+        List list = entity.world.collectEntitiesByClass(MovingPlatformEntity.class, Box.createCached(entity.x - 1.0D, entity.y - 0.10000000149011612D, entity.z - 0.10000000149011612D, entity.x - 0.89999997615814209D, entity.y + 0.10000000149011612D, entity.z + 0.10000000149011612D));
         if(list == null || list.size() <= 0)
         {
             block.setBoundingBox(0.0001F, 0.0625F, 0.0001F, 0.0625F, 0.9375F, 0.9999F);
 //            this.localRenderBlocks.method_53(block, world, i, j, k);
             CustomBlockRendering.RenderMovingBlock(localRenderBlocks, block, world, i, j, k);
         }
-        list = entity.world.method_175(MovingPlatformEntity.class, Box.createCached(entity.x - 0.10000000149011612D, entity.y - 0.10000000149011612D, entity.z + 0.89999997615814209D, entity.x + 0.10000000149011612D, entity.y + 0.10000000149011612D, entity.z + 1.0D));
+        list = entity.world.collectEntitiesByClass(MovingPlatformEntity.class, Box.createCached(entity.x - 0.10000000149011612D, entity.y - 0.10000000149011612D, entity.z + 0.89999997615814209D, entity.x + 0.10000000149011612D, entity.y + 0.10000000149011612D, entity.z + 1.0D));
         if(list == null || list.size() <= 0)
         {
             block.setBoundingBox(0.0F, 0.0625F, 0.9375F, 1.0F, 0.9375F, 1.0F);
 //            this.localRenderBlocks.method_53( block, world, i, j, k);
             CustomBlockRendering.RenderMovingBlock(localRenderBlocks, block, world, i, j, k);
         }
-        list = entity.world.method_175(MovingPlatformEntity.class, Box.createCached(entity.x + 0.89999997615814209D, entity.y - 0.10000000149011612D, entity.z - 0.10000000149011612D, entity.x + 1.0D, entity.y + 0.10000000149011612D, entity.z + 0.10000000149011612D));
+        list = entity.world.collectEntitiesByClass(MovingPlatformEntity.class, Box.createCached(entity.x + 0.89999997615814209D, entity.y - 0.10000000149011612D, entity.z - 0.10000000149011612D, entity.x + 1.0D, entity.y + 0.10000000149011612D, entity.z + 0.10000000149011612D));
         if(list == null || list.size() <= 0)
         {
             block.setBoundingBox(0.9375F, 0.0625F, 0.0001F, 0.9999F, 0.9375F, 0.9999F);
 //            this.localRenderBlocks.method_53(block, world, i, j, k);
             CustomBlockRendering.RenderMovingBlock(localRenderBlocks, block, world, i, j, k);
         }
-        list = entity.world.method_175(MovingPlatformEntity.class, Box.createCached(entity.x - 0.10000000149011612D, entity.y - 0.10000000149011612D, entity.z - 1.0D, entity.x + 0.10000000149011612D, entity.y + 0.10000000149011612D, entity.z - 0.89999997615814209D));
+        list = entity.world.collectEntitiesByClass(MovingPlatformEntity.class, Box.createCached(entity.x - 0.10000000149011612D, entity.y - 0.10000000149011612D, entity.z - 1.0D, entity.x + 0.10000000149011612D, entity.y + 0.10000000149011612D, entity.z - 0.89999997615814209D));
         if(list == null || list.size() <= 0)
         {
             block.setBoundingBox(0.0F, 0.0625F, 0.0F, 1.0F, 0.9375F, 0.0625F);

@@ -47,7 +47,7 @@ public class UnfiredPotteryBlockEntity extends BlockEntity
             {
                 if(m_iCookStateCount == 0)
                 {
-                    world.method_202(x, y, z, x, y, z);
+                    world.setBlocksDirty(x, y, z, x, y, z);
                 }
                 m_iCookStateCount += GetFireFactor();
                 if(m_iCookStateCount >= 130)
@@ -61,7 +61,7 @@ public class UnfiredPotteryBlockEntity extends BlockEntity
             if(m_iCookStateCount != 0)
             {
                 m_iCookStateCount = 0;
-                world.method_202(x, y, z, x, y, z);
+                world.setBlocksDirty(x, y, z, x, y, z);
             }
             m_iStateUpdateTickCount = 0;
         }

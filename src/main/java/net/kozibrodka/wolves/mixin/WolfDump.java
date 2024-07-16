@@ -26,7 +26,7 @@ public abstract class WolfDump extends AnimalEntity {
     private int foodCounter;
 
     @Shadow
-    public abstract boolean method_425(); // isTamed
+    public abstract boolean isTamed(); // isTamed
 
     public WolfDump(World arg) {
         super(arg);
@@ -36,12 +36,12 @@ public abstract class WolfDump extends AnimalEntity {
     private void tick(CallbackInfo callbackInfo) {
         if (foodCounter < 1) return;
         int dungBooster = 1;
-        if (world.method_252((int)x, (int)y, (int)z) < 5) dungBooster *= 2;
-        if (method_425()) dungBooster *= 4;
-        if (world.field_214.nextInt(9600) > dungBooster) return;
+        if (world.getBrightness((int)x, (int)y, (int)z) < 5) dungBooster *= 2;
+        if (isTamed()) dungBooster *= 4;
+        if (world.random.nextInt(9600) > dungBooster) return;
         foodCounter--;
         int turboDump = 1;
-        if (world.field_214.nextInt(1000) == 0) turboDump = world.field_214.nextInt(91) + 10;
+        if (world.random.nextInt(1000) == 0) turboDump = world.random.nextInt(91) + 10;
         for (; turboDump > 0; turboDump--) {
             float xOffset = -(-MathHelper.sin(this.yaw / 180.0F * 3.141593F) * MathHelper.cos(this.pitch / 180.0F * 3.141593F));
             float zOffset = -(MathHelper.cos(this.yaw / 180.0F * 3.141593F) * MathHelper.cos(this.pitch / 180.0F * 3.141593F));
@@ -52,16 +52,16 @@ public abstract class WolfDump extends AnimalEntity {
             itemEntity.velocityY = (double)(-(MathHelper.cos(this.yaw / 180.0F * 3.141593F) * MathHelper.cos(this.pitch / 180.0F * 3.141593F)) * 10.0F * velocityFactor) + random.nextFloat() * 0.2F - 0.1F;
             itemEntity.velocityZ = (double)((-MathHelper.cos(this.yaw / 180.0F * 3.141593F) * MathHelper.cos(this.pitch / 180.0F * 3.141593F)) * 10.0F * velocityFactor) + random.nextFloat() * 0.2F - 0.1F;
             itemEntity.pickupDelay = 10;
-            this.world.method_210(itemEntity);
+            this.world.spawnEntity(itemEntity);
         }
         this.world.playSound(this, "random.explode", 0.2F, 1.25F);
-        this.world.playSound(this, "mob.wolf.growl", this.method_915(), (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
+        this.world.playSound(this, "mob.wolf.growl", this.getSoundVolume(), (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
     }
 
-    @Inject(at = @At("HEAD"), method = "method_1323")
+    @Inject(at = @At("HEAD"), method = "interact")
     private void detectFeeding(PlayerEntity playerEntity, CallbackInfoReturnable<Boolean> cir) {
         ItemStack var2 = playerEntity.inventory.getSelectedItem();
-        if (this.method_425()) {
+        if (this.isTamed()) {
             if (var2 != null && Item.ITEMS[var2.itemId] instanceof FoodItem var3) {
                 if (var3.isMeat() && this.dataTracker.getInt(18) == 20) {
                     --var2.count;

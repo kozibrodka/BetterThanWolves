@@ -2,7 +2,7 @@ package net.kozibrodka.wolves.block;
 
 import net.kozibrodka.wolves.events.BlockListener;
 import net.minecraft.block.Block;
-import net.minecraft.block.Material;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.util.math.Box;
@@ -27,7 +27,7 @@ public class StokedFireBlockAlternativeCode extends TemplateBlock implements Blo
     @Override
     public void onTick(World arg, int i, int j, int k, Random random) {
         if (arg.getBlockMeta(i, j, k) >= 3) arg.setBlock(i, j, k, 0);
-        else arg.method_215(i, j, k, arg.getBlockMeta(i, j, k) + 1);
+        else arg.setBlockMeta(i, j, k, arg.getBlockMeta(i, j, k) + 1);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class StokedFireBlockAlternativeCode extends TemplateBlock implements Blo
         super.neighborUpdate(arg, i, j, k, l);
         if (arg.getBlockId(i, j - 1, k) != Block.FIRE.id)
         {
-            if (arg.method_234(i, j - 1, k) && arg.getBlockId(i, j - 2, k) == BlockListener.hibachi.id && (arg.getBlockMeta(i, j - 2, k) & 4) > 0) arg.setBlock(i, j - 1, k, Block.FIRE.id);
+            if (arg.isAir(i, j - 1, k) && arg.getBlockId(i, j - 2, k) == BlockListener.hibachi.id && (arg.getBlockMeta(i, j - 2, k) & 4) > 0) arg.setBlock(i, j - 1, k, Block.FIRE.id);
             else arg.setBlock(i, j, k, 0);
         }
     }

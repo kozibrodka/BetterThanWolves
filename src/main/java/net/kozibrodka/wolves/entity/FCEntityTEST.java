@@ -23,7 +23,7 @@ public class FCEntityTEST extends Entity implements EntitySpawnDataProvider {
 
     public FCEntityTEST(World world, double x, double y, double z, int type) {
         this(world);
-        method_1340(x, y, z);
+        setPos(x, y, z);
         setColour(type);
     }
 
@@ -42,7 +42,7 @@ public class FCEntityTEST extends Entity implements EntitySpawnDataProvider {
         return true;
     }
 
-    public boolean method_1323(PlayerEntity entityplayer){
+    public boolean interact(PlayerEntity entityplayer){
         ItemStack itemstack = entityplayer.inventory.getSelectedItem();
         if(itemstack !=null && itemstack.itemId == Item.DYE.id)
         {
@@ -72,17 +72,17 @@ public class FCEntityTEST extends Entity implements EntitySpawnDataProvider {
         return entity.boundingBox;
     }
 
-    public Box method_1381()
+    public Box getBoundingBox()
     {
         return boundingBox;
     }
 
-    public boolean method_1380()
+    public boolean isPushable()
     {
         return false;
     }
 
-    public boolean method_1356()
+    public boolean isCollidable()
     {
         return !dead;
     }

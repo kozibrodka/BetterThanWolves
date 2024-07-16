@@ -8,7 +8,7 @@ import net.kozibrodka.wolves.block.entity.UnfiredPotteryBlockEntity;
 import net.kozibrodka.wolves.utils.RotatableBlock;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.Material;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.util.math.Box;

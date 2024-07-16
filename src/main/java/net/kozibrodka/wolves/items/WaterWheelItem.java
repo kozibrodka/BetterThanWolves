@@ -35,7 +35,7 @@ public class WaterWheelItem extends TemplateItem
                 }
                 if(WaterWheelEntity.WaterWheelValidateAreaAroundBlock(world, i, j, k, bIAligned))
                 {
-                    world.method_210(new WaterWheelEntity(world, (float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F, bIAligned));
+                    world.spawnEntity(new WaterWheelEntity(world, (float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F, bIAligned));
 //                    world.spawnEntity(new FCEntityTEST(world, (float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F, rand.nextInt(16)));
                     ItemInstance.count--;
                     return true;

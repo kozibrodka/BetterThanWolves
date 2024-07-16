@@ -20,6 +20,6 @@ public abstract class BlockMushroomMixin extends PlantBlock {
 
     @Inject(method = "canGrow", at = @At(value = "RETURN", ordinal = 0), cancellable = true)
     private void injected(World arg, int i, int j, int k, CallbackInfoReturnable<Boolean> cir) {
-        cir.setReturnValue(arg.method_252(i, j, k) < 13 && (this.canPlantOnTop(arg.getBlockId(i, j - 1, k)) || UnsortedUtils.CanPlantGrowOnBlock(arg, i, j - 1, k, this)));
+        cir.setReturnValue(arg.getBrightness(i, j, k) < 13 && (this.canPlantOnTop(arg.getBlockId(i, j - 1, k)) || UnsortedUtils.CanPlantGrowOnBlock(arg, i, j - 1, k, this)));
     }
 }

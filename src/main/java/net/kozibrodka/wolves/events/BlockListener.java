@@ -4,9 +4,9 @@ import net.kozibrodka.wolves.block.*;
 import net.kozibrodka.wolves.materials.CementMaterial;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.minecraft.block.Block;
-import net.minecraft.block.Material;
+import net.minecraft.block.MapColor;
 import net.minecraft.block.PressurePlateActivationRule;
-import net.minecraft.class_259;
+import net.minecraft.block.material.Material;
 import net.modificationstation.stationapi.api.event.registry.BlockRegistryEvent;
 import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
 import net.modificationstation.stationapi.api.util.Identifier;
@@ -54,7 +54,7 @@ public class BlockListener {
         crucible = (TemplateBlockWithEntity) new CrucibleBlock(Identifier.of(MOD_ID, "crucible")).setTranslationKey(MOD_ID, "crucible");
         planter = (TemplateBlock) new PlanterBlock(Identifier.of(MOD_ID, "planter")).setTranslationKey(MOD_ID, "planter");
         vase = (TemplateBlockWithEntity) new VaseBlock(Identifier.of(MOD_ID, "vase")).setTranslationKey(MOD_ID, "vase");
-        detectorBlock = (TemplateBlock) new DetectorBlock(Identifier.of(MOD_ID, "detector_block"), Material.field_993).setTranslationKey(MOD_ID, "detector_block");;
+        detectorBlock = (TemplateBlock) new DetectorBlock(Identifier.of(MOD_ID, "detector_block"), Material.PISTON_BREAKABLE).setTranslationKey(MOD_ID, "detector_block");;
 
 
         //TODO: Omni slabs are really cursed and kinda bad. Also applies to Cornets/Moudlings - should be option in CFG to remove them
@@ -68,7 +68,7 @@ public class BlockListener {
         }
 
     }
-    public static final Material fcCementMaterial = new CementMaterial(class_259.field_2749);
+    public static final Material fcCementMaterial = new CementMaterial(MapColor.GRAY);
     public static TemplateBlock anvil;
     public static TemplateBlock lightBulbOff;
     public static TemplateBlock lightBulbOn;

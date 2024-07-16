@@ -32,16 +32,16 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
         iWaterWheelRockDirection = 1;
         fWaterWheelCurrentRotationSpeed = 0.0F;
         iFullUpdateTickCount = 0;
-        field_1593 = true;
+        blocksSameBlockSpawning = true;
         setBoundingBoxSpacing(4.8F, 4.8F);
-        eyeHeight = spacingY / 2.0F;
+        standingEyeHeight = height / 2.0F;
         waterTick = 0;
     }
 
     public WaterWheelEntity(World world, double x, double y, double z, boolean bJAligned)
     {
         this(world);
-        method_1340(x, y, z);
+        setPos(x, y, z);
         setAligned(bJAligned);
         AlignBoundingBoxWithAxis();
     }
@@ -93,17 +93,17 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
         return entity.boundingBox;
     }
 
-    public Box method_1381()
+    public Box getBoundingBox()
     {
         return boundingBox;
     }
 
-    public boolean method_1380()
+    public boolean isPushable()
     {
         return false;
     }
 
-    public boolean method_1356()
+    public boolean isCollidable()
     {
         return !dead;
     }
@@ -116,7 +116,7 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
         }
         iWaterWheelRockDirection = -iWaterWheelRockDirection;
         iWaterWheelTimeSinceHit = 10;
-        method_1336();
+        scheduleVelocityUpdate();
         iWaterWheelCurrentDamage += i * 5;
         if(iWaterWheelCurrentDamage > 40)
         {
@@ -125,7 +125,7 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
         return true;
     }
 
-    public void method_1312()
+    public void animateHurt()
     {
         iWaterWheelRockDirection = -iWaterWheelRockDirection;
         iWaterWheelTimeSinceHit = 10;
@@ -152,7 +152,7 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
     {
         if(!dead)
         {
-            method_1325(ItemListener.waterWheelItem.id, 1, 0.0F);
+            dropItem(ItemListener.waterWheelItem.id, 1, 0.0F);
             markDead();
         }
     }
@@ -235,7 +235,7 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
         }
     }
 
-    public float method_1366()
+    public float getShadowRadius()
     {
         return 0.0F;
     }
@@ -289,7 +289,7 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
 
     public static boolean IsValidBlockForWaterWheelToOccupy(World world, int i, int j, int k)
     {
-        if(!world.method_234(i, j, k))
+        if(!world.isAir(i, j, k))
         {
             int iid = world.getBlockId(i, j, k);
             if(iid != Block.FLOWING_WATER.id && iid != Block.WATER.id)
@@ -391,7 +391,7 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
             int i2 = getEffectiveFlowDecay(fluidBlock, iblockaccess, j1, k1, l1);
             if(i2 < 0)
             {
-                if(iblockaccess.method_1779(j1, k1, l1).method_907())
+                if(iblockaccess.getMaterial (j1, k1, l1).blocksMovement())
                 {
                     continue;
                 }
@@ -456,7 +456,7 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
 
     protected int getEffectiveFlowDecay(LiquidBlock fluidBlock, BlockView iblockaccess, int i, int j, int k)
     {
-        if(iblockaccess.method_1779(i, j, k) != fluidBlock.material)
+        if(iblockaccess.getMaterial (i, j, k) != fluidBlock.material)
         {
             return -1;
         }
@@ -468,7 +468,7 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
         return l;
     }
 
-    public boolean method_1323(PlayerEntity entityplayer)
+    public boolean interact(PlayerEntity entityplayer)
     {
         if(world.isRemote){
             System.out.println("KLIENT: " + getAligned());

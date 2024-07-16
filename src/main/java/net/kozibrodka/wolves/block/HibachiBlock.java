@@ -10,7 +10,7 @@ import net.kozibrodka.wolves.api.HibachiIgnitionRegistry;
 import net.kozibrodka.wolves.network.SoundPacket;
 import net.minecraft.block.Block;
 import net.minecraft.block.LiquidBlock;
-import net.minecraft.block.Material;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.network.packet.PacketHelper;
@@ -48,12 +48,12 @@ public class HibachiBlock extends TemplateBlock
 
     public void onPlaced(World world, int i, int j, int k)
     {
-        world.method_216(i, j, k, id, getTickRate());
+        world.scheduleBlockUpdate(i, j, k, id, getTickRate());
     }
 
     public void onTick(World world, int i, int j, int k, Random random)
     {
-        boolean bPowered = world.method_263(i, j, k) || world.method_263(i, j + 1, k);
+        boolean bPowered = world.canTransferPower(i, j, k) || world.canTransferPower(i, j + 1, k);
         if(bPowered)
         {
             if(!IsBBQLit(world, i, j, k))
@@ -64,9 +64,9 @@ public class HibachiBlock extends TemplateBlock
                 int iBlockAboveID = world.getBlockId(i, j + 1, k);
                 if(iBlockAboveID != Block.FIRE.id && iBlockAboveID != BlockListener.stokedFire.id && BBQShouldIgniteAbove(world, i, j, k))
                 {
-                    world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "fire.ignite", 1.0F, world.field_214.nextFloat() * 0.4F + 0.8F);
+                    world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "fire.ignite", 1.0F, world.random.nextFloat() * 0.4F + 0.8F);
                     if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                        voicePacket(world, "fire.ignite", i, j, k, 1.0F, world.field_214.nextFloat() * 0.4F + 0.8F);
+                        voicePacket(world, "fire.ignite", i, j, k, 1.0F, world.random.nextFloat() * 0.4F + 0.8F);
                     }
                     world.setBlock(i, j + 1, k, FIRE.id);
                 }
@@ -87,7 +87,7 @@ public class HibachiBlock extends TemplateBlock
 
     @Environment(EnvType.SERVER)
     public void voicePacket(World world, String name, int x, int y, int z, float g, float h){
-        List list2 = world.field_200;
+        List list2 = world.players;
         if(list2.size() != 0) {
             for(int k = 0; k < list2.size(); k++)
             {
@@ -102,7 +102,7 @@ public class HibachiBlock extends TemplateBlock
         boolean bShouldUpdate = false;
         if(l != FIRE.id)
         {
-            boolean bPowered = world.method_263(i, j, k) || world.method_263(i, j + 1, k);
+            boolean bPowered = world.canTransferPower(i, j, k) || world.canTransferPower(i, j + 1, k);
             if(IsBBQLit(world, i, j, k) != bPowered)
             {
                 bShouldUpdate = true;
@@ -118,7 +118,7 @@ public class HibachiBlock extends TemplateBlock
         }
         if(bShouldUpdate)
         {
-            world.method_216(i, j, k, id, getTickRate());
+            world.scheduleBlockUpdate(i, j, k, id, getTickRate());
         }
     }
 
@@ -131,13 +131,13 @@ public class HibachiBlock extends TemplateBlock
     private void SetBBQLitFlag(World world, int i, int j, int k)
     {
         int iMetaData = world.getBlockMeta(i, j, k);
-        world.method_215(i, j, k, iMetaData | 4);
+        world.setBlockMeta(i, j, k, iMetaData | 4);
     }
 
     private void ClearBBQLitFlag(World world, int i, int j, int k)
     {
         int iMetaData = world.getBlockMeta(i, j, k);
-        world.method_215(i, j, k, iMetaData & -5);
+        world.setBlockMeta(i, j, k, iMetaData & -5);
     }
 
     private boolean BBQShouldIgniteAbove(World world, int i, int j, int k)
@@ -149,7 +149,7 @@ public class HibachiBlock extends TemplateBlock
         {
             if(targetBlock != null)
             {
-                if(!(targetBlock instanceof LiquidBlock) && !(targetBlock instanceof CementBlock) && (world.method_1779(i, j + 1, k) == Material.WOOD || world.method_1779(i, j + 1, k) == Material.WOOL || world.method_1779(i, j + 1, k) == Material.field_998 || world.method_1779(i, j + 1, k) == Material.field_988 || world.method_1779(i, j + 1, k) == Material.field_993 || world.method_1779(i, j + 1, k) == Material.field_1000 || world.method_1779(i, j + 1, k) == Material.SOLID_ORGANIC || world.method_1779(i, j + 1, k) == Material.PUMPKIN || world.method_1779(i, j + 1, k) == Material.AIR))
+                if(!(targetBlock instanceof LiquidBlock) && !(targetBlock instanceof CementBlock) && (world.getMaterial(i, j + 1, k) == Material.WOOD || world.getMaterial(i, j + 1, k) == Material.WOOL || world.getMaterial(i, j + 1, k) == Material.SNOW_LAYER || world.getMaterial(i, j + 1, k) == Material.PLANT || world.getMaterial(i, j + 1, k) == Material.PISTON_BREAKABLE || world.getMaterial(i, j + 1, k) == Material.CACTUS || world.getMaterial(i, j + 1, k) == Material.SOLID_ORGANIC || world.getMaterial(i, j + 1, k) == Material.PUMPKIN || world.getMaterial(i, j + 1, k) == Material.AIR))
                 {
                     shouldIgnite = true;
                 }
@@ -168,9 +168,9 @@ public class HibachiBlock extends TemplateBlock
     private void BBQIgnite(World world, int i, int j, int k)
     {
         SetBBQLitFlag(world, i, j, k);
-        world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "fire.ignite", 1.0F, world.field_214.nextFloat() * 0.4F + 0.8F);
+        world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "fire.ignite", 1.0F, world.random.nextFloat() * 0.4F + 0.8F);
         if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-            voicePacket(world, "fire.ignite", i, j, k, 1.0F, world.field_214.nextFloat() * 0.4F + 0.8F);
+            voicePacket(world, "fire.ignite", i, j, k, 1.0F, world.random.nextFloat() * 0.4F + 0.8F);
         }
         int ignitedBlockID = HibachiIgnitionRegistry.getInstance().getIgnitedID(world.getBlockId(i, j + 1, k));
         if (ignitedBlockID != 0)
@@ -186,9 +186,9 @@ public class HibachiBlock extends TemplateBlock
     private void BBQExtinguish(World world, int i, int j, int k)
     {
         ClearBBQLitFlag(world, i, j, k);
-        world.playSound((float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F, "random.fizz", 0.5F, 2.6F + (world.field_214.nextFloat() - world.field_214.nextFloat()) * 0.8F);
+        world.playSound((float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F, "random.fizz", 0.5F, 2.6F + (world.random.nextFloat() - world.random.nextFloat()) * 0.8F);
         if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-            voicePacket(world, "random.fizz", i, j, k, 0.5F, 2.6F + (world.field_214.nextFloat() - world.field_214.nextFloat()) * 0.8F);
+            voicePacket(world, "random.fizz", i, j, k, 0.5F, 2.6F + (world.random.nextFloat() - world.random.nextFloat()) * 0.8F);
         }
         boolean isFireAbove = world.getBlockId(i, j + 1, k) == FIRE.id || world.getBlockId(i, j + 1, k) == BlockListener.stokedFire.id;
         if(isFireAbove)

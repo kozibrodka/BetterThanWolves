@@ -41,16 +41,16 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider
         fWindMillCurrentRotationSpeed = 0.0F;
         iCurrentBladeColoringIndex = 0;
         iFullUpdateTickCount = 0;
-        field_1593 = true;
+        blocksSameBlockSpawning = true;
         setBoundingBoxSpacing(12.8F, 12.8F);
-        eyeHeight = spacingY / 2.0F;
+        standingEyeHeight = height / 2.0F;
     }
 
     public WindMillEntity(World world, double x, double y, double z,
                           boolean bIAligned)
     {
         this(world);
-        method_1340(x, y, z);
+        setPos(x, y, z);
         setAligned(bIAligned);
         AlignBoundingBoxWithAxis();
     }
@@ -117,17 +117,18 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider
         return entity.boundingBox;
     }
 
-    public Box method_1381()
+    @Override
+    public Box getBoundingBox()
     {
         return boundingBox;
     }
 
-    public boolean method_1380()
+    public boolean isPushable()
     {
         return false;
     }
 
-    public boolean method_1356()
+    public boolean isCollidable()
     {
         return !dead;
     }
@@ -140,7 +141,7 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider
         }
         iWindMillRockDirection = -iWindMillRockDirection;
         iWindMillTimeSinceHit = 10;
-        method_1336();
+        scheduleVelocityUpdate();
         iWindMillCurrentDamage += i * 5;
         if(iWindMillCurrentDamage > 40)
         {
@@ -149,7 +150,7 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider
         return true;
     }
 
-    public void method_1312()
+    public void animateHurt()
     {
         iWindMillRockDirection = -iWindMillRockDirection;
         iWindMillTimeSinceHit = 10;
@@ -176,7 +177,7 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider
     {
         if(!dead)
         {
-            method_1325(ItemListener.windMillItem.id, 1, 0.0F);
+            dropItem(ItemListener.windMillItem.id, 1, 0.0F);
             markDead();
         }
     }
@@ -255,7 +256,7 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider
         }
     }
 
-    public float method_1366()
+    public float getShadowRadius()
     {
         return 0.0F;
     }
@@ -267,11 +268,11 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider
             return false;
         } else
         {
-            return entityplayer.method_1352(this) <= 256D;
+            return entityplayer.getSquaredDistance(this) <= 256D;
         }
     }
 
-    public boolean method_1323(PlayerEntity entityplayer)
+    public boolean interact(PlayerEntity entityplayer)
     {
         ItemStack ItemInstance = entityplayer.inventory.getSelectedItem();
         if(ItemInstance != null && (ItemInstance.itemId == Item.DYE.id || ItemInstance.itemId == ItemListener.dung.id))
@@ -347,7 +348,7 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider
 
     public static boolean IsValidBlockForWindMillToOccupy(World world, int i, int j, int k)
     {
-        return world.method_234(i, j, k);
+        return world.isAir(i, j, k);
     }
 
     private float ComputeRotation(int iCenterI, int iCenterJ, int iCenterK)
@@ -358,7 +359,7 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider
             fRotationAmount = -0.0675F;
             setOverpowerTimer(-1);
         } else
-        if(world.method_249(iCenterI, iCenterJ, iCenterK))
+        if(world.hasSkyLight(iCenterI, iCenterJ, iCenterK))
         {
             if(UnsortedUtils.IsBlockBeingPrecipitatedOn(world, iCenterI, 128, iCenterK))
             {

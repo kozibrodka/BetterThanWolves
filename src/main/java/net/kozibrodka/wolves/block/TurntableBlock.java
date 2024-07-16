@@ -6,7 +6,7 @@ import net.kozibrodka.wolves.utils.BlockPosition;
 import net.kozibrodka.wolves.utils.RotatableBlock;
 import net.kozibrodka.wolves.utils.MechanicalDevice;
 import net.minecraft.block.Block;
-import net.minecraft.block.Material;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -59,12 +59,12 @@ public class TurntableBlock extends TemplateBlockWithEntity
     public void onPlaced(World world, int i, int j, int k)
     {
         super.onPlaced(world, i, j, k);
-        world.method_216(i, j, k, BlockListener.turntable.id, getTickRate());
+        world.scheduleBlockUpdate(i, j, k, BlockListener.turntable.id, getTickRate());
     }
 
     public void neighborUpdate(World world, int i, int j, int k, int iid)
     {
-        world.method_216(i, j, k, id, getTickRate());
+        world.scheduleBlockUpdate(i, j, k, id, getTickRate());
     }
 
     public void onTick(World world, int i, int j, int k, Random random)
@@ -76,7 +76,7 @@ public class TurntableBlock extends TemplateBlockWithEntity
             EmitTurntableParticles(world, i, j, k, random);
             SetBlockMechanicalOn(world, i, j, k, bReceivingMechanicalPower);
         }
-        boolean bReceivingRedstonePower = world.method_263(i, j, k);
+        boolean bReceivingRedstonePower = world.canTransferPower(i, j, k);
         boolean bRedstoneOn = IsBlockRedstoneOn(world, i, j, k);
         if(bRedstoneOn != bReceivingRedstonePower)
         {
@@ -120,8 +120,8 @@ public class TurntableBlock extends TemplateBlockWithEntity
     {
         TurntableBlockEntity tileEntityTurntable = (TurntableBlockEntity)world.getBlockEntity(i, j, k);
         tileEntityTurntable.switchSetting = click;
-        world.method_202(i, j, k, i, j, k);
-        world.method_243(i, j, k);
+        world.setBlocksDirty(i, j, k, i, j, k);
+        world.blockUpdateEvent(i, j, k);
         return true;
     }
 

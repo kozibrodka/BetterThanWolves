@@ -192,7 +192,7 @@ public class CauldronBlockEntity extends BlockEntity
         if(world.getBlockEntity(x, y, z) != this) {
             return false;
         } else {
-            return entityPlayer.method_1347((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D) <= 64D;
+            return entityPlayer.getSquaredDistance((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D) <= 64D;
         }
     }
 
@@ -444,7 +444,7 @@ public class CauldronBlockEntity extends BlockEntity
         }
         InventoryHandler.clearInventoryContents(this);
         world.setBlock(x, y, z, 0);
-        world.method_187(null, x, y, z, fExplosionSize);
+        world.createExplosion(null, x, y, z, fExplosionSize);
     }
 
     static Class _mthclass$(String s)

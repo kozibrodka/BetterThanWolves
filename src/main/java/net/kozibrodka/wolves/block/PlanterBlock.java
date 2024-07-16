@@ -5,7 +5,7 @@ import net.kozibrodka.wolves.itemblocks.PlanterBlockItem;
 import net.kozibrodka.wolves.utils.RotatableBlock;
 import net.kozibrodka.wolves.utils.SoilTemplate;
 import net.minecraft.block.Block;
-import net.minecraft.block.Material;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
@@ -24,7 +24,7 @@ public class PlanterBlock extends TemplateBlock
 
     public PlanterBlock(Identifier iid)
     {
-        super(iid, Material.field_994);
+        super(iid, Material.GLASS);
         setHardness(0.6F);
         setSoundGroup(GLASS_SOUND_GROUP);
         setTickRandomly(true);
@@ -54,7 +54,7 @@ public class PlanterBlock extends TemplateBlock
     {
         int iOldGrowthState = GetGrowthState(world, i, j, k);
         int iNewGrowthState = 0;
-        if(world.method_234(i, j + 1, k) && world.method_255(i, j + 1, k) >= 8)
+        if(world.isAir(i, j + 1, k) && world.getLightLevel(i, j + 1, k) >= 8)
         {
             iNewGrowthState = iOldGrowthState;
             if(random.nextInt(50) == 0 && ++iNewGrowthState > 1)
@@ -126,8 +126,8 @@ public class PlanterBlock extends TemplateBlock
         {
             iMetaData |= 1;
         }
-        world.method_215(i, j, k, iMetaData);
-        world.method_243(i, j, k);
+        world.setBlockMeta(i, j, k, iMetaData);
+        world.blockUpdateEvent(i, j, k);
     }
 
     public int GetGrowthState(BlockView iBlockAccess, int i, int j, int k)
@@ -140,8 +140,8 @@ public class PlanterBlock extends TemplateBlock
     {
         int iMetaData = world.getBlockMeta(i, j, k) & -7;
         iMetaData |= (iGrowthState & 3) << 1;
-        world.method_215(i, j, k, iMetaData);
-        world.method_243(i, j, k);
+        world.setBlockMeta(i, j, k, iMetaData);
+        world.blockUpdateEvent(i, j, k);
     }
 
     public static final float m_fPlanterWidth = 0.75F;

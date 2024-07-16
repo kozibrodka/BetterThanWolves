@@ -8,7 +8,7 @@ import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.utils.BlockPosition;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
-import net.minecraft.block.Material;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -33,7 +33,7 @@ public class DetectorBlock extends TemplateBlock {
     @Override
     public void neighborUpdate(World level, int x, int y, int z, int id) {
         if (isObstructed(level, x, y, z)) activateDetector(level, x, y, z);
-        else level.method_216(x, y, z, this.id, getTickRate());
+        else level.scheduleBlockUpdate(x, y, z, this.id, getTickRate());
     }
 
     @Override
@@ -79,7 +79,7 @@ public class DetectorBlock extends TemplateBlock {
         }
         BlockPosition tempPos = new BlockPosition(x, y, z);
         tempPos.AddFacingAsOffset(getFacing(level, x, y, z));
-        List list = level.method_175(Entity.class, Box.createCached(tempPos.i, tempPos.j, tempPos.k, 1 + tempPos.i, 1 + tempPos.j, 1 + tempPos.k));
+        List list = level.collectEntitiesByClass(Entity.class, Box.createCached(tempPos.i, tempPos.j, tempPos.k, 1 + tempPos.i, 1 + tempPos.j, 1 + tempPos.k));
         if (list == null) {
             deactivateDetector(level, x, y, z);
             return;
@@ -97,17 +97,17 @@ public class DetectorBlock extends TemplateBlock {
     }
 
     private boolean isDetectingRain(World level, int x, int y, int z) {
-        if (!level.method_270()) return false;
-        if (!level.method_249(x, y, z)) return false;
-        if (level.method_228(x, z) > y) return false;
-        Biome biomeGenBase = level.method_1781().method_1787(x, z);
+        if (!level.isRaining()) return false;
+        if (!level.hasSkyLight(x, y, z)) return false;
+        if (level.getTopSolidBlockY(x, z) > y) return false;
+        Biome biomeGenBase = level.method_1781().getBiome(x, z);
         if(biomeGenBase.canSnow()) return true;
         return biomeGenBase.canRain();
     }
 
     private void activateDetector(World level, int x, int y, int z) {
         if (isBlockOn(level, x, y, z)) {
-            level.method_216(x, y, z, BlockListener.detectorBlock.id, getTickRate());
+            level.scheduleBlockUpdate(x, y, z, BlockListener.detectorBlock.id, getTickRate());
             return;
         }
         level.playSound((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, "random.click", 0.75F, 2.0F);
@@ -116,14 +116,14 @@ public class DetectorBlock extends TemplateBlock {
         }
         int metadata = level.getBlockMeta(x, y, z);
         metadata++;
-        level.method_201(x, y, z, this.id, metadata);
-        level.method_244(x, y, z, BlockListener.detectorBlock.id);
-        level.method_216(x, y, z, BlockListener.detectorBlock.id, getTickRate());
+        level.setBlock(x, y, z, this.id, metadata);
+        level.notifyNeighbors(x, y, z, BlockListener.detectorBlock.id);
+        level.scheduleBlockUpdate(x, y, z, BlockListener.detectorBlock.id, getTickRate());
     }
 
     @Environment(EnvType.SERVER)
     public void voicePacket(World world, String name, int x, int y, int z, float g, float h){
-        List list2 = world.field_200;
+        List list2 = world.players;
         if(list2.size() != 0) {
             for(int k = 0; k < list2.size(); k++)
             {
@@ -135,14 +135,14 @@ public class DetectorBlock extends TemplateBlock {
 
     private void deactivateDetector(World level, int x, int y, int z) {
         if (!isBlockOn(level, x, y, z)) {
-            level.method_216(x, y, z, BlockListener.detectorBlock.id, getTickRate());
+            level.scheduleBlockUpdate(x, y, z, BlockListener.detectorBlock.id, getTickRate());
             return;
         }
         int metadata = level.getBlockMeta(x, y, z);
         metadata--;
-        level.method_201(x, y, z, BlockListener.detectorBlock.id, metadata);
-        level.method_244(x, y, z, BlockListener.detectorBlock.id);
-        level.method_216(x, y, z, BlockListener.detectorBlock.id, getTickRate());
+        level.setBlock(x, y, z, BlockListener.detectorBlock.id, metadata);
+        level.notifyNeighbors(x, y, z, BlockListener.detectorBlock.id);
+        level.scheduleBlockUpdate(x, y, z, BlockListener.detectorBlock.id, getTickRate());
     }
 
     private boolean isObstructed(World level, int x, int y, int z) {
@@ -159,7 +159,7 @@ public class DetectorBlock extends TemplateBlock {
     @Override
     public void onPlaced(World level, int x, int y, int z) {
         super.onPlaced(level, x, y, z);
-        level.method_216(x, y, z, BlockListener.detectorBlock.id, getTickRate());
+        level.scheduleBlockUpdate(x, y, z, BlockListener.detectorBlock.id, getTickRate());
     }
 
     @Override
@@ -173,7 +173,7 @@ public class DetectorBlock extends TemplateBlock {
     }
 
     @Override
-    public boolean isEmittingRedstonePower(BlockView blockView, int x, int y, int z, int iHaveNoIdeaWhatThisDoes) {
+    public boolean isEmittingRedstonePowerInDirection(BlockView blockView, int x, int y, int z, int direction) {
         return isBlockOn(blockView, x, y, z);
     }
 
@@ -200,7 +200,7 @@ public class DetectorBlock extends TemplateBlock {
     public void setFacing(World level, int i, int j, int k, int iFacing) {
         int iMetaData = level.getBlockMeta(i, j, k);
         iMetaData = iMetaData & 1 | iFacing << 1;
-        level.method_215(i, j, k, iMetaData);
+        level.setBlockMeta(i, j, k, iMetaData);
     }
 
     public boolean isBlockOn(BlockView blockView, int i, int j, int k) {

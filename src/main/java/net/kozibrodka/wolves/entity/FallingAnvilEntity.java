@@ -28,10 +28,10 @@ public class FallingAnvilEntity extends Entity implements EntitySpawnDataProvide
         super(arg);
         this.tile = i;
         this.facing = face;
-        this.field_1593 = true;
+        this.blocksSameBlockSpawning = true;
         this.setBoundingBoxSpacing(0.98F, 0.98F);
-        this.eyeHeight = this.spacingY / 2.0F;
-        this.method_1340(d, e, f);
+        this.standingEyeHeight = this.height / 2.0F;
+        this.setPos(d, e, f);
         this.velocityX = 0.0D;
         this.velocityY = 0.0D;
         this.velocityZ = 0.0D;
@@ -52,7 +52,7 @@ public class FallingAnvilEntity extends Entity implements EntitySpawnDataProvide
     protected void initDataTracker() {
     }
 
-    public boolean method_1356() {
+    public boolean isCollidable() {
         return !this.dead;
     }
 
@@ -76,11 +76,11 @@ public class FallingAnvilEntity extends Entity implements EntitySpawnDataProvide
                 this.world.setBlock(var1, var2, var3, 0);
             }
 
-            if (this.field_1623) {
+            if (this.onGround) {
                 this.velocityX *= 0.699999988079071D;
                 this.velocityZ *= 0.699999988079071D;
                 this.velocityY *= -0.5D;
-                List list1 = world.method_175(LivingEntity.class, this.boundingBox);
+                List list1 = world.collectEntitiesByClass(LivingEntity.class, this.boundingBox);
                 if(!list1.isEmpty()) {
                     for (int k = 0; k < list1.size(); k++) {
                         LivingEntity playertohit = (LivingEntity) list1.get(k);
@@ -90,11 +90,11 @@ public class FallingAnvilEntity extends Entity implements EntitySpawnDataProvide
                 world.playSound(this.x, this.y, this.z, "wolves:anvil_land", 1.0F, 1.2F);
                 this.markDead();
                 if (!this.world.isRemote) {
-                    this.world.method_154(var1, var2, var3, this.tile, this.facing);
+                    this.world.setBlockWithoutNotifyingNeighbors(var1, var2, var3, this.tile, this.facing);
                 }
             } else if (this.field_848 > 100 && !this.world.isRemote) { //TODO: destroy after 100 ticks??
-                this.method_1339(this.tile, 1);
-                List list1 = world.method_175(LivingEntity.class, this.boundingBox);
+                this.dropItem(this.tile, 1);
+                List list1 = world.collectEntitiesByClass(LivingEntity.class, this.boundingBox);
                 if(!list1.isEmpty()) {
                     for (int k = 0; k < list1.size(); k++) {
                         LivingEntity playertohit = (LivingEntity) list1.get(k);
@@ -104,7 +104,7 @@ public class FallingAnvilEntity extends Entity implements EntitySpawnDataProvide
                 world.playSound(this.x, this.y, this.z, "wolves:anvil_land", 1.0F, 1.2F);
                 this.markDead();
             }
-            world.method_243(var1, var2, var3);
+            world.blockUpdateEvent(var1, var2, var3);
         }
     }
 
@@ -119,7 +119,7 @@ public class FallingAnvilEntity extends Entity implements EntitySpawnDataProvide
     }
 
     @Environment(EnvType.CLIENT)
-    public float method_1366() {
+    public float getShadowRadius() {
         return 0.0F;
     }
 

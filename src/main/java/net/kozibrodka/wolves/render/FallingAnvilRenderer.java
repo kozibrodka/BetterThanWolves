@@ -16,7 +16,7 @@ public class FallingAnvilRenderer extends EntityRenderer {
     private BlockRenderManager tileRenderer = new BlockRenderManager();
 
     public FallingAnvilRenderer() {
-        this.shadowOpacity = 0.5F;
+        this.field_2679 = 0.5F;
     }
 
     @Override

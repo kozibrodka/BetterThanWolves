@@ -27,7 +27,7 @@ public class ItemSeedsMixin extends Item{
             return false;
         } else {
             int var8 = arg3.getBlockId(i, j, k);
-            if ((var8 == Block.FARMLAND.id || UnsortedUtils.CanPlantGrowOnBlock(arg3, i, j, k, null)) && arg3.method_234(i, j + 1, k)) {
+            if ((var8 == Block.FARMLAND.id || UnsortedUtils.CanPlantGrowOnBlock(arg3, i, j, k, null)) && arg3.isAir(i, j + 1, k)) {
                 arg3.setBlock(i, j + 1, k, this.cropBlockId);
                 --arg.count;
                 return true;

@@ -19,9 +19,9 @@ import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.block.entity.BlockDispenserBlockEntity;
 import net.kozibrodka.wolves.utils.*;
 import net.minecraft.block.Block;
-import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.DispenserBlockEntity;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.*;
 import net.minecraft.entity.passive.ChickenEntity;
@@ -110,14 +110,14 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
     public void onPlaced(World world, int i, int j, int k, int iFacing)
     {
         SetFacing(world, i, j, k, UnsortedUtils.getOppositeFacing(iFacing));
-        world.method_216(i, j, k, BlockListener.blockDispenser.id, getTickRate());
+        world.scheduleBlockUpdate(i, j, k, BlockListener.blockDispenser.id, getTickRate());
     }
 
     public void onPlaced(World world, int i, int j, int k, LivingEntity entityLiving)
     {
         int iFacing = UnsortedUtils.ConvertPlacingEntityOrientationToBlockFacing(entityLiving);
         SetFacing(world, i, j, k, iFacing);
-        world.method_216(i, j, k, BlockListener.blockDispenser.id, getTickRate());
+        world.scheduleBlockUpdate(i, j, k, BlockListener.blockDispenser.id, getTickRate());
     }
 
     public boolean onUse(World world, int i, int j, int k, PlayerEntity entityplayer) {
@@ -142,7 +142,7 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
 
     public void neighborUpdate(World world, int i, int j, int k, int iChangedid)
     {
-        world.method_216(i, j, k, BlockListener.blockDispenser.id, getTickRate());
+        world.scheduleBlockUpdate(i, j, k, BlockListener.blockDispenser.id, getTickRate());
     }
 
     public void onBreak(World world, int i, int j, int k)
@@ -154,7 +154,7 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
     public void onTick(World world, int i, int j, int k, Random random)
     {
         ValidateBlockDispenser(world, i, j, k);
-        boolean bIsPowered = world.method_263(i, j, k) || world.method_263(i, j + 1, k);
+        boolean bIsPowered = world.canTransferPower(i, j, k) || world.canTransferPower(i, j + 1, k);
         if(bIsPowered)
         {
             if(!IsOn(world, i, j, k))
@@ -177,7 +177,7 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
     {
         int iMetaData = world.getBlockMeta(i, j, k) & 8;
         iMetaData |= iFacing;
-        world.method_215(i, j, k, iMetaData);
+        world.setBlockMeta(i, j, k, iMetaData);
     }
 
     public boolean CanRotate(BlockView iBlockAccess, int i, int j, int l)
@@ -197,7 +197,7 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
         if(iNewFacing != iFacing)
         {
             SetFacing(world, i, j, k, iNewFacing);
-            world.method_202(i, j, k, i, j, k);
+            world.setBlocksDirty(i, j, k, i, j, k);
         }
     }
 
@@ -211,17 +211,17 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
     {
         int iMetaData = world.getBlockMeta(i, j, k);
         iMetaData |= 8;
-        world.method_215(i, j, k, iMetaData);
-        world.method_243(i, j, k);
-        DispenseBlockOrItem(world, i, j, k, world.field_214);
+        world.setBlockMeta(i, j, k, iMetaData);
+        world.blockUpdateEvent(i, j, k);
+        DispenseBlockOrItem(world, i, j, k, world.random);
     }
 
     private void TurnOff(World world, int i, int j, int k)
     {
         int iMetaData = world.getBlockMeta(i, j, k);
         iMetaData &= -9;
-        world.method_215(i, j, k, iMetaData);
-        world.method_243(i, j, k);
+        world.setBlockMeta(i, j, k, iMetaData);
+        world.blockUpdateEvent(i, j, k);
         ConsumeFacingBlock(world, i, j, k);
     }
 
@@ -282,7 +282,7 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
             iTargetidDropped = Block.LEAVES.id;
         } else
         {
-            iTargetidDropped = targetBlock.getDroppedItemId(iTargetMetaData, world.field_214);
+            iTargetidDropped = targetBlock.getDroppedItemId(iTargetMetaData, world.random);
         }
         if(iTargetidDropped > 0)
         {
@@ -297,7 +297,7 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
     {
         ValidateBlockDispenser(world, i, j, k);
         List list = null;
-        list = world.method_175(Entity.class, Box.createCached(targeti, targetj, targetk, targeti + 1, targetj + 1, targetk + 1));
+        list = world.collectEntitiesByClass(Entity.class, Box.createCached(targeti, targetj, targetk, targeti + 1, targetj + 1, targetk + 1));
         if(list != null && list.size() > 0)
         {
             BlockDispenserBlockEntity tileEentityDispenser = (BlockDispenserBlockEntity)world.getBlockEntity(i, j, k);
@@ -311,10 +311,10 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
                 if(targetEntity instanceof MinecartEntity)
                 {
                     MinecartEntity targetMinecart = (MinecartEntity)targetEntity;
-                    int minecartType = targetMinecart.field_2275;
-                    if(targetMinecart.field_1594 != null)
+                    int minecartType = targetMinecart.type;
+                    if(targetMinecart.passenger != null)
                     {
-                        targetMinecart.field_1594.method_1376(targetMinecart);
+                        targetMinecart.passenger.setVehicle(targetMinecart);
                     }
                     targetMinecart.markDead();
                     switch(minecartType)
@@ -350,15 +350,15 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
                 if(targetEntity instanceof WolfEntity)
                 {
                     WolfEntity targetWolf = (WolfEntity)targetEntity;
-                    world.playSound(targetEntity, ((WolfAccessor) targetWolf).invokeGetHurtSound(), ((WolfAccessor) targetWolf).invokeGetSoundVolume(), (world.field_214.nextFloat() - world.field_214.nextFloat()) * 0.2F + 1.0F);
+                    world.playSound(targetEntity, ((WolfAccessor) targetWolf).invokeGetHurtSound(), ((WolfAccessor) targetWolf).invokeGetSoundVolume(), (world.random.nextFloat() - world.random.nextFloat()) * 0.2F + 1.0F);
                     if(net.fabricmc.loader.FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                        voicePacket(world, ((WolfAccessor) targetWolf).invokeGetHurtSound(), (int) targetEntity.x, (int) targetEntity.y, (int) targetEntity.z, ((WolfAccessor) targetWolf).invokeGetSoundVolume(), (world.field_214.nextFloat() - world.field_214.nextFloat()) * 0.2F + 1.0F);
+                        voicePacket(world, ((WolfAccessor) targetWolf).invokeGetHurtSound(), (int) targetEntity.x, (int) targetEntity.y, (int) targetEntity.z, ((WolfAccessor) targetWolf).invokeGetSoundVolume(), (world.random.nextFloat() - world.random.nextFloat()) * 0.2F + 1.0F);
                     }
                     targetEntity.markDead();
                     InventoryHandler.addSingleItemToInventory(tileEentityDispenser, BlockListener.companionCube.id, 0);
                     for(int tempCount = 0; tempCount < 2; tempCount++)
                     {
-                        SpitOutItem(world, i, j, k, new ItemStack(Item.STRING), world.field_214);
+                        SpitOutItem(world, i, j, k, new ItemStack(Item.STRING), world.random);
                     }
 
                     return true;
@@ -366,13 +366,13 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
                 if(targetEntity instanceof ChickenEntity)
                 {
                     ChickenEntity targetChicken = (ChickenEntity)targetEntity;
-                    world.playSound(targetEntity, ((ChickenAccessor) targetChicken).invokeGetHurtSound(), 1.0F, (world.field_214.nextFloat() - world.field_214.nextFloat()) * 0.2F + 1.0F);
+                    world.playSound(targetEntity, ((ChickenAccessor) targetChicken).invokeGetHurtSound(), 1.0F, (world.random.nextFloat() - world.random.nextFloat()) * 0.2F + 1.0F);
                     if(net.fabricmc.loader.FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                        voicePacket(world, ((ChickenAccessor) targetChicken).invokeGetHurtSound(), (int) targetEntity.x, (int) targetEntity.y, (int) targetEntity.z, 1.0F, (world.field_214.nextFloat() - world.field_214.nextFloat()) * 0.2F + 1.0F);
+                        voicePacket(world, ((ChickenAccessor) targetChicken).invokeGetHurtSound(), (int) targetEntity.x, (int) targetEntity.y, (int) targetEntity.z, 1.0F, (world.random.nextFloat() - world.random.nextFloat()) * 0.2F + 1.0F);
                     }
                     targetEntity.markDead();
                     InventoryHandler.addSingleItemToInventory(tileEentityDispenser, Item.EGG.id, 0);
-                    SpitOutItem(world, i, j, k, new ItemStack(Item.FEATHER), world.field_214);
+                    SpitOutItem(world, i, j, k, new ItemStack(Item.FEATHER), world.random);
                     return true;
                 }
             }
@@ -386,7 +386,7 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
         int iFacingDirection = GetFacing(world, i, j, k);
         BlockPosition targetPos = new BlockPosition(i, j, k);
         targetPos.AddFacingAsOffset(iFacingDirection);
-        if(!ConsumeEntityAtTargetLoc(world, i, j, k, targetPos.i, targetPos.j, targetPos.k) && !world.method_234(targetPos.i, targetPos.j, targetPos.k))
+        if(!ConsumeEntityAtTargetLoc(world, i, j, k, targetPos.i, targetPos.j, targetPos.k) && !world.isAir(targetPos.i, targetPos.j, targetPos.k))
         {
             int iTargetid = world.getBlockId(targetPos.i, targetPos.j, targetPos.k);
             Block targetBlock = Block.BLOCKS[iTargetid];
@@ -415,7 +415,7 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
 
     @Environment(EnvType.SERVER)
     public void renderPacket(World world, int x, int y, int z, int blockId, int metaId){
-        List list2 = world.field_200;
+        List list2 = world.players;
         if(list2.size() != 0) {
             for(int k = 0; k < list2.size(); k++)
             {
@@ -472,7 +472,7 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
         entityitem.velocityX += random.nextGaussian() * 0.0074999998323619366D * 6D;
         entityitem.velocityY += random.nextGaussian() * 0.0074999998323619366D * 6D;
         entityitem.velocityZ += random.nextGaussian() * 0.0074999998323619366D * 6D;
-        world.method_210(entityitem);
+        world.spawnEntity(entityitem);
     }
 
     private void DispenseBlockOrItem(World world, int i, int j, int k, Random random)
@@ -489,7 +489,7 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
         {
             shouldDispense = true;
         } else
-        if(ReplaceableBlockChecker.IsReplaceableBlock(world, targetPos.i, targetPos.j, targetPos.k) || !targetBlock.material.method_905())
+        if(ReplaceableBlockChecker.IsReplaceableBlock(world, targetPos.i, targetPos.j, targetPos.k) || !targetBlock.material.isSolid())
         {
             shouldDispense = true;
         }
@@ -535,8 +535,8 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
                 if(iteminstance.itemId == Item.ARROW.id)
                 {
                     ArrowEntity entityarrow = new ArrowEntity(world, d, d1, d2);
-                    entityarrow.method_1291(f, deltaj, f1, 1.1F, 6F);
-                    world.method_210(entityarrow);
+                    entityarrow.setVelocity(f, deltaj, f1, 1.1F, 6F);
+                    world.spawnEntity(entityarrow);
                     world.playSound(i, j, k, "random.bow", 1.0F, 1.2F);
                     if(net.fabricmc.loader.FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
                         voicePacket(world, "random.bow", i, j, k, 1.0F, 1.2F);
@@ -550,7 +550,7 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
                     entityarrow.velocityX *= 1.5D;
                     entityarrow.velocityY *= 1.5D;
                     entityarrow.velocityZ *= 1.5D;
-                    world.method_210(entityarrow);
+                    world.spawnEntity(entityarrow);
                     world.playSound(i, j, k, "random.bow", 1.0F, 1.2F);
                     if(net.fabricmc.loader.FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
                         voicePacket(world, "random.bow", i, j, k, 1.0F, 1.2F);
@@ -560,8 +560,8 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
                 if(iteminstance.itemId == Item.EGG.id)
                 {
                     EggEntity entityegg = new EggEntity(world, d, d1, d2);
-                    entityegg.method_1682(f, deltaj, f1, 1.1F, 6F);
-                    world.method_210(entityegg);
+                    entityegg.setVelocity(f, deltaj, f1, 1.1F, 6F);
+                    world.spawnEntity(entityegg);
                     world.playSound(i, j, k, "random.bow", 1.0F, 1.2F);
                     if(net.fabricmc.loader.FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
                         voicePacket(world, "random.bow", i, j, k, 1.0F, 1.2F);
@@ -571,8 +571,8 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
                 if(iteminstance.itemId == Item.SNOWBALL.id)
                 {
                     SnowballEntity entitysnowball = new SnowballEntity(world, d, d1, d2);
-                    entitysnowball.method_1656(f, deltaj, f1, 1.1F, 6F);
-                    world.method_210(entitysnowball);
+                    entitysnowball.setVelocity(f, deltaj, f1, 1.1F, 6F);
+                    world.spawnEntity(entitysnowball);
                     world.playSound(i, j, k, "random.bow", 1.0F, 1.2F);
                     if(net.fabricmc.loader.FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
                         voicePacket(world, "random.bow", i, j, k, 1.0F, 1.2F);
@@ -582,7 +582,7 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
                 if(iteminstance.itemId == Item.MINECART.id)
                 {
                     MinecartEntity entityMinecart = new MinecartEntity(world, d + (double)f * 0.75D, d1 - 0.5D, d2 + (double)f1 * 0.75D, 0);
-                    world.method_210(entityMinecart);
+                    world.spawnEntity(entityMinecart);
                     world.playSound(i, j, k, "random.click", 1.0F, 1.0F);
                     if(net.fabricmc.loader.FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
                         voicePacket(world, "random.click", i, j, k, 1.0F, 1.0F);
@@ -592,7 +592,7 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
                 if(iteminstance.itemId == Item.CHEST_MINECART.id)
                 {
                     MinecartEntity entityMinecart = new MinecartEntity(world, d + (double)f * 0.75D, d1 - 0.5D, d2 + (double)f1 * 0.75D, 1);
-                    world.method_210(entityMinecart);
+                    world.spawnEntity(entityMinecart);
                     world.playSound(i, j, k, "random.click", 1.0F, 1.0F);
                     if(net.fabricmc.loader.FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
                         voicePacket(world, "random.click", i, j, k, 1.0F, 1.0F);
@@ -602,7 +602,7 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
                 if(iteminstance.itemId == Item.FURNACE_MINECART.id)
                 {
                     MinecartEntity entityMinecart = new MinecartEntity(world, d + (double)f * 0.75D, d1 - 0.5D, d2 + (double)f1 * 0.75D, 2);
-                    world.method_210(entityMinecart);
+                    world.spawnEntity(entityMinecart);
                     world.playSound(i, j, k, "random.click", 1.0F, 1.0F);
                     if(net.fabricmc.loader.FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
                         voicePacket(world, "random.click", i, j, k, 1.0F, 1.0F);
@@ -612,7 +612,7 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
                 if(iteminstance.itemId == Item.BOAT.id)
                 {
                     BoatEntity entityBoat = new BoatEntity(world, d + (double)f, d1 - 0.5D, d2 + (double)f1);
-                    world.method_210(entityBoat);
+                    world.spawnEntity(entityBoat);
                     world.playSound(i, j, k, "random.click", 1.0F, 1.0F);
                     if(net.fabricmc.loader.FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
                         voicePacket(world, "random.click", i, j, k, 1.0F, 1.0F);
@@ -661,14 +661,14 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
                     {
                         int iNewid = newBlock.id;
                         int iTargetDirection = UnsortedUtils.getOppositeFacing(iFacing);
-                        if(world.method_156(iNewid, targetPos.i, targetPos.j, targetPos.k, true, iTargetDirection))
+                        if(world.canPlace(iNewid, targetPos.i, targetPos.j, targetPos.k, true, iTargetDirection))
                         {
                             if(iNewid == Block.PISTON.id || iNewid == Block.STICKY_PISTON.id)
                             {
-                                world.method_201(targetPos.i, targetPos.j, targetPos.k, iNewid, iFacing);
+                                world.setBlock(targetPos.i, targetPos.j, targetPos.k, iNewid, iFacing);
                             } else
                             {
-                                world.method_201(targetPos.i, targetPos.j, targetPos.k, iNewid, iteminstance.getItem().getPlacementMetadata(iteminstance.getDamage()));
+                                world.setBlock(targetPos.i, targetPos.j, targetPos.k, iNewid, iteminstance.getItem().getPlacementMetadata(iteminstance.getDamage()));
                                 newBlock.onPlaced(world, targetPos.i, targetPos.j, targetPos.k, iTargetDirection);
                             }
                             world.playSound((float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F, newBlock.soundGroup.getSound(), (newBlock.soundGroup.method_1976() + 1.0F) / 2.0F, newBlock.soundGroup.method_1977() * 0.8F);
@@ -681,7 +681,7 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
                             InventoryHandler.addSingleItemToInventory(tileEntityBlockDispenser, iteminstance.itemId, iteminstance.getDamage());
                         }
                     } else
-                    if(world.method_234(targetPos.i, targetPos.j, targetPos.k))
+                    if(world.isAir(targetPos.i, targetPos.j, targetPos.k))
                     {
                         SpitOutItem(world, i, j, k, iteminstance, random);
                         world.playSound(i, j, k, "random.click", 1.0F, 1.0F);
@@ -744,7 +744,7 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
                 }
 
             }
-            world.method_157(i, j, k, fctileentityblockdispenser);
+            world.setBlockEntity(i, j, k, fctileentityblockdispenser);
             return false;
         } else
         {
@@ -754,7 +754,7 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
 
     @Environment(EnvType.SERVER)
     public void voicePacket(World world, String name, int x, int y, int z, float g, float h){
-        List list2 = world.field_200;
+        List list2 = world.players;
         if(list2.size() != 0) {
             for(int k = 0; k < list2.size(); k++)
             {
@@ -766,7 +766,7 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
 
     @Environment(EnvType.SERVER)
     public void particlePacket(World world, String name, double x, double y, double z, double i, double j, double k){
-        List list2 = world.field_200;
+        List list2 = world.players;
         if(list2.size() != 0) {
             for(int k1 = 0; k1 < list2.size(); k1++)
             {

@@ -25,7 +25,7 @@ public class FoulFoodItem extends TemplateFoodItem
         {
             if(!world.isRemote)
             {
-                ((TemplateSaplingBlock)Block.SAPLING).generate(world, i, j, k, world.field_214);
+                ((TemplateSaplingBlock)Block.SAPLING).generate(world, i, j, k, world.random);
                 ItemInstance.count--;
             }
             return true;
@@ -55,7 +55,7 @@ label0:
                         k1 += random.nextInt(3) - 1;
                         l1 += ((random.nextInt(3) - 1) * random.nextInt(3)) / 2;
                         i2 += random.nextInt(3) - 1;
-                        if(world.getBlockId(k1, l1 - 1, i2) != Block.GRASS_BLOCK.id || world.method_1780(k1, l1, i2))
+                        if(world.getBlockId(k1, l1 - 1, i2) != Block.GRASS_BLOCK.id || world.shouldSuffocate(k1, l1, i2))
                         {
                             continue label0;
                         }
@@ -67,7 +67,7 @@ label0:
                     }
                     if(random.nextInt(10) != 0)
                     {
-                        world.method_201(k1, l1, i2, Block.GRASS.id, 1);
+                        world.setBlock(k1, l1, i2, Block.GRASS.id, 1);
                         continue;
                     }
                     if(random.nextInt(3) != 0)

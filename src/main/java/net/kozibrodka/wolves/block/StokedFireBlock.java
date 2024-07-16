@@ -47,7 +47,7 @@ public class StokedFireBlock extends TemplateFireBlock implements BlockWithWorld
         } else if (world.getBlockId(i, j - 1, k) == BlockListener.hibachi.id){
             flag = true;
         } else{
-            world.method_201(i, j, k, Block.FIRE.id, 15);
+            world.setBlock(i, j, k, Block.FIRE.id, 15);
 //            System.out.println("HELLO 3");
         }
 
@@ -63,7 +63,7 @@ public class StokedFireBlock extends TemplateFireBlock implements BlockWithWorld
 
         if (iMetaData < 15) {
             iMetaData++;
-            world.method_215(i, j, k, iMetaData);
+            world.setBlockMeta(i, j, k, iMetaData);
         }
         ((FireAccessor) this).invokeFireTick(world, i + 1, j, k, 300, random, 15);
         ((FireAccessor) this).invokeFireTick(world, i - 1, j, k, 300, random, 15);
@@ -89,11 +89,11 @@ public class StokedFireBlock extends TemplateFireBlock implements BlockWithWorld
                     if (
                             j2 <= 0 ||
                                     random.nextInt(l1) > j2 ||
-                                    world.method_270() && world.method_267(i1, k1, j1) ||
-                                    world.method_267(i1 - 1, k1, k) ||
-                                    world.method_267(i1 + 1, k1, j1) ||
-                                    world.method_267(i1, k1, j1 - 1) ||
-                                    world.method_267(i1, k1, j1 + 1)) {
+                                    world.isRaining() && world.isRaining(i1, k1, j1) ||
+                                    world.isRaining(i1 - 1, k1, k) ||
+                                    world.isRaining(i1 + 1, k1, j1) ||
+                                    world.isRaining(i1, k1, j1 - 1) ||
+                                    world.isRaining(i1, k1, j1 + 1)) {
                         continue;
                     }
                     int k2 = iMetaData + random.nextInt(5) / 4;
@@ -101,7 +101,7 @@ public class StokedFireBlock extends TemplateFireBlock implements BlockWithWorld
                         k2 = 15;
                     }
 //                    world.placeBlockWithMetaData(i1, k1, j1, BlockBase.FIRE.id, k2);
-                    world.method_201(i1, k1, j1, BlockListener.stokedFire.id, k2);
+                    world.setBlock(i1, k1, j1, BlockListener.stokedFire.id, k2);
                 }
 
             }
@@ -111,22 +111,22 @@ public class StokedFireBlock extends TemplateFireBlock implements BlockWithWorld
 
         if(iMetaData >= 4) //CODE EDIT (oryginal int value - 3) as its little different
         {
-            world.method_201(i, j, k, Block.FIRE.id, 15);
-            world.method_243(i, j, k);
+            world.setBlock(i, j, k, Block.FIRE.id, 15);
+            world.blockUpdateEvent(i, j, k);
 //            System.out.println("HELLO 4");
         }
-        world.method_216(i, j, k, id, getTickRate());
+        world.scheduleBlockUpdate(i, j, k, id, getTickRate());
     }
 
 
     @Override
     public boolean canPlaceAt(World arg, int i, int j, int k) {
-        return arg.method_1780(i, j - 1, k) || this.areBlocksAroundFlammable(arg, i, j, k) || arg.getBlockId(i, j - 1, k) == BlockListener.stokedFire.id || arg.getBlockId(i, j - 1, k) == Block.FIRE.id;
+        return arg.shouldSuffocate(i, j - 1, k) || this.areBlocksAroundFlammable(arg, i, j, k) || arg.getBlockId(i, j - 1, k) == BlockListener.stokedFire.id || arg.getBlockId(i, j - 1, k) == Block.FIRE.id;
     }
 
     @Override
     public void neighborUpdate(World arg, int i, int j, int k, int l) {
-        if (!arg.method_1780(i, j - 1, k) && !this.areBlocksAroundFlammable(arg, i, j, k) && arg.getBlockId(i, j - 1, k) != BlockListener.stokedFire.id && arg.getBlockId(i, j - 1, k) != Block.FIRE.id) {
+        if (!arg.shouldSuffocate(i, j - 1, k) && !this.areBlocksAroundFlammable(arg, i, j, k) && arg.getBlockId(i, j - 1, k) != BlockListener.stokedFire.id && arg.getBlockId(i, j - 1, k) != Block.FIRE.id) {
             arg.setBlock(i, j, k, 0);
         }
     }
@@ -134,10 +134,10 @@ public class StokedFireBlock extends TemplateFireBlock implements BlockWithWorld
     @Override
     public void onPlaced(World arg, int i, int j, int k) {
         if (arg.getBlockId(i, j - 1, k) != Block.OBSIDIAN.id || !Block.NETHER_PORTAL.method_736(arg, i, j, k)) {
-            if (!arg.method_1780(i, j - 1, k) && !this.areBlocksAroundFlammable(arg, i, j, k ) && arg.getBlockId(i, j - 1, k) != BlockListener.stokedFire.id && arg.getBlockId(i, j - 1, k) != Block.FIRE.id) {
+            if (!arg.shouldSuffocate(i, j - 1, k) && !this.areBlocksAroundFlammable(arg, i, j, k ) && arg.getBlockId(i, j - 1, k) != BlockListener.stokedFire.id && arg.getBlockId(i, j - 1, k) != Block.FIRE.id) {
                 arg.setBlock(i, j, k, 0);
             } else {
-                arg.method_216(i, j, k, this.id, this.getTickRate());
+                arg.scheduleBlockUpdate(i, j, k, this.id, this.getTickRate());
             }
         }
     }

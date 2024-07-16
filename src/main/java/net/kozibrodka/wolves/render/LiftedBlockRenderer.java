@@ -22,7 +22,7 @@ public class LiftedBlockRenderer extends EntityRenderer
 
     public LiftedBlockRenderer()
     {
-        shadowOpacity = 0.0F;
+        field_2679 = 0.0F;
     }
 
     public void render(Entity entity, double d, double d1, double d2,

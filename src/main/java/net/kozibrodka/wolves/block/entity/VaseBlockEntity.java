@@ -63,7 +63,7 @@ public class VaseBlockEntity extends BlockEntity
             return false;
         } else
         {
-            return entityplayer.method_1347((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D) <= 64D;
+            return entityplayer.getSquaredDistance((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D) <= 64D;
         }
     }
 

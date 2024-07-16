@@ -16,7 +16,7 @@ import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.block.entity.CrucibleBlockEntity;
 import net.kozibrodka.wolves.utils.RotatableBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.Material;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.entity.Entity;
@@ -47,7 +47,7 @@ public class CrucibleBlock extends TemplateBlockWithEntity
 
     public CrucibleBlock(Identifier iid)
     {
-        super(iid, Material.field_994);
+        super(iid, Material.GLASS);
         setHardness(0.6F);
         setSoundGroup(GLASS_SOUND_GROUP);
         setDefaultState(getDefaultState()
@@ -109,7 +109,7 @@ public class CrucibleBlock extends TemplateBlockWithEntity
     public void onEntityCollision(World world, int i, int j, int k, Entity entity)
     {
         List collisionList = null;
-        collisionList = world.method_175(ItemEntity.class, Box.createCached((float)i, (double)(float)j + 0.99000000953674316D, (float)k, (float)(i + 1), (double)(float)j + 0.99000000953674316D + 0.05000000074505806D, (float)(k + 1)));
+        collisionList = world.collectEntitiesByClass(ItemEntity.class, Box.createCached((float)i, (double)(float)j + 0.99000000953674316D, (float)k, (float)(i + 1), (double)(float)j + 0.99000000953674316D + 0.05000000074505806D, (float)(k + 1)));
         if(collisionList != null && collisionList.size() > 0)
         {
             CrucibleBlockEntity tileEntityCrucible = (CrucibleBlockEntity)world.getBlockEntity(i, j, k);
@@ -122,9 +122,9 @@ public class CrucibleBlock extends TemplateBlockWithEntity
                 }
                 if(InventoryHandler.addItemInstanceToInventory(tileEntityCrucible, targetEntityItem.stack))
                 {
-                     world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.pop", 0.25F, ((world.field_214.nextFloat() - world.field_214.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                     world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.pop", 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                     if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                        voicePacket(world, "random.pop", i, j, k, 0.25F, ((world.field_214.nextFloat() - world.field_214.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                        voicePacket(world, "random.pop", i, j, k, 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                     }
                     targetEntityItem.markDead();
                     continue;
@@ -138,7 +138,7 @@ public class CrucibleBlock extends TemplateBlockWithEntity
                 if(targetEntityItem.boundingBox.minY < fFullBoxTop)
                 {
                     double offset = fFullBoxTop - targetEntityItem.boundingBox.minY;
-                    targetEntityItem.method_1340(targetEntityItem.x, targetEntityItem.y + offset, targetEntityItem.z);
+                    targetEntityItem.setPos(targetEntityItem.x, targetEntityItem.y + offset, targetEntityItem.z);
                 }
             }
 
@@ -147,7 +147,7 @@ public class CrucibleBlock extends TemplateBlockWithEntity
 
     @Environment(EnvType.SERVER)
     public void voicePacket(World world, String name, int x, int y, int z, float g, float h){
-        List list2 = world.field_200;
+        List list2 = world.players;
         if(list2.size() != 0) {
             for(int k = 0; k < list2.size(); k++)
             {
@@ -266,7 +266,7 @@ public class CrucibleBlock extends TemplateBlockWithEntity
 
         SETTING_TILE = false;
         tileEntityBase.cancelRemoval();
-        world.method_157(i, j, k, tileEntityBase);
+        world.setBlockEntity(i, j, k, tileEntityBase);
     }
 
     public void SetHasLava(World world, int i, int j, int k, boolean bOn)
@@ -279,7 +279,7 @@ public class CrucibleBlock extends TemplateBlockWithEntity
 
         SETTING_TILE = false;
         tileEntityBase.cancelRemoval();
-        world.method_157(i, j, k, tileEntityBase);
+        world.setBlockEntity(i, j, k, tileEntityBase);
     }
 
     public static final BooleanProperty LAVA = BooleanProperty.of("lava");

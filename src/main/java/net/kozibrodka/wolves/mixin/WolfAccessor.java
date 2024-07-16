@@ -6,9 +6,9 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(WolfEntity.class)
 public interface WolfAccessor {
-    @Invoker("method_912")
+    @Invoker("getHurtSound")
     String invokeGetHurtSound();
 
-    @Invoker("method_915")
+    @Invoker("getSoundVolume")
     float invokeGetSoundVolume();
 }

@@ -37,7 +37,7 @@ public class WindMillItem extends TemplateItem
                 }
                 if(WindMillEntity.WindMillValidateAreaAroundBlock(world, i, j, k, bIAligned))
                 {
-                    world.method_210(new WindMillEntity(world, (float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F, bIAligned));
+                    world.spawnEntity(new WindMillEntity(world, (float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F, bIAligned));
                     iteminstance.count--;
                     return true;
                 }

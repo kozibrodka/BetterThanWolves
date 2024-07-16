@@ -42,16 +42,16 @@ slotLoop:
             {
                 continue;
             }
-            float xOffset = world.field_214.nextFloat() * 0.7F + 0.15F;
-            float yOffset = world.field_214.nextFloat() * 0.7F + 0.15F;
-            float zOffset = world.field_214.nextFloat() * 0.7F + 0.15F;
+            float xOffset = world.random.nextFloat() * 0.7F + 0.15F;
+            float yOffset = world.random.nextFloat() * 0.7F + 0.15F;
+            float zOffset = world.random.nextFloat() * 0.7F + 0.15F;
             do
             {
                 if(itemInstance.count <= 0)
                 {
                     continue slotLoop;
                 }
-                int randomStackSize = world.field_214.nextInt(21) + 10;
+                int randomStackSize = world.random.nextInt(21) + 10;
                 if(randomStackSize > itemInstance.count)
                 {
                     randomStackSize = itemInstance.count;
@@ -59,11 +59,11 @@ slotLoop:
                 itemInstance.count -= randomStackSize;
                 ItemEntity itemEntity = new ItemEntity(world, (float)x + xOffset, (float)y + yOffset, (float)z + zOffset, new ItemStack(itemInstance.itemId, randomStackSize, itemInstance.getDamage()));
                 float randomVelocityFactor = 0.05F;
-                itemEntity.velocityX = (float)world.field_214.nextGaussian() * randomVelocityFactor;
-                itemEntity.velocityY = (float)world.field_214.nextGaussian() * randomVelocityFactor + 0.2F;
-                itemEntity.velocityZ = (float)world.field_214.nextGaussian() * randomVelocityFactor;
+                itemEntity.velocityX = (float)world.random.nextGaussian() * randomVelocityFactor;
+                itemEntity.velocityY = (float)world.random.nextGaussian() * randomVelocityFactor + 0.2F;
+                itemEntity.velocityZ = (float)world.random.nextGaussian() * randomVelocityFactor;
                 itemEntity.pickupDelay = 10;
-                world.method_210(itemEntity);
+                world.spawnEntity(itemEntity);
             } while(true);
         }
 

@@ -23,7 +23,7 @@ public abstract class OakTreeMixin extends Feature {
         return world.getBlockId(x, y - 1, z);
     }
 
-    @WrapWithCondition(method = "generate", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;method_200(IIII)Z", ordinal = 0))
+    @WrapWithCondition(method = "generate", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;setBlockWithoutNotifyingNeighbors(IIII)Z", ordinal = 0))
     public boolean wrapDirtCheck(World world, int x, int y, int z, int i) {
         return !world.getBlockState(x,y,z).isOf(BlockListener.planter);
     }

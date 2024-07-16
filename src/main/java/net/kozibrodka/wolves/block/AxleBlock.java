@@ -9,7 +9,7 @@ import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.utils.BlockPosition;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
-import net.minecraft.block.Material;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.util.math.Box;
@@ -107,7 +107,7 @@ public class AxleBlock extends TemplateBlock
     {
         super.onPlaced(world, i, j, k);
         SetPowerLevel(world, i, j, k, 0);
-        world.method_216(i, j, k, BlockListener.axleBlock.id, getTickRate());
+        world.scheduleBlockUpdate(i, j, k, BlockListener.axleBlock.id, getTickRate());
     }
 
     public void onTick(World world, int i, int j, int k, Random random)
@@ -163,7 +163,7 @@ public class AxleBlock extends TemplateBlock
     public void neighborUpdate(World world, int i, int j, int k, int iid) //onNeighborBlockChange
     {
         ValidatePowerLevel(world, i, j, k);
-        world.method_216(i, j, k, id, getTickRate());
+        world.scheduleBlockUpdate(i, j, k, id, getTickRate());
     }
 
     public void randomDisplayTick(World world, int i, int j, int k, Random random)
@@ -200,8 +200,8 @@ public class AxleBlock extends TemplateBlock
         }
         int iMetaData = world.getBlockMeta(i, j, k) & 3;
         iMetaData |= iAxis << 2;
-        world.method_215(i, j, k, iMetaData);
-        world.method_243(i, j, k);
+        world.setBlockMeta(i, j, k, iMetaData);
+        world.blockUpdateEvent(i, j, k);
     }
 
     public int GetPowerLevel(BlockView iBlockAccess, int i, int j, int k)
@@ -218,8 +218,8 @@ public class AxleBlock extends TemplateBlock
         iPowerLevel &= 3;
         int iMetaData = world.getBlockMeta(i, j, k) & 0xc;
         iMetaData |= iPowerLevel;
-        world.method_215(i, j, k, iMetaData);
-        world.method_243(i, j, k);
+        world.setBlockMeta(i, j, k, iMetaData);
+        world.blockUpdateEvent(i, j, k);
 //        world.method_202(i, j, k, i, j, k);
     }
 
@@ -343,7 +343,7 @@ public class AxleBlock extends TemplateBlock
 
     @Environment(EnvType.SERVER)
     public void voicePacket(World world, String name, int x, int y, int z, float g, float h){
-        List list2 = world.field_200;
+        List list2 = world.players;
         if(list2.size() != 0) {
             for(int k = 0; k < list2.size(); k++)
             {

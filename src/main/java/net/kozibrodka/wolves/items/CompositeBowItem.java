@@ -31,7 +31,7 @@ public class CompositeBowItem extends TemplateItem
                 arrow.velocityX *= 1.5D;
                 arrow.velocityY *= 1.5D;
                 arrow.velocityZ *= 1.5D;
-                world.method_210(arrow);
+                world.spawnEntity(arrow);
             }
         } else
         if(entityplayer.inventory.method_676(Item.ARROW.id))
@@ -43,7 +43,7 @@ public class CompositeBowItem extends TemplateItem
                 arrow.velocityX *= 1.5D;
                 arrow.velocityY *= 1.5D;
                 arrow.velocityZ *= 1.5D;
-                world.method_210(arrow);
+                world.spawnEntity(arrow);
             }
         }
         return ItemInstance;

@@ -123,19 +123,19 @@ public class PanelBlock extends TemplateBlock {
     public void onPlaced(World arg, int i, int j, int k, LivingEntity arg2) {
         int var6 = MathHelper.floor((double)(arg2.yaw * 4.0F / 360.0F) + 0.5D) & 3;
         if (var6 == 0) {
-            arg.method_215(i, j, k, 2);
+            arg.setBlockMeta(i, j, k, 2);
         }
 
         if (var6 == 1) {
-            arg.method_215(i, j, k, 1);
+            arg.setBlockMeta(i, j, k, 1);
         }
 
         if (var6 == 2) {
-            arg.method_215(i, j, k, 3);
+            arg.setBlockMeta(i, j, k, 3);
         }
 
         if (var6 == 3) {
-            arg.method_215(i, j, k, 0);
+            arg.setBlockMeta(i, j, k, 0);
         }
 
     }

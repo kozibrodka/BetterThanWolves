@@ -24,9 +24,9 @@ public class LiftedBlockEntity extends Entity implements EntitySpawnDataProvider
     public LiftedBlockEntity(World world)
     {
         super(world);
-        field_1593 = true;
+        blocksSameBlockSpawning = true;
         setBoundingBoxSpacing(0.98F, 0.98F);
-        eyeHeight = spacingY / 2.0F;
+        standingEyeHeight = height / 2.0F;
         velocityX = 0.0D;
         velocityY = 0.0D;
         velocityZ = 0.0D;
@@ -47,11 +47,11 @@ public class LiftedBlockEntity extends Entity implements EntitySpawnDataProvider
         {
             m_iBlockMetaData = 0;
         }
-        method_1340((float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F);
-        field_1637 = prevX = x;
-        field_1638 = prevY = y;
-        field_1639 = prevZ = z;
-        world.method_210(this);
+        setPos((float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F);
+        lastTickX = prevX = x;
+        lastTickY = prevY = y;
+        lastTickZ = prevZ = z;
+        world.spawnEntity(this);
         world.setBlock(i, j, k, 0);
     }
 
@@ -86,26 +86,26 @@ public class LiftedBlockEntity extends Entity implements EntitySpawnDataProvider
         return null;
     }
 
-    public Box method_1381()
+    public Box getBoundingBox()
     {
         return null;
     }
 
-    public boolean method_1380()
+    public boolean isPushable()
     {
         return false;
     }
 
-    public boolean method_1356()
+    public boolean isCollidable()
     {
         return false;
     }
 
-    public void method_1353(Entity entity1)
+    public void onCollision(Entity entity1)
     {
     }
 
-    public float method_1366()
+    public float getShadowRadius()
     {
         return 0.0F;
     }
@@ -117,7 +117,7 @@ public class LiftedBlockEntity extends Entity implements EntitySpawnDataProvider
             return;
         }
         MovingPlatformEntity associatedMovingPlatform = null;
-        List collisionList = world.method_175(MovingPlatformEntity.class, Box.createCached(x - 0.25D, y - 1.25D, z - 0.25D, x + 0.25D, y - 0.75D, z + 0.25D));
+        List collisionList = world.collectEntitiesByClass(MovingPlatformEntity.class, Box.createCached(x - 0.25D, y - 1.25D, z - 0.25D, x + 0.25D, y - 0.75D, z + 0.25D));
         if(collisionList != null && collisionList.size() > 0)
         {
             associatedMovingPlatform = (MovingPlatformEntity)collisionList.get(0);
@@ -129,7 +129,7 @@ public class LiftedBlockEntity extends Entity implements EntitySpawnDataProvider
                 prevX = x;
                 prevY = y;
                 prevZ = z;
-                method_1340(newPosX, newPosY, newPosZ);
+                setPos(newPosX, newPosY, newPosZ);
             } else
             {
                 associatedMovingPlatform = null;
@@ -154,7 +154,7 @@ public class LiftedBlockEntity extends Entity implements EntitySpawnDataProvider
         int i = MathHelper.floor(x);
         int j = MathHelper.floor(y);
         int k = MathHelper.floor(z);
-        int idDropped = Block.BLOCKS[m_iid].getDroppedItemId(0, world.field_214);
+        int idDropped = Block.BLOCKS[m_iid].getDroppedItemId(0, world.random);
         if(idDropped > 0)
         {
             UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, idDropped, 0);
@@ -167,7 +167,7 @@ public class LiftedBlockEntity extends Entity implements EntitySpawnDataProvider
         boolean bDestroyBlock = true;
         if(world.getBlockId(i, j - 1, k) == BlockListener.platform.id && ReplaceableBlockChecker.IsReplaceableBlock(world, i, j, k))
         {
-            world.method_201(i, j, k, m_iid, m_iBlockMetaData);
+            world.setBlock(i, j, k, m_iid, m_iBlockMetaData);
             bDestroyBlock = false;
         }
         if(bDestroyBlock)

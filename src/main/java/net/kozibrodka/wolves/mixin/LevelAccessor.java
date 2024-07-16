@@ -8,6 +8,6 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 public interface LevelAccessor {
 
     @Invoker
-    void invokeMethod_235(int i, int j, int k, int l);
+    void invokeBlockUpdate(int i, int j, int k, int l);
 }
 

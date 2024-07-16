@@ -1,7 +1,7 @@
 package net.kozibrodka.wolves.block;
 
 
-import net.minecraft.block.Material;
+import net.minecraft.block.material.Material;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
@@ -342,7 +342,7 @@ public class MouldingBlock extends TemplateBlock
         }
         if(iNumPossibleAlignments > 0)
         {
-            int iRandomAlignmentNum = world.field_214.nextInt(iNumPossibleAlignments) + 1;
+            int iRandomAlignmentNum = world.random.nextInt(iNumPossibleAlignments) + 1;
             int iTempIndex = 0;
             do
             {
@@ -368,13 +368,13 @@ public class MouldingBlock extends TemplateBlock
 
     public void SetMouldingAlignment(World world, int i, int j, int k, int iAlignment)
     {
-        world.method_215(i, j, k, iAlignment);
+        world.setBlockMeta(i, j, k, iAlignment);
     }
 
     private boolean IsValidNeighbour(World world, int i, int j, int k)
     {
         int iid = world.getBlockId(i, j, k);
-        return !world.method_234(i, j, k) && iid != id;
+        return !world.isAir(i, j, k) && iid != id;
     }
 
     private static final int iMouldingTextureID = 4;

@@ -44,8 +44,8 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
     public BroadheadArrowEntity(World arg, double d, double e, double f) {
         super(arg);
         this.setBoundingBoxSpacing(0.5F, 0.5F);
-        this.method_1340(d, e, f);
-        this.eyeHeight = 0.0F;
+        this.setPos(d, e, f);
+        this.standingEyeHeight = 0.0F;
     }
 
     public BroadheadArrowEntity(World arg, LivingEntity arg2) {
@@ -53,12 +53,12 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
         this.owner = arg2;
         this.spawnedByPlayer = arg2 instanceof PlayerEntity;
         this.setBoundingBoxSpacing(0.5F, 0.5F);
-        this.method_1341(arg2.x, arg2.y + (double)arg2.method_1378(), arg2.z, arg2.yaw, arg2.pitch);
+        this.setPositionAndAnglesKeepPrevAngles(arg2.x, arg2.y + (double)arg2.getEyeHeight(), arg2.z, arg2.yaw, arg2.pitch);
         this.x -= (double)(MathHelper.cos(this.yaw / 180.0F * 3.1415927F) * 0.16F);
         this.y -= 0.10000000149011612D;
         this.z -= (double)(MathHelper.sin(this.yaw / 180.0F * 3.1415927F) * 0.16F);
-        this.method_1340(this.x, this.y, this.z);
-        this.eyeHeight = 0.0F;
+        this.setPos(this.x, this.y, this.z);
+        this.standingEyeHeight = 0.0F;
         this.velocityX = (double)(-MathHelper.sin(this.yaw / 180.0F * 3.1415927F) * MathHelper.cos(this.pitch / 180.0F * 3.1415927F));
         this.velocityZ = (double)(MathHelper.cos(this.yaw / 180.0F * 3.1415927F) * MathHelper.cos(this.pitch / 180.0F * 3.1415927F));
         this.velocityY = (double)(-MathHelper.sin(this.pitch / 180.0F * 3.1415927F));
@@ -89,7 +89,7 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
     }
 
     @Environment(EnvType.CLIENT)
-    public void method_1365(double d, double e, double f) {
+    public void setVelocityClient(double d, double e, double f) {
         this.velocityX = d;
         this.velocityY = e;
         this.velocityZ = f;
@@ -99,7 +99,7 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
             this.prevPitch = this.pitch = (float)(Math.atan2(e, (double)var7) * 180.0D / 3.1415927410125732D);
             this.prevPitch = this.pitch;
             this.prevYaw = this.yaw;
-            this.method_1341(this.x, this.y, this.z, this.yaw, this.pitch);
+            this.setPositionAndAnglesKeepPrevAngles(this.x, this.y, this.z, this.yaw, this.pitch);
             this.ticksInGround = 0;
         }
 
@@ -153,7 +153,7 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
             ++this.ticksFlying;
             Vec3d var16 = Vec3d.createCached(this.x, this.y, this.z);
             Vec3d var17 = Vec3d.createCached(this.x + this.velocityX, this.y + this.velocityY, this.z + this.velocityZ);
-            HitResult var3 = this.world.method_162(var16, var17, false, true);
+            HitResult var3 = this.world.raycast(var16, var17, false, true);
             var16 = Vec3d.createCached(this.x, this.y, this.z);
             var17 = Vec3d.createCached(this.x + this.velocityX, this.y + this.velocityY, this.z + this.velocityZ);
             if (var3 != null) {
@@ -167,7 +167,7 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
             float var10;
             for(int var8 = 0; var8 < var5.size(); ++var8) {
                 Entity var9 = (Entity)var5.get(var8);
-                if (var9.method_1356() && (var9 != this.owner || this.ticksFlying >= 5)) {
+                if (var9.isCollidable() && (var9 != this.owner || this.ticksFlying >= 5)) {
                     var10 = 0.3F;
                     Box var11 = var9.boundingBox.expand((double)var10, (double)var10, (double)var10);
                     HitResult var12 = var11.raycast(var16, var17);
@@ -243,7 +243,7 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
             this.yaw = this.prevYaw + (this.yaw - this.prevYaw) * 0.2F;
             float var20 = 0.99F;
             var10 = 0.03F;
-            if (this.method_1334()) {
+            if (this.isSubmergedInWater()) {
                 for(int var21 = 0; var21 < 4; ++var21) {
                     float var22 = 0.25F;
                     this.world.addParticle("bubble", this.x - this.velocityX * (double)var22, this.y - this.velocityY * (double)var22, this.z - this.velocityZ * (double)var22, this.velocityX, this.velocityY, this.velocityZ);
@@ -256,7 +256,7 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
             this.velocityY *= (double)var20;
             this.velocityZ *= (double)var20;
             this.velocityY -= (double)var10;
-            this.method_1340(this.x, this.y, this.z);
+            this.setPos(this.x, this.y, this.z);
         }
     }
 
@@ -294,7 +294,7 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
     }
 
     @Environment(EnvType.CLIENT)
-    public float method_1366() {
+    public float getShadowRadius() {
         return 0.0F;
     }
 

@@ -13,7 +13,7 @@ public class WaterWheelRenderer extends EntityRenderer
 
     public WaterWheelRenderer()
     {
-        shadowOpacity = 0.0F;
+        field_2679 = 0.0F;
         modelWaterWheel = new WaterWheelModel();
     }
 

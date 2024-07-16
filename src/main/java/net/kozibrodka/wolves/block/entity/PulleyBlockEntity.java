@@ -116,7 +116,7 @@ public class PulleyBlockEntity extends BlockEntity
             return false;
         } else
         {
-            return entityplayer.method_1347((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D) <= 64D;
+            return entityplayer.getSquaredDistance((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D) <= 64D;
         }
     }
 
@@ -260,7 +260,7 @@ public class PulleyBlockEntity extends BlockEntity
 
     @Environment(EnvType.SERVER)
     public void voicePacket(World world, String name, int x, int y, int z, float g, float h){
-        List list2 = world.field_200;
+        List list2 = world.players;
         if(list2.size() != 0) {
             for(int k = 0; k < list2.size(); k++)
             {
@@ -276,9 +276,9 @@ public class PulleyBlockEntity extends BlockEntity
         iUpdateRopeStateCounter = 20;
         if(InventoryHandler.addItemInstanceToInventory(this, ropeStack))
         {
-            world.playSound((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, "random.pop", 0.05F, (world.field_214.nextFloat() - world.field_214.nextFloat()) * 0.7F + 1.0F);
+            world.playSound((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, "random.pop", 0.05F, (world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F);
             if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                voicePacket(world, "random.pop", x, y, z, 0.05F, (world.field_214.nextFloat() - world.field_214.nextFloat()) * 0.7F + 1.0F);
+                voicePacket(world, "random.pop", x, y, z, 0.05F, (world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F);
             }
         } else
         {

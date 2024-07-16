@@ -10,7 +10,7 @@ import net.kozibrodka.wolves.block.entity.VaseBlockEntity;
 import net.kozibrodka.wolves.utils.RotatableBlock;
 import net.kozibrodka.wolves.utils.InventoryHandler;
 import net.kozibrodka.wolves.utils.CustomBlockRendering;
-import net.minecraft.block.Material;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.render.block.BlockRenderManager;
@@ -36,7 +36,7 @@ public class VaseBlock extends TemplateBlockWithEntity
 
     public VaseBlock(Identifier iid)
     {
-        super(iid, Material.field_994);
+        super(iid, Material.GLASS);
         textureId = 224;
         setHardness(0.0F);
         setSoundGroup(GLASS_SOUND_GROUP);
@@ -105,17 +105,17 @@ public class VaseBlock extends TemplateBlockWithEntity
             if(InventoryHandler.addItemInstanceToInventory(tileEntityVase, playerEquippedItemInstance))
             {
                 entityPlayer.method_503();
-                world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.pop", 0.25F, ((world.field_214.nextFloat() - world.field_214.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.pop", 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                 if(net.fabricmc.loader.FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                    voicePacket(world, "random.explode", i, j, k, 0.25F, ((world.field_214.nextFloat() - world.field_214.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                    voicePacket(world, "random.explode", i, j, k, 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                 }
                 return true;
             }
             if(playerEquippedItemInstance.count < iTempStackSize)
             {
-                world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.pop", 0.25F, ((world.field_214.nextFloat() - world.field_214.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.pop", 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                 if(net.fabricmc.loader.FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                    voicePacket(world, "random.explode", i, j, k, 0.25F, ((world.field_214.nextFloat() - world.field_214.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                    voicePacket(world, "random.explode", i, j, k, 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                 }
                 return true;
             }
@@ -125,7 +125,7 @@ public class VaseBlock extends TemplateBlockWithEntity
 
     @Environment(EnvType.SERVER)
     public void voicePacket(World world, String name, int x, int y, int z, float g, float h){
-        List list2 = world.field_200;
+        List list2 = world.players;
         if(list2.size() != 0) {
             for(int k = 0; k < list2.size(); k++)
             {

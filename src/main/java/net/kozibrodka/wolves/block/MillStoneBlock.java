@@ -13,7 +13,7 @@ import net.kozibrodka.wolves.block.entity.MillStoneBlockEntity;
 import net.kozibrodka.wolves.utils.BlockPosition;
 import net.kozibrodka.wolves.utils.MechanicalDevice;
 import net.minecraft.block.Block;
-import net.minecraft.block.Material;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -64,7 +64,7 @@ public class MillStoneBlock extends TemplateBlockWithEntity
     public void onPlaced(World world, int i, int j, int k)
     {
         super.onPlaced(world, i, j, k);
-        world.method_216(i, j, k, BlockListener.millStone.id, getTickRate());
+        world.scheduleBlockUpdate(i, j, k, BlockListener.millStone.id, getTickRate());
     }
 
     public void neighborUpdate(World world, int i, int j, int k, int iid)
@@ -72,7 +72,7 @@ public class MillStoneBlock extends TemplateBlockWithEntity
         boolean bReceivingPower = IsInputtingMechanicalPower(world, i, j, k);
         if(IsBlockOn(world, i, j, k) != bReceivingPower)
         {
-            world.method_216(i, j, k, BlockListener.millStone.id, getTickRate());
+            world.scheduleBlockUpdate(i, j, k, BlockListener.millStone.id, getTickRate());
         }
     }
 
@@ -108,9 +108,9 @@ public class MillStoneBlock extends TemplateBlockWithEntity
                 MillStoneBlockEntity tileEntityMillStone = (MillStoneBlockEntity)world.getBlockEntity(i, j, k);
                 if(tileEntityMillStone.IsWholeCompanionCubeNextToBeProcessed())
                 {
-                    world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "mob.wolf.hurt", 5F, (world.field_214.nextFloat() - world.field_214.nextFloat()) * 0.2F + 1.0F);
+                    world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "mob.wolf.hurt", 5F, (world.random.nextFloat() - world.random.nextFloat()) * 0.2F + 1.0F);
                     if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                        voicePacket(world, "mob.wolf.hurt", i, j, k, 5F, (world.field_214.nextFloat() - world.field_214.nextFloat()) * 0.2F + 1.0F);
+                        voicePacket(world, "mob.wolf.hurt", i, j, k, 5F, (world.random.nextFloat() - world.random.nextFloat()) * 0.2F + 1.0F);
                     }
                 }
                 world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.explode", 0.2F, 1.25F);
@@ -125,7 +125,7 @@ public class MillStoneBlock extends TemplateBlockWithEntity
 
     @Environment(EnvType.SERVER)
     public void voicePacket(World world, String name, int x, int y, int z, float g, float h){
-        List list2 = world.field_200;
+        List list2 = world.players;
         if(list2.size() != 0) {
             for(int k = 0; k < list2.size(); k++)
             {
@@ -162,12 +162,12 @@ public class MillStoneBlock extends TemplateBlockWithEntity
     {
         if(bOn)
         {
-            world.method_215(i, j, k, 1);
-            world.method_243(i, j, k);
+            world.setBlockMeta(i, j, k, 1);
+            world.blockUpdateEvent(i, j, k);
         } else
         {
-            world.method_215(i, j, k, 0);
-            world.method_243(i, j, k);
+            world.setBlockMeta(i, j, k, 0);
+            world.blockUpdateEvent(i, j, k);
         }
     }
 

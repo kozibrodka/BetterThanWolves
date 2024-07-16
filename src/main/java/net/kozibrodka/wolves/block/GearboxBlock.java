@@ -15,7 +15,7 @@ import net.kozibrodka.wolves.utils.RotatableBlock;
 import net.kozibrodka.wolves.utils.MechanicalDevice;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.Material;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
@@ -91,7 +91,7 @@ public class GearboxBlock extends TemplateBlock
     public void onPlaced(World world, int i, int j, int k)
     {
         super.onPlaced(world, i, j, k);
-        world.method_216(i, j, k, BlockListener.gearBox.id, getTickRate());
+        world.scheduleBlockUpdate(i, j, k, BlockListener.gearBox.id, getTickRate());
     }
 
     public void onBreak(World world, int i, int j, int k)
@@ -106,14 +106,14 @@ public class GearboxBlock extends TemplateBlock
 
     public void neighborUpdate(World world, int i, int j, int k, int iid)
     {
-        world.method_216(i, j, k, BlockListener.gearBox.id, getTickRate());
+        world.scheduleBlockUpdate(i, j, k, BlockListener.gearBox.id, getTickRate());
     }
 
     public void onTick(World world, int i, int j, int k, Random random)
     {
         boolean bReceivingPower = IsInputtingMechanicalPower(world, i, j, k);
         boolean bOn = IsGearBoxOn(world, i, j, k);
-        boolean bIsRedstonePowered = world.method_263(i, j, k) || world.method_263(i, j + 1, k);
+        boolean bIsRedstonePowered = world.canTransferPower(i, j, k) || world.canTransferPower(i, j + 1, k);
         if(bIsRedstonePowered)
         {
             bReceivingPower = false;
@@ -142,7 +142,7 @@ public class GearboxBlock extends TemplateBlock
 
     @Environment(EnvType.SERVER)
     public void voicePacket(World world, String name, int x, int y, int z, float g, float h){
-        List list2 = world.field_200;
+        List list2 = world.players;
         if(list2.size() != 0) {
             for(int k = 0; k < list2.size(); k++)
             {
@@ -169,7 +169,7 @@ public class GearboxBlock extends TemplateBlock
     {
         int iMetaData = world.getBlockMeta(i, j, k) & 8;
         iMetaData |= iFacing;
-        world.method_215(i, j, k, iMetaData);
+        world.setBlockMeta(i, j, k, iMetaData);
     }
 
     public boolean CanRotate(BlockView iBlockAccess, int i, int j, int l)
@@ -190,9 +190,9 @@ public class GearboxBlock extends TemplateBlock
         if(iNewFacing != iFacing)
         {
             SetFacing(world, i, j, k, iNewFacing);
-            world.method_202(i, j, k, i, j, k);
-            world.method_216(i, j, k, BlockListener.gearBox.id, getTickRate());
-            ((LevelAccessor) world).invokeMethod_235(i, j, k, BlockListener.gearBox.id);
+            world.setBlocksDirty(i, j, k, i, j, k);
+            world.scheduleBlockUpdate(i, j, k, BlockListener.gearBox.id, getTickRate());
+            ((LevelAccessor) world).invokeBlockUpdate(i, j, k, BlockListener.gearBox.id);
         }
         UnsortedUtils.DestroyHorizontallyAttachedAxles(world, i, j, k);
     }
@@ -209,8 +209,8 @@ public class GearboxBlock extends TemplateBlock
         {
             iMetaData |= 8;
         }
-        world.method_215(i, j, k, iMetaData);
-        world.method_243(i, j, k);
+        world.setBlockMeta(i, j, k, iMetaData);
+        world.blockUpdateEvent(i, j, k);
     }
 
     void EmitGearBoxParticles(World world, int i, int j, int k, Random random)
@@ -267,14 +267,14 @@ public class GearboxBlock extends TemplateBlock
             {
                 axleBlock.SetPowerLevel(world, tempPos.i, tempPos.j, tempPos.k, 0);
             }
-//            world.method_243(tempPos.i, tempPos.j, tempPos.k);
+//            world.blockUpdateEvent(tempPos.i, tempPos.j, tempPos.k);
         }
 
     }
 
     public void Overpower(World world, int i, int j, int k)
     {
-        boolean bIsRedstonePowered = world.method_263(i, j, k) || world.method_263(i, j + 1, k);
+        boolean bIsRedstonePowered = world.canTransferPower(i, j, k) || world.canTransferPower(i, j + 1, k);
         if(!bIsRedstonePowered)
         {
             BreakGearBox(world, i, j, k);

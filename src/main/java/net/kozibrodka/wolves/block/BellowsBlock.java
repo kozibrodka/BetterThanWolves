@@ -14,7 +14,7 @@ import net.kozibrodka.wolves.utils.RotatableBlock;
 import net.kozibrodka.wolves.utils.MechanicalDevice;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.Material;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
@@ -95,7 +95,7 @@ public class BellowsBlock extends TemplateBlock
     public void onPlaced(World world, int i, int j, int k)
     {
         super.onPlaced(world, i, j, k);
-        world.method_216(i, j, k, BlockListener.bellows.id, getTickRate());
+        world.scheduleBlockUpdate(i, j, k, BlockListener.bellows.id, getTickRate());
     }
 
     public boolean isOpaque()
@@ -132,7 +132,7 @@ public class BellowsBlock extends TemplateBlock
 
     public void neighborUpdate(World world, int i, int j, int k, int iid)
     {
-        world.method_216(i, j, k, BlockListener.bellows.id, getTickRate());
+        world.scheduleBlockUpdate(i, j, k, BlockListener.bellows.id, getTickRate());
     }
 
     public void onTick(World world, int i, int j, int k, Random random)
@@ -144,26 +144,26 @@ public class BellowsBlock extends TemplateBlock
             if(bReceivingMechanicalPower)
             {
                 Blow(world, i, j, k);
-                world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "fire.ignite", 0.5F, world.field_214.nextFloat() * 0.4F + 2.0F);
+                world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "fire.ignite", 0.5F, world.random.nextFloat() * 0.4F + 2.0F);
                 if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                    voicePacket(world, "fire.ignite", i, j, k, 0.5F, world.field_214.nextFloat() * 0.4F + 2.0F);
+                    voicePacket(world, "fire.ignite", i, j, k, 0.5F, world.random.nextFloat() * 0.4F + 2.0F);
                 }
             } else
             {
                 LiftCollidingEntities(world, i, j, k);
-                world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "fire.ignite", 0.5F, world.field_214.nextFloat() * 0.4F + 2.0F);
+                world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "fire.ignite", 0.5F, world.random.nextFloat() * 0.4F + 2.0F);
                 if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                    voicePacket(world, "fire.ignite", i, j, k, 0.5F, world.field_214.nextFloat() * 0.4F + 2.0F);
+                    voicePacket(world, "fire.ignite", i, j, k, 0.5F, world.random.nextFloat() * 0.4F + 2.0F);
                 }
             }
             SetBlockMechanicalOn(world, i, j, k, bReceivingMechanicalPower);
-            world.method_202(i, j, k, i, j, k);
+            world.setBlocksDirty(i, j, k, i, j, k);
         }
     }
 
     @Environment(EnvType.SERVER)
     public void voicePacket(World world, String name, int x, int y, int z, float g, float h){
-        List list2 = world.field_200;
+        List list2 = world.players;
         if(list2.size() != 0) {
             for(int k = 0; k < list2.size(); k++)
             {
@@ -189,7 +189,7 @@ public class BellowsBlock extends TemplateBlock
             iFacing = 0;
         }
         iMetaData |= iFacing;
-        world.method_215(i, j, k, iMetaData);
+        world.setBlockMeta(i, j, k, iMetaData);
     }
 
 
@@ -210,9 +210,9 @@ public class BellowsBlock extends TemplateBlock
         if(iNewFacing != iFacing)
         {
             SetFacing(world, i, j, k, iNewFacing);
-            world.method_202(i, j, k, i, j, k);
-            world.method_216(i, j, k, BlockListener.bellows.id, getTickRate());
-            ((LevelAccessor) world).invokeMethod_235(i, j, k, BlockListener.bellows.id);
+            world.setBlocksDirty(i, j, k, i, j, k);
+            world.scheduleBlockUpdate(i, j, k, BlockListener.bellows.id, getTickRate());
+            ((LevelAccessor) world).invokeBlockUpdate(i, j, k, BlockListener.bellows.id);
         }
         UnsortedUtils.DestroyHorizontallyAttachedAxles(world, i, j, k);
     }
@@ -287,8 +287,8 @@ public class BellowsBlock extends TemplateBlock
         {
             iMetaData |= 4;
         }
-        world.method_215(i, j, k, iMetaData);
-        world.method_243(i, j, k);
+        world.setBlockMeta(i, j, k, iMetaData);
+        world.blockUpdateEvent(i, j, k);
     }
 
     private void EmitBellowsParticles(World world, int i, int j, int k, Random random)
@@ -310,7 +310,7 @@ public class BellowsBlock extends TemplateBlock
         int iFacingSide2 = UnsortedUtils.RotateFacingAroundJ(iFacing, true);
         BlockPosition particlePos = new BlockPosition(i, j, k);
         particlePos.AddFacingAsOffset(iFacing);
-        EmitBellowsParticles(world, particlePos.i, particlePos.j, particlePos.k, world.field_214);
+        EmitBellowsParticles(world, particlePos.i, particlePos.j, particlePos.k, world.random);
         BlockPosition tempTargetPos = new BlockPosition(i, j, k);
         Block blockWithInterface;
         for(int iTempCount = 0; iTempCount < 3; iTempCount++)
@@ -330,7 +330,7 @@ public class BellowsBlock extends TemplateBlock
                 StokeFire(world, tempTargetPos.i, tempTargetPos.j, tempTargetPos.k);
             }
             else
-            if(!world.method_234(tempTargetPos.i, tempTargetPos.j, tempTargetPos.k))
+            if(!world.isAir(tempTargetPos.i, tempTargetPos.j, tempTargetPos.k))
             {
                 break;
             }
@@ -358,27 +358,27 @@ public class BellowsBlock extends TemplateBlock
         {
             if(world.getBlockId(i, j, k) == BlockListener.stokedFire.id)
             {
-                world.method_215(i, j, k, 0);
-                world.method_243(i, j, k);
+                world.setBlockMeta(i, j, k, 0);
+                world.blockUpdateEvent(i, j, k);
             } else
             {
                 world.setBlock(i, j, k, BlockListener.stokedFire.id);
-                world.method_243(i, j, k);
+                world.blockUpdateEvent(i, j, k);
             }
-            if(world.method_234(i, j + 1, k))
+            if(world.isAir(i, j + 1, k))
             {
                 world.setBlock(i, j + 1, k, BlockListener.stokedFire.id);
-                world.method_243(i, j, k);
+                world.blockUpdateEvent(i, j, k);
             }
             if(world.getBlockId(i, j + 1, k) == BlockListener.stokedFire.id)
             {
-                world.method_215(i, j + 1, k, 0);
-                world.method_243(i, j, k);
+                world.setBlockMeta(i, j + 1, k, 0);
+                world.blockUpdateEvent(i, j, k);
             }
         } else
         {
             world.setBlock(i, j, k, 0);
-            world.method_243(i, j, k);
+            world.blockUpdateEvent(i, j, k);
         }
     }
 
@@ -391,7 +391,7 @@ public class BellowsBlock extends TemplateBlock
             for(int j1 = 0; j1 < list.size(); j1++)
             {
                 Entity tempEntity = (Entity) list.get(j1);
-                if(tempEntity.dead || !tempEntity.method_1380() && !(tempEntity instanceof ItemEntity))
+                if(tempEntity.dead || !tempEntity.isPushable() && !(tempEntity instanceof ItemEntity))
                 {
                     continue;
                 }
@@ -399,7 +399,7 @@ public class BellowsBlock extends TemplateBlock
                 if(tempEntityMinY < (double)extendedMaxY)
                 {
                     double entityYOffset = (double)extendedMaxY - tempEntityMinY;
-                    tempEntity.method_1340(tempEntity.x, tempEntity.y + entityYOffset, tempEntity.z);
+                    tempEntity.setPos(tempEntity.x, tempEntity.y + entityYOffset, tempEntity.z);
                 }
             }
 

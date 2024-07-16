@@ -4,15 +4,15 @@
 
 package net.kozibrodka.wolves.materials;
 
-import net.minecraft.block.Material;
-import net.minecraft.class_259;
+import net.minecraft.block.MapColor;
+import net.minecraft.block.material.Material;
 
 public class CementMaterial extends Material
 {
-    public CementMaterial(class_259 mapcolor)
+    public CementMaterial(MapColor mapcolor)
     {
         super(mapcolor);
-        method_895();
-        method_900();
+        setReplaceable();
+        setDestroyPistonBehavior();
     }
 }

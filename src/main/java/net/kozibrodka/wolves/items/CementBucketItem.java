@@ -20,7 +20,7 @@ public class CementBucketItem extends TemplateBucketItem
 
     public ItemStack use(ItemStack ItemInstance, World world, PlayerEntity entityplayer)
     {
-        world.playSound(entityplayer, "mob.ghast.moan", 0.5F, 2.6F + (world.field_214.nextFloat() - world.field_214.nextFloat()) * 0.8F);
+        world.playSound(entityplayer, "mob.ghast.moan", 0.5F, 2.6F + (world.random.nextFloat() - world.random.nextFloat()) * 0.8F);
         return super.use(ItemInstance, world, entityplayer);
     }
 }

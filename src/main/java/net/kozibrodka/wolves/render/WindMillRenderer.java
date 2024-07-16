@@ -12,7 +12,7 @@ public class WindMillRenderer extends EntityRenderer
 
     public WindMillRenderer()
     {
-        shadowOpacity = 0.0F;
+        field_2679 = 0.0F;
         modelWindMill = new WindMillModel();
     }
 

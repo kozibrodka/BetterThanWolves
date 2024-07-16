@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(ChickenEntity.class)
 public interface ChickenAccessor {
-    @Invoker("method_912")
+    @Invoker("getHurtSound")
     String invokeGetHurtSound();
 
 }

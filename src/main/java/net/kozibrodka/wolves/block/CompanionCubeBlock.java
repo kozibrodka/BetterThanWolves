@@ -13,7 +13,7 @@ import net.kozibrodka.wolves.itemblocks.CompanionCubeBlockItem;
 import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.utils.RotatableBlock;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
-import net.minecraft.block.Material;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -151,7 +151,7 @@ public class CompanionCubeBlock extends TemplateBlock
     {
         if(!GetHalfCubeState(world, i, j, k))
         {
-            world.playSound((float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F, "mob.wolf.whine", 0.5F, 2.6F + (world.field_214.nextFloat() - world.field_214.nextFloat()) * 0.8F);
+            world.playSound((float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F, "mob.wolf.whine", 0.5F, 2.6F + (world.random.nextFloat() - world.random.nextFloat()) * 0.8F);
         }
     }
 
@@ -190,8 +190,8 @@ public class CompanionCubeBlock extends TemplateBlock
     {
         int iMetaData = world.getBlockMeta(i, j, k) & 8;
         iMetaData |= iFacing;
-        world.method_215(i, j, k, iMetaData);
-        world.method_243(i, j, k);
+        world.setBlockMeta(i, j, k, iMetaData);
+        world.blockUpdateEvent(i, j, k);
     }
 
     public boolean CanRotate(BlockView iBlockAccess, int i, int j, int l)
@@ -211,12 +211,12 @@ public class CompanionCubeBlock extends TemplateBlock
         if(iNewFacing != iFacing)
         {
             SetFacing(world, i, j, k, iNewFacing);
-            world.method_202(i, j, k, i, j, k);
-            if(world.field_214.nextInt(12) == 0)
+            world.setBlocksDirty(i, j, k, i, j, k);
+            if(world.random.nextInt(12) == 0)
             {
-                 world.playSound((float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F, "mob.wolf.whine", 0.5F, 2.6F + (world.field_214.nextFloat() - world.field_214.nextFloat()) * 0.8F);
+                 world.playSound((float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F, "mob.wolf.whine", 0.5F, 2.6F + (world.random.nextFloat() - world.random.nextFloat()) * 0.8F);
                 if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                    voicePacket(world, "mob.wolf.whine", i, j, k, 0.5F, 2.6F + (world.field_214.nextFloat() - world.field_214.nextFloat()) * 0.8F);
+                    voicePacket(world, "mob.wolf.whine", i, j, k, 0.5F, 2.6F + (world.random.nextFloat() - world.random.nextFloat()) * 0.8F);
                 }
             }
         }
@@ -224,7 +224,7 @@ public class CompanionCubeBlock extends TemplateBlock
 
     @Environment(EnvType.SERVER)
     public void voicePacket(World world, String name, int x, int y, int z, float g, float h){
-        List list2 = world.field_200;
+        List list2 = world.players;
         if(list2.size() != 0) {
             for(int k = 0; k < list2.size(); k++)
             {
@@ -246,8 +246,8 @@ public class CompanionCubeBlock extends TemplateBlock
         {
             iMetaData |= 8;
         }
-        world.method_215(i, j, k, iMetaData);
-        world.method_243(i, j, k);
+        world.setBlockMeta(i, j, k, iMetaData);
+        world.blockUpdateEvent(i, j, k);
     }
 
     public static void SpawnHearts(World world, int i, int j, int k)
@@ -255,11 +255,11 @@ public class CompanionCubeBlock extends TemplateBlock
         String s = "heart";
         for(int tempCount = 0; tempCount < 7; tempCount++)
         {
-            double d = world.field_214.nextGaussian() * 0.02D;
-            double d1 = world.field_214.nextGaussian() * 0.02D;
-            double d2 = world.field_214.nextGaussian() * 0.02D;
+            double d = world.random.nextGaussian() * 0.02D;
+            double d1 = world.random.nextGaussian() * 0.02D;
+            double d2 = world.random.nextGaussian() * 0.02D;
             //TODO: particle packets if needed
-            world.addParticle(s, (double)i + (double)world.field_214.nextFloat(), (double)(j + 1) + (double)world.field_214.nextFloat(), (double)k + (double)world.field_214.nextFloat(), d, d1, d2);
+            world.addParticle(s, (double)i + (double)world.random.nextFloat(), (double)(j + 1) + (double)world.random.nextFloat(), (double)k + (double)world.random.nextFloat(), d, d1, d2);
         }
 
     }

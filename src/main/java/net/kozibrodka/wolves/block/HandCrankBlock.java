@@ -13,7 +13,7 @@ import net.kozibrodka.wolves.utils.MechanicalDevice;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.kozibrodka.wolves.utils.CustomBlockRendering;
 import net.minecraft.block.Block;
-import net.minecraft.block.Material;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.entity.player.PlayerEntity;
@@ -41,7 +41,7 @@ public class HandCrankBlock extends TemplateBlock
 
     public HandCrankBlock(Identifier iid)
     {
-        super(iid, Material.field_993);
+        super(iid, Material.PISTON_BREAKABLE);
         setHardness(0.5F);
         setSoundGroup(WOOD_SOUND_GROUP);
         setTickRandomly(true);
@@ -105,11 +105,11 @@ public class HandCrankBlock extends TemplateBlock
         int iMetaData = world.getBlockMeta(i, j, k);
         if(iMetaData == 0) {
             if(!CheckForOverpower(world, i, j, k)) {
-                world.method_215(i, j, k, 1);
-                world.method_202(i, j, k, i, j, k);
+                world.setBlockMeta(i, j, k, 1);
+                world.setBlocksDirty(i, j, k, i, j, k);
                 world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.click", 1.0F, 2.0F);
-                world.method_244(i, j, k, BlockListener.handCrank.id);
-                world.method_216(i, j, k, BlockListener.handCrank.id, getTickRate());
+                world.notifyNeighbors(i, j, k, BlockListener.handCrank.id);
+                world.scheduleBlockUpdate(i, j, k, BlockListener.handCrank.id, getTickRate());
             } else {
                 BreakCrankWithDrop(world, i, j, k);
             }
@@ -133,19 +133,19 @@ public class HandCrankBlock extends TemplateBlock
                 }
                 if(iMetaData <= 5)
                 {
-                    world.method_216(i, j, k, BlockListener.handCrank.id, getTickRate() + iMetaData);
+                    world.scheduleBlockUpdate(i, j, k, BlockListener.handCrank.id, getTickRate() + iMetaData);
                 } else
                 {
-                    world.method_216(i, j, k, BlockListener.handCrank.id, handCrankDelayBeforeReset);
+                    world.scheduleBlockUpdate(i, j, k, BlockListener.handCrank.id, handCrankDelayBeforeReset);
                 }
-                world.method_215(i, j, k, iMetaData + 1);
-                world.method_243(i, j, k);
-                world.method_202(i, j, k, i, j, k);
+                world.setBlockMeta(i, j, k, iMetaData + 1);
+                world.blockUpdateEvent(i, j, k);
+                world.setBlocksDirty(i, j, k, i, j, k);
             } else
             {
-                world.method_215(i, j, k, 0);
-                world.method_243(i, j, k);
-                world.method_202(i, j, k, i, j, k);
+                world.setBlockMeta(i, j, k, 0);
+                world.blockUpdateEvent(i, j, k);
+                world.setBlocksDirty(i, j, k, i, j, k);
                 world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.click", 0.3F, 0.7F);
                 if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
                     voicePacket(world, i, j, k, 0.3F, 0.7F);
@@ -164,7 +164,7 @@ public class HandCrankBlock extends TemplateBlock
 //            System.out.println("WYSYLAM PAKIET");
 //        }
 
-        List list2 = world.field_200;
+        List list2 = world.players;
         if(list2.size() != 0) {
             for(int k = 0; k < list2.size(); k++)
             {
@@ -177,7 +177,7 @@ public class HandCrankBlock extends TemplateBlock
 
 //    public void randomDisplayTick(Level world, int i, int j, int k, Random random)
 //    {
-//        world.method_202(i, j, k, i, j, k);
+//        world.setBlocksDirty(i, j, k, i, j, k);
 //    }
 
     public void neighborUpdate(World world, int i, int j, int k, int iid)

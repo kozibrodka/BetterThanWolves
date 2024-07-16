@@ -61,7 +61,7 @@ public class HempCropBlock extends TemplatePlantBlock
     public void onTick(World world, int i, int j, int k, Random random)
     {
         super.onTick(world, i, j, k, random);
-        if(world.method_255(i, j + 1, k) >= 15 || world.method_255(i, j + 2, k) >= 15 || world.method_255(i, j, k) >= 15)
+        if(world.getLightLevel(i, j + 1, k) >= 15 || world.getLightLevel(i, j + 2, k) >= 15 || world.getLightLevel(i, j, k) >= 15)
         {
             boolean bOnHydratedSoil = false;
             int iBlockBelowID = world.getBlockId(i, j - 1, k);
@@ -85,8 +85,8 @@ public class HempCropBlock extends TemplatePlantBlock
                     if(random.nextInt(20) == 0)
                     {
                         l++;
-                        world.method_201(i, j, k, this.id, l);
-//                        world.method_243(i, j, k);     ??? Is this needed for serve?
+                        world.setBlock(i, j, k, this.id, l);
+//                        world.blockUpdateEvent(i, j, k);     ??? Is this needed for serve?
                     }
                 } else
                 {
@@ -100,10 +100,10 @@ public class HempCropBlock extends TemplatePlantBlock
                         int iTargetid = world.getBlockId(i, targetj, k);
                         if(iTargetid != id)
                         {
-                            if(world.method_234(i, targetj, k) && random.nextInt(60) == 0)
+                            if(world.isAir(i, targetj, k) && random.nextInt(60) == 0)
                             {
-                                world.method_201(i, targetj, k, id, 7);
-                                //                        world.method_243(i, j, k);     ??? Is this needed for serve?
+                                world.setBlock(i, targetj, k, id, 7);
+                                //                        world.blockUpdateEvent(i, j, k);     ??? Is this needed for serve?
                             }
                             break;
                         }
@@ -121,15 +121,15 @@ public class HempCropBlock extends TemplatePlantBlock
         {
             return;
         }
-        if(world.field_214.nextInt(100) < 50)
+        if(world.random.nextInt(100) < 50)
         {
             float f1 = 0.7F;
-            float f2 = world.field_214.nextFloat() * f1 + (1.0F - f1) * 0.5F;
-            float f3 = world.field_214.nextFloat() * f1 + (1.0F - f1) * 0.5F;
-            float f4 = world.field_214.nextFloat() * f1 + (1.0F - f1) * 0.5F;
+            float f2 = world.random.nextFloat() * f1 + (1.0F - f1) * 0.5F;
+            float f3 = world.random.nextFloat() * f1 + (1.0F - f1) * 0.5F;
+            float f4 = world.random.nextFloat() * f1 + (1.0F - f1) * 0.5F;
             ItemEntity entityitem = new ItemEntity(world, (float)i + f2, (float)j + f3, (float)k + f4, new ItemStack(ItemListener.hempSeeds));
             entityitem.pickupDelay = 10;
-            world.method_210(entityitem);
+            world.spawnEntity(entityitem);
         }
     }
 

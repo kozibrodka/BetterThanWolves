@@ -2,7 +2,7 @@ package net.kozibrodka.wolves.block;
 
 
 import net.kozibrodka.wolves.itemblocks.OmniSlabBlockItem;
-import net.minecraft.block.Material;
+import net.minecraft.block.material.Material;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
@@ -122,7 +122,7 @@ public class OmniSlabBlock extends TemplateBlock
         int iMetaData = world.getBlockMeta(i, j, k);
         iMetaData &= 1;
         iMetaData |= iFacing << 1;
-        world.method_215(i, j, k, iMetaData);
+        world.setBlockMeta(i, j, k, iMetaData);
     }
 
     public boolean IsSlabWood(BlockView iBlockAccess, int i, int j, int k)

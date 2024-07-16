@@ -1,7 +1,7 @@
 package net.kozibrodka.wolves.block;
 
 import net.kozibrodka.wolves.utils.RotatableBlock;
-import net.minecraft.block.Material;
+import net.minecraft.block.material.Material;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.template.block.TemplateBlock;
@@ -13,7 +13,7 @@ public class EmptyPlanterBlock extends TemplateBlock
 
     public EmptyPlanterBlock(Identifier iid)
     {
-        super(iid, Material.field_994);
+        super(iid, Material.GLASS);
         textureId = 77;
         setHardness(0.6F);
         setSoundGroup(GLASS_SOUND_GROUP);

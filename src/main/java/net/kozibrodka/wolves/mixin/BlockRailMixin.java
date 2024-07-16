@@ -25,6 +25,6 @@ public class BlockRailMixin {
 
     @Inject(method = "canPlaceAt", at = @At("RETURN"), cancellable = true)
     private void injected3(World arg, int i, int j, int k, CallbackInfoReturnable<Boolean> tor) {
-        tor.setReturnValue(arg.method_1780(i, j - 1, k) || arg.getBlockId(i, j - 1, k) == BlockListener.hopper.id); //TODO: not enough
+        tor.setReturnValue(arg.shouldSuffocate(i, j - 1, k) || arg.getBlockId(i, j - 1, k) == BlockListener.hopper.id); //TODO: not enough
     }
 }

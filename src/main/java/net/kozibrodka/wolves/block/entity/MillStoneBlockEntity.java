@@ -130,7 +130,7 @@ public class MillStoneBlockEntity extends BlockEntity
             return false;
         } else
         {
-            return entityplayer.method_1347((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D) <= 64D;
+            return entityplayer.getSquaredDistance((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D) <= 64D;
         }
     }
 
@@ -183,29 +183,29 @@ public class MillStoneBlockEntity extends BlockEntity
 
         if(iUnmilledItemID == BlockListener.companionCube.id) // Companion cube torture during milling
         {
-            if(millStoneContents[iUnmilledItemIndex].getDamage() == 0 && world.field_214.nextInt(10) == 0)
+            if(millStoneContents[iUnmilledItemIndex].getDamage() == 0 && world.random.nextInt(10) == 0)
             {
-                world.playSound((float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F, "mob.wolf.hurt", 2.0F, (world.field_214.nextFloat() - world.field_214.nextFloat()) * 0.2F + 1.0F);
+                world.playSound((float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F, "mob.wolf.hurt", 2.0F, (world.random.nextFloat() - world.random.nextFloat()) * 0.2F + 1.0F);
                 if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                    voicePacket(world, "mob.wolf.hurt", x, y, z, 2.0F, (world.field_214.nextFloat() - world.field_214.nextFloat()) * 0.2F + 1.0F);
+                    voicePacket(world, "mob.wolf.hurt", x, y, z, 2.0F, (world.random.nextFloat() - world.random.nextFloat()) * 0.2F + 1.0F);
                 }
             }
-            if(world.field_214.nextInt(20) == 0)
+            if(world.random.nextInt(20) == 0)
             {
                 ItemStack stringStack = new ItemStack(Item.STRING);
                 EjectStack(stringStack);
             }
-            if(world.field_214.nextInt(60) == 0)
+            if(world.random.nextInt(60) == 0)
             {
                 ItemStack woolStack = new ItemStack(Item.DYE.id, 1, 1);
                 EjectStack(woolStack);
             }
         }
-        else if(iUnmilledItemID == Block.NETHERRACK.id && world.field_214.nextInt(10) == 0) // Random scream when there is netherrack
+        else if(iUnmilledItemID == Block.NETHERRACK.id && world.random.nextInt(10) == 0) // Random scream when there is netherrack
         {
-            world.playSound((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, "mob.ghast.scream", 0.25F, world.field_214.nextFloat() * 0.4F + 0.8F);
+            world.playSound((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, "mob.ghast.scream", 0.25F, world.random.nextFloat() * 0.4F + 0.8F);
             if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                voicePacket(world, "mob.ghast.scream", x, y, z, 0.25F, world.field_214.nextFloat() * 0.4F + 0.8F);
+                voicePacket(world, "mob.ghast.scream", x, y, z, 0.25F, world.random.nextFloat() * 0.4F + 0.8F);
             }
         }
 
@@ -227,9 +227,9 @@ public class MillStoneBlockEntity extends BlockEntity
             CompanionCubeBlock.SpawnHearts(world, x, y, z);
             if(millStoneContents[iUnmilledItemIndex].getDamage() == 0)
             {
-                world.playSound((float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F, "mob.wolf.whine", 0.5F, 2.6F + (world.field_214.nextFloat() - world.field_214.nextFloat()) * 0.8F);
+                world.playSound((float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F, "mob.wolf.whine", 0.5F, 2.6F + (world.random.nextFloat() - world.random.nextFloat()) * 0.8F);
                 if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                    voicePacket(world, "mob.wolf.whine", x, y, z, 0.5F, 2.6F + (world.field_214.nextFloat() - world.field_214.nextFloat()) * 0.8F);
+                    voicePacket(world, "mob.wolf.whine", x, y, z, 0.5F, 2.6F + (world.random.nextFloat() - world.random.nextFloat()) * 0.8F);
                 }
             }
             removeStack(iUnmilledItemIndex, 1);
@@ -240,7 +240,7 @@ public class MillStoneBlockEntity extends BlockEntity
     public void EjectStack(ItemStack stack)
     {
         BlockPosition targetPos = new BlockPosition(x, y, z);
-        int iDirection = 2 + world.field_214.nextInt(4);
+        int iDirection = 2 + world.random.nextInt(4);
         targetPos.AddFacingAsOffset(iDirection);
         UnsortedUtils.ejectStackWithRandomOffset(world, targetPos.i, targetPos.j, targetPos.k, stack);
     }
@@ -377,16 +377,16 @@ public class MillStoneBlockEntity extends BlockEntity
         }
         if(IsWholeCompanionCubeInInventory())
         {
-            world.playSound((float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F, "mob.wolf.whine", 0.5F, 2.6F + (world.field_214.nextFloat() - world.field_214.nextFloat()) * 0.8F);
+            world.playSound((float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F, "mob.wolf.whine", 0.5F, 2.6F + (world.random.nextFloat() - world.random.nextFloat()) * 0.8F);
             if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                voicePacket(world, "mob.wolf.whine", x, y, z, 0.5F, 2.6F + (world.field_214.nextFloat() - world.field_214.nextFloat()) * 0.8F);
+                voicePacket(world, "mob.wolf.whine", x, y, z, 0.5F, 2.6F + (world.random.nextFloat() - world.random.nextFloat()) * 0.8F);
             }
         }
     }
 
     @Environment(EnvType.SERVER)
     public void voicePacket(World world, String name, int x, int y, int z, float g, float h){
-        List list2 = world.field_200;
+        List list2 = world.players;
         if(list2.size() != 0) {
             for(int k = 0; k < list2.size(); k++)
             {

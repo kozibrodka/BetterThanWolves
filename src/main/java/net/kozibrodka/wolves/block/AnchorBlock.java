@@ -17,7 +17,7 @@ import net.kozibrodka.wolves.block.entity.PulleyBlockEntity;
 import net.kozibrodka.wolves.utils.BlockPosition;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.Material;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -171,7 +171,7 @@ public class AnchorBlock extends TemplateBlock implements BlockWithWorldRenderer
 
     public void setAnchorFacing(World world, int i, int j, int k, int iFacing)
     {
-        world.method_215(i, j, k, iFacing);
+        world.setBlockMeta(i, j, k, iFacing);
     }
 
     void retractRope(World world, int i, int j, int k, PlayerEntity entityPlayer)
@@ -205,7 +205,7 @@ public class AnchorBlock extends TemplateBlock implements BlockWithWorldRenderer
 
     @Environment(EnvType.SERVER)
     public void voicePacket(World world, String name, int x, int y, int z, float g, float h){
-        List list2 = world.field_200;
+        List list2 = world.players;
         if(list2.size() != 0) {
             for(int k = 0; k < list2.size(); k++)
             {
@@ -220,9 +220,9 @@ public class AnchorBlock extends TemplateBlock implements BlockWithWorldRenderer
         ItemStack ropeStack = new ItemStack(ItemListener.ropeItem);
         if(entityPlayer.inventory.method_671(ropeStack))
         {
-            world.playSound(entityPlayer, "random.pop", 0.2F, ((world.field_214.nextFloat() - world.field_214.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+            world.playSound(entityPlayer, "random.pop", 0.2F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
             if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                voicePacket(world, "random.pop", i, j, k, 0.2F, ((world.field_214.nextFloat() - world.field_214.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                voicePacket(world, "random.pop", i, j, k, 0.2F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
             }
         } else
         {
@@ -240,7 +240,7 @@ public class AnchorBlock extends TemplateBlock implements BlockWithWorldRenderer
                 movementDirection = 1;
             }
         } else
-        if(tileEntityPulley.isLowering() && (world.method_234(i, j - 1, k) || world.getBlockId(i, j - 1, k) == BlockListener.platform.id))
+        if(tileEntityPulley.isLowering() && (world.isAir(i, j - 1, k) || world.getBlockId(i, j - 1, k) == BlockListener.platform.id))
         {
             movementDirection = -1;
         }
@@ -254,7 +254,7 @@ public class AnchorBlock extends TemplateBlock implements BlockWithWorldRenderer
     {
         BlockPosition pulleyPos = new BlockPosition(attachedTileEntityPulley.x, attachedTileEntityPulley.y, attachedTileEntityPulley.z);
         MovingAnchorEntity entityAnchor = new MovingAnchorEntity(world, (float)i + 0.5F, (float)j + anchorBaseHeight / 2.0F, (float)k + 0.5F, pulleyPos, movementDirection);
-        world.method_210(entityAnchor);
+        world.spawnEntity(entityAnchor);
         convertConnectedPlatformsToEntities(world, i, j, k, entityAnchor);
         world.setBlock(i, j, k, 0);
     }

@@ -50,16 +50,16 @@ public class UnsortedUtils
 
     public static void ejectStackWithRandomOffset(World world, int i, int j, int k, ItemStack stack)
     {
-        float xOffset = world.field_214.nextFloat() * 0.7F + 0.15F;
-        float yOffset = world.field_214.nextFloat() * 0.2F + 0.1F;
-        float zOffset = world.field_214.nextFloat() * 0.7F + 0.15F;
+        float xOffset = world.random.nextFloat() * 0.7F + 0.15F;
+        float yOffset = world.random.nextFloat() * 0.2F + 0.1F;
+        float zOffset = world.random.nextFloat() * 0.7F + 0.15F;
         ItemEntity entityitem = new ItemEntity(world, (float)i + xOffset, (float)j + yOffset, (float)k + zOffset, stack);
         float velocityFactor = 0.05F;
-        entityitem.velocityX = (float)world.field_214.nextGaussian() * velocityFactor;
-        entityitem.velocityY = (float)world.field_214.nextGaussian() * velocityFactor + 0.2F;
-        entityitem.velocityZ = (float)world.field_214.nextGaussian() * velocityFactor;
+        entityitem.velocityX = (float)world.random.nextGaussian() * velocityFactor;
+        entityitem.velocityY = (float)world.random.nextGaussian() * velocityFactor + 0.2F;
+        entityitem.velocityZ = (float)world.random.nextGaussian() * velocityFactor;
         entityitem.pickupDelay = 10;
-        world.method_210(entityitem);
+        world.spawnEntity(entityitem);
     }
 
     public static void EjectSingleItemWithRandomOffset(World world, int i, int j, int k, int iShiftedItemIndex, int iDamage)
@@ -71,12 +71,12 @@ public class UnsortedUtils
     public static void DropStackAsIfBlockHarvested(World world, int i, int j, int k, ItemStack stack)
     {
         float f1 = 0.7F;
-        double d = (double)(world.field_214.nextFloat() * f1) + (double)(1.0F - f1) * 0.5D;
-        double d1 = (double)(world.field_214.nextFloat() * f1) + (double)(1.0F - f1) * 0.5D;
-        double d2 = (double)(world.field_214.nextFloat() * f1) + (double)(1.0F - f1) * 0.5D;
+        double d = (double)(world.random.nextFloat() * f1) + (double)(1.0F - f1) * 0.5D;
+        double d1 = (double)(world.random.nextFloat() * f1) + (double)(1.0F - f1) * 0.5D;
+        double d2 = (double)(world.random.nextFloat() * f1) + (double)(1.0F - f1) * 0.5D;
         ItemEntity entityitem = new ItemEntity(world, (double)i + d, (double)j + d1, (double)k + d2, stack);
         entityitem.pickupDelay = 10;
-        world.method_210(entityitem);
+        world.spawnEntity(entityitem);
     }
 
     public static void DropSingleItemAsIfBlockHarvested(World world, int i, int j, int k, int iShiftedItemIndex, int iDamage)
@@ -148,19 +148,19 @@ public class UnsortedUtils
 
     public static boolean IsBlockBeingPrecipitatedOn(World world, int i, int j, int k)
     {
-        if(!world.method_270())
+        if(!world.isRaining())
         {
             return false;
         }
-        if(!world.method_249(i, j, k))
+        if(!world.hasSkyLight(i, j, k))
         {
             return false;
         }
-        if(world.method_228(i, k) > j)
+        if(world.getTopSolidBlockY(i, k) > j)
         {
             return false;
         }
-        Biome biomegenbase = world.method_1781().method_1787(i, k);
+        Biome biomegenbase = world.method_1781().getBiome(i, k);
         if(biomegenbase.canSnow())
         {
             return true;
@@ -176,7 +176,7 @@ public class UnsortedUtils
             for(int listIndex = 0; listIndex < list.size(); listIndex++)
             {
                 Entity entity = (Entity)list.get(listIndex);
-                if(entity.method_1380() || (entity instanceof ItemEntity))
+                if(entity.isPushable() || (entity instanceof ItemEntity))
                 {
                     PositionEntityOutsideOfLocation(world, entity, i, j, k);
                 }
@@ -247,7 +247,7 @@ public class UnsortedUtils
         {
             entityZ += zOffset;
         }
-        entity.method_1340(entityX, entityY, entityZ);
+        entity.setPos(entityX, entityY, entityZ);
     }
 
 //    public static void ServerPositionAllPlayerEntitiesOutsideOfLocation(Level var0, int var1, int var2, int var3)

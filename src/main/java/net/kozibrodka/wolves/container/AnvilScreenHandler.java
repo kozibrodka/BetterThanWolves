@@ -76,7 +76,7 @@ public class AnvilScreenHandler extends ScreenHandler
         if(localWorld.getBlockId(anvilX, anvilY, anvilZ) != BlockListener.anvil.id) {
             return false;
         } else {
-            return entityplayer.method_1347((double) anvilX + 0.5D, (double) anvilY + 0.5D, (double) anvilZ + 0.5D) <= 64D;
+            return entityplayer.getSquaredDistance((double) anvilX + 0.5D, (double) anvilY + 0.5D, (double) anvilZ + 0.5D) <= 64D;
         }
 //        return true;
     }
@@ -88,15 +88,15 @@ public class AnvilScreenHandler extends ScreenHandler
             ItemStack ItemInstance1 = slot.getStack();
             ItemInstance = ItemInstance1.copy();
             if(i == 0) {
-                method_2081(ItemInstance1, 10, 46, true);
+                insertItem(ItemInstance1, 10, 46, true);
             } else
             if(i >= 10 && i < 37) {
-                method_2081(ItemInstance1, 37, 46, false);
+                insertItem(ItemInstance1, 37, 46, false);
             } else
             if(i >= 37 && i < 46) {
-                method_2081(ItemInstance1, 10, 37, false);
+                insertItem(ItemInstance1, 10, 37, false);
             } else {
-                method_2081(ItemInstance1, 10, 46, false);
+                insertItem(ItemInstance1, 10, 46, false);
             }
             if(ItemInstance1.count == 0) {
                 slot.setStack(null);
@@ -104,7 +104,7 @@ public class AnvilScreenHandler extends ScreenHandler
                 slot.markDirty();
             }
             if(ItemInstance1.count != ItemInstance.count) {
-                slot.onCrafted(ItemInstance1);
+                slot.onTakeItem(ItemInstance1);
             } else {
                 return null;
             }

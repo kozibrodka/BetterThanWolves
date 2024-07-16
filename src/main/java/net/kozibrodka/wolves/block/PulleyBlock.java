@@ -12,7 +12,7 @@ import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.block.entity.PulleyBlockEntity;
 import net.kozibrodka.wolves.utils.*;
 import net.minecraft.block.Block;
-import net.minecraft.block.Material;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -68,7 +68,7 @@ public class PulleyBlock extends TemplateBlockWithEntity
     public void onPlaced(World world, int i, int j, int k)
     {
         super.onPlaced(world, i, j, k);
-        world.method_216(i, j, k, id, getTickRate());
+        world.scheduleBlockUpdate(i, j, k, id, getTickRate());
     }
 
     public void onBreak(World world, int i, int j, int k)
@@ -82,7 +82,7 @@ public class PulleyBlock extends TemplateBlockWithEntity
 
     public void neighborUpdate(World world, int i, int j, int k, int iid)
     {
-        world.method_216(i, j, k, id, getTickRate());
+        world.scheduleBlockUpdate(i, j, k, id, getTickRate());
     }
 
     public int getTickRate()
@@ -106,7 +106,7 @@ public class PulleyBlock extends TemplateBlockWithEntity
             bStateChanged = true;
         }
         boolean bRedstoneOn = IsRedstoneOn(world, i, j, k);
-        boolean bReceivingRedstone = world.method_263(i, j, k) || world.method_263(i, j + 1, k);
+        boolean bReceivingRedstone = world.canTransferPower(i, j, k) || world.canTransferPower(i, j + 1, k);
         if(bRedstoneOn != bReceivingRedstone)
         {
              world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.explode", 0.2F, 1.25F);
@@ -125,7 +125,7 @@ public class PulleyBlock extends TemplateBlockWithEntity
 
     @Environment(EnvType.SERVER)
     public void voicePacket(World world, String name, int x, int y, int z, float g, float h){
-        List list2 = world.field_200;
+        List list2 = world.players;
         if(list2.size() != 0) {
             for(int k = 0; k < list2.size(); k++)
             {
@@ -223,8 +223,8 @@ public class PulleyBlock extends TemplateBlockWithEntity
         {
             iMetaData &= -2;
         }
-        world.method_215(i, j, k, iMetaData);
-        world.method_243(i, j, k);
+        world.setBlockMeta(i, j, k, iMetaData);
+        world.blockUpdateEvent(i, j, k);
     }
 
     public boolean IsRedstoneOn(BlockView iBlockAccess, int i, int j, int k)
@@ -239,8 +239,8 @@ public class PulleyBlock extends TemplateBlockWithEntity
         {
             iMetaData |= 2;
         }
-        world.method_215(i, j, k, iMetaData);
-        world.method_243(i, j, k);
+        world.setBlockMeta(i, j, k, iMetaData);
+        world.blockUpdateEvent(i, j, k);
     }
 
     void EmitPulleyParticles(World world, int i, int j, int k, Random random)

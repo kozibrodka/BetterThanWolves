@@ -162,8 +162,8 @@ public class TurntableBlockEntity extends BlockEntity
                 } else if (currentIndex >= rotationMeta[matrixIndex].length) {
                     currentIndex = 0;
                 }
-                world.method_215(i, j, k, rotationMeta[matrixIndex][currentIndex]);
-                world.method_202(i, j, k, i, j, k);
+                world.setBlockMeta(i, j, k, rotationMeta[matrixIndex][currentIndex]);
+                world.setBlocksDirty(i, j, k, i, j, k);
                 return;
             }
         }
@@ -195,11 +195,11 @@ public class TurntableBlockEntity extends BlockEntity
         craftingRotationCount = 0;
         System.out.println("Bigger than count");
         if (outputs[0].itemId != ItemListener.nothing.id) {
-            world.method_154(x, y, z, outputs[0].itemId, outputs[0].getDamage());
+            world.setBlock(x, y, z, outputs[0].itemId, outputs[0].getDamage());
         } else {
             world.setBlock(x, y, z, 0);
         }
-        world.method_202(x, y, z, x, y, z);
+        world.setBlocksDirty(x, y, z, x, y, z);
         if (outputs[1] != null) {
             UnsortedUtils.ejectStackWithRandomOffset(world, x, y + 1, z, outputs[1].copy());
         }
@@ -234,7 +234,7 @@ public class TurntableBlockEntity extends BlockEntity
             return false;
         } else
         {
-            return world.method_1780(i, j, k);
+            return world.shouldSuffocate(i, j, k);
         }
     }
 
@@ -336,8 +336,8 @@ public class TurntableBlockEntity extends BlockEntity
             if(ReplaceableBlockChecker.IsReplaceableBlock(world, tempPos.i, tempPos.j, tempPos.k))
             {
                 world.setBlock(tempPos.i, tempPos.j, tempPos.k, iTempid);
-                world.method_215(tempPos.i, tempPos.j, tempPos.k, iTempMetaData);
-                world.method_202(tempPos.i, tempPos.j, tempPos.k, tempPos.i, tempPos.j, tempPos.k);
+                world.setBlockMeta(tempPos.i, tempPos.j, tempPos.k, iTempMetaData);
+                world.setBlocksDirty(tempPos.i, tempPos.j, tempPos.k, tempPos.i, tempPos.j, tempPos.k);
             } else
             {
                 Block tempBlock = Block.BLOCKS[iTempid];
@@ -348,44 +348,6 @@ public class TurntableBlockEntity extends BlockEntity
             }
         }
 
-    }
-
-    private void RotatePiston(PistonBlock blockPiston, int i, int j, int k, boolean bReverseDirection)
-    {
-        int iMetaData = world.getBlockMeta(i, j, k);
-        PistonBlock _tmp = blockPiston;
-        if(!PistonBlock.method_762(iMetaData))
-        {
-            int iDirection = iMetaData & 7;
-            int iNewDirection = UnsortedUtils.RotateFacingAroundJ(iDirection, bReverseDirection);
-            if(iDirection != iNewDirection)
-            {
-                iMetaData = iMetaData & -8 | iNewDirection;
-                world.method_215(i, j, k, iMetaData);
-                world.method_202(i, j, k, i, j, k);
-            }
-        }
-    }
-
-    private void RotateRepeater(RepeaterBlock blockRepeater, int i, int j, int k, boolean bReverseDirection)
-    {
-        int iMetaData = world.getBlockMeta(i, j, k);
-        int iDirection = iMetaData & 3;
-        if(bReverseDirection)
-        {
-            if(++iDirection > 3)
-            {
-                iDirection = 0;
-            }
-        } else
-        if(--iDirection < 0)
-        {
-            iDirection = 3;
-        }
-        iMetaData = iMetaData & -4 | iDirection;
-        world.method_215(i, j, k, iMetaData);
-        world.method_202(i, j, k, i, j, k);
-        blockRepeater.neighborUpdate(world, i, j, k, 0);
     }
 
     private void RotateRail(RailBlock blockRail, int i, int j, int k, boolean bReverseDirection)
@@ -454,28 +416,8 @@ public class TurntableBlockEntity extends BlockEntity
         {
             iMetaData = iDirection;
         }
-        world.method_215(i, j, k, iMetaData);
-        world.method_202(i, j, k, i, j, k);
-    }
-
-    private void RotateDispenser(int i, int j, int k, boolean bReverseDirection)
-    {
-        int iMetaData = world.getBlockMeta(i, j, k);
-        int iDirection = iMetaData;
-        iDirection = UnsortedUtils.RotateFacingAroundJ(iDirection, bReverseDirection);
-        iMetaData = iDirection;
-        world.method_215(i, j, k, iMetaData);
-        world.method_202(i, j, k, i, j, k);
-    }
-
-    private void RotateFurnace(int i, int j, int k, boolean bReverseDirection)
-    {
-        int iMetaData = world.getBlockMeta(i, j, k);
-        int iDirection = iMetaData;
-        iDirection = UnsortedUtils.RotateFacingAroundJ(iDirection, bReverseDirection);
-        iMetaData = iDirection;
-        world.method_215(i, j, k, iMetaData);
-        world.method_202(i, j, k, i, j, k);
+        world.setBlockMeta(i, j, k, iMetaData);
+        world.setBlocksDirty(i, j, k, i, j, k);
     }
 
     private void RotateStairs(int i, int j, int k, boolean bReverseDirection)
@@ -484,33 +426,13 @@ public class TurntableBlockEntity extends BlockEntity
         int iDirection = iMetaData + 2;
         iDirection = UnsortedUtils.RotateFacingAroundJ(iDirection, !bReverseDirection);
         iMetaData = iDirection - 2;
-        world.method_215(i, j, k, iMetaData);
-        world.method_202(i, j, k, i, j, k);
-    }
-
-    private void RotatePumpkin(int i, int j, int k, boolean bReverseDirection)
-    {
-        int iMetaData = world.getBlockMeta(i, j, k);
-        int iDirection = iMetaData;
-        if(bReverseDirection)
-        {
-            if(++iDirection > 3)
-            {
-                iDirection = 0;
-            }
-        } else
-        if(--iDirection < 0)
-        {
-            iDirection = 3;
-        }
-        iMetaData = iDirection;
-        world.method_215(i, j, k, iMetaData);
-        world.method_202(i, j, k, i, j, k);
+        world.setBlockMeta(i, j, k, iMetaData);
+        world.setBlocksDirty(i, j, k, i, j, k);
     }
 
     @Environment(EnvType.SERVER)
     public void voicePacket(World world, String name, int x, int y, int z, float g, float h){
-        List list2 = world.field_200;
+        List list2 = world.players;
         if(list2.size() != 0) {
             for(int k = 0; k < list2.size(); k++)
             {

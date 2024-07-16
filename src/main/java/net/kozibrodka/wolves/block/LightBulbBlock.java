@@ -7,7 +7,7 @@ import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.utils.RotatableBlock;
-import net.minecraft.block.Material;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.BlockView;
@@ -23,7 +23,7 @@ public class LightBulbBlock extends TemplateBlock
 
     public LightBulbBlock(Identifier iid)
     {
-        super(iid, 0, Material.field_994);
+        super(iid, 0, Material.GLASS);
         setHardness(0.4F);
         setSoundGroup(GLASS_SOUND_GROUP);
     }
@@ -40,7 +40,7 @@ public class LightBulbBlock extends TemplateBlock
 
     public void onPlaced(World world, int i, int j, int k)
     {
-        world.method_216(i, j, k, id, getTickRate());
+        world.scheduleBlockUpdate(i, j, k, id, getTickRate());
     }
 
     public int getDroppedItemId(int i, Random random)
@@ -66,12 +66,12 @@ public class LightBulbBlock extends TemplateBlock
 
     public void neighborUpdate(World world, int i, int j, int k, int l)
     {
-        world.method_216(i, j, k, id, getTickRate());
+        world.scheduleBlockUpdate(i, j, k, id, getTickRate());
     }
 
     public void onTick(World world, int i, int j, int k, Random random)
     {
-        boolean bPowered = world.method_265(i, j, k);
+        boolean bPowered = world.isEmittingRedstonePower(i, j, k);
         if(bPowered)
         {
             if(!IsLightOn(world, i, j, k))
@@ -89,9 +89,9 @@ public class LightBulbBlock extends TemplateBlock
 
     public boolean isEmittingRedstonePower(BlockView iBlockAccess, int i, int j, int k, int l) //isPoweringTo
     {
-//        return ((Minecraft) net.fabricmc.loader.FabricLoader.INSTANCE.getGameInstance()).level.method_263(i, j, k);
+//        return ((Minecraft) net.fabricmc.loader.FabricLoader.INSTANCE.getGameInstance()).level.canTransferPower(i, j, k);
 
-//        return ((MinecraftServer) FabricLoader.getInstance().getGameInstance()).getLevel(0).method_263(i, j, k);
+//        return ((MinecraftServer) FabricLoader.getInstance().getGameInstance()).getLevel(0).canTransferPower(i, j, k);
 //        FabricLoader.getInstance().getGameInstance();
 //        return iBlockAccess.getTileId(i, j, k) == BlockListener.lightBulbOn.id;
         switch (FabricLoader.INSTANCE.getEnvironmentType()){
@@ -107,12 +107,12 @@ public class LightBulbBlock extends TemplateBlock
 
     @Environment(EnvType.CLIENT)
     public boolean powerClient(BlockView iBlockAccess, int i, int j, int k, int l){
-        return ((Minecraft) FabricLoader.INSTANCE.getGameInstance()).world.method_263(i, j, k);
+        return ((Minecraft) FabricLoader.INSTANCE.getGameInstance()).world.canTransferPower(i, j, k);
     }
 
     @Environment(EnvType.SERVER)
     public boolean powerServer(BlockView iBlockAccess, int i, int j, int k, int l){
-        return ((MinecraftServer) net.fabricmc.loader.api.FabricLoader.getInstance().getGameInstance()).method_2157(0).method_263(i, j, k);
+        return ((MinecraftServer) net.fabricmc.loader.api.FabricLoader.getInstance().getGameInstance()).method_2157(0).canTransferPower(i, j, k);
         //TODO: It gets the overworld always.
     }
 

@@ -9,7 +9,7 @@ import net.kozibrodka.wolves.mixin.EntityBaseAccessor;
 import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.kozibrodka.wolves.utils.CustomBlockRendering;
-import net.minecraft.block.Material;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -31,7 +31,7 @@ public class RopeBlock extends TemplateBlock implements BlockWithWorldRenderer
 
     public RopeBlock(Identifier iid)
     {
-        super(iid, Material.field_993);
+        super(iid, Material.PISTON_BREAKABLE);
         setHardness(0.5F);
         setSoundGroup(DIRT_SOUND_GROUP);
         descensionSpeed = -0.15F;
@@ -93,7 +93,7 @@ public class RopeBlock extends TemplateBlock implements BlockWithWorldRenderer
             {
                 entity.velocityY = descensionSpeed;
             }
-            if(entity.field_1624)
+            if(entity.horizontalCollision)
             {
                 entity.velocityY = ascensionSpeed;
             }
@@ -112,7 +112,7 @@ public class RopeBlock extends TemplateBlock implements BlockWithWorldRenderer
 
     @Environment(EnvType.SERVER)
     public void voicePacket(World world, String name, int x, int y, int z, float g, float h){
-        List list2 = world.field_200;
+        List list2 = world.players;
         if(list2.size() != 0) {
             for(int k = 0; k < list2.size(); k++)
             {

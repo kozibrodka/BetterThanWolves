@@ -9,8 +9,8 @@ import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.block.entity.CementBlockEntity;
 import net.minecraft.block.Block;
-import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.util.math.Box;
@@ -23,7 +23,6 @@ import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockWithEntity;
 
 import java.util.Random;
-
 
 public class CementBlock extends TemplateBlockWithEntity
     implements BlockWithWorldRenderer
@@ -75,12 +74,12 @@ public class CementBlock extends TemplateBlockWithEntity
 
     public boolean isSolidBlock(BlockView iblockaccess, int i, int j, int k, int l)
     {
-        Material new_material = iblockaccess.method_1779(i, j, k);
+        Material new_material = iblockaccess.getMaterial(i, j, k);
         if(new_material == material)
         {
             return false;
         }
-        if(new_material == Material.field_997)
+        if(new_material == Material.ICE)
         {
             return false;
         }
@@ -131,8 +130,8 @@ public class CementBlock extends TemplateBlockWithEntity
         super.onPlaced(world, i, j, k);
         if(world.getBlockId(i, j, k) == id)
         {
-            world.method_216(i, j, k, id, getTickRate());
-            if(world.method_265(i, j, k))
+            world.scheduleBlockUpdate(i, j, k, id, getTickRate());
+            if(world.isEmittingRedstonePower(i, j, k))
             {
                 SetCementPowered(world, i, j, k, true);
             }
@@ -143,7 +142,7 @@ public class CementBlock extends TemplateBlockWithEntity
     {
         if(!IsCementPartiallyDry(world, i, j, k) && random.nextInt(250) == 0)
         {
-             world.playSound((float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F, "mob.ghast.moan", 0.5F, 2.6F + (world.field_214.nextFloat() - world.field_214.nextFloat()) * 0.8F);
+             world.playSound((float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F, "mob.ghast.moan", 0.5F, 2.6F + (world.random.nextFloat() - world.random.nextFloat()) * 0.8F);
         }
     }
 
@@ -151,7 +150,7 @@ public class CementBlock extends TemplateBlockWithEntity
     {
         int cementDist = GetCementSpreadDist(world, i, j, k);
         boolean bOldPowerState = IsCementPowered(world, i, j, k);
-        boolean bNewPowerState = world.method_265(i, j, k);
+        boolean bNewPowerState = world.isEmittingRedstonePower(i, j, k);
         if(bOldPowerState != bNewPowerState)
         {
             SetCementPowered(world, i, j, k, bNewPowerState);
@@ -206,7 +205,7 @@ public class CementBlock extends TemplateBlockWithEntity
         } else
         {
             SetCementDryTime(world, i, j, k, iDryTime);
-            world.method_216(i, j, k, id, getTickRate());
+            world.scheduleBlockUpdate(i, j, k, id, getTickRate());
             if(IsBlockOpenToSpread(world, i, j - 1, k))
             {
                 int targetCementDist = cementDist + 1;
@@ -257,21 +256,21 @@ public class CementBlock extends TemplateBlockWithEntity
             int iMetaData = world.getBlockMeta(i, j, k);
             if(bPowered)
             {
-                 world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "mob.ghast.scream", 1.0F, world.field_214.nextFloat() * 0.4F + 0.8F);
+                 world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "mob.ghast.scream", 1.0F, world.random.nextFloat() * 0.4F + 0.8F);
                 iMetaData |= 1;
             } else
             {
                 iMetaData &= -2;
             }
-            world.method_215(i, j, k, iMetaData);
-            world.method_243(i, j, k);
+            world.setBlockMeta(i, j, k, iMetaData);
+            world.blockUpdateEvent(i, j, k);
         }
     }
 
     public float GetRenderHeight(BlockView blockAccess, int i, int j, int k)
     {
         float fRenderHeight = 1.0F;
-        if(blockAccess.method_1779(i, j, k) == material)
+        if(blockAccess.getMaterial(i, j, k) == material)
         {
             int dist = GetCementSpreadDist(blockAccess, i, j, k);
             fRenderHeight = (float)(dist + 1) / 18F;
@@ -288,7 +287,7 @@ public class CementBlock extends TemplateBlockWithEntity
 
     public int GetCementSpreadDist(BlockView blockAccess, int i, int j, int k)
     {
-        if(blockAccess.method_1779(i, j, k) != material)
+        if(blockAccess.getMaterial(i, j, k) != material)
         {
             return -1;
         } else
@@ -302,8 +301,8 @@ public class CementBlock extends TemplateBlockWithEntity
     {
         CementBlockEntity tileEntity = (CementBlockEntity)world.getBlockEntity(i, j, k);
         tileEntity.spreadDist = iSpreadDist;
-        world.method_244(i, j, k, id);
-        world.method_202(i, j, k, i, j, k);
+        world.notifyNeighbors(i, j, k, id);
+        world.setBlocksDirty(i, j, k, i, j, k);
     }
 
     public boolean IsCementSourceBlock(BlockView blockAccess, int i, int j, int k)
@@ -313,7 +312,7 @@ public class CementBlock extends TemplateBlockWithEntity
 
     public int GetCementDryTime(BlockView blockAccess, int i, int j, int k)
     {
-        if(blockAccess.method_1779(i, j, k) != material)
+        if(blockAccess.getMaterial(i, j, k) != material)
         {
             return 0;
         } else
@@ -327,8 +326,8 @@ public class CementBlock extends TemplateBlockWithEntity
     {
         CementBlockEntity tileEntity = (CementBlockEntity)world.getBlockEntity(i, j, k);
         tileEntity.dryTime = iDryTime;
-        world.method_244(i, j, k, id);
-        world.method_202(i, j, k, i, j, k);
+        world.notifyNeighbors(i, j, k, id);
+        world.setBlocksDirty(i, j, k, i, j, k);
     }
 
     public boolean IsCementPartiallyDry(BlockView blockAccess, int i, int j, int k)
@@ -350,7 +349,7 @@ public class CementBlock extends TemplateBlockWithEntity
 
     private int GetLesserDryTimeIfCloserToSource(World world, int i, int j, int k, int distToSource, int dryTime)
     {
-        Material new_material = world.method_1779(i, j, k);
+        Material new_material = world.getMaterial(i, j, k);
         if(new_material == material)
         {
             int targetDistToSource = GetCementSpreadDist(world, i, j, k);
@@ -405,7 +404,7 @@ public class CementBlock extends TemplateBlockWithEntity
                 kSide++;
                 break;
             }
-            if(blockBlocksFlow(world, iSide, jSide, kSide) || world.method_1779(iSide, jSide, kSide) == material && IsCementSourceBlock(world, iSide, jSide, kSide))
+            if(blockBlocksFlow(world, iSide, jSide, kSide) || world.getMaterial(iSide, jSide, kSide) == material && IsCementSourceBlock(world, iSide, jSide, kSide))
             {
                 tempSpreadToSideFlags[sideNum] = false;
             } else
@@ -441,7 +440,7 @@ public class CementBlock extends TemplateBlockWithEntity
             {
                 kSide++;
             }
-            if(blockBlocksFlow(world, iSide, jSide, kSide) || world.method_1779(iSide, jSide, kSide) == material && IsCementSourceBlock(world, iSide, jSide, kSide))
+            if(blockBlocksFlow(world, iSide, jSide, kSide) || world.getMaterial(iSide, jSide, kSide) == material && IsCementSourceBlock(world, iSide, jSide, kSide))
             {
                 continue;
             }
@@ -538,7 +537,7 @@ public class CementBlock extends TemplateBlockWithEntity
             return false;
         } else
         {
-            return material.method_905();
+            return material.isSolid();
         }
     }
 
@@ -560,7 +559,7 @@ public class CementBlock extends TemplateBlockWithEntity
 
     private boolean IsBlockOpenToSpread(World world, int i, int j, int k)
     {
-        Material new_material = world.method_1779(i, j, k);
+        Material new_material = world.getMaterial(i, j, k);
         if(new_material == material)
         {
             return false;
@@ -732,11 +731,11 @@ public class CementBlock extends TemplateBlockWithEntity
             int j1 = i - (i1 & 1);
             int k1 = j;
             int l1 = k - (i1 >> 1 & 1);
-            if(iblockaccess.method_1779(j1, k1 + 1, l1) == BlockListener.fcCementMaterial)
+            if(iblockaccess.getMaterial(j1, k1 + 1, l1) == BlockListener.fcCementMaterial)
             {
                 return 1.0F;
             }
-            Material material = iblockaccess.method_1779(j1, k1, l1);
+            Material material = iblockaccess.getMaterial(j1, k1, l1);
             if(material == BlockListener.fcCementMaterial)
             {
                 if(iblockaccess.method_1783(j1, k1 + 1, l1))
@@ -752,7 +751,7 @@ public class CementBlock extends TemplateBlockWithEntity
                 l++;
                 continue;
             }
-            if(!material.method_905())
+            if(!material.isSolid())
             {
                 f += 0.6F;
                 l++;

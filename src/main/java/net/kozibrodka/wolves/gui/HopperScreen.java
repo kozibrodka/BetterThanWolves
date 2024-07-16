@@ -34,7 +34,7 @@ public class HopperScreen extends HandledScreen
 
     protected void drawBackground(float f)
     {
-        int i = minecraft.textureManager.getTextureId("/assets/wolves/stationapi/textures/gui/fchopper.png");
+        int i = minecraft.textureManager.getTextureId("assets/wolves/stationapi/textures/gui/fchopper.png");
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         minecraft.textureManager.bindTexture(i);
         int j = (width - backgroundWidth) / 2;

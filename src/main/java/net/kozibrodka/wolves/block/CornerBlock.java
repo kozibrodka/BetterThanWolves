@@ -1,7 +1,7 @@
 
 package net.kozibrodka.wolves.block;
 
-import net.minecraft.block.Material;
+import net.minecraft.block.material.Material;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
@@ -174,7 +174,7 @@ public class CornerBlock extends TemplateBlock
     {
         int iMetaData = world.getBlockMeta(i, j, k) & 8;
         iMetaData |= iAlignment;
-        world.method_215(i, j, k, iMetaData);
+        world.setBlockMeta(i, j, k, iMetaData);
     }
 
     public void SetCornerAlignment(World world, int i, int j, int k, boolean bIAligned, boolean bJAligned, boolean bKAligned)
@@ -197,19 +197,19 @@ public class CornerBlock extends TemplateBlock
 
     private boolean GetIOffsetOnPlaceFromNeighbours(World world, int i, int j, int k)
     {
-        if(!world.method_234(i + 1, j, k))
+        if(!world.isAir(i + 1, j, k))
         {
-            if(!world.method_234(i - 1, j, k))
+            if(!world.isAir(i - 1, j, k))
             {
-                return world.field_214.nextInt(2) > 0;
+                return world.random.nextInt(2) > 0;
             } else
             {
                 return true;
             }
         }
-        if(world.method_234(i - 1, j, k))
+        if(world.isAir(i - 1, j, k))
         {
-            return world.field_214.nextInt(2) > 0;
+            return world.random.nextInt(2) > 0;
         } else
         {
             return false;
@@ -218,19 +218,19 @@ public class CornerBlock extends TemplateBlock
 
     private boolean GetJOffsetOnPlaceFromNeighbours(World world, int i, int j, int k)
     {
-        if(!world.method_234(i, j + 1, k))
+        if(!world.isAir(i, j + 1, k))
         {
-            if(!world.method_234(i, j - 1, k))
+            if(!world.isAir(i, j - 1, k))
             {
-                return world.field_214.nextInt(2) > 0;
+                return world.random.nextInt(2) > 0;
             } else
             {
                 return true;
             }
         }
-        if(world.method_234(i, j - 1, k))
+        if(world.isAir(i, j - 1, k))
         {
-            return world.field_214.nextInt(2) > 0;
+            return world.random.nextInt(2) > 0;
         } else
         {
             return false;
@@ -239,19 +239,19 @@ public class CornerBlock extends TemplateBlock
 
     private boolean GetKOffsetOnPlaceFromNeighbours(World world, int i, int j, int k)
     {
-        if(!world.method_234(i, j, k + 1))
+        if(!world.isAir(i, j, k + 1))
         {
-            if(!world.method_234(i, j, k - 1))
+            if(!world.isAir(i, j, k - 1))
             {
-                return world.field_214.nextInt(2) > 0;
+                return world.random.nextInt(2) > 0;
             } else
             {
                 return true;
             }
         }
-        if(world.method_234(i, j, k - 1))
+        if(world.isAir(i, j, k - 1))
         {
-            return world.field_214.nextInt(2) > 0;
+            return world.random.nextInt(2) > 0;
         } else
         {
             return false;

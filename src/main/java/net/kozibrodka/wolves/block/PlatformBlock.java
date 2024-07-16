@@ -7,7 +7,7 @@ import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.utils.BlockPosition;
 import net.kozibrodka.wolves.utils.RotatableBlock;
-import net.minecraft.block.Material;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
@@ -82,7 +82,7 @@ public class PlatformBlock extends TemplateBlock
     private void ConvertToEntity(World world, int i, int j, int k, MovingAnchorEntity associatedAnchorEntity)
     {
         MovingPlatformEntity entityPlatform = new MovingPlatformEntity(world, (float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F, associatedAnchorEntity);
-        world.method_210(entityPlatform);
+        world.spawnEntity(entityPlatform);
         AttemptToLiftBlockWithPlatform(world, i, j + 1, k);
         world.setBlock(i, j, k, 0);
     }
