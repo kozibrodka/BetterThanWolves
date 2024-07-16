@@ -1,11 +1,14 @@
 package net.kozibrodka.wolves.model;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.kozibrodka.wolves.entity.WindMillEntity;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.entity.passive.SheepEntity;
 import org.lwjgl.opengl.GL11;
 
+@Environment(EnvType.CLIENT)
 public class WindMillModel extends EntityModel
 {
 

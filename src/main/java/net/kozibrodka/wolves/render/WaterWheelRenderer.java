@@ -1,11 +1,13 @@
 package net.kozibrodka.wolves.render;
 
 import net.kozibrodka.wolves.entity.WaterWheelEntity;
+import net.kozibrodka.wolves.mixin.BlockRendererAccessor;
 import net.kozibrodka.wolves.model.WaterWheelModel;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
 public class WaterWheelRenderer extends EntityRenderer
@@ -17,12 +19,12 @@ public class WaterWheelRenderer extends EntityRenderer
         modelWaterWheel = new WaterWheelModel();
     }
 
-    public void render(Entity entity, double d, double d1, double d2,
-                         float f, float f1)
+    @Override
+    public void render(Entity entity, double x, double y, double z, float f, float f1)
     {
         WaterWheelEntity fcentitywaterwheel = (WaterWheelEntity)entity;
         GL11.glPushMatrix();
-        GL11.glTranslatef((float)d, (float)d1, (float)d2);
+        GL11.glTranslatef((float)x, (float)y, (float)z);
         bindTexture("/assets/wolves/stationapi/textures/entity/fcwaterwheelent.png");
         GL11.glScalef(1.0F, 1.0F, 1.0F);
         float f2 = (float)fcentitywaterwheel.iWaterWheelTimeSinceHit - f1;

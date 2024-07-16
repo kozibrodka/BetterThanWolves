@@ -42,7 +42,8 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider
         iCurrentBladeColoringIndex = 0;
         iFullUpdateTickCount = 0;
         blocksSameBlockSpawning = true;
-        setBoundingBoxSpacing(12.8F, 12.8F);
+        //setBoundingBoxSpacing(12.8F, 12.8F);
+        setBoundingBoxSpacing(0.1F, 0.1F); // Temporary change to mitigate bogus collision on server
         standingEyeHeight = height / 2.0F;
     }
 

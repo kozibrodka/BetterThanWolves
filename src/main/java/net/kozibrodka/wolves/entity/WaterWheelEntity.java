@@ -33,7 +33,8 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
         fWaterWheelCurrentRotationSpeed = 0.0F;
         iFullUpdateTickCount = 0;
         blocksSameBlockSpawning = true;
-        setBoundingBoxSpacing(4.8F, 4.8F);
+        //setBoundingBoxSpacing(4.8F, 4.8F);
+        setBoundingBoxSpacing(0.1F, 0.1F); // Temporary change to mitigate bogus collision on server
         standingEyeHeight = height / 2.0F;
         waterTick = 0;
     }
