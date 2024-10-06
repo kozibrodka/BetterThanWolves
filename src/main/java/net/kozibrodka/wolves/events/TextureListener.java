@@ -14,7 +14,7 @@ import net.modificationstation.stationapi.api.util.Null;
 public class TextureListener {
 
     @Entrypoint.Namespace
-    public static final Namespace MOD_ID = Null.get();
+    public static final Namespace NAMESPACE = Null.get();
 
     @EventListener
     public void registerTextures(TextureRegisterEvent event) {
@@ -116,10 +116,11 @@ public class TextureListener {
         detector_side = registerBlockTexture("block/fcBlockDetector_side");
         detector_top = registerBlockTexture("block/fcBlockDetector_top");
         detector_bottom = registerBlockTexture("block/fcBlockDetector_down");
+        BlockListener.blockOfGrates.specifyTextures(getBlockTexture("item/fcGrate"));
 
-        ItemListener.bucketCement.setTexture(Identifier.of(MOD_ID, "item/bucketCement"));
-        ItemListener.soulFilter.setTexture(Identifier.of(MOD_ID, "item/soulFilter"));
-        ItemListener.nothing.setTexture(Identifier.of(MOD_ID, "item/nothing"));
+        ItemListener.bucketCement.setTexture(Identifier.of(NAMESPACE, "item/bucketCement"));
+        ItemListener.soulFilter.setTexture(Identifier.of(NAMESPACE, "item/soulFilter"));
+        ItemListener.nothing.setTexture(Identifier.of(NAMESPACE, "item/nothing"));
 
         BlockListener.detectorRailObsidian.asItem().setTextureId(registerBlockTexture("block/fcRailDetector_obsidian"));
         BlockListener.detectorRailWood.asItem().setTextureId(registerBlockTexture("block/fcRailDetector_wood"));
@@ -131,7 +132,7 @@ public class TextureListener {
         if(s == null) {
             return 0;
         }
-        return Atlases.getStationTerrain().addTexture(Identifier.of(MOD_ID, s)).index;
+        return Atlases.getStationTerrain().addTexture(Identifier.of(NAMESPACE, s)).index;
     }
 
     @EventListener
@@ -144,6 +145,10 @@ public class TextureListener {
         event.renderers.put(MovingAnchorEntity.class, new MovingAnchorRenderer());
         event.renderers.put(FallingAnvilEntity.class, new FallingAnvilRenderer());
         event.renderers.put(FCEntityTEST.class, new FCEntityTestRenderer());
+    }
+
+    public int getBlockTexture(String path) {
+        return Atlases.getTerrain().addTexture(Identifier.of(NAMESPACE, path)).index;
     }
 
     public static int axle_vertical;
