@@ -1,5 +1,5 @@
 package net.kozibrodka.wolves.glasscfg;
-
+/*
 import net.glasslauncher.mods.api.gcapi.api.ConfigName;
 import net.glasslauncher.mods.api.gcapi.api.MaxLength;
 import org.checkerframework.framework.qual.CFComment;
@@ -29,3 +29,5 @@ public class GameplayCFG {
 //    public static boolean fcDisableAxeChanges = false;
 //    public static boolean fcDisableMinecartChanges = false;
 }
+
+ */

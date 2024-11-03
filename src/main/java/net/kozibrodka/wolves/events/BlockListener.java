@@ -60,12 +60,12 @@ public class BlockListener {
         //TODO: Omni slabs are really cursed and kinda bad. Also applies to Cornets/Moudlings - should be option in CFG to remove them
 
         //TODO: I like the idea of Vanilla providing SLABS (can be placed only horizontally - with fixed placement (basically modern slabs)) & BTW providing PANELS
-        if(ConfigListener.wolvesGlass.gameplay_settings.initPanels){
-            panelNumber1 = (TemplateBlock) new PanelBlock(Identifier.of(MOD_ID, "fcPanel1"), Block.SAND).setTranslationKey(MOD_ID, "fc_panel_1"); //test panels later hide
-            panelNumber2 = (TemplateBlock) new PanelBlock(Identifier.of(MOD_ID, "fcPanel2"), Block.PUMPKIN).setTranslationKey(MOD_ID, "fcPanel_2");
-            panelNumber3 = (TemplateBlock) new PanelBlock(Identifier.of(MOD_ID, "fcPanel3"), crucible).setTranslationKey(MOD_ID, "fc_panel3");
-            panelNumber4 = (TemplateBlock) new PanelBlock(Identifier.of(MOD_ID, "fcPanel4"), Block.NETHER_PORTAL).setTranslationKey(MOD_ID, "fc_panel_4");
-        }
+        //if(ConfigListener.wolvesGlass.gameplay_settings.initPanels){
+        //    panelNumber1 = (TemplateBlock) new PanelBlock(Identifier.of(MOD_ID, "fcPanel1"), Block.SAND).setTranslationKey(MOD_ID, "fc_panel_1"); //test panels later hide
+        //    panelNumber2 = (TemplateBlock) new PanelBlock(Identifier.of(MOD_ID, "fcPanel2"), Block.PUMPKIN).setTranslationKey(MOD_ID, "fcPanel_2");
+        //    panelNumber3 = (TemplateBlock) new PanelBlock(Identifier.of(MOD_ID, "fcPanel3"), crucible).setTranslationKey(MOD_ID, "fc_panel3");
+        //    panelNumber4 = (TemplateBlock) new PanelBlock(Identifier.of(MOD_ID, "fcPanel4"), Block.NETHER_PORTAL).setTranslationKey(MOD_ID, "fc_panel_4");
+        //}
 
     }
     public static final Material fcCementMaterial = new CementMaterial(MapColor.GRAY);

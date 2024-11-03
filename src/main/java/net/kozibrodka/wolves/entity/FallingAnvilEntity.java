@@ -2,6 +2,7 @@ package net.kozibrodka.wolves.entity;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+//import net.kozibrodka.wolves.events.ConfigListener;
 import net.kozibrodka.wolves.events.ConfigListener;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
