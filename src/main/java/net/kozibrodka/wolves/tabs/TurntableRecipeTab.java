@@ -1,5 +1,5 @@
 package net.kozibrodka.wolves.tabs;
-
+/*
 import net.glasslauncher.hmifabric.Utils;
 import net.glasslauncher.hmifabric.tabs.TabWithTexture;
 import net.kozibrodka.wolves.events.BlockListener;
@@ -108,3 +108,5 @@ public class TurntableRecipeTab extends TabWithTexture {
         return new ItemStack(tabBlock);
     }
 }
+
+ */

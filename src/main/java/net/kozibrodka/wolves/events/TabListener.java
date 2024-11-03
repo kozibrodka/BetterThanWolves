@@ -1,5 +1,5 @@
 package net.kozibrodka.wolves.events;
-
+/*
 import net.glasslauncher.hmifabric.event.HMITabRegistryEvent;
 import net.kozibrodka.wolves.tabs.*;
 import net.mine_diver.unsafeevents.listener.EventListener;
@@ -22,3 +22,5 @@ public class TabListener {
         event.registry.register(Identifier.of(ConfigListener.MOD_ID, "sawing"), new SawingRecipeTab(ConfigListener.MOD_ID), new ItemStack(BlockListener.saw));
     }
 }
+
+ */

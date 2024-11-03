@@ -28,7 +28,6 @@
       "net.kozibrodka.wolves.events.PacketListener"
     ],
     "stationapi:event_bus_client": [
-      "net.kozibrodka.wolves.events.TabListener",
       "net.kozibrodka.wolves.events.TextureListener",
       "net.kozibrodka.wolves.events.ScreenHandlerListener"
     ],

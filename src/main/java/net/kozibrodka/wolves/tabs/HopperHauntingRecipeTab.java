@@ -1,5 +1,5 @@
 package net.kozibrodka.wolves.tabs;
-
+/*
 import net.glasslauncher.hmifabric.Utils;
 import net.glasslauncher.hmifabric.tabs.TabWithTexture;
 import net.kozibrodka.wolves.events.BlockListener;
@@ -107,3 +107,5 @@ public class HopperHauntingRecipeTab extends TabWithTexture {
         return new ItemStack(tabBlock);
     }
 }
+
+ */
