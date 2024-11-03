@@ -34,7 +34,7 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
         iFullUpdateTickCount = 0;
         blocksSameBlockSpawning = true;
         //setBoundingBoxSpacing(4.8F, 4.8F);
-        setBoundingBoxSpacing(0.1F, 0.1F); // Temporary change to mitigate bogus collision on server
+        setBoundingBoxSpacing(1.0F, 0); // Temporary change to mitigate bogus collision on server
         standingEyeHeight = height / 2.0F;
         waterTick = 0;
     }
@@ -44,7 +44,7 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
         this(world);
         setPos(x, y, z);
         setAligned(bJAligned);
-        AlignBoundingBoxWithAxis();
+        //AlignBoundingBoxWithAxis();
     }
 
     public WaterWheelEntity(World level, Double aDouble, Double aDouble1, Double aDouble2) {
@@ -55,10 +55,10 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
     {
         if(getAligned())
         {
-            boundingBox.set(x - 0.40000000596046448D, y - 2.4000000953674316D, z - 2.4000000953674316D, x + 0.40000000596046448D, y + 2.4000000953674316D, z + 2.4000000953674316D);
+            boundingBox.set(x - 0.4, y - 2.4, z - 2.4, x + 0.4, y + 2.4, z + 2.4);
         } else
         {
-            boundingBox.set(x - 2.4000000953674316D, y - 2.4000000953674316D, z - 0.40000000596046448D, x + 2.4000000953674316D, y + 2.4000000953674316D, z + 0.40000000596046448D);
+            boundingBox.set(x - 2.4, y - 2.4, z - 0.4, x + 2.4, y + 2.4, z + 0.4);
         }
     }
 
@@ -81,7 +81,7 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
         setAligned(nbttagcompound.getBoolean("bWaterWheelIAligned"));
         setWheelRotation(nbttagcompound.getFloat("fRotation"));
         setProvidingPower(nbttagcompound.getBoolean("bProvidingPower"));
-        AlignBoundingBoxWithAxis();
+        //AlignBoundingBoxWithAxis();
     }
 
     protected boolean bypassesSteppingEffects()
@@ -91,12 +91,14 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
 
     public Box method_1379(Entity entity)
     {
-        return entity.boundingBox;
+        //return entity.boundingBox;
+        return null;
     }
 
     public Box getBoundingBox()
     {
-        return boundingBox;
+        //return boundingBox;
+        return null;
     }
 
     public boolean isPushable()
@@ -106,7 +108,8 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
 
     public boolean isCollidable()
     {
-        return !dead;
+        //return !dead;
+        return false;
     }
 
     public boolean damage(Entity entity, int i)
@@ -193,7 +196,7 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
                 return;
             }
             fWaterWheelCurrentRotationSpeed = ComputeRotation(iCenterI, iCenterJ, iCenterK);
-            /**
+            /*
              * modloader code
              */
 //            if(fWaterWheelCurrentRotationSpeed != sentRotationSpeed) {
@@ -471,9 +474,9 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
 
     public boolean interact(PlayerEntity entityplayer)
     {
-        if(world.isRemote){
+        if(world.isRemote) {
             System.out.println("KLIENT: " + getAligned());
-        }else{
+        } else {
             System.out.println("SERVER: " + getAligned());
         }
         return false;
