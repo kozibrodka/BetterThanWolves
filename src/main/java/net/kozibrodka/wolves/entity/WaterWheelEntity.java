@@ -33,8 +33,7 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
         fWaterWheelCurrentRotationSpeed = 0.0F;
         iFullUpdateTickCount = 0;
         blocksSameBlockSpawning = true;
-        //setBoundingBoxSpacing(4.8F, 4.8F);
-        setBoundingBoxSpacing(1.0F, 0); // Temporary change to mitigate bogus collision on server
+        setBoundingBoxSpacing(0.5F, 0.5F);
         standingEyeHeight = height / 2.0F;
         waterTick = 0;
     }
@@ -44,22 +43,10 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
         this(world);
         setPos(x, y, z);
         setAligned(bJAligned);
-        //AlignBoundingBoxWithAxis();
     }
 
     public WaterWheelEntity(World level, Double aDouble, Double aDouble1, Double aDouble2) {
         this(level);
-    }
-
-    private void AlignBoundingBoxWithAxis()
-    {
-        if(getAligned())
-        {
-            boundingBox.set(x - 0.4, y - 2.4, z - 2.4, x + 0.4, y + 2.4, z + 2.4);
-        } else
-        {
-            boundingBox.set(x - 2.4, y - 2.4, z - 0.4, x + 2.4, y + 2.4, z + 0.4);
-        }
     }
 
     protected void initDataTracker()
@@ -81,7 +68,6 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
         setAligned(nbttagcompound.getBoolean("bWaterWheelIAligned"));
         setWheelRotation(nbttagcompound.getFloat("fRotation"));
         setProvidingPower(nbttagcompound.getBoolean("bProvidingPower"));
-        //AlignBoundingBoxWithAxis();
     }
 
     protected boolean bypassesSteppingEffects()
@@ -91,14 +77,12 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
 
     public Box method_1379(Entity entity)
     {
-        //return entity.boundingBox;
-        return null;
+        return entity.boundingBox;
     }
 
     public Box getBoundingBox()
     {
-        //return boundingBox;
-        return null;
+        return boundingBox;
     }
 
     public boolean isPushable()
@@ -108,8 +92,7 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
 
     public boolean isCollidable()
     {
-        //return !dead;
-        return false;
+        return !dead;
     }
 
     public boolean damage(Entity entity, int i)
@@ -138,15 +121,20 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
 
     public void markDead()
     {
+        int iCenterI = (int)(x - 0.5D);
+        int iCenterJ = (int)(y - 0.5D);
+        int iCenterK = (int)(z - 0.5D);
+        int iCenterid = world.getBlockId(iCenterI, iCenterJ, iCenterK);
+        if (iCenterid == BlockListener.nonCollidingAxleBlock.id) {
+            world.setBlock(iCenterI, iCenterJ, iCenterK, BlockListener.axleBlock.id, world.getBlockMeta(iCenterI, iCenterJ, iCenterK));
+        }
         if(getProvidingPower())
         {
-            int iCenterI = (int)(x - 0.5D);
-            int iCenterJ = (int)(y - 0.5D);
-            int iCenterK = (int)(z - 0.5D);
-            int iCenterid = world.getBlockId(iCenterI, iCenterJ, iCenterK);
-            if(iCenterid == BlockListener.axleBlock.id)
-            {
+
+            if(iCenterid == BlockListener.axleBlock.id) {
                 ((AxleBlock)BlockListener.axleBlock).SetPowerLevel(world, iCenterI, iCenterJ, iCenterK, 0);
+            } else if(iCenterid == BlockListener.nonCollidingAxleBlock.id) {
+                ((AxleBlock)BlockListener.nonCollidingAxleBlock).SetPowerLevel(world, iCenterI, iCenterJ, iCenterK, 0);
             }
         }
         super.markDead();
@@ -180,7 +168,10 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
             int iCenterJ = (int)(y - 0.5D);
             int iCenterK = (int)(z - 0.5D);
             int iCenterid = world.getBlockId(iCenterI, iCenterJ, iCenterK);
-            if(iCenterid != BlockListener.axleBlock.id)
+            if (iCenterid == BlockListener.axleBlock.id) {
+                world.setBlock(iCenterI, iCenterJ, iCenterK, BlockListener.nonCollidingAxleBlock.id, world.getBlockMeta(iCenterI, iCenterJ, iCenterK));
+            }
+            if(iCenterid != BlockListener.axleBlock.id && iCenterid != BlockListener.nonCollidingAxleBlock.id)
             {
                 DestroyWithDrop();
                 return;
@@ -191,6 +182,11 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
                 return;
             }
             if(!getProvidingPower() && ((AxleBlock)BlockListener.axleBlock).GetPowerLevel(world, iCenterI, iCenterJ, iCenterK) > 0)
+            {
+                DestroyWithDrop();
+                return;
+            }
+            if(!getProvidingPower() && ((AxleBlock)BlockListener.nonCollidingAxleBlock).GetPowerLevel(world, iCenterI, iCenterJ, iCenterK) > 0)
             {
                 DestroyWithDrop();
                 return;
@@ -209,13 +205,13 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
                 {
 //                    System.out.println("SERVI+ " + getAligned());
                     setProvidingPower(true);
-                    ((AxleBlock)BlockListener.axleBlock).SetPowerLevel(world, iCenterI, iCenterJ, iCenterK, 3);
+                    ((AxleBlock)BlockListener.nonCollidingAxleBlock).SetPowerLevel(world, iCenterI, iCenterJ, iCenterK, 3);
                 }
             } else
                 if (getProvidingPower()) {
 //                    System.out.println("SERVI+ " + getAligned());
                     setProvidingPower(false);
-                    ((AxleBlock) BlockListener.axleBlock).SetPowerLevel(world, iCenterI, iCenterJ, iCenterK, 0);
+                    ((AxleBlock) BlockListener.nonCollidingAxleBlock).SetPowerLevel(world, iCenterI, iCenterJ, iCenterK, 0);
                 }
 
         }

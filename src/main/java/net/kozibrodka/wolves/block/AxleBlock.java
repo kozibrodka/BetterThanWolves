@@ -252,76 +252,9 @@ public class AxleBlock extends TemplateBlock
         return false;
     }
 
-    public void PropagatePowerFromSource(World world, int i, int j, int k, boolean bPowered)
-    {
-        int iSourceAxis = GetAxisAlignment(world, i, j, k);
-        BlockPosition tempPos = new BlockPosition(i, j, k);
-        int iTempPowerLevel = 0;
-        if(bPowered)
-        {
-            iTempPowerLevel = 3;
-        }
-        BlockPosition offsetPos = new BlockPosition();
-        switch(iSourceAxis)
-        {
-        case 0: // '\0'
-            offsetPos.AddFacingAsOffset(0);
-            break;
-
-        case 1: // '\001'
-            offsetPos.AddFacingAsOffset(2);
-            break;
-
-        default:
-            offsetPos.AddFacingAsOffset(4);
-            break;
-        }
-        for(int tempCount = 0; tempCount < 2; tempCount++)
-        {
-            do
-            {
-                int iTempid = world.getBlockId(tempPos.i, tempPos.j, tempPos.k);
-                if(iTempid != BlockListener.axleBlock.id)
-                {
-                    break;
-                }
-                int iTempAxis = GetAxisAlignment(world, tempPos.i, tempPos.j, tempPos.k);
-                if(iTempAxis != iSourceAxis)
-                {
-                    break;
-                }
-                if(bPowered && iTempPowerLevel <= 0)
-                {
-                    BreakAxle(world, tempPos.i, tempPos.j, tempPos.k);
-                    break;
-                }
-                SetPowerLevel(world, tempPos.i, tempPos.j, tempPos.k, iTempPowerLevel);
-                tempPos.AddPos(offsetPos);
-                if(iTempPowerLevel > 0)
-                {
-                    iTempPowerLevel--;
-                }
-            } while(true);
-            if(tempCount != 0)
-            {
-                continue;
-            }
-            offsetPos.Invert();
-            tempPos.i = i + offsetPos.i;
-            tempPos.j = j + offsetPos.j;
-            tempPos.k = k + offsetPos.k;
-            iTempPowerLevel = 0;
-            if(bPowered)
-            {
-                iTempPowerLevel = 2;
-            }
-        }
-
-    }
-
     public void BreakAxle(World world, int i, int j, int k)
     {
-        if(world.getBlockId(i, j, k) == BlockListener.axleBlock.id)
+        if(world.getBlockId(i, j, k) == BlockListener.axleBlock.id || world.getBlockId(i, j, k) == BlockListener.nonCollidingAxleBlock.id)
         {
             for(int iTemp = 0; iTemp < 5; iTemp++)
             {
@@ -384,7 +317,7 @@ public class AxleBlock extends TemplateBlock
             for(int tempSource = 0; tempSource < 2; tempSource++)
             {
                 int iTempid = world.getBlockId(potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
-                if(iTempid != BlockListener.axleBlock.id)
+                if(iTempid != BlockListener.axleBlock.id && iTempid != BlockListener.nonCollidingAxleBlock.id)
                 {
                     continue;
                 }
@@ -448,7 +381,7 @@ public class AxleBlock extends TemplateBlock
     {
         int iCurrentPower = GetPowerLevel(world, i, j, k);
         int iAxis = GetAxisAlignment(world, i, j, k);
-        BlockPosition potentialSources[] = new BlockPosition[2];
+        BlockPosition[] potentialSources = new BlockPosition[2];
         potentialSources[0] = new BlockPosition(i, j, k);
         potentialSources[1] = new BlockPosition(i, j, k);
         switch(iAxis)
@@ -471,7 +404,7 @@ public class AxleBlock extends TemplateBlock
         for(int tempSource = 0; tempSource < 2; tempSource++)
         {
             int iTempid = world.getBlockId(potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
-            if(iTempid == BlockListener.axleBlock.id)
+            if(iTempid == BlockListener.axleBlock.id || iTempid == BlockListener.nonCollidingAxleBlock.id)
             {
                 int iTempAxis = GetAxisAlignment(world, potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
                 if(iTempAxis != iAxis)

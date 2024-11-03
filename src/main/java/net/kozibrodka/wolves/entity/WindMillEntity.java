@@ -42,8 +42,7 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider
         iCurrentBladeColoringIndex = 0;
         iFullUpdateTickCount = 0;
         blocksSameBlockSpawning = true;
-        //setBoundingBoxSpacing(12.8F, 12.8F);
-        setBoundingBoxSpacing(0.1F, 0.1F); // Temporary change to mitigate bogus collision on server
+        setBoundingBoxSpacing(0.5F, 0.5F);
         standingEyeHeight = height / 2.0F;
     }
 
@@ -53,22 +52,10 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider
         this(world);
         setPos(x, y, z);
         setAligned(bIAligned);
-        AlignBoundingBoxWithAxis();
     }
 
     public WindMillEntity(World level, Double aDouble, Double aDouble1, Double aDouble2) {
         this(level);
-    }
-
-    private void AlignBoundingBoxWithAxis()
-    {
-        if(getAligned())
-        {
-            boundingBox.set(x - 0.40000000596046448D, y - 6.4000000953674316D, z - 6.4000000953674316D, x + 0.40000000596046448D, y + 6.4000000953674316D, z + 6.4000000953674316D);
-        } else
-        {
-            boundingBox.set(x - 6.4000000953674316D, y - 6.4000000953674316D, z - 0.40000000596046448D, x + 6.4000000953674316D, y + 6.4000000953674316D, z + 0.40000000596046448D);
-        }
     }
 
     protected void initDataTracker()
@@ -105,7 +92,6 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider
         setBladeColor(1, nbttagcompound.getInt("iBladeColors1"));
         setBladeColor(2, nbttagcompound.getInt("iBladeColors2"));
         setBladeColor(3, nbttagcompound.getInt("iBladeColors3"));
-        AlignBoundingBoxWithAxis();
     }
 
     protected boolean bypassesSteppingEffects()
@@ -160,15 +146,21 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider
 
     public void markDead()
     {
+        int iCenterI = (int)(x - 0.5D);
+        int iCenterJ = (int)(y - 0.5D);
+        int iCenterK = (int)(z - 0.5D);
+        int iCenterid = world.getBlockId(iCenterI, iCenterJ, iCenterK);
+        if (iCenterid == BlockListener.nonCollidingAxleBlock.id) {
+            world.setBlock(iCenterI, iCenterJ, iCenterK, BlockListener.axleBlock.id, world.getBlockMeta(iCenterI, iCenterJ, iCenterK));
+        }
         if(getProvidingPower())
         {
-            int iCenterI = (int)(x - 0.5D);
-            int iCenterJ = (int)(y - 0.5D);
-            int iCenterK = (int)(z - 0.5D);
-            int iCenterid = world.getBlockId(iCenterI, iCenterJ, iCenterK);
-            if(iCenterid == BlockListener.axleBlock.id)
-            {
+
+
+            if(iCenterid == BlockListener.axleBlock.id) {
                 ((AxleBlock)BlockListener.axleBlock).SetPowerLevel(world, iCenterI, iCenterJ, iCenterK, 0);
+            } else if(iCenterid == BlockListener.nonCollidingAxleBlock.id) {
+                ((AxleBlock)BlockListener.nonCollidingAxleBlock).SetPowerLevel(world, iCenterI, iCenterJ, iCenterK, 0);
             }
         }
         super.markDead();
@@ -197,7 +189,10 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider
             int iCenterJ = (int)(y - 0.5D);
             int iCenterK = (int)(z - 0.5D);
             int iCenterid = world.getBlockId(iCenterI, iCenterJ, iCenterK);
-            if(iCenterid != BlockListener.axleBlock.id)
+            if (iCenterid == BlockListener.axleBlock.id) {
+                world.setBlock(iCenterI, iCenterJ, iCenterK, BlockListener.nonCollidingAxleBlock.id, world.getBlockMeta(iCenterI, iCenterJ, iCenterK));
+            }
+            if(iCenterid != BlockListener.axleBlock.id && iCenterid != BlockListener.nonCollidingAxleBlock.id)
             {
                 DestroyWithDrop();
                 return;
@@ -212,19 +207,24 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider
                 DestroyWithDrop();
                 return;
             }
+            if(!getProvidingPower() && ((AxleBlock)BlockListener.nonCollidingAxleBlock).GetPowerLevel(world, iCenterI, iCenterJ, iCenterK) > 0)
+            {
+                DestroyWithDrop();
+                return;
+            }
             fWindMillCurrentRotationSpeed = ComputeRotation(iCenterI, iCenterJ, iCenterK);
             if(fWindMillCurrentRotationSpeed > 0.01F || fWindMillCurrentRotationSpeed < -0.01F)
             {
                 if(!getProvidingPower())
                 {
                     setProvidingPower(true);
-                    ((AxleBlock)BlockListener.axleBlock).SetPowerLevel(world, iCenterI, iCenterJ, iCenterK, 3);
+                    ((AxleBlock)BlockListener.nonCollidingAxleBlock).SetPowerLevel(world, iCenterI, iCenterJ, iCenterK, 3);
                 }
             } else
             if(getProvidingPower())
             {
                 setProvidingPower(false);
-                ((AxleBlock)BlockListener.axleBlock).SetPowerLevel(world, iCenterI, iCenterJ, iCenterK, 0);
+                ((AxleBlock)BlockListener.nonCollidingAxleBlock).SetPowerLevel(world, iCenterI, iCenterJ, iCenterK, 0);
             }
             if(getOverpowerTimer() >= 0)
             {
@@ -234,7 +234,7 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider
                 }
                 if(getOverpowerTimer() <= 0)
                 {
-                    ((AxleBlock)BlockListener.axleBlock).Overpower(world, iCenterI, iCenterJ, iCenterK);
+                    ((AxleBlock)BlockListener.nonCollidingAxleBlock).Overpower(world, iCenterI, iCenterJ, iCenterK);
                 }
             }
         }

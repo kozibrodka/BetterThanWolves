@@ -56,6 +56,7 @@ public class BlockListener {
         vase = (TemplateBlockWithEntity) new VaseBlock(Identifier.of(MOD_ID, "vase")).setTranslationKey(MOD_ID, "vase");
         detectorBlock = (TemplateBlock) new DetectorBlock(Identifier.of(MOD_ID, "detector_block"), Material.PISTON_BREAKABLE).setTranslationKey(MOD_ID, "detector_block");;
         blockOfGrates = new LazyTransparentBlockTemplate(Identifier.of(MOD_ID, "block_of_grates"), Material.WOOD, 1.5F, Block.WOOD_SOUND_GROUP);
+        nonCollidingAxleBlock = (TemplateBlock) new NonCollidingAxleBlock(Identifier.of(MOD_ID, "non_colliding_axle_block")).setTranslationKey(MOD_ID, "non_colliding_axle_block");
 
         //TODO: Omni slabs are really cursed and kinda bad. Also applies to Cornets/Moudlings - should be option in CFG to remove them
 
@@ -104,6 +105,7 @@ public class BlockListener {
     public static TemplateBlock planter;
     public static TemplateBlockWithEntity vase;
     public static TemplateBlock detectorBlock;
+    public static TemplateBlock nonCollidingAxleBlock;
 
     public static TemplateBlock blockOfWicker; //Mango Pack Addon
     public static LazyBlockTemplate blockOfGrates; //Another Mango Pack Addon

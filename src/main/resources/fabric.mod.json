@@ -19,6 +19,7 @@
   "environment": "*",
   "entrypoints": {
     "stationapi:event_bus": [
+      "net.kozibrodka.wolves.events.ConfigListener",
       "net.kozibrodka.wolves.events.EntityListener",
       "net.kozibrodka.wolves.events.BlockListener",
       "net.kozibrodka.wolves.events.ItemListener",

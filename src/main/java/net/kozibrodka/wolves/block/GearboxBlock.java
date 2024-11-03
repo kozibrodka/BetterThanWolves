@@ -48,7 +48,8 @@ public class GearboxBlock extends TemplateBlock
         }
         BlockPosition sideBlockPos = new BlockPosition(i, j, k);
         sideBlockPos.AddFacingAsOffset(iSide);
-        if(iblockaccess.getBlockId(sideBlockPos.i, sideBlockPos.j, sideBlockPos.k) == BlockListener.axleBlock.id && ((AxleBlock)BlockListener.axleBlock).IsAxleOrientedTowardsFacing(iblockaccess, sideBlockPos.i, sideBlockPos.j, sideBlockPos.k, iSide))
+        if(iblockaccess.getBlockId(sideBlockPos.i, sideBlockPos.j, sideBlockPos.k) == BlockListener.axleBlock.id && ((AxleBlock)BlockListener.axleBlock).IsAxleOrientedTowardsFacing(iblockaccess, sideBlockPos.i, sideBlockPos.j, sideBlockPos.k, iSide)
+        || iblockaccess.getBlockId(sideBlockPos.i, sideBlockPos.j, sideBlockPos.k) == BlockListener.nonCollidingAxleBlock.id && ((AxleBlock)BlockListener.nonCollidingAxleBlock).IsAxleOrientedTowardsFacing(iblockaccess, sideBlockPos.i, sideBlockPos.j, sideBlockPos.k, iSide))
         {
             return TextureListener.gearbox_output;
         } else
@@ -240,11 +241,14 @@ public class GearboxBlock extends TemplateBlock
             }
             BlockPosition tempPos = new BlockPosition(i, j, k);
             tempPos.AddFacingAsOffset(iFacing);
-            if(world.getBlockId(tempPos.i, tempPos.j, tempPos.k) != BlockListener.axleBlock.id)
+            if(world.getBlockId(tempPos.i, tempPos.j, tempPos.k) != BlockListener.axleBlock.id && world.getBlockId(tempPos.i, tempPos.j, tempPos.k) != BlockListener.nonCollidingAxleBlock.id)
             {
                 continue;
             }
             AxleBlock axleBlock = (AxleBlock)BlockListener.axleBlock;
+            if (world.getBlockId(tempPos.i, tempPos.j, tempPos.k) == BlockListener.nonCollidingAxleBlock.id) {
+                axleBlock = (AxleBlock)BlockListener.nonCollidingAxleBlock;
+            }
             if(!axleBlock.IsAxleOrientedTowardsFacing(world, tempPos.i, tempPos.j, tempPos.k, iFacing))
             {
                 continue;
@@ -317,7 +321,8 @@ public class GearboxBlock extends TemplateBlock
         BlockPosition targetBlockPos = new BlockPosition(i, j, k);
         targetBlockPos.AddFacingAsOffset(iFacing);
         int iTargetid = world.getBlockId(targetBlockPos.i, targetBlockPos.j, targetBlockPos.k);
-        return iTargetid == BlockListener.axleBlock.id && ((AxleBlock)BlockListener.axleBlock).IsAxleOrientedTowardsFacing(world, targetBlockPos.i, targetBlockPos.j, targetBlockPos.k, iFacing) && ((AxleBlock)BlockListener.axleBlock).GetPowerLevel(world, targetBlockPos.i, targetBlockPos.j, targetBlockPos.k) > 0;
+        return iTargetid == BlockListener.axleBlock.id && ((AxleBlock)BlockListener.axleBlock).IsAxleOrientedTowardsFacing(world, targetBlockPos.i, targetBlockPos.j, targetBlockPos.k, iFacing) && ((AxleBlock)BlockListener.axleBlock).GetPowerLevel(world, targetBlockPos.i, targetBlockPos.j, targetBlockPos.k) > 0
+                || iTargetid == BlockListener.nonCollidingAxleBlock.id && ((AxleBlock)BlockListener.nonCollidingAxleBlock).IsAxleOrientedTowardsFacing(world, targetBlockPos.i, targetBlockPos.j, targetBlockPos.k, iFacing) && ((AxleBlock)BlockListener.nonCollidingAxleBlock).GetPowerLevel(world, targetBlockPos.i, targetBlockPos.j, targetBlockPos.k) > 0;
     }
 
     public boolean IsOutputtingMechanicalPower(World world, int i, int j, int k)
