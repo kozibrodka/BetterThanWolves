@@ -12,6 +12,8 @@
     "wolves:handCrank",
     "wolves:bellows",
     "wolves:block_of_grates",
-    "wolves:non_colliding_axle_block"
+    "wolves:non_colliding_axle_block",
+    "wolves:collision_block",
+    "wolves:obstruction_block"
   ]
 }

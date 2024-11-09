@@ -10,37 +10,27 @@ import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.template.item.TemplateItem;
 
-public class WaterWheelItem extends TemplateItem
-{
+public class WaterWheelItem extends TemplateItem {
 
-    public WaterWheelItem(Identifier iItemID)
-    {
+    public WaterWheelItem(Identifier iItemID) {
         super(iItemID);
         maxCount = 1;
     }
 
 
-    public boolean useOnBlock(ItemStack ItemInstance, PlayerEntity entityplayer, World world, int i, int j, int k, int l)
-    {
-        int iTargetid = world.getBlockId(i, j, k);
-        if(iTargetid == BlockListener.axleBlock.id && !world.isRemote)
-        {
-            int iAxisAlignment = ((AxleBlock)BlockListener.axleBlock).GetAxisAlignment(world, i, j, k);
-            if(iAxisAlignment != 0)
-            {
-                boolean bIAligned = false;
-                if(iAxisAlignment == 2)
-                {
-                    bIAligned = true;
-                }
-                if(WaterWheelEntity.WaterWheelValidateAreaAroundBlock(world, i, j, k, bIAligned))
-                {
-                    world.spawnEntity(new WaterWheelEntity(world, (float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F, bIAligned));
-//                    world.spawnEntity(new FCEntityTEST(world, (float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F, rand.nextInt(16)));
-                    ItemInstance.count--;
+    public boolean useOnBlock(ItemStack itemStack, PlayerEntity playerEntity, World world, int x, int y, int z, int l) {
+        int targetId = world.getBlockId(x, y, z);
+        if(targetId == BlockListener.axleBlock.id && !world.isRemote) {
+            int axisAlignment = ((AxleBlock)BlockListener.axleBlock).GetAxisAlignment(world, x, y, z);
+            if(axisAlignment != 0) {
+                boolean aligned = axisAlignment == 2;
+                if(WaterWheelEntity.validateArea(world, x, y, z, aligned)) {
+                    WaterWheelEntity.placeCollisionBlocks(world, x, y, z, aligned);
+                    world.spawnEntity(new WaterWheelEntity(world, (float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F, aligned));
+                    itemStack.count--;
                     return true;
                 }
-                entityplayer.method_490("Not enough room to place Water Wheel");
+                playerEntity.method_490("Not enough room to place Water Wheel");
             }
         }
         return false;

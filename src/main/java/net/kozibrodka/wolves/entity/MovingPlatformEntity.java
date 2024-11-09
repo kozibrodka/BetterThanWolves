@@ -149,7 +149,7 @@ public class MovingPlatformEntity extends Entity implements EntitySpawnDataProvi
                 if(entity instanceof WaterWheelEntity)
                 {
                     WaterWheelEntity entityWaterWheel = (WaterWheelEntity)entity;
-                    entityWaterWheel.DestroyWithDrop();
+                    entityWaterWheel.destroyWithDrop();
                     continue;
                 }
                 if(entity instanceof WindMillEntity)

@@ -18,15 +18,12 @@ import net.modificationstation.stationapi.api.server.entity.HasTrackingParameter
 import net.modificationstation.stationapi.api.util.Identifier;
 
 @HasTrackingParameters(trackingDistance = 160, updatePeriod = 2)
-public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
-{
+public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider {
 
-    public WaterWheelEntity(World world)
-    {
+    public WaterWheelEntity(World world) {
         super(world);
         setProvidingPower(false);
         setWheelRotation(0.0F);
-//        setAligned(true);
         iWaterWheelCurrentDamage = 0;
         iWaterWheelTimeSinceHit = 0;
         iWaterWheelRockDirection = 1;
@@ -38,8 +35,7 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
         waterTick = 0;
     }
 
-    public WaterWheelEntity(World world, double x, double y, double z, boolean bJAligned)
-    {
+    public WaterWheelEntity(World world, double x, double y, double z, boolean bJAligned) {
         this(world);
         setPos(x, y, z);
         setAligned(bJAligned);
@@ -49,253 +45,239 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
         this(level);
     }
 
-    protected void initDataTracker()
-    {
+    protected void initDataTracker() {
         dataTracker.startTracking(16, (byte) 0); //ALIGNED
         dataTracker.startTracking(17, (int) 0); //WHEEL ROTATION
         dataTracker.startTracking(18, (byte) 0); //PROVIDING POWER
     }
 
-    protected void writeNbt(NbtCompound nbttagcompound)
-    {
+    protected void writeNbt(NbtCompound nbttagcompound) {
         nbttagcompound.putBoolean("bWaterWheelIAligned", getAligned());
         nbttagcompound.putFloat("fRotation", getWheelRotation());
         nbttagcompound.putBoolean("bProvidingPower", getProvidingPower());
     }
 
-    protected void readNbt(NbtCompound nbttagcompound)
-    {
+    protected void readNbt(NbtCompound nbttagcompound) {
         setAligned(nbttagcompound.getBoolean("bWaterWheelIAligned"));
         setWheelRotation(nbttagcompound.getFloat("fRotation"));
         setProvidingPower(nbttagcompound.getBoolean("bProvidingPower"));
     }
 
-    protected boolean bypassesSteppingEffects()
-    {
+    protected boolean bypassesSteppingEffects() {
         return false;
     }
 
-    public Box method_1379(Entity entity)
-    {
+    public Box method_1379(Entity entity) {
         return entity.boundingBox;
     }
 
-    public Box getBoundingBox()
-    {
+    public Box getBoundingBox() {
         return boundingBox;
     }
 
-    public boolean isPushable()
-    {
+    public boolean isPushable() {
         return false;
     }
 
-    public boolean isCollidable()
-    {
+    public boolean isCollidable() {
         return !dead;
     }
 
-    public boolean damage(Entity entity, int i)
-    {
-        if(world.isRemote || dead)
-        {
+    public boolean damage(Entity entity, int i) {
+        if(world.isRemote || dead) {
             return true;
         }
         iWaterWheelRockDirection = -iWaterWheelRockDirection;
         iWaterWheelTimeSinceHit = 10;
         scheduleVelocityUpdate();
         iWaterWheelCurrentDamage += i * 5;
-        if(iWaterWheelCurrentDamage > 40)
-        {
-            DestroyWithDrop();
+        if(iWaterWheelCurrentDamage > 40) {
+            destroyWithDrop();
         }
         return true;
     }
 
-    public void animateHurt()
-    {
+    public void animateHurt() {
         iWaterWheelRockDirection = -iWaterWheelRockDirection;
         iWaterWheelTimeSinceHit = 10;
         iWaterWheelCurrentDamage += iWaterWheelCurrentDamage * 5;
     }
 
-    public void markDead()
-    {
-        int iCenterI = (int)(x - 0.5D);
-        int iCenterJ = (int)(y - 0.5D);
-        int iCenterK = (int)(z - 0.5D);
-        int iCenterid = world.getBlockId(iCenterI, iCenterJ, iCenterK);
-        if (iCenterid == BlockListener.nonCollidingAxleBlock.id) {
-            world.setBlock(iCenterI, iCenterJ, iCenterK, BlockListener.axleBlock.id, world.getBlockMeta(iCenterI, iCenterJ, iCenterK));
+    public void markDead() {
+        int centerX = (int)(x - 0.5D);
+        int centerY = (int)(y - 0.5D);
+        int centerZ = (int)(z - 0.5D);
+        int centerId = world.getBlockId(centerX, centerY, centerZ);
+        if (centerId == BlockListener.nonCollidingAxleBlock.id) {
+            world.setBlock(centerX, centerY, centerZ, BlockListener.axleBlock.id, world.getBlockMeta(centerX, centerY, centerZ));
         }
-        if(getProvidingPower())
-        {
-
-            if(iCenterid == BlockListener.axleBlock.id) {
-                ((AxleBlock)BlockListener.axleBlock).SetPowerLevel(world, iCenterI, iCenterJ, iCenterK, 0);
-            } else if(iCenterid == BlockListener.nonCollidingAxleBlock.id) {
-                ((AxleBlock)BlockListener.nonCollidingAxleBlock).SetPowerLevel(world, iCenterI, iCenterJ, iCenterK, 0);
+        if(getProvidingPower()) {
+            if(centerId == BlockListener.axleBlock.id) {
+                ((AxleBlock)BlockListener.axleBlock).SetPowerLevel(world, centerX, centerY, centerZ, 0);
+            } else if(centerId == BlockListener.nonCollidingAxleBlock.id) {
+                ((AxleBlock)BlockListener.nonCollidingAxleBlock).SetPowerLevel(world, centerX, centerY, centerZ, 0);
+            }
+        }
+        int xOffset;
+        int zOffset;
+        if(getAligned()) {
+            xOffset = 0;
+            zOffset = 1;
+        } else {
+            xOffset = 1;
+            zOffset = 0;
+        }
+        for(int heightOffset = -2; heightOffset <= 2; heightOffset++) {
+            for(int widthOffset = -2; widthOffset <= 2; widthOffset++) {
+                if(heightOffset == 0 && widthOffset == 0) {
+                    continue;
+                }
+                int tempX = centerX + xOffset * widthOffset;
+                int tempY = centerY + heightOffset;
+                int tempZ = centerZ + zOffset * widthOffset;
+                if(world.getBlockId(tempX, tempY, tempZ) == BlockListener.collisionBlock.id
+                        || world.getBlockId(tempX, tempY, tempZ) == BlockListener.obstructionBlock.id) {
+                    world.setBlock(tempX, tempY, tempZ, 0);
+                }
             }
         }
         super.markDead();
     }
 
-    public void DestroyWithDrop()
-    {
-        if(!dead)
-        {
+    public void destroyWithDrop() {
+        if(!dead) {
             dropItem(ItemListener.waterWheelItem.id, 1, 0.0F);
             markDead();
         }
     }
 
-    public void tick()
-    {
-//        if(!typechoosen && level.isServerSide)
-//        {
-//            typechoosen = true;
-//            System.out.println("KLIENT SPRAWDZA: "  + getAligned());
-//        }
-        if(dead || world.isRemote)
-        {
+    public void tick() {
+        if(dead || world.isRemote) {
             return;
         }
         iFullUpdateTickCount--;
-        if(iFullUpdateTickCount <= 0)
-        {
+        if(iFullUpdateTickCount <= 0) {
             iFullUpdateTickCount = 20;
-            int iCenterI = (int)(x - 0.5D);
-            int iCenterJ = (int)(y - 0.5D);
-            int iCenterK = (int)(z - 0.5D);
-            int iCenterid = world.getBlockId(iCenterI, iCenterJ, iCenterK);
-            if (iCenterid == BlockListener.axleBlock.id) {
-                world.setBlock(iCenterI, iCenterJ, iCenterK, BlockListener.nonCollidingAxleBlock.id, world.getBlockMeta(iCenterI, iCenterJ, iCenterK));
+            int centerX = (int)(x - 0.5D);
+            int centerY = (int)(y - 0.5D);
+            int centerZ = (int)(z - 0.5D);
+            int centerId = world.getBlockId(centerX, centerY, centerZ);
+            if (centerId == BlockListener.axleBlock.id) {
+                world.setBlock(centerX, centerY, centerZ, BlockListener.nonCollidingAxleBlock.id, world.getBlockMeta(centerX, centerY, centerZ));
             }
-            if(iCenterid != BlockListener.axleBlock.id && iCenterid != BlockListener.nonCollidingAxleBlock.id)
-            {
-                DestroyWithDrop();
+            if(centerId != BlockListener.axleBlock.id && centerId != BlockListener.nonCollidingAxleBlock.id) {
+                destroyWithDrop();
                 return;
             }
-            if(!WaterWheelValidateAreaAroundBlock(world, iCenterI, iCenterJ, iCenterK, getAligned()))
-            {
-                DestroyWithDrop();
+            if(!validateArea(world, centerX, centerY, centerZ, getAligned())) {
+                destroyWithDrop();
                 return;
             }
-            if(!getProvidingPower() && ((AxleBlock)BlockListener.axleBlock).GetPowerLevel(world, iCenterI, iCenterJ, iCenterK) > 0)
-            {
-                DestroyWithDrop();
+            if(!getProvidingPower() && ((AxleBlock)BlockListener.axleBlock).GetPowerLevel(world, centerX, centerY, centerZ) > 0) {
+                destroyWithDrop();
                 return;
             }
-            if(!getProvidingPower() && ((AxleBlock)BlockListener.nonCollidingAxleBlock).GetPowerLevel(world, iCenterI, iCenterJ, iCenterK) > 0)
-            {
-                DestroyWithDrop();
+            if(!getProvidingPower() && ((AxleBlock)BlockListener.nonCollidingAxleBlock).GetPowerLevel(world, centerX, centerY, centerZ) > 0) {
+                destroyWithDrop();
                 return;
             }
-            fWaterWheelCurrentRotationSpeed = ComputeRotation(iCenterI, iCenterJ, iCenterK);
-            /*
-             * modloader code
-             */
-//            if(fWaterWheelCurrentRotationSpeed != sentRotationSpeed) {
-//            	mod_FCBetterThanWolves.sendData(this);
-//            	sentRotationSpeed = fWaterWheelCurrentRotationSpeed;
-//            }
-            if(fWaterWheelCurrentRotationSpeed > 0.01F || fWaterWheelCurrentRotationSpeed < -0.01F)
-            {
-                if(!getProvidingPower())
-                {
-//                    System.out.println("SERVI+ " + getAligned());
+            fWaterWheelCurrentRotationSpeed = ComputeRotation(centerX, centerY, centerZ);
+            if(fWaterWheelCurrentRotationSpeed > 0.01F || fWaterWheelCurrentRotationSpeed < -0.01F) {
+                if(!getProvidingPower()) {
                     setProvidingPower(true);
-                    ((AxleBlock)BlockListener.nonCollidingAxleBlock).SetPowerLevel(world, iCenterI, iCenterJ, iCenterK, 3);
+                    ((AxleBlock)BlockListener.nonCollidingAxleBlock).SetPowerLevel(world, centerX, centerY, centerZ, 3);
                 }
-            } else
-                if (getProvidingPower()) {
-//                    System.out.println("SERVI+ " + getAligned());
-                    setProvidingPower(false);
-                    ((AxleBlock) BlockListener.nonCollidingAxleBlock).SetPowerLevel(world, iCenterI, iCenterJ, iCenterK, 0);
-                }
-
+            } else if (getProvidingPower()) {
+                setProvidingPower(false);
+                ((AxleBlock) BlockListener.nonCollidingAxleBlock).SetPowerLevel(world, centerX, centerY, centerZ, 0);
+            }
         }
-        if(iWaterWheelTimeSinceHit > 0)
-        {
+        if(iWaterWheelTimeSinceHit > 0) {
             iWaterWheelTimeSinceHit--;
         }
-        if(iWaterWheelCurrentDamage > 0)
-        {
+        if(iWaterWheelCurrentDamage > 0) {
             iWaterWheelCurrentDamage--;
         }
-
         setWheelRotation(getWheelRotation()+fWaterWheelCurrentRotationSpeed);
-        if(getWheelRotation() > 360F)
-        {
+        if(getWheelRotation() > 360F) {
             setWheelRotation(getWheelRotation()-360F);
         } else
-        if(getWheelRotation() < -360F)
-        {
+        if(getWheelRotation() < -360F) {
             setWheelRotation(getWheelRotation()+360F);
         }
     }
 
-    public float getShadowRadius()
-    {
+    public float getShadowRadius() {
         return 0.0F;
     }
 
-    public void move(double deltaX, double deltaY, double deltaZ)
-    {
-        if(!dead)
-        {
-            DestroyWithDrop();
+    public void move(double deltaX, double deltaY, double deltaZ) {
+        if(!dead) {
+            destroyWithDrop();
         }
     }
 
-    public static boolean WaterWheelValidateAreaAroundBlock(World world, int i, int j, int k, boolean bIAligned)
-    {
-        if(j + 2 >= 128)
-        {
+    public static boolean validateArea(World world, int x, int y, int z, boolean aligned) {
+        if(y + 2 >= 128) {
             return false;
         }
-        int iOffset;
-        int kOffset;
-        if(bIAligned)
-        {
-            iOffset = 0;
-            kOffset = 1;
-        } else
-        {
-            iOffset = 1;
-            kOffset = 0;
+        int xOffset;
+        int zOffset;
+        if(aligned) {
+            xOffset = 0;
+            zOffset = 1;
+        } else {
+            xOffset = 1;
+            zOffset = 0;
         }
-        for(int iHeightOffset = -2; iHeightOffset <= 2; iHeightOffset++)
-        {
-            for(int iWidthOffset = -2; iWidthOffset <= 2; iWidthOffset++)
-            {
-                if(iHeightOffset == 0 && iWidthOffset == 0)
-                {
+        for(int heightOffset = -2; heightOffset <= 2; heightOffset++) {
+            for(int widthOffset = -2; widthOffset <= 2; widthOffset++) {
+                if(heightOffset == 0 && widthOffset == 0) {
                     continue;
                 }
-                int tempI = i + iOffset * iWidthOffset;
-                int tempJ = j + iHeightOffset;
-                int tempK = k + kOffset * iWidthOffset;
-                if(!IsValidBlockForWaterWheelToOccupy(world, tempI, tempJ, tempK))
-                {
+                int tempX = x + xOffset * widthOffset;
+                int tempY = y + heightOffset;
+                int tempZ = z + zOffset * widthOffset;
+                if(!isSuitableBlock(world, tempX, tempY, tempZ)) {
                     return false;
                 }
             }
-
         }
-
         return true;
     }
 
-    public static boolean IsValidBlockForWaterWheelToOccupy(World world, int i, int j, int k)
-    {
-        if(!world.isAir(i, j, k))
-        {
-            int iid = world.getBlockId(i, j, k);
-            if(iid != Block.FLOWING_WATER.id && iid != Block.WATER.id)
-            {
-                return false;
+    public static void placeCollisionBlocks(World world, int x, int y, int z, boolean aligned) {
+        if(y + 2 >= 128) {
+            return;
+        }
+        int xOffset;
+        int zOffset;
+        if(aligned) {
+            xOffset = 0;
+            zOffset = 1;
+        } else {
+            xOffset = 1;
+            zOffset = 0;
+        }
+        for(int heightOffset = -2; heightOffset <= 2; heightOffset++) {
+            for(int widthOffset = -2; widthOffset <= 2; widthOffset++) {
+                if(heightOffset == 0 && widthOffset == 0) {
+                    continue;
+                }
+                int tempX = x + xOffset * widthOffset;
+                int tempY = y + heightOffset;
+                int tempZ = z + zOffset * widthOffset;
+                if (world.getBlockId(tempX, tempY, tempZ) == 0) {
+                    world.setBlock(tempX, tempY, tempZ, BlockListener.collisionBlock.id);
+                }
             }
+        }
+    }
+
+    public static boolean isSuitableBlock(World world, int x, int y, int z) {
+        if(!world.isAir(x, y, z)) {
+            int id = world.getBlockId(x, y, z);
+            return id == Block.FLOWING_WATER.id || id == Block.WATER.id || id == BlockListener.collisionBlock.id;
         }
         return true;
     }

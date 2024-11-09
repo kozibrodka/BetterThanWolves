@@ -162,7 +162,7 @@ public class MovingAnchorEntity extends Entity implements EntitySpawnDataProvide
                 if(entity instanceof WaterWheelEntity)
                 {
                     WaterWheelEntity entityWaterWheel = (WaterWheelEntity)entity;
-                    entityWaterWheel.DestroyWithDrop();
+                    entityWaterWheel.destroyWithDrop();
                     continue;
                 }
                 if(entity instanceof WindMillEntity)

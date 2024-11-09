@@ -22,26 +22,19 @@ public class WindMillItem extends TemplateItem
      Block and Entity Classes not implemented yet
      */
 
-    public boolean useOnBlock(ItemStack iteminstance, PlayerEntity entityplayer, World world, int i, int j, int k, int l)
-    {
-        int iTargetid = world.getBlockId(i, j, k);
-        if(iTargetid == BlockListener.axleBlock.id && !world.isRemote)
-        {
-            int iAxisAlignment = ((AxleBlock)BlockListener.axleBlock).GetAxisAlignment(world, i, j, k);
-            if(iAxisAlignment != 0)
-            {
-                boolean bIAligned = false;
-                if(iAxisAlignment == 2)
-                {
-                    bIAligned = true;
-                }
-                if(WindMillEntity.WindMillValidateAreaAroundBlock(world, i, j, k, bIAligned))
-                {
-                    world.spawnEntity(new WindMillEntity(world, (float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F, bIAligned));
-                    iteminstance.count--;
+    public boolean useOnBlock(ItemStack itemStack, PlayerEntity playerEntity, World world, int x, int y, int z, int l) {
+        int targetId = world.getBlockId(x, y, z);
+        if(targetId == BlockListener.axleBlock.id && !world.isRemote) {
+            int axisAlignment = ((AxleBlock)BlockListener.axleBlock).GetAxisAlignment(world, x, y, z);
+            if(axisAlignment != 0) {
+                boolean aligned = axisAlignment == 2;
+                if(WindMillEntity.validateArea(world, x, y, z, aligned)) {
+                    WindMillEntity.placeCollisionBlocks(world, x, y, z, aligned);
+                    world.spawnEntity(new WindMillEntity(world, (float)x + 0.5F, (float)y + 0.5F, (float)z + 0.5F, aligned));
+                    itemStack.count--;
                     return true;
                 }
-                entityplayer.method_490("Not enough room to place Wind Mill (They are absolutely HUGE!)");
+                playerEntity.method_490("Not enough room to place Wind Mill (They are absolutely HUGE!)");
             }
         }
         return false;
