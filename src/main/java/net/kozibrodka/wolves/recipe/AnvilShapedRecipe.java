@@ -2,9 +2,8 @@ package net.kozibrodka.wolves.recipe;
 
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
-import net.modificationstation.stationapi.api.recipe.StationRecipe;
 
-public class AnvilShapedRecipe implements AnvilRecipeTemplate, StationRecipe {
+public class AnvilShapedRecipe implements AnvilRecipeTemplate {
     private int width;
     private int height;
     private ItemStack[] ingredients;
@@ -79,16 +78,6 @@ public class AnvilShapedRecipe implements AnvilRecipeTemplate, StationRecipe {
 
     public int getIngredientCount() {
         return this.width * this.height;
-    }
-
-    @Override
-    public ItemStack[] getIngredients() {
-        return ingredients;
-    }
-
-    @Override
-    public ItemStack[] getOutputs() {
-        return new ItemStack[] {output};
     }
 
     public int getWidth() {

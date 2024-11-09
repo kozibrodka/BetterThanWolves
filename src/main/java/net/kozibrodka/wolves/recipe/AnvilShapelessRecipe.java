@@ -2,13 +2,12 @@ package net.kozibrodka.wolves.recipe;
 
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
-import net.modificationstation.stationapi.api.recipe.StationRecipe;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class AnvilShapelessRecipe implements AnvilRecipeTemplate, StationRecipe {
+public class AnvilShapelessRecipe implements AnvilRecipeTemplate {
     private final ItemStack output;
     private final List input;
 
@@ -58,17 +57,4 @@ public class AnvilShapelessRecipe implements AnvilRecipeTemplate, StationRecipe 
         return this.input.size();
     }
 
-    @Override
-    public ItemStack[] getIngredients() {
-        ItemStack[] ingredients = new ItemStack[input.size()];
-        for (int i = 0; i < input.size(); i++) {
-            ingredients[i] = (ItemStack) input.get(i);
-        }
-        return ingredients;
-    }
-
-    @Override
-    public ItemStack[] getOutputs() {
-        return new ItemStack[] {output};
-    }
 }
