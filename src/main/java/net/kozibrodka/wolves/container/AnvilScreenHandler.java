@@ -40,18 +40,19 @@ public class AnvilScreenHandler extends ScreenHandler
         for(int j1 = 0; j1 < 9; j1++) {
             addSlot(new Slot(inventoryplayer, j1, 8 + j1 * 18, 178));
         }
-        method_2088(craftMatrix);
+        onSlotUpdate(craftMatrix);
     }
 
-    public void method_2088(Inventory iinventory) {
+    @Override
+    public void onSlotUpdate(Inventory iinventory) {
 
-        //if(ConfigListener.wolvesGlass.gameplay_settings.anvilVanillaRecipes){
+        //if (ConfigListener.wolvesGlass.gameplay_settings.anvilVanillaRecipes) {
         //    ItemStack craftedStack = CraftingRecipeManager.getInstance().craft(craftMatrix);
-        //    if(craftedStack == null) {
+        //    if (craftedStack == null) {
         //        craftedStack = AnvilCraftingManager.getInstance().findMatchingRecipe(craftMatrix);
         //    }
         //    craftResult.setStack(0, craftedStack);
-        //}else{
+        //} else {
             ItemStack craftedStac2k = AnvilCraftingManager.getInstance().findMatchingRecipe(craftMatrix);
             craftResult.setStack(0, craftedStac2k);
         //}
