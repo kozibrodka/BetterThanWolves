@@ -105,3 +105,6 @@ tile.wolves.vase.black.name=Vase
 tile.wolves.block_of_grates.name=Block of Grates
 tile.wolves.collision_block.name=Collision Block
 tile.wolves.obstruction_block.name=Obstruction Block
+
+description.@.hemp=Obtained from harvesting hemp crops. Hemp crops can be grown 2 blocks high for efficient farming.
+description.@.dung=Dropped by dogs after being fed some pork. There is some time delay until the dung gets dropped.

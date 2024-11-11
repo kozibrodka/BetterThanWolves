@@ -33,6 +33,9 @@
     ],
     "stationapi:event_bus_server": [
 
+    ],
+    "alwaysmoreitems:plugin": [
+      "net.kozibrodka.wolves.compat.ami.AMICompat"
     ]
   },
   "mixins": [
