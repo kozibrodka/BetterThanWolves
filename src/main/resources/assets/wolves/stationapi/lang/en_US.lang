@@ -107,4 +107,7 @@ tile.wolves.collision_block.name=Collision Block
 tile.wolves.obstruction_block.name=Obstruction Block
 
 description.@.hemp=Obtained from harvesting hemp crops. Hemp crops can be grown 2 blocks high for efficient farming.
+description.@.hemp_seeds=Rarely dropped by tall grass. Planted on farmland to grow hemp crops.
 description.@.dung=Dropped by dogs after being fed some pork. There is some time delay until the dung gets dropped.
+description.@.axle=Component for transferring rotational force. Axles can be built 3 blocks long.
+description.@.gear_box=Component for distributing rotational force. 1 side acts as an input, the other 5 are outputs.
