@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 public class MillStoneRecipeCategory implements RecipeCategory {
 
     @NotNull
-    private final AMIDrawable background = DrawableHelper.createDrawable("/assets/wolves/stationapi/gui/hmi_tabs/one_in_one_out.png", 10, 0, 160, 100);
+    private final AMIDrawable background = DrawableHelper.createDrawable("/assets/wolves/stationapi/gui/ami_tabs/one_in_one_out.png", 12, 0, 160, 100);
 
     @NotNull
     @Override
@@ -45,7 +45,7 @@ public class MillStoneRecipeCategory implements RecipeCategory {
     @Override
     public void setRecipe(@NotNull RecipeLayout recipeLayout, @NotNull RecipeWrapper recipeWrapper) {
         GuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
-        int xOffset = 15;
+        int xOffset = 13;
         int yOffset = 34;
         guiItemStacks.init(0, true, xOffset, yOffset);
         guiItemStacks.init(1, false, 116 + xOffset, yOffset);
