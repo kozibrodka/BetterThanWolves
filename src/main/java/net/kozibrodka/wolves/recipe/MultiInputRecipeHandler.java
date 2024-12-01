@@ -11,18 +11,18 @@ public class MultiInputRecipeHandler
 
     public MultiInputRecipeHandler(ItemStack recipeOutputStack, List recipeInputStacks)
     {
-        m_recipeOutputStack = recipeOutputStack;
+        this.recipeOutputStack = recipeOutputStack;
         this.recipeInputStacks = recipeInputStacks;
     }
 
     public ItemStack getCopyOfOutputStack()
     {
-        if(m_recipeOutputStack == null)
+        if(recipeOutputStack == null)
         {
             return null;
         } else
         {
-            return m_recipeOutputStack.copy();
+            return recipeOutputStack.copy();
         }
     }
 
@@ -67,6 +67,10 @@ public class MultiInputRecipeHandler
         return (ItemStack) recipeInputStacks.get(index);
     }
 
+    public List getRecipeInputStacks() {
+        return recipeInputStacks;
+    }
+
     public int getNumberOfInputStacks()
     {
         return recipeInputStacks.size();
@@ -74,9 +78,9 @@ public class MultiInputRecipeHandler
 
     public ItemStack getOutputStack()
     {
-        return m_recipeOutputStack;
+        return recipeOutputStack;
     }
 
-    private final ItemStack m_recipeOutputStack;
+    private final ItemStack recipeOutputStack;
     private final List recipeInputStacks;
 }

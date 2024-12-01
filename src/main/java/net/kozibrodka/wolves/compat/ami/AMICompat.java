@@ -5,12 +5,15 @@ import net.kozibrodka.wolves.compat.ami.anvil.AnvilShapedRecipeHandler;
 import net.kozibrodka.wolves.compat.ami.anvil.AnvilShapedRecipeCategory;
 import net.kozibrodka.wolves.compat.ami.anvil.AnvilShapelessRecipeCategory;
 import net.kozibrodka.wolves.compat.ami.anvil.AnvilShapelessRecipeHandler;
+import net.kozibrodka.wolves.compat.ami.cauldron.CauldronRecipeCategory;
+import net.kozibrodka.wolves.compat.ami.cauldron.CauldronRecipeHandler;
 import net.kozibrodka.wolves.compat.ami.millstone.MillStoneRecipeCategory;
 import net.kozibrodka.wolves.compat.ami.millstone.MillStoneRecipeHandler;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ConfigListener;
 import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.recipe.AnvilCraftingManager;
+import net.kozibrodka.wolves.recipe.CauldronCraftingManager;
 import net.kozibrodka.wolves.recipe.MillingRecipeRegistry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -57,6 +60,10 @@ public class AMICompat implements ModPluginProvider {
         registry.addRecipeCategories(new AnvilShapelessRecipeCategory());
         registry.addRecipeHandlers(new AnvilShapelessRecipeHandler());
         registry.addRecipes(AnvilCraftingManager.getInstance().getShapelessRecipes());
+
+        registry.addRecipeCategories(new CauldronRecipeCategory());
+        registry.addRecipeHandlers(new CauldronRecipeHandler());
+        registry.addRecipes(CauldronCraftingManager.getInstance().getRecipes());
     }
 
     @Override

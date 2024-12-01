@@ -37,6 +37,7 @@ public class GearboxBlock extends TemplateBlock
         super(iid, Material.WOOD);
         setHardness(2.0F);
         setSoundGroup(WOOD_SOUND_GROUP);
+        setTickRandomly(true);
     }
 
     public int getTextureId(BlockView iblockaccess, int i, int j, int k, int iSide) {

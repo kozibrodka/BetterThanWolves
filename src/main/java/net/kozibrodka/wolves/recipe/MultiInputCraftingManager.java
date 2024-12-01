@@ -56,4 +56,8 @@ public abstract class MultiInputCraftingManager
     }
 
     protected List recipes;
+
+    public List getRecipes() {
+        return recipes;
+    }
 }

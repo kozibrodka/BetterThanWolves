@@ -39,6 +39,7 @@ public class BellowsBlock extends TemplateBlock
         super(iid, Material.WOOD);
         setHardness(2.0F);
         setSoundGroup(WOOD_SOUND_GROUP);
+        setTickRandomly(true);
     }
 
     public int getTextureId(BlockView blockAccess, int i, int j, int k, int iSide)
