@@ -1,5 +1,6 @@
 package net.kozibrodka.wolves.recipe;
 
+import net.kozibrodka.wolves.events.ItemListener;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
 
@@ -82,5 +83,23 @@ public class AnvilShapedRecipe implements AnvilRecipeTemplate {
 
     public int getWidth() {
         return width;
+    }
+
+    public ItemStack[] getIngredients() {
+        int widthCompensation = 5 - width;
+        ItemStack[] convertedIngredients = new ItemStack[25];
+        for (int i = 0; i < ingredients.length; i++) {
+            ItemStack ingredient = ingredients[i];
+            if (ingredient == null) {
+                continue;
+            }
+            convertedIngredients[i + widthCompensation * (i / width)] = ingredient.copy();
+        }
+        for (int i = 0; i < 25; i++) {
+            if (convertedIngredients[i] == null) {
+                convertedIngredients[i] = new ItemStack(ItemListener.nothing, 1);
+            }
+        }
+        return convertedIngredients;
     }
 }

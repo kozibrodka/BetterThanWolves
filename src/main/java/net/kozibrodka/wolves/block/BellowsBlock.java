@@ -4,6 +4,7 @@ package net.kozibrodka.wolves.block;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.FabricLoader;
+import net.kozibrodka.wolves.api.MechanicalPowerConsumer;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.mixin.LevelAccessor;
@@ -30,7 +31,7 @@ import java.util.List;
 import java.util.Random;
 
 public class BellowsBlock extends TemplateBlock
-    implements MechanicalDevice, RotatableBlock
+    implements MechanicalDevice, RotatableBlock, MechanicalPowerConsumer
 {
 
     public BellowsBlock(Identifier iid)
@@ -143,7 +144,7 @@ public class BellowsBlock extends TemplateBlock
         {
             if(bReceivingMechanicalPower)
             {
-                Blow(world, i, j, k);
+                blow(world, i, j, k);
                 world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "fire.ignite", 0.5F, world.random.nextFloat() * 0.4F + 2.0F);
                 if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
                     voicePacket(world, "fire.ignite", i, j, k, 0.5F, world.random.nextFloat() * 0.4F + 2.0F);
@@ -303,8 +304,7 @@ public class BellowsBlock extends TemplateBlock
 
     }
 
-    private void Blow(World world, int i, int j, int k)
-    {
+    private void blow(World world, int i, int j, int k) {
         int iFacing = GetFacing(world, i, j, k);
         int iFacingSide1 = UnsortedUtils.RotateFacingAroundJ(iFacing, false);
         int iFacingSide2 = UnsortedUtils.RotateFacingAroundJ(iFacing, true);
@@ -408,4 +408,25 @@ public class BellowsBlock extends TemplateBlock
 
     private static int m_iBellowsTickRate = 10;
 
+    @Override
+    public void receivePower(World world, int x, int y, int z, int side) {
+        blow(world, x, y, z);
+        world.playSound((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, "fire.ignite", 0.5F, world.random.nextFloat() * 0.4F + 2.0F);
+        if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+            voicePacket(world, "fire.ignite", x, y, z, 0.5F, world.random.nextFloat() * 0.4F + 2.0F);
+        }
+        SetBlockMechanicalOn(world, x, y, z, true);
+        world.setBlocksDirty(x, y, z, x, y, z);
+    }
+
+    @Override
+    public void stopReceivingPower(World world, int x, int y, int z, int side) {
+        LiftCollidingEntities(world, x, y, z);
+        world.playSound((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, "fire.ignite", 0.5F, world.random.nextFloat() * 0.4F + 2.0F);
+        if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+            voicePacket(world, "fire.ignite", x, y, z, 0.5F, world.random.nextFloat() * 0.4F + 2.0F);
+        }
+        SetBlockMechanicalOn(world, x, y, z, false);
+        world.setBlocksDirty(x, y, z, x, y, z);
+    }
 }

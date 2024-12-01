@@ -20,6 +20,10 @@ public class AnvilShapelessRecipe implements AnvilRecipeTemplate {
         return this.output;
     }
 
+    public List getInput() {
+        return input;
+    }
+
     public boolean canCraft(CraftingInventory arg) {
         ArrayList var2 = new ArrayList(this.input);
 

@@ -23,17 +23,15 @@ import java.util.List;
 import java.util.Random;
 
 
-public class AxleBlock extends TemplateBlock
-{
-    public AxleBlock(Identifier iid)
-    {
+public class AxleBlock extends TemplateBlock {
+
+    public AxleBlock(Identifier iid) {
         super(iid, Material.WOOD);
         setHardness(2.0F);
         setSoundGroup(WOOD_SOUND_GROUP);
     }
 
-    public int getTexture(int iSide)
-    {
+    public int getTexture(int iSide) {
         if(iSide == 2 || iSide == 3)
         {
             return TextureListener.axle_side;
@@ -47,9 +45,8 @@ public class AxleBlock extends TemplateBlock
         }
     }
 
-    public int getTextureId(BlockView iblockaccess, int i, int j, int k, int iSide) //getBlockTexture
-    {
-        int iAxis = GetAxisAlignment(iblockaccess, i, j, k);
+    public int getTextureId(BlockView iblockaccess, int i, int j, int k, int iSide) {
+        int iAxis = getAxisAlignment(iblockaccess, i, j, k);
         if(iAxis == 0)
         {
             if(iSide == 0 || iSide == 1)
@@ -83,45 +80,34 @@ public class AxleBlock extends TemplateBlock
         }
     }
 
-    public int getTickRate() //tickRate
-    {
+    public int getTickRate() {
         return 1;
     }
 
-    public boolean isOpaque() //isOpaqueCube
-    {
+    public boolean isOpaque() {
         return false;
     }
 
-    public boolean isFullCube()
-    {
+    public boolean isFullCube() {
         return false;
-    } //renderAsNormalBlock
+    }
 
-    public void onPlaced(World world, int i, int j, int k, int iFacing) //onBlockPlaced
-    {
+    public void onPlaced(World world, int i, int j, int k, int iFacing) {
         SetAxisAlignmentBasedOnFacing(world, i, j, k, iFacing);
     }
 
-    public void onPlaced(World world, int i, int j, int k) //onBlockAdded
-    {
+    public void onPlaced(World world, int i, int j, int k) {
         super.onPlaced(world, i, j, k);
         SetPowerLevel(world, i, j, k, 0);
         world.scheduleBlockUpdate(i, j, k, BlockListener.axleBlock.id, getTickRate());
     }
 
-    public void onTick(World world, int i, int j, int k, Random random)
-    {
+    public void onTick(World world, int i, int j, int k, Random random) {
         ValidatePowerLevel(world, i, j, k);
-//        if(GetPowerLevel(world, i, j, k) > 0)
-//        {
-//            EmitAxleParticles(world, i, j, k, random);
-//        }
     }
 
-    public Box getCollisionShape(World world, int i, int j, int k) //getCollisionBoundingBoxFromPool
-    {
-        int iAxis = GetAxisAlignment(world, i, j, k);
+    public Box getCollisionShape(World world, int i, int j, int k) {
+        int iAxis = getAxisAlignment(world, i, j, k);
         switch(iAxis)
         {
         case 0: // '\0'
@@ -133,9 +119,8 @@ public class AxleBlock extends TemplateBlock
         return Box.createCached((float)i, ((float)j + 0.5F) - 0.125F, ((float)k + 0.5F) - 0.125F, (float)i + 1.0F, (float)j + 0.5F + 0.125F, (float)k + 0.5F + 0.125F);
     }
 
-    public void updateBoundingBox(BlockView iBlockAccess, int i, int j, int k) //setBlockBoundsBasedOnState
-    {
-        int iAxis = GetAxisAlignment(iBlockAccess, i, j, k);
+    public void updateBoundingBox(BlockView iBlockAccess, int i, int j, int k) {
+        int iAxis = getAxisAlignment(iBlockAccess, i, j, k);
         switch(iAxis)
         {
         case 0: // '\0'
@@ -155,32 +140,27 @@ public class AxleBlock extends TemplateBlock
     /**
      * chyba render w inventory
      */
-    public void setupRenderBoundingBox() //setBlockBoundsForItemRender
-    {
+    public void setupRenderBoundingBox() {
         setBoundingBox(0.375F, 0.375F, 0.0F, 0.625F, 0.625F, 1.0F);
     }
 
-    public void neighborUpdate(World world, int i, int j, int k, int iid) //onNeighborBlockChange
-    {
+    public void neighborUpdate(World world, int i, int j, int k, int iid) {
         ValidatePowerLevel(world, i, j, k);
         world.scheduleBlockUpdate(i, j, k, id, getTickRate());
     }
 
-    public void randomDisplayTick(World world, int i, int j, int k, Random random)
-    {
+    public void randomDisplayTick(World world, int i, int j, int k, Random random) {
         if(GetPowerLevel(world, i, j, k) > 0)
         {
             EmitAxleParticles(world, i, j, k, random);
         }
     }
 
-    public int GetAxisAlignment(BlockView iBlockAccess, int i, int j, int k)
-    {
+    public int getAxisAlignment(BlockView iBlockAccess, int i, int j, int k) {
         return iBlockAccess.getBlockMeta(i, j, k) >> 2;
     }
 
-    public void SetAxisAlignmentBasedOnFacing(World world, int i, int j, int k, int iFacing)
-    {
+    public void SetAxisAlignmentBasedOnFacing(World world, int i, int j, int k, int iFacing) {
         int iAxis;
         switch(iFacing)
         {
@@ -204,13 +184,11 @@ public class AxleBlock extends TemplateBlock
         world.blockUpdateEvent(i, j, k);
     }
 
-    public int GetPowerLevel(BlockView iBlockAccess, int i, int j, int k)
-    {
+    public int GetPowerLevel(BlockView iBlockAccess, int i, int j, int k) {
         return iBlockAccess.getBlockMeta(i, j, k) & 3;
     }
 
-    public void SetPowerLevel(World world, int i, int j, int k, int iPowerLevel)
-    {
+    public void SetPowerLevel(World world, int i, int j, int k, int iPowerLevel) {
         if(world.isRemote){
             return;
             //TODO: Maybe more of those conditions in other blocks
@@ -223,9 +201,8 @@ public class AxleBlock extends TemplateBlock
 //        world.method_202(i, j, k, i, j, k);
     }
 
-    public boolean IsAxleOrientedTowardsFacing(BlockView iBlockAccess, int i, int j, int k, int iFacing)
-    {
-        int iAxis = GetAxisAlignment(iBlockAccess, i, j, k);
+    public boolean IsAxleOrientedTowardsFacing(BlockView iBlockAccess, int i, int j, int k, int iFacing) {
+        int iAxis = getAxisAlignment(iBlockAccess, i, j, k);
         switch(iAxis)
         {
         case 0: // '\0'
@@ -252,8 +229,7 @@ public class AxleBlock extends TemplateBlock
         return false;
     }
 
-    public void BreakAxle(World world, int i, int j, int k)
-    {
+    public void BreakAxle(World world, int i, int j, int k) {
         if(world.getBlockId(i, j, k) == BlockListener.axleBlock.id || world.getBlockId(i, j, k) == BlockListener.nonCollidingAxleBlock.id)
         {
             for(int iTemp = 0; iTemp < 5; iTemp++)
@@ -286,87 +262,71 @@ public class AxleBlock extends TemplateBlock
         }
     }
 
-    private void ValidatePowerLevel(World world, int i, int j, int k)
-    {
-        int iCurrentPower = GetPowerLevel(world, i, j, k);
-        int iAxis = GetAxisAlignment(world, i, j, k);
-        if(iCurrentPower != 3)
-        {
-            BlockPosition potentialSources[] = new BlockPosition[2];
+    private void ValidatePowerLevel(World world, int i, int j, int k) {
+        int currentPower = GetPowerLevel(world, i, j, k);
+        int axis = getAxisAlignment(world, i, j, k);
+        if(currentPower != 3) {
+            BlockPosition[] potentialSources = new BlockPosition[2];
             potentialSources[0] = new BlockPosition(i, j, k);
             potentialSources[1] = new BlockPosition(i, j, k);
-            switch(iAxis)
-            {
+            switch(axis) {
             case 0: // '\0'
                 potentialSources[0].AddFacingAsOffset(0);
                 potentialSources[1].AddFacingAsOffset(1);
                 break;
-
             case 1: // '\001'
                 potentialSources[0].AddFacingAsOffset(2);
                 potentialSources[1].AddFacingAsOffset(3);
                 break;
-
             default:
                 potentialSources[0].AddFacingAsOffset(4);
                 potentialSources[1].AddFacingAsOffset(5);
                 break;
             }
-            int iMaxNeighborPower = 0;
-            int iGreaterPowerNeighbors = 0;
-            for(int tempSource = 0; tempSource < 2; tempSource++)
-            {
-                int iTempid = world.getBlockId(potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
-                if(iTempid != BlockListener.axleBlock.id && iTempid != BlockListener.nonCollidingAxleBlock.id)
-                {
+            int maxNeighborPower = 0;
+            int greaterPowerNeighbors = 0;
+            for(int tempSource = 0; tempSource < 2; tempSource++) {
+                int tempId = world.getBlockId(potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
+                if(tempId != BlockListener.axleBlock.id && tempId != BlockListener.nonCollidingAxleBlock.id) {
                     continue;
                 }
-                int iTempAxis = GetAxisAlignment(world, potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
-                if(iTempAxis != iAxis)
-                {
+                int tempAxis = getAxisAlignment(world, potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
+                if(tempAxis != axis) {
                     continue;
                 }
-                int iTempPowerLevel = GetPowerLevel(world, potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
-                if(iTempPowerLevel > iMaxNeighborPower)
-                {
-                    iMaxNeighborPower = iTempPowerLevel;
+                int tempPowerLevel = GetPowerLevel(world, potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
+                if(tempPowerLevel > maxNeighborPower) {
+                    maxNeighborPower = tempPowerLevel;
                 }
-                if(iTempPowerLevel > iCurrentPower)
-                {
-                    iGreaterPowerNeighbors++;
+                if(tempPowerLevel > currentPower) {
+                    greaterPowerNeighbors++;
                 }
             }
 
-            if(iGreaterPowerNeighbors >= 2)
-            {
+            if(greaterPowerNeighbors >= 2) {
                 BreakAxle(world, i, j, k);
                 return;
             }
-            int iNewPower = iCurrentPower;
-            if(iMaxNeighborPower > iCurrentPower)
-            {
-                if(iMaxNeighborPower == 1)
-                {
+            int newPower = currentPower;
+            if(maxNeighborPower > currentPower) {
+                if(maxNeighborPower == 1) {
                     BreakAxle(world, i, j, k);
                     return;
                 }
-                iNewPower = iMaxNeighborPower - 1;
-            } else
-            {
-                iNewPower = 0;
+                newPower = maxNeighborPower - 1;
+            } else {
+                newPower = 0;
             }
-            if(iNewPower != iCurrentPower)
-            {
+            if(newPower != currentPower) {
 //                System.out.println("ZNIAMIA");
-                SetPowerLevel(world, i, j, k, iNewPower);
+                SetPowerLevel(world, i, j, k, newPower);
 //                world.method_243(i, j, k);
 //                world.method_202(i, j, k, i, j, k);
             }
         }
     }
 
-    private void EmitAxleParticles(World world, int i, int j, int k, Random random)
-    {
+    private void EmitAxleParticles(World world, int i, int j, int k, Random random) {
         for(int counter = 0; counter < 2; counter++)
         {
             float smokeX = (float)i + random.nextFloat();
@@ -377,10 +337,9 @@ public class AxleBlock extends TemplateBlock
 
     }
 
-    public void Overpower(World world, int i, int j, int k)
-    {
+    public void Overpower(World world, int i, int j, int k) {
         int iCurrentPower = GetPowerLevel(world, i, j, k);
-        int iAxis = GetAxisAlignment(world, i, j, k);
+        int iAxis = getAxisAlignment(world, i, j, k);
         BlockPosition[] potentialSources = new BlockPosition[2];
         potentialSources[0] = new BlockPosition(i, j, k);
         potentialSources[1] = new BlockPosition(i, j, k);
@@ -406,7 +365,7 @@ public class AxleBlock extends TemplateBlock
             int iTempid = world.getBlockId(potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
             if(iTempid == BlockListener.axleBlock.id || iTempid == BlockListener.nonCollidingAxleBlock.id)
             {
-                int iTempAxis = GetAxisAlignment(world, potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
+                int iTempAxis = getAxisAlignment(world, potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
                 if(iTempAxis != iAxis)
                 {
                     continue;

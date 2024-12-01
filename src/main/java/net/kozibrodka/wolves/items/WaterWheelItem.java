@@ -21,7 +21,7 @@ public class WaterWheelItem extends TemplateItem {
     public boolean useOnBlock(ItemStack itemStack, PlayerEntity playerEntity, World world, int x, int y, int z, int l) {
         int targetId = world.getBlockId(x, y, z);
         if(targetId == BlockListener.axleBlock.id && !world.isRemote) {
-            int axisAlignment = ((AxleBlock)BlockListener.axleBlock).GetAxisAlignment(world, x, y, z);
+            int axisAlignment = ((AxleBlock)BlockListener.axleBlock).getAxisAlignment(world, x, y, z);
             if(axisAlignment != 0) {
                 boolean aligned = axisAlignment == 2;
                 if(WaterWheelEntity.validateArea(world, x, y, z, aligned)) {

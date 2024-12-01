@@ -193,7 +193,7 @@ public class RecipeListener {
                 "###", "X X", "X X", '#', ItemListener.steel, 'X', ItemListener.armourPlateSteel
         });
         addAnvilRecipe(new ItemStack(ItemListener.bootsSteel, 1), new Object[] {
-                "# #", "# #", '#', ItemListener.steel, 'X', ItemListener.armourPlateSteel
+                "# #", "# #", '#', ItemListener.steel
         });
         addShapelessAnvilRecipe(new ItemStack(ItemListener.broadHeadArrowhead, 4), new Object[] {
                 ItemListener.steel

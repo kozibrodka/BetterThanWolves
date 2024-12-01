@@ -39,21 +39,17 @@ public class GearboxBlock extends TemplateBlock
         setSoundGroup(WOOD_SOUND_GROUP);
     }
 
-    public int getTextureId(BlockView iblockaccess, int i, int j, int k, int iSide)
-    {
+    public int getTextureId(BlockView iblockaccess, int i, int j, int k, int iSide) {
         int iFacing = GetFacing(iblockaccess, i, j, k);
-        if(iSide == iFacing)
-        {
+        if(iSide == iFacing) {
             return TextureListener.gearbox_front;
         }
         BlockPosition sideBlockPos = new BlockPosition(i, j, k);
         sideBlockPos.AddFacingAsOffset(iSide);
         if(iblockaccess.getBlockId(sideBlockPos.i, sideBlockPos.j, sideBlockPos.k) == BlockListener.axleBlock.id && ((AxleBlock)BlockListener.axleBlock).IsAxleOrientedTowardsFacing(iblockaccess, sideBlockPos.i, sideBlockPos.j, sideBlockPos.k, iSide)
-        || iblockaccess.getBlockId(sideBlockPos.i, sideBlockPos.j, sideBlockPos.k) == BlockListener.nonCollidingAxleBlock.id && ((AxleBlock)BlockListener.nonCollidingAxleBlock).IsAxleOrientedTowardsFacing(iblockaccess, sideBlockPos.i, sideBlockPos.j, sideBlockPos.k, iSide))
-        {
+        || iblockaccess.getBlockId(sideBlockPos.i, sideBlockPos.j, sideBlockPos.k) == BlockListener.nonCollidingAxleBlock.id && ((AxleBlock)BlockListener.nonCollidingAxleBlock).IsAxleOrientedTowardsFacing(iblockaccess, sideBlockPos.i, sideBlockPos.j, sideBlockPos.k, iSide)) {
             return TextureListener.gearbox_output;
-        } else
-        {
+        } else {
             return TextureListener.gearbox_side;
         }
     }
@@ -228,28 +224,25 @@ public class GearboxBlock extends TemplateBlock
 
     private void ValidateOutputs(World world, int i, int j, int k, boolean bDestroyIfAlreadyPowered)
     {
-        int iBlockFacing = GetFacing(world, i, j, k);
-        boolean bIsOn = IsGearBoxOn(world, i, j, k);
+        int blockFacing = GetFacing(world, i, j, k);
+        boolean isOn = IsGearBoxOn(world, i, j, k);
 //        if(world.isServerSide){
 //            return;
 //        }
-        for(int iFacing = 0; iFacing <= 5; iFacing++)
-        {
-            if(iFacing == iBlockFacing)
-            {
+        for(int facing = 0; facing <= 5; facing++) {
+            if(facing == blockFacing) {
                 continue;
             }
             BlockPosition tempPos = new BlockPosition(i, j, k);
-            tempPos.AddFacingAsOffset(iFacing);
-            if(world.getBlockId(tempPos.i, tempPos.j, tempPos.k) != BlockListener.axleBlock.id && world.getBlockId(tempPos.i, tempPos.j, tempPos.k) != BlockListener.nonCollidingAxleBlock.id)
-            {
+            tempPos.AddFacingAsOffset(facing);
+            if(world.getBlockId(tempPos.i, tempPos.j, tempPos.k) != BlockListener.axleBlock.id && world.getBlockId(tempPos.i, tempPos.j, tempPos.k) != BlockListener.nonCollidingAxleBlock.id) {
                 continue;
             }
             AxleBlock axleBlock = (AxleBlock)BlockListener.axleBlock;
             if (world.getBlockId(tempPos.i, tempPos.j, tempPos.k) == BlockListener.nonCollidingAxleBlock.id) {
                 axleBlock = (AxleBlock)BlockListener.nonCollidingAxleBlock;
             }
-            if(!axleBlock.IsAxleOrientedTowardsFacing(world, tempPos.i, tempPos.j, tempPos.k, iFacing))
+            if(!axleBlock.IsAxleOrientedTowardsFacing(world, tempPos.i, tempPos.j, tempPos.k, facing))
             {
                 continue;
             }
@@ -259,7 +252,7 @@ public class GearboxBlock extends TemplateBlock
                 axleBlock.BreakAxle(world, tempPos.i, tempPos.j, tempPos.k);
                 continue;
             }
-            if(bIsOn)
+            if(isOn)
             {
                 if(tempPowerLevel != 3)
                 {

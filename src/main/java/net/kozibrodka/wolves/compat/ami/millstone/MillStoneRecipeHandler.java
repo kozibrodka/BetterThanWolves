@@ -1,4 +1,4 @@
-package net.kozibrodka.wolves.compat.ami;
+package net.kozibrodka.wolves.compat.ami.millstone;
 
 import net.glasslauncher.mods.alwaysmoreitems.api.recipe.RecipeHandler;
 import net.glasslauncher.mods.alwaysmoreitems.api.recipe.RecipeWrapper;
