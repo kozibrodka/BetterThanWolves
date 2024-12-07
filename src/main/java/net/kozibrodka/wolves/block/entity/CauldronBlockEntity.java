@@ -17,7 +17,7 @@ import net.kozibrodka.wolves.block.CauldronBlock;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.recipe.CauldronCraftingManager;
-import net.kozibrodka.wolves.recipe.CauldronStokedCraftingManager;
+import net.kozibrodka.wolves.recipe.StokedCauldronCraftingManager;
 import net.kozibrodka.wolves.utils.InventoryHandler;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.Block;
@@ -234,7 +234,7 @@ public class CauldronBlockEntity extends BlockEntity
             {
                 m_bContainsValidIngrediantsForState = true;
             } else
-            if(CauldronStokedCraftingManager.getInstance().getCraftingResult(this) != null)
+            if(StokedCauldronCraftingManager.getInstance().getCraftingResult(this) != null)
             {
                 m_bContainsValidIngrediantsForState = true;
             }
@@ -316,9 +316,9 @@ public class CauldronBlockEntity extends BlockEntity
                 {
                     BlowUpCauldron();
                 } else
-                if(CauldronStokedCraftingManager.getInstance().getCraftingResult(this) != null)
+                if(StokedCauldronCraftingManager.getInstance().getCraftingResult(this) != null)
                 {
-                    ItemStack cookedStack = CauldronStokedCraftingManager.getInstance().consumeIngredientsAndReturnResult(this);
+                    ItemStack cookedStack = StokedCauldronCraftingManager.getInstance().consumeIngredientsAndReturnResult(this);
                     if(!$assertionsDisabled && cookedStack == null)
                     {
                         throw new AssertionError();

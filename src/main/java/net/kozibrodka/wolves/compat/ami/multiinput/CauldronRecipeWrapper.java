@@ -1,8 +1,6 @@
-package net.kozibrodka.wolves.compat.ami.cauldron;
+package net.kozibrodka.wolves.compat.ami.multiinput;
 
 import net.glasslauncher.mods.alwaysmoreitems.api.recipe.RecipeWrapper;
-import net.kozibrodka.wolves.recipe.AnvilShapelessRecipe;
-import net.kozibrodka.wolves.recipe.CauldronCraftingManager;
 import net.kozibrodka.wolves.recipe.MultiInputRecipeHandler;
 import net.minecraft.client.Minecraft;
 import org.jetbrains.annotations.NotNull;

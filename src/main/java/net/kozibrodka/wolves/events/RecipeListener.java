@@ -62,7 +62,7 @@ public class RecipeListener {
     }
 
     public static void addStokedCauldronRecipe(ItemStack output, ItemStack[] inputs) {
-        CauldronStokedCraftingManager.getInstance().addRecipe(output, inputs);
+        StokedCauldronCraftingManager.getInstance().addRecipe(output, inputs);
     }
 
     public static void addCrucibleRecipe(ItemStack output, ItemStack[] inputs) {

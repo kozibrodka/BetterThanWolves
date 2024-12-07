@@ -1,4 +1,4 @@
-package net.kozibrodka.wolves.compat.ami.cauldron;
+package net.kozibrodka.wolves.compat.ami.multiinput;
 
 import net.glasslauncher.mods.alwaysmoreitems.api.recipe.RecipeHandler;
 import net.glasslauncher.mods.alwaysmoreitems.api.recipe.RecipeWrapper;
