@@ -402,7 +402,12 @@ public class RecipeListener {
     private static void addSawingRecipes() {
         SawingRecipeRegistry.getInstance().addSawingRecipe(Block.LOG.id, new ItemStack(Block.PLANKS, 4));
         SawingRecipeRegistry.getInstance().addSawingRecipe(Block.PLANKS.id, new ItemStack(BlockListener.omniSlab, 2, 1));
-        SawingRecipeRegistry.getInstance().addSawingRecipe(BlockListener.omniSlab.id, new ItemStack(BlockListener.moulding, 2));
+        SawingRecipeRegistry.getInstance().addSawingRecipe(new ItemStack(BlockListener.omniSlab, 1, 1), new ItemStack(BlockListener.moulding, 2));
+        SawingRecipeRegistry.getInstance().addSawingRecipe(new ItemStack(BlockListener.omniSlab, 1, 3), new ItemStack(BlockListener.moulding, 2));
+        SawingRecipeRegistry.getInstance().addSawingRecipe(new ItemStack(BlockListener.omniSlab, 1, 5), new ItemStack(BlockListener.moulding, 2));
+        SawingRecipeRegistry.getInstance().addSawingRecipe(new ItemStack(BlockListener.omniSlab, 1, 7), new ItemStack(BlockListener.moulding, 2));
+        SawingRecipeRegistry.getInstance().addSawingRecipe(new ItemStack(BlockListener.omniSlab, 1, 9), new ItemStack(BlockListener.moulding, 2));
+        SawingRecipeRegistry.getInstance().addSawingRecipe(new ItemStack(BlockListener.omniSlab, 1, 11), new ItemStack(BlockListener.moulding, 2));
         SawingRecipeRegistry.getInstance().addSawingRecipe(BlockListener.moulding.id, new ItemStack(BlockListener.corner, 2));
         SawingRecipeRegistry.getInstance().addSawingRecipe(BlockListener.corner.id, new ItemStack(ItemListener.gear, 2));
     }

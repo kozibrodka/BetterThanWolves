@@ -10,11 +10,14 @@ import net.kozibrodka.wolves.compat.ami.multiinput.MultiInputRecipeCategory;
 import net.kozibrodka.wolves.compat.ami.multiinput.MultiInputRecipeHandler;
 import net.kozibrodka.wolves.compat.ami.millstone.MillStoneRecipeCategory;
 import net.kozibrodka.wolves.compat.ami.millstone.MillStoneRecipeHandler;
+import net.kozibrodka.wolves.compat.ami.sawmill.SawRecipeCategory;
+import net.kozibrodka.wolves.compat.ami.sawmill.SawRecipeHandler;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ConfigListener;
 import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.recipe.AnvilCraftingManager;
 import net.kozibrodka.wolves.recipe.MillingRecipeRegistry;
+import net.kozibrodka.wolves.recipe.SawingRecipeRegistry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.modificationstation.stationapi.api.util.Identifier;
@@ -64,6 +67,10 @@ public class AMICompat implements ModPluginProvider {
         registry.addRecipeCategories(new MultiInputRecipeCategory());
         registry.addRecipeHandlers(new MultiInputRecipeHandler());
         registry.addRecipes(MultiInputRecipeMerger.getInstance().getRecipes());
+
+        registry.addRecipeCategories(new SawRecipeCategory());
+        registry.addRecipeHandlers(new SawRecipeHandler());
+        registry.addRecipes(SawingRecipeRegistry.getInstance().getRecipes());
     }
 
     @Override

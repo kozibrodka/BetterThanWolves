@@ -410,6 +410,7 @@ public class SawBlock extends TemplateBlock
         if(!world.isAir(i, j, k))
         {
             int iTargetid = world.getBlockId(i, j, k);
+            ItemStack targetItem = new ItemStack(iTargetid, 1, world.getBlockMeta(i, j, k));
             boolean bSawedBlock = false;
             Block targetBlock = Block.BLOCKS[iTargetid];
             boolean bRemoveOriginalBlockIfSawed = true;
@@ -421,7 +422,7 @@ public class SawBlock extends TemplateBlock
             }
 
             // Standard recipes from the registry
-            ItemStack output = SawingRecipeRegistry.getInstance().getResult(iTargetid);
+            ItemStack output = SawingRecipeRegistry.getInstance().getResult(targetItem);
             if (output != null)
             {
                 if (output.count == 0) output.count = 1;

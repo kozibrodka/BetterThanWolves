@@ -1,43 +1,47 @@
 package net.kozibrodka.wolves.recipe;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import net.minecraft.item.ItemStack;
 
 public class SawingRecipeRegistry {
     private static final SawingRecipeRegistry INSTANCE = new SawingRecipeRegistry();
-    private Map recipes = new HashMap();
+    private ArrayList<ItemStack[]> recipes = new ArrayList<>();
 
     public static final SawingRecipeRegistry getInstance() {
         return INSTANCE;
     }
 
-    public void addSawingRecipe(int i, ItemStack arg) {
-        this.recipes.put(i, arg);
+    public void addSawingRecipe(int input, ItemStack output) {
+        this.recipes.add(new ItemStack[] {new ItemStack(input, 1, 0), output});
     }
 
-    public ItemStack getResult(int i) {
-        return (ItemStack)this.recipes.get(i);
+    public void addSawingRecipe(ItemStack input, ItemStack output) {
+        this.recipes.add(new ItemStack[] {input, output});
     }
 
-    // This is not a clean solution, but it should work fine
-    public ArrayList<ItemStack[]> getRecipes() {
-        ArrayList<ItemStack[]> itemInstances = new ArrayList<>();
+    public ItemStack getResult(ItemStack item) {
+        for (ItemStack[] items : recipes) {
+            if (items[0].isItemEqual(item)) {
+
+                return items[1];
+            }
+        }
+        return null;
+    }
+
+    public ArrayList<SawRecipe> getRecipes() {
+        ArrayList<SawRecipe> convertedRecipes = new ArrayList<>();
         ArrayList<ItemStack> inputs = new ArrayList<>();
         ArrayList<ItemStack> outputs = new ArrayList<>();
-        for (Object obj : recipes.keySet()) {
-            if (obj instanceof Integer)
-            {
-                inputs.add(new ItemStack((Integer) obj, 1, 0));
-                outputs.add(getResult((Integer) obj));
-            }
+        for (ItemStack[] recipe : recipes) {
+            inputs.add(recipe[0]);
+            outputs.add(recipe[1]);
         }
         for (int i = 0; i < inputs.size(); i++) {
             if (i >= outputs.size()) break;
-            itemInstances.add(new ItemStack[] {inputs.get(i), outputs.get(i)});
+            convertedRecipes.add(new SawRecipe(inputs.get(i), outputs.get(i)));
         }
-        return itemInstances;
+        return convertedRecipes;
     }
 }
 

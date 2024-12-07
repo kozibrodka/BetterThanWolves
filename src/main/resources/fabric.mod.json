@@ -3,8 +3,8 @@
   "id": "wolves",
   "version": "${version}",
 
-  "name": "Better Than Wolves Mod V2.94 by FlowerChild",
-  "description": "Better Than Wolves was originally created in Beta 1.4, when FlowerChild remarked that the addition of Wolves added little value to the game, and that there was a lot of better ideas that could have been applied instead. He collected various ideas from the community that were \"better than wolves\", and created the first version of Better Than Wolves a few days later.",
+  "name": "Better Than Wolves",
+  "description": "Better Than Wolves was originally created in Beta 1.4, when FlowerChild remarked that the addition of Wolves added little value to the game, and that there was a lot of better ideas that could have been applied instead. He collected various ideas from the community that were \"better than wolves\", and created the first version of Better Than Wolves a few days later. This port stays mostly faithful to the original version while adding small improvements and an API for other mods to use.",
   "authors": [
     "kozibrodka, shootyourgoomydude, atilist"
   ],
