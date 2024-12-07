@@ -6,8 +6,8 @@ import net.kozibrodka.wolves.compat.ami.anvil.AnvilShapedRecipeCategory;
 import net.kozibrodka.wolves.compat.ami.anvil.AnvilShapelessRecipeCategory;
 import net.kozibrodka.wolves.compat.ami.anvil.AnvilShapelessRecipeHandler;
 import net.kozibrodka.wolves.compat.ami.makecalmangry.MultiInputRecipeMerger;
-import net.kozibrodka.wolves.compat.ami.multiinput.CauldronRecipeCategory;
-import net.kozibrodka.wolves.compat.ami.multiinput.CauldronRecipeHandler;
+import net.kozibrodka.wolves.compat.ami.multiinput.MultiInputRecipeCategory;
+import net.kozibrodka.wolves.compat.ami.multiinput.MultiInputRecipeHandler;
 import net.kozibrodka.wolves.compat.ami.millstone.MillStoneRecipeCategory;
 import net.kozibrodka.wolves.compat.ami.millstone.MillStoneRecipeHandler;
 import net.kozibrodka.wolves.events.BlockListener;
@@ -61,8 +61,8 @@ public class AMICompat implements ModPluginProvider {
         registry.addRecipeHandlers(new AnvilShapelessRecipeHandler());
         registry.addRecipes(AnvilCraftingManager.getInstance().getShapelessRecipes());
 
-        registry.addRecipeCategories(new CauldronRecipeCategory());
-        registry.addRecipeHandlers(new CauldronRecipeHandler());
+        registry.addRecipeCategories(new MultiInputRecipeCategory());
+        registry.addRecipeHandlers(new MultiInputRecipeHandler());
         registry.addRecipes(MultiInputRecipeMerger.getInstance().getRecipes());
     }
 

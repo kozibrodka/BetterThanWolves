@@ -1,6 +1,7 @@
 package net.kozibrodka.wolves.compat.ami.makecalmangry;
 
 import net.kozibrodka.wolves.recipe.CauldronCraftingManager;
+import net.kozibrodka.wolves.recipe.CrucibleCraftingManager;
 import net.kozibrodka.wolves.recipe.MultiInputCraftingManager;
 import net.kozibrodka.wolves.recipe.StokedCauldronCraftingManager;
 
@@ -21,9 +22,13 @@ public class MultiInputRecipeMerger extends MultiInputCraftingManager {
     @Override
     public List getRecipes() {
         List mergedList = CauldronCraftingManager.getInstance().getRecipes();
-        List amiAdjustedRecipes = StokedCauldronCraftingManager.getInstance().getAmiAdjustedRecipes();
-        for (int i = 0; i < amiAdjustedRecipes.size(); i++) {
-            mergedList.add(amiAdjustedRecipes.get(i));
+        List amiAdjustedCauldronRecipes = StokedCauldronCraftingManager.getInstance().getAmiAdjustedRecipes();
+        for (int i = 0; i < amiAdjustedCauldronRecipes.size(); i++) {
+            mergedList.add(amiAdjustedCauldronRecipes.get(i));
+        }
+        List amiAdjustedCrucibleRecipes = CrucibleCraftingManager.getInstance().getAmiAdjustedRecipes();
+        for (int i = 0; i < amiAdjustedCrucibleRecipes.size(); i++) {
+            mergedList.add(amiAdjustedCrucibleRecipes.get(i));
         }
         return CauldronCraftingManager.getInstance().getRecipes();
     }

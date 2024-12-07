@@ -6,10 +6,10 @@ import net.minecraft.item.ItemStack;
 import java.util.List;
 
 
-public class MultiInputRecipeHandler
+public class MultiInputRecipe
 {
 
-    public MultiInputRecipeHandler(ItemStack recipeOutputStack, List recipeInputStacks)
+    public MultiInputRecipe(ItemStack recipeOutputStack, List recipeInputStacks)
     {
         this.recipeOutputStack = recipeOutputStack;
         this.recipeInputStacks = recipeInputStacks;

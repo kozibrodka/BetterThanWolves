@@ -23,14 +23,14 @@ public abstract class MultiInputCraftingManager
             arraylist.add(inputStacks[iTempIndex].copy());
         }
 
-        recipes.add(new MultiInputRecipeHandler(outputStack, arraylist));
+        recipes.add(new MultiInputRecipe(outputStack, arraylist));
     }
 
     public ItemStack getCraftingResult(Inventory inventory)
     {
         for(int i = 0; i < recipes.size(); i++)
         {
-            MultiInputRecipeHandler tempRecipe = (MultiInputRecipeHandler) recipes.get(i);
+            MultiInputRecipe tempRecipe = (MultiInputRecipe) recipes.get(i);
             if(tempRecipe.DoesInventoryContainIngredients(inventory))
             {
                 return tempRecipe.getCopyOfOutputStack();
@@ -44,7 +44,7 @@ public abstract class MultiInputCraftingManager
     {
         for(int i = 0; i < recipes.size(); i++)
         {
-            MultiInputRecipeHandler tempRecipe = (MultiInputRecipeHandler) recipes.get(i);
+            MultiInputRecipe tempRecipe = (MultiInputRecipe) recipes.get(i);
             if(tempRecipe.DoesInventoryContainIngredients(inventory))
             {
                 tempRecipe.ConsumeInventoryIngredients(inventory);

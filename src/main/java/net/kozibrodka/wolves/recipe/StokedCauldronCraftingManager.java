@@ -27,10 +27,10 @@ public class StokedCauldronCraftingManager extends MultiInputCraftingManager
     public List getAmiAdjustedRecipes() {
         List adjustedRecipes = new ArrayList();
         for (int i = 0; i < instance.getRecipes().size(); i++) {
-            MultiInputRecipeHandler recipe = (MultiInputRecipeHandler) instance.getRecipes().get(i);
+            MultiInputRecipe recipe = (MultiInputRecipe) instance.getRecipes().get(i);
             List adaptedInputs = recipe.getRecipeInputStacks();
             adaptedInputs.add(new ItemStack(ItemListener.nothing));
-            MultiInputRecipeHandler newRecipe = new MultiInputRecipeHandler(recipe.getOutputStack(), adaptedInputs);
+            MultiInputRecipe newRecipe = new MultiInputRecipe(recipe.getOutputStack(), adaptedInputs);
             adjustedRecipes.add(newRecipe);
         }
         return adjustedRecipes;

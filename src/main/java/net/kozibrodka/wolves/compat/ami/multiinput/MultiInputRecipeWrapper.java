@@ -1,7 +1,7 @@
 package net.kozibrodka.wolves.compat.ami.multiinput;
 
 import net.glasslauncher.mods.alwaysmoreitems.api.recipe.RecipeWrapper;
-import net.kozibrodka.wolves.recipe.MultiInputRecipeHandler;
+import net.kozibrodka.wolves.recipe.MultiInputRecipe;
 import net.minecraft.client.Minecraft;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -9,10 +9,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CauldronRecipeWrapper implements RecipeWrapper {
-    private final MultiInputRecipeHandler recipe;
+public class MultiInputRecipeWrapper implements RecipeWrapper {
+    private final MultiInputRecipe recipe;
 
-    public CauldronRecipeWrapper(MultiInputRecipeHandler recipe) {
+    public MultiInputRecipeWrapper(MultiInputRecipe recipe) {
         this.recipe = recipe;
     }
 
