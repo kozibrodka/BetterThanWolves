@@ -21,8 +21,9 @@ public class MultiInputRecipeMerger extends MultiInputCraftingManager {
     @Override
     public List getRecipes() {
         List mergedList = CauldronCraftingManager.getInstance().getRecipes();
-        for (int i = 0; i < StokedCauldronCraftingManager.getInstance().getAmiAdjustedRecipes().size(); i++) {
-            mergedList.add(StokedCauldronCraftingManager.getInstance().getAmiAdjustedRecipes().get(i));
+        List amiAdjustedRecipes = StokedCauldronCraftingManager.getInstance().getAmiAdjustedRecipes();
+        for (int i = 0; i < amiAdjustedRecipes.size(); i++) {
+            mergedList.add(amiAdjustedRecipes.get(i));
         }
         return CauldronCraftingManager.getInstance().getRecipes();
     }
