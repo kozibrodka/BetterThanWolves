@@ -7,7 +7,7 @@ import net.kozibrodka.wolves.block.HopperBlock;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.network.SoundPacket;
-import net.kozibrodka.wolves.recipe.HopperHauntingRecipeRegistry;
+import net.kozibrodka.wolves.recipe.HopperPurifyingRecipeRegistry;
 import net.kozibrodka.wolves.utils.BlockPosition;
 import net.kozibrodka.wolves.utils.InventoryHandler;
 import net.kozibrodka.wolves.utils.ReplaceableBlockChecker;
@@ -166,7 +166,7 @@ public class HopperBlockEntity extends BlockEntity
         for (; inputSlot < 18; inputSlot++) {
             item = getStack(inputSlot);
             if (item == null) continue;
-            recipeResultGetter = HopperHauntingRecipeRegistry.getInstance().getResult(item.itemId);
+            recipeResultGetter = HopperPurifyingRecipeRegistry.getInstance().getResult(item.itemId);
             if (recipeResultGetter != null) result = recipeResultGetter.copy();
             if (result != null) break;
         }
@@ -182,7 +182,7 @@ public class HopperBlockEntity extends BlockEntity
             }
             else if (result.isItemEqual(getStack(outputSlot)) && getStack(outputSlot).count + result.count <= getStack(outputSlot).getMaxCount())
             {
-                convertToHellfireDust(inputSlot, outputSlot, false, HopperHauntingRecipeRegistry.getInstance().getResult(item.itemId));
+                convertToHellfireDust(inputSlot, outputSlot, false, HopperPurifyingRecipeRegistry.getInstance().getResult(item.itemId));
                 return true;
             }
         }

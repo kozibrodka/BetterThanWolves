@@ -396,7 +396,7 @@ public class RecipeListener {
     }
 
     private static void addHopperRecipes() {
-        HopperHauntingRecipeRegistry.getInstance().addHopperHauntingRecipe(ItemListener.groundNetherrack.id, new ItemStack(ItemListener.hellfireDust, 1));
+        HopperPurifyingRecipeRegistry.getInstance().addHopperHauntingRecipe(ItemListener.groundNetherrack.id, new ItemStack(ItemListener.hellfireDust, 1));
     }
 
     private static void addSawingRecipes() {

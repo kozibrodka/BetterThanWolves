@@ -5,6 +5,8 @@ import net.kozibrodka.wolves.compat.ami.anvil.AnvilShapedRecipeHandler;
 import net.kozibrodka.wolves.compat.ami.anvil.AnvilShapedRecipeCategory;
 import net.kozibrodka.wolves.compat.ami.anvil.AnvilShapelessRecipeCategory;
 import net.kozibrodka.wolves.compat.ami.anvil.AnvilShapelessRecipeHandler;
+import net.kozibrodka.wolves.compat.ami.hopperpurifying.HopperPurifyingRecipeCategory;
+import net.kozibrodka.wolves.compat.ami.hopperpurifying.HopperPurifyingRecipeHandler;
 import net.kozibrodka.wolves.compat.ami.makecalmangry.MultiInputRecipeMerger;
 import net.kozibrodka.wolves.compat.ami.multiinput.MultiInputRecipeCategory;
 import net.kozibrodka.wolves.compat.ami.multiinput.MultiInputRecipeHandler;
@@ -17,10 +19,7 @@ import net.kozibrodka.wolves.compat.ami.turntable.TurntableRecipeHandler;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ConfigListener;
 import net.kozibrodka.wolves.events.ItemListener;
-import net.kozibrodka.wolves.recipe.AnvilCraftingManager;
-import net.kozibrodka.wolves.recipe.MillingRecipeRegistry;
-import net.kozibrodka.wolves.recipe.SawingRecipeRegistry;
-import net.kozibrodka.wolves.recipe.TurntableRecipeRegistry;
+import net.kozibrodka.wolves.recipe.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.modificationstation.stationapi.api.util.Identifier;
@@ -78,6 +77,10 @@ public class AMICompat implements ModPluginProvider {
         registry.addRecipeCategories(new TurntableRecipeCategory());
         registry.addRecipeHandlers(new TurntableRecipeHandler());
         registry.addRecipes(TurntableRecipeRegistry.getInstance().getRecipes());
+
+        registry.addRecipeCategories(new HopperPurifyingRecipeCategory());
+        registry.addRecipeHandlers(new HopperPurifyingRecipeHandler());
+        registry.addRecipes(HopperPurifyingRecipeRegistry.getInstance().getRecipes());
     }
 
     @Override
