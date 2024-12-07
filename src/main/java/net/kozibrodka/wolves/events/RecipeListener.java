@@ -30,21 +30,23 @@ public class RecipeListener {
             addBlockRecipes();
             addItemRecipes();
             addAlternateVanillaRecipes();
+            addShapedAnvilRecipes();
         }
         if (type == RecipeRegisterEvent.Vanilla.CRAFTING_SHAPELESS.type()) {
             addDyeRecipes();
             addConversionRecipes();
+            addShapelessAnvilRecipes();
+            addCauldronRecipes();
+            addMillingRecipes();
+            addHopperRecipes();
+            addSawingRecipes();
+            addTurntableRecipes();
         }
-        if (type == RecipeRegisterEvent.Vanilla.SMELTING.type()) AddSmeltingRecipes();
-        // TODO: Add custom recipe types to the event bus and check for them like vanilla recipes to avoid redundant recipe creation
-        addAnvilRecipes();
-        addCauldronRecipes();
+        if (type == RecipeRegisterEvent.Vanilla.SMELTING.type()) {
+            addSmeltingRecipes();
+            addCrucibleRecipes();
+        }
         addDebugRecipes();
-        addMillingRecipes();
-        addSawingRecipes();
-        addTurntableRecipes();
-        addCrucibleRecipes();
-        addHopperRecipes();
     }
 
     private static void addAnvilRecipe(ItemStack output, Object[] inputs) {
@@ -157,14 +159,14 @@ public class RecipeListener {
         CraftingRegistry.addShapelessRecipe(new ItemStack(Item.STRING), new ItemStack(ItemListener.hempFibers), new ItemStack(ItemListener.hempFibers));
     }
 
-    private static void AddSmeltingRecipes() {
+    private static void addSmeltingRecipes() {
         SmeltingRegistry.addSmeltingRecipe(ItemListener.wolfRaw.id, new ItemStack(ItemListener.wolfCooked));
         SmeltingRegistry.addSmeltingRecipe(ItemListener.flour.id, new ItemStack(Item.BREAD));
 //        ModLoader.AddSmelting(mod_FCBetterThanWolves.wolfRaw.id, new ItemInstance(mod_FCBetterThanWolves.wolfCooked));
 //        ModLoader.AddSmelting(mod_FCBetterThanWolves.flour.id, new ItemInstance(ItemBase.bread));
     }
 
-    private static void addAnvilRecipes() {
+    private static void addShapedAnvilRecipes() {
         addAnvilRecipe(new ItemStack(ItemListener.refinedPickAxe, 1), new Object[] {
                 "###", " X ", " X ", '#', ItemListener.steel, 'X', ItemListener.haft
         });
@@ -195,6 +197,9 @@ public class RecipeListener {
         addAnvilRecipe(new ItemStack(ItemListener.bootsSteel, 1), new Object[] {
                 "# #", "# #", '#', ItemListener.steel
         });
+    }
+
+    private static void addShapelessAnvilRecipes() {
         addShapelessAnvilRecipe(new ItemStack(ItemListener.broadHeadArrowhead, 4), new Object[] {
                 ItemListener.steel
         });
