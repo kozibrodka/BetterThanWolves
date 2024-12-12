@@ -8,14 +8,18 @@ import net.kozibrodka.wolves.mixin.ClientPlayerAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.NetworkHandler;
 import net.minecraft.network.packet.Packet;
-import net.modificationstation.stationapi.api.network.packet.IdentifiablePacket;
+import net.modificationstation.stationapi.api.network.packet.ManagedPacket;
+import net.modificationstation.stationapi.api.network.packet.PacketType;
 import net.modificationstation.stationapi.api.util.Identifier;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class ParticlePacket extends Packet implements IdentifiablePacket{
+public class ParticlePacket extends Packet implements ManagedPacket<ParticlePacket> {
+
+    public static final PacketType<ParticlePacket> TYPE=PacketType.builder(true, true, ParticlePacket::new).build();
 
     private String particleToPlay;
     private double x;
@@ -92,16 +96,10 @@ public class ParticlePacket extends Packet implements IdentifiablePacket{
         return 6;
     }
 
-    @Override
-    public Identifier getId() {
-        return identifier;
-    }
-
-
     private static final Identifier identifier = PacketListener.MOD_ID.id("btw_particle");
 
-    public static void register() {
-        IdentifiablePacket.register(identifier, true, true, ParticlePacket::new);
+    @Override
+    public @NotNull PacketType<ParticlePacket> getType() {
+        return null;
     }
-
 }

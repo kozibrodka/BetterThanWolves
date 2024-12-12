@@ -15,16 +15,20 @@ import net.kozibrodka.wolves.block.entity.MillStoneBlockEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.NetworkHandler;
 import net.minecraft.network.packet.Packet;
-import net.modificationstation.stationapi.api.network.packet.IdentifiablePacket;
+import net.modificationstation.stationapi.api.network.packet.ManagedPacket;
 import net.modificationstation.stationapi.api.network.packet.PacketHelper;
+import net.modificationstation.stationapi.api.network.packet.PacketType;
 import net.modificationstation.stationapi.api.util.Identifier;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Objects;
 
-public class ScreenPacket extends Packet implements IdentifiablePacket {
+public class ScreenPacket extends Packet implements ManagedPacket<ScreenPacket> {
+
+    public static final PacketType<ScreenPacket> TYPE=PacketType.builder(true, true, ScreenPacket::new).build();
 
     private String tile;
     private int count;
@@ -138,15 +142,10 @@ public class ScreenPacket extends Packet implements IdentifiablePacket {
         return 16;
     }
 
-    @Override
-    public Identifier getId() {
-        return identifier;
-    }
-
-
     private static final Identifier identifier = PacketListener.MOD_ID.id("btw_gui");
 
-    public static void register() {
-        IdentifiablePacket.register(identifier, true, true, ScreenPacket::new);
+    @Override
+    public @NotNull PacketType<ScreenPacket> getType() {
+        return null;
     }
 }

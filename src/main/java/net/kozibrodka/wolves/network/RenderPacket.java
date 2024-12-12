@@ -8,14 +8,18 @@ import net.kozibrodka.wolves.mixin.ClientPlayerAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.NetworkHandler;
 import net.minecraft.network.packet.Packet;
-import net.modificationstation.stationapi.api.network.packet.IdentifiablePacket;
+import net.modificationstation.stationapi.api.network.packet.ManagedPacket;
+import net.modificationstation.stationapi.api.network.packet.PacketType;
 import net.modificationstation.stationapi.api.util.Identifier;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class RenderPacket extends Packet implements IdentifiablePacket {
+public class RenderPacket extends Packet implements ManagedPacket<RenderPacket> {
+
+    public static final PacketType<RenderPacket> TYPE=PacketType.builder(true, true, RenderPacket::new).build();
 
     private int x;
     private int y;
@@ -113,15 +117,10 @@ public class RenderPacket extends Packet implements IdentifiablePacket {
         return 8;
     }
 
-    @Override
-    public Identifier getId() {
-        return identifier;
-    }
-
-
     private static final Identifier identifier = PacketListener.MOD_ID.id("btw_render");
 
-    public static void register() {
-        IdentifiablePacket.register(identifier, true, true, RenderPacket::new);
+    @Override
+    public @NotNull PacketType<RenderPacket> getType() {
+        return null;
     }
 }

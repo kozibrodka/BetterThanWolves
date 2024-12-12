@@ -6,6 +6,8 @@ import net.kozibrodka.wolves.network.SoundPacket;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.modificationstation.stationapi.api.event.network.packet.PacketRegisterEvent;
 import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
+import net.modificationstation.stationapi.api.registry.PacketTypeRegistry;
+import net.modificationstation.stationapi.api.registry.Registry;
 import net.modificationstation.stationapi.api.util.Namespace;
 import net.modificationstation.stationapi.api.util.Null;
 
@@ -16,10 +18,14 @@ public class PacketListener {
 
     @EventListener
     public void registerPacket(PacketRegisterEvent event) {
-        SoundPacket.register();
-        ScreenPacket.register();
-        RenderPacket.register();
-        ParticlePacket.register();
+//        SoundPacket.register();
+//        ScreenPacket.register();
+//        RenderPacket.register();
+//        ParticlePacket.register();
+        Registry.register(PacketTypeRegistry.INSTANCE, PacketListener.MOD_ID.id("btw_particle"), ParticlePacket.TYPE);
+        Registry.register(PacketTypeRegistry.INSTANCE, PacketListener.MOD_ID.id("btw_sound"), SoundPacket.TYPE);
+        Registry.register(PacketTypeRegistry.INSTANCE, PacketListener.MOD_ID.id("btw_gui"), ScreenPacket.TYPE);
+        Registry.register(PacketTypeRegistry.INSTANCE, PacketListener.MOD_ID.id("btw_render"), RenderPacket.TYPE);
 //        IdentifiablePacket.register(MOD_ID.id("btw_sound"), true, true, SoundPacket::new);
     }
 

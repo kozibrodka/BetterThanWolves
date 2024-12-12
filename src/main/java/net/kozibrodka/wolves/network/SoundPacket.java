@@ -9,15 +9,19 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.NetworkHandler;
 import net.minecraft.network.packet.Packet;
 import net.kozibrodka.wolves.events.ItemListener;
-import net.modificationstation.stationapi.api.network.packet.IdentifiablePacket;
+import net.modificationstation.stationapi.api.network.packet.ManagedPacket;
 import net.modificationstation.stationapi.api.network.packet.PacketHelper;
+import net.modificationstation.stationapi.api.network.packet.PacketType;
 import net.modificationstation.stationapi.api.util.Identifier;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class SoundPacket extends Packet implements IdentifiablePacket{
+public class SoundPacket extends Packet implements ManagedPacket<SoundPacket> {
+
+    public static final PacketType<SoundPacket> TYPE=PacketType.builder(true, true, SoundPacket::new).build();
 
     private String soundToPlay;
     private int x;
@@ -102,16 +106,10 @@ public class SoundPacket extends Packet implements IdentifiablePacket{
         return 16;
     }
 
-    @Override
-    public Identifier getId() {
-        return identifier;
-    }
-
-
     private static final Identifier identifier = PacketListener.MOD_ID.id("btw_sound");
 
-    public static void register() {
-        IdentifiablePacket.register(identifier, true, true, SoundPacket::new);
+    @Override
+    public @NotNull PacketType<SoundPacket> getType() {
+        return null;
     }
-
 }

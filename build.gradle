@@ -1,6 +1,6 @@
 plugins {
-	id 'fabric-loom' version '1.7.2'
-	id 'babric-loom-extension' version '1.7.4'
+	id 'fabric-loom' version '1.8.9'
+	id 'babric-loom-extension' version '1.8.9'
 	id 'maven-publish'
 }
 
@@ -89,9 +89,10 @@ dependencies {
 	modImplementation("net.glasslauncher.mods:GlassConfigAPI:${project.gcapi_version}") {
 		transitive false
 	}
-	modImplementation("net.glasslauncher.mods:AlwaysMoreItems:${project.alwaysmoreitems_version}") {
-		transitive false
-	}
+//	modImplementation("net.glasslauncher.mods:AlwaysMoreItems:${project.alwaysmoreitems_version}") {
+//		transitive false
+//	}
+
 }
 
 processResources {

@@ -137,4 +137,9 @@ public class FCEntityTEST extends Entity implements EntitySpawnDataProvider {
     }
 
     public int iFullUpdateTickCount;
+
+    @Override
+    public boolean syncTrackerAtSpawn() {
+        return true;
+    }
 }
