@@ -453,4 +453,9 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider {
             case 3 -> dataTracker.set(23, (byte) color);
         }
     }
+
+    @Override
+    public boolean syncTrackerAtSpawn() {
+        return true;
+    }
 }

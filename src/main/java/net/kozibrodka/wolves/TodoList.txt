@@ -16,6 +16,9 @@ Game mechanics:
 - Make wolf dumping rate depend on feeding (Done)
 - Feature to stop wolves from dumping (Done, they will not dump without excessive feeding)
 - Make stoked fire set entities on fire
+- Make Cement Render Correctly in Multiplayer
+- Fix Multiplayer Entities
+- Pickaxe from steel doesnt break ORES fast
 
 Configurable content (Move some content to separate add-on):
 - Animated saw

@@ -18,13 +18,20 @@ import net.modificationstation.stationapi.api.util.Identifier;
 public class FCEntityTEST extends Entity implements EntitySpawnDataProvider {
     public FCEntityTEST(World arg) {
         super(arg);
-        setBoundingBoxSpacing(2F, 2F);
+        setBoundingBoxSpacing(12.8F, 12.8F);
     }
 
     public FCEntityTEST(World world, double x, double y, double z, int type) {
         this(world);
         setPos(x, y, z);
         setColour(type);
+        AlignBoundingBoxWithAxis();
+    }
+
+    private void AlignBoundingBoxWithAxis()
+    {
+            boundingBox.set(x - 0.40000000596046448D, y - 6.4000000953674316D, z - 6.4000000953674316D, x + 0.40000000596046448D, y + 6.4000000953674316D, z + 6.4000000953674316D);
+//            boundingBox.set(x - 6.4000000953674316D, y - 6.4000000953674316D, z - 0.40000000596046448D, x + 6.4000000953674316D, y + 6.4000000953674316D, z + 0.40000000596046448D);
     }
 
     public FCEntityTEST(World level, Double aDouble, Double aDouble1, Double aDouble2) {
@@ -38,7 +45,7 @@ public class FCEntityTEST extends Entity implements EntitySpawnDataProvider {
             return true;
         }
         System.out.println(dataTracker.getByte(16) & 15);
-//        remove();
+        this.markDead();
         return true;
     }
 
@@ -103,9 +110,20 @@ public class FCEntityTEST extends Entity implements EntitySpawnDataProvider {
             if (iCenterid != BlockListener.axleBlock.id) {
                 if(!world.isRemote){
                     markDead();
+//                    System.out.println(this.y);
+                }else{
+//                    System.out.println("KONSOLA2");
+//                    System.out.println(this.y + "  " + this.lastTickY + "  " + this.trackedPosY);
+//                    this.y = (double)(this.trackedPosY/32);
                 }
                 return;
             }
+        }
+        if(!world.isRemote){
+            System.out.println(this.y);
+        }else{
+            this.y = (double)(this.trackedPosY/32);
+            System.out.println(this.y + "  " + this.lastTickY + "  " + this.trackedPosY);
         }
     }
 

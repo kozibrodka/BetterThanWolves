@@ -532,4 +532,9 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider 
         }
     }
 
+    @Override
+    public boolean syncTrackerAtSpawn() {
+        return true;
+    }
+
 }
