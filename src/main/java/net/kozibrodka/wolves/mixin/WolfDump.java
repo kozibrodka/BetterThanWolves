@@ -1,5 +1,6 @@
 package net.kozibrodka.wolves.mixin;
 
+import net.kozibrodka.wolves.events.ConfigListener;
 import net.kozibrodka.wolves.events.ItemListener;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.passive.AnimalEntity;
@@ -26,7 +27,7 @@ public abstract class WolfDump extends AnimalEntity {
     private int foodCounter;
 
     @Shadow
-    public abstract boolean isTamed(); // isTamed
+    public abstract boolean isTamed();
 
     public WolfDump(World arg) {
         super(arg);
@@ -34,6 +35,10 @@ public abstract class WolfDump extends AnimalEntity {
 
     @Inject(at = @At("TAIL"), method = "tick")
     private void tick(CallbackInfo callbackInfo) {
+        if (ConfigListener.wolvesGlass.gameplay_settings.deactivateDung) {
+            foodCounter = 0;
+            return;
+        }
         if (foodCounter < 1) return;
         int dungBooster = 1;
         if (world.getBrightness((int)x, (int)y, (int)z) < 5) dungBooster *= 2;

@@ -13,6 +13,9 @@ public class GameplayCFG {
     @CFComment("template_comment")
     public Boolean anvilVanillaRecipes = true;
 
+    @ConfigEntry(name = "Deactivate Dung", description = "Deactivates dung production from wolves and replace it with substitutes in recipes")
+    public Boolean deactivateDung = false;
+
     @ConfigEntry(name = "Disable Axe Changes")
     public Boolean fcDisableAxeChanges = false;
 

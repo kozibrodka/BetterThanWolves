@@ -138,8 +138,13 @@ public class RecipeListener {
             CraftingRegistry.addShapelessRecipe(new ItemStack(BlockListener.vase, 1, WoolBlock.method_1(i)), new ItemStack(Item.DYE, 1, i), new ItemStack(BlockListener.vase.id, 1, 0));
         }
 
-        CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 12), new ItemStack(ItemListener.dung), new ItemStack(Block.WOOL.id, 1, 0));
-        CraftingRegistry.addShapelessRecipe(new ItemStack(BlockListener.vase, 1, 12), new ItemStack(ItemListener.dung), new ItemStack(BlockListener.vase.id, 1, 0));
+        if (ConfigListener.wolvesGlass.gameplay_settings.deactivateDung) {
+            CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 12), new ItemStack(Block.LOG), new ItemStack(Block.WOOL.id, 1, 0));
+            CraftingRegistry.addShapelessRecipe(new ItemStack(BlockListener.vase, 1, 12), new ItemStack(Block.LOG), new ItemStack(BlockListener.vase.id, 1, 0));
+        } else {
+            CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 12), new ItemStack(ItemListener.dung), new ItemStack(Block.WOOL.id, 1, 0));
+            CraftingRegistry.addShapelessRecipe(new ItemStack(BlockListener.vase, 1, 12), new ItemStack(ItemListener.dung), new ItemStack(BlockListener.vase.id, 1, 0));
+        }
     }
 
     private static void addAlternateVanillaRecipes() {
@@ -218,9 +223,21 @@ public class RecipeListener {
         addCauldronRecipe(new ItemStack(ItemListener.concentratedHellfire, 1), new ItemStack[] {
                 new ItemStack(ItemListener.hellfireDust, 8)
         });
-        addCauldronRecipe(new ItemStack(ItemListener.tannedLeather, 1), new ItemStack[] {
-                new ItemStack(ItemListener.dung, 1), new ItemStack(ItemListener.scouredLeather, 1)
-        });
+        if (ConfigListener.wolvesGlass.gameplay_settings.deactivateDung) {
+            addCauldronRecipe(new ItemStack(ItemListener.tannedLeather, 1), new ItemStack[]{
+                    new ItemStack(Block.LOG, 1), new ItemStack(ItemListener.scouredLeather, 1)
+            });
+            addCauldronRecipe(new ItemStack(Block.WOOL, 8, 12), new ItemStack[] {
+                    new ItemStack(Block.LOG, 1), new ItemStack(Block.WOOL.id, 8, 0)
+            });
+        } else {
+            addCauldronRecipe(new ItemStack(ItemListener.tannedLeather, 1), new ItemStack[]{
+                    new ItemStack(ItemListener.dung, 1), new ItemStack(ItemListener.scouredLeather, 1)
+            });
+            addCauldronRecipe(new ItemStack(Block.WOOL, 8, 12), new ItemStack[] {
+                    new ItemStack(ItemListener.dung, 1), new ItemStack(Block.WOOL.id, 8, 0)
+            });
+        }
         addCauldronRecipe(new ItemStack(ItemListener.donut, 4), new ItemStack[] {
                 new ItemStack(ItemListener.flour, 1)
         });
@@ -229,9 +246,6 @@ public class RecipeListener {
                     new ItemStack(Item.DYE, 1, i), new ItemStack(Block.WOOL, 8, 0)
             });
         }
-        addCauldronRecipe(new ItemStack(Block.WOOL, 8, 12), new ItemStack[] {
-                new ItemStack(ItemListener.dung, 1), new ItemStack(Block.WOOL.id, 8, 0)
-        });
         addCauldronRecipe(new ItemStack(Block.TNT), new ItemStack[] {
                 new ItemStack(Block.SAND, 4), new ItemStack(Item.GUNPOWDER, 5)
         });
