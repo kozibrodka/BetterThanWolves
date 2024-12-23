@@ -137,7 +137,7 @@ public class CrucibleBlockEntity extends BlockEntity implements Inventory {
 
     public int getStokedFireFactor() {
         int fireFactor = 0;
-        if(world.getBlockId(x, y - 1, z) == BlockListener.stokedFire.id && world.getBlockId(x, y - 2, z) == BlockListener.stokedFire.id) {
+        if(world.getBlockId(x, y - 1, z) == BlockListener.stokedFire.id) {
             fireFactor += 5;
             int tempY = y - 1;
             for(int tempX = x - 1; tempX <= x + 1; tempX++) {

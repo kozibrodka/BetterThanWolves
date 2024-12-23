@@ -272,6 +272,9 @@ public class CrucibleBlock extends TemplateBlockWithEntity
     public void SetHasLava(World world, int i, int j, int k, boolean bOn)
     {
         BlockEntity tileEntityBase = world.getBlockEntity(i, j, k);
+        if (tileEntityBase == null) {
+            return;
+        }
         SETTING_TILE = true;
 
         BlockState currentState = world.getBlockState(i, j, k);
