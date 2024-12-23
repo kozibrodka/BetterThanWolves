@@ -128,9 +128,6 @@ public class RecipeListener {
         CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.compositeBow, 1), "X#Y", "ZX#", "X#Y", Character.valueOf('#'), BlockListener.moulding, Character.valueOf('X'), Item.BONE, Character.valueOf('Y'), ItemListener.glue, Character.valueOf('Z'),
                 Item.STRING);
         CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.broadHeadArrow, 4), "#", "X", "Y", Character.valueOf('#'), ItemListener.broadHeadArrowhead, Character.valueOf('X'), BlockListener.moulding, Character.valueOf('Y'), Item.FEATHER);
-        //TODO DEBUG DELETE
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.debug1, 1), "#", Character.valueOf('#'), Block.DIRT);
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.debug2, 1), "#", Character.valueOf('#'), Block.SAND);
     }
 
     private static void addDyeRecipes() {
