@@ -54,8 +54,8 @@ public class AnvilScreenHandler extends ScreenHandler
             }
             craftResult.setStack(0, craftedStack);
         } else {
-            ItemStack craftedStac2k = AnvilCraftingManager.getInstance().findMatchingRecipe(craftMatrix);
-            craftResult.setStack(0, craftedStac2k);
+            ItemStack craftedStack = AnvilCraftingManager.getInstance().findMatchingRecipe(craftMatrix);
+            craftResult.setStack(0, craftedStack);
         }
     }
 
