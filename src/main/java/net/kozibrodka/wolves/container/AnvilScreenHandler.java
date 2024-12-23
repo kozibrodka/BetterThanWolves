@@ -2,6 +2,7 @@ package net.kozibrodka.wolves.container;
 
 import net.kozibrodka.wolves.events.BlockListener;
 //import net.kozibrodka.wolves.events.ConfigListener;
+import net.kozibrodka.wolves.events.ConfigListener;
 import net.kozibrodka.wolves.recipe.AnvilCraftingManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -46,16 +47,16 @@ public class AnvilScreenHandler extends ScreenHandler
     @Override
     public void onSlotUpdate(Inventory iinventory) {
 
-        //if (ConfigListener.wolvesGlass.gameplay_settings.anvilVanillaRecipes) {
-        //    ItemStack craftedStack = CraftingRecipeManager.getInstance().craft(craftMatrix);
-        //    if (craftedStack == null) {
-        //        craftedStack = AnvilCraftingManager.getInstance().findMatchingRecipe(craftMatrix);
-        //    }
-        //    craftResult.setStack(0, craftedStack);
-        //} else {
+        if (ConfigListener.wolvesGlass.gameplay_settings.anvilVanillaRecipes) {
+            ItemStack craftedStack = CraftingRecipeManager.getInstance().craft(craftMatrix);
+            if (craftedStack == null) {
+                craftedStack = AnvilCraftingManager.getInstance().findMatchingRecipe(craftMatrix);
+            }
+            craftResult.setStack(0, craftedStack);
+        } else {
             ItemStack craftedStac2k = AnvilCraftingManager.getInstance().findMatchingRecipe(craftMatrix);
             craftResult.setStack(0, craftedStac2k);
-        //}
+        }
     }
 
     public void onClosed(PlayerEntity entityplayer) {

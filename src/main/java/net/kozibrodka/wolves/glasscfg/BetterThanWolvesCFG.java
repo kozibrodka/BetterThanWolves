@@ -7,6 +7,6 @@ package net.kozibrodka.wolves.glasscfg;
 import net.glasslauncher.mods.gcapi3.api.ConfigCategory;
 
 public class BetterThanWolvesCFG {
-    //@ConfigCategory("§5Gameplay Settings")
-    //public GameplayCFG gameplay_settings = new GameplayCFG();
+    @ConfigCategory(name = "§5Gameplay Settings")
+    public GameplayCFG gameplay_settings = new GameplayCFG();
 }

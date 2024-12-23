@@ -36,6 +36,9 @@
     ],
     "alwaysmoreitems:plugin": [
       "net.kozibrodka.wolves.compat.ami.AMICompat"
+    ],
+    "gcapi3": [
+      "net.kozibrodka.wolves.events.ConfigListener"
     ]
   },
   "mixins": [

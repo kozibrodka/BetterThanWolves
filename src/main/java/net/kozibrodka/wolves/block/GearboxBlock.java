@@ -5,9 +5,9 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.events.BlockListener;
+import net.kozibrodka.wolves.events.ConfigListener;
 import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.events.TextureListener;
-//import net.kozibrodka.wolves.events.ConfigListener;
 import net.kozibrodka.wolves.mixin.LevelAccessor;
 import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.utils.BlockPosition;
@@ -79,10 +79,9 @@ public class GearboxBlock extends TemplateBlock
     public void onPlaced(World world, int i, int j, int k, LivingEntity entityLiving) //onBlockPlacedBy
     {
         int iFacing = UnsortedUtils.ConvertPlacingEntityOrientationToBlockFacing(entityLiving);
-        //if(ConfigListener.wolvesGlass.gameplay_settings.faceGearBoxAwayFromPlayer)
-        //{
-        //    iFacing = UnsortedUtils.getOppositeFacing(iFacing);
-        //}
+        if(ConfigListener.wolvesGlass.gameplay_settings.faceGearBoxAwayFromPlayer) {
+            iFacing = UnsortedUtils.getOppositeFacing(iFacing);
+        }
         SetFacing(world, i, j, k, iFacing);
     }
 
