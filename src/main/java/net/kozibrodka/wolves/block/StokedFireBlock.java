@@ -5,6 +5,7 @@ import net.kozibrodka.wolves.mixin.FireAccessor;
 import net.minecraft.block.Block;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.block.BlockRenderManager;
+import net.minecraft.entity.Entity;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
@@ -156,6 +157,16 @@ public class StokedFireBlock extends TemplateFireBlock implements BlockWithWorld
         } else {
             return this.isBlockFlammable(world, x, y, z + 1);
         }
+    }
+
+    @Override
+    public void onEntityCollision(World world, int x, int y, int z, Entity entity) {
+        super.onEntityCollision(world, x, y, z, entity);
+        if (entity == null) {
+            return;
+        }
+        entity.fireTicks = 10;
+        entity.damage(null, 2);
     }
 
     // TODO: Replace this messy code. And make the top stoked fire visually connect better to the bottom block. - think its done?
