@@ -52,13 +52,18 @@ public class TurntableRecipeRegistry {
         ArrayList<ItemStack> outputs = new ArrayList<>();
         ArrayList<ItemStack> byproducts = new ArrayList<>();
         for (ItemStack[] recipe : recipes) {
-            inputs.add(recipe[0]);
-            recipe[1].count = 1;
-            outputs.add(recipe[1]);
+            ItemStack input = recipe[0].copy();
+            ItemStack output = recipe[1].copy();
+            ItemStack byproduct;
             if (recipe[2] == null) {
-                recipe[2] = new ItemStack(ItemListener.nothing, 1);
+                byproduct = new ItemStack(ItemListener.nothing, 1);
+            } else {
+                byproduct = recipe[2].copy();
             }
-            byproducts.add(recipe[2]);
+            output.count = 1;
+            inputs.add(input);
+            outputs.add(output);
+            byproducts.add(byproduct);
         }
         for (int i = 0; i < inputs.size(); i++) {
             if (i >= outputs.size()) break;

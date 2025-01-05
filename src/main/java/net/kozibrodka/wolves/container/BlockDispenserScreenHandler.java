@@ -18,7 +18,7 @@ public class BlockDispenserScreenHandler extends ScreenHandler
         {
             for(int l = 0; l < 3; l++)
             {
-                addSlot(new Slot(tileEntityBlockDispenser, l + i * 3, 61 + l * 18, 17 + i * 18));
+                addSlot(new Slot(tileEntityBlockDispenser, l + i * 3, 62 + l * 18, 17 + i * 18));
             }
 
         }
