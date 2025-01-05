@@ -106,10 +106,8 @@ public class SoundPacket extends Packet implements ManagedPacket<SoundPacket> {
         return 16;
     }
 
-    private static final Identifier identifier = PacketListener.MOD_ID.id("btw_sound");
-
     @Override
     public @NotNull PacketType<SoundPacket> getType() {
-        return null;
+        return TYPE;
     }
 }

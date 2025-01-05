@@ -142,10 +142,8 @@ public class ScreenPacket extends Packet implements ManagedPacket<ScreenPacket> 
         return 16;
     }
 
-    private static final Identifier identifier = PacketListener.MOD_ID.id("btw_gui");
-
     @Override
     public @NotNull PacketType<ScreenPacket> getType() {
-        return null;
+        return TYPE;
     }
 }

@@ -96,10 +96,8 @@ public class ParticlePacket extends Packet implements ManagedPacket<ParticlePack
         return 6;
     }
 
-    private static final Identifier identifier = PacketListener.MOD_ID.id("btw_particle");
-
     @Override
     public @NotNull PacketType<ParticlePacket> getType() {
-        return null;
+        return TYPE;
     }
 }

@@ -170,7 +170,6 @@ public class HandCrankBlock extends TemplateBlock
             {
                 ServerPlayerEntity player1 = (ServerPlayerEntity) list2.get(k);
                 PacketHelper.sendTo(player1, new SoundPacket("random.click", x, y, z, g,h));
-                System.out.println("WYSYLAM PAKIET");
             }
         }
     }

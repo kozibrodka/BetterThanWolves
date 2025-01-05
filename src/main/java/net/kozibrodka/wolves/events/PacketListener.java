@@ -22,10 +22,10 @@ public class PacketListener {
 //        ScreenPacket.register();
 //        RenderPacket.register();
 //        ParticlePacket.register();
-        Registry.register(PacketTypeRegistry.INSTANCE, PacketListener.MOD_ID.id("btw_particle"), ParticlePacket.TYPE);
-        Registry.register(PacketTypeRegistry.INSTANCE, PacketListener.MOD_ID.id("btw_sound"), SoundPacket.TYPE);
-        Registry.register(PacketTypeRegistry.INSTANCE, PacketListener.MOD_ID.id("btw_gui"), ScreenPacket.TYPE);
-        Registry.register(PacketTypeRegistry.INSTANCE, PacketListener.MOD_ID.id("btw_render"), RenderPacket.TYPE);
+        Registry.register(PacketTypeRegistry.INSTANCE, PacketListener.MOD_ID.id("particle"), ParticlePacket.TYPE);
+        Registry.register(PacketTypeRegistry.INSTANCE, PacketListener.MOD_ID.id("sound"), SoundPacket.TYPE);
+        Registry.register(PacketTypeRegistry.INSTANCE, PacketListener.MOD_ID.id("gui"), ScreenPacket.TYPE);
+        Registry.register(PacketTypeRegistry.INSTANCE, PacketListener.MOD_ID.id("render"), RenderPacket.TYPE);
 //        IdentifiablePacket.register(MOD_ID.id("btw_sound"), true, true, SoundPacket::new);
     }
 

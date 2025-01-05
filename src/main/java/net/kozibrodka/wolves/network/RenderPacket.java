@@ -117,10 +117,8 @@ public class RenderPacket extends Packet implements ManagedPacket<RenderPacket> 
         return 8;
     }
 
-    private static final Identifier identifier = PacketListener.MOD_ID.id("btw_render");
-
     @Override
     public @NotNull PacketType<RenderPacket> getType() {
-        return null;
+        return TYPE;
     }
 }
