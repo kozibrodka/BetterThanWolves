@@ -66,6 +66,23 @@ item.wolves.green_wool_ball.name=Green Wool Ball
 item.wolves.red_wool_ball.name=Red Wool Ball
 item.wolves.black_wool_ball.name=Black Wool Ball
 
+item.wolves.white_wool_knit.name=White Wool Knit
+item.wolves.orange_wool_knit.name=Orange Wool Knit
+item.wolves.magenta_wool_knit.name=Magenta Wool Knit
+item.wolves.light_blue_wool_knit.name=Light Blue Wool Knit
+item.wolves.yellow_wool_knit.name=Yellow Wool Knit
+item.wolves.lime_wool_knit.name=Lime Wool Knit
+item.wolves.pink_wool_knit.name=Pink Wool Knit
+item.wolves.dark_grey_wool_knit.name=Dark Grey Wool Knit
+item.wolves.light_grey_wool_knit.name=Light Grey Wool Knit
+item.wolves.cyan_wool_knit.name=Cyan Wool Knit
+item.wolves.purple_wool_knit.name=Purple Wool Knit
+item.wolves.blue_wool_knit.name=Blue Wool Knit
+item.wolves.brown_wool_knit.name=Brown Wool Knit
+item.wolves.green_wool_knit.name=Green Wool Knit
+item.wolves.red_wool_knit.name=Red Wool Knit
+item.wolves.black_wool_knit.name=Black Wool Knit
+
 tile.wolves.anvil.name=Anvil
 tile.wolves.light_bulb_off.name=Light Block
 tile.wolves.light_bulb_on.name=Light Block

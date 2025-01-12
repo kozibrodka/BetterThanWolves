@@ -170,6 +170,24 @@ public class RecipeListener {
         if (ConfigListener.wolvesGlass.difficulty.wickerWeaving) {
             CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.wicker), new ItemStack(ItemListener.wickerSheet), new ItemStack(ItemListener.grate));
         }
+        if (ConfigListener.wolvesGlass.difficulty.woolKnitting) {
+            CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 0), new ItemStack(BlockListener.blockOfWicker), new ItemStack(ItemListener.whiteWoolKnit), new ItemStack(ItemListener.whiteWoolKnit));
+            CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 1), new ItemStack(BlockListener.blockOfWicker), new ItemStack(ItemListener.orangeWoolKnit), new ItemStack(ItemListener.orangeWoolKnit));
+            CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 2), new ItemStack(BlockListener.blockOfWicker), new ItemStack(ItemListener.magentaWoolKnit), new ItemStack(ItemListener.magentaWoolKnit));
+            CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 3), new ItemStack(BlockListener.blockOfWicker), new ItemStack(ItemListener.lightBlueWoolKnit), new ItemStack(ItemListener.lightBlueWoolKnit));
+            CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 4), new ItemStack(BlockListener.blockOfWicker), new ItemStack(ItemListener.yellowWoolKnit), new ItemStack(ItemListener.yellowWoolKnit));
+            CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 5), new ItemStack(BlockListener.blockOfWicker), new ItemStack(ItemListener.limeWoolKnit), new ItemStack(ItemListener.limeWoolKnit));
+            CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 6), new ItemStack(BlockListener.blockOfWicker), new ItemStack(ItemListener.pinkWoolKnit), new ItemStack(ItemListener.pinkWoolKnit));
+            CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 7), new ItemStack(BlockListener.blockOfWicker), new ItemStack(ItemListener.darkGreyWoolKnit), new ItemStack(ItemListener.darkGreyWoolKnit));
+            CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 8), new ItemStack(BlockListener.blockOfWicker), new ItemStack(ItemListener.lightGreyWoolKnit), new ItemStack(ItemListener.lightGreyWoolKnit));
+            CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 9), new ItemStack(BlockListener.blockOfWicker), new ItemStack(ItemListener.cyanWoolKnit), new ItemStack(ItemListener.cyanWoolKnit));
+            CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 10), new ItemStack(BlockListener.blockOfWicker), new ItemStack(ItemListener.purpleWoolKnit), new ItemStack(ItemListener.purpleWoolKnit));
+            CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 11), new ItemStack(BlockListener.blockOfWicker), new ItemStack(ItemListener.blueWoolKnit), new ItemStack(ItemListener.blueWoolKnit));
+            CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 12), new ItemStack(BlockListener.blockOfWicker), new ItemStack(ItemListener.brownWoolKnit), new ItemStack(ItemListener.brownWoolKnit));
+            CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 13), new ItemStack(BlockListener.blockOfWicker), new ItemStack(ItemListener.greenWoolKnit), new ItemStack(ItemListener.greenWoolKnit));
+            CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 14), new ItemStack(BlockListener.blockOfWicker), new ItemStack(ItemListener.redWoolKnit), new ItemStack(ItemListener.redWoolKnit));
+            CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 15), new ItemStack(BlockListener.blockOfWicker), new ItemStack(ItemListener.blackWoolKnit), new ItemStack(ItemListener.blackWoolKnit));
+        }
     }
 
     private static void addConversionRecipes() {

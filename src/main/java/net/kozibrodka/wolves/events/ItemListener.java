@@ -81,6 +81,23 @@ public class ItemListener {
     public static TemplateItem redWoolBall;
     public static TemplateItem blackWoolBall;
 
+    public static TemplateItem whiteWoolKnit;
+    public static TemplateItem orangeWoolKnit;
+    public static TemplateItem magentaWoolKnit;
+    public static TemplateItem lightBlueWoolKnit;
+    public static TemplateItem yellowWoolKnit;
+    public static TemplateItem limeWoolKnit;
+    public static TemplateItem pinkWoolKnit;
+    public static TemplateItem darkGreyWoolKnit;
+    public static TemplateItem lightGreyWoolKnit;
+    public static TemplateItem cyanWoolKnit;
+    public static TemplateItem purpleWoolKnit;
+    public static TemplateItem blueWoolKnit;
+    public static TemplateItem brownWoolKnit;
+    public static TemplateItem greenWoolKnit;
+    public static TemplateItem redWoolKnit;
+    public static TemplateItem blackWoolKnit;
+
     @Entrypoint.Namespace
     public static final Namespace MOD_ID = Null.get();
 
@@ -155,6 +172,23 @@ public class ItemListener {
         greenWoolBall = new LazyItemTemplate(Identifier.of(MOD_ID, "green_wool_ball"));
         redWoolBall = new LazyItemTemplate(Identifier.of(MOD_ID, "red_wool_ball"));
         blackWoolBall = new LazyItemTemplate(Identifier.of(MOD_ID, "black_wool_ball"));
+
+        whiteWoolKnit = new LazyItemTemplate(Identifier.of(MOD_ID, "white_wool_knit"));
+        orangeWoolKnit = new LazyItemTemplate(Identifier.of(MOD_ID,"orange_wool_knit"));
+        magentaWoolKnit = new LazyItemTemplate(Identifier.of(MOD_ID, "magenta_wool_knit"));
+        lightBlueWoolKnit = new LazyItemTemplate(Identifier.of(MOD_ID, "light_blue_wool_knit"));
+        yellowWoolKnit = new LazyItemTemplate(Identifier.of(MOD_ID,"yellow_wool_knit"));
+        limeWoolKnit = new LazyItemTemplate(Identifier.of(MOD_ID,"lime_wool_knit"));
+        pinkWoolKnit = new LazyItemTemplate(Identifier.of(MOD_ID,"pink_wool_knit"));
+        darkGreyWoolKnit = new LazyItemTemplate(Identifier.of(MOD_ID,"dark_grey_wool_knit"));
+        lightGreyWoolKnit = new LazyItemTemplate(Identifier.of(MOD_ID, "light_grey_wool_knit"));
+        cyanWoolKnit = new LazyItemTemplate(Identifier.of(MOD_ID,"cyan_wool_knit"));
+        purpleWoolKnit = new LazyItemTemplate(Identifier.of(MOD_ID,"purple_wool_knit"));
+        blueWoolKnit = new LazyItemTemplate(Identifier.of(MOD_ID,"blue_wool_knit"));
+        brownWoolKnit = new LazyItemTemplate(Identifier.of(MOD_ID, "brown_wool_knit"));
+        greenWoolKnit = new LazyItemTemplate(Identifier.of(MOD_ID, "green_wool_knit"));
+        redWoolKnit = new LazyItemTemplate(Identifier.of(MOD_ID, "red_wool_knit"));
+        blackWoolKnit  = new LazyItemTemplate(Identifier.of(MOD_ID, "black_wool_knit"));
 
         //TODO: ADDON IDEA: Refined Steel Minecarts - they would be X times faster than normal ones, great way to give more purpose for rail usage.
     }
