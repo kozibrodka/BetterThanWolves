@@ -1,7 +1,7 @@
 package net.kozibrodka.wolves.mixin;
 
 import net.kozibrodka.wolves.events.ConfigListener;
-import net.minecraft.block.Block;
+import net.kozibrodka.wolves.events.ItemListener;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.SheepEntity;
@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -18,6 +19,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(SheepEntity.class)
 public abstract class WoolDropMixin extends AnimalEntity {
+
+    @Unique
+    Item[] woolTypes = {ItemListener.whiteWoolBall, ItemListener.orangeWoolBall, ItemListener.magentaWoolBall, ItemListener.lightBlueWoolBall,
+                        ItemListener.yellowWoolBall, ItemListener.limeWoolBall, ItemListener.pinkWoolBall, ItemListener.darkGreyWoolBall,
+                        ItemListener.lightGreyWoolBall, ItemListener.cyanWoolBall, ItemListener.purpleWoolBall, ItemListener.blueWoolBall,
+                        ItemListener.brownWoolBall, ItemListener.greenWoolBall, ItemListener.redWoolBall, ItemListener.blackWoolBall};
+
     @Shadow public abstract boolean isSheared();
 
     @Shadow public abstract int getColor();
@@ -34,7 +42,7 @@ public abstract class WoolDropMixin extends AnimalEntity {
             return;
         }
         if (!isSheared()) {
-            this.dropItem(new ItemStack(Block.LOG, 1), 0.0F);
+            this.dropItem(new ItemStack(woolTypes[getColor()], 1), 0.0F);
         }
         callbackInfo.cancel();
     }
@@ -51,7 +59,7 @@ public abstract class WoolDropMixin extends AnimalEntity {
                 int var3 = 2 + this.random.nextInt(3);
 
                 for(int var4 = 0; var4 < var3; ++var4) {
-                    ItemEntity var5 = this.dropItem(new ItemStack(Block.LOG, 1), 1.0F);
+                    ItemEntity var5 = this.dropItem(new ItemStack(woolTypes[getColor()], 1), 1.0F);
                     var5.velocityY += this.random.nextFloat() * 0.05F;
                     var5.velocityX += (this.random.nextFloat() - this.random.nextFloat()) * 0.1F;
                     var5.velocityZ += (this.random.nextFloat() - this.random.nextFloat()) * 0.1F;

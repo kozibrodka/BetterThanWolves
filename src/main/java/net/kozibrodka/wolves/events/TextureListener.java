@@ -127,6 +127,23 @@ public class TextureListener {
         ItemListener.wickerWeaving.setTexture(Identifier.of(NAMESPACE, "item/wickerWeaving"));
         ItemListener.wickerSheet.setTexture(Identifier.of(NAMESPACE, "item/wickerSheet"));
 
+        ItemListener.whiteWoolBall.setTexture(Identifier.of(NAMESPACE, "item/whiteWoolBall"));
+        ItemListener.orangeWoolBall.setTexture(Identifier.of(NAMESPACE, "item/orangeWoolBall"));
+        ItemListener.magentaWoolBall.setTexture(Identifier.of(NAMESPACE, "item/magentaWoolBall"));
+        ItemListener.lightBlueWoolBall.setTexture(Identifier.of(NAMESPACE, "item/lightBlueWoolBall"));
+        ItemListener.yellowWoolBall.setTexture(Identifier.of(NAMESPACE, "item/yellowWoolBall"));
+        ItemListener.limeWoolBall.setTexture(Identifier.of(NAMESPACE, "item/limeWoolBall"));
+        ItemListener.pinkWoolBall.setTexture(Identifier.of(NAMESPACE, "item/pinkWoolBall"));
+        ItemListener.darkGreyWoolBall.setTexture(Identifier.of(NAMESPACE, "item/darkGreyWoolBall"));
+        ItemListener.lightGreyWoolBall.setTexture(Identifier.of(NAMESPACE, "item/lightGreyWoolBall"));
+        ItemListener.cyanWoolBall.setTexture(Identifier.of(NAMESPACE, "item/cyanWoolBall"));
+        ItemListener.purpleWoolBall.setTexture(Identifier.of(NAMESPACE, "item/purpleWoolBall"));
+        ItemListener.blueWoolBall.setTexture(Identifier.of(NAMESPACE, "item/blueWoolBall"));
+        ItemListener.brownWoolBall.setTexture(Identifier.of(NAMESPACE, "item/brownWoolBall"));
+        ItemListener.greenWoolBall.setTexture(Identifier.of(NAMESPACE, "item/greenWoolBall"));
+        ItemListener.redWoolBall.setTexture(Identifier.of(NAMESPACE, "item/redWoolBall"));
+        ItemListener.blackWoolBall.setTexture(Identifier.of(NAMESPACE, "item/blackWoolBall"));
+
         BlockListener.detectorRailObsidian.asItem().setTextureId(registerBlockTexture("block/fcRailDetector_obsidian"));
         BlockListener.detectorRailWood.asItem().setTextureId(registerBlockTexture("block/fcRailDetector_wood"));
         BlockListener.cement.asItem().setTextureId(cement);
