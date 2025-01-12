@@ -47,7 +47,7 @@ public class AnvilScreenHandler extends ScreenHandler
     @Override
     public void onSlotUpdate(Inventory iinventory) {
 
-        if (ConfigListener.wolvesGlass.gameplay_settings.anvilVanillaRecipes) {
+        if (ConfigListener.wolvesGlass.small_tweaks.anvilVanillaRecipes) {
             ItemStack craftedStack = CraftingRecipeManager.getInstance().craft(craftMatrix);
             if (craftedStack == null) {
                 craftedStack = AnvilCraftingManager.getInstance().findMatchingRecipe(craftMatrix);

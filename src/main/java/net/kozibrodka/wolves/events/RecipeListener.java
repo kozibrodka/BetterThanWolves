@@ -135,7 +135,7 @@ public class RecipeListener {
             CraftingRegistry.addShapelessRecipe(new ItemStack(BlockListener.vase, 1, WoolBlock.method_1(i)), new ItemStack(Item.DYE, 1, i), new ItemStack(BlockListener.vase.id, 1, 0));
         }
 
-        if (ConfigListener.wolvesGlass.gameplay_settings.deactivateDung) {
+        if (ConfigListener.wolvesGlass.small_tweaks.deactivateDung) {
             CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 12), new ItemStack(Block.LOG), new ItemStack(Block.WOOL.id, 1, 0));
             CraftingRegistry.addShapelessRecipe(new ItemStack(BlockListener.vase, 1, 12), new ItemStack(Block.LOG), new ItemStack(BlockListener.vase.id, 1, 0));
         } else {
@@ -220,7 +220,7 @@ public class RecipeListener {
         addCauldronRecipe(new ItemStack(ItemListener.concentratedHellfire, 1), new ItemStack[] {
                 new ItemStack(ItemListener.hellfireDust, 8)
         });
-        if (ConfigListener.wolvesGlass.gameplay_settings.deactivateDung) {
+        if (ConfigListener.wolvesGlass.small_tweaks.deactivateDung) {
             addCauldronRecipe(new ItemStack(ItemListener.tannedLeather, 1), new ItemStack[]{
                     new ItemStack(Block.LOG, 1), new ItemStack(ItemListener.scouredLeather, 1)
             });

@@ -35,7 +35,7 @@ public abstract class WolfDump extends AnimalEntity {
 
     @Inject(at = @At("TAIL"), method = "tick")
     private void tick(CallbackInfo callbackInfo) {
-        if (ConfigListener.wolvesGlass.gameplay_settings.deactivateDung) {
+        if (ConfigListener.wolvesGlass.small_tweaks.deactivateDung) {
             foodCounter = 0;
             return;
         }
