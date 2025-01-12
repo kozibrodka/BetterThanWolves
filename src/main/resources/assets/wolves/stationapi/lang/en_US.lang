@@ -49,6 +49,9 @@ item.wolves.soul_filter.name=Soul Filter
 item.wolves.nothing.name=Nothing
 item.wolves.wicker_weaving.name=Wicker Weaving
 item.wolves.wicker_sheet.name=Wicker Sheet
+
+item.wolves.knitting_needles.name=Knitting Needles
+
 item.wolves.white_wool_ball.name=White Wool Ball
 item.wolves.orange_wool_ball.name=Orange Wool Ball
 item.wolves.magenta_wool_ball.name=Magenta Wool Ball
@@ -65,6 +68,23 @@ item.wolves.brown_wool_ball.name=Brown Wool Ball
 item.wolves.green_wool_ball.name=Green Wool Ball
 item.wolves.red_wool_ball.name=Red Wool Ball
 item.wolves.black_wool_ball.name=Black Wool Ball
+
+item.wolves.white_knitting.name=White Knitting
+item.wolves.orange_knitting.name=Orange Knitting
+item.wolves.magenta_knitting.name=Magenta Knitting
+item.wolves.light_blue_knitting.name=Light Blue Knitting
+item.wolves.yellow_knitting.name=Yellow Knitting
+item.wolves.lime_knitting.name=Lime Knitting
+item.wolves.pink_knitting.name=Pink Knitting
+item.wolves.dark_grey_knitting.name=Dark Grey Knitting
+item.wolves.light_grey_knitting.name=Light Grey Knitting
+item.wolves.cyan_knitting.name=Cyan Knitting
+item.wolves.purple_knitting.name=Purple Knitting
+item.wolves.blue_knitting.name=Blue Knitting
+item.wolves.brown_knitting.name=Brown Knitting
+item.wolves.green_knitting.name=Green Knitting
+item.wolves.red_knitting.name=Red Knitting
+item.wolves.black_knitting.name=Black Knitting
 
 item.wolves.white_wool_knit.name=White Wool Knit
 item.wolves.orange_wool_knit.name=Orange Wool Knit

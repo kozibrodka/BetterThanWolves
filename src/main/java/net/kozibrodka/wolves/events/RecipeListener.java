@@ -171,6 +171,25 @@ public class RecipeListener {
             CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.wicker), new ItemStack(ItemListener.wickerSheet), new ItemStack(ItemListener.grate));
         }
         if (ConfigListener.wolvesGlass.difficulty.woolKnitting) {
+            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.knittingNeedles, 1), new ItemStack(Item.STICK, 1), new ItemStack(Item.STICK, 1));
+
+            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.whiteKnitting, 1), new ItemStack(ItemListener.knittingNeedles, 1), new ItemStack(ItemListener.whiteWoolBall, 1));
+            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.orangeKnitting, 1), new ItemStack(ItemListener.knittingNeedles, 1), new ItemStack(ItemListener.orangeWoolBall, 1));
+            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.magentaKnitting, 1), new ItemStack(ItemListener.knittingNeedles, 1), new ItemStack(ItemListener.magentaWoolBall, 1));
+            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.lightBlueKnitting, 1), new ItemStack(ItemListener.knittingNeedles, 1), new ItemStack(ItemListener.lightBlueWoolBall, 1));
+            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.yellowKnitting, 1), new ItemStack(ItemListener.knittingNeedles, 1), new ItemStack(ItemListener.yellowWoolBall, 1));
+            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.limeKnitting, 1), new ItemStack(ItemListener.knittingNeedles, 1), new ItemStack(ItemListener.limeWoolBall, 1));
+            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.pinkKnitting, 1), new ItemStack(ItemListener.knittingNeedles, 1), new ItemStack(ItemListener.pinkWoolBall, 1));
+            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.darkGreyKnitting, 1), new ItemStack(ItemListener.knittingNeedles, 1), new ItemStack(ItemListener.darkGreyWoolBall, 1));
+            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.lightGreyKnitting, 1), new ItemStack(ItemListener.knittingNeedles, 1), new ItemStack(ItemListener.lightGreyWoolBall, 1));
+            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.cyanKnitting, 1), new ItemStack(ItemListener.knittingNeedles, 1), new ItemStack(ItemListener.cyanWoolBall, 1));
+            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.purpleKnitting, 1), new ItemStack(ItemListener.knittingNeedles, 1), new ItemStack(ItemListener.purpleWoolBall, 1));
+            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.blueKnitting, 1), new ItemStack(ItemListener.knittingNeedles, 1), new ItemStack(ItemListener.blueWoolBall, 1));
+            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.brownKnitting, 1), new ItemStack(ItemListener.knittingNeedles, 1), new ItemStack(ItemListener.brownWoolBall, 1));
+            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.greenKnitting, 1), new ItemStack(ItemListener.knittingNeedles, 1), new ItemStack(ItemListener.greenWoolBall, 1));
+            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.redKnitting, 1), new ItemStack(ItemListener.knittingNeedles, 1), new ItemStack(ItemListener.redWoolBall, 1));
+            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.blackKnitting, 1), new ItemStack(ItemListener.knittingNeedles, 1), new ItemStack(ItemListener.blackWoolBall, 1));
+
             CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 0), new ItemStack(BlockListener.blockOfWicker), new ItemStack(ItemListener.whiteWoolKnit), new ItemStack(ItemListener.whiteWoolKnit));
             CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 1), new ItemStack(BlockListener.blockOfWicker), new ItemStack(ItemListener.orangeWoolKnit), new ItemStack(ItemListener.orangeWoolKnit));
             CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 2), new ItemStack(BlockListener.blockOfWicker), new ItemStack(ItemListener.magentaWoolKnit), new ItemStack(ItemListener.magentaWoolKnit));
