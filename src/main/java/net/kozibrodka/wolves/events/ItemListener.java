@@ -13,6 +13,56 @@ import net.modificationstation.stationapi.api.util.Null;
 
 public class ItemListener {
 
+    public static TemplateBucketItem bucketCement;
+    public static TemplateFoodItem wolfRaw;
+    public static TemplateFoodItem wolfCooked;
+    public static TemplateItem netherCoal;
+    public static TemplateSeedsItem hempSeeds;
+    public static TemplateItem hemp;
+    public static TemplateItem gear;
+    public static TemplateItem flour;
+    public static TemplateItem hempFibers;
+    public static TemplateItem scouredLeather;
+    public static TemplateFoodItem donut;
+    public static TemplateItem ropeItem;
+    public static TemplateItem rollersItem;
+    public static TemplateItem dung;
+    public static TemplateItem waterWheelItem;
+    public static TemplateItem windMillBladeItem;
+    public static TemplateItem windMillItem;
+    public static TemplateItem hempCloth;
+    public static TemplateItem grate;
+    public static TemplateItem wicker;
+    public static TemplateItem tannedLeather;
+    public static TemplateItem strap;
+    public static TemplateItem belt;
+    public static TemplateFoodItem foulFood;
+    public static TemplateItem woodBlade;
+    public static TemplateItem glue;
+    public static TemplateItem tallow;
+    public static TemplateItem haft;
+    public static TemplateItem steel;
+    public static TemplatePickaxeItem refinedPickAxe;
+    public static TemplateShovelItem refinedShovel;
+    public static TemplateHoeItem refinedHoe;
+    public static TemplateAxeItem refinedAxe;
+    public static TemplateSwordItem refinedSword;
+    public static TemplateItem groundNetherrack;
+    public static TemplateItem hellfireDust;
+    public static TemplateItem concentratedHellfire;
+    public static TemplateItem armourPlateSteel;
+    public static TemplateArmorItem helmetSteel;
+    public static TemplateArmorItem chestPlateSteel;
+    public static TemplateArmorItem leggingsSteel;
+    public static TemplateArmorItem bootsSteel;
+    public static TemplateItem compositeBow;
+    public static TemplateItem broadHeadArrowhead;
+    public static TemplateItem broadHeadArrow;
+    public static TemplateItem coalDust;
+    public static TemplateItem soulFilter;
+    public static TemplateItem nothing;
+    public static WickerWeavingItem wickerWeaving;
+
     @Entrypoint.Namespace
     public static final Namespace MOD_ID = Null.get();
 
@@ -68,56 +118,8 @@ public class ItemListener {
         coalDust = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "coalDust")).setTranslationKey(MOD_ID, "coal_dust");
         soulFilter = (TemplateItem) new SoulFilterItem(Identifier.of(MOD_ID, "soul_filter")).setTranslationKey(MOD_ID, "soul_filter");
         nothing = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "nothing")).setTranslationKey(MOD_ID, "nothing");
+        wickerWeaving = new WickerWeavingItem(Identifier.of(MOD_ID, "wicker_weaving"));
 
         //TODO: ADDON IDEA: Refined Steel Minecarts - they would be X times faster than normal ones, great way to give more purpose for rail usage.
     }
-
-    public static TemplateBucketItem bucketCement;
-    public static TemplateFoodItem wolfRaw;
-    public static TemplateFoodItem wolfCooked;
-    public static TemplateItem netherCoal;
-    public static TemplateSeedsItem hempSeeds;
-    public static TemplateItem hemp;
-    public static TemplateItem gear;
-    public static TemplateItem flour;
-    public static TemplateItem hempFibers;
-    public static TemplateItem scouredLeather;
-    public static TemplateFoodItem donut;
-    public static TemplateItem ropeItem;
-    public static TemplateItem rollersItem;
-    public static TemplateItem dung;
-    public static TemplateItem waterWheelItem;
-    public static TemplateItem windMillBladeItem;
-    public static TemplateItem windMillItem;
-    public static TemplateItem hempCloth;
-    public static TemplateItem grate;
-    public static TemplateItem wicker;
-    public static TemplateItem tannedLeather;
-    public static TemplateItem strap;
-    public static TemplateItem belt;
-    public static TemplateFoodItem foulFood;
-    public static TemplateItem woodBlade;
-    public static TemplateItem glue;
-    public static TemplateItem tallow;
-    public static TemplateItem haft;
-    public static TemplateItem steel;
-    public static TemplatePickaxeItem refinedPickAxe;
-    public static TemplateShovelItem refinedShovel;
-    public static TemplateHoeItem refinedHoe;
-    public static TemplateAxeItem refinedAxe;
-    public static TemplateSwordItem refinedSword;
-    public static TemplateItem groundNetherrack;
-    public static TemplateItem hellfireDust;
-    public static TemplateItem concentratedHellfire;
-    public static TemplateItem armourPlateSteel;
-    public static TemplateArmorItem helmetSteel;
-    public static TemplateArmorItem chestPlateSteel;
-    public static TemplateArmorItem leggingsSteel;
-    public static TemplateArmorItem bootsSteel;
-    public static TemplateItem compositeBow;
-    public static TemplateItem broadHeadArrowhead;
-    public static TemplateItem broadHeadArrow;
-    public static TemplateItem coalDust;
-    public static TemplateItem soulFilter;
-    public static TemplateItem nothing;
 }

@@ -47,6 +47,7 @@ item.wolves.broad_head_arrow.name=Broad Head Arrow
 item.wolves.coal_dust.name=Coal Dust
 item.wolves.soul_filter.name=Soul Filter
 item.wolves.nothing.name=Nothing
+item.wolves.wicker_weaving.name=Wicker Weaving
 
 tile.wolves.anvil.name=Anvil
 tile.wolves.light_bulb_off.name=Light Block

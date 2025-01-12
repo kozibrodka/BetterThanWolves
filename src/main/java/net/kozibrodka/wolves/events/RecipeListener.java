@@ -119,7 +119,9 @@ public class RecipeListener {
         CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.windMillItem), " # ", "# #", " # ", Character.valueOf('#'), ItemListener.windMillBladeItem);
         CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.hempCloth, 1), "###", "###", "###", Character.valueOf('#'), ItemListener.hempFibers);
         CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.grate, 1), "###", "###", "###", Character.valueOf('#'), Item.STICK);
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.wicker, 1), "###", "###", "###", Character.valueOf('#'), Item.SUGAR_CANE);
+        if (!ConfigListener.wolvesGlass.difficulty.wickerWeaving) {
+            CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.wicker, 1), "###", "###", "###", Character.valueOf('#'), Item.SUGAR_CANE);
+        }
         CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.rollersItem, 1), "###", "###", "###", Character.valueOf('#'), BlockListener.moulding);
         CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.strap, 8), "#", Character.valueOf('#'), ItemListener.tannedLeather);
         CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.belt, 1), " # ", "# #", " # ", Character.valueOf('#'), ItemListener.strap);
@@ -132,6 +134,9 @@ public class RecipeListener {
         CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.compositeBow, 1), "X#Y", "ZX#", "X#Y", Character.valueOf('#'), BlockListener.moulding, Character.valueOf('X'), Item.BONE, Character.valueOf('Y'), ItemListener.glue, Character.valueOf('Z'),
                 Item.STRING);
         CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.broadHeadArrow, 4), "#", "X", "Y", Character.valueOf('#'), ItemListener.broadHeadArrowhead, Character.valueOf('X'), BlockListener.moulding, Character.valueOf('Y'), Item.FEATHER);
+        if (ConfigListener.wolvesGlass.difficulty.wickerWeaving) {
+            CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.wickerWeaving), "###", "###", "###", '#', Item.SUGAR_CANE);
+        }
     }
 
     private static void addDyeRecipes() {
