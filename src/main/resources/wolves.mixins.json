@@ -27,7 +27,8 @@
     "ServerPlayerAccessor",
     "SpruceTreeMixin",
     "WolfAccessor",
-    "WolfDump"
+    "WolfDump",
+    "WoolDropMixin"
   ],
   "server": [
   ],
