@@ -119,6 +119,7 @@ public class TextureListener {
         BlockListener.blockOfGrates.specifyTextures(getBlockTexture("item/fcGrate"));
         BlockListener.collisionBlock.specifyTextures(getBlockTexture("block/blank"));
         BlockListener.obstructionBlock.specifyTextures(getBlockTexture("block/blank"));
+        BlockListener.blockOfSteel.specifyTextures(getBlockTexture("block/steel"));
 
         ItemListener.bucketCement.setTexture(Identifier.of(NAMESPACE, "item/bucketCement"));
         ItemListener.soulFilter.setTexture(Identifier.of(NAMESPACE, "item/soulFilter"));

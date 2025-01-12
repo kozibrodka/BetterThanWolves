@@ -100,8 +100,12 @@ public class RecipeListener {
         CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.bellows), "###", "XXX", "YZY", '#', new ItemStack(BlockListener.omniSlab.id, 1, 1), 'X', ItemListener.tannedLeather, 'Y', ItemListener.gear, 'Z',
                 ItemListener.belt);
         CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.planter, 1, 1), "Y", "X", "#", '#', new ItemStack(BlockListener.planter, 1, 0), 'X', Item.WATER_BUCKET, 'Y', Block.DIRT);
-        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.blockOfWicker, 1), "XX", "XX", 'X', ItemListener.wicker);
-        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.blockOfGrates, 1), "XX", "XX", 'X', ItemListener.grate);
+        if (ConfigListener.wolvesGlass.small_tweaks.wickerBlock) {
+            CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.blockOfWicker, 1), "XX", "XX", 'X', ItemListener.wicker);
+        }
+        if (ConfigListener.wolvesGlass.small_tweaks.grateBlock) {
+            CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.blockOfGrates, 1), "XX", "XX", 'X', ItemListener.grate);
+        }
     }
 
     private static void addItemRecipes() {
@@ -162,6 +166,7 @@ public class RecipeListener {
         CraftingRegistry.addShapelessRecipe(new ItemStack(BlockListener.omniSlab.id, 1, 1), new ItemStack(BlockListener.moulding.id,1,0), new ItemStack(BlockListener.moulding.id,1,0));
         CraftingRegistry.addShapelessRecipe(new ItemStack(BlockListener.moulding.id,1,0), new ItemStack(BlockListener.corner.id,1,0), new ItemStack(BlockListener.corner.id,1,0));
         CraftingRegistry.addShapelessRecipe(new ItemStack(Item.STRING), new ItemStack(ItemListener.hempFibers), new ItemStack(ItemListener.hempFibers));
+        CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.steel, 9), new ItemStack(BlockListener.blockOfSteel));
     }
 
     private static void addSmeltingRecipes() {
@@ -202,6 +207,11 @@ public class RecipeListener {
         addAnvilRecipe(new ItemStack(ItemListener.bootsSteel, 1), new Object[] {
                 "# #", "# #", '#', ItemListener.steel
         });
+        if (ConfigListener.wolvesGlass.small_tweaks.steelBlock) {
+            addAnvilRecipe(new ItemStack(BlockListener.blockOfSteel, 1), new Object[] {
+                    "###", "###", "###", '#', ItemListener.steel
+            });
+        }
     }
 
     private static void addShapelessAnvilRecipes() {

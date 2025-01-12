@@ -16,6 +16,55 @@ import net.modificationstation.stationapi.api.util.Null;
 
 public class BlockListener {
 
+    public static final Material fcCementMaterial = new CementMaterial(MapColor.GRAY);
+    public static TemplateBlock anvil;
+    public static TemplateBlock lightBulbOff;
+    public static TemplateBlock lightBulbOn;
+    public static TemplateBlock hibachi;
+    public static TemplateBlockWithEntity hopper;
+    public static TemplateBlock saw;
+    public static TemplateBlock platform;
+    public static TemplateBlockWithEntity cement;
+    public static TemplateBlockWithEntity pulley;
+    public static TemplatePressurePlateBlock pressurePlateObsidian;
+    public static TemplateBlock moulding;
+    public static TemplateBlock corner;
+    public static TemplateBlockWithEntity blockDispenser;
+    public static TemplateBlockWithEntity cauldron;
+    public static TemplateDetectorRailBlock detectorRailWood;
+    public static TemplateDetectorRailBlock detectorRailObsidian;
+    public static TemplateBlock companionCube;
+    public static TemplateBlock blockDetector;
+    public static TemplateBlock blockDetectorLogic;
+    public static TemplatePlantBlock hempCrop;
+    public static TemplateBlock handCrank;
+    public static TemplateBlockWithEntity millStone;
+    public static TemplateBlock anchor;
+    public static TemplateBlock rope;
+    public static TemplateBlock omniSlab;
+    public static TemplateBlock axleBlock;
+    public static TemplateBlock gearBox;
+    public static TemplateBlockWithEntity turntable;
+    public static TemplateBlock bellows;
+    public static TemplateFireBlock stokedFire;
+    public static TemplateBlockWithEntity unfiredPottery;
+    public static TemplateBlockWithEntity crucible;
+    public static TemplateBlock planter;
+    public static TemplateBlockWithEntity vase;
+    public static TemplateBlock detectorBlock;
+    public static TemplateBlock nonCollidingAxleBlock;
+    public static CollisionBlock collisionBlock;
+    public static ObstructionBlock obstructionBlock;
+
+    public static TemplateBlock blockOfWicker; //Mango Pack Addon
+    public static LazyBlockTemplate blockOfGrates; //Another Mango Pack Addon
+    public static LazyBlockTemplate blockOfSteel;
+
+    public static TemplateBlock panelNumber1;
+    public static TemplateBlock panelNumber2;
+    public static TemplateBlock panelNumber3;
+    public static TemplateBlock panelNumber4;
+
     @Entrypoint.Namespace
     public static final Namespace MOD_ID = Null.get();
 
@@ -59,6 +108,7 @@ public class BlockListener {
         nonCollidingAxleBlock = (TemplateBlock) new NonCollidingAxleBlock(Identifier.of(MOD_ID, "non_colliding_axle_block")).setTranslationKey(MOD_ID, "non_colliding_axle_block");
         collisionBlock = new CollisionBlock(Identifier.of(MOD_ID, "collision_block"), Material.WOOD, 1.5F, Block.WOOD_SOUND_GROUP);
         obstructionBlock = new ObstructionBlock(Identifier.of(MOD_ID, "obstruction_block"), Material.WOOD, 1.5F, Block.WOOD_SOUND_GROUP);
+        blockOfSteel = new LazyBlockTemplate(Identifier.of(MOD_ID, "block_of_steel"), Material.METAL, 2.5F, Block.METAL_SOUND_GROUP);
 
         //TODO: Omni slabs are really cursed and kinda bad. Also applies to Cornets/Moudlings - should be option in CFG to remove them
 
@@ -71,51 +121,4 @@ public class BlockListener {
         //}
 
     }
-    public static final Material fcCementMaterial = new CementMaterial(MapColor.GRAY);
-    public static TemplateBlock anvil;
-    public static TemplateBlock lightBulbOff;
-    public static TemplateBlock lightBulbOn;
-    public static TemplateBlock hibachi;
-    public static TemplateBlockWithEntity hopper;
-    public static TemplateBlock saw;
-    public static TemplateBlock platform;
-    public static TemplateBlockWithEntity cement;
-    public static TemplateBlockWithEntity pulley;
-    public static TemplatePressurePlateBlock pressurePlateObsidian;
-    public static TemplateBlock moulding;
-    public static TemplateBlock corner;
-    public static TemplateBlockWithEntity blockDispenser;
-    public static TemplateBlockWithEntity cauldron;
-    public static TemplateDetectorRailBlock detectorRailWood;
-    public static TemplateDetectorRailBlock detectorRailObsidian;
-    public static TemplateBlock companionCube;
-    public static TemplateBlock blockDetector;
-    public static TemplateBlock blockDetectorLogic;
-    public static TemplatePlantBlock hempCrop;
-    public static TemplateBlock handCrank;
-    public static TemplateBlockWithEntity millStone;
-    public static TemplateBlock anchor;
-    public static TemplateBlock rope;
-    public static TemplateBlock omniSlab;
-    public static TemplateBlock axleBlock;
-    public static TemplateBlock gearBox;
-    public static TemplateBlockWithEntity turntable;
-    public static TemplateBlock bellows;
-    public static TemplateFireBlock stokedFire;
-    public static TemplateBlockWithEntity unfiredPottery;
-    public static TemplateBlockWithEntity crucible;
-    public static TemplateBlock planter;
-    public static TemplateBlockWithEntity vase;
-    public static TemplateBlock detectorBlock;
-    public static TemplateBlock nonCollidingAxleBlock;
-    public static CollisionBlock collisionBlock;
-    public static ObstructionBlock obstructionBlock;
-
-    public static TemplateBlock blockOfWicker; //Mango Pack Addon
-    public static LazyBlockTemplate blockOfGrates; //Another Mango Pack Addon
-
-    public static TemplateBlock panelNumber1;
-    public static TemplateBlock panelNumber2;
-    public static TemplateBlock panelNumber3;
-    public static TemplateBlock panelNumber4;
 }
