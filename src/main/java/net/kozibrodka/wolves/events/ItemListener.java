@@ -62,6 +62,7 @@ public class ItemListener {
     public static TemplateItem soulFilter;
     public static TemplateItem nothing;
     public static WickerWeavingItem wickerWeaving;
+    public static LazyItemTemplate wickerSheet;
 
     @Entrypoint.Namespace
     public static final Namespace MOD_ID = Null.get();
@@ -119,6 +120,7 @@ public class ItemListener {
         soulFilter = (TemplateItem) new SoulFilterItem(Identifier.of(MOD_ID, "soul_filter")).setTranslationKey(MOD_ID, "soul_filter");
         nothing = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "nothing")).setTranslationKey(MOD_ID, "nothing");
         wickerWeaving = new WickerWeavingItem(Identifier.of(MOD_ID, "wicker_weaving"));
+        wickerSheet = new LazyItemTemplate(Identifier.of(MOD_ID, "wicker_sheet"));
 
         //TODO: ADDON IDEA: Refined Steel Minecarts - they would be X times faster than normal ones, great way to give more purpose for rail usage.
     }

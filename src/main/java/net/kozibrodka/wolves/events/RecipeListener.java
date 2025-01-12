@@ -34,6 +34,7 @@ public class RecipeListener {
         }
         if (type == RecipeRegisterEvent.Vanilla.CRAFTING_SHAPELESS.type()) {
             addDyeRecipes();
+            addShapelessCraftingRecipes();
             addConversionRecipes();
             addShapelessAnvilRecipes();
             addCauldronRecipes();
@@ -163,6 +164,12 @@ public class RecipeListener {
         CraftingRegistry.addShapedRecipe(new ItemStack(Item.CAKE, 1), "AAA", "BEB", "CCC", Character.valueOf('A'), Item.SUGAR, Character.valueOf('B'), Item.MILK_BUCKET, Character.valueOf('C'), ItemListener.flour, Character.valueOf('E'),
                 Item.EGG);
         CraftingRegistry.addShapedRecipe(new ItemStack(Block.TORCH, 4), "#", "X", Character.valueOf('#'), ItemListener.netherCoal, Character.valueOf('X'), Item.STICK);
+    }
+
+    private static void addShapelessCraftingRecipes() {
+        if (ConfigListener.wolvesGlass.difficulty.wickerWeaving) {
+            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.wicker), new ItemStack(ItemListener.wickerSheet), new ItemStack(ItemListener.grate));
+        }
     }
 
     private static void addConversionRecipes() {

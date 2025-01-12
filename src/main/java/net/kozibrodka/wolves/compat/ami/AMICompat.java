@@ -53,6 +53,8 @@ public class AMICompat implements ModPluginProvider {
         registry.addDescription(new ItemStack(ItemListener.dung), "description.wolves.dung");
         registry.addDescription(new ItemStack(BlockListener.axleBlock), "description.wolves.axle");
         registry.addDescription(new ItemStack(BlockListener.gearBox), "description.wolves.gear_box");
+        registry.addDescription(new ItemStack(ItemListener.wickerSheet), "description.wolves.wicker_sheet");
+        registry.addDescription(new ItemStack(ItemListener.wickerWeaving), "description.wolves.wicker_weaving");
 
         registry.addRecipeCategories(new MillStoneRecipeCategory());
         registry.addRecipeHandlers(new MillStoneRecipeHandler());

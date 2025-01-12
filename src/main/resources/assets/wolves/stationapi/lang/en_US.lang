@@ -48,6 +48,7 @@ item.wolves.coal_dust.name=Coal Dust
 item.wolves.soul_filter.name=Soul Filter
 item.wolves.nothing.name=Nothing
 item.wolves.wicker_weaving.name=Wicker Weaving
+item.wolves.wicker_sheet.name=Wicker Sheet
 
 tile.wolves.anvil.name=Anvil
 tile.wolves.light_bulb_off.name=Light Block
@@ -113,3 +114,5 @@ description.@.hemp_seeds=Rarely dropped by tall grass. Planted on farmland to gr
 description.@.dung=Dropped by dogs after being fed some pork. There is some time delay until the dung gets dropped.
 description.@.axle=Component for transferring rotational force. Axles can be built 3 blocks long.
 description.@.gear_box=Component for distributing rotational force. 1 side acts as an input, the other 5 are outputs.
+description.@.wicker_sheet=Created by weaving the "Wicker Weaving" item for long enough. Only obtainable if "Wicker Weaving" config option is enabled.
+description.@.wicker_weaving=Turns into "Wicker Sheet" if used long enough. A durability bar will go down until the wicker is fully woven. Only obtainable if "Wicker Weaving" config option is enabled.
