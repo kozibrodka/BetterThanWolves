@@ -25,6 +25,7 @@
     "LevelAccessor",
     "OakTreeMixin",
     "OakTreeStumpMixin",
+    "PineTreeStumpMixin",
     "PlantBlockMixin",
     "SeedsMixin",
     "ServerPlayerAccessor",

@@ -121,6 +121,10 @@ public class TextureListener {
         BlockListener.obstructionBlock.specifyTextures(getBlockTexture("block/blank"));
         BlockListener.blockOfSteel.specifyTextures(getBlockTexture("block/steel"));
 
+        BlockListener.oakStump.specifyTextures(getBlockTexture("block/stumpTop"), getBlockTexture("block/oakStumpSide"), getBlockTexture("block/stumpTop"));
+        BlockListener.birchStump.specifyTextures(getBlockTexture("block/stumpTop"), getBlockTexture("block/birchStumpSide"), getBlockTexture("block/stumpTop"));
+        BlockListener.spruceStump.specifyTextures(getBlockTexture("block/stumpTop"), getBlockTexture("block/spruceStumpSide"), getBlockTexture("block/stumpTop"));
+
         ItemListener.bucketCement.setTexture(Identifier.of(NAMESPACE, "item/bucketCement"));
         ItemListener.soulFilter.setTexture(Identifier.of(NAMESPACE, "item/soulFilter"));
         ItemListener.nothing.setTexture(Identifier.of(NAMESPACE, "item/nothing"));

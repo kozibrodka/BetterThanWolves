@@ -1,7 +1,7 @@
 package net.kozibrodka.wolves.mixin;
 
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ConfigListener;
-import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.LargeOakTreeFeature;
@@ -26,6 +26,6 @@ public abstract class LargeOakTreeStumpMixin extends Feature {
         if (!ConfigListener.wolvesGlass.difficulty.treeStumps) {
             return;
         }
-        world.setBlock(field_648[0], field_648[1], field_648[2], Block.WOOL.id);
+        world.setBlock(field_648[0], field_648[1], field_648[2], BlockListener.oakStump.id);
     }
 }

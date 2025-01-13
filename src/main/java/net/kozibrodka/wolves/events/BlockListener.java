@@ -60,6 +60,10 @@ public class BlockListener {
     public static LazyBlockTemplate blockOfGrates; //Another Mango Pack Addon
     public static LazyBlockTemplate blockOfSteel;
 
+    public static StumpBlock oakStump;
+    public static StumpBlock birchStump;
+    public static StumpBlock spruceStump;
+
     public static TemplateBlock panelNumber1;
     public static TemplateBlock panelNumber2;
     public static TemplateBlock panelNumber3;
@@ -110,7 +114,11 @@ public class BlockListener {
         obstructionBlock = new ObstructionBlock(Identifier.of(MOD_ID, "obstruction_block"), Material.WOOD, 1.5F, Block.WOOD_SOUND_GROUP);
         blockOfSteel = new LazyBlockTemplate(Identifier.of(MOD_ID, "block_of_steel"), Material.METAL, 2.5F, Block.METAL_SOUND_GROUP);
 
-        //TODO: Omni slabs are really cursed and kinda bad. Also applies to Cornets/Moudlings - should be option in CFG to remove them
+        oakStump = new StumpBlock(Identifier.of(MOD_ID, "oak_stump"), Material.STONE, 32F, Block.WOOD_SOUND_GROUP);
+        birchStump = new StumpBlock(Identifier.of(MOD_ID, "birch_stump"), Material.STONE, 32F, Block.WOOD_SOUND_GROUP);
+        spruceStump = new StumpBlock(Identifier.of(MOD_ID, "spruce_stump"), Material.STONE, 32F, Block.WOOD_SOUND_GROUP);
+
+        //TODO: Omni slabs are really cursed and kinda bad. Also applies to Cornets/Mouldings - should be option in CFG to remove them
 
         //TODO: I like the idea of Vanilla providing SLABS (can be placed only horizontally - with fixed placement (basically modern slabs)) & BTW providing PANELS
         //if(ConfigListener.wolvesGlass.small_tweaks.initPanels){

@@ -1,7 +1,7 @@
 package net.kozibrodka.wolves.mixin;
 
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ConfigListener;
-import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.SpruceTreeFeature;
@@ -23,6 +23,6 @@ public abstract class SpruceTreeStumpMixin extends Feature {
         if (y < 1 || y + 10 > 128) {
             return;
         }
-        world.setBlock(x, y, z, Block.WOOL.id, 1);
+        world.setBlock(x, y, z, BlockListener.spruceStump.id);
     }
 }
