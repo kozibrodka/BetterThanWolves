@@ -117,6 +117,8 @@ public class ItemListener {
     public static TemplateItem redWoolKnit;
     public static TemplateItem blackWoolKnit;
 
+    public static StumpRemoverItem stumpRemover;
+
     @Entrypoint.Namespace
     public static final Namespace MOD_ID = Null.get();
 
@@ -227,6 +229,8 @@ public class ItemListener {
         greenWoolKnit = new LazyItemTemplate(Identifier.of(MOD_ID, "green_wool_knit"));
         redWoolKnit = new LazyItemTemplate(Identifier.of(MOD_ID, "red_wool_knit"));
         blackWoolKnit  = new LazyItemTemplate(Identifier.of(MOD_ID, "black_wool_knit"));
+
+        stumpRemover = new StumpRemoverItem(Identifier.of(MOD_ID, "stump_remover"));
 
         //TODO: ADDON IDEA: Refined Steel Minecarts - they would be X times faster than normal ones, great way to give more purpose for rail usage.
     }

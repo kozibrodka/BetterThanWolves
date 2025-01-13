@@ -207,6 +207,9 @@ public class RecipeListener {
             CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 14), new ItemStack(BlockListener.blockOfWicker), new ItemStack(ItemListener.redWoolKnit), new ItemStack(ItemListener.redWoolKnit));
             CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 15), new ItemStack(BlockListener.blockOfWicker), new ItemStack(ItemListener.blackWoolKnit), new ItemStack(ItemListener.blackWoolKnit));
         }
+        if (ConfigListener.wolvesGlass.difficulty.treeStumps) {
+            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.stumpRemover, 4), new ItemStack(Item.GUNPOWDER), new ItemStack(Block.RED_MUSHROOM));
+        }
     }
 
     private static void addConversionRecipes() {

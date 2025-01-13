@@ -184,6 +184,8 @@ public class TextureListener {
         ItemListener.redWoolKnit.setTexture(Identifier.of(NAMESPACE, "item/redWoolKnit"));
         ItemListener.blackWoolKnit.setTexture(Identifier.of(NAMESPACE, "item/blackWoolKnit"));
 
+        ItemListener.stumpRemover.setTexture(Identifier.of(NAMESPACE, "item/stumpRemover"));
+
         BlockListener.detectorRailObsidian.asItem().setTextureId(registerBlockTexture("block/fcRailDetector_obsidian"));
         BlockListener.detectorRailWood.asItem().setTextureId(registerBlockTexture("block/fcRailDetector_wood"));
         BlockListener.cement.asItem().setTextureId(cement);

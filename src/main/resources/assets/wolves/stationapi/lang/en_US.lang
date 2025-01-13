@@ -103,6 +103,8 @@ item.wolves.green_wool_knit.name=Green Wool Knit
 item.wolves.red_wool_knit.name=Red Wool Knit
 item.wolves.black_wool_knit.name=Black Wool Knit
 
+item.wolves.stump_remover.name=Stump Remover
+
 tile.wolves.anvil.name=Anvil
 tile.wolves.light_bulb_off.name=Light Block
 tile.wolves.light_bulb_on.name=Light Block
