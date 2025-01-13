@@ -1,10 +1,8 @@
 package net.kozibrodka.wolves.items;
 
 import net.kozibrodka.wolves.events.BlockListener;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.util.Identifier;

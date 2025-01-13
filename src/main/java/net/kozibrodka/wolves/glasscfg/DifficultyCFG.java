@@ -10,7 +10,7 @@ public class DifficultyCFG {
     @ConfigEntry(name = "Wool Knitting (game restart required!)", description = "Changes wool to require multiple crafting steps, including knitting")
     public Boolean woolKnitting = false;
 
-    @ConfigEntry(name = "Tree Stumps", description = "Newly generated or grown trees now come with stumps which either require TNT or a stump remover to be cleared")
+    @ConfigEntry(name = "Tree Stumps (game restart required!)", description = "Newly generated or grown trees now come with stumps which either require TNT or a stump remover to be cleared")
     public Boolean treeStumps = false;
 
 }
