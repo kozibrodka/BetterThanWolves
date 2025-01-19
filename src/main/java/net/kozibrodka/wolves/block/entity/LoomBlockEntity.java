@@ -20,6 +20,18 @@ import java.util.List;
 
 public class LoomBlockEntity extends BlockEntity implements Inventory {
 
+    private final int[][] woolMatrix = {
+            {ItemListener.whiteWoolBall.id, ItemListener.orangeWoolBall.id, ItemListener.magentaWoolBall.id, ItemListener.lightBlueWoolBall.id,
+            ItemListener.yellowWoolBall.id, ItemListener.limeWoolBall.id, ItemListener.pinkWoolBall.id, ItemListener.darkGreyWoolBall.id,
+            ItemListener.lightGreyWoolBall.id, ItemListener.cyanWoolBall.id, ItemListener.purpleWoolBall.id, ItemListener.blueWoolBall.id,
+            ItemListener.brownWoolBall.id, ItemListener.greenWoolBall.id, ItemListener.redWoolBall.id, ItemListener.blackWoolBall.id},
+
+            {ItemListener.whiteWoolKnit.id, ItemListener.orangeWoolKnit.id, ItemListener.magentaWoolKnit.id, ItemListener.lightBlueWoolKnit.id,
+            ItemListener.yellowWoolKnit.id, ItemListener.limeWoolKnit.id, ItemListener.pinkWoolKnit.id, ItemListener.darkGreyWoolKnit.id,
+            ItemListener.lightGreyWoolKnit.id, ItemListener.cyanWoolKnit.id, ItemListener.purpleWoolKnit.id, ItemListener.blueWoolKnit.id,
+            ItemListener.brownWoolKnit.id, ItemListener.greenWoolKnit.id, ItemListener.redWoolKnit.id, ItemListener.blackWoolKnit.id}
+    };
+
     public LoomBlockEntity() {
         loomContents = new ItemStack[9];
         loomCounter = 0;
@@ -38,7 +50,8 @@ public class LoomBlockEntity extends BlockEntity implements Inventory {
         if (loomShuttle == null) {
             return;
         }
-        if (loomShuttle.itemId == ItemListener.emptyLoomShuttle.id) {
+        if (loomShuttle.itemId != ItemListener.wickerLoomShuttle.id && loomShuttle.itemId != ItemListener.woolLoomShuttle.id) {
+            loomCounter = 0;
             return;
         }
         //if(!((MillStoneBlock) BlockListener.millStone).IsBlockOn(world, x, y, z)) return;
@@ -50,8 +63,18 @@ public class LoomBlockEntity extends BlockEntity implements Inventory {
                 && loomContents[ingredientIndex] != null
                 && loomContents[ingredientIndex].itemId == Item.SUGAR_CANE.id) {
             processItem(ingredientIndex, outputIndex, ItemListener.wickerSheet.id);
-            loomCounter = 0;
+        } else {
+            for (int i = 0; i < 16; i++) {
+                outputIndex = getValidOutput(woolMatrix[1][i]);
+                if (outputIndex > -1
+                        && loomShuttle.itemId == ItemListener.woolLoomShuttle.id
+                        && loomContents[ingredientIndex] != null
+                        && loomContents[ingredientIndex].itemId == woolMatrix[0][i]) {
+                    processItem(ingredientIndex, outputIndex, woolMatrix[1][i]);
+                }
+            }
         }
+        loomCounter = 0;
     }
 
     private void processItem(int ingredientIndex, int outputIndex, int itemId) {

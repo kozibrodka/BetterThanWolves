@@ -24,7 +24,7 @@ public class LoomScreen extends HandledScreen {
     }
 
     protected void drawBackground(float f) {
-        int i = minecraft.textureManager.getTextureId("/assets/wolves/stationapi/textures/gui/fcmillstone.png");
+        int i = minecraft.textureManager.getTextureId("/assets/wolves/stationapi/textures/gui/loom.png");
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         minecraft.textureManager.bindTexture(i);
         int j = (width - backgroundWidth) / 2;
