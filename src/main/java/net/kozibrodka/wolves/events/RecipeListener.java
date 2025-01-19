@@ -108,7 +108,7 @@ public class RecipeListener {
             CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.blockOfGrates, 1), "XX", "XX", 'X', ItemListener.grate);
         }
         if (ConfigListener.wolvesGlass.difficulty.wickerWeaving || ConfigListener.wolvesGlass.difficulty.woolKnitting) {
-            CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.bellows), "# #", "X X", "YZY", '#', new ItemStack(BlockListener.moulding), 'X', Item.IRON_INGOT, 'Y', Block.CHEST, 'Z', BlockListener.gearBox);
+            CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.loom), "# #", "X X", "YZY", '#', new ItemStack(BlockListener.moulding), 'X', Item.IRON_INGOT, 'Y', Block.CHEST, 'Z', BlockListener.gearBox);
         }
     }
 
