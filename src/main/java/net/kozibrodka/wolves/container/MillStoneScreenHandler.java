@@ -44,7 +44,7 @@ public class MillStoneScreenHandler extends ScreenHandler
         return localTileEntityMillStone.canPlayerUse(entityplayer);
     }
 
-    public ItemStack getStackInSlot(int iSlotIndex) //func_27086_a
+    public ItemStack quickMove(int iSlotIndex) //func_27086_a
     {
         ItemStack ItemInstance = null;
         Slot slot = (Slot)slots.get(iSlotIndex);

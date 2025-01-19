@@ -186,6 +186,10 @@ public class TextureListener {
 
         ItemListener.stumpRemover.setTexture(Identifier.of(NAMESPACE, "item/stumpRemover"));
 
+        ItemListener.emptyLoomShuttle.setTexture(Identifier.of(NAMESPACE, "item/emptyLoomShuttle"));
+        ItemListener.woolLoomShuttle.setTexture(Identifier.of(NAMESPACE, "item/woolLoomShuttle"));
+        ItemListener.wickerLoomShuttle.setTexture(Identifier.of(NAMESPACE, "item/wickerLoomShuttle"));
+
         BlockListener.detectorRailObsidian.asItem().setTextureId(registerBlockTexture("block/fcRailDetector_obsidian"));
         BlockListener.detectorRailWood.asItem().setTextureId(registerBlockTexture("block/fcRailDetector_wood"));
         BlockListener.cement.asItem().setTextureId(cement);

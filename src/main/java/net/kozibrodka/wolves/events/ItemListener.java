@@ -119,6 +119,10 @@ public class ItemListener {
 
     public static StumpRemoverItem stumpRemover;
 
+    public static LazyItemTemplate emptyLoomShuttle;
+    public static LoadedLoomShuttleItem woolLoomShuttle;
+    public static LoadedLoomShuttleItem wickerLoomShuttle;
+
     @Entrypoint.Namespace
     public static final Namespace MOD_ID = Null.get();
 
@@ -231,6 +235,10 @@ public class ItemListener {
         blackWoolKnit  = new LazyItemTemplate(Identifier.of(MOD_ID, "black_wool_knit"));
 
         stumpRemover = new StumpRemoverItem(Identifier.of(MOD_ID, "stump_remover"));
+
+        emptyLoomShuttle = new LazyItemTemplate(Identifier.of(MOD_ID, "empty_loom_shuttle"));
+        woolLoomShuttle = new LoadedLoomShuttleItem(Identifier.of(MOD_ID, "wool_loom_shuttle"));
+        wickerLoomShuttle = new LoadedLoomShuttleItem(Identifier.of(MOD_ID, "wicker_loom_shuttle"));
 
         //TODO: ADDON IDEA: Refined Steel Minecarts - they would be X times faster than normal ones, great way to give more purpose for rail usage.
     }

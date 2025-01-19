@@ -64,6 +64,8 @@ public class BlockListener {
     public static StumpBlock birchStump;
     public static StumpBlock spruceStump;
 
+    public static LoomBlock loom;
+
     public static TemplateBlock panelNumber1;
     public static TemplateBlock panelNumber2;
     public static TemplateBlock panelNumber3;
@@ -117,6 +119,8 @@ public class BlockListener {
         oakStump = new StumpBlock(Identifier.of(MOD_ID, "oak_stump"), Material.STONE, 32F, Block.WOOD_SOUND_GROUP);
         birchStump = new StumpBlock(Identifier.of(MOD_ID, "birch_stump"), Material.STONE, 32F, Block.WOOD_SOUND_GROUP);
         spruceStump = new StumpBlock(Identifier.of(MOD_ID, "spruce_stump"), Material.STONE, 32F, Block.WOOD_SOUND_GROUP);
+
+        loom = new LoomBlock(Identifier.of(MOD_ID, "loom"), Material.WOOD, 1.5F, Block.WOOD_SOUND_GROUP);
 
         //TODO: Omni slabs are really cursed and kinda bad. Also applies to Cornets/Mouldings - should be option in CFG to remove them
 
