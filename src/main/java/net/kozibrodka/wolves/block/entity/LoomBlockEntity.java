@@ -2,6 +2,7 @@ package net.kozibrodka.wolves.block.entity;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.utils.InventoryHandler;
@@ -54,7 +55,7 @@ public class LoomBlockEntity extends BlockEntity implements Inventory {
             loomCounter = 0;
             return;
         }
-        //if(!((MillStoneBlock) BlockListener.millStone).IsBlockOn(world, x, y, z)) return;
+        if(!BlockListener.loom.isBlockOn(world, x, y, z)) return;
         loomCounter++;
         if (loomCounter < 200) return;
         int outputIndex = getValidOutput(ItemListener.wickerSheet.id);

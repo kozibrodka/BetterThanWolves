@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "types=0": {
+      "model": "wolves:block/loom"
+    }
+  }
+}
