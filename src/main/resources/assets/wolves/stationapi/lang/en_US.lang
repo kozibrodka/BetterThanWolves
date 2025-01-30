@@ -50,6 +50,65 @@ item.wolves.nothing.name=Nothing
 item.wolves.wicker_weaving.name=Wicker Weaving
 item.wolves.wicker_sheet.name=Wicker Sheet
 
+item.wolves.knitting_needles.name=Knitting Needles
+
+item.wolves.white_wool_ball.name=White Wool Ball
+item.wolves.orange_wool_ball.name=Orange Wool Ball
+item.wolves.magenta_wool_ball.name=Magenta Wool Ball
+item.wolves.light_blue_wool_ball.name=Light Blue Wool Ball
+item.wolves.yellow_wool_ball.name=Yellow Wool Ball
+item.wolves.lime_wool_ball.name=Lime Wool Ball
+item.wolves.pink_wool_ball.name=Pink Wool Ball
+item.wolves.dark_grey_wool_ball.name=Dark Grey Wool Ball
+item.wolves.light_grey_wool_ball.name=Light Grey Wool Ball
+item.wolves.cyan_wool_ball.name=Cyan Wool Ball
+item.wolves.purple_wool_ball.name=Purple Wool Ball
+item.wolves.blue_wool_ball.name=Blue Wool Ball
+item.wolves.brown_wool_ball.name=Brown Wool Ball
+item.wolves.green_wool_ball.name=Green Wool Ball
+item.wolves.red_wool_ball.name=Red Wool Ball
+item.wolves.black_wool_ball.name=Black Wool Ball
+
+item.wolves.white_knitting.name=White Knitting
+item.wolves.orange_knitting.name=Orange Knitting
+item.wolves.magenta_knitting.name=Magenta Knitting
+item.wolves.light_blue_knitting.name=Light Blue Knitting
+item.wolves.yellow_knitting.name=Yellow Knitting
+item.wolves.lime_knitting.name=Lime Knitting
+item.wolves.pink_knitting.name=Pink Knitting
+item.wolves.dark_grey_knitting.name=Dark Grey Knitting
+item.wolves.light_grey_knitting.name=Light Grey Knitting
+item.wolves.cyan_knitting.name=Cyan Knitting
+item.wolves.purple_knitting.name=Purple Knitting
+item.wolves.blue_knitting.name=Blue Knitting
+item.wolves.brown_knitting.name=Brown Knitting
+item.wolves.green_knitting.name=Green Knitting
+item.wolves.red_knitting.name=Red Knitting
+item.wolves.black_knitting.name=Black Knitting
+
+item.wolves.white_wool_knit.name=White Wool Knit
+item.wolves.orange_wool_knit.name=Orange Wool Knit
+item.wolves.magenta_wool_knit.name=Magenta Wool Knit
+item.wolves.light_blue_wool_knit.name=Light Blue Wool Knit
+item.wolves.yellow_wool_knit.name=Yellow Wool Knit
+item.wolves.lime_wool_knit.name=Lime Wool Knit
+item.wolves.pink_wool_knit.name=Pink Wool Knit
+item.wolves.dark_grey_wool_knit.name=Dark Grey Wool Knit
+item.wolves.light_grey_wool_knit.name=Light Grey Wool Knit
+item.wolves.cyan_wool_knit.name=Cyan Wool Knit
+item.wolves.purple_wool_knit.name=Purple Wool Knit
+item.wolves.blue_wool_knit.name=Blue Wool Knit
+item.wolves.brown_wool_knit.name=Brown Wool Knit
+item.wolves.green_wool_knit.name=Green Wool Knit
+item.wolves.red_wool_knit.name=Red Wool Knit
+item.wolves.black_wool_knit.name=Black Wool Knit
+
+item.wolves.stump_remover.name=Stump Remover
+
+item.wolves.empty_loom_shuttle.name=Empty Loom Shuttle
+item.wolves.wool_loom_shuttle.name=Wool Loom Shuttle
+item.wolves.wicker_loom_shuttle.name=Wicker Loom Shuttle
+
 tile.wolves.anvil.name=Anvil
 tile.wolves.light_bulb_off.name=Light Block
 tile.wolves.light_bulb_on.name=Light Block
@@ -108,6 +167,12 @@ tile.wolves.block_of_grates.name=Block of Grates
 tile.wolves.collision_block.name=Collision Block
 tile.wolves.obstruction_block.name=Obstruction Block
 tile.wolves.block_of_steel.name=Block of Steel
+
+tile.wolves.oak_stump.name=Oak Stump
+tile.wolves.birch_stump.name=Birch Stump
+tile.wolves.spruce_stump.name=Spruce Stump
+
+tile.wolves.loom.name=Loom
 
 description.@.hemp=Obtained from harvesting hemp crops. Hemp crops can be grown 2 blocks high for efficient farming.
 description.@.hemp_seeds=Rarely dropped by tall grass. Planted on farmland to grow hemp crops.

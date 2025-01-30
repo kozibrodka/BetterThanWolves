@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "BirchTreeMixin",
+    "BirchTreeStumpMixin",
     "BlockBaseAccessor",
     "BlockCactusMixin",
     "BlockCropsMixin",
@@ -20,14 +21,19 @@
     "FireAccessor",
     "HempSeedDrop",
     "ItemSeedsMixin",
+    "LargeOakTreeStumpMixin",
     "LevelAccessor",
     "OakTreeMixin",
+    "OakTreeStumpMixin",
+    "PineTreeStumpMixin",
     "PlantBlockMixin",
     "SeedsMixin",
     "ServerPlayerAccessor",
     "SpruceTreeMixin",
+    "SpruceTreeStumpMixin",
     "WolfAccessor",
-    "WolfDump"
+    "WolfDump",
+    "WoolDropMixin"
   ],
   "server": [
   ],
