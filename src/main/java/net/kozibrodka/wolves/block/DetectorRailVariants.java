@@ -1,5 +1,7 @@
 package net.kozibrodka.wolves.block;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.EnvironmentInterface;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.minecraft.client.render.block.BlockRenderManager;
@@ -8,6 +10,7 @@ import net.modificationstation.stationapi.api.client.model.block.BlockWithInvent
 import net.modificationstation.stationapi.api.template.block.TemplateDetectorRailBlock;
 import net.modificationstation.stationapi.api.util.Identifier;
 
+@EnvironmentInterface(value= EnvType.CLIENT, itf=BlockWithInventoryRenderer.class)
 public class DetectorRailVariants extends TemplateDetectorRailBlock implements BlockWithInventoryRenderer
         /* implements ITextureProvider */ //MAYBE FOR FAKE LATER
 {

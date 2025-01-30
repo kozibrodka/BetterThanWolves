@@ -2,6 +2,7 @@ package net.kozibrodka.wolves.block;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.api.EnvironmentInterface;
 import net.fabricmc.loader.api.FabricLoader;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.itemblocks.VaseBlockItem;
@@ -29,6 +30,8 @@ import net.modificationstation.stationapi.api.template.block.TemplateBlockWithEn
 import java.util.List;
 import java.util.Random;
 
+@EnvironmentInterface(value=EnvType.CLIENT, itf=BlockWithWorldRenderer.class)
+@EnvironmentInterface(value=EnvType.CLIENT, itf=BlockWithInventoryRenderer.class)
 @HasCustomBlockItemFactory(VaseBlockItem.class)
 public class VaseBlock extends TemplateBlockWithEntity
     implements RotatableBlock, BlockWithWorldRenderer, BlockWithInventoryRenderer

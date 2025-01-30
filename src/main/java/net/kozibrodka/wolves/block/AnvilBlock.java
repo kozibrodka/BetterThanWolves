@@ -5,6 +5,8 @@
 
 package net.kozibrodka.wolves.block;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.EnvironmentInterface;
 import net.kozibrodka.wolves.container.AnvilScreenHandler;
 import net.kozibrodka.wolves.entity.FallingAnvilEntity;
 import net.kozibrodka.wolves.events.ScreenHandlerListener;
@@ -29,6 +31,8 @@ import net.modificationstation.stationapi.api.util.Identifier;
 
 import java.util.Random;
 
+@EnvironmentInterface(value= EnvType.CLIENT, itf=BlockWithWorldRenderer.class)
+@EnvironmentInterface(value=EnvType.CLIENT, itf=BlockWithInventoryRenderer.class)
 public class AnvilBlock extends TemplateBlock
     implements RotatableBlock, BlockWithWorldRenderer, BlockWithInventoryRenderer {
 

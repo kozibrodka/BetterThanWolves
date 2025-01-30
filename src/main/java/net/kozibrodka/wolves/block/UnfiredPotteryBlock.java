@@ -1,6 +1,8 @@
 package net.kozibrodka.wolves.block;
 
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.EnvironmentInterface;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.itemblocks.UnfiredPotteryBlockItem;
@@ -21,6 +23,8 @@ import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldR
 import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockWithEntity;
 
+@EnvironmentInterface(value= EnvType.CLIENT, itf=BlockWithWorldRenderer.class)
+@EnvironmentInterface(value=EnvType.CLIENT, itf=BlockWithInventoryRenderer.class)
 @HasCustomBlockItemFactory(UnfiredPotteryBlockItem.class)
 public class UnfiredPotteryBlock extends TemplateBlockWithEntity
    implements RotatableBlock, BlockWithWorldRenderer, BlockWithInventoryRenderer

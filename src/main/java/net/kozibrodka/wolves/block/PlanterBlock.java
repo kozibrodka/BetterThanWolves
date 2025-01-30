@@ -1,5 +1,7 @@
 package net.kozibrodka.wolves.block;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.EnvironmentInterface;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.itemblocks.PlanterBlockItem;
 import net.kozibrodka.wolves.utils.RotatableBlock;
@@ -17,6 +19,9 @@ import net.modificationstation.stationapi.api.template.block.TemplateBlock;
 import net.modificationstation.stationapi.api.util.Identifier;
 
 import java.util.Random;
+
+@EnvironmentInterface(value= EnvType.CLIENT, itf=BlockWithWorldRenderer.class)
+@EnvironmentInterface(value=EnvType.CLIENT, itf=BlockWithInventoryRenderer.class)
 @HasCustomBlockItemFactory(PlanterBlockItem.class)
 public class PlanterBlock extends TemplateBlock
     implements RotatableBlock, SoilTemplate, BlockWithWorldRenderer, BlockWithInventoryRenderer

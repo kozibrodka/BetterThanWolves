@@ -7,6 +7,7 @@ package net.kozibrodka.wolves.block;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.api.EnvironmentInterface;
 import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.container.CrucibleScreenHandler;
 import net.kozibrodka.wolves.events.ScreenHandlerListener;
@@ -41,6 +42,7 @@ import net.modificationstation.stationapi.api.template.block.TemplateBlockWithEn
 
 import java.util.List;
 
+@EnvironmentInterface(value=EnvType.CLIENT, itf=BlockWithInventoryRenderer.class)
 public class CrucibleBlock extends TemplateBlockWithEntity
     implements RotatableBlock, BlockWithInventoryRenderer
 {

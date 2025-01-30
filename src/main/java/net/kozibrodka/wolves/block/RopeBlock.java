@@ -2,6 +2,7 @@ package net.kozibrodka.wolves.block;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.api.EnvironmentInterface;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.events.TextureListener;
@@ -17,6 +18,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.modificationstation.stationapi.api.client.model.block.BlockWithInventoryRenderer;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
 import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import net.modificationstation.stationapi.api.template.block.TemplateBlock;
@@ -25,7 +27,7 @@ import net.modificationstation.stationapi.api.util.Identifier;
 import java.util.List;
 import java.util.Random;
 
-
+@EnvironmentInterface(value=EnvType.CLIENT, itf=BlockWithWorldRenderer.class)
 public class RopeBlock extends TemplateBlock implements BlockWithWorldRenderer
 {
 
