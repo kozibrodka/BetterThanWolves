@@ -7,6 +7,7 @@ package net.kozibrodka.wolves.block;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.api.EnvironmentInterface;
 import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.entity.MovingAnchorEntity;
 import net.kozibrodka.wolves.events.BlockListener;
@@ -34,7 +35,8 @@ import net.modificationstation.stationapi.api.util.Identifier;
 
 import java.util.List;
 
-
+@EnvironmentInterface(value=EnvType.CLIENT, itf=BlockWithWorldRenderer.class)
+@EnvironmentInterface(value=EnvType.CLIENT, itf=BlockWithInventoryRenderer.class)
 public class AnchorBlock extends TemplateBlock implements BlockWithWorldRenderer, BlockWithInventoryRenderer
 {
 

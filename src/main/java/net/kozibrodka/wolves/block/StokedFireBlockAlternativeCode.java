@@ -1,5 +1,7 @@
 package net.kozibrodka.wolves.block;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.EnvironmentInterface;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -8,6 +10,7 @@ import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.modificationstation.stationapi.api.client.model.block.BlockWithInventoryRenderer;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
 import net.modificationstation.stationapi.api.client.texture.atlas.Atlas;
 import net.modificationstation.stationapi.api.client.texture.atlas.Atlases;
@@ -16,6 +19,7 @@ import net.modificationstation.stationapi.api.util.Identifier;
 
 import java.util.Random;
 
+@EnvironmentInterface(value= EnvType.CLIENT, itf=BlockWithWorldRenderer.class)
 public class StokedFireBlockAlternativeCode extends TemplateBlock implements BlockWithWorldRenderer{
     public StokedFireBlockAlternativeCode(Identifier identifier, Material material) {
         super(identifier, material);

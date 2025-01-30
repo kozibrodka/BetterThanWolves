@@ -1,5 +1,7 @@
 package net.kozibrodka.wolves.block;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.EnvironmentInterface;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.mixin.FireAccessor;
 import net.minecraft.block.Block;
@@ -16,7 +18,7 @@ import net.modificationstation.stationapi.api.template.block.TemplateFireBlock;
 
 import java.util.Random;
 
-
+@EnvironmentInterface(value= EnvType.CLIENT, itf=BlockWithWorldRenderer.class)
 public class StokedFireBlock extends TemplateFireBlock implements BlockWithWorldRenderer
 {
     public StokedFireBlock(Identifier iid)
