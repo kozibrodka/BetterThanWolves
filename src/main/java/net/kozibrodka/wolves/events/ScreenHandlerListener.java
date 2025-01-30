@@ -33,7 +33,6 @@ public class ScreenHandlerListener {
         Registry.register(registry, Identifier.of(MOD_ID, "openCauldron"), new GuiHandler((GuiHandler.ScreenFactoryNoMessage) this::openCauldron, CauldronBlockEntity::new));
         Registry.register(registry, Identifier.of(MOD_ID, "openBlockDispenser"), new GuiHandler((GuiHandler.ScreenFactoryNoMessage) this::openBlockDispenser, BlockDispenserBlockEntity::new));
         Registry.register(registry, Identifier.of(MOD_ID, "openPulley"), new GuiHandler((GuiHandler.ScreenFactoryNoMessage) this::openPulley, PulleyBlockEntity::new));
-        Registry.register(registry, Identifier.of(MOD_ID, "openLoom"), new GuiHandler((GuiHandler.ScreenFactoryNoMessage) this::openLoom, LoomBlockEntity::new));
     }
 
     @Environment(EnvType.CLIENT)
@@ -71,9 +70,5 @@ public class ScreenHandlerListener {
     @Environment(EnvType.CLIENT)
     public Screen openPulley(PlayerEntity player, Inventory inventoryBase) {
         return new PulleyScreen(player.inventory, (PulleyBlockEntity) inventoryBase, TempGuiX, TempGuiY, TempGuiZ);
-    }
-    @Environment(EnvType.CLIENT)
-    public Screen openLoom(PlayerEntity player, Inventory inventoryBase) {
-        return new LoomScreen(player.inventory, (LoomBlockEntity) inventoryBase, TempGuiX, TempGuiY, TempGuiZ);
     }
 }

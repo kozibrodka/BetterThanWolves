@@ -25,6 +25,5 @@ public class BlockEntityListener {
         event.register(UnfiredPotteryBlockEntity.class, String.valueOf(Identifier.of(MOD_ID, "TilePottery")));
         event.register(VaseBlockEntity.class, String.valueOf(Identifier.of(MOD_ID, "TileVase")));
         event.register(CementBlockEntity.class, String.valueOf(Identifier.of(MOD_ID, "TileCement")));
-        event.register(LoomBlockEntity.class, String.valueOf(Identifier.of(MOD_ID, "Loom")));
     }
 }

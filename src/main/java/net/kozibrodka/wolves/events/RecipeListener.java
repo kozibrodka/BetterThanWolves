@@ -107,9 +107,6 @@ public class RecipeListener {
         if (ConfigListener.wolvesGlass.small_tweaks.grateBlock) {
             CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.blockOfGrates, 1), "XX", "XX", 'X', ItemListener.grate);
         }
-        if (ConfigListener.wolvesGlass.difficulty.wickerWeaving || ConfigListener.wolvesGlass.difficulty.woolKnitting) {
-            CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.loom), "# #", "X X", "YZY", '#', new ItemStack(BlockListener.moulding), 'X', Item.IRON_INGOT, 'Y', Block.CHEST, 'Z', BlockListener.gearBox);
-        }
     }
 
     private static void addItemRecipes() {
@@ -138,9 +135,6 @@ public class RecipeListener {
         CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.compositeBow, 1), "X#Y", "ZX#", "X#Y", Character.valueOf('#'), BlockListener.moulding, Character.valueOf('X'), Item.BONE, Character.valueOf('Y'), ItemListener.glue, Character.valueOf('Z'),
                 Item.STRING);
         CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.broadHeadArrow, 4), "#", "X", "Y", Character.valueOf('#'), ItemListener.broadHeadArrowhead, Character.valueOf('X'), BlockListener.moulding, Character.valueOf('Y'), Item.FEATHER);
-        if (ConfigListener.wolvesGlass.difficulty.wickerWeaving || ConfigListener.wolvesGlass.difficulty.woolKnitting) {
-            CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.emptyLoomShuttle, 1), " X ", "YZY", " X ", 'X', BlockListener.moulding, 'Y', BlockListener.corner, 'Z', Item.STICK);
-        }
         if (ConfigListener.wolvesGlass.difficulty.wickerWeaving) {
             CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.wickerWeaving), "###", "###", "###", '#', Item.SUGAR_CANE);
         }
@@ -175,64 +169,6 @@ public class RecipeListener {
     private static void addShapelessCraftingRecipes() {
         if (ConfigListener.wolvesGlass.difficulty.wickerWeaving) {
             CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.wicker), new ItemStack(ItemListener.wickerSheet), new ItemStack(ItemListener.grate));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.wickerLoomShuttle), new ItemStack(ItemListener.emptyLoomShuttle), new ItemStack(Item.SUGAR_CANE));
-        }
-        if (ConfigListener.wolvesGlass.difficulty.woolKnitting) {
-            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.knittingNeedles, 1), new ItemStack(Item.STICK, 1), new ItemStack(Item.STICK, 1));
-
-            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.woolLoomShuttle), new ItemStack(ItemListener.emptyLoomShuttle), new ItemStack(ItemListener.whiteWoolBall));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.woolLoomShuttle), new ItemStack(ItemListener.emptyLoomShuttle), new ItemStack(ItemListener.orangeWoolBall));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.woolLoomShuttle), new ItemStack(ItemListener.emptyLoomShuttle), new ItemStack(ItemListener.magentaWoolBall));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.woolLoomShuttle), new ItemStack(ItemListener.emptyLoomShuttle), new ItemStack(ItemListener.lightBlueWoolBall));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.woolLoomShuttle), new ItemStack(ItemListener.emptyLoomShuttle), new ItemStack(ItemListener.yellowWoolBall));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.woolLoomShuttle), new ItemStack(ItemListener.emptyLoomShuttle), new ItemStack(ItemListener.limeWoolBall));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.woolLoomShuttle), new ItemStack(ItemListener.emptyLoomShuttle), new ItemStack(ItemListener.pinkWoolBall));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.woolLoomShuttle), new ItemStack(ItemListener.emptyLoomShuttle), new ItemStack(ItemListener.darkGreyWoolBall));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.woolLoomShuttle), new ItemStack(ItemListener.emptyLoomShuttle), new ItemStack(ItemListener.lightGreyWoolBall));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.woolLoomShuttle), new ItemStack(ItemListener.emptyLoomShuttle), new ItemStack(ItemListener.cyanWoolBall));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.woolLoomShuttle), new ItemStack(ItemListener.emptyLoomShuttle), new ItemStack(ItemListener.purpleWoolBall));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.woolLoomShuttle), new ItemStack(ItemListener.emptyLoomShuttle), new ItemStack(ItemListener.blueWoolBall));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.woolLoomShuttle), new ItemStack(ItemListener.emptyLoomShuttle), new ItemStack(ItemListener.brownWoolBall));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.woolLoomShuttle), new ItemStack(ItemListener.emptyLoomShuttle), new ItemStack(ItemListener.greenWoolBall));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.woolLoomShuttle), new ItemStack(ItemListener.emptyLoomShuttle), new ItemStack(ItemListener.redWoolBall));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.woolLoomShuttle), new ItemStack(ItemListener.emptyLoomShuttle), new ItemStack(ItemListener.blackWoolBall));
-
-            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.whiteKnitting, 1), new ItemStack(ItemListener.knittingNeedles, 1), new ItemStack(ItemListener.whiteWoolBall, 1), new ItemStack(ItemListener.whiteWoolBall, 1));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.orangeKnitting, 1), new ItemStack(ItemListener.knittingNeedles, 1), new ItemStack(ItemListener.orangeWoolBall, 1), new ItemStack(ItemListener.orangeWoolBall, 1));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.magentaKnitting, 1), new ItemStack(ItemListener.knittingNeedles, 1), new ItemStack(ItemListener.magentaWoolBall, 1), new ItemStack(ItemListener.magentaWoolBall, 1));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.lightBlueKnitting, 1), new ItemStack(ItemListener.knittingNeedles, 1), new ItemStack(ItemListener.lightBlueWoolBall, 1), new ItemStack(ItemListener.lightBlueWoolBall, 1));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.yellowKnitting, 1), new ItemStack(ItemListener.knittingNeedles, 1), new ItemStack(ItemListener.yellowWoolBall, 1), new ItemStack(ItemListener.yellowWoolBall, 1));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.limeKnitting, 1), new ItemStack(ItemListener.knittingNeedles, 1), new ItemStack(ItemListener.limeWoolBall, 1), new ItemStack(ItemListener.limeWoolBall, 1));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.pinkKnitting, 1), new ItemStack(ItemListener.knittingNeedles, 1), new ItemStack(ItemListener.pinkWoolBall, 1), new ItemStack(ItemListener.pinkWoolBall, 1));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.darkGreyKnitting, 1), new ItemStack(ItemListener.knittingNeedles, 1), new ItemStack(ItemListener.darkGreyWoolBall, 1), new ItemStack(ItemListener.darkGreyWoolBall, 1));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.lightGreyKnitting, 1), new ItemStack(ItemListener.knittingNeedles, 1), new ItemStack(ItemListener.lightGreyWoolBall, 1), new ItemStack(ItemListener.lightGreyWoolBall, 1));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.cyanKnitting, 1), new ItemStack(ItemListener.knittingNeedles, 1), new ItemStack(ItemListener.cyanWoolBall, 1), new ItemStack(ItemListener.cyanWoolBall, 1));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.purpleKnitting, 1), new ItemStack(ItemListener.knittingNeedles, 1), new ItemStack(ItemListener.purpleWoolBall, 1), new ItemStack(ItemListener.purpleWoolBall, 1));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.blueKnitting, 1), new ItemStack(ItemListener.knittingNeedles, 1), new ItemStack(ItemListener.blueWoolBall, 1), new ItemStack(ItemListener.blueWoolBall, 1));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.brownKnitting, 1), new ItemStack(ItemListener.knittingNeedles, 1), new ItemStack(ItemListener.brownWoolBall, 1), new ItemStack(ItemListener.brownWoolBall, 1));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.greenKnitting, 1), new ItemStack(ItemListener.knittingNeedles, 1), new ItemStack(ItemListener.greenWoolBall, 1), new ItemStack(ItemListener.greenWoolBall, 1));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.redKnitting, 1), new ItemStack(ItemListener.knittingNeedles, 1), new ItemStack(ItemListener.redWoolBall, 1), new ItemStack(ItemListener.redWoolBall, 1));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.blackKnitting, 1), new ItemStack(ItemListener.knittingNeedles, 1), new ItemStack(ItemListener.blackWoolBall, 1), new ItemStack(ItemListener.blackWoolBall, 1));
-
-            CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 0), new ItemStack(BlockListener.blockOfWicker), new ItemStack(ItemListener.whiteWoolKnit), new ItemStack(ItemListener.whiteWoolKnit));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 1), new ItemStack(BlockListener.blockOfWicker), new ItemStack(ItemListener.orangeWoolKnit), new ItemStack(ItemListener.orangeWoolKnit));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 2), new ItemStack(BlockListener.blockOfWicker), new ItemStack(ItemListener.magentaWoolKnit), new ItemStack(ItemListener.magentaWoolKnit));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 3), new ItemStack(BlockListener.blockOfWicker), new ItemStack(ItemListener.lightBlueWoolKnit), new ItemStack(ItemListener.lightBlueWoolKnit));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 4), new ItemStack(BlockListener.blockOfWicker), new ItemStack(ItemListener.yellowWoolKnit), new ItemStack(ItemListener.yellowWoolKnit));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 5), new ItemStack(BlockListener.blockOfWicker), new ItemStack(ItemListener.limeWoolKnit), new ItemStack(ItemListener.limeWoolKnit));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 6), new ItemStack(BlockListener.blockOfWicker), new ItemStack(ItemListener.pinkWoolKnit), new ItemStack(ItemListener.pinkWoolKnit));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 7), new ItemStack(BlockListener.blockOfWicker), new ItemStack(ItemListener.darkGreyWoolKnit), new ItemStack(ItemListener.darkGreyWoolKnit));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 8), new ItemStack(BlockListener.blockOfWicker), new ItemStack(ItemListener.lightGreyWoolKnit), new ItemStack(ItemListener.lightGreyWoolKnit));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 9), new ItemStack(BlockListener.blockOfWicker), new ItemStack(ItemListener.cyanWoolKnit), new ItemStack(ItemListener.cyanWoolKnit));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 10), new ItemStack(BlockListener.blockOfWicker), new ItemStack(ItemListener.purpleWoolKnit), new ItemStack(ItemListener.purpleWoolKnit));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 11), new ItemStack(BlockListener.blockOfWicker), new ItemStack(ItemListener.blueWoolKnit), new ItemStack(ItemListener.blueWoolKnit));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 12), new ItemStack(BlockListener.blockOfWicker), new ItemStack(ItemListener.brownWoolKnit), new ItemStack(ItemListener.brownWoolKnit));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 13), new ItemStack(BlockListener.blockOfWicker), new ItemStack(ItemListener.greenWoolKnit), new ItemStack(ItemListener.greenWoolKnit));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 14), new ItemStack(BlockListener.blockOfWicker), new ItemStack(ItemListener.redWoolKnit), new ItemStack(ItemListener.redWoolKnit));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 15), new ItemStack(BlockListener.blockOfWicker), new ItemStack(ItemListener.blackWoolKnit), new ItemStack(ItemListener.blackWoolKnit));
-        }
-        if (ConfigListener.wolvesGlass.difficulty.treeStumps) {
-            CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.stumpRemover, 4), new ItemStack(Item.GUNPOWDER), new ItemStack(Block.RED_MUSHROOM));
         }
     }
 

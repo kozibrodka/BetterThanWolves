@@ -121,74 +121,11 @@ public class TextureListener {
         BlockListener.obstructionBlock.specifyTextures(getBlockTexture("block/blank"));
         BlockListener.blockOfSteel.specifyTextures(getBlockTexture("block/steel"));
 
-        BlockListener.oakStump.specifyTextures(getBlockTexture("block/stumpTop"), getBlockTexture("block/oakStumpSide"), getBlockTexture("block/stumpTop"));
-        BlockListener.birchStump.specifyTextures(getBlockTexture("block/stumpTop"), getBlockTexture("block/birchStumpSide"), getBlockTexture("block/stumpTop"));
-        BlockListener.spruceStump.specifyTextures(getBlockTexture("block/stumpTop"), getBlockTexture("block/spruceStumpSide"), getBlockTexture("block/stumpTop"));
-
         ItemListener.bucketCement.setTexture(Identifier.of(NAMESPACE, "item/bucketCement"));
         ItemListener.soulFilter.setTexture(Identifier.of(NAMESPACE, "item/soulFilter"));
         ItemListener.nothing.setTexture(Identifier.of(NAMESPACE, "item/nothing"));
         ItemListener.wickerWeaving.setTexture(Identifier.of(NAMESPACE, "item/wickerWeaving"));
         ItemListener.wickerSheet.setTexture(Identifier.of(NAMESPACE, "item/wickerSheet"));
-
-        ItemListener.knittingNeedles.setTexture(Identifier.of(NAMESPACE, "item/knittingNeedles"));
-
-        ItemListener.whiteWoolBall.setTexture(Identifier.of(NAMESPACE, "item/whiteWoolBall"));
-        ItemListener.orangeWoolBall.setTexture(Identifier.of(NAMESPACE, "item/orangeWoolBall"));
-        ItemListener.magentaWoolBall.setTexture(Identifier.of(NAMESPACE, "item/magentaWoolBall"));
-        ItemListener.lightBlueWoolBall.setTexture(Identifier.of(NAMESPACE, "item/lightBlueWoolBall"));
-        ItemListener.yellowWoolBall.setTexture(Identifier.of(NAMESPACE, "item/yellowWoolBall"));
-        ItemListener.limeWoolBall.setTexture(Identifier.of(NAMESPACE, "item/limeWoolBall"));
-        ItemListener.pinkWoolBall.setTexture(Identifier.of(NAMESPACE, "item/pinkWoolBall"));
-        ItemListener.darkGreyWoolBall.setTexture(Identifier.of(NAMESPACE, "item/darkGreyWoolBall"));
-        ItemListener.lightGreyWoolBall.setTexture(Identifier.of(NAMESPACE, "item/lightGreyWoolBall"));
-        ItemListener.cyanWoolBall.setTexture(Identifier.of(NAMESPACE, "item/cyanWoolBall"));
-        ItemListener.purpleWoolBall.setTexture(Identifier.of(NAMESPACE, "item/purpleWoolBall"));
-        ItemListener.blueWoolBall.setTexture(Identifier.of(NAMESPACE, "item/blueWoolBall"));
-        ItemListener.brownWoolBall.setTexture(Identifier.of(NAMESPACE, "item/brownWoolBall"));
-        ItemListener.greenWoolBall.setTexture(Identifier.of(NAMESPACE, "item/greenWoolBall"));
-        ItemListener.redWoolBall.setTexture(Identifier.of(NAMESPACE, "item/redWoolBall"));
-        ItemListener.blackWoolBall.setTexture(Identifier.of(NAMESPACE, "item/blackWoolBall"));
-
-        ItemListener.whiteKnitting.setTexture(Identifier.of(NAMESPACE, "item/whiteKnitting"));
-        ItemListener.orangeKnitting.setTexture(Identifier.of(NAMESPACE, "item/orangeKnitting"));
-        ItemListener.magentaKnitting.setTexture(Identifier.of(NAMESPACE, "item/magentaKnitting"));
-        ItemListener.lightBlueKnitting.setTexture(Identifier.of(NAMESPACE, "item/lightBlueKnitting"));
-        ItemListener.yellowKnitting.setTexture(Identifier.of(NAMESPACE, "item/yellowKnitting"));
-        ItemListener.limeKnitting.setTexture(Identifier.of(NAMESPACE, "item/limeKnitting"));
-        ItemListener.pinkKnitting.setTexture(Identifier.of(NAMESPACE, "item/pinkKnitting"));
-        ItemListener.darkGreyKnitting.setTexture(Identifier.of(NAMESPACE, "item/darkGreyKnitting"));
-        ItemListener.lightGreyKnitting.setTexture(Identifier.of(NAMESPACE, "item/lightGreyKnitting"));
-        ItemListener.cyanKnitting.setTexture(Identifier.of(NAMESPACE, "item/cyanKnitting"));
-        ItemListener.purpleKnitting.setTexture(Identifier.of(NAMESPACE, "item/purpleKnitting"));
-        ItemListener.blueKnitting.setTexture(Identifier.of(NAMESPACE, "item/blueKnitting"));
-        ItemListener.brownKnitting.setTexture(Identifier.of(NAMESPACE, "item/brownKnitting"));
-        ItemListener.greenKnitting.setTexture(Identifier.of(NAMESPACE, "item/greenKnitting"));
-        ItemListener.redKnitting.setTexture(Identifier.of(NAMESPACE, "item/redKnitting"));
-        ItemListener.blackKnitting.setTexture(Identifier.of(NAMESPACE, "item/blackKnitting"));
-
-        ItemListener.whiteWoolKnit.setTexture(Identifier.of(NAMESPACE, "item/whiteWoolKnit"));
-        ItemListener.orangeWoolKnit.setTexture(Identifier.of(NAMESPACE, "item/orangeWoolKnit"));
-        ItemListener.magentaWoolKnit.setTexture(Identifier.of(NAMESPACE, "item/magentaWoolKnit"));
-        ItemListener.lightBlueWoolKnit.setTexture(Identifier.of(NAMESPACE, "item/lightBlueWoolKnit"));
-        ItemListener.yellowWoolKnit.setTexture(Identifier.of(NAMESPACE, "item/yellowWoolKnit"));
-        ItemListener.limeWoolKnit.setTexture(Identifier.of(NAMESPACE, "item/limeWoolKnit"));
-        ItemListener.pinkWoolKnit.setTexture(Identifier.of(NAMESPACE, "item/pinkWoolKnit"));
-        ItemListener.darkGreyWoolKnit.setTexture(Identifier.of(NAMESPACE, "item/darkGreyWoolKnit"));
-        ItemListener.lightGreyWoolKnit.setTexture(Identifier.of(NAMESPACE, "item/lightGreyWoolKnit"));
-        ItemListener.cyanWoolKnit.setTexture(Identifier.of(NAMESPACE, "item/cyanWoolKnit"));
-        ItemListener.purpleWoolKnit.setTexture(Identifier.of(NAMESPACE, "item/purpleWoolKnit"));
-        ItemListener.blueWoolKnit.setTexture(Identifier.of(NAMESPACE, "item/blueWoolKnit"));
-        ItemListener.brownWoolKnit.setTexture(Identifier.of(NAMESPACE, "item/brownWoolKnit"));
-        ItemListener.greenWoolKnit.setTexture(Identifier.of(NAMESPACE, "item/greenWoolKnit"));
-        ItemListener.redWoolKnit.setTexture(Identifier.of(NAMESPACE, "item/redWoolKnit"));
-        ItemListener.blackWoolKnit.setTexture(Identifier.of(NAMESPACE, "item/blackWoolKnit"));
-
-        ItemListener.stumpRemover.setTexture(Identifier.of(NAMESPACE, "item/stumpRemover"));
-
-        ItemListener.emptyLoomShuttle.setTexture(Identifier.of(NAMESPACE, "item/emptyLoomShuttle"));
-        ItemListener.woolLoomShuttle.setTexture(Identifier.of(NAMESPACE, "item/woolLoomShuttle"));
-        ItemListener.wickerLoomShuttle.setTexture(Identifier.of(NAMESPACE, "item/wickerLoomShuttle"));
 
         BlockListener.detectorRailObsidian.asItem().setTextureId(registerBlockTexture("block/fcRailDetector_obsidian"));
         BlockListener.detectorRailWood.asItem().setTextureId(registerBlockTexture("block/fcRailDetector_wood"));

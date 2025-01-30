@@ -64,65 +64,6 @@ public class ItemListener {
     public static WickerWeavingItem wickerWeaving;
     public static LazyItemTemplate wickerSheet;
 
-    public static KnittingNeedlesItem knittingNeedles;
-
-    public static TemplateItem whiteWoolBall;
-    public static TemplateItem orangeWoolBall;
-    public static TemplateItem magentaWoolBall;
-    public static TemplateItem lightBlueWoolBall;
-    public static TemplateItem yellowWoolBall;
-    public static TemplateItem limeWoolBall;
-    public static TemplateItem pinkWoolBall;
-    public static TemplateItem darkGreyWoolBall;
-    public static TemplateItem lightGreyWoolBall;
-    public static TemplateItem cyanWoolBall;
-    public static TemplateItem purpleWoolBall;
-    public static TemplateItem blueWoolBall;
-    public static TemplateItem brownWoolBall;
-    public static TemplateItem greenWoolBall;
-    public static TemplateItem redWoolBall;
-    public static TemplateItem blackWoolBall;
-
-    public static KnittingItem whiteKnitting;
-    public static KnittingItem orangeKnitting;
-    public static KnittingItem magentaKnitting;
-    public static KnittingItem lightBlueKnitting;
-    public static KnittingItem yellowKnitting;
-    public static KnittingItem limeKnitting;
-    public static KnittingItem pinkKnitting;
-    public static KnittingItem darkGreyKnitting;
-    public static KnittingItem lightGreyKnitting;
-    public static KnittingItem cyanKnitting;
-    public static KnittingItem purpleKnitting;
-    public static KnittingItem blueKnitting;
-    public static KnittingItem brownKnitting;
-    public static KnittingItem greenKnitting;
-    public static KnittingItem redKnitting;
-    public static KnittingItem blackKnitting;
-
-    public static TemplateItem whiteWoolKnit;
-    public static TemplateItem orangeWoolKnit;
-    public static TemplateItem magentaWoolKnit;
-    public static TemplateItem lightBlueWoolKnit;
-    public static TemplateItem yellowWoolKnit;
-    public static TemplateItem limeWoolKnit;
-    public static TemplateItem pinkWoolKnit;
-    public static TemplateItem darkGreyWoolKnit;
-    public static TemplateItem lightGreyWoolKnit;
-    public static TemplateItem cyanWoolKnit;
-    public static TemplateItem purpleWoolKnit;
-    public static TemplateItem blueWoolKnit;
-    public static TemplateItem brownWoolKnit;
-    public static TemplateItem greenWoolKnit;
-    public static TemplateItem redWoolKnit;
-    public static TemplateItem blackWoolKnit;
-
-    public static StumpRemoverItem stumpRemover;
-
-    public static LazyItemTemplate emptyLoomShuttle;
-    public static LoadedLoomShuttleItem woolLoomShuttle;
-    public static LoadedLoomShuttleItem wickerLoomShuttle;
-
     @Entrypoint.Namespace
     public static final Namespace MOD_ID = Null.get();
 
@@ -180,65 +121,6 @@ public class ItemListener {
         nothing = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "nothing")).setTranslationKey(MOD_ID, "nothing");
         wickerWeaving = new WickerWeavingItem(Identifier.of(MOD_ID, "wicker_weaving"));
         wickerSheet = new LazyItemTemplate(Identifier.of(MOD_ID, "wicker_sheet"));
-
-        knittingNeedles = new KnittingNeedlesItem(Identifier.of(MOD_ID, "knitting_needles"));
-
-        whiteWoolBall = new LazyItemTemplate(Identifier.of(MOD_ID, "white_wool_ball"));
-        orangeWoolBall = new LazyItemTemplate(Identifier.of(MOD_ID,"orange_wool_ball"));
-        magentaWoolBall = new LazyItemTemplate(Identifier.of(MOD_ID, "magenta_wool_ball"));
-        lightBlueWoolBall = new LazyItemTemplate(Identifier.of(MOD_ID, "light_blue_wool_ball"));
-        yellowWoolBall = new LazyItemTemplate(Identifier.of(MOD_ID,"yellow_wool_ball"));
-        limeWoolBall = new LazyItemTemplate(Identifier.of(MOD_ID,"lime_wool_ball"));
-        pinkWoolBall = new LazyItemTemplate(Identifier.of(MOD_ID,"pink_wool_ball"));
-        darkGreyWoolBall = new LazyItemTemplate(Identifier.of(MOD_ID,"dark_grey_wool_ball"));
-        lightGreyWoolBall = new LazyItemTemplate(Identifier.of(MOD_ID, "light_grey_wool_ball"));
-        cyanWoolBall = new LazyItemTemplate(Identifier.of(MOD_ID,"cyan_wool_ball"));
-        purpleWoolBall = new LazyItemTemplate(Identifier.of(MOD_ID,"purple_wool_ball"));
-        blueWoolBall = new LazyItemTemplate(Identifier.of(MOD_ID,"blue_wool_ball"));
-        brownWoolBall = new LazyItemTemplate(Identifier.of(MOD_ID, "brown_wool_ball"));
-        greenWoolBall = new LazyItemTemplate(Identifier.of(MOD_ID, "green_wool_ball"));
-        redWoolBall = new LazyItemTemplate(Identifier.of(MOD_ID, "red_wool_ball"));
-        blackWoolBall = new LazyItemTemplate(Identifier.of(MOD_ID, "black_wool_ball"));
-
-        whiteKnitting = new KnittingItem(Identifier.of(MOD_ID, "white_knitting"), 0);
-        orangeKnitting = new KnittingItem(Identifier.of(MOD_ID,"orange_knitting"), 1);
-        magentaKnitting = new KnittingItem(Identifier.of(MOD_ID, "magenta_knitting"), 2);
-        lightBlueKnitting = new KnittingItem(Identifier.of(MOD_ID, "light_blue_knitting"), 3);
-        yellowKnitting = new KnittingItem(Identifier.of(MOD_ID,"yellow_knitting"), 4);
-        limeKnitting = new KnittingItem(Identifier.of(MOD_ID,"lime_knitting"), 5);
-        pinkKnitting = new KnittingItem(Identifier.of(MOD_ID,"pink_knitting"), 6);
-        darkGreyKnitting = new KnittingItem(Identifier.of(MOD_ID,"dark_grey_knitting"), 7);
-        lightGreyKnitting = new KnittingItem(Identifier.of(MOD_ID, "light_grey_knitting"), 8);
-        cyanKnitting = new KnittingItem(Identifier.of(MOD_ID,"cyan_knitting"), 9);
-        purpleKnitting = new KnittingItem(Identifier.of(MOD_ID,"purple_knitting"), 10);
-        blueKnitting = new KnittingItem(Identifier.of(MOD_ID,"blue_knitting"), 11);
-        brownKnitting = new KnittingItem(Identifier.of(MOD_ID, "brown_knitting"), 12);
-        greenKnitting = new KnittingItem(Identifier.of(MOD_ID, "green_knitting"), 13);
-        redKnitting = new KnittingItem(Identifier.of(MOD_ID, "red_knitting"), 14);
-        blackKnitting = new KnittingItem(Identifier.of(MOD_ID, "black_knitting"), 15);
-
-        whiteWoolKnit = new LazyItemTemplate(Identifier.of(MOD_ID, "white_wool_knit"));
-        orangeWoolKnit = new LazyItemTemplate(Identifier.of(MOD_ID,"orange_wool_knit"));
-        magentaWoolKnit = new LazyItemTemplate(Identifier.of(MOD_ID, "magenta_wool_knit"));
-        lightBlueWoolKnit = new LazyItemTemplate(Identifier.of(MOD_ID, "light_blue_wool_knit"));
-        yellowWoolKnit = new LazyItemTemplate(Identifier.of(MOD_ID,"yellow_wool_knit"));
-        limeWoolKnit = new LazyItemTemplate(Identifier.of(MOD_ID,"lime_wool_knit"));
-        pinkWoolKnit = new LazyItemTemplate(Identifier.of(MOD_ID,"pink_wool_knit"));
-        darkGreyWoolKnit = new LazyItemTemplate(Identifier.of(MOD_ID,"dark_grey_wool_knit"));
-        lightGreyWoolKnit = new LazyItemTemplate(Identifier.of(MOD_ID, "light_grey_wool_knit"));
-        cyanWoolKnit = new LazyItemTemplate(Identifier.of(MOD_ID,"cyan_wool_knit"));
-        purpleWoolKnit = new LazyItemTemplate(Identifier.of(MOD_ID,"purple_wool_knit"));
-        blueWoolKnit = new LazyItemTemplate(Identifier.of(MOD_ID,"blue_wool_knit"));
-        brownWoolKnit = new LazyItemTemplate(Identifier.of(MOD_ID, "brown_wool_knit"));
-        greenWoolKnit = new LazyItemTemplate(Identifier.of(MOD_ID, "green_wool_knit"));
-        redWoolKnit = new LazyItemTemplate(Identifier.of(MOD_ID, "red_wool_knit"));
-        blackWoolKnit  = new LazyItemTemplate(Identifier.of(MOD_ID, "black_wool_knit"));
-
-        stumpRemover = new StumpRemoverItem(Identifier.of(MOD_ID, "stump_remover"));
-
-        emptyLoomShuttle = new LazyItemTemplate(Identifier.of(MOD_ID, "empty_loom_shuttle"));
-        woolLoomShuttle = new LoadedLoomShuttleItem(Identifier.of(MOD_ID, "wool_loom_shuttle"));
-        wickerLoomShuttle = new LoadedLoomShuttleItem(Identifier.of(MOD_ID, "wicker_loom_shuttle"));
 
         //TODO: ADDON IDEA: Refined Steel Minecarts - they would be X times faster than normal ones, great way to give more purpose for rail usage.
     }
