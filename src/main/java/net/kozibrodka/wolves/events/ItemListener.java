@@ -4,8 +4,12 @@ import net.kozibrodka.wolves.items.*;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.minecraft.item.ToolMaterial;
 import net.modificationstation.stationapi.api.event.registry.ItemRegistryEvent;
+import net.modificationstation.stationapi.api.item.tool.TagToolLevel;
+import net.modificationstation.stationapi.api.item.tool.ToolLevel;
 import net.modificationstation.stationapi.api.item.tool.ToolMaterialFactory;
 import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
+import net.modificationstation.stationapi.api.registry.BlockRegistry;
+import net.modificationstation.stationapi.api.tag.TagKey;
 import net.modificationstation.stationapi.api.template.item.*;
 import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.util.Namespace;
@@ -69,7 +73,9 @@ public class ItemListener {
 
     @EventListener
     public void registerItems(ItemRegistryEvent event) {
-        ToolMaterial steelMaterial = ToolMaterialFactory.create("STEEL",3,2250,12F,8);
+        ToolLevel soulforgedLevel = new TagToolLevel(TagKey.of(BlockRegistry.KEY, MOD_ID.id("needs_tool_level_soulforged")));
+        ToolLevel.GRAPH.putEdge(ToolMaterial.DIAMOND.getToolLevel(), soulforgedLevel);
+        ToolMaterial soulforgedSteelMaterial = ToolMaterialFactory.create("soulforged_steel", 3, 2250, 12F,8).toolLevel(soulforgedLevel);
 
         bucketCement = (TemplateBucketItem) new CementBucketItem(Identifier.of(MOD_ID, "bucketCement"), BlockListener.cement.id).setTranslationKey(MOD_ID, "bucket_cement");
         wolfRaw = (TemplateFoodItem) new TemplateFoodItem(Identifier.of(MOD_ID, "wolfRaw"),3,false).setTranslationKey(MOD_ID, "wolf_raw");
@@ -100,11 +106,11 @@ public class ItemListener {
         tallow = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "tallow")).setTranslationKey(MOD_ID, "tallow");
         haft = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "haft")).setTranslationKey(MOD_ID, "haft");
         steel = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "steel")).setTranslationKey(MOD_ID, "steel");
-        refinedPickAxe = (TemplatePickaxeItem) new TemplatePickaxeItem(Identifier.of(MOD_ID, "refinedPickAxe"), steelMaterial).setTranslationKey(MOD_ID, "refined_pick_axe");
-        refinedShovel = (TemplateShovelItem) new TemplateShovelItem(Identifier.of(MOD_ID, "refinedShovel"), steelMaterial).setTranslationKey(MOD_ID, "refined_shovel");
-        refinedHoe = (TemplateHoeItem) new TemplateHoeItem(Identifier.of(MOD_ID, "refinedHoe"), steelMaterial).setTranslationKey(MOD_ID, "refined_hoe");
-        refinedAxe = (TemplateAxeItem) new TemplateAxeItem(Identifier.of(MOD_ID, "refinedAxe"), steelMaterial).setTranslationKey(MOD_ID, "refined_axe");
-        refinedSword = (TemplateSwordItem) new TemplateSwordItem(Identifier.of(MOD_ID, "refinedSword"), steelMaterial).setTranslationKey(MOD_ID, "refined_sword");
+        refinedPickAxe = (TemplatePickaxeItem) new TemplatePickaxeItem(Identifier.of(MOD_ID, "refinedPickAxe"), soulforgedSteelMaterial).setTranslationKey(MOD_ID, "refined_pick_axe");
+        refinedShovel = (TemplateShovelItem) new TemplateShovelItem(Identifier.of(MOD_ID, "refinedShovel"), soulforgedSteelMaterial).setTranslationKey(MOD_ID, "refined_shovel");
+        refinedHoe = (TemplateHoeItem) new TemplateHoeItem(Identifier.of(MOD_ID, "refinedHoe"), soulforgedSteelMaterial).setTranslationKey(MOD_ID, "refined_hoe");
+        refinedAxe = (TemplateAxeItem) new TemplateAxeItem(Identifier.of(MOD_ID, "refinedAxe"), soulforgedSteelMaterial).setTranslationKey(MOD_ID, "refined_axe");
+        refinedSword = (TemplateSwordItem) new TemplateSwordItem(Identifier.of(MOD_ID, "refinedSword"), soulforgedSteelMaterial).setTranslationKey(MOD_ID, "refined_sword");
         groundNetherrack = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "groundNetherrack")).setTranslationKey(MOD_ID, "ground_netherrack");
         hellfireDust = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "hellfireDust")).setTranslationKey(MOD_ID, "hellfire_dust");
         concentratedHellfire = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "concentratedHellfire")).setTranslationKey(MOD_ID, "concentrated_hellfire");
