@@ -66,7 +66,7 @@ public class BlockListener {
     public static TemplateBlock panelNumber4;
 
     @Entrypoint.Namespace
-    public static final Namespace MOD_ID = Null.get();
+    public static Namespace MOD_ID;
 
     @EventListener
     public void registerBlocks(BlockRegistryEvent event) {

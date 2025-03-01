@@ -13,7 +13,7 @@ public class ConfigListener {
     public static final BetterThanWolvesCFG wolvesGlass = new BetterThanWolvesCFG();
 
     @Entrypoint.Namespace
-    public static final Namespace MOD_ID = Null.get();
+    public static Namespace MOD_ID;
 
     //TODO EXTRA: Saw animated, Anvil gravity, PANELS/options
     //TODO: NEW

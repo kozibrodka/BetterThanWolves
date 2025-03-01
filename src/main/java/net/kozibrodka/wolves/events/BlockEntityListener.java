@@ -11,10 +11,10 @@ import net.modificationstation.stationapi.api.util.Null;
 public class BlockEntityListener {
 
     @Entrypoint.Namespace
-    public static final Namespace MOD_ID = Null.get();
+    public static Namespace MOD_ID;
 
     @EventListener
-    private static void registerBlockEntities(BlockEntityRegisterEvent event) {
+    public static void registerBlockEntities(BlockEntityRegisterEvent event) {
         event.register(MillStoneBlockEntity.class, String.valueOf(Identifier.of(MOD_ID, "TileMillStone")));
         event.register(CrucibleBlockEntity.class, String.valueOf(Identifier.of(MOD_ID, "TileCrucible")));
         event.register(CauldronBlockEntity.class, String.valueOf(Identifier.of(MOD_ID, "TileCauldron")));

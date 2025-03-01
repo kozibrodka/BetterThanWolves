@@ -13,10 +13,10 @@ import net.modificationstation.stationapi.api.util.Null;
 public class EntityListener {
 
     @Entrypoint.Namespace
-    public static final Namespace MOD_ID = Null.get();
+    public static Namespace MOD_ID;
 
     @EventListener
-    private static void registerEntities(EntityRegister event) {
+    public static void registerEntities(EntityRegister event) {
         event.register(WaterWheelEntity.class, String.valueOf(Identifier.of(MOD_ID, "WaterWheel")));
         event.register(WindMillEntity.class, String.valueOf(Identifier.of(MOD_ID, "WindMill")));
         event.register(BroadheadArrowEntity.class, String.valueOf(Identifier.of(MOD_ID, "BroadheadArrow")));
@@ -28,7 +28,7 @@ public class EntityListener {
     }
 
     @EventListener
-    private static void registerMobHandlers(EntityHandlerRegistryEvent event) {
+    public static void registerMobHandlers(EntityHandlerRegistryEvent event) {
         Registry.register(event.registry, MOD_ID.id("WaterWheel") , WaterWheelEntity::new);
         Registry.register(event.registry, MOD_ID.id("WindMill") , WindMillEntity::new);
         Registry.register(event.registry, MOD_ID.id("BroadheadArrow") , BroadheadArrowEntity::new);

@@ -14,7 +14,7 @@ import net.modificationstation.stationapi.api.util.Null;
 public class TextureListener {
 
     @Entrypoint.Namespace
-    public static final Namespace NAMESPACE = Null.get();
+    public static Namespace NAMESPACE;
 
     @EventListener
     public void registerTextures(TextureRegisterEvent event) {
@@ -141,7 +141,7 @@ public class TextureListener {
     }
 
     @EventListener
-    private static void registerEntityRenderers(EntityRendererRegisterEvent event) {
+    public static void registerEntityRenderers(EntityRendererRegisterEvent event) {
         event.renderers.put(WaterWheelEntity.class, new WaterWheelRenderer());
         event.renderers.put(WindMillEntity.class, new WindMillRenderer());
         event.renderers.put(BroadheadArrowEntity.class, new BroadHeadArrowRenderer());

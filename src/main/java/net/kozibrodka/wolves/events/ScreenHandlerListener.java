@@ -20,7 +20,7 @@ import net.modificationstation.stationapi.api.util.Null;
 public class ScreenHandlerListener {
 
     @Entrypoint.Namespace
-    public static final Namespace MOD_ID = Null.get();
+    public static Namespace MOD_ID;
 
     @Environment(EnvType.CLIENT)
     @EventListener

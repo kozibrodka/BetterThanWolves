@@ -65,11 +65,11 @@ public class ItemListener {
     public static LazyItemTemplate wickerSheet;
 
     @Entrypoint.Namespace
-    public static final Namespace MOD_ID = Null.get();
+    public static Namespace MOD_ID;
 
     @EventListener
     public void registerItems(ItemRegistryEvent event) {
-        ToolMaterialFactory.create("STEEL",3,2250,12F,8);
+        ToolMaterial steelMaterial = ToolMaterialFactory.create("STEEL",3,2250,12F,8);
 
         bucketCement = (TemplateBucketItem) new CementBucketItem(Identifier.of(MOD_ID, "bucketCement"), BlockListener.cement.id).setTranslationKey(MOD_ID, "bucket_cement");
         wolfRaw = (TemplateFoodItem) new TemplateFoodItem(Identifier.of(MOD_ID, "wolfRaw"),3,false).setTranslationKey(MOD_ID, "wolf_raw");
@@ -100,11 +100,11 @@ public class ItemListener {
         tallow = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "tallow")).setTranslationKey(MOD_ID, "tallow");
         haft = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "haft")).setTranslationKey(MOD_ID, "haft");
         steel = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "steel")).setTranslationKey(MOD_ID, "steel");
-        refinedPickAxe = (TemplatePickaxeItem) new TemplatePickaxeItem(Identifier.of(MOD_ID, "refinedPickAxe"), ToolMaterial.valueOf("STEEL")).setTranslationKey(MOD_ID, "refined_pick_axe");
-        refinedShovel = (TemplateShovelItem) new TemplateShovelItem(Identifier.of(MOD_ID, "refinedShovel"), ToolMaterial.valueOf("STEEL")).setTranslationKey(MOD_ID, "refined_shovel");
-        refinedHoe = (TemplateHoeItem) new TemplateHoeItem(Identifier.of(MOD_ID, "refinedHoe"), ToolMaterial.valueOf("STEEL")).setTranslationKey(MOD_ID, "refined_hoe");
-        refinedAxe = (TemplateAxeItem) new TemplateAxeItem(Identifier.of(MOD_ID, "refinedAxe"), ToolMaterial.valueOf("STEEL")).setTranslationKey(MOD_ID, "refined_axe");
-        refinedSword = (TemplateSwordItem) new TemplateSwordItem(Identifier.of(MOD_ID, "refinedSword"), ToolMaterial.valueOf("STEEL")).setTranslationKey(MOD_ID, "refined_sword");
+        refinedPickAxe = (TemplatePickaxeItem) new TemplatePickaxeItem(Identifier.of(MOD_ID, "refinedPickAxe"), steelMaterial).setTranslationKey(MOD_ID, "refined_pick_axe");
+        refinedShovel = (TemplateShovelItem) new TemplateShovelItem(Identifier.of(MOD_ID, "refinedShovel"), steelMaterial).setTranslationKey(MOD_ID, "refined_shovel");
+        refinedHoe = (TemplateHoeItem) new TemplateHoeItem(Identifier.of(MOD_ID, "refinedHoe"), steelMaterial).setTranslationKey(MOD_ID, "refined_hoe");
+        refinedAxe = (TemplateAxeItem) new TemplateAxeItem(Identifier.of(MOD_ID, "refinedAxe"), steelMaterial).setTranslationKey(MOD_ID, "refined_axe");
+        refinedSword = (TemplateSwordItem) new TemplateSwordItem(Identifier.of(MOD_ID, "refinedSword"), steelMaterial).setTranslationKey(MOD_ID, "refined_sword");
         groundNetherrack = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "groundNetherrack")).setTranslationKey(MOD_ID, "ground_netherrack");
         hellfireDust = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "hellfireDust")).setTranslationKey(MOD_ID, "hellfire_dust");
         concentratedHellfire = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "concentratedHellfire")).setTranslationKey(MOD_ID, "concentrated_hellfire");
