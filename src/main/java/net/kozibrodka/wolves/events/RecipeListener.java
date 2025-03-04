@@ -1,5 +1,6 @@
 package net.kozibrodka.wolves.events;
 
+import net.fabricmc.loader.api.FabricLoader;
 import net.kozibrodka.wolves.recipe.*;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.minecraft.block.Block;
@@ -15,6 +16,8 @@ import net.modificationstation.stationapi.api.util.Namespace;
 import net.modificationstation.stationapi.api.util.Null;
 
 public class RecipeListener {
+
+    static boolean isHarderThanWolvesPresent = FabricLoader.getInstance().isModLoaded("harderthanwolves");
 
     @Entrypoint.Namespace
     public static Namespace MOD_ID;
@@ -73,8 +76,10 @@ public class RecipeListener {
     private static void addBlockRecipes() {
         CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.anvil, 1), "###", " # ", "###", '#', ItemListener.steel);
         CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.lightBulbOff, 1), " # ", "#X#", " Y ", '#', Block.GLASS, 'X', Item.GLOWSTONE_DUST, 'Y', Item.REDSTONE);
-        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.hibachi), "XXX", "#Z#", "#Y#", '#', Block.STONE, 'X', ItemListener.concentratedHellfire, 'Y', Item.REDSTONE, 'Z',
-                Item.GLOWSTONE_DUST);
+        if (!isHarderThanWolvesPresent) {
+            CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.hibachi), "XXX", "#Z#", "#Y#", '#', Block.STONE, 'X', ItemListener.concentratedHellfire, 'Y', Item.REDSTONE, 'Z',
+                    Item.GLOWSTONE_DUST);
+        }
         CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.hopper), "# #", "XYX", " Z ", '#', new ItemStack(BlockListener.omniSlab.id, 1, 1), 'X', ItemListener.gear, 'Y', Block.STONE_PRESSURE_PLATE, 'Z',
                 BlockListener.corner);
         CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.saw), "YYY", "XZX", "#X#", '#', Block.PLANKS, 'X', ItemListener.gear, 'Y', Item.IRON_INGOT, 'Z',
@@ -84,12 +89,16 @@ public class RecipeListener {
         CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.pulley), "#Y#", "XZX", "#Y#", '#', Block.PLANKS, 'X', ItemListener.gear, 'Y', Item.IRON_INGOT, 'Z',
                 Item.REDSTONE);
         CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.pressurePlateObsidian, 1), "##", '#', Block.OBSIDIAN);
-        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.blockDispenser), "###", "# #", "YXY", '#', Block.MOSSY_COBBLESTONE, 'X', Item.REDSTONE, 'Y', Block.STONE);
+        if (!isHarderThanWolvesPresent) {
+            CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.blockDispenser), "###", "# #", "YXY", '#', Block.MOSSY_COBBLESTONE, 'X', Item.REDSTONE, 'Y', Block.STONE);
+        }
         CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.cauldron), "#Y#", "#X#", "###", '#', Item.IRON_INGOT, 'X', Item.BONE, 'Y', Item.WATER_BUCKET);
         CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.detectorRailWood, 6), "X X", "X#X", "XRX", 'X', Item.IRON_INGOT, 'R', Item.REDSTONE, '#', Block.STONE_PRESSURE_PLATE);
         CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.detectorRailObsidian, 6), "X X", "X#X", "XRX", 'X', Item.IRON_INGOT, 'R', Item.REDSTONE, '#', BlockListener.pressurePlateObsidian);
-        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.detectorBlock), "X#X", "###", "ZYZ", '#', Block.COBBLESTONE, 'X', new ItemStack(Item.DYE, 1, 4), 'Y', Item.REDSTONE, 'Z',
-                Block.STONE);
+        if (!isHarderThanWolvesPresent) {
+            CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.detectorBlock), "X#X", "###", "ZYZ", '#', Block.COBBLESTONE, 'X', new ItemStack(Item.DYE, 1, 4), 'Y', Item.REDSTONE, 'Z',
+                    Block.STONE);
+        }
         CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.handCrank), "  Y", " Y ", "#X#", '#', Block.COBBLESTONE, 'X', ItemListener.gear, 'Y', Item.STICK);
         CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.millStone), "YYY", "YYY", "YXY", 'X', ItemListener.gear, 'Y', Block.STONE);
         CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.axleBlock), "#", "X", "#", '#', Block.PLANKS, 'X', ItemListener.ropeItem);
@@ -274,9 +283,11 @@ public class RecipeListener {
         addCauldronRecipe(new ItemStack(Item.DYE, 1, 2), new ItemStack[] {
                 new ItemStack(Block.CACTUS)
         });
-        addCauldronRecipe(new ItemStack(ItemListener.soulFilter, 1), new ItemStack[] {
-                new ItemStack(ItemListener.hempCloth, 2), new ItemStack(Block.SOUL_SAND, 1)
-        });
+        if (!isHarderThanWolvesPresent) {
+            addCauldronRecipe(new ItemStack(ItemListener.soulFilter, 1), new ItemStack[]{
+                    new ItemStack(ItemListener.hempCloth, 2), new ItemStack(Block.SOUL_SAND, 1)
+            });
+        }
         addStokedCauldronRecipe(new ItemStack(ItemListener.glue, 1), new ItemStack[] {
                 new ItemStack(Item.LEATHER, 1)
         });
@@ -335,7 +346,9 @@ public class RecipeListener {
         MillingRecipeRegistry.getInstance().addMillingRecipe(Item.LEATHER.id, new ItemStack(ItemListener.scouredLeather, 1));
         MillingRecipeRegistry.getInstance().addMillingRecipe(ItemListener.hemp.id, new ItemStack(ItemListener.hempFibers, 4));
         MillingRecipeRegistry.getInstance().addMillingRecipe(Item.SUGAR_CANE.id, new ItemStack(Item.SUGAR, 1));
-        MillingRecipeRegistry.getInstance().addMillingRecipe(Block.NETHERRACK.id, new ItemStack(ItemListener.groundNetherrack, 1));
+        if (!isHarderThanWolvesPresent) {
+            MillingRecipeRegistry.getInstance().addMillingRecipe(Block.NETHERRACK.id, new ItemStack(ItemListener.groundNetherrack, 1));
+        }
         MillingRecipeRegistry.getInstance().addMillingRecipe(Item.BONE.id, new ItemStack(Item.DYE, 3, 15));
         MillingRecipeRegistry.getInstance().addMillingRecipe(Item.COAL.id, new ItemStack(ItemListener.coalDust, 1));
         MillingRecipeRegistry.getInstance().addMillingRecipe(Block.ROSE.id, new ItemStack(Item.DYE, 2, 1));
@@ -370,7 +383,9 @@ public class RecipeListener {
 
     private static void addCrucibleRecipes() {
         // Material processing
-        addCrucibleRecipe(new ItemStack(ItemListener.steel, 4), new ItemStack[] { new ItemStack(Item.IRON_INGOT, 3), new ItemStack(ItemListener.concentratedHellfire), new ItemStack(ItemListener.coalDust) });
+        if (!isHarderThanWolvesPresent) {
+            addCrucibleRecipe(new ItemStack(ItemListener.steel, 4), new ItemStack[]{new ItemStack(Item.IRON_INGOT, 3), new ItemStack(ItemListener.concentratedHellfire), new ItemStack(ItemListener.coalDust)});
+        }
 
         // Recycling (iron)
         addCrucibleRecipe(new ItemStack(Item.IRON_INGOT, 9), new ItemStack[] { new ItemStack(Block.IRON_BLOCK) });

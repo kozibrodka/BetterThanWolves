@@ -35,6 +35,7 @@ import java.util.List;
 public class MillStoneBlockEntity extends BlockEntity
     implements Inventory
 {
+    static boolean isHarderThanWolvesPresent = net.fabricmc.loader.api.FabricLoader.getInstance().isModLoaded("harderthanwolves");
 
     public MillStoneBlockEntity()
     {
@@ -201,7 +202,7 @@ public class MillStoneBlockEntity extends BlockEntity
                 EjectStack(woolStack);
             }
         }
-        else if(iUnmilledItemID == Block.NETHERRACK.id && world.random.nextInt(10) == 0) // Random scream when there is netherrack
+        else if(iUnmilledItemID == Block.NETHERRACK.id && world.random.nextInt(10) == 0 && !isHarderThanWolvesPresent) // Random scream when there is netherrack
         {
             world.playSound((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, "mob.ghast.scream", 0.25F, world.random.nextFloat() * 0.4F + 0.8F);
             if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
