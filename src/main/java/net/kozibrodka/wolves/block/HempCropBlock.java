@@ -16,12 +16,9 @@ import net.modificationstation.stationapi.api.template.block.TemplatePlantBlock;
 
 import java.util.Random;
 
-public class HempCropBlock extends TemplatePlantBlock
+public class HempCropBlock extends TemplatePlantBlock {
 
-{
-
-    public HempCropBlock(Identifier i)
-    {
+    public HempCropBlock(Identifier i) {
         super(i, 240);
         setHardness(0.0F);
         setSoundGroup(DIRT_SOUND_GROUP);
@@ -31,17 +28,7 @@ public class HempCropBlock extends TemplatePlantBlock
         setTickRandomly(true);
     }
 
-//    public int getTextureForSide(int i, int j)
-//    {
-//        if(j < 0)
-//        {
-//            j = 7;
-//        }
-//        return texture + j;
-//    }
-
-    public int getTexture(int iSide, int iMetaData)
-    {
+    public int getTexture(int iSide, int iMetaData) {
         return switch (iMetaData) {
             case 0 -> TextureListener.hemp_0;
             case 1 -> TextureListener.hemp_1;
@@ -55,57 +42,36 @@ public class HempCropBlock extends TemplatePlantBlock
         };
     }
 
-    protected boolean method_1683(int i)
-    {
-        return i == Block.FARMLAND.id || i == id;
-    }
-
-    public void onTick(World world, int i, int j, int k, Random random)
-    {
+    public void onTick(World world, int i, int j, int k, Random random) {
         super.onTick(world, i, j, k, random);
-        if(world.getLightLevel(i, j + 1, k) >= 15 || world.getLightLevel(i, j + 2, k) >= 15 || world.getLightLevel(i, j, k) >= 15)
-        {
-            boolean bOnHydratedSoil = false;
-            int iBlockBelowID = world.getBlockId(i, j - 1, k);
-            if(iBlockBelowID == Block.FARMLAND.id && world.getBlockMeta(i, j - 1, k) > 0)
-            {
-                bOnHydratedSoil = true;
-            } else
-            if(UnsortedUtils.CanPlantGrowOnBlock(world, i, j - 1, k, this))
-            {
-                Block blockBelow = Block.BLOCKS[iBlockBelowID];
-                if((blockBelow instanceof SoilTemplate) && ((SoilTemplate)blockBelow).IsBlockHydrated(world, i, j - 1, k))
-                {
-                    bOnHydratedSoil = true;
+        if(world.getLightLevel(i, j + 1, k) >= 15 || world.getLightLevel(i, j + 2, k) >= 15 || world.getLightLevel(i, j, k) >= 15) {
+            boolean onHydratedSoil = false;
+            int blockBelowID = world.getBlockId(i, j - 1, k);
+            if(blockBelowID == Block.FARMLAND.id && world.getBlockMeta(i, j - 1, k) > 0) {
+                onHydratedSoil = true;
+            } else if(UnsortedUtils.CanPlantGrowOnBlock(world, i, j - 1, k, this)) {
+                Block blockBelow = Block.BLOCKS[blockBelowID];
+                if((blockBelow instanceof SoilTemplate) && ((SoilTemplate)blockBelow).IsBlockHydrated(world, i, j - 1, k)) {
+                    onHydratedSoil = true;
                 }
             }
-            if(bOnHydratedSoil)
-            {
+            if(onHydratedSoil) {
                 int l = world.getBlockMeta(i, j, k);
-                if(l < 7)
-                {
-                    if(random.nextInt(20) == 0)
-                    {
+                if(l < 7) {
+                    if(random.nextInt(20) == 0) {
                         l++;
                         world.setBlock(i, j, k, this.id, l);
-//                        world.blockUpdateEvent(i, j, k);     ??? Is this needed for serve?
                     }
-                } else
-                {
+                } else {
                     int targetj = j + 1;
-                    do
-                    {
-                        if(targetj >= j + 2)
-                        {
+                    do {
+                        if(targetj >= j + 2) {
                             break;
                         }
-                        int iTargetid = world.getBlockId(i, targetj, k);
-                        if(iTargetid != id)
-                        {
-                            if(world.isAir(i, targetj, k) && random.nextInt(60) == 0)
-                            {
+                        int targetId = world.getBlockId(i, targetj, k);
+                        if(targetId != id) {
+                            if(world.isAir(i, targetj, k) && random.nextInt(60) == 0) {
                                 world.setBlock(i, targetj, k, id, 7);
-                                //                        world.blockUpdateEvent(i, j, k);     ??? Is this needed for serve?
                             }
                             break;
                         }
@@ -116,15 +82,12 @@ public class HempCropBlock extends TemplatePlantBlock
         }
     }
 
-    public void dropStacks(World world, int i, int j, int k, int l, float f)
-    {
+    public void dropStacks(World world, int i, int j, int k, int l, float f) {
         super.dropStacks(world, i, j, k, l, f);
-        if(world.isRemote)
-        {
+        if(world.isRemote) {
             return;
         }
-        if(world.random.nextInt(100) < 50)
-        {
+        if(world.random.nextInt(100) < 50) {
             float f1 = 0.7F;
             float f2 = world.random.nextFloat() * f1 + (1.0F - f1) * 0.5F;
             float f3 = world.random.nextFloat() * f1 + (1.0F - f1) * 0.5F;
@@ -135,19 +98,15 @@ public class HempCropBlock extends TemplatePlantBlock
         }
     }
 
-    public int getDroppedItemId(int i, Random random)
-    {
-        if(i == 7)
-        {
+    public int getDroppedItemId(int i, Random random) {
+        if(i == 7) {
             return ItemListener.hemp.id;
-        } else
-        {
+        } else {
             return -1;
         }
     }
 
-    public int getDroppedItemCount(Random random)
-    {
+    public int getDroppedItemCount(Random random) {
         return 1;
     }
 
@@ -162,5 +121,13 @@ public class HempCropBlock extends TemplatePlantBlock
         }
         world.setBlockMeta(x, y, z, 7);
         return true;
+    }
+
+    @Override
+    protected boolean canPlantOnTop(int id) {
+        if (id == BlockListener.hempCrop.id) {
+            return true;
+        }
+        return super.canPlantOnTop(id);
     }
 }
