@@ -1,6 +1,6 @@
 package net.kozibrodka.wolves.mixin;
 
-import com.llamalad7.mixinextras.injector.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.Block;
@@ -10,8 +10,6 @@ import net.minecraft.world.gen.feature.OakTreeFeature;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
-
-import java.util.Random;
 
 @Mixin(OakTreeFeature.class)
 public abstract class OakTreeMixin extends Feature {

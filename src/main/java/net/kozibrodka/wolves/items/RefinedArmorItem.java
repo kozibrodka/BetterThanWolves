@@ -7,8 +7,7 @@ import net.modificationstation.stationapi.api.client.item.ArmorTextureProvider;
 
 import net.modificationstation.stationapi.api.template.item.TemplateArmorItem;
 
-public class RefinedArmorItem extends TemplateArmorItem implements ArmorTextureProvider
-{
+public class RefinedArmorItem extends TemplateArmorItem implements ArmorTextureProvider {
 
     public RefinedArmorItem(Identifier identifier, int armorType) {
         super(identifier, 1, 1, armorType);
