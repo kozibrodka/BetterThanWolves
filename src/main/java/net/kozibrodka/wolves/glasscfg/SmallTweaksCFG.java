@@ -14,11 +14,11 @@ public class SmallTweaksCFG {
     public Boolean deactivateDung = false;
 
     @ConfigEntry(name = "Add recipe for wicker block (game restart required!)", description = "Only affects recipe, no risk of world corruption")
-    public Boolean wickerBlock = false;
+    public Boolean wickerBlock = true;
 
     @ConfigEntry(name = "Add recipe for grate block (game restart required!)", description = "Only affects recipe, no risk of world corruption")
-    public Boolean grateBlock = false;
+    public Boolean grateBlock = true;
 
     @ConfigEntry(name = "Add recipe for steel block (game restart required!)", description = "Only affects recipe, no risk of world corruption")
-    public Boolean steelBlock = false;
+    public Boolean steelBlock = true;
 }
