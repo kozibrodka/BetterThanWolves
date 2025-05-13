@@ -1,6 +1,7 @@
 
 package net.kozibrodka.wolves.block;
 
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.utils.SoilTemplate;
@@ -9,6 +10,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.modificationstation.stationapi.api.block.BlockState;
 import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.template.block.TemplatePlantBlock;
 
@@ -149,23 +151,16 @@ public class HempCropBlock extends TemplatePlantBlock
         return 1;
     }
 
-    /**
-     * EXTRA
-     */
-//    public void updateBoundingBox(BlockView arg, int i, int j, int k)
-//    {
-//        Level level = Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).level;
-//        float max = 0.1F;
-//        float f = 0.2F;
-//        int state;
-//        if(level.getTileId(i,j,k) == mod_FCBetterThanWolves.hempCrop.id) {
-//            state = 7 - level.getTileMeta(i, j, k);
-//            setBoundingBox(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, 1.0F - (max*state), 0.5F + f);
-//        }
-//    }
-
-    /**
-     * GROWTH DEGUB
-     */
-
+    @Override
+    public boolean onBonemealUse(World world, int x, int y, int z, BlockState state) {
+        if (world.getBlockMeta(x, y, z) == 7) {
+            if (world.getBlockId(x, y + 1, z) == 0 && world.getBlockId(x, y - 1, z) != BlockListener.hempCrop.id) {
+                world.setBlock(x, y + 1, z, BlockListener.hempCrop.id, 7);
+                return true;
+            }
+            return false;
+        }
+        world.setBlockMeta(x, y, z, 7);
+        return true;
+    }
 }
