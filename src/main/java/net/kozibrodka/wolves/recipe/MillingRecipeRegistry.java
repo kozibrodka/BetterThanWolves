@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import net.minecraft.item.ItemStack;
+import net.modificationstation.stationapi.api.registry.ItemRegistry;
+import net.modificationstation.stationapi.api.util.Identifier;
 
 public class MillingRecipeRegistry {
     private static final MillingRecipeRegistry INSTANCE = new MillingRecipeRegistry();
@@ -14,43 +16,22 @@ public class MillingRecipeRegistry {
         return INSTANCE;
     }
 
-    public void addMillingRecipe(int i, ItemStack arg) {
+    public void addMillingRecipe(Identifier i, ItemStack arg) {
         this.recipes.put(i, arg);
     }
 
-    public ItemStack getResult(int i) {
+    public ItemStack getResult(Identifier i) {
         return (ItemStack)this.recipes.get(i);
     }
-
-    // This is not a clean solution, but it should work fine
-    /*
-    public ArrayList<ItemStack[]> getRecipes() {
-        ArrayList<ItemStack[]> itemInstances = new ArrayList<>();
-        ArrayList<ItemStack> inputs = new ArrayList<>();
-        ArrayList<ItemStack> outputs = new ArrayList<>();
-        for (Object obj : recipes.keySet()) {
-            if (obj instanceof Integer) {
-                inputs.add(new ItemStack((Integer) obj, 1, 0));
-                outputs.add(getResult((Integer) obj));
-            }
-        }
-        for (int i = 0; i < inputs.size(); i++) {
-            if (i >= outputs.size()) break;
-            itemInstances.add(new ItemStack[] {inputs.get(i), outputs.get(i)});
-        }
-        return itemInstances;
-    }
-
-     */
 
     public ArrayList<MillStoneRecipe> getRecipes() {
         ArrayList<MillStoneRecipe> convertedRecipes = new ArrayList<>();
         ArrayList<ItemStack> inputs = new ArrayList<>();
         ArrayList<ItemStack> outputs = new ArrayList<>();
         for (Object obj : recipes.keySet()) {
-            if (obj instanceof Integer) {
-                inputs.add(new ItemStack((Integer) obj, 1, 0));
-                outputs.add(getResult((Integer) obj));
+            if (obj instanceof Identifier) {
+                inputs.add(new ItemStack(ItemRegistry.INSTANCE.get((Identifier) obj), 1, 0));
+                outputs.add(getResult((Identifier) obj));
             }
         }
         for (int i = 0; i < inputs.size(); i++) {

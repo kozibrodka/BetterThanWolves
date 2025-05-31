@@ -11,6 +11,8 @@ import net.modificationstation.stationapi.api.event.recipe.RecipeRegisterEvent;
 import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
 import net.modificationstation.stationapi.api.recipe.CraftingRegistry;
 import net.modificationstation.stationapi.api.recipe.SmeltingRegistry;
+import net.modificationstation.stationapi.api.registry.BlockRegistry;
+import net.modificationstation.stationapi.api.registry.ItemRegistry;
 import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.util.Namespace;
 
@@ -339,17 +341,17 @@ public class RecipeListener {
     }
 
     private static void addMillingRecipes() {
-        MillingRecipeRegistry.getInstance().addMillingRecipe(Item.WHEAT.id, new ItemStack(ItemListener.flour, 1));
-        MillingRecipeRegistry.getInstance().addMillingRecipe(Item.LEATHER.id, new ItemStack(ItemListener.scouredLeather, 1));
-        MillingRecipeRegistry.getInstance().addMillingRecipe(ItemListener.hemp.id, new ItemStack(ItemListener.hempFibers, 4));
-        MillingRecipeRegistry.getInstance().addMillingRecipe(Item.SUGAR_CANE.id, new ItemStack(Item.SUGAR, 1));
+        MillingRecipeRegistry.getInstance().addMillingRecipe(ItemRegistry.INSTANCE.getId(Item.WHEAT), new ItemStack(ItemListener.flour, 1));
+        MillingRecipeRegistry.getInstance().addMillingRecipe(ItemRegistry.INSTANCE.getId(Item.LEATHER), new ItemStack(ItemListener.scouredLeather, 1));
+        MillingRecipeRegistry.getInstance().addMillingRecipe(ItemListener.MOD_ID.id("hemp"), new ItemStack(ItemListener.hempFibers, 4));
+        MillingRecipeRegistry.getInstance().addMillingRecipe(ItemRegistry.INSTANCE.getId(Item.SUGAR_CANE), new ItemStack(Item.SUGAR, 1));
         if (!isHarderThanWolvesPresent) {
-            MillingRecipeRegistry.getInstance().addMillingRecipe(Block.NETHERRACK.id, new ItemStack(ItemListener.groundNetherrack, 1));
+            MillingRecipeRegistry.getInstance().addMillingRecipe(BlockRegistry.INSTANCE.getId(Block.NETHERRACK), new ItemStack(ItemListener.groundNetherrack, 1));
         }
-        MillingRecipeRegistry.getInstance().addMillingRecipe(Item.BONE.id, new ItemStack(Item.DYE, 3, 15));
-        MillingRecipeRegistry.getInstance().addMillingRecipe(Item.COAL.id, new ItemStack(ItemListener.coalDust, 1));
-        MillingRecipeRegistry.getInstance().addMillingRecipe(Block.ROSE.id, new ItemStack(Item.DYE, 2, 1));
-        MillingRecipeRegistry.getInstance().addMillingRecipe(Block.DANDELION.id, new ItemStack(Item.DYE, 2, 11));
+        MillingRecipeRegistry.getInstance().addMillingRecipe(ItemRegistry.INSTANCE.getId(Item.BONE), new ItemStack(Item.DYE, 3, 15));
+        MillingRecipeRegistry.getInstance().addMillingRecipe(ItemRegistry.INSTANCE.getId(Item.COAL), new ItemStack(ItemListener.coalDust, 1));
+        MillingRecipeRegistry.getInstance().addMillingRecipe(BlockRegistry.INSTANCE.getId(Block.ROSE), new ItemStack(Item.DYE, 2, 1));
+        MillingRecipeRegistry.getInstance().addMillingRecipe(BlockRegistry.INSTANCE.getId(Block.DANDELION), new ItemStack(Item.DYE, 2, 11));
     }
 
     private static void addTurntableRecipes() {
