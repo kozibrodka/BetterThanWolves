@@ -18,7 +18,7 @@ public class NFCRecipes {
                 new ItemStack(BlockListener.petrifiedLog, 1), new ItemStack(net.newfrontiercraft.nfc.events.init.ItemListener.netherAsh, 1), new ItemStack(Item.COAL, 2, 1)
         });
         RecipeListener.addStokedCauldronRecipe(new ItemStack(Item.COAL, 2), new ItemStack[] {
-                new ItemStack(ItemListener.coalDust, 1), new ItemStack(net.newfrontiercraft.nfc.events.init.ItemListener.netherAsh, 2), new ItemStack(Item.COAL, 1)
+                new ItemStack(ItemListener.coalDust, 1), new ItemStack(net.newfrontiercraft.nfc.events.init.ItemListener.netherAsh, 2)
         });
     }
 }
