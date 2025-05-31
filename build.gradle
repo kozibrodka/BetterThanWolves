@@ -93,6 +93,11 @@ dependencies {
 		transitive false
 	}
 
+	// Crossover content
+	modImplementation("com.github.New-Frontier-Craft:NFC-StationAPI-Dev:${project.nfc_version}") {
+		transitive false
+	}
+
 }
 
 processResources {
