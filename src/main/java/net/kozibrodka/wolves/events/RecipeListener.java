@@ -118,31 +118,31 @@ public class RecipeListener {
     }
 
     private static void addItemRecipes() {
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.bucketCement, 1), "#YX", " Z ", Character.valueOf('#'), Block.SOUL_SAND, Character.valueOf('X'), Block.GRAVEL, Character.valueOf('Y'), Item.WATER_BUCKET, Character.valueOf('Z'), Item.BUCKET);
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.gear, 2), " X ", "X#X", " X ", Character.valueOf('#'), Block.PLANKS, Character.valueOf('X'), Item.STICK);
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.ropeItem, 1), "##", "##", "##", Character.valueOf('#'), ItemListener.hempFibers);
-        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.anchor), " X ", "###", Character.valueOf('#'), Block.STONE, Character.valueOf('X'), Item.IRON_INGOT);
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.waterWheelItem), "###", "# #", "###", Character.valueOf('#'), ItemListener.woodBlade);
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.windMillBladeItem), "###", "###", "XXX", Character.valueOf('#'), ItemListener.hempCloth, Character.valueOf('X'), BlockListener.moulding);
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.windMillBladeItem), "###", "###", "XXX", Character.valueOf('#'), ItemListener.hempCloth, Character.valueOf('X'), Block.PLANKS);
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.windMillItem), " # ", "# #", " # ", Character.valueOf('#'), ItemListener.windMillBladeItem);
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.hempCloth, 1), "###", "###", "###", Character.valueOf('#'), ItemListener.hempFibers);
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.grate, 1), "###", "###", "###", Character.valueOf('#'), Item.STICK);
+        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.bucketCement, 1), "#YX", " Z ", '#', Block.SOUL_SAND, 'X', Block.GRAVEL, 'Y', Item.WATER_BUCKET, 'Z', Item.BUCKET);
+        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.gear, 2), " X ", "X#X", " X ", '#', Block.PLANKS, 'X', Item.STICK);
+        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.ropeItem, 1), "##", "##", "##", '#', ItemListener.hempFibers);
+        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.anchor), " X ", "###", '#', Block.STONE, 'X', Item.IRON_INGOT);
+        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.waterWheelItem), "###", "# #", "###", '#', ItemListener.woodBlade);
+        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.windMillBladeItem), "###", "###", "XXX", '#', ItemListener.hempCloth, 'X', BlockListener.moulding);
+        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.windMillBladeItem), "###", "###", "XXX", '#', ItemListener.hempCloth, 'X', Block.PLANKS);
+        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.windMillItem), " # ", "# #", " # ", '#', ItemListener.windMillBladeItem);
+        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.hempCloth, 1), "###", "###", "###", '#', ItemListener.hempFibers);
+        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.grate, 1), "###", "###", "###", '#', Item.STICK);
         if (!ConfigListener.wolvesGlass.difficulty.wickerWeaving) {
-            CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.wicker, 1), "###", "###", "###", Character.valueOf('#'), Item.SUGAR_CANE);
+            CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.wicker, 1), "###", "###", "###", '#', Item.SUGAR_CANE);
         }
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.rollersItem, 1), "###", "###", "###", Character.valueOf('#'), BlockListener.moulding);
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.strap, 8), "#", Character.valueOf('#'), ItemListener.tannedLeather);
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.belt, 1), " # ", "# #", " # ", Character.valueOf('#'), ItemListener.strap);
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.woodBlade, 1), "#  ", "#X#", "#  ", Character.valueOf('#'), new ItemStack(BlockListener.omniSlab, 1, 1), Character.valueOf('X'), Item.SLIMEBALL);
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.woodBlade, 1), "#  ", "#X#", "#  ", Character.valueOf('#'), new ItemStack(BlockListener.omniSlab, 1, 1), Character.valueOf('X'), ItemListener.glue);
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.haft, 1), "Y", "X", "#", Character.valueOf('#'), BlockListener.moulding, Character.valueOf('X'), ItemListener.glue, Character.valueOf('Y'), ItemListener.strap);
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.haft, 1), "Y", "X", "#", Character.valueOf('#'), BlockListener.moulding, Character.valueOf('X'), Item.SLIMEBALL, Character.valueOf('Y'), ItemListener.strap);
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.compositeBow, 1), "X#Y", "ZX#", "X#Y", Character.valueOf('#'), BlockListener.moulding, Character.valueOf('X'), Item.BONE, Character.valueOf('Y'), Item.SLIMEBALL, Character.valueOf('Z'),
+        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.rollersItem, 1), "###", "###", "###", '#', BlockListener.moulding);
+        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.strap, 8), "#", '#', ItemListener.tannedLeather);
+        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.belt, 1), " # ", "# #", " # ", '#', ItemListener.strap);
+        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.woodBlade, 1), "#  ", "#X#", "#  ", '#', new ItemStack(BlockListener.omniSlab, 1, 1), 'X', Item.SLIMEBALL);
+        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.woodBlade, 1), "#  ", "#X#", "#  ", '#', new ItemStack(BlockListener.omniSlab, 1, 1), 'X', ItemListener.glue);
+        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.haft, 1), "Y", "X", "#", '#', BlockListener.moulding, 'X', ItemListener.glue, 'Y', ItemListener.strap);
+        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.haft, 1), "Y", "X", "#", '#', BlockListener.moulding, 'X', Item.SLIMEBALL, 'Y', ItemListener.strap);
+        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.compositeBow, 1), "X#Y", "ZX#", "X#Y", '#', BlockListener.moulding, 'X', Item.BONE, 'Y', Item.SLIMEBALL, 'Z',
                 Item.STRING);
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.compositeBow, 1), "X#Y", "ZX#", "X#Y", Character.valueOf('#'), BlockListener.moulding, Character.valueOf('X'), Item.BONE, Character.valueOf('Y'), ItemListener.glue, Character.valueOf('Z'),
+        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.compositeBow, 1), "X#Y", "ZX#", "X#Y", '#', BlockListener.moulding, 'X', Item.BONE, 'Y', ItemListener.glue, 'Z',
                 Item.STRING);
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.broadHeadArrow, 4), "#", "X", "Y", Character.valueOf('#'), ItemListener.broadHeadArrowhead, Character.valueOf('X'), BlockListener.moulding, Character.valueOf('Y'), Item.FEATHER);
+        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.broadHeadArrow, 4), "#", "X", "Y", '#', ItemListener.broadHeadArrowhead, 'X', BlockListener.moulding, 'Y', Item.FEATHER);
         if (ConfigListener.wolvesGlass.difficulty.wickerWeaving) {
             CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.wickerWeaving), "###", "###", "###", '#', Item.SUGAR_CANE);
         }
@@ -163,15 +163,15 @@ public class RecipeListener {
     }
 
     private static void addAlternateVanillaRecipes() {
-        CraftingRegistry.addShapedRecipe(new ItemStack(Block.STICKY_PISTON, 1), "#", "X", Character.valueOf('#'), ItemListener.glue, Character.valueOf('X'), Block.PISTON);
-        CraftingRegistry.addShapedRecipe(new ItemStack(Block.FENCE, 2), "###", Character.valueOf('#'), BlockListener.moulding);
-        CraftingRegistry.addShapedRecipe(new ItemStack(Block.WOODEN_STAIRS, 1), "# ", "##", Character.valueOf('#'), BlockListener.moulding);
-        CraftingRegistry.addShapedRecipe(new ItemStack(Item.SIGN, 1), "###", "###", " X ", Character.valueOf('#'), new ItemStack(BlockListener.omniSlab, 1, 1), Character.valueOf('X'), Item.STICK);
-        CraftingRegistry.addShapedRecipe(new ItemStack(Item.WOODEN_DOOR, 1), "##", "##", "##", Character.valueOf('#'), new ItemStack(BlockListener.omniSlab, 1, 1));
-        CraftingRegistry.addShapedRecipe(new ItemStack(Block.TRAPDOOR, 2), "###", "###", Character.valueOf('#'), new ItemStack(BlockListener.omniSlab, 1, 1));
-        CraftingRegistry.addShapedRecipe(new ItemStack(Item.CAKE, 1), "AAA", "BEB", "CCC", Character.valueOf('A'), Item.SUGAR, Character.valueOf('B'), Item.MILK_BUCKET, Character.valueOf('C'), ItemListener.flour, Character.valueOf('E'),
+        CraftingRegistry.addShapedRecipe(new ItemStack(Block.STICKY_PISTON, 1), "#", "X", '#', ItemListener.glue, 'X', Block.PISTON);
+        CraftingRegistry.addShapedRecipe(new ItemStack(Block.FENCE, 2), "###", '#', BlockListener.moulding);
+        CraftingRegistry.addShapedRecipe(new ItemStack(Block.WOODEN_STAIRS, 1), "# ", "##", '#', BlockListener.moulding);
+        CraftingRegistry.addShapedRecipe(new ItemStack(Item.SIGN, 1), "###", "###", " X ", '#', new ItemStack(BlockListener.omniSlab, 1, 1), 'X', Item.STICK);
+        CraftingRegistry.addShapedRecipe(new ItemStack(Item.WOODEN_DOOR, 1), "##", "##", "##", '#', new ItemStack(BlockListener.omniSlab, 1, 1));
+        CraftingRegistry.addShapedRecipe(new ItemStack(Block.TRAPDOOR, 2), "###", "###", '#', new ItemStack(BlockListener.omniSlab, 1, 1));
+        CraftingRegistry.addShapedRecipe(new ItemStack(Item.CAKE, 1), "AAA", "BEB", "CCC", 'A', Item.SUGAR, 'B', Item.MILK_BUCKET, 'C', ItemListener.flour, 'E',
                 Item.EGG);
-        CraftingRegistry.addShapedRecipe(new ItemStack(Block.TORCH, 4), "#", "X", Character.valueOf('#'), ItemListener.netherCoal, Character.valueOf('X'), Item.STICK);
+        CraftingRegistry.addShapedRecipe(new ItemStack(Block.TORCH, 4), "#", "X", '#', ItemListener.netherCoal, 'X', Item.STICK);
     }
 
     private static void addShapelessCraftingRecipes() {
