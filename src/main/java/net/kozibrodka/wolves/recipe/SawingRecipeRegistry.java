@@ -2,6 +2,8 @@ package net.kozibrodka.wolves.recipe;
 
 import java.util.ArrayList;
 import net.minecraft.item.ItemStack;
+import net.modificationstation.stationapi.api.registry.ItemRegistry;
+import net.modificationstation.stationapi.api.util.Identifier;
 
 public class SawingRecipeRegistry {
     private static final SawingRecipeRegistry INSTANCE = new SawingRecipeRegistry();
@@ -11,10 +13,6 @@ public class SawingRecipeRegistry {
         return INSTANCE;
     }
 
-    public void addSawingRecipe(int input, ItemStack output) {
-        this.recipes.add(new ItemStack[] {new ItemStack(input, 1, 0), output});
-    }
-
     public void addSawingRecipe(ItemStack input, ItemStack output) {
         this.recipes.add(new ItemStack[] {input, output});
     }
@@ -22,7 +20,6 @@ public class SawingRecipeRegistry {
     public ItemStack getResult(ItemStack item) {
         for (ItemStack[] items : recipes) {
             if (items[0].isItemEqual(item)) {
-
                 return items[1];
             }
         }

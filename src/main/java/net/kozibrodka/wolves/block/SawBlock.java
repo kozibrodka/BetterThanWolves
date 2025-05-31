@@ -412,17 +412,11 @@ public class SawBlock extends TemplateBlock
     {
         if(!world.isAir(i, j, k))
         {
-            int iTargetid = world.getBlockId(i, j, k);
-            ItemStack targetItem = new ItemStack(iTargetid, 1, world.getBlockMeta(i, j, k));
-            boolean bSawedBlock = false;
-            Block targetBlock = Block.BLOCKS[iTargetid];
+            int targetId = world.getBlockId(i, j, k);
+            ItemStack targetItem = new ItemStack(targetId, 1, world.getBlockMeta(i, j, k));
+            boolean sawedBlock = false;
+            Block targetBlock = Block.BLOCKS[targetId];
             boolean bRemoveOriginalBlockIfSawed = true;
-
-            // This exists so the slab can be in the registry and to keep the wood check intact
-            if (iTargetid == BlockListener.omniSlab.id)
-            {
-                if(!((OmniSlabBlock)BlockListener.omniSlab).IsSlabWood(world, i, j, k)) return false;
-            }
 
             // Standard recipes from the registry
             ItemStack output = SawingRecipeRegistry.getInstance().getResult(targetItem);
@@ -433,11 +427,11 @@ public class SawBlock extends TemplateBlock
                 {
                     UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, output.itemId, output.getDamage());
                 }
-                bSawedBlock = true;
+                sawedBlock = true;
             }
 
             // Special recipes with more complex outcomes
-            else if(iTargetid == BlockListener.companionCube.id)
+            else if(targetId == BlockListener.companionCube.id)
             {
                 CompanionCubeBlock cubeBlock = (CompanionCubeBlock)BlockListener.companionCube;
                 if(!cubeBlock.GetHalfCubeState(world, i, j, k))
@@ -463,25 +457,20 @@ public class SawBlock extends TemplateBlock
                     if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
                         voicePacket(world, "mob.wolf.hurt", i, j, k, 5F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
                     }
-                    bSawedBlock = true;
+                    sawedBlock = true;
                 } else
                 if(iSawFacing == 0 || iSawFacing == 1)
                 {
                     UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, BlockListener.companionCube.id, 1);
-                    bSawedBlock = true;
+                    sawedBlock = true;
                 }
             } else
-            if(iTargetid == Block.LEAVES.id || iTargetid == Block.SUGAR_CANE.id || iTargetid == Block.WHEAT.id || iTargetid == BlockListener.hempCrop.id)
+            if(targetId == Block.LEAVES.id || targetId == Block.SUGAR_CANE.id || targetId == Block.WHEAT.id || targetId == BlockListener.hempCrop.id)
             {
                 targetBlock.dropStacks(world, i, j, k, world.getBlockMeta(i, j, k));
-                bSawedBlock = true;
+                sawedBlock = true;
             } else
-//            if(iTargetid == BlockBase.SUGAR_CANES.id)
-//            {
-//                targetBlock.drop(world, i, j, k, world.getTileMeta(i, j, k));
-//                bSawedBlock = true;
-//            } else
-            if(iTargetid != Block.PISTON_HEAD.id && targetBlock != null)
+            if(targetId != Block.PISTON_HEAD.id && targetBlock != null)
             {
                 Material targetMaterial = targetBlock.material;
                 if(targetMaterial != Material.WOOD)
@@ -493,10 +482,10 @@ public class SawBlock extends TemplateBlock
                 } else
                 {
                     targetBlock.dropStacks(world, i, j, k, world.getBlockMeta(i, j, k));
-                    bSawedBlock = true;
+                    sawedBlock = true;
                 }
             }
-            if(bSawedBlock)
+            if(sawedBlock)
             {
                 world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.explode", 0.2F, 1.25F);
                 if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
