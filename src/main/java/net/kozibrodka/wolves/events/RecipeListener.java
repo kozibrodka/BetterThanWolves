@@ -13,7 +13,6 @@ import net.modificationstation.stationapi.api.recipe.CraftingRegistry;
 import net.modificationstation.stationapi.api.recipe.SmeltingRegistry;
 import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.util.Namespace;
-import net.modificationstation.stationapi.api.util.Null;
 
 public class RecipeListener {
 
@@ -80,7 +79,7 @@ public class RecipeListener {
             CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.hibachi), "XXX", "#Z#", "#Y#", '#', Block.STONE, 'X', ItemListener.concentratedHellfire, 'Y', Item.REDSTONE, 'Z',
                     Item.GLOWSTONE_DUST);
         }
-        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.hopper), "# #", "XYX", " Z ", '#', new ItemStack(BlockListener.omniSlab.id, 1, 1), 'X', ItemListener.gear, 'Y', Block.STONE_PRESSURE_PLATE, 'Z',
+        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.hopper), "# #", "XYX", " Z ", '#', new ItemStack(BlockListener.omniSlab, 1, 1), 'X', ItemListener.gear, 'Y', Block.STONE_PRESSURE_PLATE, 'Z',
                 BlockListener.corner);
         CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.saw), "YYY", "XZX", "#X#", '#', Block.PLANKS, 'X', ItemListener.gear, 'Y', Item.IRON_INGOT, 'Z',
                 ItemListener.belt);
@@ -104,10 +103,10 @@ public class RecipeListener {
         CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.axleBlock), "#", "X", "#", '#', Block.PLANKS, 'X', ItemListener.ropeItem);
         CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.axleBlock), "#", "X", "#", '#', BlockListener.moulding, 'X', ItemListener.ropeItem);
         CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.gearBox), "#X#", "XYX", "#X#", '#', Block.PLANKS, 'X', ItemListener.gear, 'Y', Item.REDSTONE);
-        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.gearBox), "#X#", "XYX", "#X#", '#', new ItemStack(BlockListener.omniSlab.id, 1, 1), 'X', ItemListener.gear, 'Y', Item.REDSTONE);
-        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.turntable), "###", "ZXZ", "ZYZ", '#', new ItemStack(BlockListener.omniSlab.id, 1, 1), 'X', Item.REDSTONE, 'Y', ItemListener.gear, 'Z',
+        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.gearBox), "#X#", "XYX", "#X#", '#', new ItemStack(BlockListener.omniSlab, 1, 1), 'X', ItemListener.gear, 'Y', Item.REDSTONE);
+        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.turntable), "###", "ZXZ", "ZYZ", '#', new ItemStack(BlockListener.omniSlab, 1, 1), 'X', Item.REDSTONE, 'Y', ItemListener.gear, 'Z',
                 Block.STONE);
-        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.bellows), "###", "XXX", "YZY", '#', new ItemStack(BlockListener.omniSlab.id, 1, 1), 'X', ItemListener.tannedLeather, 'Y', ItemListener.gear, 'Z',
+        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.bellows), "###", "XXX", "YZY", '#', new ItemStack(BlockListener.omniSlab, 1, 1), 'X', ItemListener.tannedLeather, 'Y', ItemListener.gear, 'Z',
                 ItemListener.belt);
         CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.planter, 1, 1), "Y", "X", "#", '#', new ItemStack(BlockListener.planter, 1, 0), 'X', Item.WATER_BUCKET, 'Y', Block.DIRT);
         if (ConfigListener.wolvesGlass.small_tweaks.wickerBlock) {
@@ -135,8 +134,8 @@ public class RecipeListener {
         CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.rollersItem, 1), "###", "###", "###", Character.valueOf('#'), BlockListener.moulding);
         CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.strap, 8), "#", Character.valueOf('#'), ItemListener.tannedLeather);
         CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.belt, 1), " # ", "# #", " # ", Character.valueOf('#'), ItemListener.strap);
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.woodBlade, 1), "#  ", "#X#", "#  ", Character.valueOf('#'), new ItemStack(BlockListener.omniSlab.id, 1, 1), Character.valueOf('X'), Item.SLIMEBALL);
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.woodBlade, 1), "#  ", "#X#", "#  ", Character.valueOf('#'), new ItemStack(BlockListener.omniSlab.id, 1, 1), Character.valueOf('X'), ItemListener.glue);
+        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.woodBlade, 1), "#  ", "#X#", "#  ", Character.valueOf('#'), new ItemStack(BlockListener.omniSlab, 1, 1), Character.valueOf('X'), Item.SLIMEBALL);
+        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.woodBlade, 1), "#  ", "#X#", "#  ", Character.valueOf('#'), new ItemStack(BlockListener.omniSlab, 1, 1), Character.valueOf('X'), ItemListener.glue);
         CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.haft, 1), "Y", "X", "#", Character.valueOf('#'), BlockListener.moulding, Character.valueOf('X'), ItemListener.glue, Character.valueOf('Y'), ItemListener.strap);
         CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.haft, 1), "Y", "X", "#", Character.valueOf('#'), BlockListener.moulding, Character.valueOf('X'), Item.SLIMEBALL, Character.valueOf('Y'), ItemListener.strap);
         CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.compositeBow, 1), "X#Y", "ZX#", "X#Y", Character.valueOf('#'), BlockListener.moulding, Character.valueOf('X'), Item.BONE, Character.valueOf('Y'), Item.SLIMEBALL, Character.valueOf('Z'),
@@ -151,15 +150,15 @@ public class RecipeListener {
 
     private static void addDyeRecipes() {
         for(int i = 0; i < 15; i++) {
-            CraftingRegistry.addShapelessRecipe(new ItemStack(BlockListener.vase, 1, WoolBlock.method_1(i)), new ItemStack(Item.DYE, 1, i), new ItemStack(BlockListener.vase.id, 1, 0));
+            CraftingRegistry.addShapelessRecipe(new ItemStack(BlockListener.vase, 1, WoolBlock.method_1(i)), new ItemStack(Item.DYE, 1, i), new ItemStack(BlockListener.vase, 1, 0));
         }
 
         if (ConfigListener.wolvesGlass.small_tweaks.deactivateDung) {
-            CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 12), new ItemStack(Block.LOG), new ItemStack(Block.WOOL.id, 1, 0));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(BlockListener.vase, 1, 12), new ItemStack(Block.LOG), new ItemStack(BlockListener.vase.id, 1, 0));
+            CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 12), new ItemStack(Block.LOG), new ItemStack(Block.WOOL, 1, 0));
+            CraftingRegistry.addShapelessRecipe(new ItemStack(BlockListener.vase, 1, 12), new ItemStack(Block.LOG), new ItemStack(BlockListener.vase, 1, 0));
         } else {
-            CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 12), new ItemStack(ItemListener.dung), new ItemStack(Block.WOOL.id, 1, 0));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(BlockListener.vase, 1, 12), new ItemStack(ItemListener.dung), new ItemStack(BlockListener.vase.id, 1, 0));
+            CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 12), new ItemStack(ItemListener.dung), new ItemStack(Block.WOOL, 1, 0));
+            CraftingRegistry.addShapelessRecipe(new ItemStack(BlockListener.vase, 1, 12), new ItemStack(ItemListener.dung), new ItemStack(BlockListener.vase, 1, 0));
         }
     }
 
@@ -167,9 +166,9 @@ public class RecipeListener {
         CraftingRegistry.addShapedRecipe(new ItemStack(Block.STICKY_PISTON, 1), "#", "X", Character.valueOf('#'), ItemListener.glue, Character.valueOf('X'), Block.PISTON);
         CraftingRegistry.addShapedRecipe(new ItemStack(Block.FENCE, 2), "###", Character.valueOf('#'), BlockListener.moulding);
         CraftingRegistry.addShapedRecipe(new ItemStack(Block.WOODEN_STAIRS, 1), "# ", "##", Character.valueOf('#'), BlockListener.moulding);
-        CraftingRegistry.addShapedRecipe(new ItemStack(Item.SIGN, 1), "###", "###", " X ", Character.valueOf('#'), new ItemStack(BlockListener.omniSlab.id, 1, 1), Character.valueOf('X'), Item.STICK);
-        CraftingRegistry.addShapedRecipe(new ItemStack(Item.WOODEN_DOOR, 1), "##", "##", "##", Character.valueOf('#'), new ItemStack(BlockListener.omniSlab.id, 1, 1));
-        CraftingRegistry.addShapedRecipe(new ItemStack(Block.TRAPDOOR, 2), "###", "###", Character.valueOf('#'), new ItemStack(BlockListener.omniSlab.id, 1, 1));
+        CraftingRegistry.addShapedRecipe(new ItemStack(Item.SIGN, 1), "###", "###", " X ", Character.valueOf('#'), new ItemStack(BlockListener.omniSlab, 1, 1), Character.valueOf('X'), Item.STICK);
+        CraftingRegistry.addShapedRecipe(new ItemStack(Item.WOODEN_DOOR, 1), "##", "##", "##", Character.valueOf('#'), new ItemStack(BlockListener.omniSlab, 1, 1));
+        CraftingRegistry.addShapedRecipe(new ItemStack(Block.TRAPDOOR, 2), "###", "###", Character.valueOf('#'), new ItemStack(BlockListener.omniSlab, 1, 1));
         CraftingRegistry.addShapedRecipe(new ItemStack(Item.CAKE, 1), "AAA", "BEB", "CCC", Character.valueOf('A'), Item.SUGAR, Character.valueOf('B'), Item.MILK_BUCKET, Character.valueOf('C'), ItemListener.flour, Character.valueOf('E'),
                 Item.EGG);
         CraftingRegistry.addShapedRecipe(new ItemStack(Block.TORCH, 4), "#", "X", Character.valueOf('#'), ItemListener.netherCoal, Character.valueOf('X'), Item.STICK);
@@ -182,10 +181,10 @@ public class RecipeListener {
     }
 
     private static void addConversionRecipes() {
-        CraftingRegistry.addShapelessRecipe(new ItemStack(Block.PLANKS), new ItemStack(BlockListener.omniSlab.id, 1, 1), new ItemStack(BlockListener.omniSlab.id, 1, 1));
-        CraftingRegistry.addShapelessRecipe(new ItemStack(Block.STONE), new ItemStack(BlockListener.omniSlab.id, 1, 0), new ItemStack(BlockListener.omniSlab.id, 1, 0));
-        CraftingRegistry.addShapelessRecipe(new ItemStack(BlockListener.omniSlab.id, 1, 1), new ItemStack(BlockListener.moulding.id,1,0), new ItemStack(BlockListener.moulding.id,1,0));
-        CraftingRegistry.addShapelessRecipe(new ItemStack(BlockListener.moulding.id,1,0), new ItemStack(BlockListener.corner.id,1,0), new ItemStack(BlockListener.corner.id,1,0));
+        CraftingRegistry.addShapelessRecipe(new ItemStack(Block.PLANKS), new ItemStack(BlockListener.omniSlab, 1, 1), new ItemStack(BlockListener.omniSlab, 1, 1));
+        CraftingRegistry.addShapelessRecipe(new ItemStack(Block.STONE), new ItemStack(BlockListener.omniSlab, 1, 0), new ItemStack(BlockListener.omniSlab, 1, 0));
+        CraftingRegistry.addShapelessRecipe(new ItemStack(BlockListener.omniSlab, 1, 1), new ItemStack(BlockListener.moulding,1,0), new ItemStack(BlockListener.moulding,1,0));
+        CraftingRegistry.addShapelessRecipe(new ItemStack(BlockListener.moulding,1,0), new ItemStack(BlockListener.corner,1,0), new ItemStack(BlockListener.corner,1,0));
         CraftingRegistry.addShapelessRecipe(new ItemStack(Item.STRING), new ItemStack(ItemListener.hempFibers), new ItemStack(ItemListener.hempFibers));
         CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.steel, 9), new ItemStack(BlockListener.blockOfSteel));
     }
@@ -193,8 +192,6 @@ public class RecipeListener {
     private static void addSmeltingRecipes() {
         SmeltingRegistry.addSmeltingRecipe(ItemListener.wolfRaw.id, new ItemStack(ItemListener.wolfCooked));
         SmeltingRegistry.addSmeltingRecipe(ItemListener.flour.id, new ItemStack(Item.BREAD));
-//        ModLoader.AddSmelting(mod_FCBetterThanWolves.wolfRaw.id, new ItemInstance(mod_FCBetterThanWolves.wolfCooked));
-//        ModLoader.AddSmelting(mod_FCBetterThanWolves.flour.id, new ItemInstance(ItemBase.bread));
     }
 
     private static void addShapedAnvilRecipes() {
@@ -239,7 +236,7 @@ public class RecipeListener {
         addShapelessAnvilRecipe(new ItemStack(ItemListener.broadHeadArrowhead, 4), new Object[] {
                 ItemListener.steel
         });
-        addShapelessAnvilRecipe(new ItemStack(BlockListener.omniSlab.id, 1, 0), new Object[] {
+        addShapelessAnvilRecipe(new ItemStack(BlockListener.omniSlab, 1, 0), new Object[] {
                 Block.STONE
         });
     }
@@ -256,14 +253,14 @@ public class RecipeListener {
                     new ItemStack(Block.LOG, 1), new ItemStack(ItemListener.scouredLeather, 1)
             });
             addCauldronRecipe(new ItemStack(Block.WOOL, 8, 12), new ItemStack[] {
-                    new ItemStack(Block.LOG, 1), new ItemStack(Block.WOOL.id, 8, 0)
+                    new ItemStack(Block.LOG, 1), new ItemStack(Block.WOOL, 8, 0)
             });
         } else {
             addCauldronRecipe(new ItemStack(ItemListener.tannedLeather, 1), new ItemStack[]{
                     new ItemStack(ItemListener.dung, 1), new ItemStack(ItemListener.scouredLeather, 1)
             });
             addCauldronRecipe(new ItemStack(Block.WOOL, 8, 12), new ItemStack[] {
-                    new ItemStack(ItemListener.dung, 1), new ItemStack(Block.WOOL.id, 8, 0)
+                    new ItemStack(ItemListener.dung, 1), new ItemStack(Block.WOOL, 8, 0)
             });
         }
         addCauldronRecipe(new ItemStack(ItemListener.donut, 4), new ItemStack[] {
