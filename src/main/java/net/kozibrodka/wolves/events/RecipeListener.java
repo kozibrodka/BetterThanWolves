@@ -1,6 +1,7 @@
 package net.kozibrodka.wolves.events;
 
 import net.fabricmc.loader.api.FabricLoader;
+import net.kozibrodka.wolves.compat.nfc.NFCRecipes;
 import net.kozibrodka.wolves.recipe.*;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.minecraft.block.Block;
@@ -10,7 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.modificationstation.stationapi.api.event.recipe.RecipeRegisterEvent;
 import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
 import net.modificationstation.stationapi.api.recipe.CraftingRegistry;
-import net.modificationstation.stationapi.api.recipe.SmeltingRegistry;
 import net.modificationstation.stationapi.api.registry.BlockRegistry;
 import net.modificationstation.stationapi.api.registry.ItemRegistry;
 import net.modificationstation.stationapi.api.util.Identifier;
@@ -19,6 +19,7 @@ import net.modificationstation.stationapi.api.util.Namespace;
 public class RecipeListener {
 
     static boolean isHarderThanWolvesPresent = FabricLoader.getInstance().isModLoaded("harderthanwolves");
+    static boolean isNewFrontierCraftPresent = FabricLoader.getInstance().isModLoaded("nfc");
 
     @Entrypoint.Namespace
     public static Namespace MOD_ID;
@@ -332,6 +333,10 @@ public class RecipeListener {
         addStokedCauldronRecipe(new ItemStack(ItemListener.tallow, 1), new ItemStack[] {
                 new ItemStack(ItemListener.wolfRaw, 1)
         });
+
+        if (isNewFrontierCraftPresent) {
+            NFCRecipes.addCauldronRecipes();
+        }
     }
 
     private static void addMillingRecipes() {
@@ -377,7 +382,11 @@ public class RecipeListener {
     private static void addCrucibleRecipes() {
         // Material processing
         if (!isHarderThanWolvesPresent) {
-            addCrucibleRecipe(new ItemStack(ItemListener.steel, 4), new ItemStack[]{new ItemStack(Item.IRON_INGOT, 3), new ItemStack(ItemListener.concentratedHellfire), new ItemStack(ItemListener.coalDust)});
+            if (isNewFrontierCraftPresent) {
+                NFCRecipes.addCrucibleRecipes();
+            } else {
+                addCrucibleRecipe(new ItemStack(ItemListener.steel, 4), new ItemStack[]{new ItemStack(Item.IRON_INGOT, 3), new ItemStack(ItemListener.concentratedHellfire), new ItemStack(ItemListener.coalDust)});
+            }
         }
 
         // Recycling (iron)
