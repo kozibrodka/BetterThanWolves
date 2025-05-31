@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import net.minecraft.item.ItemStack;
+import net.modificationstation.stationapi.api.registry.ItemRegistry;
+import net.modificationstation.stationapi.api.util.Identifier;
 
 public class HopperPurifyingRecipeRegistry {
     private static final HopperPurifyingRecipeRegistry INSTANCE = new HopperPurifyingRecipeRegistry();
@@ -13,11 +15,11 @@ public class HopperPurifyingRecipeRegistry {
         return INSTANCE;
     }
 
-    public void addHopperHauntingRecipe(int i, ItemStack arg) {
+    public void addHopperHauntingRecipe(Identifier i, ItemStack arg) {
         this.recipes.put(i, arg);
     }
 
-    public ItemStack getResult(int i) {
+    public ItemStack getResult(Identifier i) {
         return (ItemStack)this.recipes.get(i);
     }
 
@@ -26,9 +28,9 @@ public class HopperPurifyingRecipeRegistry {
         ArrayList<ItemStack> inputs = new ArrayList<>();
         ArrayList<ItemStack> outputs = new ArrayList<>();
         for (Object obj : recipes.keySet()) {
-            if (obj instanceof Integer) {
-                inputs.add(new ItemStack((Integer) obj, 1, 0));
-                outputs.add(getResult((Integer) obj));
+            if (obj instanceof Identifier) {
+                inputs.add(new ItemStack(ItemRegistry.INSTANCE.get((Identifier) obj), 1, 0));
+                outputs.add(getResult((Identifier) obj));
             }
         }
         for (int i = 0; i < inputs.size(); i++) {

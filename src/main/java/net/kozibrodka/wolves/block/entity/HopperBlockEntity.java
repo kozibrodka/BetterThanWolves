@@ -27,6 +27,8 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.network.packet.PacketHelper;
+import net.modificationstation.stationapi.api.registry.ItemRegistry;
+import net.modificationstation.stationapi.api.util.Identifier;
 
 import java.util.List;
 
@@ -159,14 +161,15 @@ public class HopperBlockEntity extends BlockEntity
         if (GetFilterType() != 6) return false;
         if (getStack(18) == null) return false;
         ItemStack item = null;
-        ItemStack recipeResultGetter = null; // This is a necessary workaround, otherwise the registry gets messed up.
+        ItemStack recipeResultGetter; // This is a necessary workaround, otherwise the registry gets messed up.
         ItemStack result = null;
         int inputSlot = 0;
 
         for (; inputSlot < 18; inputSlot++) {
             item = getStack(inputSlot);
             if (item == null) continue;
-            recipeResultGetter = HopperPurifyingRecipeRegistry.getInstance().getResult(item.itemId);
+            Identifier itemIdentifier = ItemRegistry.INSTANCE.getId(item.getItem());
+            recipeResultGetter = HopperPurifyingRecipeRegistry.getInstance().getResult(itemIdentifier);
             if (recipeResultGetter != null) result = recipeResultGetter.copy();
             if (result != null) break;
         }
@@ -182,7 +185,8 @@ public class HopperBlockEntity extends BlockEntity
             }
             else if (result.isItemEqual(getStack(outputSlot)) && getStack(outputSlot).count + result.count <= getStack(outputSlot).getMaxCount())
             {
-                convertToHellfireDust(inputSlot, outputSlot, false, HopperPurifyingRecipeRegistry.getInstance().getResult(item.itemId));
+                Identifier itemIdentifier = ItemRegistry.INSTANCE.getId(item.getItem());
+                convertToHellfireDust(inputSlot, outputSlot, false, HopperPurifyingRecipeRegistry.getInstance().getResult(itemIdentifier));
                 return true;
             }
         }
