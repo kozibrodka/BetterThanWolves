@@ -48,7 +48,6 @@ public class RecipeListener {
             addTurntableRecipes();
         }
         if (type == RecipeRegisterEvent.Vanilla.SMELTING.type()) {
-            addSmeltingRecipes();
             addCrucibleRecipes();
         }
         addDebugRecipes();
@@ -189,11 +188,6 @@ public class RecipeListener {
         CraftingRegistry.addShapelessRecipe(new ItemStack(BlockListener.moulding,1,0), new ItemStack(BlockListener.corner,1,0), new ItemStack(BlockListener.corner,1,0));
         CraftingRegistry.addShapelessRecipe(new ItemStack(Item.STRING), new ItemStack(ItemListener.hempFibers), new ItemStack(ItemListener.hempFibers));
         CraftingRegistry.addShapelessRecipe(new ItemStack(ItemListener.steel, 9), new ItemStack(BlockListener.blockOfSteel));
-    }
-
-    private static void addSmeltingRecipes() {
-        SmeltingRegistry.addSmeltingRecipe(ItemListener.wolfRaw.id, new ItemStack(ItemListener.wolfCooked));
-        SmeltingRegistry.addSmeltingRecipe(ItemListener.flour.id, new ItemStack(Item.BREAD));
     }
 
     private static void addShapedAnvilRecipes() {

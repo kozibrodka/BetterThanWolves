@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "wolves:flour"
+  },
+  "result": {
+    "item": "minecraft:bread"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "wolves:wolfRaw"
+  },
+  "result": {
+    "item": "wolves:wolfCooked"
+  }
+}
