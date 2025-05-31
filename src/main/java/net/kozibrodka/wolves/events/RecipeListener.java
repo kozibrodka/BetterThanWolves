@@ -54,11 +54,11 @@ public class RecipeListener {
         addDebugRecipes();
     }
 
-    private static void addAnvilRecipe(ItemStack output, Object[] inputs) {
+    public static void addAnvilRecipe(ItemStack output, Object[] inputs) {
         AnvilCraftingManager.getInstance().addRecipe(output, inputs);
     }
 
-    private static void addShapelessAnvilRecipe(ItemStack output, Object[] inputs) {
+    public static void addShapelessAnvilRecipe(ItemStack output, Object[] inputs) {
         AnvilCraftingManager.getInstance().addShapelessRecipe(output, inputs);
     }
 
@@ -171,8 +171,7 @@ public class RecipeListener {
         CraftingRegistry.addShapedRecipe(new ItemStack(Item.SIGN, 1), "###", "###", " X ", '#', new ItemStack(BlockListener.omniSlab, 1, 1), 'X', Item.STICK);
         CraftingRegistry.addShapedRecipe(new ItemStack(Item.WOODEN_DOOR, 1), "##", "##", "##", '#', new ItemStack(BlockListener.omniSlab, 1, 1));
         CraftingRegistry.addShapedRecipe(new ItemStack(Block.TRAPDOOR, 2), "###", "###", '#', new ItemStack(BlockListener.omniSlab, 1, 1));
-        CraftingRegistry.addShapedRecipe(new ItemStack(Item.CAKE, 1), "AAA", "BEB", "CCC", 'A', Item.SUGAR, 'B', Item.MILK_BUCKET, 'C', ItemListener.flour, 'E',
-                Item.EGG);
+        CraftingRegistry.addShapedRecipe(new ItemStack(Item.CAKE, 1), "AAA", "BEB", "CCC", 'A', Item.SUGAR, 'B', Item.MILK_BUCKET, 'C', ItemListener.flour, 'E', Item.EGG);
         CraftingRegistry.addShapedRecipe(new ItemStack(Block.TORCH, 4), "#", "X", '#', ItemListener.netherCoal, 'X', Item.STICK);
     }
 
@@ -226,6 +225,12 @@ public class RecipeListener {
             addAnvilRecipe(new ItemStack(BlockListener.blockOfSteel, 1), new Object[] {
                     "###", "###", "###", '#', ItemListener.steel
             });
+        }
+        addAnvilRecipe(new ItemStack(Block.RAIL, 48), new Object[] {
+                "#X#", "#X#", "#X#", '#', ItemListener.steel, 'X', ItemListener.haft
+        });
+        if (isNewFrontierCraftPresent) {
+            NFCRecipes.addAnvilRecipes();
         }
     }
 

@@ -1,6 +1,7 @@
 package net.kozibrodka.wolves.compat.nfc;
 
 import net.kozibrodka.wolves.events.RecipeListener;
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.newfrontiercraft.nfc.events.init.BlockListener;
@@ -251,6 +252,15 @@ public class NFCRecipes {
         });
         RecipeListener.addStokedCauldronRecipe(new ItemStack(Item.COAL, 2), new ItemStack[] {
                 new ItemStack(net.kozibrodka.wolves.events.ItemListener.coalDust, 1), new ItemStack(ItemListener.netherAsh, 2)
+        });
+    }
+
+    public static void addAnvilRecipes() {
+        RecipeListener.addAnvilRecipe(new ItemStack(Block.POWERED_RAIL, 24), new Object[] {
+                "#X#", "YXY", "#+#", '#', net.kozibrodka.wolves.events.ItemListener.steel, 'X', net.kozibrodka.wolves.events.ItemListener.haft, 'Y', ItemListener.copperIngot, '+', Item.REDSTONE
+        });
+        RecipeListener.addAnvilRecipe(new ItemStack(Block.POWERED_RAIL, 30), new Object[] {
+                "#X#", "YZY", "#+#", '#', net.kozibrodka.wolves.events.ItemListener.steel, 'X', net.kozibrodka.wolves.events.ItemListener.haft, 'Y', ItemListener.copperIngot, 'Z', Item.GOLD_INGOT, '+', Item.REDSTONE
         });
     }
 }
