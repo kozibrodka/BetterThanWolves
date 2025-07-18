@@ -31,7 +31,7 @@ public abstract class MultiInputCraftingManager
         for(int i = 0; i < recipes.size(); i++)
         {
             MultiInputRecipe tempRecipe = (MultiInputRecipe) recipes.get(i);
-            if(tempRecipe.DoesInventoryContainIngredients(inventory))
+            if(tempRecipe.doesInventoryContainIngredients(inventory))
             {
                 return tempRecipe.getCopyOfOutputStack();
             }
@@ -45,7 +45,7 @@ public abstract class MultiInputCraftingManager
         for(int i = 0; i < recipes.size(); i++)
         {
             MultiInputRecipe tempRecipe = (MultiInputRecipe) recipes.get(i);
-            if(tempRecipe.DoesInventoryContainIngredients(inventory))
+            if(tempRecipe.doesInventoryContainIngredients(inventory))
             {
                 tempRecipe.ConsumeInventoryIngredients(inventory);
                 return tempRecipe.getCopyOfOutputStack();
