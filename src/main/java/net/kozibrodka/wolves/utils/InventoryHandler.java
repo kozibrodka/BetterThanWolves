@@ -10,6 +10,8 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.modificationstation.stationapi.api.registry.ItemRegistry;
+import net.modificationstation.stationapi.api.util.Identifier;
 
 
 public class InventoryHandler {
@@ -58,14 +60,15 @@ slotLoop:
 
     }
 
-    public static void consumeItemsInInventory(Inventory inventory, int itemId, int itemDamage, int itemCount) {
+    public static void consumeItemsInInventory(Inventory inventory, Identifier itemId, int itemDamage, int itemCount) {
         for (int slot = 0; slot < inventory.size(); slot++) {
             ItemStack tempItemInstance = inventory.getStack(slot);
             if (tempItemInstance == null) {
                 continue;
             }
             Item tempItem = tempItemInstance.getItem();
-            if (tempItem.id != itemId || itemDamage != -1 && tempItemInstance.getDamage() != itemDamage) {
+            Identifier tempIdentifier = ItemRegistry.INSTANCE.getId(tempItem);
+            if (tempIdentifier != itemId || itemDamage != -1 && tempItemInstance.getDamage() != itemDamage) {
                 continue;
             }
             if (tempItemInstance.count >= itemCount) {
@@ -97,29 +100,29 @@ slotLoop:
         }
     }
 
-    public static int getFirstOccupiedStackExcludingItem(Inventory inventory, int excludeditemId) {
+    public static int getFirstOccupiedStackExcludingItem(Inventory inventory, Identifier excludedItemId) {
         for (int slot = 0; slot < inventory.size(); slot++) {
-            if (inventory.getStack(slot) != null && inventory.getStack(slot).getItem().id != excludeditemId) {
+            if (inventory.getStack(slot) != null && ItemRegistry.INSTANCE.getId(inventory.getStack(slot).getItem()) != excludedItemId) {
                 return slot;
             }
         }
         return -1;
     }
 
-    public static int getFirstOccupiedStackOfItem(Inventory inventory, int itemId) {
+    public static int getFirstOccupiedStackOfItem(Inventory inventory, Identifier itemId) {
         for (int slot = 0; slot < inventory.size(); slot++) {
-            if (inventory.getStack(slot) != null && inventory.getStack(slot).getItem().id == itemId) {
+            if (inventory.getStack(slot) != null && ItemRegistry.INSTANCE.getId(inventory.getStack(slot).getItem()) == itemId) {
                 return slot;
             }
         }
         return -1;
     }
 
-    public static int itemCountInInventory(Inventory inventory, int itemId, int itemDamage) {
+    public static int itemCountInInventory(Inventory inventory, Identifier itemId, int itemDamage) {
         int itemCount = 0;
         for (int slot = 0; slot < inventory.size(); slot++) {
             ItemStack tempStack = inventory.getStack(slot);
-            if (tempStack != null && tempStack.getItem().id == itemId && (itemDamage == -1 || tempStack.getDamage() == itemDamage)) {
+            if (tempStack != null && ItemRegistry.INSTANCE.getId(tempStack.getItem()) == itemId && (itemDamage == -1 || tempStack.getDamage() == itemDamage)) {
                 itemCount += inventory.getStack(slot).count;
             }
         }
@@ -136,6 +139,8 @@ slotLoop:
         return count;
     }
 
+    // I could not find a good way to change this one because it relies on block drops which currently can
+    // only be accessed through numeric IDs. So I am completely cooked until there is a better solution.
     public static boolean addSingleItemToInventory(Inventory inventory, int itemId, int itemDamage) {
         ItemStack ItemInstance = new ItemStack(itemId, 1, itemDamage);
         return addItemInstanceToInventory(inventory, ItemInstance);
@@ -167,7 +172,7 @@ slotLoop:
     }
 
     private static int storePartialItemStack(Inventory inventory, ItemStack itemStack) {
-        int itemId = itemStack.itemId;
+        Item item = itemStack.getItem();
         int count = itemStack.count;
         int slot = findValidSlotForItem(inventory, itemStack);
         if (slot < 0) {
@@ -177,7 +182,7 @@ slotLoop:
             return count;
         }
         if (inventory.getStack(slot) == null) {
-            inventory.setStack(slot, new ItemStack(itemId, 0, itemStack.getDamage()));
+            inventory.setStack(slot, new ItemStack(item, 0, itemStack.getDamage()));
         }
         int insertedItems = count;
         ItemStack tempStack = inventory.getStack(slot);

@@ -3,6 +3,8 @@ package net.kozibrodka.wolves.recipe;
 import net.kozibrodka.wolves.utils.InventoryHandler;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+import net.modificationstation.stationapi.api.registry.ItemRegistry;
+
 import java.util.List;
 
 
@@ -28,7 +30,7 @@ public class MultiInputRecipe {
         if(recipeInputStacks != null && !recipeInputStacks.isEmpty()) {
             for (Object recipeInputStack : recipeInputStacks) {
                 ItemStack tempStack = (ItemStack) recipeInputStack;
-                if (tempStack != null && InventoryHandler.itemCountInInventory(inventory, tempStack.getItem().id, tempStack.getDamage()) < tempStack.count) {
+                if (tempStack != null && InventoryHandler.itemCountInInventory(inventory, ItemRegistry.INSTANCE.getId(tempStack.getItem()), tempStack.getDamage()) < tempStack.count) {
                     return false;
                 }
             }
@@ -43,7 +45,7 @@ public class MultiInputRecipe {
             for (Object recipeOutputStack : recipeInputStacks) {
                 ItemStack tempStack = (ItemStack) recipeOutputStack;
                 if (tempStack != null) {
-                    InventoryHandler.consumeItemsInInventory(inventory, tempStack.getItem().id, tempStack.getDamage(), tempStack.count);
+                    InventoryHandler.consumeItemsInInventory(inventory, ItemRegistry.INSTANCE.getId(tempStack.getItem()), tempStack.getDamage(), tempStack.count);
                 }
             }
 

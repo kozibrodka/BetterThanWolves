@@ -374,7 +374,7 @@ public class HopperBlockEntity extends BlockEntity
 
     private void attemptItemEjection()
     {
-        int itemIndex = InventoryHandler.getFirstOccupiedStackExcludingItem(this, Item.CLAY.id);
+        int itemIndex = InventoryHandler.getFirstOccupiedStackExcludingItem(this, ItemRegistry.INSTANCE.getId(Item.CLAY));
         if(itemIndex >= 0 && itemIndex < 18)
         {
             ItemStack invStack = getStack(itemIndex);

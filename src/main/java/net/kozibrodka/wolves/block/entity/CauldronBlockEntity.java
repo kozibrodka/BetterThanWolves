@@ -30,6 +30,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.recipe.SmeltingRecipeManager;
+import net.modificationstation.stationapi.api.registry.BlockRegistry;
+import net.modificationstation.stationapi.api.registry.ItemRegistry;
 
 public class CauldronBlockEntity extends BlockEntity
     implements Inventory
@@ -215,22 +217,22 @@ public class CauldronBlockEntity extends BlockEntity
             {
                 m_bContainsValidIngrediantsForState = true;
             } else
-            if(InventoryHandler.getFirstOccupiedStackOfItem(this, ItemListener.dung.id) >= 0 && ContainsFood())
+            if(InventoryHandler.getFirstOccupiedStackOfItem(this, ItemRegistry.INSTANCE.getId(ItemListener.dung)) >= 0 && ContainsFood())
             {
                 m_bContainsValidIngrediantsForState = true;
             }
         } else
         if(iFireUnderState == 2)
         {
-            if(InventoryHandler.getFirstOccupiedStackOfItem(this, Block.TNT.id) >= 0)
+            if(InventoryHandler.getFirstOccupiedStackOfItem(this, BlockRegistry.INSTANCE.getId(Block.TNT)) >= 0)
             {
                 m_bContainsValidIngrediantsForState = true;
             } else
-            if(InventoryHandler.getFirstOccupiedStackOfItem(this, Item.GUNPOWDER.id) >= 0)
+            if(InventoryHandler.getFirstOccupiedStackOfItem(this, ItemRegistry.INSTANCE.getId(Item.GUNPOWDER)) >= 0)
             {
                 m_bContainsValidIngrediantsForState = true;
             } else
-            if(InventoryHandler.getFirstOccupiedStackOfItem(this, ItemListener.hellfireDust.id) >= 0)
+            if(InventoryHandler.getFirstOccupiedStackOfItem(this, ItemRegistry.INSTANCE.getId(ItemListener.hellfireDust)) >= 0)
             {
                 m_bContainsValidIngrediantsForState = true;
             } else
@@ -276,7 +278,7 @@ public class CauldronBlockEntity extends BlockEntity
             m_iCauldronCookCounter += m_iFireFactor;
             if(m_iCauldronCookCounter >= 1950)
             {
-                int iDungIndex = InventoryHandler.getFirstOccupiedStackOfItem(this, ItemListener.dung.id);
+                int iDungIndex = InventoryHandler.getFirstOccupiedStackOfItem(this, ItemRegistry.INSTANCE.getId(ItemListener.dung));
                 if(iDungIndex >= 0 && DestroyAllFoodInInventory())
                 {
                     m_iCauldronCookCounter = 0;
@@ -312,7 +314,7 @@ public class CauldronBlockEntity extends BlockEntity
             m_iCauldronCookCounter += m_iFireFactor;
             if(m_iCauldronCookCounter >= 1950)
             {
-                if(InventoryHandler.getFirstOccupiedStackOfItem(this, ItemListener.hellfireDust.id) >= 0 || InventoryHandler.getFirstOccupiedStackOfItem(this, Block.TNT.id) >= 0 || InventoryHandler.getFirstOccupiedStackOfItem(this, Item.GUNPOWDER.id) >= 0)
+                if(InventoryHandler.getFirstOccupiedStackOfItem(this, ItemRegistry.INSTANCE.getId(ItemListener.hellfireDust)) >= 0 || InventoryHandler.getFirstOccupiedStackOfItem(this, BlockRegistry.INSTANCE.getId(Block.TNT)) >= 0 || InventoryHandler.getFirstOccupiedStackOfItem(this, ItemRegistry.INSTANCE.getId(Item.GUNPOWDER)) >= 0)
                 {
                     BlowUpCauldron();
                 } else
@@ -422,17 +424,17 @@ public class CauldronBlockEntity extends BlockEntity
 
     private void BlowUpCauldron()
     {
-        int iHellfireCount = InventoryHandler.itemCountInInventory(this, ItemListener.hellfireDust.id, -1);
+        int iHellfireCount = InventoryHandler.itemCountInInventory(this, ItemRegistry.INSTANCE.getId(ItemListener.hellfireDust), -1);
         float fExplosionSize = ((float)iHellfireCount * 10F) / 64F;
-        fExplosionSize += ((float) InventoryHandler.itemCountInInventory(this, Item.GUNPOWDER.id, -1) * 10F) / 64F;
-        int iTNTCount = InventoryHandler.itemCountInInventory(this, Block.TNT.id, -1);
+        fExplosionSize += ((float) InventoryHandler.itemCountInInventory(this, ItemRegistry.INSTANCE.getId(Item.GUNPOWDER), -1) * 10F) / 64F;
+        int iTNTCount = InventoryHandler.itemCountInInventory(this, BlockRegistry.INSTANCE.getId(Block.TNT), -1);
         if(iTNTCount > 0)
         {
             if(fExplosionSize < 4F)
             {
                 fExplosionSize = 4F;
             }
-            fExplosionSize += InventoryHandler.itemCountInInventory(this, Block.TNT.id, -1);
+            fExplosionSize += InventoryHandler.itemCountInInventory(this, BlockRegistry.INSTANCE.getId(Block.TNT), -1);
         }
         if(fExplosionSize < 2.0F)
         {

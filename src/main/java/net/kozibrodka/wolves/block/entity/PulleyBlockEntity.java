@@ -25,6 +25,7 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.world.World;
 import net.kozibrodka.wolves.utils.ReplaceableBlockChecker;
 import net.modificationstation.stationapi.api.network.packet.PacketHelper;
+import net.modificationstation.stationapi.api.registry.ItemRegistry;
 
 import java.util.List;
 
@@ -161,7 +162,7 @@ public class PulleyBlockEntity extends BlockEntity
 
     public boolean isLowering()
     {
-        return !IsRedstonePowered() && !IsMechanicallyPowered() && InventoryHandler.getFirstOccupiedStackOfItem(this, ItemListener.ropeItem.id) >= 0;
+        return !IsRedstonePowered() && !IsMechanicallyPowered() && InventoryHandler.getFirstOccupiedStackOfItem(this, ItemRegistry.INSTANCE.getId(ItemListener.ropeItem)) >= 0;
     }
 
     public void NotifyPulleyEntityOfBlockStateChange()
@@ -220,7 +221,7 @@ public class PulleyBlockEntity extends BlockEntity
 
     public boolean AttemptToDispenseRope()
     {
-        int iRopeSlot = InventoryHandler.getFirstOccupiedStackOfItem(this, ItemListener.ropeItem.id);
+        int iRopeSlot = InventoryHandler.getFirstOccupiedStackOfItem(this, ItemRegistry.INSTANCE.getId(ItemListener.ropeItem));
         iUpdateRopeStateCounter = 20;
         if(iRopeSlot >= 0)
         {
@@ -288,12 +289,12 @@ public class PulleyBlockEntity extends BlockEntity
 
     public int GetContainedRopeCount()
     {
-        return InventoryHandler.itemCountInInventory(this, ItemListener.ropeItem.id, -1);
+        return InventoryHandler.itemCountInInventory(this, ItemRegistry.INSTANCE.getId(ItemListener.ropeItem), -1);
     }
 
     public void RemoveRopeFromInventory()
     {
-        int iRopeSlot = InventoryHandler.getFirstOccupiedStackOfItem(this, ItemListener.ropeItem.id);
+        int iRopeSlot = InventoryHandler.getFirstOccupiedStackOfItem(this, ItemRegistry.INSTANCE.getId(ItemListener.ropeItem));
         if(iRopeSlot >= 0)
         {
             InventoryHandler.decreaseStackSize(this, iRopeSlot, 1);
