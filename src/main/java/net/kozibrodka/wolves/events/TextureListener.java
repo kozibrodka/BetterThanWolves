@@ -137,7 +137,7 @@ public class TextureListener {
         if(s == null) {
             return 0;
         }
-        return Atlases.getStationTerrain().addTexture(Identifier.of(NAMESPACE, s)).index;
+        return Atlases.getTerrain().addTexture(Identifier.of(NAMESPACE, s)).index;
     }
 
     @EventListener

@@ -257,8 +257,8 @@ public class HandCrankBlock extends TemplateBlock
             f3 = 1.0F;
         }
         tessellator.color(f3, f3, f3);
-        int l = TextureListener.handcrack_lever;
-        Atlas.Sprite testTex =  Atlases.getTerrain().getTexture(l);
+        int leverTexture = TextureListener.handcrack_lever;
+        Atlas.Sprite testTex = Atlases.getTerrain().getTexture(leverTexture);
         float f4 = (float)(testTex.getStartU());
         float f5 = (float)(testTex.getEndU());
         float f6 = (float)(testTex.getStartV());
