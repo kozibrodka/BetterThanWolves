@@ -102,11 +102,6 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
         return 4;
     }
 
-    public int getDroppedItemId(int i, Random random)
-    {
-        return BlockListener.blockDispenser.id;
-    }
-
     public void onPlaced(World world, int i, int j, int k, int iFacing)
     {
         SetFacing(world, i, j, k, UnsortedUtils.getOppositeFacing(iFacing));

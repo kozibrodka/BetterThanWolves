@@ -57,7 +57,7 @@ slotLoop:
                     randomStackSize = itemInstance.count;
                 }
                 itemInstance.count -= randomStackSize;
-                ItemEntity itemEntity = new ItemEntity(world, (float)x + xOffset, (float)y + yOffset, (float)z + zOffset, new ItemStack(itemInstance.itemId, randomStackSize, itemInstance.getDamage()));
+                ItemEntity itemEntity = new ItemEntity(world, (float)x + xOffset, (float)y + yOffset, (float)z + zOffset, new ItemStack(itemInstance.getItem(), randomStackSize, itemInstance.getDamage()));
                 float randomVelocityFactor = 0.05F;
                 itemEntity.velocityX = (float)world.random.nextGaussian() * randomVelocityFactor;
                 itemEntity.velocityY = (float)world.random.nextGaussian() * randomVelocityFactor + 0.2F;
