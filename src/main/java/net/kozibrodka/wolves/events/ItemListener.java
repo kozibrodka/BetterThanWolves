@@ -73,8 +73,7 @@ public class ItemListener {
     public void registerItems(ItemRegistryEvent event) {
         ToolLevel soulforgedLevel = new TagToolLevel(TagKey.of(BlockRegistry.KEY, NAMESPACE.id("needs_tool_level_soulforged")));
         ToolLevel.GRAPH.putEdge(ToolMaterial.DIAMOND.getToolLevel(), soulforgedLevel);
-        ToolMaterial soulforgedSteelMaterial = ToolMaterialFactory.create("soulforged_steel", 3, 2250, 12F, 8).toolLevel(soulforgedLevel);
-        // This semicolon exists so my IDE stops falsely greying out the code
+        ToolMaterial soulforgedSteelMaterial = ToolMaterialFactory.create("soulforged_steel", 3, 2250, 12F, 8).toolLevel(soulforgedLevel);; // This semicolon exists so my IDE stops falsely greying out the code
 
         bucketCement = new CementBucketItem(NAMESPACE.id("bucketCement"), BlockListener.cement.id).setTranslationKey(NAMESPACE, "bucket_cement");
         wolfRaw = new TemplateFoodItem(NAMESPACE.id("wolfRaw"), 3, false).setTranslationKey(NAMESPACE, "wolf_raw");
