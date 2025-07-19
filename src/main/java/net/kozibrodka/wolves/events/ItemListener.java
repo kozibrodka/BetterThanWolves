@@ -13,7 +13,6 @@ import net.modificationstation.stationapi.api.tag.TagKey;
 import net.modificationstation.stationapi.api.template.item.*;
 import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.util.Namespace;
-import net.modificationstation.stationapi.api.util.Null;
 
 public class ItemListener {
 
@@ -40,7 +39,7 @@ public class ItemListener {
     public static TemplateItem tannedLeather;
     public static TemplateItem strap;
     public static TemplateItem belt;
-    public static TemplateFoodItem foulFood;
+    public static TemplateItem foulFood;
     public static TemplateItem woodBlade;
     public static TemplateItem glue;
     public static TemplateItem tallow;
@@ -100,7 +99,7 @@ public class ItemListener {
         tannedLeather = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "tannedLeather")).setTranslationKey(MOD_ID, "tanned_leather");
         strap = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "strap")).setTranslationKey(MOD_ID, "strap");
         belt = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "belt")).setTranslationKey(MOD_ID, "belt");
-        foulFood = (TemplateFoodItem) new FoulFoodItem(Identifier.of(MOD_ID, "foulFood"),0,false).setTranslationKey(MOD_ID, "foul_food"); //TODO: how much healt point?
+        foulFood = (TemplateItem) new FoulFoodItem(Identifier.of(MOD_ID, "foulFood")).setTranslationKey(MOD_ID, "foul_food");
         woodBlade = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "woodBlade")).setTranslationKey(MOD_ID, "wood_blade");
         glue = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "glue")).setTranslationKey(MOD_ID, "glue");
         tallow = (TemplateItem) new TemplateItem(Identifier.of(MOD_ID, "tallow")).setTranslationKey(MOD_ID, "tallow");

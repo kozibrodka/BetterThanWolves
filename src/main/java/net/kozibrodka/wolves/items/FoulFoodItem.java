@@ -7,14 +7,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.template.block.TemplateCropBlock;
 import net.modificationstation.stationapi.api.template.block.TemplateSaplingBlock;
-import net.modificationstation.stationapi.api.template.item.TemplateFoodItem;
+import net.modificationstation.stationapi.api.template.item.TemplateItem;
 import net.modificationstation.stationapi.api.util.Identifier;
 
-public class FoulFoodItem extends TemplateFoodItem
+public class FoulFoodItem extends TemplateItem
 
 {
-    public FoulFoodItem(Identifier identifier, int healAmount, boolean isWolfFood) {
-        super(identifier, healAmount, isWolfFood);
+    public FoulFoodItem(Identifier identifier) {
+        super(identifier);
         maxCount = 64;
     }
 
@@ -87,4 +87,10 @@ label0:
         }
     }
 
+    @Override
+    public ItemStack use(ItemStack stack, World world, PlayerEntity user) {
+        stack.count--;
+        user.damage(null, 1);
+        return stack;
+    }
 }
