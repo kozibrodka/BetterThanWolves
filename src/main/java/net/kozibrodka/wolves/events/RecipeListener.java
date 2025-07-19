@@ -47,6 +47,9 @@ public class RecipeListener {
             addHopperRecipes();
             addSawingRecipes();
             addTurntableRecipes();
+            if (isNewFrontierCraftPresent) {
+                NFCRecipes.addShapelessCraftingRecipes();
+            }
         }
         if (type == RecipeRegisterEvent.Vanilla.SMELTING.type()) {
             addCrucibleRecipes();

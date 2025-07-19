@@ -4,10 +4,15 @@ import net.kozibrodka.wolves.events.RecipeListener;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.modificationstation.stationapi.api.recipe.CraftingRegistry;
 import net.newfrontiercraft.nfc.events.init.BlockListener;
 import net.newfrontiercraft.nfc.events.init.ItemListener;
 
 public class NFCRecipes {
+
+    public static void addShapelessCraftingRecipes() {
+        CraftingRegistry.addShapelessRecipe(new ItemStack(BlockListener.unfiredPlanter, 1, 0), new ItemStack(net.kozibrodka.wolves.events.BlockListener.unfiredPottery, 1, 0));
+    }
 
     public static void addCrucibleRecipes() {
         RecipeListener.addCrucibleRecipe(new ItemStack(net.kozibrodka.wolves.events.ItemListener.steel, 4), new ItemStack[]{new ItemStack(ItemListener.steelIngot, 2), new ItemStack(net.kozibrodka.wolves.events.ItemListener.concentratedHellfire), new ItemStack(net.kozibrodka.wolves.events.ItemListener.coalDust)});
