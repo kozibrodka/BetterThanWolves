@@ -17,8 +17,8 @@ public class DebugItem2 extends TemplateItem {
     }
 
     public boolean useOnBlock(ItemStack itemStack, PlayerEntity playerEntity, World world, int x, int y, int z, int l) {
-        int targetId = world.getBlockId(x, y, z);
-        if(targetId == BlockListener.axleBlock.id && !world.isRemote) {
+        int blockId = world.getBlockId(x, y, z);
+        if(blockId == BlockListener.axleBlock.id && !world.isRemote) {
             int axisAlignment = ((AxleBlock)BlockListener.axleBlock).getAxisAlignment(world, x, y, z);
             if(axisAlignment != 0) {
                 boolean aligned = axisAlignment == 2;

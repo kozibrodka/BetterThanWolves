@@ -224,7 +224,7 @@ public class CauldronBlockEntity extends BlockEntity
         } else
         if(iFireUnderState == 2)
         {
-            if(InventoryHandler.getFirstOccupiedStackOfItem(this, BlockRegistry.INSTANCE.getId(Block.TNT)) >= 0)
+            if(InventoryHandler.getFirstOccupiedStackOfItem(this, BlockRegistry.INSTANCE.getId(Block.TNT)) >= 0) // should this change?
             {
                 m_bContainsValidIngrediantsForState = true;
             } else

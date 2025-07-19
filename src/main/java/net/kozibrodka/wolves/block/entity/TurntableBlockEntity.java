@@ -113,8 +113,8 @@ public class TurntableBlockEntity extends BlockEntity
                 RotateBlocksAttachedToBlock(x, iTempJ, z, reverseDirection);
             } else
             {
-                int iTempid = world.getBlockId(x, iTempJ, z);
-                if(iTempid == Block.CLAY.id)
+                int tempBlockId = world.getBlockId(x, iTempJ, z);
+                if(tempBlockId == Block.CLAY.id)
                 {
                     RotateBlocksAttachedToBlock(x, iTempJ, z, reverseDirection);
                 }
@@ -250,57 +250,57 @@ public class TurntableBlockEntity extends BlockEntity
         {
             BlockPosition tempPos = new BlockPosition(i, j, k);
             tempPos.AddFacingAsOffset(iTempFacing);
-            int iTempid = world.getBlockId(tempPos.i, tempPos.j, tempPos.k);
+            int tempBlockId = world.getBlockId(tempPos.i, tempPos.j, tempPos.k);
             int iTempMetaData = world.getBlockMeta(tempPos.i, tempPos.j, tempPos.k);
             boolean bAttached = false;
-            if(iTempid == Block.TORCH.id || iTempid == Block.LIT_REDSTONE_TORCH.id || iTempid == Block.REDSTONE_TORCH.id)
+            if(tempBlockId == Block.TORCH.id || tempBlockId == Block.LIT_REDSTONE_TORCH.id || tempBlockId == Block.REDSTONE_TORCH.id)
             {
                 if(iTempMetaData == 1 && iTempFacing == 5 || iTempMetaData == 2 && iTempFacing == 4 || iTempMetaData == 3 && iTempFacing == 3 || iTempMetaData == 4 && iTempFacing == 2)
                 {
                     bAttached = true;
-                    if(iTempid == Block.REDSTONE_TORCH.id)
+                    if(tempBlockId == Block.REDSTONE_TORCH.id)
                     {
-                        iTempid = Block.LIT_REDSTONE_TORCH.id;
+                        tempBlockId = Block.LIT_REDSTONE_TORCH.id;
                     }
                 }
             } else
-            if(iTempid == Block.LADDER.id)
+            if(tempBlockId == Block.LADDER.id)
             {
                 if(iTempMetaData == iTempFacing)
                 {
                     bAttached = true;
                 }
             } else
-            if(iTempid == Block.WALL_SIGN.id)
+            if(tempBlockId == Block.WALL_SIGN.id)
             {
-                Block tempBlock = Block.BLOCKS[iTempid];
+                Block tempBlock = Block.BLOCKS[tempBlockId];
                 if(iTempMetaData == iTempFacing)
                 {
-                    tempBlock.dropStacks(world, tempPos.i, tempPos.j, tempPos.k, iTempid);
+                    tempBlock.dropStacks(world, tempPos.i, tempPos.j, tempPos.k, tempBlockId);
                     world.setBlock(tempPos.i, tempPos.j, tempPos.k, 0);
                 }
             } else
-            if(iTempid == Block.BUTTON.id || iTempid == Block.LEVER.id)
+            if(tempBlockId == Block.BUTTON.id || tempBlockId == Block.LEVER.id)
             {
-                Block tempBlock = Block.BLOCKS[iTempid];
+                Block tempBlock = Block.BLOCKS[tempBlockId];
                 if(iTempMetaData == 1 && iTempFacing == 5 || iTempMetaData == 2 && iTempFacing == 4 || iTempMetaData == 3 && iTempFacing == 3 || iTempMetaData == 4 && iTempFacing == 2)
                 {
-                    tempBlock.dropStacks(world, tempPos.i, tempPos.j, tempPos.k, iTempid);
+                    tempBlock.dropStacks(world, tempPos.i, tempPos.j, tempPos.k, tempBlock.asItem().id);
                     world.setBlock(tempPos.i, tempPos.j, tempPos.k, 0);
                 }
             }
             if(bAttached)
             {
                 int iDestFacing = UnsortedUtils.RotateFacingAroundJ(iTempFacing, bReverseDirection);
-                newids[iDestFacing - 2] = iTempid;
+                newids[iDestFacing - 2] = tempBlockId;
                 world.setBlock(tempPos.i, tempPos.j, tempPos.k, 0);
             }
         }
 
         for(int iTempIndex = 0; iTempIndex < 4; iTempIndex++)
         {
-            int iTempid = newids[iTempIndex];
-            if(iTempid == 0)
+            int tempBlockId = newids[iTempIndex];
+            if(tempBlockId == 0)
             {
                 continue;
             }
@@ -308,7 +308,7 @@ public class TurntableBlockEntity extends BlockEntity
             int iTempMetaData = 0;
             BlockPosition tempPos = new BlockPosition(i, j, k);
             tempPos.AddFacingAsOffset(iTempFacing);
-            if(iTempid == Block.TORCH.id || iTempid == Block.LIT_REDSTONE_TORCH.id)
+            if(tempBlockId == Block.TORCH.id || tempBlockId == Block.LIT_REDSTONE_TORCH.id)
             {
                 int iTargetFacing = 0;
                 if(iTempFacing == 2)
@@ -329,22 +329,22 @@ public class TurntableBlockEntity extends BlockEntity
                 }
                 iTempMetaData = iTargetFacing;
             } else
-            if(iTempid == Block.LADDER.id)
+            if(tempBlockId == Block.LADDER.id)
             {
                 iTempMetaData = iTempFacing;
             }
             if(ReplaceableBlockChecker.IsReplaceableBlock(world, tempPos.i, tempPos.j, tempPos.k))
             {
-                world.setBlock(tempPos.i, tempPos.j, tempPos.k, iTempid);
+                world.setBlock(tempPos.i, tempPos.j, tempPos.k, tempBlockId);
                 world.setBlockMeta(tempPos.i, tempPos.j, tempPos.k, iTempMetaData);
                 world.setBlocksDirty(tempPos.i, tempPos.j, tempPos.k, tempPos.i, tempPos.j, tempPos.k);
             } else
             {
-                Block tempBlock = Block.BLOCKS[iTempid];
+                Block tempBlock = Block.BLOCKS[tempBlockId];
                 int iOldFacing = UnsortedUtils.RotateFacingAroundJ(iTempFacing, !bReverseDirection);
                 BlockPosition oldPos = new BlockPosition(i, j, k);
                 oldPos.AddFacingAsOffset(iOldFacing);
-                tempBlock.dropStacks(world, oldPos.i, oldPos.j, oldPos.k, iTempid);
+                tempBlock.dropStacks(world, oldPos.i, oldPos.j, oldPos.k, tempBlock.asItem().id);
             }
         }
 

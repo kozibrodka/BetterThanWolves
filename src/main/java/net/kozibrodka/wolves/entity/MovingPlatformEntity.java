@@ -171,20 +171,20 @@ public class MovingPlatformEntity extends Entity implements EntitySpawnDataProvi
             int oldTopJ = MathHelper.floor(oldPosY + 0.49000000953674316D);
             if(newTopJ != oldTopJ)
             {
-                int iTargetid = world.getBlockId(i, newTopJ, k);
+                int blockId = world.getBlockId(i, newTopJ, k);
                 if(!ReplaceableBlockChecker.IsReplaceableBlock(world, i, newTopJ, k))
                 {
-                    if(!Block.BLOCKS[iTargetid].material.isSolid())
+                    if(!Block.BLOCKS[blockId].material.isSolid())
                     {
-                        if(iTargetid == BlockListener.rope.id)
+                        if(blockId == BlockListener.rope.id)
                         {
                             if(!associatedMovingAnchor.ReturnRopeToPulley())
                             {
-                                Block.BLOCKS[iTargetid].dropStacks(world, i, newTopJ, k, world.getBlockMeta(i, newTopJ, k));
+                                Block.BLOCKS[blockId].dropStacks(world, i, newTopJ, k, world.getBlockMeta(i, newTopJ, k));
                             }
                         } else
                         {
-                            Block.BLOCKS[iTargetid].dropStacks(world, i, newTopJ, k, world.getBlockMeta(i, newTopJ, k));
+                            Block.BLOCKS[blockId].dropStacks(world, i, newTopJ, k, world.getBlockMeta(i, newTopJ, k));
                         }
                         world.setBlock(i, newTopJ, k, 0);
                     } else
@@ -201,20 +201,20 @@ public class MovingPlatformEntity extends Entity implements EntitySpawnDataProvi
             int oldBottomJ = MathHelper.floor(oldPosY - 0.49000000953674316D);
             if(oldBottomJ != newBottomJ)
             {
-                int iTargetid = world.getBlockId(i, newBottomJ, k);
+                int blockId = world.getBlockId(i, newBottomJ, k);
                 if(!ReplaceableBlockChecker.IsReplaceableBlock(world, i, newBottomJ, k))
                 {
-                    if(!Block.BLOCKS[iTargetid].material.isSolid())
+                    if(!Block.BLOCKS[blockId].material.isSolid())
                     {
-                        if(iTargetid == BlockListener.rope.id)
+                        if(blockId == BlockListener.rope.id)
                         {
                             if(!associatedMovingAnchor.ReturnRopeToPulley())
                             {
-                                Block.BLOCKS[iTargetid].dropStacks(world, i, newBottomJ, k, world.getBlockMeta(i, newBottomJ, k));
+                                Block.BLOCKS[blockId].dropStacks(world, i, newBottomJ, k, world.getBlockMeta(i, newBottomJ, k));
                             }
                         } else
                         {
-                            Block.BLOCKS[iTargetid].dropStacks(world, i, newBottomJ, k, world.getBlockMeta(i, newBottomJ, k));
+                            Block.BLOCKS[blockId].dropStacks(world, i, newBottomJ, k, world.getBlockMeta(i, newBottomJ, k));
                         }
                         world.setBlock(i, newBottomJ, k, 0);
                     } else
@@ -309,22 +309,22 @@ public class MovingPlatformEntity extends Entity implements EntitySpawnDataProvi
     private void ConvertToBlock(int i, int j, int k, MovingAnchorEntity associatedAnchor)
     {
         boolean moveEntities = true;
-        int iTargetid = world.getBlockId(i, j, k);
+        int blockId = world.getBlockId(i, j, k);
         if(ReplaceableBlockChecker.IsReplaceableBlock(world, i, j, k))
         {
             world.setBlock(i, j, k, BlockListener.platform.id);
         } else
-        if(!Block.BLOCKS[iTargetid].material.isSolid())
+        if(!Block.BLOCKS[blockId].material.isSolid())
         {
-            if(iTargetid == BlockListener.rope.id && associatedAnchor != null)
+            if(blockId == BlockListener.rope.id && associatedAnchor != null)
             {
                 if(!associatedAnchor.ReturnRopeToPulley())
                 {
-                    Block.BLOCKS[iTargetid].dropStacks(world, i, j, k, world.getBlockMeta(i, j, k));
+                    Block.BLOCKS[blockId].dropStacks(world, i, j, k, world.getBlockMeta(i, j, k));
                 }
             } else
             {
-                Block.BLOCKS[iTargetid].dropStacks(world, i, j, k, world.getBlockMeta(i, j, k));
+                Block.BLOCKS[blockId].dropStacks(world, i, j, k, world.getBlockMeta(i, j, k));
             }
             world.setBlock(i, j, k, BlockListener.platform.id);
         } else

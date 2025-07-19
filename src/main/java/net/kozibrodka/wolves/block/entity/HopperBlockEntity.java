@@ -230,11 +230,11 @@ public class HopperBlockEntity extends BlockEntity
         ItemStack filterStack = getStack(18);
         if(filterStack != null && filterStack.count > 0)
         {
-            if(filterStack.itemId == Block.LADDER.id)
+            if(filterStack.itemId == Block.LADDER.asItem().id)
             {
                 return 1;
             }
-            if(filterStack.itemId == Block.TRAPDOOR.id)
+            if(filterStack.itemId == Block.TRAPDOOR.asItem().id)
             {
                 return 2;
             }
@@ -266,15 +266,15 @@ public class HopperBlockEntity extends BlockEntity
         {
             if(
                     item.id < 256 &&
-                    item.id != Block.SAND.id &&
-                    item.id != Block.GRAVEL.id &&
-                    item.id != Block.TORCH.id &&
-                    item.id != Block.LIT_REDSTONE_TORCH.id &&
-                    item.id != Block.SAPLING.id &&
-                    item.id != Block.DANDELION.id &&
-                    item.id != Block.ROSE.id &&
-                    item.id != Block.BROWN_MUSHROOM.id &&
-                    item.id != Block.RED_MUSHROOM.id
+                    item.id != Block.SAND.asItem().id &&
+                    item.id != Block.GRAVEL.asItem().id &&
+                    item.id != Block.TORCH.asItem().id &&
+                    item.id != Block.LIT_REDSTONE_TORCH.asItem().id &&
+                    item.id != Block.SAPLING.asItem().id &&
+                    item.id != Block.DANDELION.asItem().id &&
+                    item.id != Block.ROSE.asItem().id &&
+                    item.id != Block.BROWN_MUSHROOM.asItem().id &&
+                    item.id != Block.RED_MUSHROOM.asItem().id
             )
             {
                 return false;
@@ -289,12 +289,12 @@ public class HopperBlockEntity extends BlockEntity
             if(iFilterType == 3)
             {
                 if(
-                        item.id != Block.SAND.id &&
-                        item.id != Block.GRAVEL.id &&
-                        item.id != Block.DANDELION.id &&
-                        item.id != Block.ROSE.id &&
-                        item.id != Block.BROWN_MUSHROOM.id &&
-                        item.id != Block.RED_MUSHROOM.id &&
+                        item.id != Block.SAND.asItem().id &&
+                        item.id != Block.GRAVEL.asItem().id &&
+                        item.id != Block.DANDELION.asItem().id &&
+                        item.id != Block.ROSE.asItem().id &&
+                        item.id != Block.BROWN_MUSHROOM.asItem().id &&
+                        item.id != Block.RED_MUSHROOM.asItem().id &&
                         item.id != Item.APPLE.id &&
                         item.id != Item.COAL.id &&
                         item.id != Item.DIAMOND.id &&
@@ -332,8 +332,8 @@ public class HopperBlockEntity extends BlockEntity
             if(iFilterType == 4 || iFilterType == 5)
             {
                 if(
-                        item.id != Block.SAND.id &&
-                        item.id != Block.GRAVEL.id &&
+                        item.id != Block.SAND.asItem().id &&
+                        item.id != Block.GRAVEL.asItem().id &&
                         item.id != Item.SEEDS.id &&
                         item.id != Item.GUNPOWDER.id &&
                         item.id != Item.REDSTONE.id &&
@@ -396,13 +396,13 @@ public class HopperBlockEntity extends BlockEntity
                 bEjectIntoWorld = true;
             } else
             {
-                int iTargetid = world.getBlockId(iTargetI, iTargetJ, iTargetK);
+                int blockId = world.getBlockId(iTargetI, iTargetJ, iTargetK);
                 if(ReplaceableBlockChecker.IsReplaceableBlock(world, iTargetI, iTargetJ, iTargetK))
                 {
                     bEjectIntoWorld = true;
                 } else
                 {
-                    Block targetBlock = Block.BLOCKS[iTargetid];
+                    Block targetBlock = Block.BLOCKS[blockId];
                     if(!targetBlock.material.isSolid())
                     {
                         bEjectIntoWorld = true;
@@ -415,11 +415,11 @@ public class HopperBlockEntity extends BlockEntity
                             int iMinSlotToAddTo = 0;
                             int iMaxSlotToAddTo = ((Inventory)targetTileEntityBase).size() - 1;
                             boolean canProcessStack = true;
-                            if(iTargetid == Block.FURNACE.id || iTargetid == Block.LIT_FURNACE.id)
+                            if(blockId == Block.FURNACE.id || blockId == Block.LIT_FURNACE.id)
                             {
                                 iMaxSlotToAddTo = 0;
                             } else
-                            if(iTargetid == BlockListener.hopper.id)
+                            if(blockId == BlockListener.hopper.id)
                             {
                                 iMaxSlotToAddTo = 17;
                                 canProcessStack = ((HopperBlockEntity)targetTileEntityBase).CanCurrentFilterProcessItem(Item.ITEMS[ejectStack.itemId]);
@@ -428,7 +428,7 @@ public class HopperBlockEntity extends BlockEntity
                             {
                                 if(!InventoryHandler.addItemWithinSlotBounds((Inventory)targetTileEntityBase, ejectStack, iMinSlotToAddTo, iMaxSlotToAddTo))
                                 {
-                                    if(iTargetid == Block.CHEST.id)
+                                    if(blockId == Block.CHEST.id)
                                     {
                                         int iTempFacing = 2;
                                         do
@@ -438,8 +438,8 @@ public class HopperBlockEntity extends BlockEntity
                                                 break;
                                             }
                                             BlockPosition tempOffset = new BlockPosition(iTempFacing);
-                                            int iTempid = world.getBlockId(iTargetI + tempOffset.i, iTargetJ + tempOffset.j, iTargetK + tempOffset.k);
-                                            if(iTempid == Block.CHEST.id)
+                                            int tempBlockId = world.getBlockId(iTargetI + tempOffset.i, iTargetJ + tempOffset.j, iTargetK + tempOffset.k);
+                                            if(tempBlockId == Block.CHEST.id)
                                             {
                                                 targetTileEntityBase = world.getBlockEntity(iTargetI + tempOffset.i, iTargetJ + tempOffset.j, iTargetK + tempOffset.k);
                                                 if(targetTileEntityBase != null && (targetTileEntityBase instanceof Inventory))

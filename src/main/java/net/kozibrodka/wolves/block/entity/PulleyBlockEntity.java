@@ -175,8 +175,8 @@ public class PulleyBlockEntity extends BlockEntity
     {
         for(int tempj = y - 1; tempj >= 0; tempj--)
         {
-            int iTempid = world.getBlockId(x, tempj, z);
-            if(iTempid == BlockListener.anchor.id)
+            int tempBlockId = world.getBlockId(x, tempj, z);
+            if(tempBlockId == BlockListener.anchor.id)
             {
                 if(((AnchorBlock)BlockListener.anchor).getAnchorFacing(world, x, tempj, z) != 1)
                 {
@@ -185,7 +185,7 @@ public class PulleyBlockEntity extends BlockEntity
                 ((AnchorBlock)BlockListener.anchor).notifyAnchorBlockOfAttachedPulleyStateChange(this, world, x, tempj, z);
                 continue;
             }
-            if(iTempid != BlockListener.rope.id)
+            if(tempBlockId != BlockListener.rope.id)
             {
                 break;
             }
@@ -197,8 +197,8 @@ public class PulleyBlockEntity extends BlockEntity
     {
         for(int tempj = y - 1; tempj >= 0; tempj--)
         {
-            int iTempid = world.getBlockId(x, tempj, z);
-            if(iTempid == BlockListener.rope.id)
+            int tempBlockId = world.getBlockId(x, tempj, z);
+            if(tempBlockId == BlockListener.rope.id)
             {
                 if(world.getBlockId(x, tempj - 1, z) != BlockListener.rope.id)
                 {
@@ -227,7 +227,7 @@ public class PulleyBlockEntity extends BlockEntity
         {
             for(int tempj = y - 1; tempj >= 0; tempj--)
             {
-                int iTempid = world.getBlockId(x, tempj, z);
+                int tempBlockId = world.getBlockId(x, tempj, z);
                 if(ReplaceableBlockChecker.IsReplaceableBlock(world, x, tempj, z))
                 {
                     if(world.setBlock(x, tempj, z, BlockListener.rope.id))
@@ -249,7 +249,7 @@ public class PulleyBlockEntity extends BlockEntity
                         return false;
                     }
                 }
-                if(iTempid != BlockListener.rope.id)
+                if(tempBlockId != BlockListener.rope.id)
                 {
                     return false;
                 }

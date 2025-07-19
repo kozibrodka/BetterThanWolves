@@ -19,6 +19,6 @@ public class NonCollidingAxleBlock extends AxleBlock {
 
     @Override
     public int getDroppedItemId(int blockMeta, Random random) {
-        return BlockListener.axleBlock.id;
+        return BlockListener.axleBlock.asItem().id;
     }
 }

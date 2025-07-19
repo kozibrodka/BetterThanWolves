@@ -20,8 +20,8 @@ public class FoulFoodItem extends TemplateFoodItem
 
     public boolean useOnBlock(ItemStack ItemInstance, PlayerEntity entityplayer, World world, int i, int j, int k, int l)
     {
-        int i1 = world.getBlockId(i, j, k);
-        if(i1 == Block.SAPLING.id)
+        int blockId = world.getBlockId(i, j, k);
+        if(blockId == Block.SAPLING.id)
         {
             if(!world.isRemote)
             {
@@ -30,7 +30,7 @@ public class FoulFoodItem extends TemplateFoodItem
             }
             return true;
         }
-        if(i1 == Block.WHEAT.id)
+        if(blockId == Block.WHEAT.id)
         {
             if(!world.isRemote)
             {
@@ -39,7 +39,7 @@ public class FoulFoodItem extends TemplateFoodItem
             }
             return true;
         }
-        if(i1 == Block.GRASS_BLOCK.id)
+        if(blockId == Block.GRASS_BLOCK.id)
         {
             if(!world.isRemote)
             {
