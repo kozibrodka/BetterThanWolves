@@ -151,7 +151,7 @@ public class FCEntityTEST extends Entity implements EntitySpawnDataProvider {
 
     @Override
     public Identifier getHandlerIdentifier() {
-        return Identifier.of(ConfigListener.MOD_ID, "StapiTEST");
+        return Identifier.of(ConfigListener.NAMESPACE, "StapiTEST");
     }
 
     public int iFullUpdateTickCount;

@@ -203,6 +203,6 @@ public class LiftedBlockEntity extends Entity implements EntitySpawnDataProvider
 
     @Override
     public Identifier getHandlerIdentifier() {
-        return Identifier.of(EntityListener.MOD_ID, "BlockLiftedByPlatform");
+        return Identifier.of(EntityListener.NAMESPACE, "BlockLiftedByPlatform");
     }
 }

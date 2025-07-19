@@ -131,7 +131,7 @@ public class FallingAnvilEntity extends Entity implements EntitySpawnDataProvide
 
     @Override
     public Identifier getHandlerIdentifier() {
-        return Identifier.of(ConfigListener.MOD_ID, "FallingAnvil");
+        return Identifier.of(ConfigListener.NAMESPACE, "FallingAnvil");
     }
 
 }

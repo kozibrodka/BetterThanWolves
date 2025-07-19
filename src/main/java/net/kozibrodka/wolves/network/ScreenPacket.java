@@ -6,8 +6,6 @@ import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.block.HopperBlock;
 import net.kozibrodka.wolves.block.PulleyBlock;
 import net.kozibrodka.wolves.events.BlockListener;
-import net.kozibrodka.wolves.events.PacketListener;
-import net.kozibrodka.wolves.glasscfg.BetterThanWolvesCFG;
 import net.kozibrodka.wolves.block.entity.BlockDispenserBlockEntity;
 import net.kozibrodka.wolves.block.entity.CauldronBlockEntity;
 import net.kozibrodka.wolves.block.entity.CrucibleBlockEntity;
@@ -19,7 +17,6 @@ import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.modificationstation.stationapi.api.network.packet.ManagedPacket;
 import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import net.modificationstation.stationapi.api.network.packet.PacketType;
-import net.modificationstation.stationapi.api.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.DataInputStream;

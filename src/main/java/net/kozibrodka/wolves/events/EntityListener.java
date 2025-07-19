@@ -5,37 +5,33 @@ import net.mine_diver.unsafeevents.listener.EventListener;
 import net.modificationstation.stationapi.api.event.entity.EntityRegister;
 import net.modificationstation.stationapi.api.event.registry.EntityHandlerRegistryEvent;
 import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
-import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.util.Namespace;
-import net.modificationstation.stationapi.api.registry.Registry;
-import net.modificationstation.stationapi.api.util.Null;
 
 public class EntityListener {
-
     @Entrypoint.Namespace
-    public static Namespace MOD_ID;
+    public static Namespace NAMESPACE;
 
     @EventListener
     public static void registerEntities(EntityRegister event) {
-        event.register(WaterWheelEntity.class, String.valueOf(Identifier.of(MOD_ID, "WaterWheel")));
-        event.register(WindMillEntity.class, String.valueOf(Identifier.of(MOD_ID, "WindMill")));
-        event.register(BroadheadArrowEntity.class, String.valueOf(Identifier.of(MOD_ID, "BroadheadArrow")));
-        event.register(LiftedBlockEntity.class, String.valueOf(Identifier.of(MOD_ID, "BlockLiftedByPlatform")));
-        event.register(MovingPlatformEntity.class, String.valueOf(Identifier.of(MOD_ID, "MovingPlatform")));
-        event.register(MovingAnchorEntity.class, String.valueOf(Identifier.of(MOD_ID, "MovingAnchor")));
-        event.register(FallingAnvilEntity.class, String.valueOf(Identifier.of(MOD_ID, "FallingAnvil")));
-        event.register(FCEntityTEST.class, String.valueOf(Identifier.of(MOD_ID, "StapiTEST")));
+        event.register(WaterWheelEntity.class, NAMESPACE.id("WaterWheel").toString());
+        event.register(WindMillEntity.class, NAMESPACE.id("WindMill").toString());
+        event.register(BroadheadArrowEntity.class, NAMESPACE.id("BroadheadArrow").toString());
+        event.register(LiftedBlockEntity.class, NAMESPACE.id("BlockLiftedByPlatform").toString());
+        event.register(MovingPlatformEntity.class, NAMESPACE.id("MovingPlatform").toString());
+        event.register(MovingAnchorEntity.class, NAMESPACE.id("MovingAnchor").toString());
+        event.register(FallingAnvilEntity.class, NAMESPACE.id("FallingAnvil").toString());
+        event.register(FCEntityTEST.class, NAMESPACE.id("StapiTEST").toString());
     }
 
     @EventListener
     public static void registerMobHandlers(EntityHandlerRegistryEvent event) {
-        Registry.register(event.registry, MOD_ID.id("WaterWheel") , WaterWheelEntity::new);
-        Registry.register(event.registry, MOD_ID.id("WindMill") , WindMillEntity::new);
-        Registry.register(event.registry, MOD_ID.id("BroadheadArrow") , BroadheadArrowEntity::new);
-        Registry.register(event.registry, MOD_ID.id("BlockLiftedByPlatform") , LiftedBlockEntity::new);
-        Registry.register(event.registry, MOD_ID.id("MovingPlatform") , MovingPlatformEntity::new);
-        Registry.register(event.registry, MOD_ID.id("MovingAnchor") , MovingAnchorEntity::new);
-        Registry.register(event.registry, MOD_ID.id("FallingAnvil") , FallingAnvilEntity::new);
-        Registry.register(event.registry, MOD_ID.id("StapiTEST") , FCEntityTEST::new);
+        event.register(NAMESPACE.id("WaterWheel"), WaterWheelEntity::new);
+        event.register(NAMESPACE.id("WindMill"), WindMillEntity::new);
+        event.register(NAMESPACE.id("BroadheadArrow"), BroadheadArrowEntity::new);
+        event.register(NAMESPACE.id("BlockLiftedByPlatform"), LiftedBlockEntity::new);
+        event.register(NAMESPACE.id("MovingPlatform"), MovingPlatformEntity::new);
+        event.register(NAMESPACE.id("MovingAnchor"), MovingAnchorEntity::new);
+        event.register(NAMESPACE.id("FallingAnvil"), FallingAnvilEntity::new);
+        event.register(NAMESPACE.id("StapiTEST"), FCEntityTEST::new);
     }
 }

@@ -1,9 +1,8 @@
-package net.kozibrodka.wolves.glasscfg;
+package net.kozibrodka.wolves.config;
 
 import net.glasslauncher.mods.gcapi3.api.ConfigEntry;
 
-public class SmallTweaksCFG {
-
+public class SmallTweaksConfig {
     @ConfigEntry(name = "Face Gear Box Away From Player", description = "Face gear boxes away from the player on placement")
     public Boolean faceGearBoxAwayFromPlayer = false;
 

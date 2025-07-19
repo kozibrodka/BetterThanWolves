@@ -373,7 +373,7 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider {
 
     @Override
     public Identifier getHandlerIdentifier() {
-        return Identifier.of(EntityListener.MOD_ID, "WindMill");
+        return Identifier.of(EntityListener.NAMESPACE, "WindMill");
     }
 
     //ALIGNED
