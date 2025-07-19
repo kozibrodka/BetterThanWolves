@@ -7,13 +7,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.block.BlockState;
+import net.modificationstation.stationapi.api.block.StationFlatteningBlock;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
 @Mixin(TallPlantBlock.class)
-@Unique
-public class HempSeedDrop {
-
+public class HempSeedDrop implements StationFlatteningBlock {
+    @Override
     public void dropWithChance(World level, int x, int y, int z, BlockState state, int meta, float chance) {
         float f1 = 0.7F;
         float f2 = level.random.nextFloat() * f1 + (1.0F - f1) * 0.5F;

@@ -11,15 +11,16 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(CactusBlock.class)
-public class BlockCactusMixin extends Block{
+public class BlockCactusMixin extends Block {
 
-    protected BlockCactusMixin(int i, Material arg) {
-        super(i, arg);
+    protected BlockCactusMixin(int id, Material material) {
+        super(id, material);
     }
 
     @Inject(method = "canGrow", at = @At(value = "RETURN", ordinal = 4), cancellable = true)
-    private void injected(World arg, int i, int j, int k, CallbackInfoReturnable<Boolean> cir) {
-        int var5 = arg.getBlockId(i, j - 1, k);
-        cir.setReturnValue(var5 == Block.CACTUS.id || var5 == Block.SAND.id || UnsortedUtils.CanPlantGrowOnBlock(arg, i, j - 1, k, this));
+    private void injected(World world, int x, int y, int z, CallbackInfoReturnable<Boolean> cir) {
+        if (UnsortedUtils.CanPlantGrowOnBlock(world, x, y - 1, z, this)) {
+            cir.setReturnValue(true);
+        }
     }
 }

@@ -7,7 +7,6 @@ import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.events.TextureListener;
-import net.kozibrodka.wolves.mixin.LevelAccessor;
 import net.kozibrodka.wolves.network.ParticlePacket;
 import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.recipe.SawingRecipeRegistry;
@@ -287,7 +286,7 @@ public class SawBlock extends TemplateBlock
             SetFacing(world, i, j, k, iNewFacing);
             world.setBlocksDirty(i, j, k, i, j, k);
             world.scheduleBlockUpdate(i, j, k, id, getTickRate());
-            ((LevelAccessor) world).invokeBlockUpdate(i, j, k, id);
+            world.blockUpdate(i, j, k, i);
         }
         UnsortedUtils.DestroyHorizontallyAttachedAxles(world, i, j, k);
     }

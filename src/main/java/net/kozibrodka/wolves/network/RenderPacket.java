@@ -4,7 +4,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.events.PacketListener;
-import net.kozibrodka.wolves.mixin.ClientPlayerAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.NetworkHandler;
 import net.minecraft.network.packet.Packet;
@@ -75,9 +74,7 @@ public class RenderPacket extends Packet implements ManagedPacket<RenderPacket> 
 
     @Environment(EnvType.CLIENT) //TODO: NOT QUITE WOTKING ;(
     public void handleClient(NetworkHandler networkHandler){
-        ClientPlayerAccessor accessor = (ClientPlayerAccessor) networkHandler;
-        Minecraft minecraft = accessor.getMinecraft();
-        minecraft.field_2808.method_322(x,y,z, block, meta);
+        Minecraft.INSTANCE.field_2808.method_322(x,y,z, block, meta);
 //        Minecraft.class.cast(net.fabricmc.loader.api.FabricLoader.getInstance().getGameInstance()).particleManager.addTileBreakParticles(targetPos.i, targetPos.j, targetPos.k, iTargetid, iTargetMetaData);
 //        if(block == 1){ //TURNTABLE
 //            TurntableTileEntity tile = (TurntableTileEntity) minecraft.level.getTileEntity(this.x,this.y,this.z);

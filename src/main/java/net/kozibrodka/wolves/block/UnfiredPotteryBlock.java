@@ -42,7 +42,7 @@ public class UnfiredPotteryBlock extends TemplateBlockWithEntity
         return TextureListener.unfiredpottery;
     }
 
-    protected int getDroppedItemMeta(int itemMetaData)
+    public int getDroppedItemMeta(int itemMetaData)
     {
         return itemMetaData;
     }

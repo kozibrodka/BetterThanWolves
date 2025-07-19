@@ -4,7 +4,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.events.PacketListener;
-import net.kozibrodka.wolves.mixin.ClientPlayerAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.NetworkHandler;
 import net.minecraft.network.packet.Packet;
@@ -89,10 +88,8 @@ public class SoundPacket extends Packet implements ManagedPacket<SoundPacket> {
     @Environment(EnvType.CLIENT)
     public void handleClient(NetworkHandler networkHandler){
 //        System.out.println("Handle Client");
-        ClientPlayerAccessor accessor = (ClientPlayerAccessor) networkHandler;
-        Minecraft minecraft = accessor.getMinecraft();
 //        minecraft.level.playSound((double)minecraft.player.x + 0.5D, (double)minecraft.player.y + 0.5D, (double)minecraft.player.z + 0.5D, this.soundToPlay, 1.0F, 2.0F);
-        minecraft.world.playSound((double)this.x + 0.5D, (double)this.y + 0.5D, (double)this.z + 0.5D, this.soundToPlay, this.g, this.h);
+        Minecraft.INSTANCE.world.playSound((double)this.x + 0.5D, (double)this.y + 0.5D, (double)this.z + 0.5D, this.soundToPlay, this.g, this.h);
     }
 
     @Environment(EnvType.SERVER)

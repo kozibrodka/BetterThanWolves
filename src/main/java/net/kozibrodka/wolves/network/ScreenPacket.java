@@ -7,7 +7,7 @@ import net.kozibrodka.wolves.block.HopperBlock;
 import net.kozibrodka.wolves.block.PulleyBlock;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.PacketListener;
-import net.kozibrodka.wolves.mixin.ServerPlayerAccessor;
+import net.kozibrodka.wolves.glasscfg.BetterThanWolvesCFG;
 import net.kozibrodka.wolves.block.entity.BlockDispenserBlockEntity;
 import net.kozibrodka.wolves.block.entity.CauldronBlockEntity;
 import net.kozibrodka.wolves.block.entity.CrucibleBlockEntity;
@@ -15,6 +15,7 @@ import net.kozibrodka.wolves.block.entity.MillStoneBlockEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.NetworkHandler;
 import net.minecraft.network.packet.Packet;
+import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.modificationstation.stationapi.api.network.packet.ManagedPacket;
 import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import net.modificationstation.stationapi.api.network.packet.PacketType;
@@ -89,8 +90,16 @@ public class ScreenPacket extends Packet implements ManagedPacket<ScreenPacket> 
 
     @Environment(EnvType.SERVER)
     public void handleServer(NetworkHandler networkHandler){
-        ServerPlayerAccessor accessor = (ServerPlayerAccessor) networkHandler;
-        ServerPlayerEntity player = accessor.getServerPlayer();
+        ServerPlayerEntity player = null;
+        if(networkHandler instanceof ServerPlayNetworkHandler serverPlayNetworkHandler) {
+            player = serverPlayNetworkHandler.player;
+        }
+        
+        if (player == null){
+            System.err.println("ScreenPacket: Player is null, cannot send packet to client");
+            return;
+        }
+        
         if(Objects.equals(tile, "mill")){
             MillStoneBlockEntity tile = (MillStoneBlockEntity) player.world.getBlockEntity(this.x,this.y,this.z);
             if(tile != null) {

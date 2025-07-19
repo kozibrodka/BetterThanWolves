@@ -61,7 +61,7 @@ public class VaseBlock extends TemplateBlockWithEntity
         return 0;
     }
 
-    protected int getDroppedItemMeta(int i)
+    public int getDroppedItemMeta(int i)
     {
         return i;
     }

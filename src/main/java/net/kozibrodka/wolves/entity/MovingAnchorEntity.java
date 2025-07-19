@@ -5,7 +5,6 @@ import net.kozibrodka.wolves.block.RopeBlock;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.EntityListener;
 import net.kozibrodka.wolves.events.ItemListener;
-import net.kozibrodka.wolves.mixin.EntityBaseAccessor;
 import net.kozibrodka.wolves.block.entity.PulleyBlockEntity;
 import net.kozibrodka.wolves.utils.BlockPosition;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
@@ -320,7 +319,7 @@ public class MovingAnchorEntity extends Entity implements EntitySpawnDataProvide
             {
                 double entityYOffset = anchorMaxY - entityMinY;
                 entity.setPos(entity.x, entity.y + entityYOffset, entity.z);
-                ((EntityBaseAccessor) entity).setFallDistance(0.0F);
+                entity.fallDistance = 0.0F;
             } else
             if((entity instanceof LivingEntity) && velocityY < 0.0D)
             {
