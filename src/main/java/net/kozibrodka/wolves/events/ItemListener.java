@@ -73,7 +73,7 @@ public class ItemListener {
     public void registerItems(ItemRegistryEvent event) {
         ToolLevel soulforgedLevel = new TagToolLevel(TagKey.of(BlockRegistry.KEY, NAMESPACE.id("needs_tool_level_soulforged")));
         ToolLevel.GRAPH.putEdge(ToolMaterial.DIAMOND.getToolLevel(), soulforgedLevel);
-        ToolMaterial soulforgedSteelMaterial = ToolMaterialFactory.create("soulforged_steel", 3, 2250, 12F, 8).toolLevel(soulforgedLevel);
+        ToolMaterial soulforgedSteelMaterial = ToolMaterialFactory.create("soulforged_steel", 3, 2250, 12F, 8).toolLevel(soulforgedLevel);; // This semicolon exists so my IDE stops falsely greying out the code
 
         bucketCement = new CementBucketItem(NAMESPACE.id("bucketCement"), BlockListener.cement.id).setTranslationKey(NAMESPACE, "bucket_cement");
         wolfRaw = new TemplateFoodItem(NAMESPACE.id("wolfRaw"), 3, false).setTranslationKey(NAMESPACE, "wolf_raw");
@@ -98,7 +98,7 @@ public class ItemListener {
         tannedLeather = new TemplateItem(NAMESPACE.id("tannedLeather")).setTranslationKey(NAMESPACE, "tanned_leather");
         strap = new TemplateItem(NAMESPACE.id("strap")).setTranslationKey(NAMESPACE, "strap");
         belt = new TemplateItem(NAMESPACE.id("belt")).setTranslationKey(NAMESPACE, "belt");
-        foulFood = new FoulFoodItem(NAMESPACE.id("foulFood"), 0, false).setTranslationKey(NAMESPACE, "foul_food"); //TODO: how much healt point?
+        foulFood = new FoulFoodItem(NAMESPACE.id("foulFood")).setTranslationKey(NAMESPACE, "foul_food");
         woodBlade = new TemplateItem(NAMESPACE.id("woodBlade")).setTranslationKey(NAMESPACE, "wood_blade");
         glue = new TemplateItem(NAMESPACE.id("glue")).setTranslationKey(NAMESPACE, "glue");
         tallow = new TemplateItem(NAMESPACE.id("tallow")).setTranslationKey(NAMESPACE, "tallow");
