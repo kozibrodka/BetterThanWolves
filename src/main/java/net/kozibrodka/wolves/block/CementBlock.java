@@ -419,110 +419,6 @@ public class CementBlock extends TemplateBlockWithEntity
         return tempSpreadToSideFlags;
     }
 
-    private boolean[] CheckSideBlocksForDownslope(World world, int i, int j, int k)
-    {
-        for(int sideNum = 0; sideNum < 4; sideNum++)
-        {
-            tempClosestDownslopeToSideDist[sideNum] = 1000;
-            int iSide = i;
-            int jSide = j;
-            int kSide = k;
-            if(sideNum == 0)
-            {
-                iSide--;
-            } else
-            if(sideNum == 1)
-            {
-                iSide++;
-            } else
-            if(sideNum == 2)
-            {
-                kSide--;
-            } else
-            if(sideNum == 3)
-            {
-                kSide++;
-            }
-            if(blockBlocksFlow(world, iSide, jSide, kSide) || world.getMaterial(iSide, jSide, kSide) == material && IsCementSourceBlock(world, iSide, jSide, kSide))
-            {
-                continue;
-            }
-            if(!blockBlocksFlow(world, iSide, jSide - 1, kSide))
-            {
-                tempClosestDownslopeToSideDist[sideNum] = 0;
-            } else
-            {
-                tempClosestDownslopeToSideDist[sideNum] = RecursivelyCheckSideBlocksForDownSlope(world, iSide, jSide, kSide, 1, sideNum);
-            }
-        }
-
-        int minDistanceToDownslope = tempClosestDownslopeToSideDist[0];
-        for(int tempSide = 1; tempSide < 4; tempSide++)
-        {
-            if(tempClosestDownslopeToSideDist[tempSide] < minDistanceToDownslope)
-            {
-                minDistanceToDownslope = tempClosestDownslopeToSideDist[tempSide];
-            }
-        }
-
-        for(int tempSide = 0; tempSide < 4; tempSide++)
-        {
-            tempSpreadToSideFlags[tempSide] = tempClosestDownslopeToSideDist[tempSide] == minDistanceToDownslope;
-        }
-
-        return tempSpreadToSideFlags;
-    }
-
-    private int RecursivelyCheckSideBlocksForDownSlope(World world, int i, int j, int k, int recursionCount, int originSideNum)
-    {
-        int closestDownslope = 1000;
-        for(int tempSideNum = 0; tempSideNum < 4; tempSideNum++)
-        {
-            if(tempSideNum == 0 && originSideNum == 1 || tempSideNum == 1 && originSideNum == 0 || tempSideNum == 2 && originSideNum == 3 || tempSideNum == 3 && originSideNum == 2)
-            {
-                continue;
-            }
-            int tempi = i;
-            int tempj = j;
-            int tempk = k;
-            if(tempSideNum == 0)
-            {
-                tempi--;
-            } else
-            if(tempSideNum == 1)
-            {
-                tempi++;
-            } else
-            if(tempSideNum == 2)
-            {
-                tempk--;
-            } else
-            if(tempSideNum == 3)
-            {
-                tempk++;
-            }
-            if(blockBlocksFlow(world, tempi, tempj, tempk) || GetCementSpreadDist(world, tempi, tempj, tempk) == 0)
-            {
-                continue;
-            }
-            if(!blockBlocksFlow(world, tempi, tempj - 1, tempk))
-            {
-                return recursionCount;
-            }
-            if(recursionCount >= 4)
-            {
-                continue;
-            }
-            int tempSideClosestDownslope = RecursivelyCheckSideBlocksForDownSlope(world, tempi, tempj, tempk, recursionCount + 1, tempSideNum);
-            if(tempSideClosestDownslope < closestDownslope)
-            {
-                closestDownslope = tempSideClosestDownslope;
-            }
-        }
-
-        return closestDownslope;
-    }
-
     private boolean blockBlocksFlow(World world, int i, int j, int k)
     {
         int l = world.getBlockId(i, j, k);
@@ -582,7 +478,6 @@ public class CementBlock extends TemplateBlockWithEntity
 
     @Override
     public boolean renderWorld(BlockRenderManager tileRenderer, BlockView tileView, int x, int y, int z) {
-        //TODO: How to make it work on server? ...
         boolean flag = false;
         Tessellator tessellator = Tessellator.INSTANCE;
         boolean flag1 = this.isSideVisible(tileView, x, y + 1, z, 1);
