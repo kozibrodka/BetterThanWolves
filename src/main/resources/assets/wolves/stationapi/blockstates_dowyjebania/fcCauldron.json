@@ -1,5 +1,7 @@
 {
   "variants": {
-    "": { "model": "wolves:block/fcCauldron"}
+    "": {
+      "model": "wolves:block/fcCauldron"
+    }
   }
 }

@@ -24,7 +24,7 @@ public abstract class BlockMushroomMixin extends PlantBlock {
 //    private void injected(World arg, int i, int j, int k, CallbackInfoReturnable<Boolean> cir) {
 //        cir.setReturnValue(arg.getBrightness(i, j, k) < 13 && (this.canPlantOnTop(arg.getBlockId(i, j - 1, k)) || UnsortedUtils.CanPlantGrowOnBlock(arg, i, j - 1, k, this)));
 //    }
-    
+
     @WrapOperation(method = "canGrow", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/MushroomPlantBlock;canPlantOnTop(I)Z"))
     public boolean allowGrowth(MushroomPlantBlock block, int id, Operation<Boolean> original, @Local(ordinal = 0, argsOnly = true) World world, @Local(ordinal = 0, argsOnly = true) int x, @Local(ordinal = 1, argsOnly = true) int y, @Local(ordinal = 2, argsOnly = true) int z) {
         if (UnsortedUtils.CanPlantGrowOnBlock(world, x, y - 1, z, this)) {

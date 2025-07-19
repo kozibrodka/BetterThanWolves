@@ -1,5 +1,7 @@
 {
   "variants": {
-    "": { "model": "wolves:block/fcUnfiredPottery_vase"}
+    "": {
+      "model": "wolves:block/fcUnfiredPottery_vase"
+    }
   }
 }

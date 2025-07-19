@@ -7,10 +7,8 @@ package net.kozibrodka.wolves.materials;
 import net.minecraft.block.MapColor;
 import net.minecraft.block.material.Material;
 
-public class CementMaterial extends Material
-{
-    public CementMaterial(MapColor mapcolor)
-    {
+public class CementMaterial extends Material {
+    public CementMaterial(MapColor mapcolor) {
         super(mapcolor);
         setReplaceable();
         setDestroyPistonBehavior();

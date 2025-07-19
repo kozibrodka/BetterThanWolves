@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.Random;
 
 @Mixin(LargeOakTreeFeature.class)
-public class LargeOakMixin extends Feature{
+public class LargeOakMixin extends Feature {
 
     public boolean generate(World arg, Random random, int i, int j, int k) {
         return false;
@@ -27,7 +27,7 @@ public class LargeOakMixin extends Feature{
 
     @Inject(method = "method_611", at = @At(value = "RETURN", ordinal = 0), cancellable = true)
     private void injected(CallbackInfoReturnable<Boolean> cir) {
-        if(!UnsortedUtils.CanPlantGrowOnBlock(world, field_648[0], field_648[1] - 1, field_648[2], Block.SAPLING))
+        if (!UnsortedUtils.CanPlantGrowOnBlock(world, field_648[0], field_648[1] - 1, field_648[2], Block.SAPLING))
             cir.setReturnValue(false);
     }
 

@@ -1,4 +1,3 @@
-
 package net.kozibrodka.wolves.block;
 
 import net.kozibrodka.wolves.events.BlockListener;
@@ -11,8 +10,8 @@ import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.block.BlockState;
-import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.template.block.TemplatePlantBlock;
+import net.modificationstation.stationapi.api.util.Identifier;
 
 import java.util.Random;
 
@@ -44,39 +43,39 @@ public class HempCropBlock extends TemplatePlantBlock {
 
     public void onTick(World world, int i, int j, int k, Random random) {
         super.onTick(world, i, j, k, random);
-        if(world.getLightLevel(i, j + 1, k) >= 15 || world.getLightLevel(i, j + 2, k) >= 15 || world.getLightLevel(i, j, k) >= 15) {
+        if (world.getLightLevel(i, j + 1, k) >= 15 || world.getLightLevel(i, j + 2, k) >= 15 || world.getLightLevel(i, j, k) >= 15) {
             boolean onHydratedSoil = false;
             int blockBelowID = world.getBlockId(i, j - 1, k);
-            if(blockBelowID == Block.FARMLAND.id && world.getBlockMeta(i, j - 1, k) > 0) {
+            if (blockBelowID == Block.FARMLAND.id && world.getBlockMeta(i, j - 1, k) > 0) {
                 onHydratedSoil = true;
-            } else if(UnsortedUtils.CanPlantGrowOnBlock(world, i, j - 1, k, this)) {
+            } else if (UnsortedUtils.CanPlantGrowOnBlock(world, i, j - 1, k, this)) {
                 Block blockBelow = Block.BLOCKS[blockBelowID];
-                if((blockBelow instanceof SoilTemplate) && ((SoilTemplate)blockBelow).IsBlockHydrated(world, i, j - 1, k)) {
+                if ((blockBelow instanceof SoilTemplate) && ((SoilTemplate) blockBelow).IsBlockHydrated(world, i, j - 1, k)) {
                     onHydratedSoil = true;
                 }
             }
-            if(onHydratedSoil) {
+            if (onHydratedSoil) {
                 int l = world.getBlockMeta(i, j, k);
-                if(l < 7) {
-                    if(random.nextInt(20) == 0) {
+                if (l < 7) {
+                    if (random.nextInt(20) == 0) {
                         l++;
                         world.setBlock(i, j, k, this.id, l);
                     }
                 } else {
                     int targetj = j + 1;
                     do {
-                        if(targetj >= j + 2) {
+                        if (targetj >= j + 2) {
                             break;
                         }
                         int targetId = world.getBlockId(i, targetj, k);
-                        if(targetId != id) {
-                            if(world.isAir(i, targetj, k) && random.nextInt(60) == 0) {
+                        if (targetId != id) {
+                            if (world.isAir(i, targetj, k) && random.nextInt(60) == 0) {
                                 world.setBlock(i, targetj, k, id, 7);
                             }
                             break;
                         }
                         targetj++;
-                    } while(true);
+                    } while (true);
                 }
             }
         }
@@ -84,22 +83,22 @@ public class HempCropBlock extends TemplatePlantBlock {
 
     public void dropStacks(World world, int i, int j, int k, int l, float f) {
         super.dropStacks(world, i, j, k, l, f);
-        if(world.isRemote) {
+        if (world.isRemote) {
             return;
         }
-        if(world.random.nextInt(100) < 50) {
+        if (world.random.nextInt(100) < 50) {
             float f1 = 0.7F;
             float f2 = world.random.nextFloat() * f1 + (1.0F - f1) * 0.5F;
             float f3 = world.random.nextFloat() * f1 + (1.0F - f1) * 0.5F;
             float f4 = world.random.nextFloat() * f1 + (1.0F - f1) * 0.5F;
-            ItemEntity entityitem = new ItemEntity(world, (float)i + f2, (float)j + f3, (float)k + f4, new ItemStack(ItemListener.hempSeeds));
+            ItemEntity entityitem = new ItemEntity(world, (float) i + f2, (float) j + f3, (float) k + f4, new ItemStack(ItemListener.hempSeeds));
             entityitem.pickupDelay = 10;
             world.spawnEntity(entityitem);
         }
     }
 
     public int getDroppedItemId(int i, Random random) {
-        if(i == 7) {
+        if (i == 7) {
             return ItemListener.hemp.id;
         } else {
             return -1;

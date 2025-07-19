@@ -9,7 +9,7 @@ import java.util.Map;
 public class HibachiIgnitionRegistry {
 
     private static final HibachiIgnitionRegistry INSTANCE = new HibachiIgnitionRegistry();
-    private Map<Integer, Integer> recipes = new HashMap<>();
+    private final Map<Integer, Integer> recipes = new HashMap<>();
 
     public static final HibachiIgnitionRegistry getInstance() {
         return INSTANCE;
@@ -21,7 +21,7 @@ public class HibachiIgnitionRegistry {
 
     public int getIgnitedID(int i) {
         if (this.recipes.get(i) == null) return 0;
-        return (int)this.recipes.get(i);
+        return this.recipes.get(i);
     }
 
 }

@@ -12,16 +12,14 @@ import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
 import net.modificationstation.stationapi.api.client.texture.atlas.Atlas;
 import net.modificationstation.stationapi.api.client.texture.atlas.Atlases;
-import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.template.block.TemplateFireBlock;
+import net.modificationstation.stationapi.api.util.Identifier;
 
 import java.util.Random;
 
-@EnvironmentInterface(value= EnvType.CLIENT, itf=BlockWithWorldRenderer.class)
-public class StokedFireBlock extends TemplateFireBlock implements BlockWithWorldRenderer
-{
-    public StokedFireBlock(Identifier iid)
-    {
+@EnvironmentInterface(value = EnvType.CLIENT, itf = BlockWithWorldRenderer.class)
+public class StokedFireBlock extends TemplateFireBlock implements BlockWithWorldRenderer {
+    public StokedFireBlock(Identifier iid) {
         super(iid, 31);
         setHardness(0.0F);
         setLuminance(1.0F);
@@ -46,9 +44,9 @@ public class StokedFireBlock extends TemplateFireBlock implements BlockWithWorld
 //                System.out.println("HELLO 2");
                 return;
             }
-        } else if (world.getBlockId(i, j - 1, k) == BlockListener.hibachi.id){
+        } else if (world.getBlockId(i, j - 1, k) == BlockListener.hibachi.id) {
             flag = true;
-        } else{
+        } else {
             world.setBlock(i, j, k, Block.FIRE.id, 15);
 //            System.out.println("HELLO 3");
         }
@@ -63,55 +61,55 @@ public class StokedFireBlock extends TemplateFireBlock implements BlockWithWorld
         if (true) //flag
         {
 
-        if (iMetaData < 15) {
-            iMetaData++;
-            world.setBlockMeta(i, j, k, iMetaData);
-        }
-        trySpreadingFire(world, i + 1, j, k, 300, random, 15);
-        trySpreadingFire(world, i - 1, j, k, 300, random, 15);
-        trySpreadingFire(world, i, j - 1, k, 250, random, 15);
-        trySpreadingFire(world, i, j + 1, k, 250, random, 15);
-        trySpreadingFire(world, i, j, k - 1, 300, random, 15);
-        trySpreadingFire(world, i, j, k + 1, 300, random, 15);
-        for (int i1 = i - 1; i1 <= i + 1; i1++) {
-            for (int j1 = k - 1; j1 <= k + 1; j1++) {
-                for (int k1 = j - 1; k1 <= j + 4; k1++) {
-                    if (i1 == i && k1 == j && j1 == k) {
-                        continue;
-                    }
-                    int l1 = 100;
-                    if (k1 > j + 1) {
-                        l1 += (k1 - (j + 1)) * 100;
-                    }
-                    int i2 = this.method_1827(world, i1, k1, j1);
-                    if (i2 <= 0) {
-                        continue;
-                    }
-                    int j2 = (i2 + 40) / 45;
-                    if (
-                            j2 <= 0 ||
-                                    random.nextInt(l1) > j2 ||
-                                    world.isRaining() && world.isRaining(i1, k1, j1) ||
-                                    world.isRaining(i1 - 1, k1, k) ||
-                                    world.isRaining(i1 + 1, k1, j1) ||
-                                    world.isRaining(i1, k1, j1 - 1) ||
-                                    world.isRaining(i1, k1, j1 + 1)) {
-                        continue;
-                    }
-                    int k2 = iMetaData + random.nextInt(5) / 4;
-                    if (k2 > 15) {
-                        k2 = 15;
-                    }
+            if (iMetaData < 15) {
+                iMetaData++;
+                world.setBlockMeta(i, j, k, iMetaData);
+            }
+            trySpreadingFire(world, i + 1, j, k, 300, random, 15);
+            trySpreadingFire(world, i - 1, j, k, 300, random, 15);
+            trySpreadingFire(world, i, j - 1, k, 250, random, 15);
+            trySpreadingFire(world, i, j + 1, k, 250, random, 15);
+            trySpreadingFire(world, i, j, k - 1, 300, random, 15);
+            trySpreadingFire(world, i, j, k + 1, 300, random, 15);
+            for (int i1 = i - 1; i1 <= i + 1; i1++) {
+                for (int j1 = k - 1; j1 <= k + 1; j1++) {
+                    for (int k1 = j - 1; k1 <= j + 4; k1++) {
+                        if (i1 == i && k1 == j && j1 == k) {
+                            continue;
+                        }
+                        int l1 = 100;
+                        if (k1 > j + 1) {
+                            l1 += (k1 - (j + 1)) * 100;
+                        }
+                        int i2 = this.method_1827(world, i1, k1, j1);
+                        if (i2 <= 0) {
+                            continue;
+                        }
+                        int j2 = (i2 + 40) / 45;
+                        if (
+                                j2 <= 0 ||
+                                        random.nextInt(l1) > j2 ||
+                                        world.isRaining() && world.isRaining(i1, k1, j1) ||
+                                        world.isRaining(i1 - 1, k1, k) ||
+                                        world.isRaining(i1 + 1, k1, j1) ||
+                                        world.isRaining(i1, k1, j1 - 1) ||
+                                        world.isRaining(i1, k1, j1 + 1)) {
+                            continue;
+                        }
+                        int k2 = iMetaData + random.nextInt(5) / 4;
+                        if (k2 > 15) {
+                            k2 = 15;
+                        }
 //                    world.placeBlockWithMetaData(i1, k1, j1, BlockBase.FIRE.id, k2);
-                    world.setBlock(i1, k1, j1, BlockListener.stokedFire.id, k2);
+                        world.setBlock(i1, k1, j1, BlockListener.stokedFire.id, k2);
+                    }
+
                 }
 
             }
-
         }
-    }
 
-        if(iMetaData >= 4) //CODE EDIT (oryginal int value - 3) as its little different
+        if (iMetaData >= 4) //CODE EDIT (oryginal int value - 3) as its little different
         {
             world.setBlock(i, j, k, Block.FIRE.id, 15);
             world.blockUpdateEvent(i, j, k);
@@ -136,7 +134,7 @@ public class StokedFireBlock extends TemplateFireBlock implements BlockWithWorld
     @Override
     public void onPlaced(World arg, int i, int j, int k) {
         if (arg.getBlockId(i, j - 1, k) != Block.OBSIDIAN.id || !Block.NETHER_PORTAL.method_736(arg, i, j, k)) {
-            if (!arg.shouldSuffocate(i, j - 1, k) && !this.areBlocksAroundFlammable(arg, i, j, k ) && arg.getBlockId(i, j - 1, k) != BlockListener.stokedFire.id && arg.getBlockId(i, j - 1, k) != Block.FIRE.id) {
+            if (!arg.shouldSuffocate(i, j - 1, k) && !this.areBlocksAroundFlammable(arg, i, j, k) && arg.getBlockId(i, j - 1, k) != BlockListener.stokedFire.id && arg.getBlockId(i, j - 1, k) != Block.FIRE.id) {
                 arg.setBlock(i, j, k, 0);
             } else {
                 arg.scheduleBlockUpdate(i, j, k, this.id, this.getTickRate());
@@ -189,7 +187,7 @@ public class StokedFireBlock extends TemplateFireBlock implements BlockWithWorld
 //        double var14 = (double)((float)var9 / 256.0F);
 //        double var16 = (double)(((float)var9 + 15.99F) / 256.0F);
 
-        Atlas.Sprite atlasTX =  Atlases.getTerrain().getTexture(var6);
+        Atlas.Sprite atlasTX = Atlases.getTerrain().getTexture(var6);
         double var10 = atlasTX.getStartU();
         double var12 = atlasTX.getEndU();
         double var14 = atlasTX.getStartV();
@@ -204,22 +202,22 @@ public class StokedFireBlock extends TemplateFireBlock implements BlockWithWorld
         double var31;
         double var33;
         if (true) {
-            double var19 = (double)i + 0.5D + 0.2D;
-            var21 = (double)i + 0.5D - 0.2D;
-            var23 = (double)k + 0.5D + 0.2D;
-            var25 = (double)k + 0.5D - 0.2D;
-            var27 = (double)i + 0.5D - 0.3D;
-            var29 = (double)i + 0.5D + 0.3D;
-            var31 = (double)k + 0.5D - 0.3D;
-            var33 = (double)k + 0.5D + 0.3D;
-            var5.vertex(var27, (double)((float)j + var18), (double)(k + 1), var12, var14);
-            var5.vertex(var19, (double)(j + 0), (double)(k + 1), var12, var16);
-            var5.vertex(var19, (double)(j + 0), (double)(k + 0), var10, var16);
-            var5.vertex(var27, (double)((float)j + var18), (double)(k + 0), var10, var14);
-            var5.vertex(var29, (double)((float)j + var18), (double)(k + 0), var12, var14);
-            var5.vertex(var21, (double)(j + 0), (double)(k + 0), var12, var16);
-            var5.vertex(var21, (double)(j + 0), (double)(k + 1), var10, var16);
-            var5.vertex(var29, (double)((float)j + var18), (double)(k + 1), var10, var14);
+            double var19 = (double) i + 0.5D + 0.2D;
+            var21 = (double) i + 0.5D - 0.2D;
+            var23 = (double) k + 0.5D + 0.2D;
+            var25 = (double) k + 0.5D - 0.2D;
+            var27 = (double) i + 0.5D - 0.3D;
+            var29 = (double) i + 0.5D + 0.3D;
+            var31 = (double) k + 0.5D - 0.3D;
+            var33 = (double) k + 0.5D + 0.3D;
+            var5.vertex(var27, (float) j + var18, k + 1, var12, var14);
+            var5.vertex(var19, j, k + 1, var12, var16);
+            var5.vertex(var19, j, k, var10, var16);
+            var5.vertex(var27, (float) j + var18, k, var10, var14);
+            var5.vertex(var29, (float) j + var18, k, var12, var14);
+            var5.vertex(var21, j, k, var12, var16);
+            var5.vertex(var21, j, k + 1, var10, var16);
+            var5.vertex(var29, (float) j + var18, k + 1, var10, var14);
 
 //            var10 = (double)((float)var8 / 256.0F);
 //            var12 = (double)(((float)var8 + 15.99F) / 256.0F);
@@ -231,30 +229,30 @@ public class StokedFireBlock extends TemplateFireBlock implements BlockWithWorld
             var14 = atlasTX.getStartV();
             var16 = atlasTX.getEndV();
 
-            var5.vertex((double)(i + 1), (double)((float)j + var18), var33, var12, var14);
-            var5.vertex((double)(i + 1), (double)(j + 0), var25, var12, var16);
-            var5.vertex((double)(i + 0), (double)(j + 0), var25, var10, var16);
-            var5.vertex((double)(i + 0), (double)((float)j + var18), var33, var10, var14);
-            var5.vertex((double)(i + 0), (double)((float)j + var18), var31, var12, var14);
-            var5.vertex((double)(i + 0), (double)(j + 0), var23, var12, var16);
-            var5.vertex((double)(i + 1), (double)(j + 0), var23, var10, var16);
-            var5.vertex((double)(i + 1), (double)((float)j + var18), var31, var10, var14);
-            var19 = (double)i + 0.5D - 0.5D;
-            var21 = (double)i + 0.5D + 0.5D;
-            var23 = (double)k + 0.5D - 0.5D;
-            var25 = (double)k + 0.5D + 0.5D;
-            var27 = (double)i + 0.5D - 0.4D;
-            var29 = (double)i + 0.5D + 0.4D;
-            var31 = (double)k + 0.5D - 0.4D;
-            var33 = (double)k + 0.5D + 0.4D;
-            var5.vertex(var27, (double)((float)j + var18), (double)(k + 0), var10, var14);
-            var5.vertex(var19, (double)(j + 0), (double)(k + 0), var10, var16);
-            var5.vertex(var19, (double)(j + 0), (double)(k + 1), var12, var16);
-            var5.vertex(var27, (double)((float)j + var18), (double)(k + 1), var12, var14);
-            var5.vertex(var29, (double)((float)j + var18), (double)(k + 1), var10, var14);
-            var5.vertex(var21, (double)(j + 0), (double)(k + 1), var10, var16);
-            var5.vertex(var21, (double)(j + 0), (double)(k + 0), var12, var16);
-            var5.vertex(var29, (double)((float)j + var18), (double)(k + 0), var12, var14);
+            var5.vertex(i + 1, (float) j + var18, var33, var12, var14);
+            var5.vertex(i + 1, j, var25, var12, var16);
+            var5.vertex(i, j, var25, var10, var16);
+            var5.vertex(i, (float) j + var18, var33, var10, var14);
+            var5.vertex(i, (float) j + var18, var31, var12, var14);
+            var5.vertex(i, j, var23, var12, var16);
+            var5.vertex(i + 1, j, var23, var10, var16);
+            var5.vertex(i + 1, (float) j + var18, var31, var10, var14);
+            var19 = (double) i + 0.5D - 0.5D;
+            var21 = (double) i + 0.5D + 0.5D;
+            var23 = (double) k + 0.5D - 0.5D;
+            var25 = (double) k + 0.5D + 0.5D;
+            var27 = (double) i + 0.5D - 0.4D;
+            var29 = (double) i + 0.5D + 0.4D;
+            var31 = (double) k + 0.5D - 0.4D;
+            var33 = (double) k + 0.5D + 0.4D;
+            var5.vertex(var27, (float) j + var18, k, var10, var14);
+            var5.vertex(var19, j, k, var10, var16);
+            var5.vertex(var19, j, k + 1, var12, var16);
+            var5.vertex(var27, (float) j + var18, k + 1, var12, var14);
+            var5.vertex(var29, (float) j + var18, k + 1, var10, var14);
+            var5.vertex(var21, j, k + 1, var10, var16);
+            var5.vertex(var21, j, k, var12, var16);
+            var5.vertex(var29, (float) j + var18, k, var12, var14);
 
 //            var10 = (double)((float)var8 / 256.0F);
 //            var12 = (double)(((float)var8 + 15.99F) / 256.0F);
@@ -266,14 +264,14 @@ public class StokedFireBlock extends TemplateFireBlock implements BlockWithWorld
             var14 = atlasTX.getStartV();
             var16 = atlasTX.getEndV();
 
-            var5.vertex((double)(i + 0), (double)((float)j + var18), var33, var10, var14);
-            var5.vertex((double)(i + 0), (double)(j + 0), var25, var10, var16);
-            var5.vertex((double)(i + 1), (double)(j + 0), var25, var12, var16);
-            var5.vertex((double)(i + 1), (double)((float)j + var18), var33, var12, var14);
-            var5.vertex((double)(i + 1), (double)((float)j + var18), var31, var10, var14);
-            var5.vertex((double)(i + 1), (double)(j + 0), var23, var10, var16);
-            var5.vertex((double)(i + 0), (double)(j + 0), var23, var12, var16);
-            var5.vertex((double)(i + 0), (double)((float)j + var18), var31, var12, var14);
+            var5.vertex(i, (float) j + var18, var33, var10, var14);
+            var5.vertex(i, j, var25, var10, var16);
+            var5.vertex(i + 1, j, var25, var12, var16);
+            var5.vertex(i + 1, (float) j + var18, var33, var12, var14);
+            var5.vertex(i + 1, (float) j + var18, var31, var10, var14);
+            var5.vertex(i + 1, j, var23, var10, var16);
+            var5.vertex(i, j, var23, var12, var16);
+            var5.vertex(i, (float) j + var18, var31, var12, var14);
         }
 
         return true;

@@ -1,10 +1,7 @@
 package net.kozibrodka.wolves.items;
 
-import net.kozibrodka.wolves.entity.BroadheadArrowEntity;
 import net.kozibrodka.wolves.events.ItemListener;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ArrowEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.template.item.TemplateItem;
@@ -17,8 +14,7 @@ public class DebugItem1 extends TemplateItem {
         maxCount = 1;
     }
 
-    public ItemStack use(ItemStack ItemInstance, World world, PlayerEntity entityplayer)
-    {
+    public ItemStack use(ItemStack ItemInstance, World world, PlayerEntity entityplayer) {
         //TODO: DELETE
 //        entityplayer.inventory.method_671(new ItemStack(ItemListener.refinedPickAxe, 1));
 //        entityplayer.inventory.method_671(new ItemStack(ItemListener.refinedAxe, 1));

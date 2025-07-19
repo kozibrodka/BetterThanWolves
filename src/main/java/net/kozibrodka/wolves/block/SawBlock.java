@@ -31,14 +31,12 @@ import net.modificationstation.stationapi.api.util.Identifier;
 import java.util.List;
 import java.util.Random;
 
-@EnvironmentInterface(value=EnvType.CLIENT, itf=BlockWithWorldRenderer.class)
-@EnvironmentInterface(value=EnvType.CLIENT, itf=BlockWithInventoryRenderer.class)
+@EnvironmentInterface(value = EnvType.CLIENT, itf = BlockWithWorldRenderer.class)
+@EnvironmentInterface(value = EnvType.CLIENT, itf = BlockWithInventoryRenderer.class)
 public class SawBlock extends TemplateBlock
-    implements MechanicalDevice, RotatableBlock, BlockWithWorldRenderer, BlockWithInventoryRenderer
-{
+        implements MechanicalDevice, RotatableBlock, BlockWithWorldRenderer, BlockWithInventoryRenderer {
 
-    public SawBlock(Identifier iid)
-    {
+    public SawBlock(Identifier iid) {
         super(iid, Material.WOOD);
         setHardness(2.0F);
         setSoundGroup(WOOD_SOUND_GROUP);
@@ -46,203 +44,173 @@ public class SawBlock extends TemplateBlock
         setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 0.75F, 1.0F);
     }
 
-    public int getTextureId(BlockView blockAccess, int i, int j, int k, int iSide)
-    {
+    public int getTextureId(BlockView blockAccess, int i, int j, int k, int iSide) {
         int iFacing = GetFacing(blockAccess, i, j, k);
         return iSide != iFacing ? TextureListener.saw_side : TextureListener.saw_face;
     }
 
-    public int getTexture(int iSide)
-    {
+    public int getTexture(int iSide) {
         return iSide != 1 ? TextureListener.saw_side : TextureListener.saw_face;
     }
 
-    public int getTickRate()
-    {
+    public int getTickRate() {
         return iSawTickRate;
     }
 
-    public void onPlaced(World world, int i, int j, int k, int iFacing)
-    {
+    public void onPlaced(World world, int i, int j, int k, int iFacing) {
         SetFacing(world, i, j, k, UnsortedUtils.getOppositeFacing(iFacing));
     }
 
-    public void onPlaced(World world, int i, int j, int k, LivingEntity entityLiving)
-    {
+    public void onPlaced(World world, int i, int j, int k, LivingEntity entityLiving) {
         int iFacing = UnsortedUtils.ConvertPlacingEntityOrientationToBlockFacing(entityLiving);
         SetFacing(world, i, j, k, iFacing);
     }
 
-    public void onPlaced(World world, int i, int j, int k)
-    {
+    public void onPlaced(World world, int i, int j, int k) {
         super.onPlaced(world, i, j, k);
         world.scheduleBlockUpdate(i, j, k, id, getTickRate());
     }
 
-    public boolean isOpaque()
-    {
+    public boolean isOpaque() {
         return false;
     }
 
-    public boolean isFullCube()
-    {
+    public boolean isFullCube() {
         return false;
     }
 
-    public Box getCollisionShape(World world, int i, int j, int k)
-    {
+    public Box getCollisionShape(World world, int i, int j, int k) {
         int iFacing = GetFacing(world, i, j, k);
-        switch(iFacing)
-        {
-        case 0: // '\0'
-            return Box.createCached((float)i, ((float)j + 1.0F) - 0.75F, (float)k, (float)i + 1.0F, (float)j + 1.0F, (float)k + 1.0F);
+        switch (iFacing) {
+            case 0: // '\0'
+                return Box.createCached((float) i, ((float) j + 1.0F) - 0.75F, (float) k, (float) i + 1.0F, (float) j + 1.0F, (float) k + 1.0F);
 
-        case 1: // '\001'
-            return Box.createCached((float)i, (float)j, (float)k, (float)i + 1.0F, (float)j + 0.75F, (float)k + 1.0F);
+            case 1: // '\001'
+                return Box.createCached((float) i, (float) j, (float) k, (float) i + 1.0F, (float) j + 0.75F, (float) k + 1.0F);
 
-        case 2: // '\002'
-            return Box.createCached((float)i, (float)j, ((float)k + 1.0F) - 0.75F, (float)i + 1.0F, (float)j + 1.0F, (float)k + 1.0F);
+            case 2: // '\002'
+                return Box.createCached((float) i, (float) j, ((float) k + 1.0F) - 0.75F, (float) i + 1.0F, (float) j + 1.0F, (float) k + 1.0F);
 
-        case 3: // '\003'
-            return Box.createCached((float)i, (float)j, (float)k, (float)i + 1.0F, (float)j + 1.0F, (float)k + 0.75F);
+            case 3: // '\003'
+                return Box.createCached((float) i, (float) j, (float) k, (float) i + 1.0F, (float) j + 1.0F, (float) k + 0.75F);
 
-        case 4: // '\004'
-            return Box.createCached(((float)i + 1.0F) - 0.75F, (float)j, (float)k, (float)i + 1.0F, (float)j + 1.0F, (float)k + 1.0F);
+            case 4: // '\004'
+                return Box.createCached(((float) i + 1.0F) - 0.75F, (float) j, (float) k, (float) i + 1.0F, (float) j + 1.0F, (float) k + 1.0F);
         }
-        return Box.createCached((float)i, (float)j, (float)k, (float)i + 0.75F, (float)j + 1.0F, (float)k + 1.0F);
+        return Box.createCached((float) i, (float) j, (float) k, (float) i + 0.75F, (float) j + 1.0F, (float) k + 1.0F);
     }
 
-    public void updateBoundingBox(BlockView iblockaccess, int i, int j, int k)
-    {
+    public void updateBoundingBox(BlockView iblockaccess, int i, int j, int k) {
         int iFacing = GetFacing(iblockaccess, i, j, k);
-        switch(iFacing)
-        {
-        case 0: // '\0'
-            setBoundingBox(0.0F, 0.25F, 0.0F, 1.0F, 1.0F, 1.0F);
-            break;
+        switch (iFacing) {
+            case 0: // '\0'
+                setBoundingBox(0.0F, 0.25F, 0.0F, 1.0F, 1.0F, 1.0F);
+                break;
 
-        case 1: // '\001'
-            setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 0.75F, 1.0F);
-            break;
+            case 1: // '\001'
+                setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 0.75F, 1.0F);
+                break;
 
-        case 2: // '\002'
-            setBoundingBox(0.0F, 0.0F, 0.25F, 1.0F, 1.0F, 1.0F);
-            break;
+            case 2: // '\002'
+                setBoundingBox(0.0F, 0.0F, 0.25F, 1.0F, 1.0F, 1.0F);
+                break;
 
-        case 3: // '\003'
-            setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 0.75F);
-            break;
+            case 3: // '\003'
+                setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 0.75F);
+                break;
 
-        case 4: // '\004'
-            setBoundingBox(0.25F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-            break;
+            case 4: // '\004'
+                setBoundingBox(0.25F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+                break;
 
-        default:
-            setBoundingBox(0.0F, 0.0F, 0.0F, 0.75F, 1.0F, 1.0F);
-            break;
+            default:
+                setBoundingBox(0.0F, 0.0F, 0.0F, 0.75F, 1.0F, 1.0F);
+                break;
         }
     }
 
-    public void setupRenderBoundingBox()
-    {
+    public void setupRenderBoundingBox() {
         setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 0.75F, 1.0F);
     }
 
-    public void neighborUpdate(World world, int i, int j, int k, int iid)
-    {
-        if(iid == BlockListener.axleBlock.id || iid == BlockListener.handCrank.id)
-        {
+    public void neighborUpdate(World world, int i, int j, int k, int iid) {
+        if (iid == BlockListener.axleBlock.id || iid == BlockListener.handCrank.id) {
             world.scheduleBlockUpdate(i, j, k, id, getTickRate());
-        } else
-        {
+        } else {
             world.scheduleBlockUpdate(i, j, k, id, getTickRate() + world.random.nextInt(6));
         }
     }
 
-    public void onTick(World world, int i, int j, int k, Random random)
-    {
+    public void onTick(World world, int i, int j, int k, Random random) {
         boolean bReceivingPower = IsInputtingMechanicalPower(world, i, j, k);
         boolean bOn = IsBlockOn(world, i, j, k);
-        if(bOn != bReceivingPower)
-        {
-            world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.explode", 0.2F, 1.25F);
-            if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+        if (bOn != bReceivingPower) {
+            world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "random.explode", 0.2F, 1.25F);
+            if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
                 voicePacket(world, "random.explode", i, j, k, 0.2F, 1.25F);
             }
             EmitSawParticles(world, i, j, k, random);
             SetBlockOn(world, i, j, k, bReceivingPower);
-            if(bReceivingPower)
-            {
+            if (bReceivingPower) {
                 world.scheduleBlockUpdate(i, j, k, id, getTickRate() + random.nextInt(6));
             }
-        } else
-        if(bOn)
-        {
+        } else if (bOn) {
             int iFacing = GetFacing(world, i, j, k);
             BlockPosition targetPos = new BlockPosition(i, j, k);
             targetPos.AddFacingAsOffset(iFacing);
-            if(!AttemptToSawBlock(world, targetPos.i, targetPos.j, targetPos.k, random, iFacing))
-            {
+            if (!AttemptToSawBlock(world, targetPos.i, targetPos.j, targetPos.k, random, iFacing)) {
                 BreakSaw(world, i, j, k);
             }
         }
     }
 
-    public void randomDisplayTick(World world, int i, int j, int k, Random random)
-    {
-        if(IsBlockOn(world, i, j, k))
-        {
+    public void randomDisplayTick(World world, int i, int j, int k, Random random) {
+        if (IsBlockOn(world, i, j, k)) {
             EmitSawParticles(world, i, j, k, random);
         }
     }
 
-    public void onEntityCollision(World world, int i, int j, int k, Entity entity)
-    {
-        if(IsBlockOn(world, i, j, k) && (entity instanceof LivingEntity))
-        {
+    public void onEntityCollision(World world, int i, int j, int k, Entity entity) {
+        if (IsBlockOn(world, i, j, k) && (entity instanceof LivingEntity)) {
             int iFacing = GetFacing(world, i, j, k);
             float fHalfLength = 0.3125F;
             float fHalfWidth = 0.0078125F;
             float fBlockHeight = 0.25F;
             Box sawBox;
-            switch(iFacing)
-            {
-            case 0: // '\0'
-                sawBox = Box.createCached(0.5F - fHalfLength, 0.0D, 0.5F - fHalfWidth, 0.5F + fHalfLength, fBlockHeight, 0.5F + fHalfWidth);
-                break;
+            switch (iFacing) {
+                case 0: // '\0'
+                    sawBox = Box.createCached(0.5F - fHalfLength, 0.0D, 0.5F - fHalfWidth, 0.5F + fHalfLength, fBlockHeight, 0.5F + fHalfWidth);
+                    break;
 
-            case 1: // '\001'
-                sawBox = Box.createCached(0.5F - fHalfLength, 1.0F - fBlockHeight, 0.5F - fHalfWidth, 0.5F + fHalfLength, 1.0D, 0.5F + fHalfWidth);
-                break;
+                case 1: // '\001'
+                    sawBox = Box.createCached(0.5F - fHalfLength, 1.0F - fBlockHeight, 0.5F - fHalfWidth, 0.5F + fHalfLength, 1.0D, 0.5F + fHalfWidth);
+                    break;
 
-            case 2: // '\002'
-                sawBox = Box.createCached(0.5F - fHalfLength, 0.5F - fHalfWidth, 0.0D, 0.5F + fHalfLength, 0.5F + fHalfWidth, fBlockHeight);
-                break;
+                case 2: // '\002'
+                    sawBox = Box.createCached(0.5F - fHalfLength, 0.5F - fHalfWidth, 0.0D, 0.5F + fHalfLength, 0.5F + fHalfWidth, fBlockHeight);
+                    break;
 
-            case 3: // '\003'
-                sawBox = Box.createCached(0.5F - fHalfLength, 0.5F - fHalfWidth, 1.0F - fBlockHeight, 0.5F + fHalfLength, 0.5F + fHalfWidth, 1.0D);
-                break;
+                case 3: // '\003'
+                    sawBox = Box.createCached(0.5F - fHalfLength, 0.5F - fHalfWidth, 1.0F - fBlockHeight, 0.5F + fHalfLength, 0.5F + fHalfWidth, 1.0D);
+                    break;
 
-            case 4: // '\004'
-                sawBox = Box.createCached(0.0D, 0.5F - fHalfWidth, 0.5F - fHalfLength, fBlockHeight, 0.5F + fHalfWidth, 0.5F + fHalfLength);
-                break;
+                case 4: // '\004'
+                    sawBox = Box.createCached(0.0D, 0.5F - fHalfWidth, 0.5F - fHalfLength, fBlockHeight, 0.5F + fHalfWidth, 0.5F + fHalfLength);
+                    break;
 
-            default:
-                sawBox = Box.createCached(1.0F - fBlockHeight, 0.5F - fHalfWidth, 0.5F - fHalfLength, 1.0D, 0.5F + fHalfWidth, 0.5F + fHalfLength);
-                break;
+                default:
+                    sawBox = Box.createCached(1.0F - fBlockHeight, 0.5F - fHalfWidth, 0.5F - fHalfLength, 1.0D, 0.5F + fHalfWidth, 0.5F + fHalfLength);
+                    break;
             }
             sawBox = sawBox.offset(i, j, k);
             List collisionList = null;
             collisionList = world.collectEntitiesByClass(LivingEntity.class, sawBox);
-            if(collisionList != null && collisionList.size() > 0)
-            {
-                for(int iTempListIndex = 0; iTempListIndex < collisionList.size(); iTempListIndex++)
-                {
-                    LivingEntity tempTargetEntity = (LivingEntity)collisionList.get(iTempListIndex);
-                    if(tempTargetEntity.damage(null, 4))
-                    {
-                        world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.explode", 0.2F, 1.25F);
-                        if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+            if (collisionList != null && collisionList.size() > 0) {
+                for (int iTempListIndex = 0; iTempListIndex < collisionList.size(); iTempListIndex++) {
+                    LivingEntity tempTargetEntity = (LivingEntity) collisionList.get(iTempListIndex);
+                    if (tempTargetEntity.damage(null, 4)) {
+                        world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "random.explode", 0.2F, 1.25F);
+                        if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
                             voicePacket(world, "random.explode", i, j, k, 0.2F, 1.25F);
                         }
                         EmitBloodParticles(world, i, j, k, world.random);
@@ -253,36 +221,30 @@ public class SawBlock extends TemplateBlock
         }
     }
 
-    public int GetFacing(BlockView iBlockAccess, int i, int j, int k)
-    {
+    public int GetFacing(BlockView iBlockAccess, int i, int j, int k) {
         return iBlockAccess.getBlockMeta(i, j, k) & 7;
     }
 
-    public void SetFacing(World world, int i, int j, int k, int iFacing)
-    {
+    public void SetFacing(World world, int i, int j, int k, int iFacing) {
         int iMetaData = world.getBlockMeta(i, j, k) & -8;
         iMetaData |= iFacing;
         world.setBlockMeta(i, j, k, iMetaData);
     }
 
-    public boolean CanRotate(BlockView iBlockAccess, int i, int j, int k)
-    {
+    public boolean CanRotate(BlockView iBlockAccess, int i, int j, int k) {
         int iFacing = GetFacing(iBlockAccess, i, j, k);
         return iFacing != 0;
     }
 
-    public boolean CanTransmitRotation(BlockView iBlockAccess, int i, int j, int k)
-    {
+    public boolean CanTransmitRotation(BlockView iBlockAccess, int i, int j, int k) {
         int iFacing = GetFacing(iBlockAccess, i, j, k);
         return iFacing != 0 && iFacing != 1;
     }
 
-    public void Rotate(World world, int i, int j, int k, boolean bReverse)
-    {
+    public void Rotate(World world, int i, int j, int k, boolean bReverse) {
         int iFacing = GetFacing(world, i, j, k);
         int iNewFacing = UnsortedUtils.RotateFacingAroundJ(iFacing, bReverse);
-        if(iNewFacing != iFacing)
-        {
+        if (iNewFacing != iFacing) {
             SetFacing(world, i, j, k, iNewFacing);
             world.setBlocksDirty(i, j, k, i, j, k);
             world.scheduleBlockUpdate(i, j, k, id, getTickRate());
@@ -291,73 +253,67 @@ public class SawBlock extends TemplateBlock
         UnsortedUtils.DestroyHorizontallyAttachedAxles(world, i, j, k);
     }
 
-    public boolean IsBlockOn(BlockView iBlockAccess, int i, int j, int k)
-    {
+    public boolean IsBlockOn(BlockView iBlockAccess, int i, int j, int k) {
         return (iBlockAccess.getBlockMeta(i, j, k) & 8) > 0;
     }
 
-    public void SetBlockOn(World world, int i, int j, int k, boolean bOn)
-    {
+    public void SetBlockOn(World world, int i, int j, int k, boolean bOn) {
         int iMetaData = world.getBlockMeta(i, j, k) & 7;
-        if(bOn)
-        {
+        if (bOn) {
             iMetaData |= 8;
         }
         world.setBlockMeta(i, j, k, iMetaData);
         world.blockUpdateEvent(i, j, k);
     }
 
-    void EmitSawParticles(World world, int i, int j, int k, Random random)
-    {
+    void EmitSawParticles(World world, int i, int j, int k, Random random) {
         int iFacing = GetFacing(world, i, j, k);
         float fBladeXPos = i;
         float fBladeYPos = j;
         float fBladeZPos = k;
         float fBladeXExtent = 0.0F;
         float fBladeZExtent = 0.0F;
-        switch(iFacing)
-        {
-        case 0: // '\0'
-            fBladeXPos += 0.5F;
-            fBladeZPos += 0.5F;
-            fBladeXExtent = 1.0F;
-            break;
+        switch (iFacing) {
+            case 0: // '\0'
+                fBladeXPos += 0.5F;
+                fBladeZPos += 0.5F;
+                fBladeXExtent = 1.0F;
+                break;
 
-        case 1: // '\001'
-            fBladeXPos += 0.5F;
-            fBladeZPos += 0.5F;
-            fBladeYPos++;
-            fBladeXExtent = 1.0F;
-            break;
+            case 1: // '\001'
+                fBladeXPos += 0.5F;
+                fBladeZPos += 0.5F;
+                fBladeYPos++;
+                fBladeXExtent = 1.0F;
+                break;
 
-        case 2: // '\002'
-            fBladeXPos += 0.5F;
-            fBladeYPos += 0.5F;
-            fBladeXExtent = 1.0F;
-            break;
+            case 2: // '\002'
+                fBladeXPos += 0.5F;
+                fBladeYPos += 0.5F;
+                fBladeXExtent = 1.0F;
+                break;
 
-        case 3: // '\003'
-            fBladeXPos += 0.5F;
-            fBladeYPos += 0.5F;
-            fBladeZPos++;
-            fBladeXExtent = 1.0F;
-            break;
+            case 3: // '\003'
+                fBladeXPos += 0.5F;
+                fBladeYPos += 0.5F;
+                fBladeZPos++;
+                fBladeXExtent = 1.0F;
+                break;
 
-        case 4: // '\004'
-            fBladeYPos += 0.5F;
-            fBladeZPos += 0.5F;
-            fBladeZExtent = 1.0F;
-            break;
+            case 4: // '\004'
+                fBladeYPos += 0.5F;
+                fBladeZPos += 0.5F;
+                fBladeZExtent = 1.0F;
+                break;
 
-        default:
-            fBladeYPos += 0.5F;
-            fBladeZPos += 0.5F;
-            fBladeXPos++;
-            fBladeZExtent = 1.0F;
-            break;
+            default:
+                fBladeYPos += 0.5F;
+                fBladeZPos += 0.5F;
+                fBladeXPos++;
+                fBladeZExtent = 1.0F;
+                break;
         }
-        for(int counter = 0; counter < 5; counter++)
-        {
+        for (int counter = 0; counter < 5; counter++) {
             float smokeX = fBladeXPos + (random.nextFloat() - 0.5F) * fBladeXExtent;
             float smokeY = fBladeYPos + random.nextFloat() * 0.1F;
             float smokeZ = fBladeZPos + (random.nextFloat() - 0.5F) * fBladeZExtent;
@@ -366,51 +322,45 @@ public class SawBlock extends TemplateBlock
 
     }
 
-    void EmitBloodParticles(World world, int i, int j, int k, Random random)
-    {
+    void EmitBloodParticles(World world, int i, int j, int k, Random random) {
         int iFacing = GetFacing(world, i, j, k);
         BlockPosition iTargetPos = new BlockPosition(i, j, k);
         iTargetPos.AddFacingAsOffset(iFacing);
-        for(int counter = 0; counter < 10; counter++)
-        {
-            float smokeX = (float)iTargetPos.i + random.nextFloat();
-            float smokeY = (float)iTargetPos.j + random.nextFloat();
-            float smokeZ = (float)iTargetPos.k + random.nextFloat();
+        for (int counter = 0; counter < 10; counter++) {
+            float smokeX = (float) iTargetPos.i + random.nextFloat();
+            float smokeY = (float) iTargetPos.j + random.nextFloat();
+            float smokeZ = (float) iTargetPos.k + random.nextFloat();
             world.addParticle("reddust", smokeX, smokeY, smokeZ, 0.0D, 0.0D, 0.0D);
-            if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+            if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
                 particlePacket(world, "reddust", smokeX, smokeY, smokeZ);
             }
         }
     }
 
     @Environment(EnvType.SERVER)
-    public void voicePacket(World world, String name, int x, int y, int z, float g, float h){
+    public void voicePacket(World world, String name, int x, int y, int z, float g, float h) {
         List list2 = world.players;
-        if(list2.size() != 0) {
-            for(int k = 0; k < list2.size(); k++)
-            {
+        if (list2.size() != 0) {
+            for (int k = 0; k < list2.size(); k++) {
                 ServerPlayerEntity player1 = (ServerPlayerEntity) list2.get(k);
-                PacketHelper.sendTo(player1, new SoundPacket(name, x, y, z, g,h));
+                PacketHelper.sendTo(player1, new SoundPacket(name, x, y, z, g, h));
             }
         }
     }
 
     @Environment(EnvType.SERVER)
-    public void particlePacket(World world, String name, double x, double y, double z){
+    public void particlePacket(World world, String name, double x, double y, double z) {
         List list2 = world.players;
-        if(list2.size() != 0) {
-            for(int k1 = 0; k1 < list2.size(); k1++)
-            {
+        if (list2.size() != 0) {
+            for (int k1 = 0; k1 < list2.size(); k1++) {
                 ServerPlayerEntity player1 = (ServerPlayerEntity) list2.get(k1);
-                PacketHelper.sendTo(player1, new ParticlePacket(name, x, y, z,0,0,0));
+                PacketHelper.sendTo(player1, new ParticlePacket(name, x, y, z, 0, 0, 0));
             }
         }
     }
 
-    boolean AttemptToSawBlock(World world, int i, int j, int k, Random random, int iSawFacing)
-    {
-        if(!world.isAir(i, j, k))
-        {
+    boolean AttemptToSawBlock(World world, int i, int j, int k, Random random, int iSawFacing) {
+        if (!world.isAir(i, j, k)) {
             int blockId = world.getBlockId(i, j, k);
             Block block = BLOCKS[blockId];
             if (null != block) {
@@ -485,64 +435,52 @@ public class SawBlock extends TemplateBlock
         return true;
     }
 
-    public void BreakSaw(World world, int i, int j, int k)
-    {
-        for(int iTemp = 0; iTemp < 2; iTemp++)
-        {
+    public void BreakSaw(World world, int i, int j, int k) {
+        for (int iTemp = 0; iTemp < 2; iTemp++) {
             UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, ItemListener.gear.id, 0);
         }
 
-        for(int iTemp = 0; iTemp < 2; iTemp++)
-        {
+        for (int iTemp = 0; iTemp < 2; iTemp++) {
             UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, Block.PLANKS.asItem().id, 0);
         }
 
-        for(int iTemp = 0; iTemp < 2; iTemp++)
-        {
+        for (int iTemp = 0; iTemp < 2; iTemp++) {
             UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, Item.IRON_INGOT.id, 0);
         }
 
-        for(int iTemp = 0; iTemp < 1; iTemp++)
-        {
+        for (int iTemp = 0; iTemp < 1; iTemp++) {
             UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, ItemListener.belt.id, 0);
         }
 
-        world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.explode", 0.2F, 1.25F);
-        if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+        world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "random.explode", 0.2F, 1.25F);
+        if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
             voicePacket(world, "random.explode", i, j, k, 0.2F, 1.25F);
         }
         world.setBlock(i, j, k, 0);
     }
 
-    public boolean CanOutputMechanicalPower()
-    {
+    public boolean CanOutputMechanicalPower() {
         return false;
     }
 
-    public boolean CanInputMechanicalPower()
-    {
+    public boolean CanInputMechanicalPower() {
         return true;
     }
 
-    public boolean IsInputtingMechanicalPower(World world, int i, int j, int k)
-    {
+    public boolean IsInputtingMechanicalPower(World world, int i, int j, int k) {
         int iSawFacing = GetFacing(world, i, j, k);
-        for(int iFacing = 0; iFacing <= 5; iFacing++)
-        {
-            if(iFacing == iSawFacing)
-            {
+        for (int iFacing = 0; iFacing <= 5; iFacing++) {
+            if (iFacing == iSawFacing) {
                 continue;
             }
             BlockPosition targetPos = new BlockPosition(i, j, k);
             targetPos.AddFacingAsOffset(iFacing);
             int blockId = world.getBlockId(targetPos.i, targetPos.j, targetPos.k);
-            if(blockId != BlockListener.axleBlock.id)
-            {
+            if (blockId != BlockListener.axleBlock.id) {
                 continue;
             }
-            AxleBlock axleBlock = (AxleBlock)BlockListener.axleBlock;
-            if(axleBlock.IsAxleOrientedTowardsFacing(world, targetPos.i, targetPos.j, targetPos.k, iFacing) && axleBlock.GetPowerLevel(world, targetPos.i, targetPos.j, targetPos.k) > 0)
-            {
+            AxleBlock axleBlock = (AxleBlock) BlockListener.axleBlock;
+            if (axleBlock.IsAxleOrientedTowardsFacing(world, targetPos.i, targetPos.j, targetPos.k, iFacing) && axleBlock.GetPowerLevel(world, targetPos.i, targetPos.j, targetPos.k) > 0) {
                 return true;
             }
         }
@@ -550,12 +488,11 @@ public class SawBlock extends TemplateBlock
         return false;
     }
 
-    public boolean IsOutputtingMechanicalPower(World world, int i, int j, int l)
-    {
+    public boolean IsOutputtingMechanicalPower(World world, int i, int j, int l) {
         return false;
     }
 
-    private static int iSawTickRate = 10;
+    private static final int iSawTickRate = 10;
     public static final float fSawBaseHeight = 0.75F;
     private final int iSawTopTextureIndex = 56;
     private final int iSawSideTextureIndex = 57;
@@ -567,8 +504,7 @@ public class SawBlock extends TemplateBlock
         float f1 = 0.5F;
         float f2 = 0.75F;
         int l = GetFacing(tileView, x, y, z);
-        switch(l)
-        {
+        switch (l) {
             case 0: // '\0'
                 this.setBoundingBox(0.5F - f1, 1.0F - f2, 0.5F - f, 0.5F + f1, 1.0F, 0.5F + f);
                 break;
@@ -597,8 +533,7 @@ public class SawBlock extends TemplateBlock
         f = 0.3125F;
         f1 = 0.0078125F;
         f2 = 0.25F;
-        switch(l)
-        {
+        switch (l) {
             case 0: // '\0'
                 this.setBoundingBox(0.5F - f, 0.0F, 0.5F - f1, 0.5F + f, 0.999F, 0.5F + f1);
                 break;

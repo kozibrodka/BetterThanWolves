@@ -11,6 +11,7 @@ import net.kozibrodka.wolves.container.AnvilScreenHandler;
 import net.kozibrodka.wolves.entity.FallingAnvilEntity;
 import net.kozibrodka.wolves.events.ScreenHandlerListener;
 import net.kozibrodka.wolves.events.TextureListener;
+import net.kozibrodka.wolves.utils.CustomBlockRendering;
 import net.kozibrodka.wolves.utils.RotatableBlock;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.Block;
@@ -21,7 +22,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import net.kozibrodka.wolves.utils.CustomBlockRendering;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithInventoryRenderer;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
 import net.modificationstation.stationapi.api.gui.screen.container.GuiHelper;
@@ -30,10 +30,10 @@ import net.modificationstation.stationapi.api.util.Identifier;
 
 import java.util.Random;
 
-@EnvironmentInterface(value= EnvType.CLIENT, itf=BlockWithWorldRenderer.class)
-@EnvironmentInterface(value=EnvType.CLIENT, itf=BlockWithInventoryRenderer.class)
+@EnvironmentInterface(value = EnvType.CLIENT, itf = BlockWithWorldRenderer.class)
+@EnvironmentInterface(value = EnvType.CLIENT, itf = BlockWithInventoryRenderer.class)
 public class AnvilBlock extends TemplateBlock
-    implements RotatableBlock, BlockWithWorldRenderer, BlockWithInventoryRenderer {
+        implements RotatableBlock, BlockWithWorldRenderer, BlockWithInventoryRenderer {
 
     public AnvilBlock(Identifier iid) {
         super(iid, Material.METAL);
@@ -54,11 +54,9 @@ public class AnvilBlock extends TemplateBlock
     }
 
     public void onPlaced(World world, int i, int j, int k, int iFacing) {
-        if(iFacing < 2)
-        {
+        if (iFacing < 2) {
             iFacing = 2;
-        } else
-        {
+        } else {
             iFacing = UnsortedUtils.getOppositeFacing(iFacing);
         }
         SetFacing(world, i, j, k, iFacing);
@@ -66,7 +64,7 @@ public class AnvilBlock extends TemplateBlock
     }
 
     public void onPlaced(World world, int i, int j, int k, LivingEntity entityLiving) {
-        world.playSound(i,j,k, "wolves:anvil_place", 1.0F, 1.2F);
+        world.playSound(i, j, k, "wolves:anvil_place", 1.0F, 1.2F);
         int iFacing = UnsortedUtils.ConvertPlacingEntityOrientationToFlatBlockFacing(entityLiving);
         SetFacing(world, i, j, k, iFacing);
     }
@@ -81,16 +79,16 @@ public class AnvilBlock extends TemplateBlock
 
     public Box getCollisionShape(World world, int i, int j, int k) {
         int iFacing = GetFacing(world, i, j, k);
-        if(iFacing == 2 || iFacing == 3) {
-            return Box.createCached(((float)i + 0.5F) - 0.25F, (float)j, (float)k, (float)i + 0.5F + 0.25F, (float)j + 1.0F, (float)k + 1.0F);
+        if (iFacing == 2 || iFacing == 3) {
+            return Box.createCached(((float) i + 0.5F) - 0.25F, (float) j, (float) k, (float) i + 0.5F + 0.25F, (float) j + 1.0F, (float) k + 1.0F);
         } else {
-            return Box.createCached((float)i, (float)j, ((float)k + 0.5F) - 0.25F, (float)i + 1.0F, (float)j + 1.0F, (float)k + 0.5F + 0.25F);
+            return Box.createCached((float) i, (float) j, ((float) k + 0.5F) - 0.25F, (float) i + 1.0F, (float) j + 1.0F, (float) k + 0.5F + 0.25F);
         }
     }
 
     public void updateBoundingBox(BlockView iblockaccess, int i, int j, int k) {
         int iFacing = GetFacing(iblockaccess, i, j, k);
-        if(iFacing == 2 || iFacing == 3) {
+        if (iFacing == 2 || iFacing == 3) {
             setBoundingBox(0.25F, 0.0F, 0.0F, 0.75F, 1.0F, 1.0F);
         } else {
             setBoundingBox(0.0F, 0.0F, 0.25F, 1.0F, 1.0F, 0.75F);
@@ -116,7 +114,7 @@ public class AnvilBlock extends TemplateBlock
     public void Rotate(World world, int i, int j, int k, boolean bReverse) {
         int iFacing = GetFacing(world, i, j, k);
         int iNewFacing = UnsortedUtils.RotateFacingAroundJ(iFacing, bReverse);
-        if(iNewFacing != iFacing) {
+        if (iNewFacing != iFacing) {
             SetFacing(world, i, j, k, iNewFacing);
             world.setBlocksDirty(i, j, k, i, j, k);
             world.scheduleBlockUpdate(i, j, k, id, getTickRate());
@@ -124,34 +122,27 @@ public class AnvilBlock extends TemplateBlock
         }
     }
 
-    public void SetBlockBoundsRotatedAboutJToFacing(float x1, float y1, float z1, float x2, float y2, float z2, int iFacing)
-    {
+    public void SetBlockBoundsRotatedAboutJToFacing(float x1, float y1, float z1, float x2, float y2, float z2, int iFacing) {
         float rotatedX1;
         float rotatedZ1;
         float rotatedX2;
         float rotatedZ2;
-        if(iFacing == 4)
-        {
+        if (iFacing == 4) {
             rotatedX1 = 1.0F - x2;
             rotatedZ1 = 1.0F - z2;
             rotatedX2 = 1.0F - x1;
             rotatedZ2 = 1.0F - z1;
-        } else
-        if(iFacing == 3)
-        {
+        } else if (iFacing == 3) {
             rotatedX1 = z1;
             rotatedZ1 = x1;
             rotatedX2 = z2;
             rotatedZ2 = x2;
-        } else
-        if(iFacing == 2)
-        {
+        } else if (iFacing == 2) {
             rotatedX1 = 1.0F - z2;
             rotatedZ1 = 1.0F - x2;
             rotatedX2 = 1.0F - z1;
             rotatedZ2 = 1.0F - x1;
-        } else
-        {
+        } else {
             rotatedX1 = x1;
             rotatedZ1 = z1;
             rotatedX2 = x2;
@@ -170,15 +161,15 @@ public class AnvilBlock extends TemplateBlock
 
     private void method_436(World arg, int i, int j, int k) {
         if (method_435(arg, i, j - 1, k) && j >= 0) {
-            int facing = arg.getBlockMeta(i,j,k);
+            int facing = arg.getBlockMeta(i, j, k);
             byte var8 = 32;
             if (!fallInstantly && arg.isRegionLoaded(i - var8, j - var8, k - var8, i + var8, j + var8, k + var8)) {
-                FallingAnvilEntity var9 = new FallingAnvilEntity(arg, (double)((float)i + 0.5F), (double)((float)j + 0.5F), (double)((float)k + 0.5F), this.id, facing);
+                FallingAnvilEntity var9 = new FallingAnvilEntity(arg, (float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, this.id, facing);
                 arg.spawnEntity(var9);
             } else {
                 arg.setBlock(i, j, k, 0);
 
-                while(method_435(arg, i, j - 1, k) && j > 0) {
+                while (method_435(arg, i, j - 1, k) && j > 0) {
                     --j;
                 }
 
@@ -205,6 +196,7 @@ public class AnvilBlock extends TemplateBlock
             }
         }
     }
+
     public int getTickRate() {
         return 3;
     }

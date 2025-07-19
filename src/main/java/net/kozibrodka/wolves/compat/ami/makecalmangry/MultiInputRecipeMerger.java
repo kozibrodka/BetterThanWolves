@@ -9,8 +9,7 @@ import java.util.List;
 
 public class MultiInputRecipeMerger extends MultiInputCraftingManager {
 
-    public static final MultiInputRecipeMerger getInstance()
-    {
+    public static final MultiInputRecipeMerger getInstance() {
         return instance;
     }
 

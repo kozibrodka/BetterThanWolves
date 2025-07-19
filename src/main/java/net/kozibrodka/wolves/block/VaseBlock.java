@@ -4,15 +4,15 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.api.EnvironmentInterface;
 import net.fabricmc.loader.api.FabricLoader;
+import net.kozibrodka.wolves.block.entity.VaseBlockEntity;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.itemblocks.VaseBlockItem;
 import net.kozibrodka.wolves.network.SoundPacket;
-import net.kozibrodka.wolves.block.entity.VaseBlockEntity;
-import net.kozibrodka.wolves.utils.RotatableBlock;
-import net.kozibrodka.wolves.utils.InventoryHandler;
 import net.kozibrodka.wolves.utils.CustomBlockRendering;
-import net.minecraft.block.material.Material;
+import net.kozibrodka.wolves.utils.InventoryHandler;
+import net.kozibrodka.wolves.utils.RotatableBlock;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.entity.player.PlayerEntity;
@@ -24,21 +24,19 @@ import net.modificationstation.stationapi.api.block.HasCustomBlockItemFactory;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithInventoryRenderer;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
 import net.modificationstation.stationapi.api.network.packet.PacketHelper;
-import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockWithEntity;
+import net.modificationstation.stationapi.api.util.Identifier;
 
 import java.util.List;
 import java.util.Random;
 
-@EnvironmentInterface(value=EnvType.CLIENT, itf=BlockWithWorldRenderer.class)
-@EnvironmentInterface(value=EnvType.CLIENT, itf=BlockWithInventoryRenderer.class)
+@EnvironmentInterface(value = EnvType.CLIENT, itf = BlockWithWorldRenderer.class)
+@EnvironmentInterface(value = EnvType.CLIENT, itf = BlockWithInventoryRenderer.class)
 @HasCustomBlockItemFactory(VaseBlockItem.class)
 public class VaseBlock extends TemplateBlockWithEntity
-    implements RotatableBlock, BlockWithWorldRenderer, BlockWithInventoryRenderer
-{
+        implements RotatableBlock, BlockWithWorldRenderer, BlockWithInventoryRenderer {
 
-    public VaseBlock(Identifier iid)
-    {
+    public VaseBlock(Identifier iid) {
         super(iid, Material.GLASS);
         textureId = 224;
         setHardness(0.0F);
@@ -46,28 +44,23 @@ public class VaseBlock extends TemplateBlockWithEntity
         setBoundingBox(0.1875F, 0.0F, 0.1875F, 0.8125F, 1.0F, 0.8125F);
     }
 
-    public boolean isOpaque()
-    {
+    public boolean isOpaque() {
         return false;
     }
 
-    public boolean isFullCube()
-    {
+    public boolean isFullCube() {
         return false;
     }
 
-    public int getDroppedItemCount(Random random)
-    {
+    public int getDroppedItemCount(Random random) {
         return 0;
     }
 
-    public int getDroppedItemMeta(int i)
-    {
+    public int getDroppedItemMeta(int i) {
         return i;
     }
 
-    public int getTexture(int iSide, int iMetaData)
-    {
+    public int getTexture(int iSide, int iMetaData) {
         return switch (iMetaData) {
             case 0 -> TextureListener.vase_white;
             case 1 -> TextureListener.vase_orange;
@@ -89,35 +82,29 @@ public class VaseBlock extends TemplateBlockWithEntity
         };
     }
 
-    protected BlockEntity createBlockEntity()
-    {
+    protected BlockEntity createBlockEntity() {
         return new VaseBlockEntity();
     }
 
-    public boolean onUse(World world, int i, int j, int k, PlayerEntity entityPlayer)
-    {
-        if(world.isRemote)
-        {
+    public boolean onUse(World world, int i, int j, int k, PlayerEntity entityPlayer) {
+        if (world.isRemote) {
             return true;
         }
         ItemStack playerEquippedItemInstance = entityPlayer.getHand();
-        if(playerEquippedItemInstance != null && playerEquippedItemInstance.count > 0)
-        {
-            VaseBlockEntity tileEntityVase = (VaseBlockEntity)world.getBlockEntity(i, j, k);
+        if (playerEquippedItemInstance != null && playerEquippedItemInstance.count > 0) {
+            VaseBlockEntity tileEntityVase = (VaseBlockEntity) world.getBlockEntity(i, j, k);
             int iTempStackSize = playerEquippedItemInstance.count;
-            if(InventoryHandler.addItemInstanceToInventory(tileEntityVase, playerEquippedItemInstance))
-            {
+            if (InventoryHandler.addItemInstanceToInventory(tileEntityVase, playerEquippedItemInstance)) {
                 entityPlayer.method_503();
-                world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.pop", 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-                if(net.fabricmc.loader.FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+                world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "random.pop", 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                if (net.fabricmc.loader.FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
                     voicePacket(world, "random.explode", i, j, k, 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                 }
                 return true;
             }
-            if(playerEquippedItemInstance.count < iTempStackSize)
-            {
-                world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.pop", 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-                if(net.fabricmc.loader.FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+            if (playerEquippedItemInstance.count < iTempStackSize) {
+                world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "random.pop", 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                if (net.fabricmc.loader.FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
                     voicePacket(world, "random.explode", i, j, k, 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                 }
                 return true;
@@ -127,54 +114,45 @@ public class VaseBlock extends TemplateBlockWithEntity
     }
 
     @Environment(EnvType.SERVER)
-    public void voicePacket(World world, String name, int x, int y, int z, float g, float h){
+    public void voicePacket(World world, String name, int x, int y, int z, float g, float h) {
         List list2 = world.players;
-        if(list2.size() != 0) {
-            for(int k = 0; k < list2.size(); k++)
-            {
+        if (list2.size() != 0) {
+            for (int k = 0; k < list2.size(); k++) {
                 ServerPlayerEntity player1 = (ServerPlayerEntity) list2.get(k);
-                PacketHelper.sendTo(player1, new SoundPacket(name, x, y, z, g,h));
+                PacketHelper.sendTo(player1, new SoundPacket(name, x, y, z, g, h));
             }
         }
     }
 
-    public void onBreak(World world, int i, int j, int k)
-    {
-        VaseBlockEntity tileEntity = (VaseBlockEntity)world.getBlockEntity(i, j, k);
-        if(tileEntity != null)
-        {
+    public void onBreak(World world, int i, int j, int k) {
+        VaseBlockEntity tileEntity = (VaseBlockEntity) world.getBlockEntity(i, j, k);
+        if (tileEntity != null) {
             InventoryHandler.ejectInventoryContents(world, i, j, k, tileEntity);
         }
         super.onBreak(world, i, j, k);
     }
 
-    public int GetFacing(BlockView iBlockAccess, int i, int j, int l)
-    {
+    public int GetFacing(BlockView iBlockAccess, int i, int j, int l) {
         return 0;
     }
 
-    public void SetFacing(World world1, int l, int i1, int j1, int k1)
-    {
+    public void SetFacing(World world1, int l, int i1, int j1, int k1) {
     }
 
-    public boolean CanRotate(BlockView iBlockAccess, int i, int j, int l)
-    {
+    public boolean CanRotate(BlockView iBlockAccess, int i, int j, int l) {
         return false;
     }
 
-    public boolean CanTransmitRotation(BlockView iBlockAccess, int i, int j, int l)
-    {
+    public boolean CanTransmitRotation(BlockView iBlockAccess, int i, int j, int l) {
         return false;
     }
 
-    public void Rotate(World world1, int l, int i1, int j1, boolean flag)
-    {
+    public void Rotate(World world1, int l, int i1, int j1, boolean flag) {
     }
 
-    public void BreakVase(World world, int i, int j, int k)
-    {
-        Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).field_2808.method_322(i, j, k, id, 0);
-        Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).soundManager.playSound(soundGroup.getSound(), (float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F, (soundGroup.method_1976() + 1.0F) / 2.0F, soundGroup.method_1977() * 0.8F);
+    public void BreakVase(World world, int i, int j, int k) {
+        ((Minecraft) FabricLoader.getInstance().getGameInstance()).field_2808.method_322(i, j, k, id, 0);
+        ((Minecraft) FabricLoader.getInstance().getGameInstance()).soundManager.playSound(soundGroup.getSound(), (float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, (soundGroup.method_1976() + 1.0F) / 2.0F, soundGroup.method_1977() * 0.8F);
         world.setBlock(i, j, k, 0);
     }
 

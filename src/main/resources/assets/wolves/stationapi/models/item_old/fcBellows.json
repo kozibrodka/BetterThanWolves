@@ -1,3 +1,4 @@
 {
-  "parent": "wolves:block/fcBlockBellows_on" ,"y": 270
+  "parent": "wolves:block/fcBlockBellows_on",
+  "y": 270
 }

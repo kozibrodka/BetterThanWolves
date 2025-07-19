@@ -1,5 +1,7 @@
 {
   "variants": {
-    "": { "model": "wolves:vase/fcVase_yellow"}
+    "": {
+      "model": "wolves:vase/fcVase_yellow"
+    }
   }
 }

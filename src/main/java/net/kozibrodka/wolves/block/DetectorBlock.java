@@ -39,15 +39,15 @@ public class DetectorBlock extends TemplateBlock {
     @Override
     public int getTextureId(BlockView blockView, int x, int y, int z, int l) {
         int facing = getFacing(blockView, x, y, z);
-        if(l == facing) {
-            if(isBlockOn(blockView, x, y, z)) {
+        if (l == facing) {
+            if (isBlockOn(blockView, x, y, z)) {
                 return TextureListener.detector_on;
             } else {
                 return TextureListener.detector_off;
             }
-        } else if(l == 1) {
+        } else if (l == 1) {
             return TextureListener.detector_top;
-        } else if(l == 0) {
+        } else if (l == 0) {
             return TextureListener.detector_bottom;
         } else {
             return TextureListener.detector_side;
@@ -55,13 +55,12 @@ public class DetectorBlock extends TemplateBlock {
     }
 
     @Override
-    public int getTexture(int i)
-    {
-        if(i == 3) {
+    public int getTexture(int i) {
+        if (i == 3) {
             return TextureListener.detector_off;
-        } else if(i == 1) {
+        } else if (i == 1) {
             return TextureListener.detector_top;
-        } else if(i == 0) {
+        } else if (i == 0) {
             return TextureListener.detector_bottom;
         } else {
             return TextureListener.detector_side;
@@ -88,9 +87,9 @@ public class DetectorBlock extends TemplateBlock {
             deactivateDetector(level, x, y, z);
             return;
         }
-        for(int listIndex = 0; listIndex < list.size(); listIndex++) {
-            Entity targetEntity = (Entity)list.get(listIndex);
-            if(targetEntity == null) continue;
+        for (int listIndex = 0; listIndex < list.size(); listIndex++) {
+            Entity targetEntity = (Entity) list.get(listIndex);
+            if (targetEntity == null) continue;
             activateDetector(level, x, y, z);
             return;
         }
@@ -101,7 +100,7 @@ public class DetectorBlock extends TemplateBlock {
         if (!level.hasSkyLight(x, y, z)) return false;
         if (level.getTopSolidBlockY(x, z) > y) return false;
         Biome biomeGenBase = level.method_1781().getBiome(x, z);
-        if(biomeGenBase.canSnow()) return true;
+        if (biomeGenBase.canSnow()) return true;
         return biomeGenBase.canRain();
     }
 
@@ -110,8 +109,8 @@ public class DetectorBlock extends TemplateBlock {
             level.scheduleBlockUpdate(x, y, z, BlockListener.detectorBlock.id, getTickRate());
             return;
         }
-        level.playSound((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D, "random.click", 0.75F, 2.0F);
-        if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+        level.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.click", 0.75F, 2.0F);
+        if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
             voicePacket(level, "random.click", x, y, z, 0.75F, 2.0F);
         }
         int metadata = level.getBlockMeta(x, y, z);
@@ -122,13 +121,12 @@ public class DetectorBlock extends TemplateBlock {
     }
 
     @Environment(EnvType.SERVER)
-    public void voicePacket(World world, String name, int x, int y, int z, float g, float h){
+    public void voicePacket(World world, String name, int x, int y, int z, float g, float h) {
         List list2 = world.players;
-        if(list2.size() != 0) {
-            for(int k = 0; k < list2.size(); k++)
-            {
+        if (list2.size() != 0) {
+            for (int k = 0; k < list2.size(); k++) {
                 ServerPlayerEntity player1 = (ServerPlayerEntity) list2.get(k);
-                PacketHelper.sendTo(player1, new SoundPacket(name, x, y, z, g,h));
+                PacketHelper.sendTo(player1, new SoundPacket(name, x, y, z, g, h));
             }
         }
     }
@@ -178,14 +176,12 @@ public class DetectorBlock extends TemplateBlock {
     }
 
     @Override
-    public boolean canTransferPowerInDirection(World world, int i, int j, int i1, int j1)
-    {
+    public boolean canTransferPowerInDirection(World world, int i, int j, int i1, int j1) {
         return false;
     }
 
     @Override
-    public boolean canEmitRedstonePower()
-    {
+    public boolean canEmitRedstonePower() {
         return true;
     }
 

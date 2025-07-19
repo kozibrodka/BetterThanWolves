@@ -103,7 +103,6 @@ public class BlockListener {
         planter = new PlanterBlock(NAMESPACE.id("planter")).setTranslationKey(NAMESPACE, "planter");
         vase = new VaseBlock(NAMESPACE.id("vase")).setTranslationKey(NAMESPACE, "vase");
         detectorBlock = new DetectorBlock(NAMESPACE.id("detector_block"), Material.PISTON_BREAKABLE).setTranslationKey(NAMESPACE, "detector_block");
-        ;
         blockOfGrates = new LazyTransparentBlockTemplate(NAMESPACE.id("block_of_grates"), Material.WOOD, 1.5F, Block.WOOD_SOUND_GROUP);
         nonCollidingAxleBlock = new NonCollidingAxleBlock(NAMESPACE.id("non_colliding_axle_block")).setTranslationKey(NAMESPACE, "non_colliding_axle_block");
         collisionBlock = new CollisionBlock(NAMESPACE.id("collision_block"), Material.WOOD, 1.5F, Block.WOOD_SOUND_GROUP);

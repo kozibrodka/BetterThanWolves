@@ -3,11 +3,9 @@ package net.kozibrodka.wolves.itemblocks;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 
-public class CompanionCubeBlockItem extends BlockItem
-{
+public class CompanionCubeBlockItem extends BlockItem {
 
-    public CompanionCubeBlockItem(int i)
-    {
+    public CompanionCubeBlockItem(int i) {
         super(i);
         setMaxDamage(0);
         setHasSubtypes(true);
@@ -15,20 +13,17 @@ public class CompanionCubeBlockItem extends BlockItem
     }
 
     @Override
-    public int getPlacementMetadata(int i)
-    {
+    public int getPlacementMetadata(int i) {
         return i <= 0 ? 0 : 8;
     }
 
     @Override
     public String getTranslationKey(ItemStack itemstack) //getItemNameIS
     {
-        if(itemstack.getDamage() > 0)
-        {
-            return (new StringBuilder()).append(super.getTranslationKey()).append(".").append("slab").toString();
-        } else
-        {
-            return (new StringBuilder()).append(super.getTranslationKey()).append(".").append("cube").toString();
+        if (itemstack.getDamage() > 0) {
+            return super.getTranslationKey() + "." + "slab";
+        } else {
+            return super.getTranslationKey() + "." + "cube";
         }
     }
 }

@@ -1,76 +1,196 @@
 {
   "multipart": [
-    {   "when": { "facing": 0 },
-      "apply": { "model": "wolves:panel/fcCorner_wood_0"}
+    {
+      "when": {
+        "facing": 0
+      },
+      "apply": {
+        "model": "wolves:panel/fcCorner_wood_0"
+      }
     },
-    {   "when": { "facing": 0 },
-      "apply": { "model": "wolves:panel/fcCorner_wood_4"}
+    {
+      "when": {
+        "facing": 0
+      },
+      "apply": {
+        "model": "wolves:panel/fcCorner_wood_4"
+      }
     },
-    {   "when": { "facing": 1 },
-      "apply": { "model": "wolves:panel/fcCorner_wood_4"}
+    {
+      "when": {
+        "facing": 1
+      },
+      "apply": {
+        "model": "wolves:panel/fcCorner_wood_4"
+      }
     },
-    {   "when": { "facing": 1 },
-      "apply": { "model": "wolves:panel/fcCorner_wood_5"}
+    {
+      "when": {
+        "facing": 1
+      },
+      "apply": {
+        "model": "wolves:panel/fcCorner_wood_5"
+      }
     },
-    {   "when": { "facing": 2 },
-      "apply": { "model": "wolves:panel/fcCorner_wood_1"}
+    {
+      "when": {
+        "facing": 2
+      },
+      "apply": {
+        "model": "wolves:panel/fcCorner_wood_1"
+      }
     },
-    {   "when": { "facing": 2 },
-      "apply": { "model": "wolves:panel/fcCorner_wood_5"}
+    {
+      "when": {
+        "facing": 2
+      },
+      "apply": {
+        "model": "wolves:panel/fcCorner_wood_5"
+      }
     },
-    {   "when": { "facing": 3 },
-      "apply": { "model": "wolves:panel/fcCorner_wood_0"}
+    {
+      "when": {
+        "facing": 3
+      },
+      "apply": {
+        "model": "wolves:panel/fcCorner_wood_0"
+      }
     },
-    {   "when": { "facing": 3 },
-      "apply": { "model": "wolves:panel/fcCorner_wood_1"}
+    {
+      "when": {
+        "facing": 3
+      },
+      "apply": {
+        "model": "wolves:panel/fcCorner_wood_1"
+      }
     },
-    {   "when": { "facing": 4 },
-      "apply": { "model": "wolves:panel/fcCorner_wood_0"}
+    {
+      "when": {
+        "facing": 4
+      },
+      "apply": {
+        "model": "wolves:panel/fcCorner_wood_0"
+      }
     },
-    {   "when": { "facing": 4 },
-      "apply": { "model": "wolves:panel/fcCorner_wood_2"}
+    {
+      "when": {
+        "facing": 4
+      },
+      "apply": {
+        "model": "wolves:panel/fcCorner_wood_2"
+      }
     },
-    {   "when": { "facing": 5 },
-      "apply": { "model": "wolves:panel/fcCorner_wood_4"}
+    {
+      "when": {
+        "facing": 5
+      },
+      "apply": {
+        "model": "wolves:panel/fcCorner_wood_4"
+      }
     },
-    {   "when": { "facing": 5 },
-      "apply": { "model": "wolves:panel/fcCorner_wood_6"}
+    {
+      "when": {
+        "facing": 5
+      },
+      "apply": {
+        "model": "wolves:panel/fcCorner_wood_6"
+      }
     },
-    {   "when": { "facing": 6 },
-      "apply": { "model": "wolves:panel/fcCorner_wood_5"}
+    {
+      "when": {
+        "facing": 6
+      },
+      "apply": {
+        "model": "wolves:panel/fcCorner_wood_5"
+      }
     },
-    {   "when": { "facing": 6 },
-      "apply": { "model": "wolves:panel/fcCorner_wood_7"}
+    {
+      "when": {
+        "facing": 6
+      },
+      "apply": {
+        "model": "wolves:panel/fcCorner_wood_7"
+      }
     },
-    {   "when": { "facing": 7 },
-      "apply": { "model": "wolves:panel/fcCorner_wood_1"}
+    {
+      "when": {
+        "facing": 7
+      },
+      "apply": {
+        "model": "wolves:panel/fcCorner_wood_1"
+      }
     },
-    {   "when": { "facing": 7 },
-      "apply": { "model": "wolves:panel/fcCorner_wood_3"}
+    {
+      "when": {
+        "facing": 7
+      },
+      "apply": {
+        "model": "wolves:panel/fcCorner_wood_3"
+      }
     },
-    {   "when": { "facing": 8 },
-      "apply": { "model": "wolves:panel/fcCorner_wood_2"}
+    {
+      "when": {
+        "facing": 8
+      },
+      "apply": {
+        "model": "wolves:panel/fcCorner_wood_2"
+      }
     },
-    {   "when": { "facing": 8 },
-      "apply": { "model": "wolves:panel/fcCorner_wood_6"}
+    {
+      "when": {
+        "facing": 8
+      },
+      "apply": {
+        "model": "wolves:panel/fcCorner_wood_6"
+      }
     },
-    {   "when": { "facing": 9 },
-      "apply": { "model": "wolves:panel/fcCorner_wood_6"}
+    {
+      "when": {
+        "facing": 9
+      },
+      "apply": {
+        "model": "wolves:panel/fcCorner_wood_6"
+      }
     },
-    {   "when": { "facing": 9 },
-      "apply": { "model": "wolves:panel/fcCorner_wood_7"}
+    {
+      "when": {
+        "facing": 9
+      },
+      "apply": {
+        "model": "wolves:panel/fcCorner_wood_7"
+      }
     },
-    {   "when": { "facing": 10 },
-      "apply": { "model": "wolves:panel/fcCorner_wood_3"}
+    {
+      "when": {
+        "facing": 10
+      },
+      "apply": {
+        "model": "wolves:panel/fcCorner_wood_3"
+      }
     },
-    {   "when": { "facing": 10 },
-      "apply": { "model": "wolves:panel/fcCorner_wood_7"}
+    {
+      "when": {
+        "facing": 10
+      },
+      "apply": {
+        "model": "wolves:panel/fcCorner_wood_7"
+      }
     },
-    {   "when": { "facing": 11 },
-      "apply": { "model": "wolves:panel/fcCorner_wood_2"}
+    {
+      "when": {
+        "facing": 11
+      },
+      "apply": {
+        "model": "wolves:panel/fcCorner_wood_2"
+      }
     },
-    {   "when": { "facing": 11 },
-      "apply": { "model": "wolves:panel/fcCorner_wood_3"}
+    {
+      "when": {
+        "facing": 11
+      },
+      "apply": {
+        "model": "wolves:panel/fcCorner_wood_3"
+      }
     }
   ]
 }

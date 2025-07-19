@@ -1,5 +1,7 @@
 {
   "variants": {
-    "": { "model": "wolves:block/fcDetectorLogic"}
+    "": {
+      "model": "wolves:block/fcDetectorLogic"
+    }
   }
 }

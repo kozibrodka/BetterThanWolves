@@ -1,5 +1,7 @@
 {
   "variants": {
-    "": { "model": "wolves:block/fcPulley"}
+    "": {
+      "model": "wolves:block/fcPulley"
+    }
   }
 }

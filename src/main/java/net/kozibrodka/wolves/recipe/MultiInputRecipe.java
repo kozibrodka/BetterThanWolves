@@ -19,7 +19,7 @@ public class MultiInputRecipe {
     }
 
     public ItemStack getCopyOfOutputStack() {
-        if(recipeOutputStack == null) {
+        if (recipeOutputStack == null) {
             return null;
         } else {
             return recipeOutputStack.copy();
@@ -27,7 +27,7 @@ public class MultiInputRecipe {
     }
 
     public boolean doesInventoryContainIngredients(Inventory inventory) {
-        if(recipeInputStacks != null && !recipeInputStacks.isEmpty()) {
+        if (recipeInputStacks != null && !recipeInputStacks.isEmpty()) {
             for (Object recipeInputStack : recipeInputStacks) {
                 ItemStack tempStack = (ItemStack) recipeInputStack;
                 if (tempStack != null && InventoryHandler.itemCountInInventory(inventory, ItemRegistry.INSTANCE.getId(tempStack.getItem()), tempStack.getDamage()) < tempStack.count) {
@@ -41,7 +41,7 @@ public class MultiInputRecipe {
     }
 
     public void ConsumeInventoryIngredients(Inventory inventory) {
-        if(recipeInputStacks != null && !recipeInputStacks.isEmpty()) {
+        if (recipeInputStacks != null && !recipeInputStacks.isEmpty()) {
             for (Object recipeOutputStack : recipeInputStacks) {
                 ItemStack tempStack = (ItemStack) recipeOutputStack;
                 if (tempStack != null) {

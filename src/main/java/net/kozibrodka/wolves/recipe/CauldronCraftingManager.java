@@ -2,8 +2,7 @@ package net.kozibrodka.wolves.recipe;
 
 public class CauldronCraftingManager extends MultiInputCraftingManager {
 
-    public static final CauldronCraftingManager getInstance()
-    {
+    public static final CauldronCraftingManager getInstance() {
         return instance;
     }
 

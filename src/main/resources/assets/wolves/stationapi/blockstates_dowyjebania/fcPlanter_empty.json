@@ -1,5 +1,7 @@
 {
   "variants": {
-    "": { "model": "wolves:block/fcPlanter_empty"}
+    "": {
+      "model": "wolves:block/fcPlanter_empty"
+    }
   }
 }

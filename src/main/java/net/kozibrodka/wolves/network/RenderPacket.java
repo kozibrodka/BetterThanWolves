@@ -3,13 +3,11 @@ package net.kozibrodka.wolves.network;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.FabricLoader;
-import net.kozibrodka.wolves.events.PacketListener;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.NetworkHandler;
 import net.minecraft.network.packet.Packet;
 import net.modificationstation.stationapi.api.network.packet.ManagedPacket;
 import net.modificationstation.stationapi.api.network.packet.PacketType;
-import net.modificationstation.stationapi.api.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.DataInputStream;
@@ -18,7 +16,7 @@ import java.io.IOException;
 
 public class RenderPacket extends Packet implements ManagedPacket<RenderPacket> {
 
-    public static final PacketType<RenderPacket> TYPE=PacketType.builder(true, true, RenderPacket::new).build();
+    public static final PacketType<RenderPacket> TYPE = PacketType.builder(true, true, RenderPacket::new).build();
 
     private int x;
     private int y;
@@ -26,7 +24,7 @@ public class RenderPacket extends Packet implements ManagedPacket<RenderPacket> 
     private int block;
     private int meta;
 
-    public RenderPacket(int posX, int posY, int posZ, int blockId, int metaId){
+    public RenderPacket(int posX, int posY, int posZ, int blockId, int metaId) {
         this.x = posX;
         this.y = posY;
         this.z = posZ;
@@ -66,15 +64,15 @@ public class RenderPacket extends Packet implements ManagedPacket<RenderPacket> 
 
     @Override
     public void apply(NetworkHandler arg) {
-        switch (FabricLoader.INSTANCE.getEnvironmentType()){
+        switch (FabricLoader.INSTANCE.getEnvironmentType()) {
             case CLIENT -> handleClient(arg);
             case SERVER -> handleServer(arg);
         }
     }
 
     @Environment(EnvType.CLIENT) //TODO: NOT QUITE WOTKING ;(
-    public void handleClient(NetworkHandler networkHandler){
-        Minecraft.INSTANCE.field_2808.method_322(x,y,z, block, meta);
+    public void handleClient(NetworkHandler networkHandler) {
+        Minecraft.INSTANCE.field_2808.method_322(x, y, z, block, meta);
 //        Minecraft.class.cast(net.fabricmc.loader.api.FabricLoader.getInstance().getGameInstance()).particleManager.addTileBreakParticles(targetPos.i, targetPos.j, targetPos.k, iTargetid, iTargetMetaData);
 //        if(block == 1){ //TURNTABLE
 //            TurntableTileEntity tile = (TurntableTileEntity) minecraft.level.getTileEntity(this.x,this.y,this.z);
@@ -92,7 +90,7 @@ public class RenderPacket extends Packet implements ManagedPacket<RenderPacket> 
     }
 
     @Environment(EnvType.SERVER)
-    public void handleServer(NetworkHandler networkHandler){
+    public void handleServer(NetworkHandler networkHandler) {
 //        ServerPlayerAccessor accessor = (ServerPlayerAccessor) networkHandler;
 //        ServerPlayer player = accessor.getServerPlayer();
 //        if(block == 1){ //TURNTABLE

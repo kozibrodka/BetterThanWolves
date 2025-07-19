@@ -5,11 +5,11 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.block.HopperBlock;
 import net.kozibrodka.wolves.block.PulleyBlock;
-import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.block.entity.BlockDispenserBlockEntity;
 import net.kozibrodka.wolves.block.entity.CauldronBlockEntity;
 import net.kozibrodka.wolves.block.entity.CrucibleBlockEntity;
 import net.kozibrodka.wolves.block.entity.MillStoneBlockEntity;
+import net.kozibrodka.wolves.events.BlockListener;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.NetworkHandler;
 import net.minecraft.network.packet.Packet;
@@ -26,7 +26,7 @@ import java.util.Objects;
 
 public class ScreenPacket extends Packet implements ManagedPacket<ScreenPacket> {
 
-    public static final PacketType<ScreenPacket> TYPE=PacketType.builder(true, true, ScreenPacket::new).build();
+    public static final PacketType<ScreenPacket> TYPE = PacketType.builder(true, true, ScreenPacket::new).build();
 
     private String tile;
     private int count;
@@ -34,7 +34,7 @@ public class ScreenPacket extends Packet implements ManagedPacket<ScreenPacket> 
     private int y;
     private int z;
 
-    public ScreenPacket(String tileEnt, int count, int posX, int posY, int posZ){
+    public ScreenPacket(String tileEnt, int count, int posX, int posY, int posZ) {
         this.tile = tileEnt;
         this.count = count;
         this.x = posX;
@@ -74,67 +74,67 @@ public class ScreenPacket extends Packet implements ManagedPacket<ScreenPacket> 
 
     @Override
     public void apply(NetworkHandler arg) {
-        switch (FabricLoader.INSTANCE.getEnvironmentType()){
+        switch (FabricLoader.INSTANCE.getEnvironmentType()) {
             case CLIENT -> handleClient(arg);
             case SERVER -> handleServer(arg);
         }
     }
 
     @Environment(EnvType.CLIENT)
-    public void handleClient(NetworkHandler networkHandler){
-            ClientScreenData.count = this.count;
+    public void handleClient(NetworkHandler networkHandler) {
+        ClientScreenData.count = this.count;
     }
 
     @Environment(EnvType.SERVER)
-    public void handleServer(NetworkHandler networkHandler){
+    public void handleServer(NetworkHandler networkHandler) {
         ServerPlayerEntity player = null;
-        if(networkHandler instanceof ServerPlayNetworkHandler serverPlayNetworkHandler) {
+        if (networkHandler instanceof ServerPlayNetworkHandler serverPlayNetworkHandler) {
             player = serverPlayNetworkHandler.player;
         }
-        
-        if (player == null){
+
+        if (player == null) {
             System.err.println("ScreenPacket: Player is null, cannot send packet to client");
             return;
         }
-        
-        if(Objects.equals(tile, "mill")){
-            MillStoneBlockEntity tile = (MillStoneBlockEntity) player.world.getBlockEntity(this.x,this.y,this.z);
-            if(tile != null) {
-                int a = ((MillStoneBlockEntity) tile).iMillStoneGrindCounter;
+
+        if (Objects.equals(tile, "mill")) {
+            MillStoneBlockEntity tile = (MillStoneBlockEntity) player.world.getBlockEntity(this.x, this.y, this.z);
+            if (tile != null) {
+                int a = tile.iMillStoneGrindCounter;
                 PacketHelper.sendTo(player, new ScreenPacket("mill", a, this.x, this.y, this.z));
             }
         }
-        if(Objects.equals(tile, "crucible")){
-            CrucibleBlockEntity tile = (CrucibleBlockEntity) player.world.getBlockEntity(this.x,this.y,this.z);
-            if(tile != null) {
-                int a = ((CrucibleBlockEntity) tile).crucibleCookCounter;
+        if (Objects.equals(tile, "crucible")) {
+            CrucibleBlockEntity tile = (CrucibleBlockEntity) player.world.getBlockEntity(this.x, this.y, this.z);
+            if (tile != null) {
+                int a = tile.crucibleCookCounter;
                 PacketHelper.sendTo(player, new ScreenPacket("crucible", a, this.x, this.y, this.z));
             }
         }
-        if(Objects.equals(tile, "cauldron")){
-            CauldronBlockEntity tile = (CauldronBlockEntity) player.world.getBlockEntity(this.x,this.y,this.z);
-            if(tile != null) {
-                int a = ((CauldronBlockEntity) tile).m_iCauldronCookCounter;
+        if (Objects.equals(tile, "cauldron")) {
+            CauldronBlockEntity tile = (CauldronBlockEntity) player.world.getBlockEntity(this.x, this.y, this.z);
+            if (tile != null) {
+                int a = tile.m_iCauldronCookCounter;
                 PacketHelper.sendTo(player, new ScreenPacket("cauldron", a, this.x, this.y, this.z));
             }
         }
-        if(Objects.equals(tile, "pulley")){
+        if (Objects.equals(tile, "pulley")) {
             int a = 0;
-            if(((PulleyBlock) BlockListener.pulley).IsBlockOn(player.world, this.x, this.y, this.z)){
+            if (((PulleyBlock) BlockListener.pulley).IsBlockOn(player.world, this.x, this.y, this.z)) {
                 a = 10;
             }
-                PacketHelper.sendTo(player, new ScreenPacket("pulley", a, this.x, this.y, this.z));
+            PacketHelper.sendTo(player, new ScreenPacket("pulley", a, this.x, this.y, this.z));
         }
-        if(Objects.equals(tile, "hopper")){
+        if (Objects.equals(tile, "hopper")) {
             int a = 0;
-            if(((HopperBlock) BlockListener.hopper).IsBlockOn(player.world, this.x, this.y, this.z)){
+            if (((HopperBlock) BlockListener.hopper).IsBlockOn(player.world, this.x, this.y, this.z)) {
                 a = 10;
             }
             PacketHelper.sendTo(player, new ScreenPacket("hopper", a, this.x, this.y, this.z));
         }
-        if(Objects.equals(tile, "dispenser")){
-            BlockDispenserBlockEntity tile = (BlockDispenserBlockEntity) player.world.getBlockEntity(this.x,this.y,this.z);
-            if(tile != null) {
+        if (Objects.equals(tile, "dispenser")) {
+            BlockDispenserBlockEntity tile = (BlockDispenserBlockEntity) player.world.getBlockEntity(this.x, this.y, this.z);
+            if (tile != null) {
                 int a = tile.iNextSlotIndexToDispense;
                 PacketHelper.sendTo(player, new ScreenPacket("dispenser", a, this.x, this.y, this.z));
             }

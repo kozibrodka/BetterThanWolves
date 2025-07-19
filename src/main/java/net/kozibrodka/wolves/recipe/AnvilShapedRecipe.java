@@ -5,10 +5,10 @@ import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
 
 public class AnvilShapedRecipe implements AnvilRecipeTemplate {
-    private int width;
-    private int height;
-    private ItemStack[] ingredients;
-    private ItemStack output;
+    private final int width;
+    private final int height;
+    private final ItemStack[] ingredients;
+    private final ItemStack output;
     public final int outputId;
 
     public AnvilShapedRecipe(int i, int j, ItemStack[] args, ItemStack arg) {
@@ -24,8 +24,8 @@ public class AnvilShapedRecipe implements AnvilRecipeTemplate {
     }
 
     public boolean canCraft(CraftingInventory arg) {
-        for(int var2 = 0; var2 <= 5 - this.width; ++var2) {
-            for(int var3 = 0; var3 <= 5 - this.height; ++var3) {
+        for (int var2 = 0; var2 <= 5 - this.width; ++var2) {
+            for (int var3 = 0; var3 <= 5 - this.height; ++var3) {
                 if (this.matches(arg, var2, var3, true)) {
                     return true;
                 }
@@ -40,8 +40,8 @@ public class AnvilShapedRecipe implements AnvilRecipeTemplate {
     }
 
     private boolean matches(CraftingInventory arg, int i, int j, boolean bl) {
-        for(int var5 = 0; var5 < 5; ++var5) {
-            for(int var6 = 0; var6 < 5; ++var6) {
+        for (int var5 = 0; var5 < 5; ++var5) {
+            for (int var6 = 0; var6 < 5; ++var6) {
                 int var7 = var5 - i;
                 int var8 = var6 - j;
                 ItemStack var9 = null;

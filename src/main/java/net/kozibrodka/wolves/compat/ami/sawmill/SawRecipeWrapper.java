@@ -1,7 +1,6 @@
 package net.kozibrodka.wolves.compat.ami.sawmill;
 
 import net.glasslauncher.mods.alwaysmoreitems.api.recipe.RecipeWrapper;
-import net.kozibrodka.wolves.recipe.MillStoneRecipe;
 import net.kozibrodka.wolves.recipe.SawRecipe;
 import net.minecraft.client.Minecraft;
 import org.jetbrains.annotations.NotNull;

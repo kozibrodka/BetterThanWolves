@@ -3,11 +3,9 @@ package net.kozibrodka.wolves.itemblocks;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 
-public class PlanterBlockItem extends BlockItem
-{
+public class PlanterBlockItem extends BlockItem {
 
-    public PlanterBlockItem(int i)
-    {
+    public PlanterBlockItem(int i) {
         super(i);
         setMaxDamage(0);
         setHasSubtypes(true);
@@ -15,8 +13,7 @@ public class PlanterBlockItem extends BlockItem
     }
 
     @Override
-    public int getPlacementMetadata(int i)
-    {
+    public int getPlacementMetadata(int i) {
         return i;
     }
 
@@ -24,12 +21,10 @@ public class PlanterBlockItem extends BlockItem
     @Override
     public String getTranslationKey(ItemStack itemstack) //getItemNameIS
     {
-        if(itemstack.getDamage() > 0)
-        {
-            return (new StringBuilder()).append(super.getTranslationKey()).append(".").append("soil").toString();
-        } else
-        {
-            return (new StringBuilder()).append(super.getTranslationKey()).append(".").append("empty").toString();
+        if (itemstack.getDamage() > 0) {
+            return super.getTranslationKey() + "." + "soil";
+        } else {
+            return super.getTranslationKey() + "." + "empty";
         }
     }
 }

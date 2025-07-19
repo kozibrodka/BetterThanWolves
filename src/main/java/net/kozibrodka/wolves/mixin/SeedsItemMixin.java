@@ -14,7 +14,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(SeedsItem.class)
 public class SeedsItemMixin {
 
-    @Shadow private int cropBlockId;
+    @Shadow
+    private int cropBlockId;
 
     @Inject(method = "useOnBlock", at = @At(value = "HEAD"), cancellable = true)
     private void addPlanterCondition(ItemStack itemStack, PlayerEntity playerEntity, World world, int x, int y, int z, int side, CallbackInfoReturnable<Boolean> cir) {

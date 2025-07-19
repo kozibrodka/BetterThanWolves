@@ -1,5 +1,7 @@
 {
   "variants": {
-    "": { "model": "wolves:block/fcMillStone"}
+    "": {
+      "model": "wolves:block/fcMillStone"
+    }
   }
 }

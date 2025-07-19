@@ -9,7 +9,6 @@ import net.modificationstation.stationapi.api.client.texture.atlas.Atlases;
 import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
 import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.util.Namespace;
-import net.modificationstation.stationapi.api.util.Null;
 
 public class TextureListener {
     @Entrypoint.Namespace
@@ -133,7 +132,7 @@ public class TextureListener {
     }
 
     private int registerBlockTexture(String s) {
-        if(s == null) {
+        if (s == null) {
             return 0;
         }
         return Atlases.getTerrain().addTexture(Identifier.of(NAMESPACE, s)).index;

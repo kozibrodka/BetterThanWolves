@@ -1,17 +1,17 @@
 package net.kozibrodka.wolves.compat.ami;
 
 import net.glasslauncher.mods.alwaysmoreitems.api.*;
-import net.kozibrodka.wolves.compat.ami.anvil.AnvilShapedRecipeHandler;
 import net.kozibrodka.wolves.compat.ami.anvil.AnvilShapedRecipeCategory;
+import net.kozibrodka.wolves.compat.ami.anvil.AnvilShapedRecipeHandler;
 import net.kozibrodka.wolves.compat.ami.anvil.AnvilShapelessRecipeCategory;
 import net.kozibrodka.wolves.compat.ami.anvil.AnvilShapelessRecipeHandler;
 import net.kozibrodka.wolves.compat.ami.hopperpurifying.HopperPurifyingRecipeCategory;
 import net.kozibrodka.wolves.compat.ami.hopperpurifying.HopperPurifyingRecipeHandler;
 import net.kozibrodka.wolves.compat.ami.makecalmangry.MultiInputRecipeMerger;
-import net.kozibrodka.wolves.compat.ami.multiinput.MultiInputRecipeCategory;
-import net.kozibrodka.wolves.compat.ami.multiinput.MultiInputRecipeHandler;
 import net.kozibrodka.wolves.compat.ami.millstone.MillStoneRecipeCategory;
 import net.kozibrodka.wolves.compat.ami.millstone.MillStoneRecipeHandler;
+import net.kozibrodka.wolves.compat.ami.multiinput.MultiInputRecipeCategory;
+import net.kozibrodka.wolves.compat.ami.multiinput.MultiInputRecipeHandler;
 import net.kozibrodka.wolves.compat.ami.sawmill.SawRecipeCategory;
 import net.kozibrodka.wolves.compat.ami.sawmill.SawRecipeHandler;
 import net.kozibrodka.wolves.compat.ami.turntable.TurntableRecipeCategory;

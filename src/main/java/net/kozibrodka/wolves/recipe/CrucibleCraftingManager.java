@@ -8,8 +8,7 @@ import java.util.List;
 
 public class CrucibleCraftingManager extends MultiInputCraftingManager {
 
-    public static final CrucibleCraftingManager getInstance()
-    {
+    public static final CrucibleCraftingManager getInstance() {
         return instance;
     }
 
@@ -19,6 +18,7 @@ public class CrucibleCraftingManager extends MultiInputCraftingManager {
     /**
      * This abomination adds a "nothing" item to the end of each recipe input list.
      * Important to distinguish stoked from non-stoked recipes.
+     *
      * @return Recipe with additional input item for distinction.
      */
     public List getAmiAdjustedRecipes() {

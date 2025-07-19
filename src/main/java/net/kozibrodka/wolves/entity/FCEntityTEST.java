@@ -28,9 +28,8 @@ public class FCEntityTEST extends Entity implements EntitySpawnDataProvider {
         AlignBoundingBoxWithAxis();
     }
 
-    private void AlignBoundingBoxWithAxis()
-    {
-            boundingBox.set(x - 0.40000000596046448D, y - 6.4000000953674316D, z - 6.4000000953674316D, x + 0.40000000596046448D, y + 6.4000000953674316D, z + 6.4000000953674316D);
+    private void AlignBoundingBoxWithAxis() {
+        boundingBox.set(x - 0.40000000596046448D, y - 6.4000000953674316D, z - 6.4000000953674316D, x + 0.40000000596046448D, y + 6.4000000953674316D, z + 6.4000000953674316D);
 //            boundingBox.set(x - 6.4000000953674316D, y - 6.4000000953674316D, z - 0.40000000596046448D, x + 6.4000000953674316D, y + 6.4000000953674316D, z + 0.40000000596046448D);
     }
 
@@ -38,10 +37,8 @@ public class FCEntityTEST extends Entity implements EntitySpawnDataProvider {
         this(level);
     }
 
-    public boolean damage(Entity entity, int i)
-    {
-        if(world.isRemote || dead)
-        {
+    public boolean damage(Entity entity, int i) {
+        if (world.isRemote || dead) {
             return true;
         }
         System.out.println(dataTracker.getByte(16) & 15);
@@ -49,19 +46,18 @@ public class FCEntityTEST extends Entity implements EntitySpawnDataProvider {
         return true;
     }
 
-    public boolean interact(PlayerEntity entityplayer){
+    public boolean interact(PlayerEntity entityplayer) {
         ItemStack itemstack = entityplayer.inventory.getSelectedItem();
-        if(itemstack !=null && itemstack.itemId == Item.DYE.id)
-        {
+        if (itemstack != null && itemstack.itemId == Item.DYE.id) {
             int var4 = WoolBlock.method_1(itemstack.getDamage());
             setColour(var4);
             return true;
         }
-        if(world.isRemote){
+        if (world.isRemote) {
 //            System.out.println("client: " + y + " " + clientY);
 //            y = (double) clientY/32D;
             System.out.println(dataTracker.getByte(16) & 15);
-        }else{
+        } else {
 //            System.out.println("HOST: " + y);
             System.out.println(dataTracker.getByte(16) & 15);
         }
@@ -69,49 +65,42 @@ public class FCEntityTEST extends Entity implements EntitySpawnDataProvider {
     }
 
 
-    protected boolean bypassesSteppingEffects()
-    {
+    protected boolean bypassesSteppingEffects() {
         return false;
     }
 
-    public Box method_1379(Entity entity)
-    {
+    public Box method_1379(Entity entity) {
         return entity.boundingBox;
     }
 
-    public Box getBoundingBox()
-    {
+    public Box getBoundingBox() {
         return boundingBox;
     }
 
-    public boolean isPushable()
-    {
+    public boolean isPushable() {
         return false;
     }
 
-    public boolean isCollidable()
-    {
+    public boolean isCollidable() {
         return !dead;
     }
 
-    public void tick()
-    {
-        if(dead)
-        {
+    public void tick() {
+        if (dead) {
             return;
         }
         iFullUpdateTickCount--;
-        if(iFullUpdateTickCount <= 0) {
+        if (iFullUpdateTickCount <= 0) {
             iFullUpdateTickCount = 20;
             int iCenterI = (int) (x - 0.5D);
             int iCenterJ = (int) (y - 0.5D);
             int iCenterK = (int) (z - 0.5D);
             int iCenterid = world.getBlockId(iCenterI, iCenterJ, iCenterK);
             if (iCenterid != BlockListener.axleBlock.id) {
-                if(!world.isRemote){
+                if (!world.isRemote) {
                     markDead();
 //                    System.out.println(this.y);
-                }else{
+                } else {
 //                    System.out.println("KONSOLA2");
 //                    System.out.println(this.y + "  " + this.lastTickY + "  " + this.trackedPosY);
 //                    this.y = (double)(this.trackedPosY/32);
@@ -119,10 +108,10 @@ public class FCEntityTEST extends Entity implements EntitySpawnDataProvider {
                 return;
             }
         }
-        if(!world.isRemote){
+        if (!world.isRemote) {
             System.out.println(this.y);
-        }else{
-            this.y = (double)(this.trackedPosY/32);
+        } else {
+            this.y = this.trackedPosY / 32;
             System.out.println(this.y + "  " + this.lastTickY + "  " + this.trackedPosY);
         }
     }
@@ -133,7 +122,7 @@ public class FCEntityTEST extends Entity implements EntitySpawnDataProvider {
     }
 
     public void writeNbt(NbtCompound arg) {
-        arg.putByte("Color", (byte)this.getColour());
+        arg.putByte("Color", (byte) this.getColour());
     }
 
     public void readNbt(NbtCompound arg) {
@@ -146,7 +135,7 @@ public class FCEntityTEST extends Entity implements EntitySpawnDataProvider {
 
     public void setColour(int i) {
         byte var2 = this.dataTracker.getByte(16);
-        this.dataTracker.set(16, (byte)(var2 & 240 | i & 15));
+        this.dataTracker.set(16, (byte) (var2 & 240 | i & 15));
     }
 
     @Override

@@ -66,11 +66,11 @@ public class MultiInputRecipeCategory implements RecipeCategory {
             guiItemStacks.init(i, true, xOffset + (i % 9) * 18, yOffset + (i / 9) * 18 + 46);
         }
         for (int i = 0; i < recipeWrapper.getInputs().size(); i++) {
-            if (((ItemStack)recipeWrapper.getInputs().get(i)).isItemEqual(new ItemStack(ItemListener.nothing))) {
+            if (((ItemStack) recipeWrapper.getInputs().get(i)).isItemEqual(new ItemStack(ItemListener.nothing))) {
                 stoked = true;
                 crucible = false;
                 break;
-            } else if (((ItemStack)recipeWrapper.getInputs().get(i)).isItemEqual(new ItemStack(BlockListener.collisionBlock))) {
+            } else if (((ItemStack) recipeWrapper.getInputs().get(i)).isItemEqual(new ItemStack(BlockListener.collisionBlock))) {
                 stoked = true;
                 crucible = true;
                 break;

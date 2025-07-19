@@ -1,7 +1,8 @@
 package net.kozibrodka.wolves.events;
-import net.kozibrodka.wolves.network.ScreenPacket;
+
 import net.kozibrodka.wolves.network.ParticlePacket;
 import net.kozibrodka.wolves.network.RenderPacket;
+import net.kozibrodka.wolves.network.ScreenPacket;
 import net.kozibrodka.wolves.network.SoundPacket;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.modificationstation.stationapi.api.event.network.packet.PacketRegisterEvent;

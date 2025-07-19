@@ -10,43 +10,37 @@ import net.modificationstation.stationapi.api.client.model.block.BlockWithInvent
 import net.modificationstation.stationapi.api.template.block.TemplateDetectorRailBlock;
 import net.modificationstation.stationapi.api.util.Identifier;
 
-@EnvironmentInterface(value= EnvType.CLIENT, itf=BlockWithInventoryRenderer.class)
+@EnvironmentInterface(value = EnvType.CLIENT, itf = BlockWithInventoryRenderer.class)
 public class DetectorRailVariants extends TemplateDetectorRailBlock implements BlockWithInventoryRenderer
         /* implements ITextureProvider */ //MAYBE FOR FAKE LATER
 {
 
-    public DetectorRailVariants(Identifier iid, int iTextureID)
-    {
+    public DetectorRailVariants(Identifier iid, int iTextureID) {
         super(iid, iTextureID);
         setHardness(0.7F);
         setSoundGroup(METAL_SOUND_GROUP);
     }
 
     public int getTexture(int i, int j) {
-        if(this.id == BlockListener.detectorRailWood.id)
-        {
+        if (this.id == BlockListener.detectorRailWood.id) {
             return TextureListener.rail_wood;
-        }else{
+        } else {
             return TextureListener.rail_obsidian;
         }
     }
 
-        public int getTexture(int i)
-    {
-        if(this.id == BlockListener.detectorRailWood.id)
-        {
+    public int getTexture(int i) {
+        if (this.id == BlockListener.detectorRailWood.id) {
             return TextureListener.rail_wood;
-        }else{
+        } else {
             return TextureListener.rail_obsidian;
         }
     }
 
-    public int getTextureId(BlockView iblockaccess, int i, int j, int k, int l)
-    {
-        if(this.id == BlockListener.detectorRailWood.id)
-        {
+    public int getTextureId(BlockView iblockaccess, int i, int j, int k, int l) {
+        if (this.id == BlockListener.detectorRailWood.id) {
             return TextureListener.rail_wood;
-        }else{
+        } else {
             return TextureListener.rail_obsidian;
         }
     }

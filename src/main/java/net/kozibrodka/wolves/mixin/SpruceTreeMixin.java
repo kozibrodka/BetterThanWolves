@@ -25,6 +25,6 @@ public abstract class SpruceTreeMixin extends Feature {
 
     @WrapWithCondition(method = "generate", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;setBlockWithoutNotifyingNeighbors(IIII)Z", ordinal = 0))
     public boolean wrapDirtCheck(World world, int x, int y, int z, int i) {
-        return !world.getBlockState(x,y,z).isOf(BlockListener.planter);
+        return !world.getBlockState(x, y, z).isOf(BlockListener.planter);
     }
 }

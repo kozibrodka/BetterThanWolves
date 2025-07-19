@@ -4,7 +4,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.FabricLoader;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.network.ClientNetworkHandler;
 import net.minecraft.network.NetworkHandler;
 import net.minecraft.network.packet.Packet;
 import net.modificationstation.stationapi.api.network.packet.ManagedPacket;
@@ -17,7 +16,7 @@ import java.io.IOException;
 
 public class ParticlePacket extends Packet implements ManagedPacket<ParticlePacket> {
 
-    public static final PacketType<ParticlePacket> TYPE=PacketType.builder(true, true, ParticlePacket::new).build();
+    public static final PacketType<ParticlePacket> TYPE = PacketType.builder(true, true, ParticlePacket::new).build();
 
     private String particleToPlay;
     private double x;
@@ -43,13 +42,13 @@ public class ParticlePacket extends Packet implements ManagedPacket<ParticlePack
     @Override
     public void read(DataInputStream stream) {
         try {
-        this.particleToPlay = readString(stream, 16);
-        this.x = stream.readDouble();
-        this.y = stream.readDouble();
-        this.z = stream.readDouble();
-        this.a1 = stream.readDouble();
-        this.a2 = stream.readDouble();
-        this.a3 = stream.readDouble();
+            this.particleToPlay = readString(stream, 16);
+            this.x = stream.readDouble();
+            this.y = stream.readDouble();
+            this.z = stream.readDouble();
+            this.a1 = stream.readDouble();
+            this.a2 = stream.readDouble();
+            this.a3 = stream.readDouble();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -58,13 +57,13 @@ public class ParticlePacket extends Packet implements ManagedPacket<ParticlePack
     @Override
     public void write(DataOutputStream stream) {
         try {
-        writeString(this.particleToPlay, stream);
-        stream.writeDouble(this.x);
-        stream.writeDouble(this.y);
-        stream.writeDouble(this.z);
-        stream.writeDouble(this.a1);
-        stream.writeDouble(this.a2);
-        stream.writeDouble(this.a3);
+            writeString(this.particleToPlay, stream);
+            stream.writeDouble(this.x);
+            stream.writeDouble(this.y);
+            stream.writeDouble(this.z);
+            stream.writeDouble(this.a1);
+            stream.writeDouble(this.a2);
+            stream.writeDouble(this.a3);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -72,19 +71,19 @@ public class ParticlePacket extends Packet implements ManagedPacket<ParticlePack
 
     @Override
     public void apply(NetworkHandler arg) {
-        switch (FabricLoader.INSTANCE.getEnvironmentType()){
+        switch (FabricLoader.INSTANCE.getEnvironmentType()) {
             case CLIENT -> handleClient(arg);
             case SERVER -> handleServer(arg);
         }
     }
 
     @Environment(EnvType.CLIENT)
-    public void handleClient(NetworkHandler networkHandler){
+    public void handleClient(NetworkHandler networkHandler) {
         Minecraft.INSTANCE.world.addParticle(this.particleToPlay, this.x, this.y, this.z, this.a1, this.a2, this.a3);
     }
 
     @Environment(EnvType.SERVER)
-    public void handleServer(NetworkHandler networkHandler){
+    public void handleServer(NetworkHandler networkHandler) {
     }
 
     @Override

@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL11;
 
 @Environment(EnvType.CLIENT)
 public class FallingAnvilRenderer extends EntityRenderer {
-    private BlockRenderManager tileRenderer = new BlockRenderManager();
+    private final BlockRenderManager tileRenderer = new BlockRenderManager();
 
     public FallingAnvilRenderer() {
         this.field_2679 = 0.5F;
@@ -21,9 +21,9 @@ public class FallingAnvilRenderer extends EntityRenderer {
 
     @Override
     public void render(Entity entity, double d, double e, double f, float g, float h) {
-        FallingAnvilEntity fallingAnvilEntity = (FallingAnvilEntity)entity;
+        FallingAnvilEntity fallingAnvilEntity = (FallingAnvilEntity) entity;
         GL11.glPushMatrix();
-        GL11.glTranslatef((float)d, (float)e, (float)f);
+        GL11.glTranslatef((float) d, (float) e, (float) f);
         this.bindTexture("/terrain.png");
         Block var10 = Block.BLOCKS[fallingAnvilEntity.tile];
         World var11 = fallingAnvilEntity.getFallingLevel();

@@ -53,15 +53,15 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
         this.owner = arg2;
         this.spawnedByPlayer = arg2 instanceof PlayerEntity;
         this.setBoundingBoxSpacing(0.5F, 0.5F);
-        this.setPositionAndAnglesKeepPrevAngles(arg2.x, arg2.y + (double)arg2.getEyeHeight(), arg2.z, arg2.yaw, arg2.pitch);
-        this.x -= (double)(MathHelper.cos(this.yaw / 180.0F * 3.1415927F) * 0.16F);
+        this.setPositionAndAnglesKeepPrevAngles(arg2.x, arg2.y + (double) arg2.getEyeHeight(), arg2.z, arg2.yaw, arg2.pitch);
+        this.x -= MathHelper.cos(this.yaw / 180.0F * 3.1415927F) * 0.16F;
         this.y -= 0.10000000149011612D;
-        this.z -= (double)(MathHelper.sin(this.yaw / 180.0F * 3.1415927F) * 0.16F);
+        this.z -= MathHelper.sin(this.yaw / 180.0F * 3.1415927F) * 0.16F;
         this.setPos(this.x, this.y, this.z);
         this.standingEyeHeight = 0.0F;
-        this.velocityX = (double)(-MathHelper.sin(this.yaw / 180.0F * 3.1415927F) * MathHelper.cos(this.pitch / 180.0F * 3.1415927F));
-        this.velocityZ = (double)(MathHelper.cos(this.yaw / 180.0F * 3.1415927F) * MathHelper.cos(this.pitch / 180.0F * 3.1415927F));
-        this.velocityY = (double)(-MathHelper.sin(this.pitch / 180.0F * 3.1415927F));
+        this.velocityX = -MathHelper.sin(this.yaw / 180.0F * 3.1415927F) * MathHelper.cos(this.pitch / 180.0F * 3.1415927F);
+        this.velocityZ = MathHelper.cos(this.yaw / 180.0F * 3.1415927F) * MathHelper.cos(this.pitch / 180.0F * 3.1415927F);
+        this.velocityY = -MathHelper.sin(this.pitch / 180.0F * 3.1415927F);
         this.method_1291(this.velocityX, this.velocityY, this.velocityZ, 1.5F, 1.0F);
     }
 
@@ -70,21 +70,21 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
 
     public void method_1291(double d, double e, double f, float g, float h) {
         float var9 = MathHelper.sqrt(d * d + e * e + f * f);
-        d /= (double)var9;
-        e /= (double)var9;
-        f /= (double)var9;
-        d += this.random.nextGaussian() * 0.007499999832361937D * (double)h;
-        e += this.random.nextGaussian() * 0.007499999832361937D * (double)h;
-        f += this.random.nextGaussian() * 0.007499999832361937D * (double)h;
-        d *= (double)g;
-        e *= (double)g;
-        f *= (double)g;
+        d /= var9;
+        e /= var9;
+        f /= var9;
+        d += this.random.nextGaussian() * 0.007499999832361937D * (double) h;
+        e += this.random.nextGaussian() * 0.007499999832361937D * (double) h;
+        f += this.random.nextGaussian() * 0.007499999832361937D * (double) h;
+        d *= g;
+        e *= g;
+        f *= g;
         this.velocityX = d;
         this.velocityY = e;
         this.velocityZ = f;
         float var10 = MathHelper.sqrt(d * d + f * f);
-        this.prevYaw = this.yaw = (float)(Math.atan2(d, f) * 180.0D / 3.1415927410125732D);
-        this.prevPitch = this.pitch = (float)(Math.atan2(e, (double)var10) * 180.0D / 3.1415927410125732D);
+        this.prevYaw = this.yaw = (float) (Math.atan2(d, f) * 180.0D / 3.1415927410125732D);
+        this.prevPitch = this.pitch = (float) (Math.atan2(e, var10) * 180.0D / 3.1415927410125732D);
         this.ticksInGround = 0;
     }
 
@@ -95,8 +95,8 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
         this.velocityZ = f;
         if (this.prevPitch == 0.0F && this.prevYaw == 0.0F) {
             float var7 = MathHelper.sqrt(d * d + f * f);
-            this.prevYaw = this.yaw = (float)(Math.atan2(d, f) * 180.0D / 3.1415927410125732D);
-            this.prevPitch = this.pitch = (float)(Math.atan2(e, (double)var7) * 180.0D / 3.1415927410125732D);
+            this.prevYaw = this.yaw = (float) (Math.atan2(d, f) * 180.0D / 3.1415927410125732D);
+            this.prevPitch = this.pitch = (float) (Math.atan2(e, var7) * 180.0D / 3.1415927410125732D);
             this.prevPitch = this.pitch;
             this.prevYaw = this.yaw;
             this.setPositionAndAnglesKeepPrevAngles(this.x, this.y, this.z, this.yaw, this.pitch);
@@ -108,15 +108,14 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
     public void tick() {
         super.tick();
         //ADDED
-        if(dead || world.isRemote)
-        {
+        if (dead || world.isRemote) {
             return;
         }
         //ADDED
         if (this.prevPitch == 0.0F && this.prevYaw == 0.0F) {
             float var1 = MathHelper.sqrt(this.velocityX * this.velocityX + this.velocityZ * this.velocityZ);
-            this.prevYaw = this.yaw = (float)(Math.atan2(this.velocityX, this.velocityZ) * 180.0D / 3.1415927410125732D);
-            this.prevPitch = this.pitch = (float)(Math.atan2(this.velocityY, (double)var1) * 180.0D / 3.1415927410125732D);
+            this.prevYaw = this.yaw = (float) (Math.atan2(this.velocityX, this.velocityZ) * 180.0D / 3.1415927410125732D);
+            this.prevPitch = this.pitch = (float) (Math.atan2(this.velocityY, var1) * 180.0D / 3.1415927410125732D);
         }
 
         int var15 = this.world.getBlockId(this.xTile, this.yTile, this.zTile);
@@ -143,9 +142,9 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
 
             } else {
                 this.inGround = false;
-                this.velocityX *= (double)(this.random.nextFloat() * 0.2F);
-                this.velocityY *= (double)(this.random.nextFloat() * 0.2F);
-                this.velocityZ *= (double)(this.random.nextFloat() * 0.2F);
+                this.velocityX *= this.random.nextFloat() * 0.2F;
+                this.velocityY *= this.random.nextFloat() * 0.2F;
+                this.velocityZ *= this.random.nextFloat() * 0.2F;
                 this.ticksInGround = 0;
                 this.ticksFlying = 0;
             }
@@ -165,11 +164,11 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
             double var6 = 0.0D;
 
             float var10;
-            for(int var8 = 0; var8 < var5.size(); ++var8) {
-                Entity var9 = (Entity)var5.get(var8);
+            for (int var8 = 0; var8 < var5.size(); ++var8) {
+                Entity var9 = (Entity) var5.get(var8);
                 if (var9.isCollidable() && (var9 != this.owner || this.ticksFlying >= 5)) {
                     var10 = 0.3F;
-                    Box var11 = var9.boundingBox.expand((double)var10, (double)var10, (double)var10);
+                    Box var11 = var9.boundingBox.expand(var10, var10, var10);
                     HitResult var12 = var11.raycast(var16, var17);
                     if (var12 != null) {
                         double var13 = var16.distanceTo(var12.pos);
@@ -205,13 +204,13 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
                     this.zTile = var3.blockZ;
                     this.inTile = this.world.getBlockId(this.xTile, this.yTile, this.zTile);
                     this.inData = this.world.getBlockMeta(this.xTile, this.yTile, this.zTile);
-                    this.velocityX = (double)((float)(var3.pos.x - this.x));
-                    this.velocityY = (double)((float)(var3.pos.y - this.y));
-                    this.velocityZ = (double)((float)(var3.pos.z - this.z));
+                    this.velocityX = (float) (var3.pos.x - this.x);
+                    this.velocityY = (float) (var3.pos.y - this.y);
+                    this.velocityZ = (float) (var3.pos.z - this.z);
                     var19 = MathHelper.sqrt(this.velocityX * this.velocityX + this.velocityY * this.velocityY + this.velocityZ * this.velocityZ);
-                    this.x -= this.velocityX / (double)var19 * 0.05000000074505806D;
-                    this.y -= this.velocityY / (double)var19 * 0.05000000074505806D;
-                    this.z -= this.velocityZ / (double)var19 * 0.05000000074505806D;
+                    this.x -= this.velocityX / (double) var19 * 0.05000000074505806D;
+                    this.y -= this.velocityY / (double) var19 * 0.05000000074505806D;
+                    this.z -= this.velocityZ / (double) var19 * 0.05000000074505806D;
                     this.world.playSound(this, "random.drr", 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
                     this.inGround = true;
                     this.shake = 7;
@@ -222,20 +221,20 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
             this.y += this.velocityY;
             this.z += this.velocityZ;
             var19 = MathHelper.sqrt(this.velocityX * this.velocityX + this.velocityZ * this.velocityZ);
-            this.yaw = (float)(Math.atan2(this.velocityX, this.velocityZ) * 180.0D / 3.1415927410125732D);
+            this.yaw = (float) (Math.atan2(this.velocityX, this.velocityZ) * 180.0D / 3.1415927410125732D);
 
-            for(this.pitch = (float)(Math.atan2(this.velocityY, (double)var19) * 180.0D / 3.1415927410125732D); this.pitch - this.prevPitch < -180.0F; this.prevPitch -= 360.0F) {
+            for (this.pitch = (float) (Math.atan2(this.velocityY, var19) * 180.0D / 3.1415927410125732D); this.pitch - this.prevPitch < -180.0F; this.prevPitch -= 360.0F) {
             }
 
-            while(this.pitch - this.prevPitch >= 180.0F) {
+            while (this.pitch - this.prevPitch >= 180.0F) {
                 this.prevPitch += 360.0F;
             }
 
-            while(this.yaw - this.prevYaw < -180.0F) {
+            while (this.yaw - this.prevYaw < -180.0F) {
                 this.prevYaw -= 360.0F;
             }
 
-            while(this.yaw - this.prevYaw >= 180.0F) {
+            while (this.yaw - this.prevYaw >= 180.0F) {
                 this.prevYaw += 360.0F;
             }
 
@@ -244,30 +243,30 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
             float var20 = 0.99F;
             var10 = 0.03F;
             if (this.isSubmergedInWater()) {
-                for(int var21 = 0; var21 < 4; ++var21) {
+                for (int var21 = 0; var21 < 4; ++var21) {
                     float var22 = 0.25F;
-                    this.world.addParticle("bubble", this.x - this.velocityX * (double)var22, this.y - this.velocityY * (double)var22, this.z - this.velocityZ * (double)var22, this.velocityX, this.velocityY, this.velocityZ);
+                    this.world.addParticle("bubble", this.x - this.velocityX * (double) var22, this.y - this.velocityY * (double) var22, this.z - this.velocityZ * (double) var22, this.velocityX, this.velocityY, this.velocityZ);
                 }
 
                 var20 = 0.8F;
             }
 
-            this.velocityX *= (double)var20;
-            this.velocityY *= (double)var20;
-            this.velocityZ *= (double)var20;
-            this.velocityY -= (double)var10;
+            this.velocityX *= var20;
+            this.velocityY *= var20;
+            this.velocityZ *= var20;
+            this.velocityY -= var10;
             this.setPos(this.x, this.y, this.z);
         }
     }
 
     public void writeNbt(NbtCompound arg) {
-        arg.putShort("xTile", (short)this.xTile);
-        arg.putShort("yTile", (short)this.yTile);
-        arg.putShort("zTile", (short)this.zTile);
-        arg.putByte("inTile", (byte)this.inTile);
-        arg.putByte("inData", (byte)this.inData);
-        arg.putByte("shake", (byte)this.shake);
-        arg.putByte("inGround", (byte)(this.inGround ? 1 : 0));
+        arg.putShort("xTile", (short) this.xTile);
+        arg.putShort("yTile", (short) this.yTile);
+        arg.putShort("zTile", (short) this.zTile);
+        arg.putByte("inTile", (byte) this.inTile);
+        arg.putByte("inData", (byte) this.inData);
+        arg.putByte("shake", (byte) this.shake);
+        arg.putByte("inGround", (byte) (this.inGround ? 1 : 0));
         arg.putBoolean("player", this.spawnedByPlayer);
     }
 

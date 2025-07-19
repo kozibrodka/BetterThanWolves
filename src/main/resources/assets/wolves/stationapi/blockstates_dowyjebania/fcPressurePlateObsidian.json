@@ -1,5 +1,7 @@
 {
   "variants": {
-    "": { "model": "wolves:block/fcObsidianPlate_up"}
+    "": {
+      "model": "wolves:block/fcObsidianPlate_up"
+    }
   }
 }

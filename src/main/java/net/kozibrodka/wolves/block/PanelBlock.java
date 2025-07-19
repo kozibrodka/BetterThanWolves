@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class PanelBlock extends TemplateBlock {
 
-    private Block template;
+    private final Block template;
 
     public PanelBlock(Identifier id, Block blockBase) {
         super(id, blockBase.textureId, blockBase.material);
@@ -74,8 +74,7 @@ public class PanelBlock extends TemplateBlock {
         }
     }
 
-    public void setupRenderBoundingBox()
-    {
+    public void setupRenderBoundingBox() {
         setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 0.5F);
     }
 
@@ -93,8 +92,7 @@ public class PanelBlock extends TemplateBlock {
         return this.template.getRenderLayer();
     }
 
-    public int getDroppedItemMeta(int iMetaData)
-    {
+    public int getDroppedItemMeta(int iMetaData) {
         return 0;
     }
 
@@ -120,7 +118,7 @@ public class PanelBlock extends TemplateBlock {
     }
 
     public void onPlaced(World arg, int i, int j, int k, LivingEntity arg2) {
-        int var6 = MathHelper.floor((double)(arg2.yaw * 4.0F / 360.0F) + 0.5D) & 3;
+        int var6 = MathHelper.floor((double) (arg2.yaw * 4.0F / 360.0F) + 0.5D) & 3;
         if (var6 == 0) {
             arg.setBlockMeta(i, j, k, 2);
         }

@@ -11,7 +11,6 @@ import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.OakTreeFeature;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(OakTreeFeature.class)
 public abstract class OakTreeMixin extends Feature {
@@ -25,6 +24,6 @@ public abstract class OakTreeMixin extends Feature {
 
     @WrapWithCondition(method = "generate", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;setBlockWithoutNotifyingNeighbors(IIII)Z", ordinal = 0))
     public boolean wrapDirtCheck(World world, int x, int y, int z, int i) {
-        return !world.getBlockState(x,y,z).isOf(BlockListener.planter);
+        return !world.getBlockState(x, y, z).isOf(BlockListener.planter);
     }
 }

@@ -1,8 +1,16 @@
 {
   "variants": {
-    "facing=2": { "model": "wolves:panel/fcPanel_wood_w"},
-    "facing=3": { "model": "wolves:panel/fcPanel_wood_e"},
-    "facing=4": { "model": "wolves:panel/fcPanel_wood_s"},
-    "facing=5": { "model": "wolves:panel/fcPanel_wood_n"}
+    "facing=2": {
+      "model": "wolves:panel/fcPanel_wood_w"
+    },
+    "facing=3": {
+      "model": "wolves:panel/fcPanel_wood_e"
+    },
+    "facing=4": {
+      "model": "wolves:panel/fcPanel_wood_s"
+    },
+    "facing=5": {
+      "model": "wolves:panel/fcPanel_wood_n"
+    }
   }
 }

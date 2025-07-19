@@ -1,7 +1,9 @@
 {
   "multipart": [
     {
-      "apply": { "model": "wolves:block/fcHooper_base"}
+      "apply": {
+        "model": "wolves:block/fcHooper_base"
+      }
     }
   ]
 }

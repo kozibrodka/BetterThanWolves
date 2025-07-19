@@ -11,17 +11,16 @@ import net.minecraft.item.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StokedCauldronCraftingManager extends MultiInputCraftingManager
-{
+public class StokedCauldronCraftingManager extends MultiInputCraftingManager {
 
-    public static final StokedCauldronCraftingManager getInstance()
-    {
+    public static final StokedCauldronCraftingManager getInstance() {
         return instance;
     }
 
     /**
      * This abomination adds a "nothing" item to the end of each recipe input list.
      * Important to distinguish stoked from non-stoked recipes.
+     *
      * @return Recipe with additional input item for distinction.
      */
     public List getAmiAdjustedRecipes() {

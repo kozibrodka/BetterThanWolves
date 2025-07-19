@@ -1,8 +1,20 @@
 {
   "variants": {
-    "facing=0": { "model": "wolves:block/fcAnvil" ,"y": 0},
-    "facing=1": { "model": "wolves:block/fcAnvil" ,"y": 180},
-    "facing=2": { "model": "wolves:block/fcAnvil" ,"y": -90},
-    "facing=3": { "model": "wolves:block/fcAnvil" ,"y": 90}
+    "facing=0": {
+      "model": "wolves:block/fcAnvil",
+      "y": 0
+    },
+    "facing=1": {
+      "model": "wolves:block/fcAnvil",
+      "y": 180
+    },
+    "facing=2": {
+      "model": "wolves:block/fcAnvil",
+      "y": -90
+    },
+    "facing=3": {
+      "model": "wolves:block/fcAnvil",
+      "y": 90
+    }
   }
 }

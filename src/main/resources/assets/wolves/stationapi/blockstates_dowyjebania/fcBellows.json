@@ -1,12 +1,36 @@
 {
   "variants": {
-    "power=true,facing=0": { "model": "wolves:block/fcBlockBellows_on", "y": -90},
-    "power=true,facing=1": { "model": "wolves:block/fcBlockBellows_on", "y": 90},
-    "power=true,facing=2": { "model": "wolves:block/fcBlockBellows_on", "y": 180},
-    "power=true,facing=3": { "model": "wolves:block/fcBlockBellows_on", "y": 0},
-    "power=false,facing=0": { "model": "wolves:block/fcBlockBellows_off", "y": -90},
-    "power=false,facing=1": { "model": "wolves:block/fcBlockBellows_off", "y": 90},
-    "power=false,facing=2": { "model": "wolves:block/fcBlockBellows_off", "y": 180},
-    "power=false,facing=3": { "model": "wolves:block/fcBlockBellows_off", "y": 0}
+    "power=true,facing=0": {
+      "model": "wolves:block/fcBlockBellows_on",
+      "y": -90
+    },
+    "power=true,facing=1": {
+      "model": "wolves:block/fcBlockBellows_on",
+      "y": 90
+    },
+    "power=true,facing=2": {
+      "model": "wolves:block/fcBlockBellows_on",
+      "y": 180
+    },
+    "power=true,facing=3": {
+      "model": "wolves:block/fcBlockBellows_on",
+      "y": 0
+    },
+    "power=false,facing=0": {
+      "model": "wolves:block/fcBlockBellows_off",
+      "y": -90
+    },
+    "power=false,facing=1": {
+      "model": "wolves:block/fcBlockBellows_off",
+      "y": 90
+    },
+    "power=false,facing=2": {
+      "model": "wolves:block/fcBlockBellows_off",
+      "y": 180
+    },
+    "power=false,facing=3": {
+      "model": "wolves:block/fcBlockBellows_off",
+      "y": 0
+    }
   }
 }

@@ -1,20 +1,19 @@
 package net.kozibrodka.wolves.recipe;
 
-import java.util.ArrayList;
 import net.minecraft.item.ItemStack;
-import net.modificationstation.stationapi.api.registry.ItemRegistry;
-import net.modificationstation.stationapi.api.util.Identifier;
+
+import java.util.ArrayList;
 
 public class SawingRecipeRegistry {
     private static final SawingRecipeRegistry INSTANCE = new SawingRecipeRegistry();
-    private ArrayList<ItemStack[]> recipes = new ArrayList<>();
+    private final ArrayList<ItemStack[]> recipes = new ArrayList<>();
 
     public static final SawingRecipeRegistry getInstance() {
         return INSTANCE;
     }
 
     public void addSawingRecipe(ItemStack input, ItemStack output) {
-        this.recipes.add(new ItemStack[] {input, output});
+        this.recipes.add(new ItemStack[]{input, output});
     }
 
     public ItemStack getResult(ItemStack item) {

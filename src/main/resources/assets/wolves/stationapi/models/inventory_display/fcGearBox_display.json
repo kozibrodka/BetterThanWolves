@@ -6,15 +6,42 @@
     "particle": "wolves:block/fcBlockGearBox_in"
   },
   "elements": [
-    {   "from": [ 0, 0, 0 ],
-      "to": [ 16, 16, 16 ],
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ],
       "faces": {
-        "down":  { "texture": "#other", "cullface": "down" },
-        "up":    { "texture": "#other", "cullface": "up" },
-        "north": { "texture": "#other", "cullface": "north" },
-        "south": { "texture": "#up", "cullface": "south" },
-        "west":  { "texture": "#other", "cullface": "west" },
-        "east":  { "texture": "#other", "cullface": "east" }
+        "down": {
+          "texture": "#other",
+          "cullface": "down"
+        },
+        "up": {
+          "texture": "#other",
+          "cullface": "up"
+        },
+        "north": {
+          "texture": "#other",
+          "cullface": "north"
+        },
+        "south": {
+          "texture": "#up",
+          "cullface": "south"
+        },
+        "west": {
+          "texture": "#other",
+          "cullface": "west"
+        },
+        "east": {
+          "texture": "#other",
+          "cullface": "east"
+        }
       }
     }
   ]

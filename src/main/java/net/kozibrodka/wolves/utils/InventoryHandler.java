@@ -30,7 +30,7 @@ public class InventoryHandler {
     }
 
     public static void ejectInventoryContents(World world, int x, int y, int z, Inventory inventory) {
-slotLoop:
+        slotLoop:
         for (int slot = 0; slot < inventory.size(); slot++) {
             ItemStack itemStack = inventory.getStack(slot);
             if (itemStack == null) {
@@ -48,11 +48,11 @@ slotLoop:
                     randomStackSize = itemStack.count;
                 }
                 itemStack.count -= randomStackSize;
-                ItemEntity itemEntity = new ItemEntity(world, (float)x + xOffset, (float)y + yOffset, (float)z + zOffset, new ItemStack(itemStack.getItem(), randomStackSize, itemStack.getDamage()));
+                ItemEntity itemEntity = new ItemEntity(world, (float) x + xOffset, (float) y + yOffset, (float) z + zOffset, new ItemStack(itemStack.getItem(), randomStackSize, itemStack.getDamage()));
                 float randomVelocityFactor = 0.05F;
-                itemEntity.velocityX = (float)world.random.nextGaussian() * randomVelocityFactor;
-                itemEntity.velocityY = (float)world.random.nextGaussian() * randomVelocityFactor + 0.2F;
-                itemEntity.velocityZ = (float)world.random.nextGaussian() * randomVelocityFactor;
+                itemEntity.velocityX = (float) world.random.nextGaussian() * randomVelocityFactor;
+                itemEntity.velocityY = (float) world.random.nextGaussian() * randomVelocityFactor + 0.2F;
+                itemEntity.velocityZ = (float) world.random.nextGaussian() * randomVelocityFactor;
                 itemEntity.pickupDelay = 10;
                 world.spawnEntity(itemEntity);
             } while (true);
@@ -277,7 +277,7 @@ slotLoop:
     private static int findValidSlotWithinBounds(Inventory inventory, ItemStack itemInstance, int minimumSlot, int maximumSlot) {
         for (int slot = minimumSlot; slot < inventory.size() && slot <= maximumSlot; slot++) {
             ItemStack tempStack = inventory.getStack(slot);
-            if(tempStack != null && tempStack.itemId == itemInstance.itemId && tempStack.isStackable() && tempStack.count < tempStack.getMaxCount() && tempStack.count < inventory.getMaxCountPerStack() && (!tempStack.hasSubtypes() || tempStack.getDamage() == itemInstance.getDamage())) {
+            if (tempStack != null && tempStack.itemId == itemInstance.itemId && tempStack.isStackable() && tempStack.count < tempStack.getMaxCount() && tempStack.count < inventory.getMaxCountPerStack() && (!tempStack.hasSubtypes() || tempStack.getDamage() == itemInstance.getDamage())) {
                 return slot;
             }
         }

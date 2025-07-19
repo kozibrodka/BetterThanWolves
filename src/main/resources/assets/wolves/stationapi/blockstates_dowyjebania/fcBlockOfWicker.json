@@ -1,5 +1,7 @@
 {
   "variants": {
-    "": { "model": "wolves:block/fcBlockOfWicker"}
+    "": {
+      "model": "wolves:block/fcBlockOfWicker"
+    }
   }
 }

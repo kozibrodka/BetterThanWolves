@@ -1,16 +1,16 @@
 package net.kozibrodka.wolves.recipe;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import net.minecraft.item.ItemStack;
 import net.modificationstation.stationapi.api.registry.ItemRegistry;
 import net.modificationstation.stationapi.api.util.Identifier;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 public class MillingRecipeRegistry {
     private static final MillingRecipeRegistry INSTANCE = new MillingRecipeRegistry();
-    private Map recipes = new HashMap();
+    private final Map recipes = new HashMap();
 
     public static final MillingRecipeRegistry getInstance() {
         return INSTANCE;
@@ -21,7 +21,7 @@ public class MillingRecipeRegistry {
     }
 
     public ItemStack getResult(Identifier i) {
-        return (ItemStack)this.recipes.get(i);
+        return (ItemStack) this.recipes.get(i);
     }
 
     public ArrayList<MillStoneRecipe> getRecipes() {

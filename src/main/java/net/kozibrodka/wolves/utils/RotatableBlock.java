@@ -3,8 +3,7 @@ package net.kozibrodka.wolves.utils;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 
-public interface RotatableBlock
-{
+public interface RotatableBlock {
 
     int GetFacing(BlockView iblockaccess, int i, int j, int k);
 

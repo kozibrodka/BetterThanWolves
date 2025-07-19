@@ -3,11 +3,9 @@ package net.kozibrodka.wolves.itemblocks;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 
-public class UnfiredPotteryBlockItem extends BlockItem
-{
+public class UnfiredPotteryBlockItem extends BlockItem {
 
-    public UnfiredPotteryBlockItem(int i)
-    {
+    public UnfiredPotteryBlockItem(int i) {
         super(i);
         setMaxDamage(0);
         setHasSubtypes(true);
@@ -15,8 +13,7 @@ public class UnfiredPotteryBlockItem extends BlockItem
     }
 
     @Override
-    public int getPlacementMetadata(int i)
-    {
+    public int getPlacementMetadata(int i) {
         return i;
     }
 
@@ -24,14 +21,12 @@ public class UnfiredPotteryBlockItem extends BlockItem
     @Override
     public String getTranslationKey(ItemStack itemstack) //getItemNameIS
     {
-        if(itemstack.getDamage() == 0)
-        {
-            return (new StringBuilder()).append(super.getTranslationKey()).append(".").append("crucible").toString();
-        } else if(itemstack.getDamage() == 1)
-        {
-            return (new StringBuilder()).append(super.getTranslationKey()).append(".").append("planter").toString();
-        }else{
-            return (new StringBuilder()).append(super.getTranslationKey()).append(".").append("vase").toString();
+        if (itemstack.getDamage() == 0) {
+            return super.getTranslationKey() + "." + "crucible";
+        } else if (itemstack.getDamage() == 1) {
+            return super.getTranslationKey() + "." + "planter";
+        } else {
+            return super.getTranslationKey() + "." + "vase";
         }
     }
 }

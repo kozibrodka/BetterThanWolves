@@ -1,5 +1,7 @@
 {
   "variants": {
-    "": { "model": "block/water"}
+    "": {
+      "model": "block/water"
+    }
   }
 }

@@ -2,7 +2,6 @@ package net.kozibrodka.wolves.compat.ami.anvil;
 
 import net.glasslauncher.mods.alwaysmoreitems.api.recipe.RecipeHandler;
 import net.glasslauncher.mods.alwaysmoreitems.api.recipe.RecipeWrapper;
-import net.kozibrodka.wolves.recipe.AnvilShapedRecipe;
 import net.kozibrodka.wolves.recipe.AnvilShapelessRecipe;
 import org.jetbrains.annotations.NotNull;
 

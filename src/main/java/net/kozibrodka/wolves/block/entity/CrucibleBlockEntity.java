@@ -44,22 +44,22 @@ public class CrucibleBlockEntity extends BlockEntity implements Inventory {
 
     public void setStack(int slot, ItemStack itemInstance) {
         crucibleContents[slot] = itemInstance;
-        if(itemInstance != null && itemInstance.count > getMaxCountPerStack()) {
+        if (itemInstance != null && itemInstance.count > getMaxCountPerStack()) {
             itemInstance.count = getMaxCountPerStack();
         }
         updateRenderFullness();
     }
 
-    public void updateRenderFullness(){
+    public void updateRenderFullness() {
         if (world == null) {
             return;
         }
-        if(world.isRemote){
+        if (world.isRemote) {
             return;
         }
 //        level.method_202(x, y, z, x, y, z);
         int iOccupiedStacks = InventoryHandler.getOccupiedSlotCountWithinBounds(this, 0, 26);
-        ((CrucibleBlock)BlockListener.crucible).SetHasFull(world, x, y, z, iOccupiedStacks);
+        ((CrucibleBlock) BlockListener.crucible).SetHasFull(world, x, y, z, iOccupiedStacks);
     }
 
     public String getName() {
@@ -67,10 +67,10 @@ public class CrucibleBlockEntity extends BlockEntity implements Inventory {
     }
 
     public boolean canPlayerUse(PlayerEntity player) {
-        if(world.getBlockEntity(x, y, z) != this) {
+        if (world.getBlockEntity(x, y, z) != this) {
             return false;
         } else {
-            return player.getSquaredDistance((double)x + 0.5D, (double)y + 0.5D, (double)z + 0.5D) <= 64D;
+            return player.getSquaredDistance((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D) <= 64D;
         }
     }
 
@@ -78,10 +78,10 @@ public class CrucibleBlockEntity extends BlockEntity implements Inventory {
         super.readNbt(compoundTag);
         NbtList nbttaglist = compoundTag.getList("Items");
         crucibleContents = new ItemStack[size()];
-        for(int i = 0; i < nbttaglist.size(); i++) {
-            NbtCompound slotCompoundTag = (NbtCompound)nbttaglist.get(i);
+        for (int i = 0; i < nbttaglist.size(); i++) {
+            NbtCompound slotCompoundTag = (NbtCompound) nbttaglist.get(i);
             int j = slotCompoundTag.getByte("Slot") & 0xff;
-            if(j < crucibleContents.length) {
+            if (j < crucibleContents.length) {
                 crucibleContents[j] = new ItemStack(slotCompoundTag);
             }
         }
@@ -92,10 +92,10 @@ public class CrucibleBlockEntity extends BlockEntity implements Inventory {
     public void writeNbt(NbtCompound nbttagcompound) {
         super.writeNbt(nbttagcompound);
         NbtList listTag = new NbtList();
-        for(int i = 0; i < crucibleContents.length; i++) {
-            if(crucibleContents[i] != null) {
+        for (int i = 0; i < crucibleContents.length; i++) {
+            if (crucibleContents[i] != null) {
                 NbtCompound slotCompoundTag = new NbtCompound();
-                slotCompoundTag.putByte("Slot", (byte)i);
+                slotCompoundTag.putByte("Slot", (byte) i);
                 crucibleContents[i].writeNbt(slotCompoundTag);
                 listTag.add(slotCompoundTag);
             }
@@ -106,19 +106,19 @@ public class CrucibleBlockEntity extends BlockEntity implements Inventory {
     }
 
     public void tick() {
-        if(world.isRemote) {
+        if (world.isRemote) {
             return;
         }
         int stokedFireFactor = getStokedFireFactor();
-        if(stokedFireFactor > 0) {
-            if(!overStokedFire) {
+        if (stokedFireFactor > 0) {
+            if (!overStokedFire) {
                 overStokedFire = true;
-                ((CrucibleBlock)BlockListener.crucible).SetHasLava(world, x, y, z, true);
+                ((CrucibleBlock) BlockListener.crucible).SetHasLava(world, x, y, z, true);
                 world.setBlocksDirty(x, y, z, x, y, z);
             }
-            if(areItemsInRegistry()) {
+            if (areItemsInRegistry()) {
                 crucibleCookCounter += stokedFireFactor;
-                if(crucibleCookCounter >= 1950) {
+                if (crucibleCookCounter >= 1950) {
                     craftFromRegistry();
                     crucibleCookCounter = 0;
                 }
@@ -126,9 +126,9 @@ public class CrucibleBlockEntity extends BlockEntity implements Inventory {
                 crucibleCookCounter = 0;
             }
         } else {
-            if(overStokedFire) {
+            if (overStokedFire) {
                 overStokedFire = false;
-                ((CrucibleBlock)BlockListener.crucible).SetHasLava(world, x, y, z, false);
+                ((CrucibleBlock) BlockListener.crucible).SetHasLava(world, x, y, z, false);
                 world.setBlocksDirty(x, y, z, x, y, z);
             }
             crucibleCookCounter = 0;
@@ -137,12 +137,12 @@ public class CrucibleBlockEntity extends BlockEntity implements Inventory {
 
     public int getStokedFireFactor() {
         int fireFactor = 0;
-        if(world.getBlockId(x, y - 1, z) == BlockListener.stokedFire.id) {
+        if (world.getBlockId(x, y - 1, z) == BlockListener.stokedFire.id) {
             fireFactor += 5;
             int tempY = y - 1;
-            for(int tempX = x - 1; tempX <= x + 1; tempX++) {
-                for(int tempZ = z - 1; tempZ <= z + 1; tempZ++) {
-                    if((tempX != x || tempZ != z) && world.getBlockId(tempX, tempY, tempZ) == BlockListener.stokedFire.id && world.getBlockId(tempX, tempY - 1, tempZ) == BlockListener.stokedFire.id) {
+            for (int tempX = x - 1; tempX <= x + 1; tempX++) {
+                for (int tempZ = z - 1; tempZ <= z + 1; tempZ++) {
+                    if ((tempX != x || tempZ != z) && world.getBlockId(tempX, tempY, tempZ) == BlockListener.stokedFire.id && world.getBlockId(tempX, tempY - 1, tempZ) == BlockListener.stokedFire.id) {
                         fireFactor++;
                     }
                 }
@@ -166,7 +166,8 @@ public class CrucibleBlockEntity extends BlockEntity implements Inventory {
     public void craftFromRegistry() {
         if (CrucibleCraftingManager.getInstance().getCraftingResult(this) == null) return;
         ItemStack outputStack = CrucibleCraftingManager.getInstance().consumeIngredientsAndReturnResult(this);
-        if(!InventoryHandler.addItemInstanceToInventory(this, outputStack)) UnsortedUtils.ejectStackWithRandomOffset(world, x, y + 1, z, outputStack);
+        if (!InventoryHandler.addItemInstanceToInventory(this, outputStack))
+            UnsortedUtils.ejectStackWithRandomOffset(world, x, y + 1, z, outputStack);
     }
 
     private ItemStack[] crucibleContents;

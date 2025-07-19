@@ -3,11 +3,9 @@ package net.kozibrodka.wolves.itemblocks;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 
-public class VaseBlockItem extends BlockItem
-{
+public class VaseBlockItem extends BlockItem {
 
-    public VaseBlockItem(int i)
-    {
+    public VaseBlockItem(int i) {
         super(i);
         setMaxDamage(0);
         setHasSubtypes(true);
@@ -15,8 +13,7 @@ public class VaseBlockItem extends BlockItem
     }
 
     @Override
-    public int getPlacementMetadata(int i)
-    {
+    public int getPlacementMetadata(int i) {
         return i;
     }
 

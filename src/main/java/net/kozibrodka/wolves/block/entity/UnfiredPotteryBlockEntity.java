@@ -12,54 +12,43 @@ import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.NbtCompound;
 
-public class UnfiredPotteryBlockEntity extends BlockEntity
-{
+public class UnfiredPotteryBlockEntity extends BlockEntity {
 
-    public UnfiredPotteryBlockEntity()
-    {
+    public UnfiredPotteryBlockEntity() {
         m_iCookStateCount = 0;
         m_iStateUpdateTickCount = 0;
     }
 
-    public void readNbt(NbtCompound nbttagcompound)
-    {
+    public void readNbt(NbtCompound nbttagcompound) {
         super.readNbt(nbttagcompound);
         m_iCookStateCount = nbttagcompound.getInt("m_iCookStateUpdateCount");
         m_iStateUpdateTickCount = nbttagcompound.getInt("m_iStateUpdateTickCount");
     }
 
-    public void writeNbt(NbtCompound nbttagcompound)
-    {
+    public void writeNbt(NbtCompound nbttagcompound) {
         super.writeNbt(nbttagcompound);
         nbttagcompound.putInt("m_iCookStateUpdateCount", m_iCookStateCount);
         nbttagcompound.putInt("m_iStateUpdateTickCount", m_iStateUpdateTickCount);
     }
 
-    public void tick()
-    {
-        if(world.isRemote){
+    public void tick() {
+        if (world.isRemote) {
             return;
         }
         m_iStateUpdateTickCount++;
-        if(m_iStateUpdateTickCount >= 20)
-        {
-            if(IsInFiredKiln())
-            {
-                if(m_iCookStateCount == 0)
-                {
+        if (m_iStateUpdateTickCount >= 20) {
+            if (IsInFiredKiln()) {
+                if (m_iCookStateCount == 0) {
                     world.setBlocksDirty(x, y, z, x, y, z);
                 }
                 m_iCookStateCount += GetFireFactor();
-                if(m_iCookStateCount >= 130)
-                {
+                if (m_iCookStateCount >= 130) {
                     int iTargetid = world.getBlockId(x, y, z);
                     Block targetBlock = Block.BLOCKS[iTargetid];
-                    ((UnfiredPotteryBlock)targetBlock).Cook(world, x, y, z);
+                    ((UnfiredPotteryBlock) targetBlock).Cook(world, x, y, z);
                     return;
                 }
-            } else
-            if(m_iCookStateCount != 0)
-            {
+            } else if (m_iCookStateCount != 0) {
                 m_iCookStateCount = 0;
                 world.setBlocksDirty(x, y, z, x, y, z);
             }
@@ -67,24 +56,19 @@ public class UnfiredPotteryBlockEntity extends BlockEntity
         }
     }
 
-    private boolean IsInFiredKiln()
-    {
-        if(world.getBlockId(x, y - 1, z) != Block.BRICKS.id)
-        {
+    private boolean IsInFiredKiln() {
+        if (world.getBlockId(x, y - 1, z) != Block.BRICKS.id) {
             return false;
         }
         Block _tmp = BlockListener.stokedFire;
-        if(world.getBlockId(x, y - 1, z) != Block.BRICKS.id)
-        {
+        if (world.getBlockId(x, y - 1, z) != Block.BRICKS.id) {
             return false;
         }
         int iNonBrickNeighbourCount = 0;
-        for(int iTempFacing = 1; iTempFacing <= 5; iTempFacing++)
-        {
+        for (int iTempFacing = 1; iTempFacing <= 5; iTempFacing++) {
             BlockPosition tempPos = new BlockPosition(x, y, z);
             tempPos.AddFacingAsOffset(iTempFacing);
-            if(world.getBlockId(tempPos.i, tempPos.j, tempPos.k) != Block.BRICKS.id && ++iNonBrickNeighbourCount > 1)
-            {
+            if (world.getBlockId(tempPos.i, tempPos.j, tempPos.k) != Block.BRICKS.id && ++iNonBrickNeighbourCount > 1) {
                 return false;
             }
         }
@@ -92,19 +76,14 @@ public class UnfiredPotteryBlockEntity extends BlockEntity
         return true;
     }
 
-    public int GetFireFactor()
-    {
+    public int GetFireFactor() {
         int fireFactor = 0;
-        if(world.getBlockId(x, y - 2, z) == BlockListener.stokedFire.id)
-        {
+        if (world.getBlockId(x, y - 2, z) == BlockListener.stokedFire.id) {
             fireFactor += 5;
             int tempY = y - 2;
-            for(int tempX = x - 1; tempX <= x + 1; tempX++)
-            {
-                for(int tempZ = z - 1; tempZ <= z + 1; tempZ++)
-                {
-                    if((tempX != x || tempZ != z) && world.getBlockId(tempX, tempY, tempZ) == BlockListener.stokedFire.id)
-                    {
+            for (int tempX = x - 1; tempX <= x + 1; tempX++) {
+                for (int tempZ = z - 1; tempZ <= z + 1; tempZ++) {
+                    if ((tempX != x || tempZ != z) && world.getBlockId(tempX, tempY, tempZ) == BlockListener.stokedFire.id) {
                         fireFactor++;
                     }
                 }
@@ -115,8 +94,7 @@ public class UnfiredPotteryBlockEntity extends BlockEntity
         return fireFactor;
     }
 
-    public boolean IsCooking()
-    {
+    public boolean IsCooking() {
         return m_iCookStateCount != 0;
     }
 

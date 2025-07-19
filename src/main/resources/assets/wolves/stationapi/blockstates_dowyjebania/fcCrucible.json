@@ -1,5 +1,7 @@
 {
   "variants": {
-    "": { "model": "wolves:block/fcCrucible"}
+    "": {
+      "model": "wolves:block/fcCrucible"
+    }
   }
 }

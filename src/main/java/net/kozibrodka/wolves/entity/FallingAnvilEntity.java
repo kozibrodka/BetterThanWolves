@@ -2,7 +2,6 @@ package net.kozibrodka.wolves.entity;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-//import net.kozibrodka.wolves.events.ConfigListener;
 import net.kozibrodka.wolves.events.ConfigListener;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -82,7 +81,7 @@ public class FallingAnvilEntity extends Entity implements EntitySpawnDataProvide
                 this.velocityZ *= 0.699999988079071D;
                 this.velocityY *= -0.5D;
                 List list1 = world.collectEntitiesByClass(LivingEntity.class, this.boundingBox);
-                if(!list1.isEmpty()) {
+                if (!list1.isEmpty()) {
                     for (int k = 0; k < list1.size(); k++) {
                         LivingEntity playertohit = (LivingEntity) list1.get(k);
                         playertohit.damage(this, 10); //TODO DMG
@@ -96,7 +95,7 @@ public class FallingAnvilEntity extends Entity implements EntitySpawnDataProvide
             } else if (this.field_848 > 100 && !this.world.isRemote) { //TODO: destroy after 100 ticks??
                 this.dropItem(this.tile, 1);
                 List list1 = world.collectEntitiesByClass(LivingEntity.class, this.boundingBox);
-                if(!list1.isEmpty()) {
+                if (!list1.isEmpty()) {
                     for (int k = 0; k < list1.size(); k++) {
                         LivingEntity playertohit = (LivingEntity) list1.get(k);
                         playertohit.damage(this, 10); //TODO DMG
@@ -110,8 +109,8 @@ public class FallingAnvilEntity extends Entity implements EntitySpawnDataProvide
     }
 
     protected void writeNbt(NbtCompound arg) {
-        arg.putByte("Tile", (byte)this.tile);
-        arg.putByte("Facing", (byte)this.facing);
+        arg.putByte("Tile", (byte) this.tile);
+        arg.putByte("Facing", (byte) this.facing);
     }
 
     protected void readNbt(NbtCompound arg) {

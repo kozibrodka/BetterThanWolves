@@ -3,22 +3,20 @@ package net.kozibrodka.wolves.recipe;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 
-public class AnvilCraftingManager
-{
+public class AnvilCraftingManager {
 
-    public static final AnvilCraftingManager getInstance()
-    {
+    public static final AnvilCraftingManager getInstance() {
         return instance;
     }
 
-    private AnvilCraftingManager()
-    {
+    private AnvilCraftingManager() {
         recipes = new ArrayList();
     }
 
@@ -27,41 +25,41 @@ public class AnvilCraftingManager
         int i = 0;
         int width = 0;
         int height = 0;
-        if(inputObjects[i] instanceof String[]) {
-            String[] as = (String[])inputObjects[i++];
-            for(int l = 0; l < as.length; l++) {
+        if (inputObjects[i] instanceof String[]) {
+            String[] as = (String[]) inputObjects[i++];
+            for (int l = 0; l < as.length; l++) {
                 String s2 = as[l];
                 height++;
                 width = s2.length();
-                s = (new StringBuilder()).append(s).append(s2).toString();
+                s = s + s2;
             }
         } else {
-            while(inputObjects[i] instanceof String) {
-                String s1 = (String)inputObjects[i++];
+            while (inputObjects[i] instanceof String) {
+                String s1 = (String) inputObjects[i++];
                 height++;
                 width = s1.length();
-                s = (new StringBuilder()).append(s).append(s1).toString();
+                s = s + s1;
             }
         }
         HashMap hashmap = new HashMap();
-        for(; i < inputObjects.length; i += 2) {
-            Character character = (Character)inputObjects[i];
+        for (; i < inputObjects.length; i += 2) {
+            Character character = (Character) inputObjects[i];
             ItemStack ItemInstance1 = null;
-            if(inputObjects[i + 1] instanceof Item) {
-                ItemInstance1 = new ItemStack((Item)inputObjects[i + 1]);
-            } else if(inputObjects[i + 1] instanceof Block) {
-                ItemInstance1 = new ItemStack((Block)inputObjects[i + 1], 1, -1);
-            } else if(inputObjects[i + 1] instanceof ItemStack) {
-                ItemInstance1 = (ItemStack)inputObjects[i + 1];
+            if (inputObjects[i + 1] instanceof Item) {
+                ItemInstance1 = new ItemStack((Item) inputObjects[i + 1]);
+            } else if (inputObjects[i + 1] instanceof Block) {
+                ItemInstance1 = new ItemStack((Block) inputObjects[i + 1], 1, -1);
+            } else if (inputObjects[i + 1] instanceof ItemStack) {
+                ItemInstance1 = (ItemStack) inputObjects[i + 1];
             }
             hashmap.put(character, ItemInstance1);
         }
 
         ItemStack[] inputs = new ItemStack[width * height];
-        for(int i1 = 0; i1 < width * height; i1++) {
+        for (int i1 = 0; i1 < width * height; i1++) {
             char c = s.charAt(i1);
-            if(hashmap.containsKey(c)) {
-                inputs[i1] = ((ItemStack)hashmap.get(c)).copy();
+            if (hashmap.containsKey(c)) {
+                inputs[i1] = ((ItemStack) hashmap.get(c)).copy();
             } else {
                 inputs[i1] = null;
             }
@@ -70,22 +68,22 @@ public class AnvilCraftingManager
         recipes.add(new AnvilShapedRecipe(width, height, inputs, output));
     }
 
-    public void addShapelessRecipe(ItemStack ItemInstance, Object aobj[]) {
+    public void addShapelessRecipe(ItemStack ItemInstance, Object[] aobj) {
         ArrayList arraylist = new ArrayList();
-        Object aobj1[] = aobj;
+        Object[] aobj1 = aobj;
         int i = aobj1.length;
-        for(int j = 0; j < i; j++) {
+        for (int j = 0; j < i; j++) {
             Object obj = aobj1[j];
-            if(obj instanceof ItemStack) {
-                arraylist.add(((ItemStack)obj).copy());
+            if (obj instanceof ItemStack) {
+                arraylist.add(((ItemStack) obj).copy());
                 continue;
             }
-            if(obj instanceof Item) {
-                arraylist.add(new ItemStack((Item)obj));
+            if (obj instanceof Item) {
+                arraylist.add(new ItemStack((Item) obj));
                 continue;
             }
-            if(obj instanceof Block) {
-                arraylist.add(new ItemStack((Block)obj));
+            if (obj instanceof Block) {
+                arraylist.add(new ItemStack((Block) obj));
             } else {
                 throw new RuntimeException("Invalid shapeless recipe!");
             }
@@ -95,9 +93,9 @@ public class AnvilCraftingManager
     }
 
     public ItemStack findMatchingRecipe(CraftingInventory inventorycrafting) {
-        for(int i = 0; i < recipes.size(); i++) {
-            AnvilRecipeTemplate irecipe = (AnvilRecipeTemplate)recipes.get(i);
-            if(irecipe.canCraft(inventorycrafting)) {
+        for (int i = 0; i < recipes.size(); i++) {
+            AnvilRecipeTemplate irecipe = (AnvilRecipeTemplate) recipes.get(i);
+            if (irecipe.canCraft(inventorycrafting)) {
                 return irecipe.craft(inventorycrafting);
             }
         }
@@ -130,6 +128,6 @@ public class AnvilCraftingManager
     }
 
     private static final AnvilCraftingManager instance = new AnvilCraftingManager();
-    private List recipes;
+    private final List recipes;
 
 }

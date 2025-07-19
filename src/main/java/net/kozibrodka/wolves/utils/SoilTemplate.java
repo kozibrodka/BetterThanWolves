@@ -4,8 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.world.World;
 
 
-public interface SoilTemplate
-{
+public interface SoilTemplate {
 
     boolean CanPlantGrowOnBlock(World world, int i, int j, int k, Block block);
 

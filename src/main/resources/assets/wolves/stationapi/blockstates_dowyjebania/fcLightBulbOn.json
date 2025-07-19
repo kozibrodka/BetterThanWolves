@@ -1,8 +1,9 @@
 {
   "variants": {
-    "":
-    [
-      { "model": "wolves:block/fcLightBulbOn" }
+    "": [
+      {
+        "model": "wolves:block/fcLightBulbOn"
+      }
     ]
   }
 }

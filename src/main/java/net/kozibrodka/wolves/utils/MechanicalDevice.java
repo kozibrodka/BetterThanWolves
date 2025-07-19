@@ -1,10 +1,8 @@
-
 package net.kozibrodka.wolves.utils;
 
 import net.minecraft.world.World;
 
-public interface MechanicalDevice
-{
+public interface MechanicalDevice {
 
     boolean CanOutputMechanicalPower();
 

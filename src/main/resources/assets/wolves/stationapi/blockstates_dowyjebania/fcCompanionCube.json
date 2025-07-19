@@ -1,10 +1,28 @@
 {
   "variants": {
-    "facing=0": { "model": "wolves:block/fcCompanion_horizontal", "x": 180},
-    "facing=1": { "model": "wolves:block/fcCompanion_horizontal", "x": 0},
-    "facing=2": { "model": "wolves:block/fcCompanion", "y": -90},
-    "facing=3": { "model": "wolves:block/fcCompanion", "y": 90},
-    "facing=4": { "model": "wolves:block/fcCompanion", "y": 180},
-    "facing=5": { "model": "wolves:block/fcCompanion", "y": 0}
+    "facing=0": {
+      "model": "wolves:block/fcCompanion_horizontal",
+      "x": 180
+    },
+    "facing=1": {
+      "model": "wolves:block/fcCompanion_horizontal",
+      "x": 0
+    },
+    "facing=2": {
+      "model": "wolves:block/fcCompanion",
+      "y": -90
+    },
+    "facing=3": {
+      "model": "wolves:block/fcCompanion",
+      "y": 90
+    },
+    "facing=4": {
+      "model": "wolves:block/fcCompanion",
+      "y": 180
+    },
+    "facing=5": {
+      "model": "wolves:block/fcCompanion",
+      "y": 0
+    }
   }
 }

@@ -32,50 +32,38 @@ public class AxleBlock extends TemplateBlock {
     }
 
     public int getTexture(int iSide) {
-        if(iSide == 2 || iSide == 3)
-        {
+        if (iSide == 2 || iSide == 3) {
             return TextureListener.axle_side;
         }
-        if(iSide == 0 || iSide == 1)
-        {
+        if (iSide == 0 || iSide == 1) {
             return TextureListener.axle_vertical;
-        } else
-        {
+        } else {
             return TextureListener.axle_horizontal;
         }
     }
 
     public int getTextureId(BlockView iblockaccess, int i, int j, int k, int iSide) {
         int iAxis = getAxisAlignment(iblockaccess, i, j, k);
-        if(iAxis == 0)
-        {
-            if(iSide == 0 || iSide == 1)
-            {
+        if (iAxis == 0) {
+            if (iSide == 0 || iSide == 1) {
                 return TextureListener.axle_side;
-            } else
-            {
+            } else {
                 return TextureListener.axle_vertical;
             }
         }
-        if(iAxis == 1)
-        {
-            if(iSide == 2 || iSide == 3)
-            {
+        if (iAxis == 1) {
+            if (iSide == 2 || iSide == 3) {
                 return TextureListener.axle_side;
             }
-            if(iSide == 0 || iSide == 1)
-            {
+            if (iSide == 0 || iSide == 1) {
                 return TextureListener.axle_vertical;
-            } else
-            {
+            } else {
                 return TextureListener.axle_horizontal;
             }
         }
-        if(iSide == 4 || iSide == 5)
-        {
+        if (iSide == 4 || iSide == 5) {
             return TextureListener.axle_side;
-        } else
-        {
+        } else {
             return TextureListener.axle_horizontal;
         }
     }
@@ -108,32 +96,30 @@ public class AxleBlock extends TemplateBlock {
 
     public Box getCollisionShape(World world, int i, int j, int k) {
         int iAxis = getAxisAlignment(world, i, j, k);
-        switch(iAxis)
-        {
-        case 0: // '\0'
-            return Box.createCached(((float)i + 0.5F) - 0.125F, (float)j, ((float)k + 0.5F) - 0.125F, (float)i + 0.5F + 0.125F, (float)j + 1.0F, (float)k + 0.5F + 0.125F);
+        switch (iAxis) {
+            case 0: // '\0'
+                return Box.createCached(((float) i + 0.5F) - 0.125F, (float) j, ((float) k + 0.5F) - 0.125F, (float) i + 0.5F + 0.125F, (float) j + 1.0F, (float) k + 0.5F + 0.125F);
 
-        case 1: // '\001'
-            return Box.createCached(((float)i + 0.5F) - 0.125F, ((float)j + 0.5F) - 0.125F, (float)k, (float)i + 0.5F + 0.125F, (float)j + 0.5F + 0.125F, (float)k + 1.0F);
+            case 1: // '\001'
+                return Box.createCached(((float) i + 0.5F) - 0.125F, ((float) j + 0.5F) - 0.125F, (float) k, (float) i + 0.5F + 0.125F, (float) j + 0.5F + 0.125F, (float) k + 1.0F);
         }
-        return Box.createCached((float)i, ((float)j + 0.5F) - 0.125F, ((float)k + 0.5F) - 0.125F, (float)i + 1.0F, (float)j + 0.5F + 0.125F, (float)k + 0.5F + 0.125F);
+        return Box.createCached((float) i, ((float) j + 0.5F) - 0.125F, ((float) k + 0.5F) - 0.125F, (float) i + 1.0F, (float) j + 0.5F + 0.125F, (float) k + 0.5F + 0.125F);
     }
 
     public void updateBoundingBox(BlockView iBlockAccess, int i, int j, int k) {
         int iAxis = getAxisAlignment(iBlockAccess, i, j, k);
-        switch(iAxis)
-        {
-        case 0: // '\0'
-            setBoundingBox(0.375F, 0.0F, 0.375F, 0.625F, 1.0F, 0.625F);
-            break;
+        switch (iAxis) {
+            case 0: // '\0'
+                setBoundingBox(0.375F, 0.0F, 0.375F, 0.625F, 1.0F, 0.625F);
+                break;
 
-        case 1: // '\001'
-            setBoundingBox(0.375F, 0.375F, 0.0F, 0.625F, 0.625F, 1.0F);
-            break;
+            case 1: // '\001'
+                setBoundingBox(0.375F, 0.375F, 0.0F, 0.625F, 0.625F, 1.0F);
+                break;
 
-        default:
-            setBoundingBox(0.0F, 0.375F, 0.375F, 1.0F, 0.625F, 0.625F);
-            break;
+            default:
+                setBoundingBox(0.0F, 0.375F, 0.375F, 1.0F, 0.625F, 0.625F);
+                break;
         }
     }
 
@@ -150,8 +136,7 @@ public class AxleBlock extends TemplateBlock {
     }
 
     public void randomDisplayTick(World world, int i, int j, int k, Random random) {
-        if(GetPowerLevel(world, i, j, k) > 0)
-        {
+        if (GetPowerLevel(world, i, j, k) > 0) {
             EmitAxleParticles(world, i, j, k, random);
         }
     }
@@ -162,8 +147,7 @@ public class AxleBlock extends TemplateBlock {
 
     public void SetAxisAlignmentBasedOnFacing(World world, int i, int j, int k, int iFacing) {
         int iAxis;
-        switch(iFacing)
-        {
+        switch (iFacing) {
             case 0: // '\0'
             case 1: // '\001'
                 iAxis = 0;
@@ -189,7 +173,7 @@ public class AxleBlock extends TemplateBlock {
     }
 
     public void SetPowerLevel(World world, int i, int j, int k, int iPowerLevel) {
-        if(world.isRemote){
+        if (world.isRemote) {
             return;
             //TODO: Maybe more of those conditions in other blocks
         }
@@ -203,47 +187,40 @@ public class AxleBlock extends TemplateBlock {
 
     public boolean IsAxleOrientedTowardsFacing(BlockView iBlockAccess, int i, int j, int k, int iFacing) {
         int iAxis = getAxisAlignment(iBlockAccess, i, j, k);
-        switch(iAxis)
-        {
-        case 0: // '\0'
-            if(iFacing == 0 || iFacing == 1)
-            {
-                return true;
-            }
-            break;
+        switch (iAxis) {
+            case 0: // '\0'
+                if (iFacing == 0 || iFacing == 1) {
+                    return true;
+                }
+                break;
 
-        case 1: // '\001'
-            if(iFacing == 2 || iFacing == 3)
-            {
-                return true;
-            }
-            break;
+            case 1: // '\001'
+                if (iFacing == 2 || iFacing == 3) {
+                    return true;
+                }
+                break;
 
-        default:
-            if(iFacing == 4 || iFacing == 5)
-            {
-                return true;
-            }
-            break;
+            default:
+                if (iFacing == 4 || iFacing == 5) {
+                    return true;
+                }
+                break;
         }
         return false;
     }
 
     public void BreakAxle(World world, int i, int j, int k) {
-        if(world.getBlockId(i, j, k) == BlockListener.axleBlock.id || world.getBlockId(i, j, k) == BlockListener.nonCollidingAxleBlock.id)
-        {
-            for(int iTemp = 0; iTemp < 5; iTemp++)
-            {
+        if (world.getBlockId(i, j, k) == BlockListener.axleBlock.id || world.getBlockId(i, j, k) == BlockListener.nonCollidingAxleBlock.id) {
+            for (int iTemp = 0; iTemp < 5; iTemp++) {
                 UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, ItemListener.hempFibers.id, 0);
             }
 
-            for(int iTemp = 0; iTemp < 2; iTemp++)
-            {
+            for (int iTemp = 0; iTemp < 2; iTemp++) {
                 UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, Item.STICK.id, 0);
             }
 
-            world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.explode", 0.2F, 1.25F);
-            if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+            world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "random.explode", 0.2F, 1.25F);
+            if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
                 voicePacket(world, "random.explode", i, j, k, 0.2F, 1.25F);
             }
             world.setBlock(i, j, k, 0);
@@ -251,13 +228,12 @@ public class AxleBlock extends TemplateBlock {
     }
 
     @Environment(EnvType.SERVER)
-    public void voicePacket(World world, String name, int x, int y, int z, float g, float h){
+    public void voicePacket(World world, String name, int x, int y, int z, float g, float h) {
         List list2 = world.players;
-        if(list2.size() != 0) {
-            for(int k = 0; k < list2.size(); k++)
-            {
+        if (list2.size() != 0) {
+            for (int k = 0; k < list2.size(); k++) {
                 ServerPlayerEntity player1 = (ServerPlayerEntity) list2.get(k);
-                PacketHelper.sendTo(player1, new SoundPacket(name, x, y, z, g,h));
+                PacketHelper.sendTo(player1, new SoundPacket(name, x, y, z, g, h));
             }
         }
     }
@@ -265,51 +241,51 @@ public class AxleBlock extends TemplateBlock {
     private void ValidatePowerLevel(World world, int i, int j, int k) {
         int currentPower = GetPowerLevel(world, i, j, k);
         int axis = getAxisAlignment(world, i, j, k);
-        if(currentPower != 3) {
+        if (currentPower != 3) {
             BlockPosition[] potentialSources = new BlockPosition[2];
             potentialSources[0] = new BlockPosition(i, j, k);
             potentialSources[1] = new BlockPosition(i, j, k);
-            switch(axis) {
-            case 0: // '\0'
-                potentialSources[0].AddFacingAsOffset(0);
-                potentialSources[1].AddFacingAsOffset(1);
-                break;
-            case 1: // '\001'
-                potentialSources[0].AddFacingAsOffset(2);
-                potentialSources[1].AddFacingAsOffset(3);
-                break;
-            default:
-                potentialSources[0].AddFacingAsOffset(4);
-                potentialSources[1].AddFacingAsOffset(5);
-                break;
+            switch (axis) {
+                case 0: // '\0'
+                    potentialSources[0].AddFacingAsOffset(0);
+                    potentialSources[1].AddFacingAsOffset(1);
+                    break;
+                case 1: // '\001'
+                    potentialSources[0].AddFacingAsOffset(2);
+                    potentialSources[1].AddFacingAsOffset(3);
+                    break;
+                default:
+                    potentialSources[0].AddFacingAsOffset(4);
+                    potentialSources[1].AddFacingAsOffset(5);
+                    break;
             }
             int maxNeighborPower = 0;
             int greaterPowerNeighbors = 0;
-            for(int tempSource = 0; tempSource < 2; tempSource++) {
+            for (int tempSource = 0; tempSource < 2; tempSource++) {
                 int tempId = world.getBlockId(potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
-                if(tempId != BlockListener.axleBlock.id && tempId != BlockListener.nonCollidingAxleBlock.id) {
+                if (tempId != BlockListener.axleBlock.id && tempId != BlockListener.nonCollidingAxleBlock.id) {
                     continue;
                 }
                 int tempAxis = getAxisAlignment(world, potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
-                if(tempAxis != axis) {
+                if (tempAxis != axis) {
                     continue;
                 }
                 int tempPowerLevel = GetPowerLevel(world, potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
-                if(tempPowerLevel > maxNeighborPower) {
+                if (tempPowerLevel > maxNeighborPower) {
                     maxNeighborPower = tempPowerLevel;
                 }
-                if(tempPowerLevel > currentPower) {
+                if (tempPowerLevel > currentPower) {
                     greaterPowerNeighbors++;
                 }
             }
 
-            if(greaterPowerNeighbors >= 2) {
+            if (greaterPowerNeighbors >= 2) {
                 BreakAxle(world, i, j, k);
                 return;
             }
             int newPower = currentPower;
-            if(maxNeighborPower > currentPower) {
-                if(maxNeighborPower == 1) {
+            if (maxNeighborPower > currentPower) {
+                if (maxNeighborPower == 1) {
                     BreakAxle(world, i, j, k);
                     return;
                 }
@@ -317,7 +293,7 @@ public class AxleBlock extends TemplateBlock {
             } else {
                 newPower = 0;
             }
-            if(newPower != currentPower) {
+            if (newPower != currentPower) {
 //                System.out.println("ZNIAMIA");
                 SetPowerLevel(world, i, j, k, newPower);
 //                world.method_243(i, j, k);
@@ -327,11 +303,10 @@ public class AxleBlock extends TemplateBlock {
     }
 
     private void EmitAxleParticles(World world, int i, int j, int k, Random random) {
-        for(int counter = 0; counter < 2; counter++)
-        {
-            float smokeX = (float)i + random.nextFloat();
-            float smokeY = (float)j + random.nextFloat() * 0.5F + 0.625F;
-            float smokeZ = (float)k + random.nextFloat();
+        for (int counter = 0; counter < 2; counter++) {
+            float smokeX = (float) i + random.nextFloat();
+            float smokeY = (float) j + random.nextFloat() * 0.5F + 0.625F;
+            float smokeZ = (float) k + random.nextFloat();
             world.addParticle("smoke", smokeX, smokeY, smokeZ, 0.0D, 0.0D, 0.0D);
         }
 
@@ -343,43 +318,37 @@ public class AxleBlock extends TemplateBlock {
         BlockPosition[] potentialSources = new BlockPosition[2];
         potentialSources[0] = new BlockPosition(i, j, k);
         potentialSources[1] = new BlockPosition(i, j, k);
-        switch(iAxis)
-        {
-        case 0: // '\0'
-            potentialSources[0].AddFacingAsOffset(0);
-            potentialSources[1].AddFacingAsOffset(1);
-            break;
+        switch (iAxis) {
+            case 0: // '\0'
+                potentialSources[0].AddFacingAsOffset(0);
+                potentialSources[1].AddFacingAsOffset(1);
+                break;
 
-        case 1: // '\001'
-            potentialSources[0].AddFacingAsOffset(2);
-            potentialSources[1].AddFacingAsOffset(3);
-            break;
+            case 1: // '\001'
+                potentialSources[0].AddFacingAsOffset(2);
+                potentialSources[1].AddFacingAsOffset(3);
+                break;
 
-        default:
-            potentialSources[0].AddFacingAsOffset(4);
-            potentialSources[1].AddFacingAsOffset(5);
-            break;
+            default:
+                potentialSources[0].AddFacingAsOffset(4);
+                potentialSources[1].AddFacingAsOffset(5);
+                break;
         }
-        for(int tempSource = 0; tempSource < 2; tempSource++)
-        {
+        for (int tempSource = 0; tempSource < 2; tempSource++) {
             int iTempid = world.getBlockId(potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
-            if(iTempid == BlockListener.axleBlock.id || iTempid == BlockListener.nonCollidingAxleBlock.id)
-            {
+            if (iTempid == BlockListener.axleBlock.id || iTempid == BlockListener.nonCollidingAxleBlock.id) {
                 int iTempAxis = getAxisAlignment(world, potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
-                if(iTempAxis != iAxis)
-                {
+                if (iTempAxis != iAxis) {
                     continue;
                 }
                 int iTempPowerLevel = GetPowerLevel(world, potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
-                if(iTempPowerLevel < iCurrentPower)
-                {
+                if (iTempPowerLevel < iCurrentPower) {
                     Overpower(world, potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
                 }
                 continue;
             }
-            if(iTempid == BlockListener.gearBox.id)
-            {
-                ((GearboxBlock)BlockListener.gearBox).Overpower(world, potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
+            if (iTempid == BlockListener.gearBox.id) {
+                ((GearboxBlock) BlockListener.gearBox).Overpower(world, potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
             }
         }
 

@@ -18,6 +18,6 @@ public class TurntableRecipe {
     }
 
     public ItemStack[] getOutputs() {
-        return new ItemStack[] {output, byproduct};
+        return new ItemStack[]{output, byproduct};
     }
 }

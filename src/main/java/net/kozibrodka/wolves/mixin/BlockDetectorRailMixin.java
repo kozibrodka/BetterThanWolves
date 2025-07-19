@@ -24,36 +24,32 @@ public class BlockDetectorRailMixin extends RailBlock {
 
     @Redirect(method = "onEntityCollision", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/DetectorRailBlock;method_1144(Lnet/minecraft/world/World;IIII)V"))
     private void injected(DetectorRailBlock instance, World i, int j, int k, int l, int var6) {
-        railCheck(i,j,k,l,var6);
+        railCheck(i, j, k, l, var6);
     }
 
     @Redirect(method = "onTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/DetectorRailBlock;method_1144(Lnet/minecraft/world/World;IIII)V"))
     private void injected2(DetectorRailBlock instance, World i, int j, int k, int l, int var6) {
-        railCheck(i,j,k,l,var6);
+        railCheck(i, j, k, l, var6);
     }
 
     private void railCheck(World arg, int i, int j, int k, int l) {
         boolean var6 = (l & 8) != 0;
         boolean var7 = false;
         float var8 = 0.125F;
-        List var9 = arg.collectEntitiesByClass(MinecartEntity.class, Box.createCached((double)((float)i + var8), (double)j, (double)((float)k + var8), (double)((float)(i + 1) - var8), (double)j + 0.25D, (double)((float)(k + 1) - var8)));
-        if(var9 != null && var9.size() > 0)
-        {
+        List var9 = arg.collectEntitiesByClass(MinecartEntity.class, Box.createCached((float) i + var8, j, (float) k + var8, (float) (i + 1) - var8, (double) j + 0.25D, (float) (k + 1) - var8));
+        if (var9 != null && var9.size() > 0) {
             int i1 = 0;
-            do
-            {
-                if(i1 >= var9.size())
-                {
+            do {
+                if (i1 >= var9.size()) {
                     break;
                 }
-                MinecartEntity entityminecart = (MinecartEntity)var9.get(i1);
-                if(ShouldPlateActivateBasedOnMinecart(arg, i, j, k, entityminecart.type, entityminecart.passenger))
-                {
+                MinecartEntity entityminecart = (MinecartEntity) var9.get(i1);
+                if (ShouldPlateActivateBasedOnMinecart(arg, i, j, k, entityminecart.type, entityminecart.passenger)) {
                     var7 = true;
                     break;
                 }
                 i1++;
-            } while(true);
+            } while (true);
         }
 
         if (var7 && !var6) {
@@ -75,25 +71,14 @@ public class BlockDetectorRailMixin extends RailBlock {
         }
     }
 
-    public  boolean ShouldPlateActivateBasedOnMinecart(World world, int i, int j, int k, int l, Entity entity)
-    {
+    public boolean ShouldPlateActivateBasedOnMinecart(World world, int i, int j, int k, int l, Entity entity) {
         int i1 = world.getBlockId(i, j, k);
-        if(i1 == BlockListener.detectorRailWood.id)
-        {
+        if (i1 == BlockListener.detectorRailWood.id) {
             return true;
         }
-        if(i1 == BlockListener.detectorRailObsidian.id)
-        {
-            if(entity != null && (entity instanceof PlayerEntity))
-            {
-                return true;
-            }
-        } else
-        if(i1 == Block.DETECTOR_RAIL.id && (l > 0 || entity != null))
-        {
-            return true;
-        }
-        return false;
+        if (i1 == BlockListener.detectorRailObsidian.id) {
+            return entity != null && (entity instanceof PlayerEntity);
+        } else return i1 == Block.DETECTOR_RAIL.id && (l > 0 || entity != null);
     }
 
 }

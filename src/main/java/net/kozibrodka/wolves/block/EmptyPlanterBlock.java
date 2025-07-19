@@ -8,11 +8,9 @@ import net.modificationstation.stationapi.api.template.block.TemplateBlock;
 import net.modificationstation.stationapi.api.util.Identifier;
 
 public class EmptyPlanterBlock extends TemplateBlock
-    implements RotatableBlock
-{
+        implements RotatableBlock {
 
-    public EmptyPlanterBlock(Identifier iid)
-    {
+    public EmptyPlanterBlock(Identifier iid) {
         super(iid, Material.GLASS);
         textureId = 77;
         setHardness(0.6F);
@@ -20,37 +18,30 @@ public class EmptyPlanterBlock extends TemplateBlock
         setTickRandomly(true);
     }
 
-    public boolean isOpaque()
-    {
+    public boolean isOpaque() {
         return false;
     }
 
-    public boolean isFullCube()
-    {
+    public boolean isFullCube() {
         return false;
     }
 
-    public int GetFacing(BlockView iBlockAccess, int i, int j, int l)
-    {
+    public int GetFacing(BlockView iBlockAccess, int i, int j, int l) {
         return 0;
     }
 
-    public void SetFacing(World world1, int l, int i1, int j1, int k1)
-    {
+    public void SetFacing(World world1, int l, int i1, int j1, int k1) {
     }
 
-    public boolean CanRotate(BlockView iBlockAccess, int i, int j, int l)
-    {
+    public boolean CanRotate(BlockView iBlockAccess, int i, int j, int l) {
         return false;
     }
 
-    public boolean CanTransmitRotation(BlockView iBlockAccess, int i, int j, int l)
-    {
+    public boolean CanTransmitRotation(BlockView iBlockAccess, int i, int j, int l) {
         return false;
     }
 
-    public void Rotate(World world1, int l, int i1, int j1, boolean flag)
-    {
+    public void Rotate(World world1, int l, int i1, int j1, boolean flag) {
     }
 
     public static final float m_fPlanterWidth = 0.75F;

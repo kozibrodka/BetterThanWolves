@@ -3,15 +3,11 @@ package net.kozibrodka.wolves.network;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.FabricLoader;
-import net.kozibrodka.wolves.events.PacketListener;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.NetworkHandler;
 import net.minecraft.network.packet.Packet;
-import net.kozibrodka.wolves.events.ItemListener;
 import net.modificationstation.stationapi.api.network.packet.ManagedPacket;
-import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import net.modificationstation.stationapi.api.network.packet.PacketType;
-import net.modificationstation.stationapi.api.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.DataInputStream;
@@ -20,7 +16,7 @@ import java.io.IOException;
 
 public class SoundPacket extends Packet implements ManagedPacket<SoundPacket> {
 
-    public static final PacketType<SoundPacket> TYPE=PacketType.builder(true, true, SoundPacket::new).build();
+    public static final PacketType<SoundPacket> TYPE = PacketType.builder(true, true, SoundPacket::new).build();
 
     private String soundToPlay;
     private int x;
@@ -44,12 +40,12 @@ public class SoundPacket extends Packet implements ManagedPacket<SoundPacket> {
     @Override
     public void read(DataInputStream stream) {
         try {
-        this.soundToPlay = readString(stream, 16);
-        this.x = stream.readInt();
-        this.y = stream.readInt();
-        this.z = stream.readInt();
-        this.g = stream.readFloat();
-        this.h = stream.readFloat();
+            this.soundToPlay = readString(stream, 16);
+            this.x = stream.readInt();
+            this.y = stream.readInt();
+            this.z = stream.readInt();
+            this.g = stream.readFloat();
+            this.h = stream.readFloat();
 //        System.out.println("Packet Read");
         } catch (IOException e) {
             e.printStackTrace();
@@ -61,12 +57,12 @@ public class SoundPacket extends Packet implements ManagedPacket<SoundPacket> {
     public void write(DataOutputStream stream) {
         //            stream.writeInt(this.soundToPlay);
         try {
-        writeString(this.soundToPlay, stream);
-        stream.writeInt(this.x);
-        stream.writeInt(this.y);
-        stream.writeInt(this.z);
-        stream.writeFloat(this.g);
-        stream.writeFloat(this.h);
+            writeString(this.soundToPlay, stream);
+            stream.writeInt(this.x);
+            stream.writeInt(this.y);
+            stream.writeInt(this.z);
+            stream.writeFloat(this.g);
+            stream.writeFloat(this.h);
 
 //            System.out.println("Packet Write");
         } catch (IOException e) {
@@ -79,21 +75,21 @@ public class SoundPacket extends Packet implements ManagedPacket<SoundPacket> {
     public void apply(NetworkHandler arg) {
 //        System.out.println("Packet Received = Sound : " + this.soundToPlay + "  " + this.x);
 
-        switch (FabricLoader.INSTANCE.getEnvironmentType()){
+        switch (FabricLoader.INSTANCE.getEnvironmentType()) {
             case CLIENT -> handleClient(arg);
             case SERVER -> handleServer(arg);
         }
     }
 
     @Environment(EnvType.CLIENT)
-    public void handleClient(NetworkHandler networkHandler){
+    public void handleClient(NetworkHandler networkHandler) {
 //        System.out.println("Handle Client");
 //        minecraft.level.playSound((double)minecraft.player.x + 0.5D, (double)minecraft.player.y + 0.5D, (double)minecraft.player.z + 0.5D, this.soundToPlay, 1.0F, 2.0F);
-        Minecraft.INSTANCE.world.playSound((double)this.x + 0.5D, (double)this.y + 0.5D, (double)this.z + 0.5D, this.soundToPlay, this.g, this.h);
+        Minecraft.INSTANCE.world.playSound((double) this.x + 0.5D, (double) this.y + 0.5D, (double) this.z + 0.5D, this.soundToPlay, this.g, this.h);
     }
 
     @Environment(EnvType.SERVER)
-    public void handleServer(NetworkHandler networkHandler){
+    public void handleServer(NetworkHandler networkHandler) {
 //        System.out.println("Handle Server HELLO");
 //        PacketHelper.send(new SoundPacket("twuj.stary"));
     }

@@ -2,6 +2,7 @@ package net.kozibrodka.wolves.entity;
 
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.EntityListener;
+import net.kozibrodka.wolves.utils.ReplaceableBlockChecker;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -12,7 +13,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.kozibrodka.wolves.utils.ReplaceableBlockChecker;
 import net.modificationstation.stationapi.api.server.entity.EntitySpawnDataProvider;
 import net.modificationstation.stationapi.api.server.entity.HasTrackingParameters;
 import net.modificationstation.stationapi.api.util.Identifier;
@@ -20,11 +20,9 @@ import net.modificationstation.stationapi.api.util.Identifier;
 import java.util.List;
 
 @HasTrackingParameters(trackingDistance = 160, updatePeriod = 2)
-public class MovingPlatformEntity extends Entity implements EntitySpawnDataProvider
-{
+public class MovingPlatformEntity extends Entity implements EntitySpawnDataProvider {
 
-    public MovingPlatformEntity(World world)
-    {
+    public MovingPlatformEntity(World world) {
         super(world);
         blocksSameBlockSpawning = true;
         setBoundingBoxSpacing(0.98F, 0.98F);
@@ -38,8 +36,7 @@ public class MovingPlatformEntity extends Entity implements EntitySpawnDataProvi
     }
 
     public MovingPlatformEntity(World world, double x, double y, double z,
-                                MovingAnchorEntity entityMovingAnchor)
-    {
+                                MovingAnchorEntity entityMovingAnchor) {
         this(world);
         m_AssociatedAnchorLastKnownXPos = entityMovingAnchor.x;
         m_AssociatedAnchorLastKnownYPos = entityMovingAnchor.y;
@@ -55,58 +52,47 @@ public class MovingPlatformEntity extends Entity implements EntitySpawnDataProvi
         this(level);
     }
 
-    protected void initDataTracker()
-    {
+    protected void initDataTracker() {
     }
 
-    protected void writeNbt(NbtCompound nbttagcompound)
-    {
+    protected void writeNbt(NbtCompound nbttagcompound) {
         nbttagcompound.putDouble("m_AssociatedAnchorLastKnownXPos", m_AssociatedAnchorLastKnownXPos);
         nbttagcompound.putDouble("m_AssociatedAnchorLastKnownYPos", m_AssociatedAnchorLastKnownYPos);
         nbttagcompound.putDouble("m_AssociatedAnchorLastKnownZPos", m_AssociatedAnchorLastKnownZPos);
     }
 
-    protected void readNbt(NbtCompound nbttagcompound)
-    {
+    protected void readNbt(NbtCompound nbttagcompound) {
         m_AssociatedAnchorLastKnownXPos = nbttagcompound.getDouble("m_AssociatedAnchorLastKnownXPos");
         m_AssociatedAnchorLastKnownYPos = nbttagcompound.getDouble("m_AssociatedAnchorLastKnownYPos");
         m_AssociatedAnchorLastKnownZPos = nbttagcompound.getDouble("m_AssociatedAnchorLastKnownZPos");
     }
 
-    protected boolean bypassesSteppingEffects()
-    {
+    protected boolean bypassesSteppingEffects() {
         return false;
     }
 
-    public Box method_1379(Entity entity)
-    {
+    public Box method_1379(Entity entity) {
         return entity.boundingBox;
     }
 
-    public Box getBoundingBox()
-    {
+    public Box getBoundingBox() {
         return boundingBox;
     }
 
-    public boolean isPushable()
-    {
+    public boolean isPushable() {
         return false;
     }
 
-    public boolean isCollidable()
-    {
+    public boolean isCollidable() {
         return !dead;
     }
 
-    public float getShadowRadius()
-    {
+    public float getShadowRadius() {
         return 0.0F;
     }
 
-    public void tick()
-    {
-        if(dead || world.isRemote)
-        {
+    public void tick() {
+        if (dead || world.isRemote) {
             return;
         }
         int i = MathHelper.floor(x);
@@ -114,17 +100,14 @@ public class MovingPlatformEntity extends Entity implements EntitySpawnDataProvi
         int k = MathHelper.floor(z);
         MovingAnchorEntity associatedMovingAnchor = null;
         List list = world.collectEntitiesByClass(MovingAnchorEntity.class, Box.createCached(m_AssociatedAnchorLastKnownXPos - 0.25D, m_AssociatedAnchorLastKnownYPos - 0.25D, m_AssociatedAnchorLastKnownZPos - 0.25D, m_AssociatedAnchorLastKnownXPos + 0.25D, m_AssociatedAnchorLastKnownYPos + 0.25D, m_AssociatedAnchorLastKnownZPos + 0.25D));
-        if(list != null && list.size() > 0)
-        {
-            associatedMovingAnchor = (MovingAnchorEntity)list.get(0);
-            if(!associatedMovingAnchor.dead)
-            {
+        if (list != null && list.size() > 0) {
+            associatedMovingAnchor = (MovingAnchorEntity) list.get(0);
+            if (!associatedMovingAnchor.dead) {
                 velocityY = associatedMovingAnchor.velocityY;
                 m_AssociatedAnchorLastKnownXPos = associatedMovingAnchor.x;
                 m_AssociatedAnchorLastKnownYPos = associatedMovingAnchor.y;
                 m_AssociatedAnchorLastKnownZPos = associatedMovingAnchor.z;
-            } else
-            {
+            } else {
                 associatedMovingAnchor = null;
             }
         }
@@ -132,109 +115,80 @@ public class MovingPlatformEntity extends Entity implements EntitySpawnDataProvi
         MoveEntityInternal(velocityX, velocityY, velocityZ);
         double newPosY = y;
         list = world.getEntities(this, boundingBox.expand(0.0D, 0.14999999999999999D, 0.0D));
-        if(list != null && list.size() > 0)
-        {
-            for(int j1 = 0; j1 < list.size(); j1++)
-            {
-                Entity entity = (Entity)list.get(j1);
-                if(entity.isPushable() || (entity instanceof ItemEntity))
-                {
+        if (list != null && list.size() > 0) {
+            for (int j1 = 0; j1 < list.size(); j1++) {
+                Entity entity = (Entity) list.get(j1);
+                if (entity.isPushable() || (entity instanceof ItemEntity)) {
                     PushEntity(entity);
                     continue;
                 }
-                if(entity.dead)
-                {
+                if (entity.dead) {
                     continue;
                 }
-                if(entity instanceof WaterWheelEntity)
-                {
-                    WaterWheelEntity entityWaterWheel = (WaterWheelEntity)entity;
+                if (entity instanceof WaterWheelEntity entityWaterWheel) {
                     entityWaterWheel.destroyWithDrop();
                     continue;
                 }
-                if(entity instanceof WindMillEntity)
-                {
-                    WindMillEntity entityWindMill = (WindMillEntity)entity;
+                if (entity instanceof WindMillEntity entityWindMill) {
                     entityWindMill.DestroyWithDrop();
                 }
             }
 
         }
-        if(associatedMovingAnchor == null)
-        {
+        if (associatedMovingAnchor == null) {
             ConvertToBlock(i, oldCentreJ, k, null);
             return;
         }
-        if(velocityY > 0.0D)
-        {
+        if (velocityY > 0.0D) {
             int newTopJ = MathHelper.floor(newPosY + 0.49000000953674316D);
             int oldTopJ = MathHelper.floor(oldPosY + 0.49000000953674316D);
-            if(newTopJ != oldTopJ)
-            {
+            if (newTopJ != oldTopJ) {
                 int blockId = world.getBlockId(i, newTopJ, k);
-                if(!ReplaceableBlockChecker.IsReplaceableBlock(world, i, newTopJ, k))
-                {
-                    if(!Block.BLOCKS[blockId].material.isSolid())
-                    {
-                        if(blockId == BlockListener.rope.id)
-                        {
-                            if(!associatedMovingAnchor.ReturnRopeToPulley())
-                            {
+                if (!ReplaceableBlockChecker.IsReplaceableBlock(world, i, newTopJ, k)) {
+                    if (!Block.BLOCKS[blockId].material.isSolid()) {
+                        if (blockId == BlockListener.rope.id) {
+                            if (!associatedMovingAnchor.ReturnRopeToPulley()) {
                                 Block.BLOCKS[blockId].dropStacks(world, i, newTopJ, k, world.getBlockMeta(i, newTopJ, k));
                             }
-                        } else
-                        {
+                        } else {
                             Block.BLOCKS[blockId].dropStacks(world, i, newTopJ, k, world.getBlockMeta(i, newTopJ, k));
                         }
                         world.setBlock(i, newTopJ, k, 0);
-                    } else
-                    {
+                    } else {
                         ConvertToBlock(i, oldTopJ, k, associatedMovingAnchor);
                         associatedMovingAnchor.ForceStopByPlatform();
-                        return;
                     }
                 }
             }
-        } else
-        {
+        } else {
             int newBottomJ = MathHelper.floor(newPosY - 0.49000000953674316D);
             int oldBottomJ = MathHelper.floor(oldPosY - 0.49000000953674316D);
-            if(oldBottomJ != newBottomJ)
-            {
+            if (oldBottomJ != newBottomJ) {
                 int blockId = world.getBlockId(i, newBottomJ, k);
-                if(!ReplaceableBlockChecker.IsReplaceableBlock(world, i, newBottomJ, k))
-                {
-                    if(!Block.BLOCKS[blockId].material.isSolid())
-                    {
-                        if(blockId == BlockListener.rope.id)
-                        {
-                            if(!associatedMovingAnchor.ReturnRopeToPulley())
-                            {
+                if (!ReplaceableBlockChecker.IsReplaceableBlock(world, i, newBottomJ, k)) {
+                    if (!Block.BLOCKS[blockId].material.isSolid()) {
+                        if (blockId == BlockListener.rope.id) {
+                            if (!associatedMovingAnchor.ReturnRopeToPulley()) {
                                 Block.BLOCKS[blockId].dropStacks(world, i, newBottomJ, k, world.getBlockMeta(i, newBottomJ, k));
                             }
-                        } else
-                        {
+                        } else {
                             Block.BLOCKS[blockId].dropStacks(world, i, newBottomJ, k, world.getBlockMeta(i, newBottomJ, k));
                         }
                         world.setBlock(i, newBottomJ, k, 0);
-                    } else
-                    {
+                    } else {
                         ConvertToBlock(i, oldBottomJ, k, associatedMovingAnchor);
                         associatedMovingAnchor.ForceStopByPlatform();
-                        return;
                     }
                 }
             }
         }
     }
 
-    public void move(double deltaX, double deltaY, double deltaZ)
-    {
+    public void move(double deltaX, double deltaY, double deltaZ) {
         DestroyPlatformWithDrop();
     }
 
-    public void DestroyPlatformWithDrop()
-    {
+    public void DestroyPlatformWithDrop() {
         int i = MathHelper.floor(x);
         int j = MathHelper.floor(y);
         int k = MathHelper.floor(z);
@@ -243,8 +197,7 @@ public class MovingPlatformEntity extends Entity implements EntitySpawnDataProvi
         markDead();
     }
 
-    private void MoveEntityInternal(double deltaX, double deltaY, double deltaZ)
-    {
+    private void MoveEntityInternal(double deltaX, double deltaY, double deltaZ) {
         double newPosX = x + deltaX;
         double newPosY = y + deltaY;
         double newPosZ = z + deltaZ;
@@ -255,25 +208,19 @@ public class MovingPlatformEntity extends Entity implements EntitySpawnDataProvi
         TestForBlockCollisions();
     }
 
-    private void TestForBlockCollisions()
-    {
+    private void TestForBlockCollisions() {
         int i1 = MathHelper.floor(boundingBox.minX + 0.001D);
         int k1 = MathHelper.floor(boundingBox.minY + 0.001D);
         int i2 = MathHelper.floor(boundingBox.minZ + 0.001D);
         int k3 = MathHelper.floor(boundingBox.maxX - 0.001D);
         int l3 = MathHelper.floor(boundingBox.maxY - 0.001D);
         int i4 = MathHelper.floor(boundingBox.maxZ - 0.001D);
-        if(world.isRegionLoaded(i1, k1, i2, k3, l3, i4))
-        {
-            for(int j4 = i1; j4 <= k3; j4++)
-            {
-                for(int k4 = k1; k4 <= l3; k4++)
-                {
-                    for(int l4 = i2; l4 <= i4; l4++)
-                    {
+        if (world.isRegionLoaded(i1, k1, i2, k3, l3, i4)) {
+            for (int j4 = i1; j4 <= k3; j4++) {
+                for (int k4 = k1; k4 <= l3; k4++) {
+                    for (int l4 = i2; l4 <= i4; l4++) {
                         int i5 = world.getBlockId(j4, k4, l4);
-                        if(i5 > 0)
-                        {
+                        if (i5 > 0) {
                             Block.BLOCKS[i5].onEntityCollision(world, j4, k4, l4, this);
                         }
                     }
@@ -282,53 +229,39 @@ public class MovingPlatformEntity extends Entity implements EntitySpawnDataProvi
         }
     }
 
-    private void PushEntity(Entity entity)
-    {
+    private void PushEntity(Entity entity) {
         // if(true)return;
-    	double platformMaxY = boundingBox.maxY + 0.074999999999999997D;
+        double platformMaxY = boundingBox.maxY + 0.074999999999999997D;
         double entityMinY = entity.boundingBox.minY;
-        if(entityMinY < platformMaxY)
-        {
-            if(entityMinY > platformMaxY - 0.25D)
-            {
+        if (entityMinY < platformMaxY) {
+            if (entityMinY > platformMaxY - 0.25D) {
                 double entityYOffset = platformMaxY - entityMinY;
                 entity.setPos(entity.x, entity.y + entityYOffset, entity.z);
-            } else
-            if((entity instanceof LivingEntity) && velocityY < 0.0D)
-            {
+            } else if ((entity instanceof LivingEntity) && velocityY < 0.0D) {
                 double entityMaxY = entity.boundingBox.maxY;
                 double platformMinY = boundingBox.minY;
-                if(platformMinY < entityMaxY - 0.25D)
-                {
+                if (platformMinY < entityMaxY - 0.25D) {
                     entity.damage(null, 1);
                 }
             }
         }
     }
 
-    private void ConvertToBlock(int i, int j, int k, MovingAnchorEntity associatedAnchor)
-    {
+    private void ConvertToBlock(int i, int j, int k, MovingAnchorEntity associatedAnchor) {
         boolean moveEntities = true;
         int blockId = world.getBlockId(i, j, k);
-        if(ReplaceableBlockChecker.IsReplaceableBlock(world, i, j, k))
-        {
+        if (ReplaceableBlockChecker.IsReplaceableBlock(world, i, j, k)) {
             world.setBlock(i, j, k, BlockListener.platform.id);
-        } else
-        if(!Block.BLOCKS[blockId].material.isSolid())
-        {
-            if(blockId == BlockListener.rope.id && associatedAnchor != null)
-            {
-                if(!associatedAnchor.ReturnRopeToPulley())
-                {
+        } else if (!Block.BLOCKS[blockId].material.isSolid()) {
+            if (blockId == BlockListener.rope.id && associatedAnchor != null) {
+                if (!associatedAnchor.ReturnRopeToPulley()) {
                     Block.BLOCKS[blockId].dropStacks(world, i, j, k, world.getBlockMeta(i, j, k));
                 }
-            } else
-            {
+            } else {
                 Block.BLOCKS[blockId].dropStacks(world, i, j, k, world.getBlockMeta(i, j, k));
             }
             world.setBlock(i, j, k, BlockListener.platform.id);
-        } else
-        {
+        } else {
             UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, BlockListener.platform.id, 0);
             moveEntities = false;
         }

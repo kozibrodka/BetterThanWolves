@@ -1,7 +1,16 @@
 {
   "variants": {
-    "facing=1": { "model": "wolves:block/fcAxleBlock" ,"x": 90},
-    "facing=2": { "model": "wolves:block/fcAxleBlock" ,"x": 90, "y": 90},
-    "facing=0": { "model": "wolves:block/fcAxleBlock"}
+    "facing=1": {
+      "model": "wolves:block/fcAxleBlock",
+      "x": 90
+    },
+    "facing=2": {
+      "model": "wolves:block/fcAxleBlock",
+      "x": 90,
+      "y": 90
+    },
+    "facing=0": {
+      "model": "wolves:block/fcAxleBlock"
+    }
   }
 }
