@@ -1,13 +1,11 @@
 package net.kozibrodka.wolves.render;
 
 import net.kozibrodka.wolves.entity.WaterWheelEntity;
-import net.kozibrodka.wolves.mixin.BlockRendererAccessor;
 import net.kozibrodka.wolves.model.WaterWheelModel;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
 public class WaterWheelRenderer extends EntityRenderer

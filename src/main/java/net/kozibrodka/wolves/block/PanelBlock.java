@@ -2,7 +2,6 @@ package net.kozibrodka.wolves.block;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.kozibrodka.wolves.mixin.BlockBaseAccessor;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -23,7 +22,7 @@ public class PanelBlock extends TemplateBlock {
         super(id, blockBase.textureId, blockBase.material);
         this.template = blockBase;
         this.setHardness(blockBase.getHardness());
-        this.setResistance(((BlockBaseAccessor)blockBase).getResistance() / 3.0F);
+        this.setResistance(blockBase.resistance / 3.0F);
         this.setSoundGroup(blockBase.soundGroup);
         this.setOpacity(255);
     }
@@ -94,7 +93,7 @@ public class PanelBlock extends TemplateBlock {
         return this.template.getRenderLayer();
     }
 
-    protected int getDroppedItemMeta(int iMetaData)
+    public int getDroppedItemMeta(int iMetaData)
     {
         return 0;
     }

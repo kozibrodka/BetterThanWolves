@@ -7,7 +7,6 @@ package net.kozibrodka.wolves.render;
 import net.kozibrodka.wolves.block.AnchorBlock;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
-import net.kozibrodka.wolves.mixin.BlockRendererAccessor;
 import net.kozibrodka.wolves.utils.CustomBlockRendering;
 import net.minecraft.block.Block;
 import net.minecraft.client.render.block.BlockRenderManager;
@@ -31,7 +30,7 @@ public class MovingAnchorRenderer extends EntityRenderer
                        float f, float f1)
     {
         World world = entity.world;
-        ((BlockRendererAccessor)localRenderBlocks).setBlockView(world);
+        localRenderBlocks.blockView = world;
         GL11.glPushMatrix();
         float f2 = 0.3125F;
         GL11.glTranslatef((float)d, (float)d1 + f2, (float)d2);

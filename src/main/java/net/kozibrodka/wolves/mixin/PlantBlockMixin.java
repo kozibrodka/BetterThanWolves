@@ -11,8 +11,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class PlantBlockMixin {
 
     @Inject(method = "canPlantOnTop", at = @At(value = "HEAD"), cancellable = true)
-    private void addPlanterCondition(int i, CallbackInfoReturnable<Boolean> cir) {
-        if (i == BlockListener.planter.id) {
+    private void addPlanterCondition(int id, CallbackInfoReturnable<Boolean> cir) {
+        if (id == BlockListener.planter.id) {
             cir.setReturnValue(true);
         }
     }

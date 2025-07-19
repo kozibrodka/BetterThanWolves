@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(SeedsItem.class)
-public class SeedsMixin {
+public class SeedsItemMixin {
 
     @Shadow private int cropBlockId;
 

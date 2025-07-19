@@ -7,34 +7,27 @@ import net.minecraft.block.PlantBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlantBlock.class)
-public class BlockPlantMixin extends Block {
-
-    @Shadow
-    protected boolean canPlantOnTop(int i) {
-        return false;
+public abstract class BlockPlantMixin extends Block {
+    public BlockPlantMixin(int i, Material arg) {
+        super(i, arg);
     }
 
-    public BlockPlantMixin(int i, Material arg) {super(i, arg);}
-
     @Inject(method = "canPlaceAt", at = @At(value = "RETURN"), cancellable = true)
-    private void injected(World arg, int i, int j, int k, CallbackInfoReturnable<Boolean> cir) {
-        cir.setReturnValue(super.canPlaceAt(arg, i, j, k) && (this.canPlantOnTopOf2(arg.getBlockId(i, j - 1, k)) || UnsortedUtils.CanPlantGrowOnBlock(arg, i, j - 1, k, this)));
+    private void injected(World world, int x, int y, int z, CallbackInfoReturnable<Boolean> cir) {
+        if (UnsortedUtils.CanPlantGrowOnBlock(world, x, y - 1, z, this)) {
+            cir.setReturnValue(true);
+        }
     }
 
     @Inject(method = "canPlantOnTop", at = @At(value = "RETURN"), cancellable = true)
-    private void injected2(int i, CallbackInfoReturnable<Boolean> cir) {
-        cir.setReturnValue(i == Block.GRASS_BLOCK.id || i == Block.DIRT.id || i == Block.FARMLAND.id || i == BlockListener.planter.id);
+    private void injected2(int id, CallbackInfoReturnable<Boolean> cir) {
+        if (id == BlockListener.planter.id) {
+            cir.setReturnValue(true);
+        }
     }
-
-    private boolean canPlantOnTopOf2(int i) {
-        return i == Block.GRASS_BLOCK.id || i == Block.DIRT.id || i == Block.FARMLAND.id;
-    }
-
-
 }

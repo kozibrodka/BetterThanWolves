@@ -345,15 +345,11 @@ public class UnsortedUtils
 
     }
 
-    public static boolean CanPlantGrowOnBlock(World world, int i, int j, int k, Block plantBlock)
-    {
-        int iTargetid = world.getBlockId(i, j, k);
-        Block block = Block.BLOCKS[iTargetid];
-        if(block != null && (block instanceof SoilTemplate))
-        {
-            return ((SoilTemplate)block).CanPlantGrowOnBlock(world, i, j, k, plantBlock);
-        } else
-        {
+    public static boolean CanPlantGrowOnBlock(World world, int x, int y, int z, Block plantBlock) {
+        Block block = world.getBlockState(x,y,z).getBlock();
+        if(block instanceof SoilTemplate soil) {
+            return soil.CanPlantGrowOnBlock(world, x, y, z, plantBlock);
+        } else {
             return false;
         }
     }

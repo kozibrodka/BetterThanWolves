@@ -8,7 +8,6 @@ import java.util.List;
 
 import net.kozibrodka.wolves.entity.MovingPlatformEntity;
 import net.kozibrodka.wolves.events.BlockListener;
-import net.kozibrodka.wolves.mixin.BlockRendererAccessor;
 import net.kozibrodka.wolves.utils.CustomBlockRendering;
 import net.minecraft.block.Block;
 import net.minecraft.client.render.block.BlockRenderManager;
@@ -32,7 +31,7 @@ public class MovingPlatformRenderer extends EntityRenderer
                        float f, float f1)
     {
         World world = entity.world;
-        ((BlockRendererAccessor)localRenderBlocks).setBlockView(world);
+        localRenderBlocks.blockView = world;
         GL11.glPushMatrix();
         GL11.glTranslatef((float)d, (float)d1, (float)d2);
         GL11.glDisable(2896 /*GL_LIGHTING*/);

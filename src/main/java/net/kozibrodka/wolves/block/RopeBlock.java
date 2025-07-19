@@ -6,7 +6,6 @@ import net.fabricmc.api.EnvironmentInterface;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.events.TextureListener;
-import net.kozibrodka.wolves.mixin.EntityBaseAccessor;
 import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.kozibrodka.wolves.utils.CustomBlockRendering;
@@ -90,7 +89,7 @@ public class RopeBlock extends TemplateBlock implements BlockWithWorldRenderer
     {
         if(entity instanceof LivingEntity)
         {
-            ((EntityBaseAccessor)entity).setFallDistance(0.0F);
+            entity.fallDistance = 0.0F;
             if(entity.velocityY < (double)descensionSpeed)
             {
                 entity.velocityY = descensionSpeed;

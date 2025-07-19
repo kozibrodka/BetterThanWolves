@@ -3,7 +3,6 @@ package net.kozibrodka.wolves.block;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.EnvironmentInterface;
 import net.kozibrodka.wolves.events.BlockListener;
-import net.kozibrodka.wolves.mixin.FireAccessor;
 import net.minecraft.block.Block;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.block.BlockRenderManager;
@@ -68,12 +67,12 @@ public class StokedFireBlock extends TemplateFireBlock implements BlockWithWorld
             iMetaData++;
             world.setBlockMeta(i, j, k, iMetaData);
         }
-        ((FireAccessor) this).invokeFireTick(world, i + 1, j, k, 300, random, 15);
-        ((FireAccessor) this).invokeFireTick(world, i - 1, j, k, 300, random, 15);
-        ((FireAccessor) this).invokeFireTick(world, i, j - 1, k, 250, random, 15);
-        ((FireAccessor) this).invokeFireTick(world, i, j + 1, k, 250, random, 15);
-        ((FireAccessor) this).invokeFireTick(world, i, j, k - 1, 300, random, 15);
-        ((FireAccessor) this).invokeFireTick(world, i, j, k + 1, 300, random, 15);
+        trySpreadingFire(world, i + 1, j, k, 300, random, 15);
+        trySpreadingFire(world, i - 1, j, k, 300, random, 15);
+        trySpreadingFire(world, i, j - 1, k, 250, random, 15);
+        trySpreadingFire(world, i, j + 1, k, 250, random, 15);
+        trySpreadingFire(world, i, j, k - 1, 300, random, 15);
+        trySpreadingFire(world, i, j, k + 1, 300, random, 15);
         for (int i1 = i - 1; i1 <= i + 1; i1++) {
             for (int j1 = k - 1; j1 <= k + 1; j1++) {
                 for (int k1 = j - 1; k1 <= j + 4; k1++) {
@@ -84,7 +83,7 @@ public class StokedFireBlock extends TemplateFireBlock implements BlockWithWorld
                     if (k1 > j + 1) {
                         l1 += (k1 - (j + 1)) * 100;
                     }
-                    int i2 = ((FireAccessor) this).invokeMethod_1827(world, i1, k1, j1);
+                    int i2 = this.method_1827(world, i1, k1, j1);
                     if (i2 <= 0) {
                         continue;
                     }

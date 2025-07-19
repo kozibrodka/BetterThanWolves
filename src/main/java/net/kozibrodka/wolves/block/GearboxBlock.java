@@ -8,7 +8,6 @@ import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ConfigListener;
 import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.events.TextureListener;
-import net.kozibrodka.wolves.mixin.LevelAccessor;
 import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.utils.BlockPosition;
 import net.kozibrodka.wolves.utils.RotatableBlock;
@@ -189,7 +188,7 @@ public class GearboxBlock extends TemplateBlock
             SetFacing(world, i, j, k, iNewFacing);
             world.setBlocksDirty(i, j, k, i, j, k);
             world.scheduleBlockUpdate(i, j, k, BlockListener.gearBox.id, getTickRate());
-            ((LevelAccessor) world).invokeBlockUpdate(i, j, k, BlockListener.gearBox.id);
+            world.blockUpdate(i, j, k, BlockListener.gearBox.id);
         }
         UnsortedUtils.DestroyHorizontallyAttachedAxles(world, i, j, k);
     }

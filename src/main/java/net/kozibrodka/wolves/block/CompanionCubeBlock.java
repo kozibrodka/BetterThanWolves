@@ -43,7 +43,7 @@ public class CompanionCubeBlock extends TemplateBlock
         textureId = 20;
     }
 
-    protected int getDroppedItemMeta(int iMetaData)
+    public int getDroppedItemMeta(int iMetaData)
     {
         return (iMetaData & 8) <= 0 ? 0 : 1;
     }

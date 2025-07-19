@@ -50,7 +50,7 @@ public class PlanterBlock extends TemplateBlock
         return false;
     }
 
-    protected int getDroppedItemMeta(int iMetaData)
+    public int getDroppedItemMeta(int iMetaData)
     {
         return iMetaData & 1;
     }
