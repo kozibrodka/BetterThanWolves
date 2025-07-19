@@ -233,53 +233,56 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
                 targetBlock != Block.ICE;
     }
 
-    private boolean AddBlockToInventory(World world, int i, int j, int k, Block targetBlock, int iTargetMetaData)
+    private boolean AddBlockToInventory(World world, int i, int j, int k, Block targetBlock, int itemMetaData)
     {
         ValidateBlockDispenser(world, i, j, k);
         BlockDispenserBlockEntity tileEentityDispenser = (BlockDispenserBlockEntity)world.getBlockEntity(i, j, k);
-        int itemDamage = targetBlock.getDroppedItemMeta(iTargetMetaData);
-        int iTargetidDropped;
+        int itemDamage = targetBlock.getDroppedItemMeta(itemMetaData);
+        int droppedItemId;
         if(targetBlock.id == Block.STONE.id)
         {
-            iTargetidDropped = Block.STONE.id;
-        } else
-        if(targetBlock.id == Block.GRAVEL.id)
+            droppedItemId = Block.STONE.asItem().id;
+        }
+        else if(targetBlock.id == Block.GRAVEL.id)
         {
-            iTargetidDropped = Block.GRAVEL.id;
-        } else
-        if(targetBlock.id == Block.CLAY.id)
+            droppedItemId = Block.GRAVEL.asItem().id;
+        }
+        else if(targetBlock.id == Block.CLAY.id)
         {
-            iTargetidDropped = Block.CLAY.id;
-        } else
-        if(targetBlock.id == Block.GLOWSTONE.id)
+            droppedItemId = Block.CLAY.asItem().id;
+        }
+        else if(targetBlock.id == Block.GLOWSTONE.id)
         {
-            iTargetidDropped = Block.GLOWSTONE.id;
-        } else
-        if(targetBlock.id == Block.SNOW_BLOCK.id)
+            droppedItemId = Block.GLOWSTONE.asItem().id;
+        }
+        else if(targetBlock.id == Block.SNOW_BLOCK.id)
         {
-            iTargetidDropped = Block.SNOW_BLOCK.id;
-        } else
-        if(targetBlock.id == Block.CAKE.id)
+            droppedItemId = Block.SNOW_BLOCK.asItem().id;
+        }
+        else if(targetBlock.id == Block.CAKE.id)
         {
-            if((iTargetMetaData & -9) == 0)
+            if((itemMetaData & -9) == 0)
             {
-                iTargetidDropped = Item.CAKE.id;
+                droppedItemId = Item.CAKE.id;
             } else
             {
                 return false;
             }
-        } else
-        if(targetBlock.id == Block.LEAVES.id)
-        {
-            iTargetidDropped = Block.LEAVES.id;
-        } else
-        {
-            iTargetidDropped = targetBlock.getDroppedItemId(iTargetMetaData, world.random);
         }
-        if(iTargetidDropped > 0)
+        else if(targetBlock.id == Block.LEAVES.id)
         {
-            return InventoryHandler.addSingleItemToInventory(tileEentityDispenser, iTargetidDropped, itemDamage);
-        } else
+            droppedItemId = Block.LEAVES.asItem().id;
+        }
+        else
+        {
+            droppedItemId = targetBlock.getDroppedItemId(itemMetaData, world.random);
+        }
+
+        if(droppedItemId > 0)
+        {
+            return InventoryHandler.addSingleItemToInventory(tileEentityDispenser, droppedItemId, itemDamage);
+        }
+        else
         {
             return false;
         }
@@ -378,23 +381,23 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
         targetPos.AddFacingAsOffset(iFacingDirection);
         if(!ConsumeEntityAtTargetLoc(world, i, j, k, targetPos.i, targetPos.j, targetPos.k) && !world.isAir(targetPos.i, targetPos.j, targetPos.k))
         {
-            int iTargetid = world.getBlockId(targetPos.i, targetPos.j, targetPos.k);
-            Block targetBlock = Block.BLOCKS[iTargetid];
+            int blockId = world.getBlockId(targetPos.i, targetPos.j, targetPos.k);
+            Block targetBlock = Block.BLOCKS[blockId];
             if(targetBlock != null && IsBlockConsumable(targetBlock))
             {
-                int iTargetMetaData = world.getBlockMeta(targetPos.i, targetPos.j, targetPos.k);
-                if(iTargetid == id)
+                int blockMetaData = world.getBlockMeta(targetPos.i, targetPos.j, targetPos.k);
+                if(blockId == id)
                 {
                     BlockDispenserBlockEntity targetTileEentityDispenser = (BlockDispenserBlockEntity)world.getBlockEntity(targetPos.i, targetPos.j, targetPos.k);
                     InventoryHandler.clearInventoryContents(targetTileEentityDispenser);
                 }
-                if(AddBlockToInventory(world, i, j, k, targetBlock, iTargetMetaData))
+                if(AddBlockToInventory(world, i, j, k, targetBlock, blockMetaData))
                 {
                     if(net.fabricmc.loader.FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                        renderPacket(world, targetPos.i, targetPos.j, targetPos.k, iTargetid, iTargetMetaData);
+                        renderPacket(world, targetPos.i, targetPos.j, targetPos.k, blockId, blockMetaData);
                         voicePacket(world, targetBlock.soundGroup.getSound(), i, j, k, (targetBlock.soundGroup.method_1976() + 1.0F) / 2.0F, targetBlock.soundGroup.method_1977() * 0.8F);
                     }else{
-                        Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).field_2808.method_322(targetPos.i, targetPos.j, targetPos.k, iTargetid, iTargetMetaData);
+                        Minecraft.class.cast(FabricLoader.getInstance().getGameInstance()).field_2808.method_322(targetPos.i, targetPos.j, targetPos.k, blockId, blockMetaData);
                         world.playSound((float)targetPos.i + 0.5F, (float)targetPos.j + 0.5F, (float)targetPos.k + 0.5F, targetBlock.soundGroup.getSound(), (targetBlock.soundGroup.method_1976() + 1.0F) / 2.0F, targetBlock.soundGroup.method_1977() * 0.8F);
                     }
                 	world.setBlock(targetPos.i, targetPos.j, targetPos.k, 0);
@@ -471,18 +474,20 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
         int iFacing = GetFacing(world, i, j, k);
         BlockPosition targetPos = new BlockPosition(i, j, k);
         targetPos.AddFacingAsOffset(iFacing);
-        int iTargetid = world.getBlockId(targetPos.i, targetPos.j, targetPos.k);
-        Block targetBlock = Block.BLOCKS[iTargetid];
+        int blockId = world.getBlockId(targetPos.i, targetPos.j, targetPos.k);
+        Block targetBlock = Block.BLOCKS[blockId];
         boolean shouldDispense = false;
         boolean bSuccessfullyDispensed = false;
+
         if(targetBlock == null)
         {
             shouldDispense = true;
-        } else
-        if(ReplaceableBlockChecker.IsReplaceableBlock(world, targetPos.i, targetPos.j, targetPos.k) || !targetBlock.material.isSolid())
+        }
+        else if(ReplaceableBlockChecker.IsReplaceableBlock(world, targetPos.i, targetPos.j, targetPos.k) || !targetBlock.material.isSolid())
         {
             shouldDispense = true;
         }
+
         if(shouldDispense)
         {
             float deltaj = 0.0F;
@@ -491,23 +496,24 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
             if(iFacing == 0)
             {
                 deltaj = -1F;
-            } else
-            if(iFacing == 1)
+            }
+            else if(iFacing == 1)
             {
                 deltaj = 1.0F;
-            } else
-            if(iFacing == 3)
+            }
+            else if(iFacing == 3)
             {
                 f1 = 1.0F;
-            } else
-            if(iFacing == 2)
+            }
+            else if(iFacing == 2)
             {
                 f1 = -1F;
-            } else
-            if(iFacing == 5)
+            }
+            else if(iFacing == 5)
             {
                 f = 1.0F;
-            } else
+            }
+            else
             {
                 f = -1F;
             }
@@ -522,6 +528,7 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
                 {
                     deltaj = 0.1F;
                 }
+
                 if(iteminstance.itemId == Item.ARROW.id)
                 {
                     ArrowEntity entityarrow = new ArrowEntity(world, d, d1, d2);
@@ -532,8 +539,8 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
                         voicePacket(world, "random.bow", i, j, k, 1.0F, 1.2F);
                     }
                     bSuccessfullyDispensed = true;
-                } else
-                if(iteminstance.itemId == ItemListener.broadHeadArrow.id)
+                }
+                else if(iteminstance.itemId == ItemListener.broadHeadArrow.id)
                 {
                     BroadheadArrowEntity entityarrow = new BroadheadArrowEntity(world, d, d1, d2);
                     entityarrow.method_1291(f, deltaj, f1, 1.1F, 6F);
@@ -546,8 +553,8 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
                         voicePacket(world, "random.bow", i, j, k, 1.0F, 1.2F);
                     }
                     bSuccessfullyDispensed = true;
-                } else
-                if(iteminstance.itemId == Item.EGG.id)
+                }
+                else if(iteminstance.itemId == Item.EGG.id)
                 {
                     EggEntity entityegg = new EggEntity(world, d, d1, d2);
                     entityegg.setVelocity(f, deltaj, f1, 1.1F, 6F);
@@ -557,8 +564,8 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
                         voicePacket(world, "random.bow", i, j, k, 1.0F, 1.2F);
                     }
                     bSuccessfullyDispensed = true;
-                } else
-                if(iteminstance.itemId == Item.SNOWBALL.id)
+                }
+                else if(iteminstance.itemId == Item.SNOWBALL.id)
                 {
                     SnowballEntity entitysnowball = new SnowballEntity(world, d, d1, d2);
                     entitysnowball.setVelocity(f, deltaj, f1, 1.1F, 6F);
@@ -568,8 +575,8 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
                         voicePacket(world, "random.bow", i, j, k, 1.0F, 1.2F);
                     }
                     bSuccessfullyDispensed = true;
-                } else
-                if(iteminstance.itemId == Item.MINECART.id)
+                }
+                else if(iteminstance.itemId == Item.MINECART.id)
                 {
                     MinecartEntity entityMinecart = new MinecartEntity(world, d + (double)f * 0.75D, d1 - 0.5D, d2 + (double)f1 * 0.75D, 0);
                     world.spawnEntity(entityMinecart);
@@ -578,8 +585,8 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
                         voicePacket(world, "random.click", i, j, k, 1.0F, 1.0F);
                     }
                     bSuccessfullyDispensed = true;
-                } else
-                if(iteminstance.itemId == Item.CHEST_MINECART.id)
+                }
+                else if(iteminstance.itemId == Item.CHEST_MINECART.id)
                 {
                     MinecartEntity entityMinecart = new MinecartEntity(world, d + (double)f * 0.75D, d1 - 0.5D, d2 + (double)f1 * 0.75D, 1);
                     world.spawnEntity(entityMinecart);
@@ -588,8 +595,8 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
                         voicePacket(world, "random.click", i, j, k, 1.0F, 1.0F);
                     }
                     bSuccessfullyDispensed = true;
-                } else
-                if(iteminstance.itemId == Item.FURNACE_MINECART.id)
+                }
+                else if(iteminstance.itemId == Item.FURNACE_MINECART.id)
                 {
                     MinecartEntity entityMinecart = new MinecartEntity(world, d + (double)f * 0.75D, d1 - 0.5D, d2 + (double)f1 * 0.75D, 2);
                     world.spawnEntity(entityMinecart);
@@ -598,8 +605,8 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
                         voicePacket(world, "random.click", i, j, k, 1.0F, 1.0F);
                     }
                     bSuccessfullyDispensed = true;
-                } else
-                if(iteminstance.itemId == Item.BOAT.id)
+                }
+                else if(iteminstance.itemId == Item.BOAT.id)
                 {
                     BoatEntity entityBoat = new BoatEntity(world, d + (double)f, d1 - 0.5D, d2 + (double)f1);
                     world.spawnEntity(entityBoat);
@@ -608,14 +615,15 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
                         voicePacket(world, "random.click", i, j, k, 1.0F, 1.0F);
                     }
                     bSuccessfullyDispensed = true;
-                } else
-                if(iteminstance.getItem() instanceof SeedsItem)
+                }
+                else if(iteminstance.getItem() instanceof SeedsItem)
                 {
                     iteminstance.count++;
                     if(!iteminstance.getItem().useOnBlock(iteminstance, null, world, targetPos.i, targetPos.j - 1, targetPos.k, 1))
                     {
                         InventoryHandler.addSingleItemToInventory(tileEntityBlockDispenser, iteminstance.itemId, 0);
-                    } else
+                    }
+                    else
                     {
                         Block newBlock = Block.WHEAT;
                         world.playSound((float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F, newBlock.soundGroup.getSound(), (newBlock.soundGroup.method_1976() + 1.0F) / 2.0F, newBlock.soundGroup.method_1977() * 0.8F);
@@ -630,48 +638,52 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
                     if(iteminstance.itemId < 256)
                     {
                         newBlock = Block.BLOCKS[iteminstance.itemId];
-                    } else
-                    if(iteminstance.itemId == Item.SUGAR_CANE.id)
+                    }
+                    else if(iteminstance.itemId == Item.SUGAR_CANE.id)
                     {
                         newBlock = Block.SUGAR_CANE;
-                    } else
-                    if(iteminstance.itemId == Item.CAKE.id)
+                    }
+                    else if(iteminstance.itemId == Item.CAKE.id)
                     {
                         newBlock = Block.CAKE;
-                    } else
-                    if(iteminstance.itemId == Item.REPEATER.id)
+                    }
+                    else if(iteminstance.itemId == Item.REPEATER.id)
                     {
                         newBlock = Block.REPEATER;
-                    } else
-                    if(iteminstance.itemId == Item.REDSTONE.id)
+                    }
+                    else if(iteminstance.itemId == Item.REDSTONE.id)
                     {
                         newBlock = Block.REDSTONE_WIRE;
                     }
+
                     if(newBlock != null)
                     {
-                        int iNewid = newBlock.id;
+                        int newBlockId = newBlock.id;
                         int iTargetDirection = UnsortedUtils.getOppositeFacing(iFacing);
-                        if(world.canPlace(iNewid, targetPos.i, targetPos.j, targetPos.k, true, iTargetDirection))
+                        if(world.canPlace(newBlockId, targetPos.i, targetPos.j, targetPos.k, true, iTargetDirection))
                         {
-                            if(iNewid == Block.PISTON.id || iNewid == Block.STICKY_PISTON.id)
+                            if(newBlockId == Block.PISTON.id || newBlockId == Block.STICKY_PISTON.id)
                             {
-                                world.setBlock(targetPos.i, targetPos.j, targetPos.k, iNewid, iFacing);
-                            } else
+                                world.setBlock(targetPos.i, targetPos.j, targetPos.k, newBlockId, iFacing);
+                            }
+                            else
                             {
-                                world.setBlock(targetPos.i, targetPos.j, targetPos.k, iNewid, iteminstance.getItem().getPlacementMetadata(iteminstance.getDamage()));
+                                world.setBlock(targetPos.i, targetPos.j, targetPos.k, newBlockId, iteminstance.getItem().getPlacementMetadata(iteminstance.getDamage()));
                                 newBlock.onPlaced(world, targetPos.i, targetPos.j, targetPos.k, iTargetDirection);
                             }
+
                             world.playSound((float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F, newBlock.soundGroup.getSound(), (newBlock.soundGroup.method_1976() + 1.0F) / 2.0F, newBlock.soundGroup.method_1977() * 0.8F);
                             if(net.fabricmc.loader.FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
                                 voicePacket(world, newBlock.soundGroup.getSound(), i, j, k, (newBlock.soundGroup.method_1976() + 1.0F) / 2.0F, newBlock.soundGroup.method_1977() * 0.8F);
                             }
                             bSuccessfullyDispensed = true;
-                        } else
+                        }
+                        else
                         {
                             InventoryHandler.addSingleItemToInventory(tileEntityBlockDispenser, iteminstance.itemId, iteminstance.getDamage());
                         }
-                    } else
-                    if(world.isAir(targetPos.i, targetPos.j, targetPos.k))
+                    }
+                    else if(world.isAir(targetPos.i, targetPos.j, targetPos.k))
                     {
                         SpitOutItem(world, i, j, k, iteminstance, random);
                         world.playSound(i, j, k, "random.click", 1.0F, 1.0F);
@@ -679,12 +691,14 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
                             voicePacket(world, "random.click", i, j, k, 1.0F, 1.0F);
                         }
                         bSuccessfullyDispensed = true;
-                    } else
+                    }
+                    else
                     {
                         InventoryHandler.addSingleItemToInventory(tileEntityBlockDispenser, iteminstance.itemId, iteminstance.getDamage());
                     }
                 }
             }
+
             if(bSuccessfullyDispensed)
             {
                 for(int i1 = 0; i1 < 10; i1++)
@@ -704,6 +718,7 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
 
             }
         }
+
         if(!bSuccessfullyDispensed)
         {
             world.playSound(i, j, k, "random.click", 1.0F, 1.2F);
@@ -736,7 +751,8 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
             }
             world.setBlockEntity(i, j, k, fctileentityblockdispenser);
             return false;
-        } else
+        }
+        else
         {
             return true;
         }

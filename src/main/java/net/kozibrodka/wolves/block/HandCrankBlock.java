@@ -236,8 +236,8 @@ public class HandCrankBlock extends TemplateBlock
     public void BreakCrankWithDrop(World world, int i, int j, int k)
     {
         UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, Item.STICK.id, 0);
-        UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, Block.COBBLESTONE.id, 0);
-        UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, Block.COBBLESTONE.id, 0);
+        UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, Block.COBBLESTONE.asItem().id, 0);
+        UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, Block.COBBLESTONE.asItem().id, 0);
         UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, ItemListener.gear.id, 0);
         world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.explode", 0.2F, 1.25F);
         world.setBlock(i, j, k, 0);

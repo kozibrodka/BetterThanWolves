@@ -23,12 +23,12 @@ public class RopeItem extends TemplateItem
         {
             return false;
         }
-        int iTargetid = world.getBlockId(i, j, k);
-        if(iTargetid == BlockListener.anchor.id || iTargetid == BlockListener.rope.id)
+        int blockId = world.getBlockId(i, j, k);
+        if(blockId == BlockListener.anchor.id || blockId == BlockListener.rope.id)
         {
             for(int tempj = j - 1; tempj >= 0; tempj--)
             {
-                int iTempid = world.getBlockId(i, tempj, k);
+                int tempBlockId = world.getBlockId(i, tempj, k);
                 if(ReplaceableBlockChecker.IsReplaceableBlock(world, i, tempj, k))
                 {
                     if(world.setBlock(i, tempj, k, BlockListener.rope.id))
@@ -43,7 +43,7 @@ public class RopeItem extends TemplateItem
                         return false;
                     }
                 }
-                if(iTempid != BlockListener.rope.id)
+                if(tempBlockId != BlockListener.rope.id)
                 {
                     return false;
                 }

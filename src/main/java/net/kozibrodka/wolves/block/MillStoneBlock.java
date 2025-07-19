@@ -199,8 +199,8 @@ public class MillStoneBlock extends TemplateBlockWithEntity
         {
             BlockPosition targetPos = new BlockPosition(i, j, k);
             targetPos.AddFacingAsOffset(iFacing);
-            int iTargetid = world.getBlockId(targetPos.i, targetPos.j, targetPos.k);
-            if(iTargetid != BlockListener.axleBlock.id)
+            int blockId = world.getBlockId(targetPos.i, targetPos.j, targetPos.k);
+            if(blockId != BlockListener.axleBlock.id)
             {
                 continue;
             }
@@ -215,12 +215,12 @@ public class MillStoneBlock extends TemplateBlockWithEntity
         {
             BlockPosition targetPos = new BlockPosition(i, j, k);
             targetPos.AddFacingAsOffset(iFacing);
-            int iTargetid = world.getBlockId(targetPos.i, targetPos.j, targetPos.k);
-            if(iTargetid != BlockListener.handCrank.id)
+            int blockId = world.getBlockId(targetPos.i, targetPos.j, targetPos.k);
+            if(blockId != BlockListener.handCrank.id)
             {
                 continue;
             }
-            Block targetBlock = Block.BLOCKS[iTargetid];
+            Block targetBlock = Block.BLOCKS[blockId];
             MechanicalDevice device = (MechanicalDevice)targetBlock;
             if(device.IsOutputtingMechanicalPower(world, targetPos.i, targetPos.j, targetPos.k))
             {

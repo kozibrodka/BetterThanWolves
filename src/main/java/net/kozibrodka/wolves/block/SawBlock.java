@@ -411,89 +411,74 @@ public class SawBlock extends TemplateBlock
     {
         if(!world.isAir(i, j, k))
         {
-            int targetId = world.getBlockId(i, j, k);
-            ItemStack targetItem = new ItemStack(targetId, 1, world.getBlockMeta(i, j, k));
-            boolean sawedBlock = false;
-            Block targetBlock = Block.BLOCKS[targetId];
-            boolean bRemoveOriginalBlockIfSawed = true;
+            int blockId = world.getBlockId(i, j, k);
+            Block block = BLOCKS[blockId];
+            if (null != block) {
+                ItemStack targetItem = new ItemStack(block.asItem(), 1, world.getBlockMeta(i, j, k));
+                boolean sawedBlock = false;
+                Block targetBlock = Block.BLOCKS[blockId];
+                boolean bRemoveOriginalBlockIfSawed = true;
 
-            // Standard recipes from the registry
-            ItemStack output = SawingRecipeRegistry.getInstance().getResult(targetItem);
-            if (output != null)
-            {
-                if (output.count == 0) output.count = 1;
-                for(int iTempCount = 0; iTempCount < output.count; iTempCount++)
-                {
-                    UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, output.itemId, output.getDamage());
+                // Standard recipes from the registry
+                ItemStack output = SawingRecipeRegistry.getInstance().getResult(targetItem);
+                if (output != null) {
+                    if (output.count == 0) output.count = 1;
+                    for (int iTempCount = 0; iTempCount < output.count; iTempCount++) {
+                        UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, output.itemId, output.getDamage());
+                    }
+                    sawedBlock = true;
                 }
-                sawedBlock = true;
-            }
 
-            // Special recipes with more complex outcomes
-            else if(targetId == BlockListener.companionCube.id)
-            {
-                CompanionCubeBlock cubeBlock = (CompanionCubeBlock)BlockListener.companionCube;
-                if(!cubeBlock.GetHalfCubeState(world, i, j, k))
-                {
-                    if(iSawFacing == 0 || iSawFacing == 1)
-                    {
-                        for(int iTempCount = 0; iTempCount < 2; iTempCount++)
-                        {
-                            UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, BlockListener.companionCube.id, 1);
+                // Special recipes with more complex outcomes
+                else if (blockId == BlockListener.companionCube.id) {
+                    CompanionCubeBlock cubeBlock = (CompanionCubeBlock) BlockListener.companionCube;
+                    if (!cubeBlock.GetHalfCubeState(world, i, j, k)) {
+                        if (iSawFacing == 0 || iSawFacing == 1) {
+                            for (int iTempCount = 0; iTempCount < 2; iTempCount++) {
+                                UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, BlockListener.companionCube.asItem().id, 1);
+                            }
+
+                        } else {
+                            UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, BlockListener.companionCube.asItem().id, 1);
+                            cubeBlock.SetHalfCubeState(world, i, j, k, true);
+                            world.setBlocksDirty(i, j, k, i, j, k);
+                            bRemoveOriginalBlockIfSawed = false;
                         }
-
-                    } else
-                    {
-                        UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, BlockListener.companionCube.id, 1);
-                        cubeBlock.SetHalfCubeState(world, i, j, k, true);
-                        world.setBlocksDirty(i, j, k, i, j, k);
-                        bRemoveOriginalBlockIfSawed = false;
+                        BlockPosition bloodPos = new BlockPosition(i, j, k);
+                        bloodPos.AddFacingAsOffset(UnsortedUtils.getOppositeFacing(iSawFacing));
+                        EmitBloodParticles(world, bloodPos.i, bloodPos.j, bloodPos.k, world.random);
+                        world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "mob.wolf.hurt", 5F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
+                        if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+                            voicePacket(world, "mob.wolf.hurt", i, j, k, 5F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
+                        }
+                        sawedBlock = true;
+                    } else if (iSawFacing == 0 || iSawFacing == 1) {
+                        UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, BlockListener.companionCube.asItem().id, 1);
+                        sawedBlock = true;
                     }
-                    BlockPosition bloodPos = new BlockPosition(i, j, k);
-                    bloodPos.AddFacingAsOffset(UnsortedUtils.getOppositeFacing(iSawFacing));
-                    EmitBloodParticles(world, bloodPos.i, bloodPos.j, bloodPos.k, world.random);
-                    world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "mob.wolf.hurt", 5F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
-                    if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                        voicePacket(world, "mob.wolf.hurt", i, j, k, 5F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
-                    }
-                    sawedBlock = true;
-                } else
-                if(iSawFacing == 0 || iSawFacing == 1)
-                {
-                    UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, BlockListener.companionCube.id, 1);
-                    sawedBlock = true;
-                }
-            } else
-            if(targetId == Block.LEAVES.id || targetId == Block.SUGAR_CANE.id || targetId == Block.WHEAT.id || targetId == BlockListener.hempCrop.id)
-            {
-                targetBlock.dropStacks(world, i, j, k, world.getBlockMeta(i, j, k));
-                sawedBlock = true;
-            } else
-            if(targetId != Block.PISTON_HEAD.id && targetBlock != null)
-            {
-                Material targetMaterial = targetBlock.material;
-                if(targetMaterial != Material.WOOD)
-                {
-                    if(targetMaterial.isSolid())
-                    {
-                        return false;
-                    }
-                } else
-                {
+                } else if (blockId == Block.LEAVES.id || blockId == Block.SUGAR_CANE.id || blockId == Block.WHEAT.id || blockId == BlockListener.hempCrop.id) {
                     targetBlock.dropStacks(world, i, j, k, world.getBlockMeta(i, j, k));
                     sawedBlock = true;
+                } else if (blockId != Block.PISTON_HEAD.id && targetBlock != null) {
+                    Material targetMaterial = targetBlock.material;
+                    if (targetMaterial != Material.WOOD) {
+                        if (targetMaterial.isSolid()) {
+                            return false;
+                        }
+                    } else {
+                        targetBlock.dropStacks(world, i, j, k, world.getBlockMeta(i, j, k));
+                        sawedBlock = true;
+                    }
                 }
-            }
-            if(sawedBlock)
-            {
-                world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "random.explode", 0.2F, 1.25F);
-                if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                    voicePacket(world, "random.explode", i, j, k, 0.2F, 1.25F);
-                }
-                EmitSawParticles(world, i, j, k, random);
-                if(bRemoveOriginalBlockIfSawed)
-                {
-                    world.setBlock(i, j, k, 0);
+                if (sawedBlock) {
+                    world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "random.explode", 0.2F, 1.25F);
+                    if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+                        voicePacket(world, "random.explode", i, j, k, 0.2F, 1.25F);
+                    }
+                    EmitSawParticles(world, i, j, k, random);
+                    if (bRemoveOriginalBlockIfSawed) {
+                        world.setBlock(i, j, k, 0);
+                    }
                 }
             }
         }
@@ -509,7 +494,7 @@ public class SawBlock extends TemplateBlock
 
         for(int iTemp = 0; iTemp < 2; iTemp++)
         {
-            UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, Block.PLANKS.id, 0);
+            UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, Block.PLANKS.asItem().id, 0);
         }
 
         for(int iTemp = 0; iTemp < 2; iTemp++)
@@ -550,8 +535,8 @@ public class SawBlock extends TemplateBlock
             }
             BlockPosition targetPos = new BlockPosition(i, j, k);
             targetPos.AddFacingAsOffset(iFacing);
-            int iTargetid = world.getBlockId(targetPos.i, targetPos.j, targetPos.k);
-            if(iTargetid != BlockListener.axleBlock.id)
+            int blockId = world.getBlockId(targetPos.i, targetPos.j, targetPos.k);
+            if(blockId != BlockListener.axleBlock.id)
             {
                 continue;
             }

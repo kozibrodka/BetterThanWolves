@@ -216,9 +216,9 @@ public class HopperBlock extends TemplateBlockWithEntity
                     {
                         int iFilterType = tileEntityHopper.GetFilterType();
                         int iTargetItemID = Item.ITEMS[targetEntityItem.stack.itemId].id;
-                        if(iFilterType == 4 && iTargetItemID == Block.GRAVEL.id)
+                        if(iFilterType == 4 && iTargetItemID == Block.GRAVEL.asItem().id)
                         {
-                            ItemStack sandItemInstance = new ItemStack(Block.SAND.id, targetEntityItem.stack.count, 0);
+                            ItemStack sandItemInstance = new ItemStack(Block.SAND.asItem().id, targetEntityItem.stack.count, 0);
                             int iSandSwallowed = 0;
                             if(InventoryHandler.addItemWithinSlotBounds(tileEntityHopper, sandItemInstance, 0, 17))
                             {
@@ -417,7 +417,7 @@ public class HopperBlock extends TemplateBlockWithEntity
     {
         for(int iTemp = 0; iTemp < 2; iTemp++)
         {
-            UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, BlockListener.omniSlab.id, 1);
+            UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, BlockListener.omniSlab.asItem().id, 1);
         }
 
         for(int iTemp = 0; iTemp < 1; iTemp++)
@@ -472,8 +472,8 @@ public class HopperBlock extends TemplateBlockWithEntity
         {
             BlockPosition targetPos = new BlockPosition(i, j, k);
             targetPos.AddFacingAsOffset(iFacing);
-            int iTargetid = world.getBlockId(targetPos.i, targetPos.j, targetPos.k);
-            if(iTargetid == BlockListener.axleBlock.id)
+            int blockId = world.getBlockId(targetPos.i, targetPos.j, targetPos.k);
+            if(blockId == BlockListener.axleBlock.id)
             {
                 AxleBlock axleBlock = (AxleBlock)BlockListener.axleBlock;
                 if(axleBlock.IsAxleOrientedTowardsFacing(world, targetPos.i, targetPos.j, targetPos.k, iFacing) && axleBlock.GetPowerLevel(world, targetPos.i, targetPos.j, targetPos.k) > 0)
@@ -482,11 +482,11 @@ public class HopperBlock extends TemplateBlockWithEntity
                 }
                 continue;
             }
-            if(iTargetid != BlockListener.handCrank.id)
+            if(blockId != BlockListener.handCrank.id)
             {
                 continue;
             }
-            Block targetBlock = Block.BLOCKS[iTargetid];
+            Block targetBlock = Block.BLOCKS[blockId];
             MechanicalDevice device = (MechanicalDevice)targetBlock;
             if(device.IsOutputtingMechanicalPower(world, targetPos.i, targetPos.j, targetPos.k))
             {

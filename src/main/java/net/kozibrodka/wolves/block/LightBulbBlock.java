@@ -45,7 +45,7 @@ public class LightBulbBlock extends TemplateBlock
 
     public int getDroppedItemId(int i, Random random)
     {
-        return BlockListener.lightBulbOff.id;
+        return BlockListener.lightBulbOff.asItem().id;
     }
 
     public boolean isOpaque()

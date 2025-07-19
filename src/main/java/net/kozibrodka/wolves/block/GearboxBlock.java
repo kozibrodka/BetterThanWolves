@@ -281,7 +281,7 @@ public class GearboxBlock extends TemplateBlock
     {
         for(int iTemp = 0; iTemp < 4; iTemp++)
         {
-            UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, Block.PLANKS.id, 0);
+            UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, Block.PLANKS.asItem().id, 0);
         }
 
         for(int iTemp = 0; iTemp < 3; iTemp++)

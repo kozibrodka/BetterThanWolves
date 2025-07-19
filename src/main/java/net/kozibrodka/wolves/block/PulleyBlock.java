@@ -175,8 +175,8 @@ public class PulleyBlock extends TemplateBlockWithEntity
         {
             BlockPosition targetPos = new BlockPosition(i, j, k);
             targetPos.AddFacingAsOffset(iFacing);
-            int iTargetid = world.getBlockId(targetPos.i, targetPos.j, targetPos.k);
-            if(iTargetid == BlockListener.axleBlock.id)
+            int blockId = world.getBlockId(targetPos.i, targetPos.j, targetPos.k);
+            if(blockId == BlockListener.axleBlock.id)
             {
                 AxleBlock axleBlock = (AxleBlock)BlockListener.axleBlock;
                 if(axleBlock.IsAxleOrientedTowardsFacing(world, targetPos.i, targetPos.j, targetPos.k, iFacing) && axleBlock.GetPowerLevel(world, targetPos.i, targetPos.j, targetPos.k) > 0)
@@ -185,11 +185,11 @@ public class PulleyBlock extends TemplateBlockWithEntity
                 }
                 continue;
             }
-            if(iTargetid != BlockListener.handCrank.id)
+            if(blockId != BlockListener.handCrank.id)
             {
                 continue;
             }
-            Block targetBlock = Block.BLOCKS[iTargetid];
+            Block targetBlock = Block.BLOCKS[blockId];
             MechanicalDevice device = (MechanicalDevice)targetBlock;
             if(device.IsOutputtingMechanicalPower(world, targetPos.i, targetPos.j, targetPos.k))
             {
