@@ -42,9 +42,9 @@ public class UnfiredPotteryBlock extends TemplateBlockWithEntity
         return TextureListener.unfiredpottery;
     }
 
-    protected int getDroppedItemMeta(int iMetaData)
+    protected int getDroppedItemMeta(int itemMetaData)
     {
-        return iMetaData;
+        return itemMetaData;
     }
 
     public boolean isOpaque()
@@ -59,8 +59,8 @@ public class UnfiredPotteryBlock extends TemplateBlockWithEntity
 
     public Box getCollisionShape(World world, int i, int j, int k)
     {
-        int iMetaData = world.getBlockMeta(i, j, k);
-        switch(iMetaData)
+        int blockMetaData = world.getBlockMeta(i, j, k);
+        switch(blockMetaData)
         {
             case 0: // '\0'
             case 1: // '\001'
@@ -74,8 +74,8 @@ public class UnfiredPotteryBlock extends TemplateBlockWithEntity
 
     public void updateBoundingBox(BlockView iBlockAccess, int i, int j, int k)
     {
-        int iMetaData = iBlockAccess.getBlockMeta(i, j, k);
-        switch(iMetaData)
+        int blockMetaData = iBlockAccess.getBlockMeta(i, j, k);
+        switch(blockMetaData)
         {
             case 0: // '\0'
             case 1: // '\001'
@@ -122,26 +122,26 @@ public class UnfiredPotteryBlock extends TemplateBlockWithEntity
 
     public void Cook(World world, int i, int j, int k)
     {
-        int iMetaData = world.getBlockMeta(i, j, k);
-        int iNewid = 0;
-        switch(iMetaData)
+        int blockMetaData = world.getBlockMeta(i, j, k);
+        int newItemId = 0;
+        switch(blockMetaData)
         {
             case 0: // '\0'
-                iNewid = BlockListener.crucible.id;
+                newItemId = BlockListener.crucible.asItem().id;
                 break;
 
             case 1: // '\001'
-                iNewid = BlockListener.planter.id;
+                newItemId = BlockListener.planter.asItem().id;
                 break;
 
             case 2: // '\002'
-                iNewid = BlockListener.vase.id;
+                newItemId = BlockListener.vase.asItem().id;
                 break;
         }
         world.setBlock(i, j, k, 0);
-        if(iNewid > 0)
+        if(newItemId > 0)
         {
-            UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, iNewid, 0);
+            UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, newItemId, 0);
         }
     }
 

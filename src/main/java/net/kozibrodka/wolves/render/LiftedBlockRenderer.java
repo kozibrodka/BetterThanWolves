@@ -30,8 +30,8 @@ public class LiftedBlockRenderer extends EntityRenderer
     {
         World world = entity.world;
         LiftedBlockEntity fcentityblockliftedbyplatform = (LiftedBlockEntity)entity;
-        int i = fcentityblockliftedbyplatform.m_iid;
-        int j = fcentityblockliftedbyplatform.m_iBlockMetaData;
+        int i = fcentityblockliftedbyplatform.blockId;
+        int j = fcentityblockliftedbyplatform.blockMetaData;
         Block block = Block.BLOCKS[i];
         if(block != null)
         {

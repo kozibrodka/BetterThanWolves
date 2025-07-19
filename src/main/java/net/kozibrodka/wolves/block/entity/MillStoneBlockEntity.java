@@ -357,7 +357,7 @@ public class MillStoneBlockEntity extends BlockEntity
                 continue;
             }
             Item tempItem = millStoneContents[tempIndex].getItem();
-            if(tempItem != null && tempItem.id == BlockListener.companionCube.id && millStoneContents[tempIndex].getDamage() == 0)
+            if(tempItem != null && tempItem.id == BlockListener.companionCube.asItem().id && millStoneContents[tempIndex].getDamage() == 0)
             {
                 return true;
             }
@@ -372,7 +372,7 @@ public class MillStoneBlockEntity extends BlockEntity
         if(iUnmilledItemIndex >= 0)
         {
             int iUnmilledItemID = millStoneContents[iUnmilledItemIndex].getItem().id;
-            if(iUnmilledItemID == BlockListener.companionCube.id && millStoneContents[iUnmilledItemIndex].getDamage() == 0)
+            if(iUnmilledItemID == BlockListener.companionCube.asItem().id && millStoneContents[iUnmilledItemIndex].getDamage() == 0)
             {
                 return true;
             }

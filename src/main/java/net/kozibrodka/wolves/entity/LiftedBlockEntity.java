@@ -30,22 +30,22 @@ public class LiftedBlockEntity extends Entity implements EntitySpawnDataProvider
         velocityX = 0.0D;
         velocityY = 0.0D;
         velocityZ = 0.0D;
-        m_iid = 0;
-        m_iBlockMetaData = 0;
+        blockId = 0;
+        blockMetaData = 0;
     }
 
     public LiftedBlockEntity(World world, int i, int j, int k)
     {
         this(world);
-        m_iid = world.getBlockId(i, j, k);
-        m_iBlockMetaData = world.getBlockMeta(i, j, k);
-        if(m_iid == Block.POWERED_RAIL.id || m_iid == Block.DETECTOR_RAIL.id || m_iid == BlockListener.detectorRailWood.id || m_iid == BlockListener.detectorRailObsidian.id)
+        blockId = world.getBlockId(i, j, k);
+        blockMetaData = world.getBlockMeta(i, j, k);
+        if(blockId == Block.POWERED_RAIL.id || blockId == Block.DETECTOR_RAIL.id || blockId == BlockListener.detectorRailWood.id || blockId == BlockListener.detectorRailObsidian.id)
         {
-            m_iBlockMetaData &= 7;
+            blockMetaData &= 7;
         } else
-        if(m_iid == Block.REDSTONE_WIRE.id)
+        if(blockId == Block.REDSTONE_WIRE.id)
         {
-            m_iBlockMetaData = 0;
+            blockMetaData = 0;
         }
         setPos((float)i + 0.5F, (float)j + 0.5F, (float)k + 0.5F);
         lastTickX = prevX = x;
@@ -66,14 +66,14 @@ public class LiftedBlockEntity extends Entity implements EntitySpawnDataProvider
 
     protected void writeNbt(NbtCompound nbttagcompound)
     {
-        nbttagcompound.putInt("m_iid", m_iid);
-        nbttagcompound.putInt("m_iBlockMetaData", m_iBlockMetaData);
+        nbttagcompound.putInt("m_iid", blockId);
+        nbttagcompound.putInt("m_iBlockMetaData", blockMetaData);
     }
 
     protected void readNbt(NbtCompound nbttagcompound)
     {
-        m_iid = nbttagcompound.getInt("m_iid");
-        m_iBlockMetaData = nbttagcompound.getInt("m_iBlockMetaData");
+        blockId = nbttagcompound.getInt("m_iid");
+        blockMetaData = nbttagcompound.getInt("m_iBlockMetaData");
     }
 
     protected boolean bypassesSteppingEffects()
@@ -154,7 +154,7 @@ public class LiftedBlockEntity extends Entity implements EntitySpawnDataProvider
         int i = MathHelper.floor(x);
         int j = MathHelper.floor(y);
         int k = MathHelper.floor(z);
-        int idDropped = Block.BLOCKS[m_iid].getDroppedItemId(0, world.random);
+        int idDropped = Block.BLOCKS[blockId].getDroppedItemId(0, world.random);
         if(idDropped > 0)
         {
             UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, idDropped, 0);
@@ -167,7 +167,7 @@ public class LiftedBlockEntity extends Entity implements EntitySpawnDataProvider
         boolean bDestroyBlock = true;
         if(world.getBlockId(i, j - 1, k) == BlockListener.platform.id && ReplaceableBlockChecker.IsReplaceableBlock(world, i, j, k))
         {
-            world.setBlock(i, j, k, m_iid, m_iBlockMetaData);
+            world.setBlock(i, j, k, blockId, blockMetaData);
             bDestroyBlock = false;
         }
         if(bDestroyBlock)
@@ -198,8 +198,8 @@ public class LiftedBlockEntity extends Entity implements EntitySpawnDataProvider
         return false;
     }
 
-    public int m_iid;
-    public int m_iBlockMetaData;
+    public int blockId;
+    public int blockMetaData;
 
     @Override
     public Identifier getHandlerIdentifier() {
