@@ -41,7 +41,7 @@ public abstract class WolfDump extends AnimalEntity {
         }
         if (foodCounter < 1) return;
         int dungBooster = 1;
-        if (world.getBrightness((int)x, (int)y, (int)z) < 5) dungBooster *= 2;
+        if (world.getBrightness((int) x, (int) y, (int) z) < 5) dungBooster *= 2;
         if (isTamed()) dungBooster *= 4;
         if (world.random.nextInt(9600) > dungBooster) return;
         foodCounter--;
@@ -51,11 +51,11 @@ public abstract class WolfDump extends AnimalEntity {
             float xOffset = -(-MathHelper.sin(this.yaw / 180.0F * 3.141593F) * MathHelper.cos(this.pitch / 180.0F * 3.141593F));
             float zOffset = -(MathHelper.cos(this.yaw / 180.0F * 3.141593F) * MathHelper.cos(this.pitch / 180.0F * 3.141593F));
             float yOffset = 0.25F;
-            ItemEntity itemEntity = new ItemEntity(this.world, this.x + (double)xOffset, this.y + (double)yOffset, this.z + (double)zOffset, new ItemStack(ItemListener.dung));
+            ItemEntity itemEntity = new ItemEntity(this.world, this.x + (double) xOffset, this.y + (double) yOffset, this.z + (double) zOffset, new ItemStack(ItemListener.dung));
             float velocityFactor = 0.05F;
-            itemEntity.velocityX = (double)((MathHelper.sin(this.yaw / 180.0F * 3.141593F) * MathHelper.cos(this.pitch / 180.0F * 3.141593F)) * 10.0F * velocityFactor) + random.nextFloat() * 0.2F - 0.1F;
-            itemEntity.velocityY = (double)(-(MathHelper.cos(this.yaw / 180.0F * 3.141593F) * MathHelper.cos(this.pitch / 180.0F * 3.141593F)) * 10.0F * velocityFactor) + random.nextFloat() * 0.2F - 0.1F;
-            itemEntity.velocityZ = (double)((-MathHelper.cos(this.yaw / 180.0F * 3.141593F) * MathHelper.cos(this.pitch / 180.0F * 3.141593F)) * 10.0F * velocityFactor) + random.nextFloat() * 0.2F - 0.1F;
+            itemEntity.velocityX = (double) ((MathHelper.sin(this.yaw / 180.0F * 3.141593F) * MathHelper.cos(this.pitch / 180.0F * 3.141593F)) * 10.0F * velocityFactor) + random.nextFloat() * 0.2F - 0.1F;
+            itemEntity.velocityY = (double) (-(MathHelper.cos(this.yaw / 180.0F * 3.141593F) * MathHelper.cos(this.pitch / 180.0F * 3.141593F)) * 10.0F * velocityFactor) + random.nextFloat() * 0.2F - 0.1F;
+            itemEntity.velocityZ = (double) ((-MathHelper.cos(this.yaw / 180.0F * 3.141593F) * MathHelper.cos(this.pitch / 180.0F * 3.141593F)) * 10.0F * velocityFactor) + random.nextFloat() * 0.2F - 0.1F;
             itemEntity.pickupDelay = 10;
             this.world.spawnEntity(itemEntity);
         }

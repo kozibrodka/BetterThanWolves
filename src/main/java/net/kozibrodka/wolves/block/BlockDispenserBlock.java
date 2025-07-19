@@ -9,8 +9,6 @@ import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ScreenHandlerListener;
 import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.events.TextureListener;
-import net.kozibrodka.wolves.mixin.ChickenAccessor;
-import net.kozibrodka.wolves.mixin.WolfAccessor;
 import net.kozibrodka.wolves.network.ScreenPacket;
 import net.kozibrodka.wolves.network.ParticlePacket;
 import net.kozibrodka.wolves.network.RenderPacket;
@@ -341,12 +339,11 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
                     }
                     return true;
                 }
-                if(targetEntity instanceof WolfEntity)
+                if(targetEntity instanceof WolfEntity targetWolf)
                 {
-                    WolfEntity targetWolf = (WolfEntity)targetEntity;
-                    world.playSound(targetEntity, ((WolfAccessor) targetWolf).invokeGetHurtSound(), ((WolfAccessor) targetWolf).invokeGetSoundVolume(), (world.random.nextFloat() - world.random.nextFloat()) * 0.2F + 1.0F);
+                    world.playSound(targetEntity, targetWolf.getHurtSound(), targetWolf.getSoundVolume(), (world.random.nextFloat() - world.random.nextFloat()) * 0.2F + 1.0F);
                     if(net.fabricmc.loader.FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                        voicePacket(world, ((WolfAccessor) targetWolf).invokeGetHurtSound(), (int) targetEntity.x, (int) targetEntity.y, (int) targetEntity.z, ((WolfAccessor) targetWolf).invokeGetSoundVolume(), (world.random.nextFloat() - world.random.nextFloat()) * 0.2F + 1.0F);
+                        voicePacket(world, targetWolf.getHurtSound(), (int) targetEntity.x, (int) targetEntity.y, (int) targetEntity.z, targetWolf.getSoundVolume(), (world.random.nextFloat() - world.random.nextFloat()) * 0.2F + 1.0F);
                     }
                     targetEntity.markDead();
                     InventoryHandler.addSingleItemToInventory(tileEentityDispenser, BlockListener.companionCube.id, 0);
@@ -357,12 +354,11 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
 
                     return true;
                 }
-                if(targetEntity instanceof ChickenEntity)
+                if(targetEntity instanceof ChickenEntity targetChicken)
                 {
-                    ChickenEntity targetChicken = (ChickenEntity)targetEntity;
-                    world.playSound(targetEntity, ((ChickenAccessor) targetChicken).invokeGetHurtSound(), 1.0F, (world.random.nextFloat() - world.random.nextFloat()) * 0.2F + 1.0F);
+                    world.playSound(targetEntity, targetChicken.getHurtSound(), 1.0F, (world.random.nextFloat() - world.random.nextFloat()) * 0.2F + 1.0F);
                     if(net.fabricmc.loader.FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                        voicePacket(world, ((ChickenAccessor) targetChicken).invokeGetHurtSound(), (int) targetEntity.x, (int) targetEntity.y, (int) targetEntity.z, 1.0F, (world.random.nextFloat() - world.random.nextFloat()) * 0.2F + 1.0F);
+                        voicePacket(world, targetChicken.getHurtSound(), (int) targetEntity.x, (int) targetEntity.y, (int) targetEntity.z, 1.0F, (world.random.nextFloat() - world.random.nextFloat()) * 0.2F + 1.0F);
                     }
                     targetEntity.markDead();
                     InventoryHandler.addSingleItemToInventory(tileEentityDispenser, Item.EGG.id, 0);

@@ -3,14 +3,12 @@ package net.kozibrodka.wolves.network;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.FabricLoader;
-import net.kozibrodka.wolves.events.PacketListener;
-import net.kozibrodka.wolves.mixin.ClientPlayerAccessor;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.network.ClientNetworkHandler;
 import net.minecraft.network.NetworkHandler;
 import net.minecraft.network.packet.Packet;
 import net.modificationstation.stationapi.api.network.packet.ManagedPacket;
 import net.modificationstation.stationapi.api.network.packet.PacketType;
-import net.modificationstation.stationapi.api.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.DataInputStream;
@@ -82,9 +80,7 @@ public class ParticlePacket extends Packet implements ManagedPacket<ParticlePack
 
     @Environment(EnvType.CLIENT)
     public void handleClient(NetworkHandler networkHandler){
-        ClientPlayerAccessor accessor = (ClientPlayerAccessor) networkHandler;
-        Minecraft minecraft = accessor.getMinecraft();
-        minecraft.world.addParticle(this.particleToPlay, this.x, this.y, this.z, this.a1, this.a2, this.a3);
+        Minecraft.INSTANCE.world.addParticle(this.particleToPlay, this.x, this.y, this.z, this.a1, this.a2, this.a3);
     }
 
     @Environment(EnvType.SERVER)

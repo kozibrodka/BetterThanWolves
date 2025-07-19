@@ -7,7 +7,6 @@ import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.api.MechanicalPowerConsumer;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
-import net.kozibrodka.wolves.mixin.LevelAccessor;
 import net.kozibrodka.wolves.api.AffectedByBellows;
 import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.utils.BlockPosition;
@@ -214,7 +213,7 @@ public class BellowsBlock extends TemplateBlock
             SetFacing(world, i, j, k, iNewFacing);
             world.setBlocksDirty(i, j, k, i, j, k);
             world.scheduleBlockUpdate(i, j, k, BlockListener.bellows.id, getTickRate());
-            ((LevelAccessor) world).invokeBlockUpdate(i, j, k, BlockListener.bellows.id);
+            world.blockUpdate(i, j, k, BlockListener.bellows.id);
         }
         UnsortedUtils.DestroyHorizontallyAttachedAxles(world, i, j, k);
     }

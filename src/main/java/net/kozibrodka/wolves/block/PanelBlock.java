@@ -93,7 +93,7 @@ public class PanelBlock extends TemplateBlock {
         return this.template.getRenderLayer();
     }
 
-    protected int getDroppedItemMeta(int iMetaData)
+    public int getDroppedItemMeta(int iMetaData)
     {
         return 0;
     }

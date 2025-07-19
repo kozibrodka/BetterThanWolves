@@ -21,7 +21,7 @@ public class OmniSlabBlock extends TemplateBlock
         setSoundGroup(WOOD_SOUND_GROUP);
     }
 
-    protected int getDroppedItemMeta(int iMetaData)
+    public int getDroppedItemMeta(int iMetaData)
     {
         return iMetaData & 1;
     }

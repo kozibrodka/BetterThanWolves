@@ -11,7 +11,6 @@ import net.kozibrodka.wolves.container.AnvilScreenHandler;
 import net.kozibrodka.wolves.entity.FallingAnvilEntity;
 import net.kozibrodka.wolves.events.ScreenHandlerListener;
 import net.kozibrodka.wolves.events.TextureListener;
-import net.kozibrodka.wolves.mixin.LevelAccessor;
 import net.kozibrodka.wolves.utils.RotatableBlock;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.Block;
@@ -121,7 +120,7 @@ public class AnvilBlock extends TemplateBlock
             SetFacing(world, i, j, k, iNewFacing);
             world.setBlocksDirty(i, j, k, i, j, k);
             world.scheduleBlockUpdate(i, j, k, id, getTickRate());
-            ((LevelAccessor) world).invokeBlockUpdate(i, j, j, id);
+            world.blockUpdate(i, j, j, id);
         }
     }
 
