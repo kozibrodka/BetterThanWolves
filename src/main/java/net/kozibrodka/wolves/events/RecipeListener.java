@@ -9,20 +9,14 @@ import net.minecraft.block.WoolBlock;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.modificationstation.stationapi.api.event.recipe.RecipeRegisterEvent;
-import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
 import net.modificationstation.stationapi.api.recipe.CraftingRegistry;
 import net.modificationstation.stationapi.api.registry.BlockRegistry;
 import net.modificationstation.stationapi.api.registry.ItemRegistry;
 import net.modificationstation.stationapi.api.util.Identifier;
-import net.modificationstation.stationapi.api.util.Namespace;
 
 public class RecipeListener {
-
     static boolean isHarderThanWolvesPresent = FabricLoader.getInstance().isModLoaded("harderthanwolves");
     static boolean isNewFrontierCraftPresent = FabricLoader.getInstance().isModLoaded("nfc");
-
-    @Entrypoint.Namespace
-    public static Namespace MOD_ID;
 
     @EventListener
     public void registerRecipes(RecipeRegisterEvent event) {
@@ -347,7 +341,7 @@ public class RecipeListener {
     private static void addMillingRecipes() {
         MillingRecipeRegistry.getInstance().addMillingRecipe(ItemRegistry.INSTANCE.getId(Item.WHEAT), new ItemStack(ItemListener.flour, 1));
         MillingRecipeRegistry.getInstance().addMillingRecipe(ItemRegistry.INSTANCE.getId(Item.LEATHER), new ItemStack(ItemListener.scouredLeather, 1));
-        MillingRecipeRegistry.getInstance().addMillingRecipe(ItemListener.MOD_ID.id("hemp"), new ItemStack(ItemListener.hempFibers, 4));
+        MillingRecipeRegistry.getInstance().addMillingRecipe(ItemListener.NAMESPACE.id("hemp"), new ItemStack(ItemListener.hempFibers, 4));
         MillingRecipeRegistry.getInstance().addMillingRecipe(ItemRegistry.INSTANCE.getId(Item.SUGAR_CANE), new ItemStack(Item.SUGAR, 1));
         if (!isHarderThanWolvesPresent) {
             MillingRecipeRegistry.getInstance().addMillingRecipe(BlockRegistry.INSTANCE.getId(Block.NETHERRACK), new ItemStack(ItemListener.groundNetherrack, 1));
@@ -463,7 +457,7 @@ public class RecipeListener {
     }
 
     private static void addHopperRecipes() {
-        HopperPurifyingRecipeRegistry.getInstance().addHopperHauntingRecipe(ItemListener.MOD_ID.id("groundNetherrack"), new ItemStack(ItemListener.hellfireDust, 1));
+        HopperPurifyingRecipeRegistry.getInstance().addHopperHauntingRecipe(ItemListener.NAMESPACE.id("groundNetherrack"), new ItemStack(ItemListener.hellfireDust, 1));
     }
 
     private static void addSawingRecipes() {

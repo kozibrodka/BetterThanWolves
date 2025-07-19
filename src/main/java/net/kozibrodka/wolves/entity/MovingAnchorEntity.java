@@ -412,6 +412,6 @@ public class MovingAnchorEntity extends Entity implements EntitySpawnDataProvide
 
     @Override
     public Identifier getHandlerIdentifier() {
-        return Identifier.of(EntityListener.MOD_ID, "MovingAnchor");
+        return Identifier.of(EntityListener.NAMESPACE, "MovingAnchor");
     }
 }

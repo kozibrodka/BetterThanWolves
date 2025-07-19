@@ -9,24 +9,17 @@ import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
 import net.modificationstation.stationapi.api.registry.PacketTypeRegistry;
 import net.modificationstation.stationapi.api.registry.Registry;
 import net.modificationstation.stationapi.api.util.Namespace;
-import net.modificationstation.stationapi.api.util.Null;
 
 public class PacketListener {
-
     @Entrypoint.Namespace
-    public static Namespace MOD_ID;
+    public static Namespace NAMESPACE;
 
     @EventListener
     public void registerPacket(PacketRegisterEvent event) {
-//        SoundPacket.register();
-//        ScreenPacket.register();
-//        RenderPacket.register();
-//        ParticlePacket.register();
-        Registry.register(PacketTypeRegistry.INSTANCE, PacketListener.MOD_ID.id("particle"), ParticlePacket.TYPE);
-        Registry.register(PacketTypeRegistry.INSTANCE, PacketListener.MOD_ID.id("sound"), SoundPacket.TYPE);
-        Registry.register(PacketTypeRegistry.INSTANCE, PacketListener.MOD_ID.id("gui"), ScreenPacket.TYPE);
-        Registry.register(PacketTypeRegistry.INSTANCE, PacketListener.MOD_ID.id("render"), RenderPacket.TYPE);
-//        IdentifiablePacket.register(MOD_ID.id("btw_sound"), true, true, SoundPacket::new);
+        Registry.register(PacketTypeRegistry.INSTANCE, NAMESPACE.id("particle"), ParticlePacket.TYPE);
+        Registry.register(PacketTypeRegistry.INSTANCE, NAMESPACE.id("sound"), SoundPacket.TYPE);
+        Registry.register(PacketTypeRegistry.INSTANCE, NAMESPACE.id("gui"), ScreenPacket.TYPE);
+        Registry.register(PacketTypeRegistry.INSTANCE, NAMESPACE.id("render"), RenderPacket.TYPE);
     }
 
 }

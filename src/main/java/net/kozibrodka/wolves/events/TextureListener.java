@@ -12,7 +12,6 @@ import net.modificationstation.stationapi.api.util.Namespace;
 import net.modificationstation.stationapi.api.util.Null;
 
 public class TextureListener {
-
     @Entrypoint.Namespace
     public static Namespace NAMESPACE;
 

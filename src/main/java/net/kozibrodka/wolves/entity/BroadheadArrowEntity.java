@@ -300,6 +300,6 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
 
     @Override
     public Identifier getHandlerIdentifier() {
-        return Identifier.of(EntityListener.MOD_ID, "BroadheadArrow");
+        return Identifier.of(EntityListener.NAMESPACE, "BroadheadArrow");
     }
 }

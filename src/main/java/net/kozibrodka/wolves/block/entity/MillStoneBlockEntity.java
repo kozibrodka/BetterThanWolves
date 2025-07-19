@@ -191,7 +191,7 @@ public class MillStoneBlockEntity extends BlockEntity
 
         Identifier unmilledItemIdentifier = ItemRegistry.INSTANCE.getId(unmilledItem);
 
-        if(unmilledItemIdentifier == BlockListener.MOD_ID.id("companionCube")) // Companion cube torture during milling
+        if(unmilledItemIdentifier == BlockListener.NAMESPACE.id("companionCube")) // Companion cube torture during milling
         {
             if(millStoneContents[iUnmilledItemIndex].getDamage() == 0 && world.random.nextInt(10) == 0)
             {
@@ -231,7 +231,7 @@ public class MillStoneBlockEntity extends BlockEntity
             removeStack(iUnmilledItemIndex, 1);
             EjectStack(milledStack);
         }
-        else if(unmilledItemIdentifier == BlockListener.MOD_ID.id("companionCube")) // Special recipe (companion cube)
+        else if(unmilledItemIdentifier == BlockListener.NAMESPACE.id("companionCube")) // Special recipe (companion cube)
         {
             EjectStack(new ItemStack(ItemListener.wolfRaw.id, 1, 0));
             CompanionCubeBlock.SpawnHearts(world, x, y, z);
