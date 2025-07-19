@@ -17,6 +17,7 @@
   "icon": "assets/wolves/wolvesicon.png",
 
   "environment": "*",
+  "accessWidener": "wolves.accesswidener",
   "entrypoints": {
     "stationapi:event_bus": [
       "net.kozibrodka.wolves.events.ConfigListener",

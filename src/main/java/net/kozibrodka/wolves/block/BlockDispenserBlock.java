@@ -9,7 +9,6 @@ import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ScreenHandlerListener;
 import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.events.TextureListener;
-import net.kozibrodka.wolves.mixin.BlockBaseAccessor;
 import net.kozibrodka.wolves.mixin.ChickenAccessor;
 import net.kozibrodka.wolves.mixin.WolfAccessor;
 import net.kozibrodka.wolves.network.ScreenPacket;
@@ -240,7 +239,7 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
     {
         ValidateBlockDispenser(world, i, j, k);
         BlockDispenserBlockEntity tileEentityDispenser = (BlockDispenserBlockEntity)world.getBlockEntity(i, j, k);
-        int itemDamage = ((BlockBaseAccessor) targetBlock).invokeDroppedMeta(iTargetMetaData);
+        int itemDamage = targetBlock.getDroppedItemMeta(iTargetMetaData);
         int iTargetidDropped;
         if(targetBlock.id == Block.STONE.id)
         {
