@@ -18,7 +18,6 @@ import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import net.modificationstation.stationapi.api.client.model.block.BlockWithInventoryRenderer;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
 import net.modificationstation.stationapi.api.client.texture.atlas.Atlas;
 import net.modificationstation.stationapi.api.client.texture.atlas.Atlases;
@@ -34,7 +33,7 @@ public class CementBlock extends TemplateBlockWithEntity
 
     public CementBlock(Identifier iid)
     {
-        super(iid, BlockListener.fcCementMaterial);
+        super(iid, BlockListener.CEMENT_MATERIAL);
         setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         setHardness(100F);
         setOpacity(255);
@@ -735,12 +734,12 @@ public class CementBlock extends TemplateBlockWithEntity
             int j1 = i - (i1 & 1);
             int k1 = j;
             int l1 = k - (i1 >> 1 & 1);
-            if(iblockaccess.getMaterial(j1, k1 + 1, l1) == BlockListener.fcCementMaterial)
+            if(iblockaccess.getMaterial(j1, k1 + 1, l1) == BlockListener.CEMENT_MATERIAL)
             {
                 return 1.0F;
             }
             Material material = iblockaccess.getMaterial(j1, k1, l1);
-            if(material == BlockListener.fcCementMaterial)
+            if(material == BlockListener.CEMENT_MATERIAL)
             {
                 if(iblockaccess.method_1783(j1, k1 + 1, l1))
                 {

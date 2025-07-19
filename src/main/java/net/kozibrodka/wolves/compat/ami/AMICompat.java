@@ -33,7 +33,7 @@ public class AMICompat implements ModPluginProvider {
 
     @Override
     public Identifier getId() {
-        return ConfigListener.MOD_ID.id("wolves");
+        return ConfigListener.NAMESPACE.id("wolves");
     }
 
     @Override

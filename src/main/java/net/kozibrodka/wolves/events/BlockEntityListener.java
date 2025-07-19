@@ -4,26 +4,23 @@ import net.kozibrodka.wolves.block.entity.*;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.modificationstation.stationapi.api.event.block.entity.BlockEntityRegisterEvent;
 import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
-import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.util.Namespace;
-import net.modificationstation.stationapi.api.util.Null;
 
 public class BlockEntityListener {
-
     @Entrypoint.Namespace
-    public static Namespace MOD_ID;
+    public static Namespace NAMESPACE;
 
     @EventListener
     public static void registerBlockEntities(BlockEntityRegisterEvent event) {
-        event.register(MillStoneBlockEntity.class, String.valueOf(Identifier.of(MOD_ID, "TileMillStone")));
-        event.register(CrucibleBlockEntity.class, String.valueOf(Identifier.of(MOD_ID, "TileCrucible")));
-        event.register(CauldronBlockEntity.class, String.valueOf(Identifier.of(MOD_ID, "TileCauldron")));
-        event.register(PulleyBlockEntity.class, String.valueOf(Identifier.of(MOD_ID, "TilePulley")));
-        event.register(TurntableBlockEntity.class, String.valueOf(Identifier.of(MOD_ID, "TileTurntable")));
-        event.register(HopperBlockEntity.class, String.valueOf(Identifier.of(MOD_ID, "TileHooper")));
-        event.register(BlockDispenserBlockEntity.class, String.valueOf(Identifier.of(MOD_ID, "TileDispenser")));
-        event.register(UnfiredPotteryBlockEntity.class, String.valueOf(Identifier.of(MOD_ID, "TilePottery")));
-        event.register(VaseBlockEntity.class, String.valueOf(Identifier.of(MOD_ID, "TileVase")));
-        event.register(CementBlockEntity.class, String.valueOf(Identifier.of(MOD_ID, "TileCement")));
+        event.register(MillStoneBlockEntity.class, NAMESPACE.id("TileMillStone").toString());
+        event.register(CrucibleBlockEntity.class, NAMESPACE.id("TileCrucible").toString());
+        event.register(CauldronBlockEntity.class, NAMESPACE.id("TileCauldron").toString());
+        event.register(PulleyBlockEntity.class, NAMESPACE.id("TilePulley").toString());
+        event.register(TurntableBlockEntity.class, NAMESPACE.id("TileTurntable").toString());
+        event.register(HopperBlockEntity.class, NAMESPACE.id("TileHooper").toString());
+        event.register(BlockDispenserBlockEntity.class, NAMESPACE.id("TileDispenser").toString());
+        event.register(UnfiredPotteryBlockEntity.class, NAMESPACE.id("TilePottery").toString());
+        event.register(VaseBlockEntity.class, NAMESPACE.id("TileVase").toString());
+        event.register(CementBlockEntity.class, NAMESPACE.id("TileCement").toString());
     }
 }

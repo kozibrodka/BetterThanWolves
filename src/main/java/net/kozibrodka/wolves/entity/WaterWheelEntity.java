@@ -481,7 +481,7 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider 
 
     @Override
     public Identifier getHandlerIdentifier() {
-        return Identifier.of(EntityListener.MOD_ID, "WaterWheel");
+        return Identifier.of(EntityListener.NAMESPACE, "WaterWheel");
     }
 
     //ALIGNED

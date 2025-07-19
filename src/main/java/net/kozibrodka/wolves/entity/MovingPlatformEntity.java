@@ -342,6 +342,6 @@ public class MovingPlatformEntity extends Entity implements EntitySpawnDataProvi
 
     @Override
     public Identifier getHandlerIdentifier() {
-        return Identifier.of(EntityListener.MOD_ID, "MovingPlatform");
+        return Identifier.of(EntityListener.NAMESPACE, "MovingPlatform");
     }
 }

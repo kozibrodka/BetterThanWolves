@@ -17,6 +17,6 @@ public class RefinedArmorItem extends TemplateArmorItem implements ArmorTextureP
 
     @Override
     public Identifier getTexture(ArmorItem armour) {
-        return ConfigListener.MOD_ID.id("plate");
+        return ConfigListener.NAMESPACE.id("plate");
     }
 }
