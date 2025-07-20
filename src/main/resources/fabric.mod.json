@@ -27,7 +27,8 @@
     ],
     "stationapi:event_bus_client": [
       "net.kozibrodka.wolves.events.TextureListener",
-      "net.kozibrodka.wolves.events.ScreenHandlerListener"
+      "net.kozibrodka.wolves.events.ScreenHandlerListener",
+      "net.kozibrodka.wolves.events.ModelPredicateProviderListener"
     ],
     "stationapi:event_bus_server": [
     ],

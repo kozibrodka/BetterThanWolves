@@ -1,0 +1,23 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "wolves:block/fcBlockAxle_side",
+		"1": "wolves:block/fcBlockAxle_front",
+		"particle": "wolves:block/fcBlockAxle_side"
+	},
+	"elements": [
+		{
+			"from": [0, 6, 6],
+			"to": [16, 10, 10],
+			"rotation": {"angle": 0, "axis": "z", "origin": [6, 0, 6]},
+			"faces": {
+				"north": {"uv": [0, 0, 4, 16], "rotation": 90, "texture": "#0"},
+				"east": {"uv": [6, 6, 10, 10], "rotation": 270, "texture": "#1"},
+				"south": {"uv": [8, 0, 12, 16], "rotation": 270, "texture": "#0"},
+				"west": {"uv": [6, 6, 10, 10], "rotation": 270, "texture": "#1"},
+				"up": {"uv": [4, 0, 8, 16], "rotation": 270, "texture": "#0"},
+				"down": {"uv": [12, 0, 16, 16], "rotation": 270, "texture": "#0"}
+			}
+		}
+	]
+}
