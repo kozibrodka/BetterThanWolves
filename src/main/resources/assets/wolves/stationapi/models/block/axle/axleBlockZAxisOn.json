@@ -1,0 +1,6 @@
+{
+	"parent": "wolves:block/axle/axleBlockZAxisOff",
+	"textures": {
+		"0": "wolves:block/fcBlockAxle_side_on"
+	}
+}
