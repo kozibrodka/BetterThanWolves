@@ -23,8 +23,7 @@
       "net.kozibrodka.wolves.events.ItemListener",
       "net.kozibrodka.wolves.events.BlockEntityListener",
       "net.kozibrodka.wolves.events.RecipeListener",
-      "net.kozibrodka.wolves.events.PacketListener",
-      "net.kozibrodka.wolves.events.ProbeInfoProviderListener"
+      "net.kozibrodka.wolves.events.PacketListener"
     ],
     "stationapi:event_bus_client": [
       "net.kozibrodka.wolves.events.TextureListener",
@@ -38,6 +37,9 @@
     ],
     "gcapi3": [
       "net.kozibrodka.wolves.events.ConfigListener"
+    ],
+    "whatsthis": [
+      "net.kozibrodka.wolves.events.ProbeInfoProviderListener"
     ]
   },
   "mixins": [
