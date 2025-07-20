@@ -1,7 +1,7 @@
 plugins {
 	id 'maven-publish'
-	id 'fabric-loom' version '1.10.1'
-	id 'babric-loom-extension' version '1.10.1'
+	id 'fabric-loom' version '1.10.5'
+	id 'babric-loom-extension' version '1.10.2'
 }
 
 sourceCompatibility = JavaVersion.VERSION_17
@@ -86,6 +86,9 @@ dependencies {
 		transitive false
 	}
 	modImplementation("net.glasslauncher.mods:AlwaysMoreItems:${project.alwaysmoreitems_version}") {
+		transitive false
+	}
+	modImplementation("net.danygames2014:WhatsThis:${project.whatsthis_version}") {
 		transitive false
 	}
 
