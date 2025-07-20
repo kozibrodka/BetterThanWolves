@@ -16,9 +16,6 @@ public class TextureListener {
 
     @EventListener
     public void registerTextures(TextureRegisterEvent event) {
-        axle_horizontal = registerBlockTexture("block/fcBlockAxle_side");
-        axle_vertical = registerBlockTexture("block/fcBlockAxle_top");
-        axle_side = registerBlockTexture("block/fcBlockAxle_front");
         gearbox_front = registerBlockTexture("block/fcBlockGearBox_in");
         gearbox_output = registerBlockTexture("block/fcBlockGearBox_out");
         gearbox_side = registerBlockTexture("block/fcBlockGearBox_side");
@@ -154,9 +151,6 @@ public class TextureListener {
         return Atlases.getTerrain().addTexture(Identifier.of(NAMESPACE, path)).index;
     }
 
-    public static int axle_vertical;
-    public static int axle_horizontal;
-    public static int axle_side;
     public static int gearbox_front;
     public static int gearbox_output;
     public static int gearbox_side;

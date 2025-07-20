@@ -31,43 +31,6 @@ public class AxleBlock extends TemplateBlock {
         setSoundGroup(WOOD_SOUND_GROUP);
     }
 
-    public int getTexture(int iSide) {
-        if (iSide == 2 || iSide == 3) {
-            return TextureListener.axle_side;
-        }
-        if (iSide == 0 || iSide == 1) {
-            return TextureListener.axle_vertical;
-        } else {
-            return TextureListener.axle_horizontal;
-        }
-    }
-
-    public int getTextureId(BlockView iblockaccess, int i, int j, int k, int iSide) {
-        int iAxis = getAxisAlignment(iblockaccess, i, j, k);
-        if (iAxis == 0) {
-            if (iSide == 0 || iSide == 1) {
-                return TextureListener.axle_side;
-            } else {
-                return TextureListener.axle_vertical;
-            }
-        }
-        if (iAxis == 1) {
-            if (iSide == 2 || iSide == 3) {
-                return TextureListener.axle_side;
-            }
-            if (iSide == 0 || iSide == 1) {
-                return TextureListener.axle_vertical;
-            } else {
-                return TextureListener.axle_horizontal;
-            }
-        }
-        if (iSide == 4 || iSide == 5) {
-            return TextureListener.axle_side;
-        } else {
-            return TextureListener.axle_horizontal;
-        }
-    }
-
     public int getTickRate() {
         return 1;
     }
@@ -121,13 +84,6 @@ public class AxleBlock extends TemplateBlock {
                 setBoundingBox(0.0F, 0.375F, 0.375F, 1.0F, 0.625F, 0.625F);
                 break;
         }
-    }
-
-    /**
-     * chyba render w inventory
-     */
-    public void setupRenderBoundingBox() {
-        setBoundingBox(0.375F, 0.375F, 0.0F, 0.625F, 0.625F, 1.0F);
     }
 
     public void neighborUpdate(World world, int i, int j, int k, int iid) {

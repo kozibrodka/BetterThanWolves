@@ -1,5 +1,18 @@
 {
 	"credit": "Made with Blockbench",
+	"parent": "block/block",
+	"display": {
+		"gui": {
+			"rotation": [ 30, 135, 0 ],
+			"translation": [ 0, 0, 0],
+			"scale":[ 0.625, 0.625, 0.625 ]
+		},
+		"ground": {
+			"rotation": [ 0, 0, 0 ],
+			"translation": [ 0, 0, 0],
+			"scale":[ 0.25, 0.25, 0.25 ]
+		}
+	},
 	"textures": {
 		"0": "wolves:block/fcBlockAxle_side",
 		"1": "wolves:block/fcBlockAxle_front",
