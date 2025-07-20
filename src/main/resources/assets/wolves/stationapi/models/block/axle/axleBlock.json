@@ -49,15 +49,15 @@
 		},
 		{
 			"predicate": {"wolves:axle_state": 3},
-			"model": "wolves:block/axle/axleBlockYAxisOff"
+			"model": "wolves:block/axle/axleBlockYAxisOn"
 		},
 		{
 			"predicate": {"wolves:axle_state": 4},
-			"model": "wolves:block/axle/axleBlockZAxisOff"
+			"model": "wolves:block/axle/axleBlockZAxisOn"
 		},
 		{
 			"predicate": {"wolves:axle_state": 5},
-			"model": "wolves:block/axle/axleBlockXAxisOff"
+			"model": "wolves:block/axle/axleBlockXAxisOn"
 		}
 	]
 }
