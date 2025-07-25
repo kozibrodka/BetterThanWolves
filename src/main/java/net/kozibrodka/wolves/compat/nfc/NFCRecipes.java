@@ -11,7 +11,7 @@ import net.newfrontiercraft.nfc.events.init.ItemListener;
 public class NFCRecipes {
 
     public static void addShapelessCraftingRecipes() {
-        CraftingRegistry.addShapelessRecipe(new ItemStack(BlockListener.unfiredPlanter, 1, 0), new ItemStack(net.kozibrodka.wolves.events.BlockListener.unfiredPottery, 1, 0));
+        CraftingRegistry.addShapelessRecipe(new ItemStack(BlockListener.unfiredPlanter, 1, 0), new ItemStack(net.kozibrodka.wolves.events.BlockListener.unfiredPottery, 1, 1));
     }
 
     public static void addCrucibleRecipes() {
