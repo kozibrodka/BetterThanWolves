@@ -18,7 +18,7 @@ import net.modificationstation.stationapi.api.server.entity.EntitySpawnDataProvi
 import net.modificationstation.stationapi.api.server.entity.HasTrackingParameters;
 import net.modificationstation.stationapi.api.util.Identifier;
 
-@HasTrackingParameters(trackingDistance = 160, updatePeriod = 2)
+@HasTrackingParameters(trackingDistance = 1000, updatePeriod = 20)
 public class WindMillEntity extends Entity implements EntitySpawnDataProvider {
 
     public WindMillEntity(World world) {
@@ -38,6 +38,12 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider {
         this(world);
         setPos(x, y, z);
         setAligned(bIAligned);
+        renderDistanceMultiplier = 64.0F;
+    }
+
+    @Override
+    public boolean shouldRender(double distance) {
+        return distance < 10000;
     }
 
     public WindMillEntity(World level, Double aDouble, Double aDouble1, Double aDouble2) {
