@@ -41,6 +41,15 @@ import java.util.List;
 
 public class TurntableBlockEntity extends BlockEntity {
 
+    private int rotationCount;
+    public int switchSetting;
+    public int craftingRotationCount;
+    private static final int[] TICKS_TO_ROTATE = {
+            10, 20, 40, 80,
+            200, 600, 1200, 2400,
+            6000, 12000, 24000, 48000
+    };
+
     public TurntableBlockEntity() {
         rotationCount = 0;
         switchSetting = 0;
@@ -353,15 +362,4 @@ public class TurntableBlockEntity extends BlockEntity {
             }
         }
     }
-
-    private final int m_iMaxHeightOfBlocksRotated = 2;
-    private final int m_iRotationsToSpinPottery = 8;
-    private int rotationCount;
-    public int switchSetting;
-    public int craftingRotationCount;
-    private static final int[] TICKS_TO_ROTATE = {
-            10, 20, 40, 80, 200, 600, 1200, 2400, 6000, 12000,
-            24000
-    };
-
 }

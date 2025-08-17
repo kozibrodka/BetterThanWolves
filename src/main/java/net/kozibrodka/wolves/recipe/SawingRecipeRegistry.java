@@ -1,5 +1,6 @@
 package net.kozibrodka.wolves.recipe;
 
+import net.kozibrodka.wolves.wrappers.SawRecipeWrapperWrapper;
 import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
@@ -25,8 +26,8 @@ public class SawingRecipeRegistry {
         return null;
     }
 
-    public ArrayList<SawRecipe> getRecipes() {
-        ArrayList<SawRecipe> convertedRecipes = new ArrayList<>();
+    public ArrayList<SawRecipeWrapperWrapper> getRecipes() {
+        ArrayList<SawRecipeWrapperWrapper> convertedRecipes = new ArrayList<>();
         ArrayList<ItemStack> inputs = new ArrayList<>();
         ArrayList<ItemStack> outputs = new ArrayList<>();
         for (ItemStack[] recipe : recipes) {
@@ -35,7 +36,7 @@ public class SawingRecipeRegistry {
         }
         for (int i = 0; i < inputs.size(); i++) {
             if (i >= outputs.size()) break;
-            convertedRecipes.add(new SawRecipe(inputs.get(i), outputs.get(i)));
+            convertedRecipes.add(new SawRecipeWrapperWrapper(inputs.get(i), outputs.get(i)));
         }
         return convertedRecipes;
     }

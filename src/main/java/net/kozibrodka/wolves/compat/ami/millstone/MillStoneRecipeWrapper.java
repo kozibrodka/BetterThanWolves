@@ -1,7 +1,7 @@
 package net.kozibrodka.wolves.compat.ami.millstone;
 
 import net.glasslauncher.mods.alwaysmoreitems.api.recipe.RecipeWrapper;
-import net.kozibrodka.wolves.recipe.MillStoneRecipe;
+import net.kozibrodka.wolves.wrappers.MillStoneRecipeWrapperWrapper;
 import net.minecraft.client.Minecraft;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MillStoneRecipeWrapper implements RecipeWrapper {
-    private final MillStoneRecipe recipe;
+    private final MillStoneRecipeWrapperWrapper recipe;
 
-    public MillStoneRecipeWrapper(MillStoneRecipe recipe) {
+    public MillStoneRecipeWrapper(MillStoneRecipeWrapperWrapper recipe) {
         this.recipe = recipe;
     }
 

@@ -1,12 +1,12 @@
-package net.kozibrodka.wolves.recipe;
+package net.kozibrodka.wolves.wrappers;
 
 import net.minecraft.item.ItemStack;
 
-public class MillStoneRecipe {
+public class MillStoneRecipeWrapperWrapper {
     private final ItemStack input;
     private final ItemStack output;
 
-    public MillStoneRecipe(ItemStack input, ItemStack output) {
+    public MillStoneRecipeWrapperWrapper(ItemStack input, ItemStack output) {
         this.input = input;
         this.output = output;
     }

@@ -389,7 +389,7 @@ public class RecipeListener {
     }
 
     private static void addTurntableRecipes() {
-        TurntableRecipeRegistry.getInstance().addTurntableRecipe(Block.CLAY, 0, new ItemStack(BlockListener.unfiredPottery, 16), new ItemStack(Item.CLAY, 1));
+        TurntableRecipeRegistry.getInstance().addTurntableRecipe(Block.CLAY, 0, new ItemStack(BlockListener.unfiredPottery, 8, 0), new ItemStack(Item.CLAY, 1));
         TurntableRecipeRegistry.getInstance().addTurntableRecipe(BlockListener.unfiredPottery, 0, new ItemStack(BlockListener.unfiredPottery, 4, 1), new ItemStack(Item.CLAY, 1));
         TurntableRecipeRegistry.getInstance().addTurntableRecipe(BlockListener.unfiredPottery, 1, new ItemStack(BlockListener.unfiredPottery, 4, 2));
         TurntableRecipeRegistry.getInstance().addTurntableRecipe(BlockListener.unfiredPottery, 2, new ItemStack(ItemListener.nothing, 4, 0), new ItemStack(Item.CLAY, 2));

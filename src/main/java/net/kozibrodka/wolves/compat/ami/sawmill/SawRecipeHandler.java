@@ -2,14 +2,14 @@ package net.kozibrodka.wolves.compat.ami.sawmill;
 
 import net.glasslauncher.mods.alwaysmoreitems.api.recipe.RecipeHandler;
 import net.glasslauncher.mods.alwaysmoreitems.api.recipe.RecipeWrapper;
-import net.kozibrodka.wolves.recipe.SawRecipe;
+import net.kozibrodka.wolves.wrappers.SawRecipeWrapperWrapper;
 import org.jetbrains.annotations.NotNull;
 
-public class SawRecipeHandler implements RecipeHandler<SawRecipe> {
+public class SawRecipeHandler implements RecipeHandler<SawRecipeWrapperWrapper> {
     @NotNull
     @Override
-    public Class<SawRecipe> getRecipeClass() {
-        return SawRecipe.class;
+    public Class<SawRecipeWrapperWrapper> getRecipeClass() {
+        return SawRecipeWrapperWrapper.class;
     }
 
     @NotNull
@@ -20,12 +20,12 @@ public class SawRecipeHandler implements RecipeHandler<SawRecipe> {
 
     @NotNull
     @Override
-    public RecipeWrapper getRecipeWrapper(@NotNull SawRecipe recipe) {
+    public RecipeWrapper getRecipeWrapper(@NotNull SawRecipeWrapperWrapper recipe) {
         return new SawRecipeWrapper(recipe);
     }
 
     @Override
-    public boolean isRecipeValid(@NotNull SawRecipe recipe) {
+    public boolean isRecipeValid(@NotNull SawRecipeWrapperWrapper recipe) {
         return true;
     }
 }

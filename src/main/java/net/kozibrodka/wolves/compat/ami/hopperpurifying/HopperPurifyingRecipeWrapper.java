@@ -1,7 +1,7 @@
 package net.kozibrodka.wolves.compat.ami.hopperpurifying;
 
 import net.glasslauncher.mods.alwaysmoreitems.api.recipe.RecipeWrapper;
-import net.kozibrodka.wolves.recipe.HopperPurifyingRecipe;
+import net.kozibrodka.wolves.wrappers.HopperPurifyingRecipeWrapperWrapper;
 import net.minecraft.client.Minecraft;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HopperPurifyingRecipeWrapper implements RecipeWrapper {
-    private final HopperPurifyingRecipe recipe;
+    private final HopperPurifyingRecipeWrapperWrapper recipe;
 
-    public HopperPurifyingRecipeWrapper(HopperPurifyingRecipe recipe) {
+    public HopperPurifyingRecipeWrapper(HopperPurifyingRecipeWrapperWrapper recipe) {
         this.recipe = recipe;
     }
 

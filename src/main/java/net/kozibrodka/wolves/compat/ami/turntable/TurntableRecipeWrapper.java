@@ -1,7 +1,7 @@
 package net.kozibrodka.wolves.compat.ami.turntable;
 
 import net.glasslauncher.mods.alwaysmoreitems.api.recipe.RecipeWrapper;
-import net.kozibrodka.wolves.recipe.TurntableRecipe;
+import net.kozibrodka.wolves.wrappers.TurntableRecipeWrapperWrapper;
 import net.minecraft.client.Minecraft;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TurntableRecipeWrapper implements RecipeWrapper {
-    private final TurntableRecipe recipe;
+    private final TurntableRecipeWrapperWrapper recipe;
 
-    public TurntableRecipeWrapper(TurntableRecipe recipe) {
+    public TurntableRecipeWrapper(TurntableRecipeWrapperWrapper recipe) {
         this.recipe = recipe;
     }
 

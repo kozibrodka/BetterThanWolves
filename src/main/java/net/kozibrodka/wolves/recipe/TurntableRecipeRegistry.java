@@ -1,6 +1,7 @@
 package net.kozibrodka.wolves.recipe;
 
 import net.kozibrodka.wolves.events.ItemListener;
+import net.kozibrodka.wolves.wrappers.TurntableRecipeWrapperWrapper;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
@@ -46,8 +47,8 @@ public class TurntableRecipeRegistry {
         return null;
     }
 
-    public ArrayList<TurntableRecipe> getRecipes() {
-        ArrayList<TurntableRecipe> convertedRecipes = new ArrayList<>();
+    public ArrayList<TurntableRecipeWrapperWrapper> getRecipes() {
+        ArrayList<TurntableRecipeWrapperWrapper> convertedRecipes = new ArrayList<>();
         ArrayList<ItemStack> inputs = new ArrayList<>();
         ArrayList<ItemStack> outputs = new ArrayList<>();
         ArrayList<ItemStack> byproducts = new ArrayList<>();
@@ -67,7 +68,7 @@ public class TurntableRecipeRegistry {
         }
         for (int i = 0; i < inputs.size(); i++) {
             if (i >= outputs.size()) break;
-            convertedRecipes.add(new TurntableRecipe(inputs.get(i), outputs.get(i), byproducts.get(i)));
+            convertedRecipes.add(new TurntableRecipeWrapperWrapper(inputs.get(i), outputs.get(i), byproducts.get(i)));
         }
         return convertedRecipes;
     }

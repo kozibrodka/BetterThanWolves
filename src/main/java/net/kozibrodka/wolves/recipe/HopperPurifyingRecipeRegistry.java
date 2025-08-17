@@ -1,5 +1,6 @@
 package net.kozibrodka.wolves.recipe;
 
+import net.kozibrodka.wolves.wrappers.HopperPurifyingRecipeWrapperWrapper;
 import net.minecraft.item.ItemStack;
 import net.modificationstation.stationapi.api.registry.ItemRegistry;
 import net.modificationstation.stationapi.api.util.Identifier;
@@ -24,8 +25,8 @@ public class HopperPurifyingRecipeRegistry {
         return (ItemStack) this.recipes.get(i);
     }
 
-    public ArrayList<HopperPurifyingRecipe> getRecipes() {
-        ArrayList<HopperPurifyingRecipe> convertedRecipes = new ArrayList<>();
+    public ArrayList<HopperPurifyingRecipeWrapperWrapper> getRecipes() {
+        ArrayList<HopperPurifyingRecipeWrapperWrapper> convertedRecipes = new ArrayList<>();
         ArrayList<ItemStack> inputs = new ArrayList<>();
         ArrayList<ItemStack> outputs = new ArrayList<>();
         for (Object obj : recipes.keySet()) {
@@ -36,7 +37,7 @@ public class HopperPurifyingRecipeRegistry {
         }
         for (int i = 0; i < inputs.size(); i++) {
             if (i >= outputs.size()) break;
-            convertedRecipes.add(new HopperPurifyingRecipe(inputs.get(i), outputs.get(i)));
+            convertedRecipes.add(new HopperPurifyingRecipeWrapperWrapper(inputs.get(i), outputs.get(i)));
         }
         return convertedRecipes;
     }

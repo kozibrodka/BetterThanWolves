@@ -1,12 +1,12 @@
-package net.kozibrodka.wolves.recipe;
+package net.kozibrodka.wolves.wrappers;
 
 import net.minecraft.item.ItemStack;
 
-public class HopperPurifyingRecipe {
+public class HopperPurifyingRecipeWrapperWrapper {
     private final ItemStack input;
     private final ItemStack output;
 
-    public HopperPurifyingRecipe(ItemStack input, ItemStack output) {
+    public HopperPurifyingRecipeWrapperWrapper(ItemStack input, ItemStack output) {
         this.input = input;
         this.output = output;
     }

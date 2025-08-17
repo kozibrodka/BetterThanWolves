@@ -1,7 +1,7 @@
 package net.kozibrodka.wolves.compat.ami.sawmill;
 
 import net.glasslauncher.mods.alwaysmoreitems.api.recipe.RecipeWrapper;
-import net.kozibrodka.wolves.recipe.SawRecipe;
+import net.kozibrodka.wolves.wrappers.SawRecipeWrapperWrapper;
 import net.minecraft.client.Minecraft;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SawRecipeWrapper implements RecipeWrapper {
-    private final SawRecipe recipe;
+    private final SawRecipeWrapperWrapper recipe;
 
-    public SawRecipeWrapper(SawRecipe recipe) {
+    public SawRecipeWrapper(SawRecipeWrapperWrapper recipe) {
         this.recipe = recipe;
     }
 

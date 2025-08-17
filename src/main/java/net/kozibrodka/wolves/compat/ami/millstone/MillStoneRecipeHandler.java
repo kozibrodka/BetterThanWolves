@@ -2,14 +2,14 @@ package net.kozibrodka.wolves.compat.ami.millstone;
 
 import net.glasslauncher.mods.alwaysmoreitems.api.recipe.RecipeHandler;
 import net.glasslauncher.mods.alwaysmoreitems.api.recipe.RecipeWrapper;
-import net.kozibrodka.wolves.recipe.MillStoneRecipe;
+import net.kozibrodka.wolves.wrappers.MillStoneRecipeWrapperWrapper;
 import org.jetbrains.annotations.NotNull;
 
-public class MillStoneRecipeHandler implements RecipeHandler<MillStoneRecipe> {
+public class MillStoneRecipeHandler implements RecipeHandler<MillStoneRecipeWrapperWrapper> {
     @NotNull
     @Override
-    public Class<MillStoneRecipe> getRecipeClass() {
-        return MillStoneRecipe.class;
+    public Class<MillStoneRecipeWrapperWrapper> getRecipeClass() {
+        return MillStoneRecipeWrapperWrapper.class;
     }
 
     @NotNull
@@ -20,12 +20,12 @@ public class MillStoneRecipeHandler implements RecipeHandler<MillStoneRecipe> {
 
     @NotNull
     @Override
-    public RecipeWrapper getRecipeWrapper(@NotNull MillStoneRecipe recipe) {
+    public RecipeWrapper getRecipeWrapper(@NotNull MillStoneRecipeWrapperWrapper recipe) {
         return new MillStoneRecipeWrapper(recipe);
     }
 
     @Override
-    public boolean isRecipeValid(@NotNull MillStoneRecipe recipe) {
+    public boolean isRecipeValid(@NotNull MillStoneRecipeWrapperWrapper recipe) {
         return true;
     }
 }

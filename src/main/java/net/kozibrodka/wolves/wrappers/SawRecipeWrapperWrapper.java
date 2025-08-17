@@ -1,12 +1,12 @@
-package net.kozibrodka.wolves.recipe;
+package net.kozibrodka.wolves.wrappers;
 
 import net.minecraft.item.ItemStack;
 
-public class SawRecipe {
+public class SawRecipeWrapperWrapper {
     private final ItemStack input;
     private final ItemStack output;
 
-    public SawRecipe(ItemStack input, ItemStack output) {
+    public SawRecipeWrapperWrapper(ItemStack input, ItemStack output) {
         this.input = input;
         this.output = output;
     }

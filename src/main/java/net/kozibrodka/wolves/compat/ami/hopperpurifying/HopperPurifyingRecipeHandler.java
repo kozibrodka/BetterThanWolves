@@ -2,14 +2,14 @@ package net.kozibrodka.wolves.compat.ami.hopperpurifying;
 
 import net.glasslauncher.mods.alwaysmoreitems.api.recipe.RecipeHandler;
 import net.glasslauncher.mods.alwaysmoreitems.api.recipe.RecipeWrapper;
-import net.kozibrodka.wolves.recipe.HopperPurifyingRecipe;
+import net.kozibrodka.wolves.wrappers.HopperPurifyingRecipeWrapperWrapper;
 import org.jetbrains.annotations.NotNull;
 
-public class HopperPurifyingRecipeHandler implements RecipeHandler<HopperPurifyingRecipe> {
+public class HopperPurifyingRecipeHandler implements RecipeHandler<HopperPurifyingRecipeWrapperWrapper> {
     @NotNull
     @Override
-    public Class<HopperPurifyingRecipe> getRecipeClass() {
-        return HopperPurifyingRecipe.class;
+    public Class<HopperPurifyingRecipeWrapperWrapper> getRecipeClass() {
+        return HopperPurifyingRecipeWrapperWrapper.class;
     }
 
     @NotNull
@@ -20,12 +20,12 @@ public class HopperPurifyingRecipeHandler implements RecipeHandler<HopperPurifyi
 
     @NotNull
     @Override
-    public RecipeWrapper getRecipeWrapper(@NotNull HopperPurifyingRecipe recipe) {
+    public RecipeWrapper getRecipeWrapper(@NotNull HopperPurifyingRecipeWrapperWrapper recipe) {
         return new HopperPurifyingRecipeWrapper(recipe);
     }
 
     @Override
-    public boolean isRecipeValid(@NotNull HopperPurifyingRecipe recipe) {
+    public boolean isRecipeValid(@NotNull HopperPurifyingRecipeWrapperWrapper recipe) {
         return true;
     }
 }
