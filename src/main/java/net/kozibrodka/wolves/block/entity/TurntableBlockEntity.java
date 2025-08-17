@@ -10,6 +10,7 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.block.TurntableBlock;
 import net.kozibrodka.wolves.events.BlockListener;
+import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.recipe.*;
 import net.kozibrodka.wolves.utils.BlockPosition;
@@ -185,7 +186,7 @@ public class TurntableBlockEntity extends BlockEntity {
             world.setBlock(x, y, z, 0);
         }
         world.setBlocksDirty(x, y, z, x, y, z);
-        if (turntableByproduct.item() != null) {
+        if (turntableByproduct.item() != ItemListener.nothing) {
             UnsortedUtils.ejectStackWithRandomOffset(world, x, y + 1, z, new ItemStack(turntableByproduct.item(), turntableByproduct.itemCount()));
         }
     }
