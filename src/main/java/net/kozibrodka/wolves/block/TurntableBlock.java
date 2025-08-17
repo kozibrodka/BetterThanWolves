@@ -101,12 +101,11 @@ public class TurntableBlock extends TemplateBlockWithEntity
         }
     }
 
-    public boolean canUseTile(World world, int i, int j, int k, int click) {
+    public void canUseTile(World world, int i, int j, int k, int click) {
         TurntableBlockEntity tileEntityTurntable = (TurntableBlockEntity) world.getBlockEntity(i, j, k);
         tileEntityTurntable.switchSetting = click;
         world.setBlocksDirty(i, j, k, i, j, k);
         world.blockUpdateEvent(i, j, k);
-        return true;
     }
 
     public int GetFacing(BlockView iBlockAccess, int i, int j, int l) {
@@ -185,37 +184,13 @@ public class TurntableBlock extends TemplateBlockWithEntity
     public boolean IsOutputtingMechanicalPower(World world, int i, int j, int l) {
         return false;
     }
-
-    private final int iTurntableTopTextureIndex = 65;
-    private final int iTurntableSideTextureIndex = 66;
-    private final int iTurntableBottomTextureIndex = 67;
-    private final int iTurntableSwitchTextureIndex = 1;
+    
     private static final int iTurntableTickRate = 10;
-    private static final boolean SETTING_TILE = false;
-
-//    @Override
-//    public boolean renderWorld(BlockRenderer tileRenderer, BlockView tileView, int x, int y, int z) {
-//        tileRenderer.renderStandardBlock(this, x, y, z);
-//        TurntableTileEntity fctileentityturntable = (TurntableTileEntity)tileView.getTileEntity(x, y, z);
-//        int l = fctileentityturntable.switchSetting;
-//        float f = 0.25F + (float)l * 0.125F;
-//        this.setBoundingBox(f, 0.3125F, 0.0625F, f + 0.125F, 0.4375F, 1.0625F);
-//        CustomBlockRendering.renderStandardBlockWithTexture(tileRenderer, this, x, y, z, TextureListener.turntable_button);
-//        this.setBoundingBox(1.0F - (f + 0.125F), 0.3125F, -0.0625F, 1.0F - f, 0.4375F, 0.9375F);
-//        CustomBlockRendering.renderStandardBlockWithTexture(tileRenderer, this, x, y, z, TextureListener.turntable_button);
-//        this.setBoundingBox(0.0625F, 0.3125F, 1.0F - (f + 0.125F), 1.0625F, 0.4375F, 1.0F - f);
-//        CustomBlockRendering.renderStandardBlockWithTexture(tileRenderer, this, x, y, z, TextureListener.turntable_button);
-//        this.setBoundingBox(-0.0625F, 0.3125F, f, 0.9375F, 0.4375F, f + 0.125F);
-//        CustomBlockRendering.renderStandardBlockWithTexture(tileRenderer, this, x, y, z, TextureListener.turntable_button);
-//        setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-//        return true;
-//    }
 
     public static final IntProperty CLICK = IntProperty.of("click", 0, 3);
     public static final BooleanProperty POWER = BooleanProperty.of("power");
     public static final BooleanProperty REDSTONE = BooleanProperty.of("redstone");
 
-    //
     public void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(CLICK);
         builder.add(REDSTONE);

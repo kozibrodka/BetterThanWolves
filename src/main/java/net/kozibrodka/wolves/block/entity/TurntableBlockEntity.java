@@ -10,9 +10,8 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.block.TurntableBlock;
 import net.kozibrodka.wolves.events.BlockListener;
-import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.network.SoundPacket;
-import net.kozibrodka.wolves.recipe.TurntableRecipeRegistry;
+import net.kozibrodka.wolves.recipe.*;
 import net.kozibrodka.wolves.utils.BlockPosition;
 import net.kozibrodka.wolves.utils.ReplaceableBlockChecker;
 import net.kozibrodka.wolves.utils.RotatableBlock;
@@ -122,13 +121,13 @@ public class TurntableBlockEntity extends BlockEntity {
         int targetId = world.getBlockId(i, j, k);
         int targetMeta = world.getBlockMeta(i, j, k);
         Block targetBlock = Block.BLOCKS[targetId];
-        ItemStack[] outputs = TurntableRecipeRegistry.getInstance().getResult(new ItemStack(targetBlock, 1, targetMeta));
-        if (outputs != null) {
+        TurntableResult result = TurntableRecipeRegistry.getInstance().getResult(new TurntableInput(targetBlock, targetMeta));
+        if (result != null) {
             world.playSound((float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, targetBlock.soundGroup.getSound(), (targetBlock.soundGroup.method_1977() + 1.0F) / 5.0F, targetBlock.soundGroup.method_1976() * 0.8F);
             if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
                 voicePacket(world, targetBlock.soundGroup.getSound(), i, j, k, (targetBlock.soundGroup.method_1977() + 1.0F) / 5.0F, targetBlock.soundGroup.method_1976() * 0.8F);
             }
-            rotateRegisteredBlock(i, j, k, outputs.clone());
+            rotateRegisteredBlock(i, j, k, result);
             return;
         }
         Integer[][] rotationMeta = TurntableRecipeRegistry.getInstance().getRotationValue(targetId);
@@ -172,22 +171,22 @@ public class TurntableBlockEntity extends BlockEntity {
         }
     }
 
-    private void rotateRegisteredBlock(int x, int y, int z, ItemStack[] outputs) {
-        outputs[0] = outputs[0].copy();
-        if (craftingRotationCount < outputs[0].count) {
+    private void rotateRegisteredBlock(int x, int y, int z, TurntableResult outputs) {
+        TurntableOutput turntableOutput = outputs.turntableOutput();
+        TurntableByproduct turntableByproduct = outputs.turntableByproduct();
+        if (craftingRotationCount < turntableOutput.rotations()) {
             craftingRotationCount++;
             return;
         }
         craftingRotationCount = 0;
-        System.out.println("Bigger than count");
-        if (outputs[0].itemId != ItemListener.nothing.id) {
-            world.setBlock(x, y, z, outputs[0].itemId, outputs[0].getDamage());
+        if (turntableOutput.block() != BlockListener.obstructionBlock) {
+            world.setBlock(x, y, z, turntableOutput.block().id, turntableOutput.blockMeta());
         } else {
             world.setBlock(x, y, z, 0);
         }
         world.setBlocksDirty(x, y, z, x, y, z);
-        if (outputs[1] != null) {
-            UnsortedUtils.ejectStackWithRandomOffset(world, x, y + 1, z, outputs[1].copy());
+        if (turntableByproduct.item() != null) {
+            UnsortedUtils.ejectStackWithRandomOffset(world, x, y + 1, z, new ItemStack(turntableByproduct.item(), turntableByproduct.itemCount()));
         }
     }
 

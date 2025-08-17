@@ -11,10 +11,10 @@ import java.util.Map;
 
 public class TurntableRecipeRegistry {
     private static final TurntableRecipeRegistry INSTANCE = new TurntableRecipeRegistry();
-    private final ArrayList<ItemStack[]> recipes = new ArrayList<>();
+    private final ArrayList<TurntableRecipe> recipes = new ArrayList<>();
     private final Map<Integer, Integer[][]> rotations = new HashMap<>();
 
-    public static final TurntableRecipeRegistry getInstance() {
+    public static TurntableRecipeRegistry getInstance() {
         return INSTANCE;
     }
 
@@ -26,50 +26,23 @@ public class TurntableRecipeRegistry {
         return this.rotations.get(blockId);
     }
 
-    public void addTurntableRecipe(Block block, ItemStack output) {
-        this.recipes.add(new ItemStack[]{new ItemStack(block, 1, 0), output, null});
+    public void addTurntableRecipe(TurntableRecipe turntableRecipe) {
+        recipes.add(turntableRecipe);
     }
 
-    public void addTurntableRecipe(Block block, int meta, ItemStack output) {
-        this.recipes.add(new ItemStack[]{new ItemStack(block, 1, meta), output, null});
-    }
-
-    public void addTurntableRecipe(Block block, int meta, ItemStack output, ItemStack byproduct) {
-        this.recipes.add(new ItemStack[]{new ItemStack(block, 1, meta), output, byproduct});
-    }
-
-    public ItemStack[] getResult(ItemStack item) {
-        for (ItemStack[] items : recipes) {
-            if (items[0].isItemEqual(item)) {
-                return new ItemStack[]{items[1], items[2]};
+    public TurntableResult getResult(TurntableInput turntableInput) {
+        if (turntableInput == null) {
+            return null;
+        }
+        for (TurntableRecipe turntableRecipe : recipes) {
+            if (turntableInput.equals(turntableRecipe.turntableInput())) {
+                return turntableRecipe.turntableResult();
             }
         }
         return null;
     }
 
-    public ArrayList<TurntableRecipeWrapperWrapper> getRecipes() {
-        ArrayList<TurntableRecipeWrapperWrapper> convertedRecipes = new ArrayList<>();
-        ArrayList<ItemStack> inputs = new ArrayList<>();
-        ArrayList<ItemStack> outputs = new ArrayList<>();
-        ArrayList<ItemStack> byproducts = new ArrayList<>();
-        for (ItemStack[] recipe : recipes) {
-            ItemStack input = recipe[0].copy();
-            ItemStack output = recipe[1].copy();
-            ItemStack byproduct;
-            if (recipe[2] == null) {
-                byproduct = new ItemStack(ItemListener.nothing, 1);
-            } else {
-                byproduct = recipe[2].copy();
-            }
-            output.count = 1;
-            inputs.add(input);
-            outputs.add(output);
-            byproducts.add(byproduct);
-        }
-        for (int i = 0; i < inputs.size(); i++) {
-            if (i >= outputs.size()) break;
-            convertedRecipes.add(new TurntableRecipeWrapperWrapper(inputs.get(i), outputs.get(i), byproducts.get(i)));
-        }
-        return convertedRecipes;
+    public ArrayList<TurntableRecipe> getRecipes() {
+        return recipes;
     }
 }

@@ -389,10 +389,10 @@ public class RecipeListener {
     }
 
     private static void addTurntableRecipes() {
-        TurntableRecipeRegistry.getInstance().addTurntableRecipe(Block.CLAY, 0, new ItemStack(BlockListener.unfiredPottery, 8, 0), new ItemStack(Item.CLAY, 1));
-        TurntableRecipeRegistry.getInstance().addTurntableRecipe(BlockListener.unfiredPottery, 0, new ItemStack(BlockListener.unfiredPottery, 4, 1), new ItemStack(Item.CLAY, 1));
-        TurntableRecipeRegistry.getInstance().addTurntableRecipe(BlockListener.unfiredPottery, 1, new ItemStack(BlockListener.unfiredPottery, 4, 2));
-        TurntableRecipeRegistry.getInstance().addTurntableRecipe(BlockListener.unfiredPottery, 2, new ItemStack(ItemListener.nothing, 4, 0), new ItemStack(Item.CLAY, 2));
+        TurntableRecipeRegistry.getInstance().addTurntableRecipe(new TurntableRecipe(new TurntableInput(Block.CLAY, 0), new TurntableResult(new TurntableOutput(BlockListener.unfiredPottery, 8, 0), new TurntableByproduct(Item.CLAY, 1))));
+        TurntableRecipeRegistry.getInstance().addTurntableRecipe(new TurntableRecipe(new TurntableInput(BlockListener.unfiredPottery, 0), new TurntableResult(new TurntableOutput(BlockListener.unfiredPottery, 4, 1), new TurntableByproduct(Item.CLAY, 1))));
+        TurntableRecipeRegistry.getInstance().addTurntableRecipe(new TurntableRecipe(new TurntableInput(BlockListener.unfiredPottery, 1), new TurntableResult(new TurntableOutput(BlockListener.unfiredPottery, 4, 2), new TurntableByproduct(ItemListener.nothing, 0))));
+        TurntableRecipeRegistry.getInstance().addTurntableRecipe(new TurntableRecipe(new TurntableInput(BlockListener.unfiredPottery, 2), new TurntableResult(new TurntableOutput(BlockListener.obstructionBlock, 4, 0), new TurntableByproduct(Item.CLAY, 2))));
         TurntableRecipeRegistry.getInstance().addRotation(Block.PUMPKIN.id, new Integer[][]{new Integer[]{0, 1, 2, 3}});
         TurntableRecipeRegistry.getInstance().addRotation(Block.JACK_O_LANTERN.id, new Integer[][]{new Integer[]{0, 1, 2, 3}});
         TurntableRecipeRegistry.getInstance().addRotation(Block.REPEATER.id, new Integer[][]{
