@@ -1,6 +1,6 @@
 plugins {
 	id 'maven-publish'
-	id 'fabric-loom' version '1.10.5'
+	id 'fabric-loom' version '1.11.7'
 	id 'babric-loom-extension' version '1.10.2'
 }
 
@@ -73,7 +73,9 @@ dependencies {
 	implementation "blue.endless:jankson:1.2.1"
 	implementation "me.carleslc:Simple-Yaml:1.8.4"
 
-	modImplementation "net.modificationstation:StationAPI:${project.stapi_version}"
+	modImplementation ("net.modificationstation:StationAPI:${project.stapi_version}") {
+        exclude group: "babric", module: "fabric-loader"
+    }
 
 	// Optional, but convenient mods for mod creators and users alike.
 	modImplementation("net.glasslauncher.mods:ModMenu:${project.modmenu_version}") {
@@ -93,9 +95,11 @@ dependencies {
 	}
 
 	// Crossover content
-	modImplementation("com.github.New-Frontier-Craft:NFC-StationAPI-Dev:${project.nfc_version}") {
+	modImplementation("maven.modrinth:new-frontier-craft:${project.nfc_version}") {
 		transitive false
 	}
+    modRuntimeOnly("net.danygames2014:NyaLib:${project.nyalib_version}") {
+    }
 
 }
 
