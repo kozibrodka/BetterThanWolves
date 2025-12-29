@@ -368,10 +368,6 @@ public class RecipeListener {
         addStokedCauldronRecipe(new ItemStack(ItemListener.tallow, 1), new ItemStack[]{
                 new ItemStack(ItemListener.wolfRaw, 1)
         });
-
-        if (isNewFrontierCraftPresent) {
-            NFCRecipes.addCauldronRecipes();
-        }
     }
 
     private static void addMillingRecipes() {

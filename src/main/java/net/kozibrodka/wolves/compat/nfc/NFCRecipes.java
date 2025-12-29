@@ -15,8 +15,7 @@ public class NFCRecipes {
     }
 
     public static void addCrucibleRecipes() {
-        RecipeListener.addCrucibleRecipe(new ItemStack(net.kozibrodka.wolves.events.ItemListener.steel, 4), new ItemStack[]{new ItemStack(ItemListener.steelIngot, 2), new ItemStack(net.kozibrodka.wolves.events.ItemListener.concentratedHellfire), new ItemStack(net.kozibrodka.wolves.events.ItemListener.coalDust)});
-        RecipeListener.addCrucibleRecipe(new ItemStack(ItemListener.anthracite, 2), new ItemStack[]{new ItemStack(ItemListener.anthracite), new ItemStack(net.kozibrodka.wolves.events.ItemListener.netherCoal, 4)});
+        RecipeListener.addCrucibleRecipe(new ItemStack(net.kozibrodka.wolves.events.ItemListener.steel, 4), new ItemStack[]{new ItemStack(ItemListener.steelIngot, 2), new ItemStack(net.kozibrodka.wolves.events.ItemListener.concentratedHellfire), new ItemStack(net.kozibrodka.wolves.events.ItemListener.coalDust), new ItemStack(ItemListener.anthracite)});
 
         // Recycling (aluminium)
         RecipeListener.addCrucibleRecipe(new ItemStack(ItemListener.aluminiumIngot, 4), new ItemStack[]{new ItemStack(BlockListener.aluminiumBlock)});
@@ -249,15 +248,6 @@ public class NFCRecipes {
         RecipeListener.addCrucibleRecipe(new ItemStack(ItemListener.osmiumIngot, 2), new ItemStack[]{new ItemStack(ItemListener.osmiumSword, 1, -1)});
         RecipeListener.addCrucibleRecipe(new ItemStack(ItemListener.osmiumIngot, 2), new ItemStack[]{new ItemStack(ItemListener.osmiumHoe, 1, -1)});
         RecipeListener.addCrucibleRecipe(new ItemStack(ItemListener.osmiumIngot, 1), new ItemStack[]{new ItemStack(ItemListener.osmiumShovel, 1, -1)});
-    }
-
-    public static void addCauldronRecipes() {
-        RecipeListener.addCauldronRecipe(new ItemStack(ItemListener.netherAsh, 2), new ItemStack[]{
-                new ItemStack(BlockListener.petrifiedLog, 1), new ItemStack(ItemListener.netherAsh, 1), new ItemStack(Item.COAL, 2, 1)
-        });
-        RecipeListener.addStokedCauldronRecipe(new ItemStack(Item.COAL, 2), new ItemStack[]{
-                new ItemStack(net.kozibrodka.wolves.events.ItemListener.coalDust, 1), new ItemStack(ItemListener.netherAsh, 2)
-        });
     }
 
     public static void addAnvilRecipes() {
