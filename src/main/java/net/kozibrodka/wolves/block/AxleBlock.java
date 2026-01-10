@@ -183,64 +183,82 @@ public class AxleBlock extends TemplateBlock {
         }
     }
 
+    /**
+     * Check if adjacent axles have power and handle the situation.
+     * @param world World the block is in.
+     * @param x x coordinate of the block.
+     * @param y y coordinate of the block.
+     * @param z z coordinate of the block.
+     */
     private void validatePowerLevel(World world, int x, int y, int z) {
         int currentPower = getPowerLevel(world, x, y, z);
         int axis = getAxisAlignment(world, x, y, z);
-        if (currentPower != 3) {
-            BlockPosition[] potentialSources = new BlockPosition[2];
-            potentialSources[0] = new BlockPosition(x, y, z);
-            potentialSources[1] = new BlockPosition(x, y, z);
-            switch (axis) {
-                case 0: // '\0'
-                    potentialSources[0].addFacingAsOffset(0);
-                    potentialSources[1].addFacingAsOffset(1);
-                    break;
-                case 1: // '\001'
-                    potentialSources[0].addFacingAsOffset(2);
-                    potentialSources[1].addFacingAsOffset(3);
-                    break;
-                default:
-                    potentialSources[0].addFacingAsOffset(4);
-                    potentialSources[1].addFacingAsOffset(5);
-                    break;
+        // Skip if the axle already is fully powered
+        if (currentPower == 3) {
+            return;
+        }
+        // Determine power source locations based on axis
+        BlockPosition[] potentialSources = new BlockPosition[2];
+        potentialSources[0] = new BlockPosition(x, y, z);
+        potentialSources[1] = new BlockPosition(x, y, z);
+        switch (axis) {
+            case 0: // '\0'
+                potentialSources[0].addFacingAsOffset(0);
+                potentialSources[1].addFacingAsOffset(1);
+                break;
+            case 1: // '\001'
+                potentialSources[0].addFacingAsOffset(2);
+                potentialSources[1].addFacingAsOffset(3);
+                break;
+            default:
+                potentialSources[0].addFacingAsOffset(4);
+                potentialSources[1].addFacingAsOffset(5);
+                break;
+        }
+        // Check both sources for power
+        int maxNeighborPower = 0;
+        int greaterPowerNeighbors = 0;
+        for (int tempSource = 0; tempSource < 2; tempSource++) {
+            // Skip if source is not an axle
+            int tempId = world.getBlockId(potentialSources[tempSource].x, potentialSources[tempSource].y, potentialSources[tempSource].z);
+            if (tempId != BlockListener.axleBlock.id && tempId != BlockListener.nonCollidingAxleBlock.id) {
+                continue;
             }
-            int maxNeighborPower = 0;
-            int greaterPowerNeighbors = 0;
-            for (int tempSource = 0; tempSource < 2; tempSource++) {
-                int tempId = world.getBlockId(potentialSources[tempSource].x, potentialSources[tempSource].y, potentialSources[tempSource].z);
-                if (tempId != BlockListener.axleBlock.id && tempId != BlockListener.nonCollidingAxleBlock.id) {
-                    continue;
-                }
-                int tempAxis = getAxisAlignment(world, potentialSources[tempSource].x, potentialSources[tempSource].y, potentialSources[tempSource].z);
-                if (tempAxis != axis) {
-                    continue;
-                }
-                int tempPowerLevel = getPowerLevel(world, potentialSources[tempSource].x, potentialSources[tempSource].y, potentialSources[tempSource].z);
-                if (tempPowerLevel > maxNeighborPower) {
-                    maxNeighborPower = tempPowerLevel;
-                }
-                if (tempPowerLevel > currentPower) {
-                    greaterPowerNeighbors++;
-                }
+            // Skip if other axle is misaligned
+            int tempAxis = getAxisAlignment(world, potentialSources[tempSource].x, potentialSources[tempSource].y, potentialSources[tempSource].z);
+            if (tempAxis != axis) {
+                continue;
             }
-
-            if (greaterPowerNeighbors >= 2) {
+            // Determine most powerful neighbour
+            int tempPowerLevel = getPowerLevel(world, potentialSources[tempSource].x, potentialSources[tempSource].y, potentialSources[tempSource].z);
+            if (tempPowerLevel > maxNeighborPower) {
+                maxNeighborPower = tempPowerLevel;
+            }
+            // Calculate amount of neighbours with more power than the axle itself
+            if (tempPowerLevel > currentPower) {
+                greaterPowerNeighbors++;
+            }
+        }
+        // Break axle and stop validation if two neighbours have more power
+        if (greaterPowerNeighbors >= 2) {
+            breakAxle(world, x, y, z);
+            return;
+        }
+        // Check if axle branch is too long
+        int newPower;
+        if (maxNeighborPower > currentPower) {
+            if (maxNeighborPower == 1) {
                 breakAxle(world, x, y, z);
                 return;
             }
-            int newPower;
-            if (maxNeighborPower > currentPower) {
-                if (maxNeighborPower == 1) {
-                    breakAxle(world, x, y, z);
-                    return;
-                }
-                newPower = maxNeighborPower - 1;
-            } else {
-                newPower = 0;
-            }
-            if (newPower != currentPower) {
-                setPowerLevel(world, x, y, z, newPower);
-            }
+            newPower = maxNeighborPower - 1;
+        } else {
+            newPower = 0;
+        }
+        // Change power level if it is different to the old one
+        if (newPower != currentPower) {
+            setPowerLevel(world, x, y, z, newPower);
+            // TODO: Use this check to update adjacent machines
         }
     }
 
