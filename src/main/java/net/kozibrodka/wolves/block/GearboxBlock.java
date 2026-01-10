@@ -83,6 +83,21 @@ public class GearboxBlock extends TemplateBlock
         super.onBreak(world, x, y, z);
     }
 
+    @Override
+    public void neighborUpdate(World world, int x, int y, int z, int id) {
+        super.neighborUpdate(world, x, y, z, id);
+        boolean redstonePowered = isPoweredByRedstone(world, x, y, z);
+        boolean gearBoxOn = isGearBoxOn(world, x, y, z);
+        if (redstonePowered && gearBoxOn) {
+            setGearBoxOnState(world, x, y, z, false);
+            handleGearBoxDeactivation(world, x, y, z);
+        }
+    }
+
+    private boolean isPoweredByRedstone(World world, int x, int y, int z) {
+        return world.isEmittingRedstonePower(x, y, z) || world.isEmittingRedstonePower(x, y + 1, z);
+    }
+
     @Environment(EnvType.SERVER)
     public void voicePacket(World world, String name, int x, int y, int z, float g, float h) {
         List list2 = world.players;
@@ -259,6 +274,9 @@ public class GearboxBlock extends TemplateBlock
 
     @Override
     public boolean canInputMechanicalPower(World world, int x, int y, int z, int side) {
+        if (isPoweredByRedstone(world, x, y, z)) {
+            return false;
+        }
         return getFacing(world, x, y, z) == side;
     }
 
