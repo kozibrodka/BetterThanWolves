@@ -138,7 +138,11 @@ public class GearboxBlock extends TemplateBlock
     }
 
     public int getFacing(BlockView blockView, int x, int y, int z) {
-        return blockView.getBlockMeta(x, y, z) & 7;
+        return getFacingFromMeta(blockView.getBlockMeta(x, y, z));
+    }
+
+    private int getFacingFromMeta(int meta) {
+        return meta & 7;
     }
 
     public void setFacing(World world, int x, int y, int z, int facing) {
@@ -290,4 +294,8 @@ public class GearboxBlock extends TemplateBlock
         return isGearBoxOn(world, x, y, z);
     }
 
+    @Override
+    public boolean canInputMechanicalPower(World world, int x, int y, int z, int side) {
+        return getFacing(world, x, y, z) == side;
+    }
 }

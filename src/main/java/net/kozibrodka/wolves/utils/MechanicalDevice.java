@@ -8,6 +8,10 @@ public interface MechanicalDevice {
 
     boolean canInputMechanicalPower();
 
+    default boolean canInputMechanicalPower(World world, int x, int y, int z, int side) {
+        return canInputMechanicalPower();
+    }
+
     boolean isInputtingMechanicalPower(World world, int i, int j, int k);
 
     boolean isOutputtingMechanicalPower(World world, int i, int j, int k);

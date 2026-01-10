@@ -275,7 +275,7 @@ public class AxleBlock extends TemplateBlock {
         }
         Block machineBlock = Block.BLOCKS[machineId];
         if (machineBlock instanceof MechanicalDevice device) {
-            if (!device.canInputMechanicalPower()) {
+            if (!device.canInputMechanicalPower(world, x, y, z, side)) {
                 return;
             }
             if (powered) {
