@@ -41,9 +41,9 @@ public class MovingAnchorEntity extends Entity implements EntitySpawnDataProvide
     public MovingAnchorEntity(World world, double x, double y, double z,
                               BlockPosition pulleyPos, int iMovementDirection) {
         this(world);
-        associatedPulleyPos.i = pulleyPos.i;
-        associatedPulleyPos.j = pulleyPos.j;
-        associatedPulleyPos.k = pulleyPos.k;
+        associatedPulleyPos.x = pulleyPos.x;
+        associatedPulleyPos.y = pulleyPos.y;
+        associatedPulleyPos.z = pulleyPos.z;
         if (iMovementDirection > 0) {
             velocityY = 0.05000000074505806D;
         } else {
@@ -63,15 +63,15 @@ public class MovingAnchorEntity extends Entity implements EntitySpawnDataProvide
     }
 
     protected void writeNbt(NbtCompound nbttagcompound) {
-        nbttagcompound.putInt("associatedPulleyPosI", associatedPulleyPos.i);
-        nbttagcompound.putInt("associatedPulleyPosJ", associatedPulleyPos.j);
-        nbttagcompound.putInt("associatedPulleyPosK", associatedPulleyPos.k);
+        nbttagcompound.putInt("associatedPulleyPosI", associatedPulleyPos.x);
+        nbttagcompound.putInt("associatedPulleyPosJ", associatedPulleyPos.y);
+        nbttagcompound.putInt("associatedPulleyPosK", associatedPulleyPos.z);
     }
 
     protected void readNbt(NbtCompound nbttagcompound) {
-        associatedPulleyPos.i = nbttagcompound.getInt("associatedPulleyPosI");
-        associatedPulleyPos.j = nbttagcompound.getInt("associatedPulleyPosJ");
-        associatedPulleyPos.k = nbttagcompound.getInt("associatedPulleyPosK");
+        associatedPulleyPos.x = nbttagcompound.getInt("associatedPulleyPosI");
+        associatedPulleyPos.y = nbttagcompound.getInt("associatedPulleyPosJ");
+        associatedPulleyPos.z = nbttagcompound.getInt("associatedPulleyPosK");
     }
 
     protected boolean bypassesSteppingEffects() {
@@ -106,11 +106,11 @@ public class MovingAnchorEntity extends Entity implements EntitySpawnDataProvide
         int oldJ = MathHelper.floor(y - (double) standingEyeHeight);
         int i = MathHelper.floor(x);
         int k = MathHelper.floor(z);
-        int associatedPulleyid = world.getBlockId(associatedPulleyPos.i, associatedPulleyPos.j, associatedPulleyPos.k);
+        int associatedPulleyid = world.getBlockId(associatedPulleyPos.x, associatedPulleyPos.y, associatedPulleyPos.z);
         int iBlockAboveID = world.getBlockId(i, oldJ + 1, k);
         int i2BlockAboveID = world.getBlockId(i, oldJ + 2, k);
         if (associatedPulleyid == BlockListener.pulley.id && (iBlockAboveID == BlockListener.pulley.id || iBlockAboveID == BlockListener.rope.id || i2BlockAboveID == BlockListener.pulley.id || i2BlockAboveID == BlockListener.rope.id)) {
-            tileEntityPulley = (PulleyBlockEntity) world.getBlockEntity(associatedPulleyPos.i, associatedPulleyPos.j, associatedPulleyPos.k);
+            tileEntityPulley = (PulleyBlockEntity) world.getBlockEntity(associatedPulleyPos.x, associatedPulleyPos.y, associatedPulleyPos.z);
             if (velocityY > 0.0D) {
                 if (tileEntityPulley.isLowering()) {
                     velocityY = -velocityY;
@@ -308,9 +308,9 @@ public class MovingAnchorEntity extends Entity implements EntitySpawnDataProvide
     }
 
     public boolean ReturnRopeToPulley() {
-        int associatedPulleyid = world.getBlockId(associatedPulleyPos.i, associatedPulleyPos.j, associatedPulleyPos.k);
+        int associatedPulleyid = world.getBlockId(associatedPulleyPos.x, associatedPulleyPos.y, associatedPulleyPos.z);
         if (associatedPulleyid == BlockListener.pulley.id) {
-            PulleyBlockEntity tileEntityPulley = (PulleyBlockEntity) world.getBlockEntity(associatedPulleyPos.i, associatedPulleyPos.j, associatedPulleyPos.k);
+            PulleyBlockEntity tileEntityPulley = (PulleyBlockEntity) world.getBlockEntity(associatedPulleyPos.x, associatedPulleyPos.y, associatedPulleyPos.z);
             if (tileEntityPulley != null) {
                 tileEntityPulley.AddRopeToInventory();
                 return true;

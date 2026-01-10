@@ -51,8 +51,8 @@ public class StokedFireBlock extends TemplateFireBlock implements BlockWithWorld
 //            System.out.println("HELLO 3");
         }
 
-//        if (world.getTileId(i, j - 1, k) == mod_FCBetterThanWolves.hibachi.id) {
-//            if (((FCBlockBBQ) mod_FCBetterThanWolves.hibachi).IsBBQLit(world, i, j - 1, k)) {
+//        if (world.getTileId(x, y - 1, z) == mod_FCBetterThanWolves.hibachi.id) {
+//            if (((FCBlockBBQ) mod_FCBetterThanWolves.hibachi).IsBBQLit(world, x, y - 1, z)) {
 //                flag = true;
 //            }
 //        }

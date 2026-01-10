@@ -355,9 +355,9 @@ public class HopperBlockEntity extends BlockEntity
                                                 break;
                                             }
                                             BlockPosition tempOffset = new BlockPosition(iTempFacing);
-                                            int tempBlockId = world.getBlockId(iTargetI + tempOffset.i, iTargetJ + tempOffset.j, iTargetK + tempOffset.k);
+                                            int tempBlockId = world.getBlockId(iTargetI + tempOffset.x, iTargetJ + tempOffset.y, iTargetK + tempOffset.z);
                                             if (tempBlockId == Block.CHEST.id) {
-                                                targetTileEntityBase = world.getBlockEntity(iTargetI + tempOffset.i, iTargetJ + tempOffset.j, iTargetK + tempOffset.k);
+                                                targetTileEntityBase = world.getBlockEntity(iTargetI + tempOffset.x, iTargetJ + tempOffset.y, iTargetK + tempOffset.z);
                                                 if (targetTileEntityBase != null && (targetTileEntityBase instanceof Inventory)) {
                                                     if (InventoryHandler.addItemInstanceToInventory((Inventory) targetTileEntityBase, ejectStack)) {
                                                         iNumItemsStored = iEjectStackSize;

@@ -235,7 +235,7 @@ public class HopperBlock extends TemplateBlockWithEntity
 //            if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER){
 //                renderPacket(world, tileEntityHopper.x, tileEntityHopper.y, tileEntityHopper.z, tileEntityHopper.GetFilterType(), InventoryHandler.getOccupiedSlotCountWithinBounds(tileEntityHopper, 0, 17));
 //            }
-//            world.blockUpdateEvent(i, j, k);
+//            world.blockUpdateEvent(x, y, z);
         }
         //TODO: Interaction with minecarts?
     }
@@ -409,11 +409,11 @@ public class HopperBlock extends TemplateBlockWithEntity
     public boolean isInputtingMechanicalPower(World world, int i, int j, int k) {
         for (int iFacing = 2; iFacing <= 5; iFacing++) {
             BlockPosition targetPos = new BlockPosition(i, j, k);
-            targetPos.AddFacingAsOffset(iFacing);
-            int blockId = world.getBlockId(targetPos.i, targetPos.j, targetPos.k);
+            targetPos.addFacingAsOffset(iFacing);
+            int blockId = world.getBlockId(targetPos.x, targetPos.y, targetPos.z);
             if (blockId == BlockListener.axleBlock.id) {
                 AxleBlock axleBlock = (AxleBlock) BlockListener.axleBlock;
-                if (axleBlock.IsAxleOrientedTowardsFacing(world, targetPos.i, targetPos.j, targetPos.k, iFacing) && axleBlock.GetPowerLevel(world, targetPos.i, targetPos.j, targetPos.k) > 0) {
+                if (axleBlock.IsAxleOrientedTowardsFacing(world, targetPos.x, targetPos.y, targetPos.z, iFacing) && axleBlock.GetPowerLevel(world, targetPos.x, targetPos.y, targetPos.z) > 0) {
                     return true;
                 }
                 continue;
@@ -423,7 +423,7 @@ public class HopperBlock extends TemplateBlockWithEntity
             }
             Block targetBlock = Block.BLOCKS[blockId];
             MechanicalDevice device = (MechanicalDevice) targetBlock;
-            if (device.isOutputtingMechanicalPower(world, targetPos.i, targetPos.j, targetPos.k)) {
+            if (device.isOutputtingMechanicalPower(world, targetPos.x, targetPos.y, targetPos.z)) {
                 return true;
             }
         }
@@ -514,8 +514,8 @@ public class HopperBlock extends TemplateBlockWithEntity
     @Override
     public void affectBlock(World world, int i, int j, int k, BlockPosition tempTargetPos, int facing) {
         for (int l = 0; l < 2; l++) {
-            tempTargetPos.AddFacingAsOffset(facing);
-            if (!world.isAir(tempTargetPos.i, tempTargetPos.j, tempTargetPos.k)) return;
+            tempTargetPos.addFacingAsOffset(facing);
+            if (!world.isAir(tempTargetPos.x, tempTargetPos.y, tempTargetPos.z)) return;
         }
         BlockEntity tileEntityHopper = world.getBlockEntity(i, j, k);
         if (tileEntityHopper == null) return;

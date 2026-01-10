@@ -137,7 +137,7 @@ public class AxleBlock extends TemplateBlock {
         iMetaData |= iPowerLevel;
         world.setBlockMeta(i, j, k, iMetaData);
         world.blockUpdateEvent(i, j, k);
-//        world.method_202(i, j, k, i, j, k);
+//        world.method_202(x, y, z, x, y, z);
     }
 
     public boolean IsAxleOrientedTowardsFacing(BlockView iBlockAccess, int i, int j, int k, int iFacing) {
@@ -202,30 +202,30 @@ public class AxleBlock extends TemplateBlock {
             potentialSources[1] = new BlockPosition(i, j, k);
             switch (axis) {
                 case 0: // '\0'
-                    potentialSources[0].AddFacingAsOffset(0);
-                    potentialSources[1].AddFacingAsOffset(1);
+                    potentialSources[0].addFacingAsOffset(0);
+                    potentialSources[1].addFacingAsOffset(1);
                     break;
                 case 1: // '\001'
-                    potentialSources[0].AddFacingAsOffset(2);
-                    potentialSources[1].AddFacingAsOffset(3);
+                    potentialSources[0].addFacingAsOffset(2);
+                    potentialSources[1].addFacingAsOffset(3);
                     break;
                 default:
-                    potentialSources[0].AddFacingAsOffset(4);
-                    potentialSources[1].AddFacingAsOffset(5);
+                    potentialSources[0].addFacingAsOffset(4);
+                    potentialSources[1].addFacingAsOffset(5);
                     break;
             }
             int maxNeighborPower = 0;
             int greaterPowerNeighbors = 0;
             for (int tempSource = 0; tempSource < 2; tempSource++) {
-                int tempId = world.getBlockId(potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
+                int tempId = world.getBlockId(potentialSources[tempSource].x, potentialSources[tempSource].y, potentialSources[tempSource].z);
                 if (tempId != BlockListener.axleBlock.id && tempId != BlockListener.nonCollidingAxleBlock.id) {
                     continue;
                 }
-                int tempAxis = getAxisAlignment(world, potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
+                int tempAxis = getAxisAlignment(world, potentialSources[tempSource].x, potentialSources[tempSource].y, potentialSources[tempSource].z);
                 if (tempAxis != axis) {
                     continue;
                 }
-                int tempPowerLevel = GetPowerLevel(world, potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
+                int tempPowerLevel = GetPowerLevel(world, potentialSources[tempSource].x, potentialSources[tempSource].y, potentialSources[tempSource].z);
                 if (tempPowerLevel > maxNeighborPower) {
                     maxNeighborPower = tempPowerLevel;
                 }
@@ -251,8 +251,8 @@ public class AxleBlock extends TemplateBlock {
             if (newPower != currentPower) {
 //                System.out.println("ZNIAMIA");
                 SetPowerLevel(world, i, j, k, newPower);
-//                world.method_243(i, j, k);
-//                world.method_202(i, j, k, i, j, k);
+//                world.method_243(x, y, z);
+//                world.method_202(x, y, z, x, y, z);
             }
         }
     }
@@ -275,35 +275,35 @@ public class AxleBlock extends TemplateBlock {
         potentialSources[1] = new BlockPosition(i, j, k);
         switch (iAxis) {
             case 0: // '\0'
-                potentialSources[0].AddFacingAsOffset(0);
-                potentialSources[1].AddFacingAsOffset(1);
+                potentialSources[0].addFacingAsOffset(0);
+                potentialSources[1].addFacingAsOffset(1);
                 break;
 
             case 1: // '\001'
-                potentialSources[0].AddFacingAsOffset(2);
-                potentialSources[1].AddFacingAsOffset(3);
+                potentialSources[0].addFacingAsOffset(2);
+                potentialSources[1].addFacingAsOffset(3);
                 break;
 
             default:
-                potentialSources[0].AddFacingAsOffset(4);
-                potentialSources[1].AddFacingAsOffset(5);
+                potentialSources[0].addFacingAsOffset(4);
+                potentialSources[1].addFacingAsOffset(5);
                 break;
         }
         for (int tempSource = 0; tempSource < 2; tempSource++) {
-            int iTempid = world.getBlockId(potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
+            int iTempid = world.getBlockId(potentialSources[tempSource].x, potentialSources[tempSource].y, potentialSources[tempSource].z);
             if (iTempid == BlockListener.axleBlock.id || iTempid == BlockListener.nonCollidingAxleBlock.id) {
-                int iTempAxis = getAxisAlignment(world, potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
+                int iTempAxis = getAxisAlignment(world, potentialSources[tempSource].x, potentialSources[tempSource].y, potentialSources[tempSource].z);
                 if (iTempAxis != iAxis) {
                     continue;
                 }
-                int iTempPowerLevel = GetPowerLevel(world, potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
+                int iTempPowerLevel = GetPowerLevel(world, potentialSources[tempSource].x, potentialSources[tempSource].y, potentialSources[tempSource].z);
                 if (iTempPowerLevel < iCurrentPower) {
-                    Overpower(world, potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
+                    Overpower(world, potentialSources[tempSource].x, potentialSources[tempSource].y, potentialSources[tempSource].z);
                 }
                 continue;
             }
             if (iTempid == BlockListener.gearBox.id) {
-                ((GearboxBlock) BlockListener.gearBox).overpower(world, potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
+                ((GearboxBlock) BlockListener.gearBox).overpower(world, potentialSources[tempSource].x, potentialSources[tempSource].y, potentialSources[tempSource].z);
             }
         }
 

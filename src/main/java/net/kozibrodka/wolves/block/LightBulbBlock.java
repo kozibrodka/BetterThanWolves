@@ -70,11 +70,11 @@ public class LightBulbBlock extends TemplateBlock
 
     public boolean isEmittingRedstonePower(BlockView iBlockAccess, int i, int j, int k, int l) //isPoweringTo
     {
-//        return ((Minecraft) net.fabricmc.loader.FabricLoader.INSTANCE.getGameInstance()).level.canTransferPower(i, j, k);
+//        return ((Minecraft) net.fabricmc.loader.FabricLoader.INSTANCE.getGameInstance()).level.canTransferPower(x, y, z);
 
-//        return ((MinecraftServer) FabricLoader.getInstance().getGameInstance()).getLevel(0).canTransferPower(i, j, k);
+//        return ((MinecraftServer) FabricLoader.getInstance().getGameInstance()).getLevel(0).canTransferPower(x, y, z);
 //        FabricLoader.getInstance().getGameInstance();
-//        return iBlockAccess.getTileId(i, j, k) == BlockListener.lightBulbOn.id;
+//        return iBlockAccess.getTileId(x, y, z) == BlockListener.lightBulbOn.id;
         switch (FabricLoader.INSTANCE.getEnvironmentType()) {
             case CLIENT -> {
                 return powerClient(iBlockAccess, i, j, k, l);

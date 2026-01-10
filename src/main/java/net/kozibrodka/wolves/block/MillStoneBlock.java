@@ -165,27 +165,27 @@ public class MillStoneBlock extends TemplateBlockWithEntity
     public boolean isInputtingMechanicalPower(World world, int i, int j, int k) {
         for (int iFacing = 0; iFacing <= 1; iFacing++) {
             BlockPosition targetPos = new BlockPosition(i, j, k);
-            targetPos.AddFacingAsOffset(iFacing);
-            int blockId = world.getBlockId(targetPos.i, targetPos.j, targetPos.k);
+            targetPos.addFacingAsOffset(iFacing);
+            int blockId = world.getBlockId(targetPos.x, targetPos.y, targetPos.z);
             if (blockId != BlockListener.axleBlock.id) {
                 continue;
             }
             AxleBlock axleBlock = (AxleBlock) BlockListener.axleBlock;
-            if (axleBlock.IsAxleOrientedTowardsFacing(world, targetPos.i, targetPos.j, targetPos.k, iFacing) && axleBlock.GetPowerLevel(world, targetPos.i, targetPos.j, targetPos.k) > 0) {
+            if (axleBlock.IsAxleOrientedTowardsFacing(world, targetPos.x, targetPos.y, targetPos.z, iFacing) && axleBlock.GetPowerLevel(world, targetPos.x, targetPos.y, targetPos.z) > 0) {
                 return true;
             }
         }
 
         for (int iFacing = 2; iFacing <= 5; iFacing++) {
             BlockPosition targetPos = new BlockPosition(i, j, k);
-            targetPos.AddFacingAsOffset(iFacing);
-            int blockId = world.getBlockId(targetPos.i, targetPos.j, targetPos.k);
+            targetPos.addFacingAsOffset(iFacing);
+            int blockId = world.getBlockId(targetPos.x, targetPos.y, targetPos.z);
             if (blockId != BlockListener.handCrank.id) {
                 continue;
             }
             Block targetBlock = Block.BLOCKS[blockId];
             MechanicalDevice device = (MechanicalDevice) targetBlock;
-            if (device.isOutputtingMechanicalPower(world, targetPos.i, targetPos.j, targetPos.k)) {
+            if (device.isOutputtingMechanicalPower(world, targetPos.x, targetPos.y, targetPos.z)) {
                 return true;
             }
         }

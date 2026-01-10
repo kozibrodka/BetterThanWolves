@@ -217,8 +217,8 @@ public class MillStoneBlockEntity extends BlockEntity
     public void EjectStack(ItemStack stack) {
         BlockPosition targetPos = new BlockPosition(x, y, z);
         int iDirection = 2 + world.random.nextInt(4);
-        targetPos.AddFacingAsOffset(iDirection);
-        UnsortedUtils.ejectStackWithRandomOffset(world, targetPos.i, targetPos.j, targetPos.k, stack);
+        targetPos.addFacingAsOffset(iDirection);
+        UnsortedUtils.ejectStackWithRandomOffset(world, targetPos.x, targetPos.y, targetPos.z, stack);
     }
 
     public boolean AddSingleItemToInventory(int iItemShiftedIndex) {

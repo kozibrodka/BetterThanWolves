@@ -172,11 +172,11 @@ public class TurntableBlock extends TemplateBlockWithEntity
 
     public boolean isInputtingMechanicalPower(World world, int i, int j, int k) {
         BlockPosition targetPos = new BlockPosition(i, j, k);
-        targetPos.AddFacingAsOffset(0);
-        int blockId = world.getBlockId(targetPos.i, targetPos.j, targetPos.k);
+        targetPos.addFacingAsOffset(0);
+        int blockId = world.getBlockId(targetPos.x, targetPos.y, targetPos.z);
         if (blockId == BlockListener.axleBlock.id) {
             AxleBlock axleBlock = (AxleBlock) BlockListener.axleBlock;
-            return axleBlock.IsAxleOrientedTowardsFacing(world, targetPos.i, targetPos.j, targetPos.k, 0) && axleBlock.GetPowerLevel(world, targetPos.i, targetPos.j, targetPos.k) > 0;
+            return axleBlock.IsAxleOrientedTowardsFacing(world, targetPos.x, targetPos.y, targetPos.z, 0) && axleBlock.GetPowerLevel(world, targetPos.x, targetPos.y, targetPos.z) > 0;
         }
         return false;
     }

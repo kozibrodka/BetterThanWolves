@@ -192,14 +192,14 @@ public class BellowsBlock extends TemplateBlock
     public boolean isInputtingMechanicalPower(World world, int i, int j, int k) {
         for (int iFacing = 2; iFacing <= 5; iFacing++) {
             BlockPosition targetPos = new BlockPosition(i, j, k);
-            targetPos.AddFacingAsOffset(iFacing);
-            int iTargetid = world.getBlockId(targetPos.i, targetPos.j, targetPos.k);
+            targetPos.addFacingAsOffset(iFacing);
+            int iTargetid = world.getBlockId(targetPos.x, targetPos.y, targetPos.z);
             if (iTargetid != BlockListener.handCrank.id) {
                 continue;
             }
             Block targetBlock = Block.BLOCKS[iTargetid];
             MechanicalDevice device = (MechanicalDevice) targetBlock;
-            if (device.isOutputtingMechanicalPower(world, targetPos.i, targetPos.j, targetPos.k)) {
+            if (device.isOutputtingMechanicalPower(world, targetPos.x, targetPos.y, targetPos.z)) {
                 return true;
             }
         }
@@ -210,13 +210,13 @@ public class BellowsBlock extends TemplateBlock
                 continue;
             }
             BlockPosition targetPos = new BlockPosition(i, j, k);
-            targetPos.AddFacingAsOffset(iFacing);
-            int iTargetid = world.getBlockId(targetPos.i, targetPos.j, targetPos.k);
+            targetPos.addFacingAsOffset(iFacing);
+            int iTargetid = world.getBlockId(targetPos.x, targetPos.y, targetPos.z);
             if (iTargetid != BlockListener.axleBlock.id) {
                 continue;
             }
             AxleBlock axleBlock = (AxleBlock) BlockListener.axleBlock;
-            if (axleBlock.IsAxleOrientedTowardsFacing(world, targetPos.i, targetPos.j, targetPos.k, iFacing) && axleBlock.GetPowerLevel(world, targetPos.i, targetPos.j, targetPos.k) > 0) {
+            if (axleBlock.IsAxleOrientedTowardsFacing(world, targetPos.x, targetPos.y, targetPos.z, iFacing) && axleBlock.GetPowerLevel(world, targetPos.x, targetPos.y, targetPos.z) > 0) {
                 return true;
             }
         }
@@ -256,37 +256,37 @@ public class BellowsBlock extends TemplateBlock
         int iFacingSide1 = UnsortedUtils.RotateFacingAroundJ(iFacing, false);
         int iFacingSide2 = UnsortedUtils.RotateFacingAroundJ(iFacing, true);
         BlockPosition particlePos = new BlockPosition(i, j, k);
-        particlePos.AddFacingAsOffset(iFacing);
-        EmitBellowsParticles(world, particlePos.i, particlePos.j, particlePos.k, world.random);
+        particlePos.addFacingAsOffset(iFacing);
+        EmitBellowsParticles(world, particlePos.x, particlePos.y, particlePos.z, world.random);
         BlockPosition tempTargetPos = new BlockPosition(i, j, k);
         Block blockWithInterface;
         for (int iTempCount = 0; iTempCount < 3; iTempCount++) {
-            tempTargetPos.AddFacingAsOffset(iFacing);
-            int tempid = world.getBlockId(tempTargetPos.i, tempTargetPos.j, tempTargetPos.k);
+            tempTargetPos.addFacingAsOffset(iFacing);
+            int tempid = world.getBlockId(tempTargetPos.x, tempTargetPos.y, tempTargetPos.z);
             blockWithInterface = Block.BLOCKS[tempid];
             if (blockWithInterface != null) {
                 if (blockWithInterface instanceof AffectedByBellows) {
-                    ((AffectedByBellows) blockWithInterface).affectBlock(world, tempTargetPos.i, tempTargetPos.j, tempTargetPos.k, tempTargetPos, iFacing);
+                    ((AffectedByBellows) blockWithInterface).affectBlock(world, tempTargetPos.x, tempTargetPos.y, tempTargetPos.z, tempTargetPos, iFacing);
                     continue;
                 }
             }
             if (tempid == Block.FIRE.id || tempid == BlockListener.stokedFire.id) {
-                StokeFire(world, tempTargetPos.i, tempTargetPos.j, tempTargetPos.k);
-            } else if (!world.isAir(tempTargetPos.i, tempTargetPos.j, tempTargetPos.k)) {
+                StokeFire(world, tempTargetPos.x, tempTargetPos.y, tempTargetPos.z);
+            } else if (!world.isAir(tempTargetPos.x, tempTargetPos.y, tempTargetPos.z)) {
                 break;
             }
-            BlockPosition tempSidePos1 = new BlockPosition(tempTargetPos.i, tempTargetPos.j, tempTargetPos.k);
-            tempSidePos1.AddFacingAsOffset(iFacingSide1);
-            tempid = world.getBlockId(tempSidePos1.i, tempSidePos1.j, tempSidePos1.k);
-            if ((tempid == Block.FIRE.id || tempid == BlockListener.stokedFire.id)) // && world.getTileId(tempSidePos1.i, tempSidePos1.j, tempSidePos1.k) == BlockBase.FIRE.id
+            BlockPosition tempSidePos1 = new BlockPosition(tempTargetPos.x, tempTargetPos.y, tempTargetPos.z);
+            tempSidePos1.addFacingAsOffset(iFacingSide1);
+            tempid = world.getBlockId(tempSidePos1.x, tempSidePos1.y, tempSidePos1.z);
+            if ((tempid == Block.FIRE.id || tempid == BlockListener.stokedFire.id)) // && world.getTileId(tempSidePos1.x, tempSidePos1.y, tempSidePos1.z) == BlockBase.FIRE.id
             {
-                StokeFire(world, tempSidePos1.i, tempSidePos1.j, tempSidePos1.k);
+                StokeFire(world, tempSidePos1.x, tempSidePos1.y, tempSidePos1.z);
             }
-            BlockPosition tempSidePos2 = new BlockPosition(tempTargetPos.i, tempTargetPos.j, tempTargetPos.k);
-            tempSidePos2.AddFacingAsOffset(iFacingSide2);
-            tempid = world.getBlockId(tempSidePos2.i, tempSidePos2.j, tempSidePos2.k);
+            BlockPosition tempSidePos2 = new BlockPosition(tempTargetPos.x, tempTargetPos.y, tempTargetPos.z);
+            tempSidePos2.addFacingAsOffset(iFacingSide2);
+            tempid = world.getBlockId(tempSidePos2.x, tempSidePos2.y, tempSidePos2.z);
             if (tempid == Block.FIRE.id || tempid == BlockListener.stokedFire.id) {
-                StokeFire(world, tempSidePos2.i, tempSidePos2.j, tempSidePos2.k);
+                StokeFire(world, tempSidePos2.x, tempSidePos2.y, tempSidePos2.z);
             }
         }
 

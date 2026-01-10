@@ -67,8 +67,8 @@ public class UnfiredPotteryBlockEntity extends BlockEntity {
         int iNonBrickNeighbourCount = 0;
         for (int iTempFacing = 1; iTempFacing <= 5; iTempFacing++) {
             BlockPosition tempPos = new BlockPosition(x, y, z);
-            tempPos.AddFacingAsOffset(iTempFacing);
-            if (world.getBlockId(tempPos.i, tempPos.j, tempPos.k) != Block.BRICKS.id && ++iNonBrickNeighbourCount > 1) {
+            tempPos.addFacingAsOffset(iTempFacing);
+            if (world.getBlockId(tempPos.x, tempPos.y, tempPos.z) != Block.BRICKS.id && ++iNonBrickNeighbourCount > 1) {
                 return false;
             }
         }

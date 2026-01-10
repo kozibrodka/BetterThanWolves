@@ -147,9 +147,9 @@ public class HandCrankBlock extends TemplateBlock
         }
     }
 
-//    public void randomDisplayTick(Level world, int i, int j, int k, Random random)
+//    public void randomDisplayTick(Level world, int x, int y, int z, Random random)
 //    {
-//        world.setBlocksDirty(i, j, k, i, j, k);
+//        world.setBlocksDirty(x, y, z, x, y, z);
 //    }
 
     public void neighborUpdate(World world, int i, int j, int k, int iid) {
@@ -179,8 +179,8 @@ public class HandCrankBlock extends TemplateBlock
         int iNumPotentialDevicesToPower = 0;
         for (int iTempFacing = 2; iTempFacing <= 5; iTempFacing++) {
             BlockPosition tempPos = new BlockPosition(i, j, k);
-            tempPos.AddFacingAsOffset(iTempFacing);
-            int iTempid = world.getBlockId(tempPos.i, tempPos.j, tempPos.k);
+            tempPos.addFacingAsOffset(iTempFacing);
+            int iTempid = world.getBlockId(tempPos.x, tempPos.y, tempPos.z);
             Block tempBlock = Block.BLOCKS[iTempid];
             if (tempBlock == null || !(tempBlock instanceof MechanicalDevice tempDevice)) {
                 continue;

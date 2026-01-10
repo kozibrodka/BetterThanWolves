@@ -127,18 +127,18 @@ public class PlatformBlock extends TemplateBlock
         bPlatformAlreadyConsideredForConnectedTest[iDeltaI + 2][iDeltaJ + 2][iDeltaK + 2] = true;
         for (int iFacing = 0; iFacing < 6; iFacing++) {
             BlockPosition tempPos = new BlockPosition(i, j, k);
-            tempPos.AddFacingAsOffset(iFacing);
-            if (tempPos.i == targetI && tempPos.j == targetJ && tempPos.k == targetK) {
+            tempPos.addFacingAsOffset(iFacing);
+            if (tempPos.x == targetI && tempPos.y == targetJ && tempPos.z == targetK) {
                 return true;
             }
-            int iTempid = world.getBlockId(tempPos.i, tempPos.j, tempPos.k);
+            int iTempid = world.getBlockId(tempPos.x, tempPos.y, tempPos.z);
             if (iTempid != id) {
                 continue;
             }
-            int tempDistI = Math.abs(sourceI - tempPos.i);
-            int tempDistJ = Math.abs(sourceJ - tempPos.j);
-            int tempDistK = Math.abs(sourceK - tempPos.k);
-            if (tempDistI <= 2 && tempDistJ <= 2 && tempDistK <= 2 && PropogateTestForConnected(world, tempPos.i, tempPos.j, tempPos.k, sourceI, sourceJ, sourceK, targetI, targetJ, targetK)) {
+            int tempDistI = Math.abs(sourceI - tempPos.x);
+            int tempDistJ = Math.abs(sourceJ - tempPos.y);
+            int tempDistK = Math.abs(sourceK - tempPos.z);
+            if (tempDistI <= 2 && tempDistJ <= 2 && tempDistK <= 2 && PropogateTestForConnected(world, tempPos.x, tempPos.y, tempPos.z, sourceI, sourceJ, sourceK, targetI, targetJ, targetK)) {
                 return true;
             }
         }
@@ -191,16 +191,16 @@ public class PlatformBlock extends TemplateBlock
         }
         for (int iFacing = 0; iFacing < 6; iFacing++) {
             BlockPosition tempPos = new BlockPosition(i, j, k);
-            tempPos.AddFacingAsOffset(iFacing);
-            int iTempid = world.getBlockId(tempPos.i, tempPos.j, tempPos.k);
+            tempPos.addFacingAsOffset(iFacing);
+            int iTempid = world.getBlockId(tempPos.x, tempPos.y, tempPos.z);
             if (iTempid != id) {
                 continue;
             }
-            int tempDistI = Math.abs(sourceI - tempPos.i);
-            int tempDistJ = Math.abs(sourceJ - tempPos.j);
-            int tempDistK = Math.abs(sourceK - tempPos.k);
+            int tempDistI = Math.abs(sourceI - tempPos.x);
+            int tempDistJ = Math.abs(sourceJ - tempPos.y);
+            int tempDistK = Math.abs(sourceK - tempPos.z);
             if (tempDistI <= 2 && tempDistJ <= 2 && tempDistK <= 2) {
-                PropogateCovertToEntity(world, tempPos.i, tempPos.j, tempPos.k, associatedAnchorEntity, sourceI, sourceJ, sourceK);
+                PropogateCovertToEntity(world, tempPos.x, tempPos.y, tempPos.z, associatedAnchorEntity, sourceI, sourceJ, sourceK);
             }
         }
 

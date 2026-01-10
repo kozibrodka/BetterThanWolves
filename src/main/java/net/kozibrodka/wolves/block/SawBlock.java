@@ -157,8 +157,8 @@ public class SawBlock extends TemplateBlock
         } else if (bOn) {
             int iFacing = getFacing(world, i, j, k);
             BlockPosition targetPos = new BlockPosition(i, j, k);
-            targetPos.AddFacingAsOffset(iFacing);
-            if (!AttemptToSawBlock(world, targetPos.i, targetPos.j, targetPos.k, random, iFacing)) {
+            targetPos.addFacingAsOffset(iFacing);
+            if (!AttemptToSawBlock(world, targetPos.x, targetPos.y, targetPos.z, random, iFacing)) {
                 BreakSaw(world, i, j, k);
             }
         }
@@ -325,11 +325,11 @@ public class SawBlock extends TemplateBlock
     void EmitBloodParticles(World world, int i, int j, int k, Random random) {
         int iFacing = getFacing(world, i, j, k);
         BlockPosition iTargetPos = new BlockPosition(i, j, k);
-        iTargetPos.AddFacingAsOffset(iFacing);
+        iTargetPos.addFacingAsOffset(iFacing);
         for (int counter = 0; counter < 10; counter++) {
-            float smokeX = (float) iTargetPos.i + random.nextFloat();
-            float smokeY = (float) iTargetPos.j + random.nextFloat();
-            float smokeZ = (float) iTargetPos.k + random.nextFloat();
+            float smokeX = (float) iTargetPos.x + random.nextFloat();
+            float smokeY = (float) iTargetPos.y + random.nextFloat();
+            float smokeZ = (float) iTargetPos.z + random.nextFloat();
             world.addParticle("reddust", smokeX, smokeY, smokeZ, 0.0D, 0.0D, 0.0D);
             if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
                 particlePacket(world, "reddust", smokeX, smokeY, smokeZ);
@@ -395,8 +395,8 @@ public class SawBlock extends TemplateBlock
                             bRemoveOriginalBlockIfSawed = false;
                         }
                         BlockPosition bloodPos = new BlockPosition(i, j, k);
-                        bloodPos.AddFacingAsOffset(UnsortedUtils.getOppositeFacing(iSawFacing));
-                        EmitBloodParticles(world, bloodPos.i, bloodPos.j, bloodPos.k, world.random);
+                        bloodPos.addFacingAsOffset(UnsortedUtils.getOppositeFacing(iSawFacing));
+                        EmitBloodParticles(world, bloodPos.x, bloodPos.y, bloodPos.z, world.random);
                         world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "mob.wolf.hurt", 5F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
                         if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
                             voicePacket(world, "mob.wolf.hurt", i, j, k, 5F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
@@ -474,13 +474,13 @@ public class SawBlock extends TemplateBlock
                 continue;
             }
             BlockPosition targetPos = new BlockPosition(i, j, k);
-            targetPos.AddFacingAsOffset(iFacing);
-            int blockId = world.getBlockId(targetPos.i, targetPos.j, targetPos.k);
+            targetPos.addFacingAsOffset(iFacing);
+            int blockId = world.getBlockId(targetPos.x, targetPos.y, targetPos.z);
             if (blockId != BlockListener.axleBlock.id) {
                 continue;
             }
             AxleBlock axleBlock = (AxleBlock) BlockListener.axleBlock;
-            if (axleBlock.IsAxleOrientedTowardsFacing(world, targetPos.i, targetPos.j, targetPos.k, iFacing) && axleBlock.GetPowerLevel(world, targetPos.i, targetPos.j, targetPos.k) > 0) {
+            if (axleBlock.IsAxleOrientedTowardsFacing(world, targetPos.x, targetPos.y, targetPos.z, iFacing) && axleBlock.GetPowerLevel(world, targetPos.x, targetPos.y, targetPos.z) > 0) {
                 return true;
             }
         }

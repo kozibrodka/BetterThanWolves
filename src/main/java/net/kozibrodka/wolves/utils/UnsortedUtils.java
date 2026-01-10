@@ -278,13 +278,13 @@ public class UnsortedUtils {
     public static void DestroyHorizontallyAttachedAxles(World world, int i, int j, int k) {
         for (int iFacing = 2; iFacing <= 5; iFacing++) {
             BlockPosition tempPos = new BlockPosition(i, j, k);
-            tempPos.AddFacingAsOffset(iFacing);
-            if (world.getBlockId(tempPos.i, tempPos.j, tempPos.k) != BlockListener.axleBlock.id) {
+            tempPos.addFacingAsOffset(iFacing);
+            if (world.getBlockId(tempPos.x, tempPos.y, tempPos.z) != BlockListener.axleBlock.id) {
                 continue;
             }
             AxleBlock axleBlock = (AxleBlock) BlockListener.axleBlock;
-            if (axleBlock.IsAxleOrientedTowardsFacing(world, tempPos.i, tempPos.j, tempPos.k, iFacing)) {
-                axleBlock.BreakAxle(world, tempPos.i, tempPos.j, tempPos.k);
+            if (axleBlock.IsAxleOrientedTowardsFacing(world, tempPos.x, tempPos.y, tempPos.z, iFacing)) {
+                axleBlock.BreakAxle(world, tempPos.x, tempPos.y, tempPos.z);
             }
         }
 

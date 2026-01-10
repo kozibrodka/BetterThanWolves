@@ -40,32 +40,32 @@ public class MovingPlatformRenderer extends EntityRenderer {
         List list = entity.world.collectEntitiesByClass(MovingPlatformEntity.class, Box.createCached(entity.x - 1.0D, entity.y - 0.10000000149011612D, entity.z - 0.10000000149011612D, entity.x - 0.89999997615814209D, entity.y + 0.10000000149011612D, entity.z + 0.10000000149011612D));
         if (list == null || list.size() <= 0) {
             block.setBoundingBox(0.0001F, 0.0625F, 0.0001F, 0.0625F, 0.9375F, 0.9999F);
-//            this.localRenderBlocks.method_53(block, world, i, j, k);
+//            this.localRenderBlocks.method_53(block, world, x, y, z);
             CustomBlockRendering.RenderMovingBlock(localRenderBlocks, block, world, i, j, k);
         }
         list = entity.world.collectEntitiesByClass(MovingPlatformEntity.class, Box.createCached(entity.x - 0.10000000149011612D, entity.y - 0.10000000149011612D, entity.z + 0.89999997615814209D, entity.x + 0.10000000149011612D, entity.y + 0.10000000149011612D, entity.z + 1.0D));
         if (list == null || list.size() <= 0) {
             block.setBoundingBox(0.0F, 0.0625F, 0.9375F, 1.0F, 0.9375F, 1.0F);
-//            this.localRenderBlocks.method_53( block, world, i, j, k);
+//            this.localRenderBlocks.method_53( block, world, x, y, z);
             CustomBlockRendering.RenderMovingBlock(localRenderBlocks, block, world, i, j, k);
         }
         list = entity.world.collectEntitiesByClass(MovingPlatformEntity.class, Box.createCached(entity.x + 0.89999997615814209D, entity.y - 0.10000000149011612D, entity.z - 0.10000000149011612D, entity.x + 1.0D, entity.y + 0.10000000149011612D, entity.z + 0.10000000149011612D));
         if (list == null || list.size() <= 0) {
             block.setBoundingBox(0.9375F, 0.0625F, 0.0001F, 0.9999F, 0.9375F, 0.9999F);
-//            this.localRenderBlocks.method_53(block, world, i, j, k);
+//            this.localRenderBlocks.method_53(block, world, x, y, z);
             CustomBlockRendering.RenderMovingBlock(localRenderBlocks, block, world, i, j, k);
         }
         list = entity.world.collectEntitiesByClass(MovingPlatformEntity.class, Box.createCached(entity.x - 0.10000000149011612D, entity.y - 0.10000000149011612D, entity.z - 1.0D, entity.x + 0.10000000149011612D, entity.y + 0.10000000149011612D, entity.z - 0.89999997615814209D));
         if (list == null || list.size() <= 0) {
             block.setBoundingBox(0.0F, 0.0625F, 0.0F, 1.0F, 0.9375F, 0.0625F);
-//            this.localRenderBlocks.method_53( block, world, i, j, k);
+//            this.localRenderBlocks.method_53( block, world, x, y, z);
             CustomBlockRendering.RenderMovingBlock(localRenderBlocks, block, world, i, j, k);
         }
         block.setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 0.0625F, 1.0F);
-//        this.localRenderBlocks.method_53( block, world, i, j, k);
+//        this.localRenderBlocks.method_53( block, world, x, y, z);
         CustomBlockRendering.RenderMovingBlock(localRenderBlocks, block, world, i, j, k);
         block.setBoundingBox(0.0F, 0.9375F, 0.0F, 1.0F, 1.0F, 1.0F);
-//        this.localRenderBlocks.method_53( block, world, i, j, k);
+//        this.localRenderBlocks.method_53( block, world, x, y, z);
         CustomBlockRendering.RenderMovingBlock(localRenderBlocks, block, world, i, j, k);
         block.setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         GL11.glEnable(2896 /*GL_LIGHTING*/);
