@@ -269,6 +269,11 @@ public class GearboxBlock extends TemplateBlock
     }
 
     @Override
+    public boolean isOutputtingMechanicalPower(World world, int x, int y, int z, int side) {
+        return isGearBoxOn(world, x, y, z) && getFacing(world, x, y, z) != side;
+    }
+
+    @Override
     public void powerMachine(World world, int x, int y, int z) {
         setGearBoxOnState(world, x, y, z, true);
         handleGearBoxActivation(world, x, y, z, new Random());

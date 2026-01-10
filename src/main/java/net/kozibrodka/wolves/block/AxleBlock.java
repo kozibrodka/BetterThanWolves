@@ -53,6 +53,20 @@ public class AxleBlock extends TemplateBlock {
         validatePowerLevel(world, x, y, z);
         world.scheduleBlockUpdate(x, y, z, BlockListener.axleBlock.id, getTickRate());
         world.notifyNeighbors(x, y, z, world.getBlockId(x, y, z));
+        BlockPosition[] potentialSources = getConnectionCandidates(world, x, y, z);
+        int axis = getAxisAlignment(world, x, y, z);
+        int powerSourceCount = 0;
+        if (isProvidingPower(world, potentialSources[0], axis * 2 + 1)) {
+            powerSourceCount++;
+        }
+        if (isProvidingPower(world, potentialSources[1], axis * 2)) {
+            powerSourceCount++;
+        }
+        if (powerSourceCount > 1) {
+            breakAxle(world, x, y, z);
+        } else if (powerSourceCount == 1) {
+            setPowerLevel(world, x, y, z, 3);
+        }
     }
 
     @Override
@@ -60,8 +74,8 @@ public class AxleBlock extends TemplateBlock {
         super.onBreak(world, x, y, z);
         BlockPosition[] potentialMachines = getConnectionCandidates(world, x, y, z);
         int axis = getAxisAlignment(world, x, y, z);
-        updateAdjacentMachine(world, potentialMachines[0], axis * 2 + 1,false);
-        updateAdjacentMachine(world, potentialMachines[1], axis * 2,false);
+        updateAdjacentMachine(world, potentialMachines[0], axis * 2 + 1, false);
+        updateAdjacentMachine(world, potentialMachines[1], axis * 2, false);
     }
 
     public void onTick(World world, int x, int y, int z, Random random) {
@@ -142,8 +156,8 @@ public class AxleBlock extends TemplateBlock {
         world.blockUpdateEvent(x, y, z);
         BlockPosition[] potentialMachines = getConnectionCandidates(world, x, y, z);
         int axis = getAxisAlignment(world, x, y, z);
-        updateAdjacentMachine(world, potentialMachines[0], axis * 2 + 1,powerLevel > 0);
-        updateAdjacentMachine(world, potentialMachines[1], axis * 2,powerLevel > 0);
+        updateAdjacentMachine(world, potentialMachines[0], axis * 2 + 1, powerLevel > 0);
+        updateAdjacentMachine(world, potentialMachines[1], axis * 2, powerLevel > 0);
     }
 
     public boolean isAxleOrientedTowardsFacing(BlockView blockView, int x, int y, int z, int facing) {
@@ -302,6 +316,21 @@ public class AxleBlock extends TemplateBlock {
                 device.unpowerMachine(world, x, y, z);
             }
         }
+    }
+
+    private boolean isProvidingPower(World world, BlockPosition potentialSource, int side) {
+        int x = potentialSource.x;
+        int y = potentialSource.y;
+        int z = potentialSource.z;
+        int machineId = world.getBlockId(x, y, z);
+        if (machineId == 0) {
+            return false;
+        }
+        Block machineBlock = Block.BLOCKS[machineId];
+        if (machineBlock instanceof MechanicalDevice device) {
+            return device.isOutputtingMechanicalPower(world, x, y, z, side);
+        }
+        return false;
     }
 
     private void emitAxleParticles(World world, int x, int y, int z, Random random) {
