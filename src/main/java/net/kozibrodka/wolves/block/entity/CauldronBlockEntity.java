@@ -95,6 +95,11 @@ public class CauldronBlockEntity extends BlockEntity implements Inventory {
         if (world.isRemote) {
             return;
         }
+        int meta = world.getBlockMeta(x, y, z);
+        if (meta > 0) {
+            dropContents(meta);
+            return;
+        }
         int fireHeat = ((CauldronBlock) BlockListener.cauldron).getFireHeat(world, x, y, z);
         if (fireHeat > 0) {
             if (forceValidateOnUpdate) {
@@ -118,6 +123,23 @@ public class CauldronBlockEntity extends BlockEntity implements Inventory {
             }
         } else {
             cauldronCookCounter = 0;
+        }
+    }
+
+    private void dropContents(int meta) {
+        switch (meta) {
+            case 2:
+                InventoryHandler.ejectInventoryContents(world, x, y, z - 1, this);
+                break;
+            case 3:
+                InventoryHandler.ejectInventoryContents(world, x, y, z + 1, this);
+                break;
+            case 4:
+                InventoryHandler.ejectInventoryContents(world, x - 1, y, z, this);
+                break;
+            case 5:
+                InventoryHandler.ejectInventoryContents(world, x + 1, y, z, this);
+                break;
         }
     }
 
