@@ -50,7 +50,7 @@ public class AxleBlock extends TemplateBlock {
 
     public void onPlaced(World world, int x, int y, int z) {
         super.onPlaced(world, x, y, z);
-        setPowerLevel(world, x, y, z, 0);
+        validatePowerLevel(world, x, y, z);
         world.scheduleBlockUpdate(x, y, z, BlockListener.axleBlock.id, getTickRate());
     }
 
