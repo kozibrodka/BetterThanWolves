@@ -53,6 +53,18 @@ public class AxleBlock extends TemplateBlock {
         validatePowerLevel(world, x, y, z);
         world.scheduleBlockUpdate(x, y, z, BlockListener.axleBlock.id, getTickRate());
         world.notifyNeighbors(x, y, z, world.getBlockId(x, y, z));
+    }
+
+    @Override
+    public void onBreak(World world, int x, int y, int z) {
+        super.onBreak(world, x, y, z);
+        BlockPosition[] potentialMachines = getConnectionCandidates(world, x, y, z);
+        int axis = getAxisAlignment(world, x, y, z);
+        updateAdjacentMachine(world, potentialMachines[0], axis * 2 + 1, false);
+        updateAdjacentMachine(world, potentialMachines[1], axis * 2, false);
+    }
+
+    public void onTick(World world, int x, int y, int z, Random random) {
         BlockPosition[] potentialSources = getConnectionCandidates(world, x, y, z);
         int axis = getAxisAlignment(world, x, y, z);
         int powerSourceCount = 0;
@@ -67,19 +79,6 @@ public class AxleBlock extends TemplateBlock {
         } else if (powerSourceCount == 1) {
             setPowerLevel(world, x, y, z, 3);
         }
-    }
-
-    @Override
-    public void onBreak(World world, int x, int y, int z) {
-        super.onBreak(world, x, y, z);
-        BlockPosition[] potentialMachines = getConnectionCandidates(world, x, y, z);
-        int axis = getAxisAlignment(world, x, y, z);
-        updateAdjacentMachine(world, potentialMachines[0], axis * 2 + 1, false);
-        updateAdjacentMachine(world, potentialMachines[1], axis * 2, false);
-    }
-
-    public void onTick(World world, int x, int y, int z, Random random) {
-        validatePowerLevel(world, x, y, z);
     }
 
     public Box getCollisionShape(World world, int x, int y, int z) {
@@ -113,7 +112,6 @@ public class AxleBlock extends TemplateBlock {
 
     public void neighborUpdate(World world, int x, int y, int z, int id) {
         validatePowerLevel(world, x, y, z);
-        world.scheduleBlockUpdate(x, y, z, id, getTickRate());
         int powerLevel = getPowerLevel(world, x, y, z);
         if (powerLevel <= 0) {
             return;
