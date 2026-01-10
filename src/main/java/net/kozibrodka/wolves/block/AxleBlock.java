@@ -114,6 +114,14 @@ public class AxleBlock extends TemplateBlock {
     public void neighborUpdate(World world, int x, int y, int z, int id) {
         validatePowerLevel(world, x, y, z);
         world.scheduleBlockUpdate(x, y, z, id, getTickRate());
+        int powerLevel = getPowerLevel(world, x, y, z);
+        if (powerLevel <= 0) {
+            return;
+        }
+        if (id == 0) {
+            return;
+        }
+        updatePotentialMachines(world, x, y, z, powerLevel);
     }
 
     public void randomDisplayTick(World world, int x, int y, int z, Random random) {
@@ -154,6 +162,10 @@ public class AxleBlock extends TemplateBlock {
         metadata |= powerLevel;
         world.setBlockMeta(x, y, z, metadata);
         world.blockUpdateEvent(x, y, z);
+        updatePotentialMachines(world, x, y, z, powerLevel);
+    }
+
+    private void updatePotentialMachines(World world, int x, int y, int z, int powerLevel) {
         BlockPosition[] potentialMachines = getConnectionCandidates(world, x, y, z);
         int axis = getAxisAlignment(world, x, y, z);
         updateAdjacentMachine(world, potentialMachines[0], axis * 2 + 1, powerLevel > 0);
@@ -310,9 +322,10 @@ public class AxleBlock extends TemplateBlock {
             if (!device.canInputMechanicalPower(world, x, y, z, side)) {
                 return;
             }
-            if (powered) {
+            boolean isMachinePowered = device.isMachinePowered(world, x, y, z);
+            if (powered && !isMachinePowered) {
                 device.powerMachine(world, x, y, z);
-            } else {
+            } else if (!powered && isMachinePowered) {
                 device.unpowerMachine(world, x, y, z);
             }
         }

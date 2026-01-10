@@ -75,12 +75,6 @@ public class GearboxBlock extends TemplateBlock
         setFacing(world, x, y, z, facing);
     }
 
-    public void onPlaced(World world, int x, int y, int z) {
-        super.onPlaced(world, x, y, z);
-        world.scheduleBlockUpdate(x, y, z, BlockListener.gearBox.id, getTickRate());
-        world.notifyNeighbors(x, y, z, world.getBlockId(x, y, z));
-    }
-
     public void onBreak(World world, int x, int y, int z) {
         if (isGearBoxOn(world, x, y, z)) {
             setGearBoxOnState(world, x, y, z, false);
@@ -298,5 +292,10 @@ public class GearboxBlock extends TemplateBlock
         emitGearBoxParticles(world, x, y, z, random);
         setGearBoxOnState(world, x, y, z, true);
         validateOutputs(world, x, y, z, true);
+    }
+
+    @Override
+    public boolean isMachinePowered(World world, int x, int y, int z) {
+        return isGearBoxOn(world, x, y, z);
     }
 }

@@ -27,4 +27,8 @@ public interface MechanicalDevice {
     default void unpowerMachine(World world, int x, int y, int z) {
         System.out.println("Unpowering machine");
     }
+
+    default boolean isMachinePowered(World world, int x, int y, int z) {
+        return false;
+    }
 }
