@@ -99,11 +99,14 @@ public class GearboxBlock extends TemplateBlock
         if (isRedstonePowered) {
             receivingPower = false;
         }
+        // Check if gear box activity changed
         if (isOn != receivingPower) {
             if (isOn) {
+                // Shut down gear box
                 setGearBoxOnState(world, x, y, z, false);
                 validateOutputs(world, x, y, z, false);
             } else {
+                // Activate gear box
                 world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.explode", 0.05F, 1.0F);
                 if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
                     voicePacket(world, "random.explode", x, y, z, 0.05F, 1.0F);
@@ -134,8 +137,8 @@ public class GearboxBlock extends TemplateBlock
         }
     }
 
-    public int getFacing(BlockView iBlockAccess, int x, int y, int z) {
-        return iBlockAccess.getBlockMeta(x, y, z) & 7;
+    public int getFacing(BlockView blockView, int x, int y, int z) {
+        return blockView.getBlockMeta(x, y, z) & 7;
     }
 
     public void setFacing(World world, int x, int y, int z, int facing) {
@@ -188,43 +191,56 @@ public class GearboxBlock extends TemplateBlock
 
     }
 
+    /**
+     * Checks each output of the gear box for attached axles
+     * @param world World the block is in.
+     * @param x x coordinate of the block.
+     * @param y y coordinate of the block.
+     * @param z z coordinate of the block.
+     * @param destroyIfAlreadyPowered Determines if already powered axles should be destroyed.
+     */
     private void validateOutputs(World world, int x, int y, int z, boolean destroyIfAlreadyPowered) {
         int blockFacing = getFacing(world, x, y, z);
-        boolean isOn = isGearBoxOn(world, x, y, z);
+        boolean isGearBoxOn = isGearBoxOn(world, x, y, z);
         if(world.isRemote) {
             return;
         }
-        for (int facing = 0; facing <= 5; facing++) {
+        for (int facing = 0; facing <= 5; facing++) { // Iterate through all sides
             if (facing == blockFacing) {
                 continue;
             }
+            // Check if block is an axle
             BlockPosition tempPos = new BlockPosition(x, y, z);
             tempPos.addFacingAsOffset(facing);
             if (world.getBlockId(tempPos.x, tempPos.y, tempPos.z) != BlockListener.axleBlock.id && world.getBlockId(tempPos.x, tempPos.y, tempPos.z) != BlockListener.nonCollidingAxleBlock.id) {
                 continue;
             }
+            // Convert non-colliding axles into normal axles
             AxleBlock axleBlock = (AxleBlock) BlockListener.axleBlock;
             if (world.getBlockId(tempPos.x, tempPos.y, tempPos.z) == BlockListener.nonCollidingAxleBlock.id) {
                 axleBlock = (AxleBlock) BlockListener.nonCollidingAxleBlock;
             }
+            // Skip misaligned axles
             if (!axleBlock.IsAxleOrientedTowardsFacing(world, tempPos.x, tempPos.y, tempPos.z, facing)) {
                 continue;
             }
+            // Check if axle is already powered
             int tempPowerLevel = axleBlock.GetPowerLevel(world, tempPos.x, tempPos.y, tempPos.z);
             if (tempPowerLevel > 0 && destroyIfAlreadyPowered) {
                 axleBlock.BreakAxle(world, tempPos.x, tempPos.y, tempPos.z);
                 continue;
             }
-            if (isOn) {
+            // Activate axle
+            if (isGearBoxOn) {
                 if (tempPowerLevel != 3) {
                     axleBlock.SetPowerLevel(world, tempPos.x, tempPos.y, tempPos.z, 3);
                 }
                 continue;
             }
+            // Deactivate axle
             if (tempPowerLevel != 0) {
                 axleBlock.SetPowerLevel(world, tempPos.x, tempPos.y, tempPos.z, 0);
             }
-//            world.blockUpdateEvent(tempPos.x, tempPos.y, tempPos.z);
         }
 
     }
