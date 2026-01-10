@@ -7,7 +7,9 @@ import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.utils.BlockPosition;
+import net.kozibrodka.wolves.utils.MechanicalDevice;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
@@ -258,7 +260,29 @@ public class AxleBlock extends TemplateBlock {
         // Change power level if it is different to the old one
         if (newPower != currentPower) {
             setPowerLevel(world, x, y, z, newPower);
-            // TODO: Use this check to update adjacent machines
+            updateAdjacentMachine(world, potentialSources[0], axis * 2 + 1,newPower > 0);
+            updateAdjacentMachine(world, potentialSources[1], axis * 2,newPower > 0);
+        }
+    }
+
+    private void updateAdjacentMachine(World world, BlockPosition potentialMachine, int side, boolean powered) {
+        int x = potentialMachine.x;
+        int y = potentialMachine.y;
+        int z = potentialMachine.z;
+        int machineId = world.getBlockId(x, y, z);
+        if (machineId == 0) {
+            return;
+        }
+        Block machineBlock = Block.BLOCKS[machineId];
+        if (machineBlock instanceof MechanicalDevice device) {
+            if (!device.canInputMechanicalPower()) {
+                return;
+            }
+            if (powered) {
+                device.powerMachine(world, x, y, z);
+            } else {
+                device.unpowerMachine(world, x, y, z);
+            }
         }
     }
 
