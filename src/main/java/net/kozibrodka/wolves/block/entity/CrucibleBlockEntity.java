@@ -17,6 +17,8 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
+import net.modificationstation.stationapi.api.block.BlockState;
+import net.modificationstation.stationapi.api.util.math.Direction;
 
 public class CrucibleBlockEntity extends BlockEntity implements Inventory {
 
@@ -109,6 +111,12 @@ public class CrucibleBlockEntity extends BlockEntity implements Inventory {
         if (world.isRemote) {
             return;
         }
+        BlockState currentState = world.getBlockState(x, y, z);
+        Direction currentDirection = currentState.get(CrucibleBlock.ROTATION);
+        if (currentDirection != Direction.UP) {
+            dropContents(currentDirection);
+            return;
+        }
         int stokedFireFactor = getStokedFireFactor();
         if (stokedFireFactor > 0) {
             if (!overStokedFire) {
@@ -132,6 +140,23 @@ public class CrucibleBlockEntity extends BlockEntity implements Inventory {
                 world.setBlocksDirty(x, y, z, x, y, z);
             }
             crucibleCookCounter = 0;
+        }
+    }
+
+    private void dropContents(Direction direction) {
+        switch (direction) {
+            case SOUTH:
+                InventoryHandler.ejectInventoryContents(world, x, y, z - 1, this);
+                break;
+            case NORTH:
+                InventoryHandler.ejectInventoryContents(world, x, y, z + 1, this);
+                break;
+            case WEST:
+                InventoryHandler.ejectInventoryContents(world, x - 1, y, z, this);
+                break;
+            case EAST:
+                InventoryHandler.ejectInventoryContents(world, x + 1, y, z, this);
+                break;
         }
     }
 

@@ -102,29 +102,34 @@ public class CrucibleBlock extends TemplateBlockWithEntity
         return Box.createCached(i, j, k, i + 1, (double) j + 0.99000000953674316D, (double) k + 1.0D);
     }
 
-    public void onEntityCollision(World world, int i, int j, int k, Entity entity) {
+    public void onEntityCollision(World world, int x, int y, int z, Entity entity) {
+        BlockState currentState = world.getBlockState(x, y, z);
+        Direction currentDirection = currentState.get(ROTATION);
+        if (currentDirection != Direction.UP) {
+            return;
+        }
         List collisionList = null;
-        collisionList = world.collectEntitiesByClass(ItemEntity.class, Box.createCached((float) i, (double) (float) j + 0.99000000953674316D, (float) k, (float) (i + 1), (double) (float) j + 0.99000000953674316D + 0.05000000074505806D, (float) (k + 1)));
+        collisionList = world.collectEntitiesByClass(ItemEntity.class, Box.createCached((float) x, (double) (float) y + 0.99000000953674316D, (float) z, (float) (x + 1), (double) (float) y + 0.99000000953674316D + 0.05000000074505806D, (float) (z + 1)));
         if (collisionList != null && collisionList.size() > 0) {
-            CrucibleBlockEntity tileEntityCrucible = (CrucibleBlockEntity) world.getBlockEntity(i, j, k);
+            CrucibleBlockEntity tileEntityCrucible = (CrucibleBlockEntity) world.getBlockEntity(x, y, z);
             for (int listIndex = 0; listIndex < collisionList.size(); listIndex++) {
                 ItemEntity targetEntityItem = (ItemEntity) collisionList.get(listIndex);
                 if (targetEntityItem.dead) {
                     continue;
                 }
                 if (InventoryHandler.addItemInstanceToInventory(tileEntityCrucible, targetEntityItem.stack)) {
-                    world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "random.pop", 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                    world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.pop", 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                     if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                        voicePacket(world, "random.pop", i, j, k, 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                        voicePacket(world, "random.pop", x, y, z, 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                     }
                     targetEntityItem.markDead();
                     continue;
                 }
-                int iBlockAboveID = world.getBlockId(i, j + 1, k);
+                int iBlockAboveID = world.getBlockId(x, y + 1, z);
                 if (iBlockAboveID != Block.FLOWING_WATER.id && iBlockAboveID != Block.WATER.id) {
                     continue;
                 }
-                double fFullBoxTop = (double) j + 1.05D;
+                double fFullBoxTop = (double) y + 1.05D;
                 if (targetEntityItem.boundingBox.minY < fFullBoxTop) {
                     double offset = fFullBoxTop - targetEntityItem.boundingBox.minY;
                     targetEntityItem.setPos(targetEntityItem.x, targetEntityItem.y + offset, targetEntityItem.z);
