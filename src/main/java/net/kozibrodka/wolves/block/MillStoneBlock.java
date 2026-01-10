@@ -106,6 +106,11 @@ public class MillStoneBlock extends TemplateBlockWithEntity
         if (millStoneBlockEntity == null) {
             return;
         }
+        Random random = new Random();
+        EmitMillingParticles(world, x, y, z, random);
+        if (random.nextInt(5) == 0) {
+            world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.explode", 0.1F + random.nextFloat() * 0.1F, 1.25F + random.nextFloat() * 0.1F);
+        }
         millStoneBlockEntity.powerManually();
     }
 
