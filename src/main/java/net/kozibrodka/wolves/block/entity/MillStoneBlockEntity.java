@@ -35,9 +35,12 @@ import net.modificationstation.stationapi.api.util.Identifier;
 import java.util.List;
 
 
-public class MillStoneBlockEntity extends BlockEntity
-        implements Inventory {
+public class MillStoneBlockEntity extends BlockEntity implements Inventory {
     static boolean isHarderThanWolvesPresent = net.fabricmc.loader.api.FabricLoader.getInstance().isModLoaded("harderthanwolves");
+
+    private ItemStack[] millStoneContents;
+    public int iMillStoneGrindCounter;
+    private boolean manuallyPowered = false;
 
     public MillStoneBlockEntity() {
         millStoneContents = new ItemStack[3];
@@ -89,6 +92,7 @@ public class MillStoneBlockEntity extends BlockEntity
         if (nbttagcompound.contains("grindCounter")) {
             iMillStoneGrindCounter = nbttagcompound.getInt("grindCounter");
         }
+        manuallyPowered = nbttagcompound.getBoolean("manuallyPowered");
     }
 
     public void writeNbt(NbtCompound nbttagcompound) {
@@ -105,6 +109,7 @@ public class MillStoneBlockEntity extends BlockEntity
 
         nbttagcompound.put("Items", nbttaglist);
         nbttagcompound.putInt("grindCounter", iMillStoneGrindCounter);
+        nbttagcompound.putBoolean("manuallyPowered", manuallyPowered);
     }
 
     public int getMaxCountPerStack() {
@@ -153,7 +158,9 @@ public class MillStoneBlockEntity extends BlockEntity
             return;
         }
 
-        if (!((MillStoneBlock) BlockListener.millStone).IsBlockOn(world, x, y, z)) return;
+        if (!manuallyPowered) {
+            if (!((MillStoneBlock) BlockListener.millStone).IsBlockOn(world, x, y, z)) return;
+        }
 
         iMillStoneGrindCounter++;
 
@@ -340,10 +347,16 @@ public class MillStoneBlockEntity extends BlockEntity
         }
     }
 
+    public void powerManually() {
+        manuallyPowered = true;
+    }
+
+    public void stopPoweringManually() {
+        manuallyPowered = false;
+    }
+
     private final int iMillStoneInventorySize = 3;
     private final int iMillStoneStackSizeLimit = 64;
     private final double dMillStoneMaxPlayerInteractionDist = 64D;
     private final int iMillStoneTimeToGrind = 200;
-    private ItemStack[] millStoneContents;
-    public int iMillStoneGrindCounter;
 }

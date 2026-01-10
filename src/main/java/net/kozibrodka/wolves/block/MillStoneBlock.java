@@ -82,6 +82,41 @@ public class MillStoneBlock extends TemplateBlockWithEntity
         }
     }
 
+    @Override
+    public void neighborUpdate(World world, int x, int y, int z, int id) {
+        if (isPoweredHandCrank(world, x + 1, y, z)) {
+            powerManually(world, x, y, z);
+        } else if (isPoweredHandCrank(world, x - 1, y, z)) {
+            powerManually(world, x, y, z);
+        } else if (isPoweredHandCrank(world, x, y, z + 1)) {
+            powerManually(world, x, y, z);
+        } else if (isPoweredHandCrank(world, x, y, z - 1)) {
+            powerManually(world, x, y, z);
+        } else {
+            stopPoweringManually(world, x, y, z);
+        }
+    }
+
+    private boolean isPoweredHandCrank(World world, int x, int y, int z) {
+        return world.getBlockId(x, y, z) == BlockListener.handCrank.id && world.getBlockMeta(x, y, z) > 0;
+    }
+
+    private void powerManually(World world, int x, int y, int z) {
+        MillStoneBlockEntity millStoneBlockEntity = (MillStoneBlockEntity) world.getBlockEntity(x, y, z);
+        if (millStoneBlockEntity == null) {
+            return;
+        }
+        millStoneBlockEntity.powerManually();
+    }
+
+    private void stopPoweringManually(World world, int x, int y, int z) {
+        MillStoneBlockEntity millStoneBlockEntity = (MillStoneBlockEntity) world.getBlockEntity(x, y, z);
+        if (millStoneBlockEntity == null) {
+            return;
+        }
+        millStoneBlockEntity.stopPoweringManually();
+    }
+
     public void randomDisplayTick(World world, int i, int j, int k, Random random) {
         if (IsBlockOn(world, i, j, k)) {
             EmitMillingParticles(world, i, j, k, random);
