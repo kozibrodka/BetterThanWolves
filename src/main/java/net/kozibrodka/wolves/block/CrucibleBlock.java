@@ -17,6 +17,7 @@ import net.kozibrodka.wolves.network.ScreenPacket;
 import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.utils.CustomBlockRendering;
 import net.kozibrodka.wolves.utils.InventoryHandler;
+import net.kozibrodka.wolves.utils.MechanicalDevice;
 import net.kozibrodka.wolves.utils.RotatableBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
@@ -36,15 +37,17 @@ import net.modificationstation.stationapi.api.gui.screen.container.GuiHelper;
 import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import net.modificationstation.stationapi.api.state.StateManager;
 import net.modificationstation.stationapi.api.state.property.BooleanProperty;
+import net.modificationstation.stationapi.api.state.property.DirectionProperty;
 import net.modificationstation.stationapi.api.state.property.IntProperty;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockWithEntity;
 import net.modificationstation.stationapi.api.util.Identifier;
+import net.modificationstation.stationapi.api.util.math.Direction;
 
 import java.util.List;
 
 @EnvironmentInterface(value = EnvType.CLIENT, itf = BlockWithInventoryRenderer.class)
 public class CrucibleBlock extends TemplateBlockWithEntity
-        implements RotatableBlock, BlockWithInventoryRenderer {
+        implements RotatableBlock, BlockWithInventoryRenderer, MechanicalDevice {
 
     public CrucibleBlock(Identifier iid) {
         super(iid, Material.GLASS);
@@ -53,6 +56,7 @@ public class CrucibleBlock extends TemplateBlockWithEntity
         setDefaultState(getDefaultState()
                 .with(LAVA, false)
                 .with(FULL, 0)
+                .with(ROTATION, Direction.UP)
         );
     }
 
@@ -261,10 +265,53 @@ public class CrucibleBlock extends TemplateBlockWithEntity
 
     public static final BooleanProperty LAVA = BooleanProperty.of("lava");
     public static final IntProperty FULL = IntProperty.of("full", 0, 27);
+    public static final DirectionProperty ROTATION = DirectionProperty.of("rotation", Direction.UP, Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST);
 
     public void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(LAVA);
         builder.add(FULL);
+        builder.add(ROTATION);
     }
 
+    @Override
+    public boolean canOutputMechanicalPower() {
+        return false;
+    }
+
+    @Override
+    public boolean canInputMechanicalPower() {
+        return false;
+    }
+
+    @Override
+    public void powerMachine(World world, int x, int y, int z, int side) {
+        BlockState currentState = world.getBlockState(x, y, z);
+        Direction newDirection;
+        newDirection = switch (side) {
+            case 2 -> Direction.EAST;
+            case 3 -> Direction.WEST;
+            case 4 -> Direction.SOUTH;
+            case 5 -> Direction.NORTH;
+            default -> Direction.UP;
+        };
+        world.setBlockStateWithNotify(x, y, z, currentState.with(ROTATION, newDirection));
+    }
+
+    @Override
+    public void unpowerMachine(World world, int x, int y, int z, int side) {
+        BlockState currentState = world.getBlockState(x, y, z);
+        world.setBlockStateWithNotify(x, y, z, currentState.with(ROTATION, Direction.UP));
+    }
+
+    @Override
+    public boolean isMachinePowered(World world, int x, int y, int z) {
+        BlockState currentState = world.getBlockState(x, y, z);
+        Direction currentDirection = currentState.get(ROTATION);
+        return currentDirection != Direction.UP;
+    }
+
+    @Override
+    public boolean canInputMechanicalPower(World world, int x, int y, int z, int side) {
+        return side > 1;
+    }
 }
