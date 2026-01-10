@@ -78,6 +78,7 @@ public class GearboxBlock extends TemplateBlock
     public void onPlaced(World world, int x, int y, int z) {
         super.onPlaced(world, x, y, z);
         world.scheduleBlockUpdate(x, y, z, BlockListener.gearBox.id, getTickRate());
+        world.notifyNeighbors(x, y, z, world.getBlockId(x, y, z));
     }
 
     public void onBreak(World world, int x, int y, int z) {
@@ -86,38 +87,6 @@ public class GearboxBlock extends TemplateBlock
             validateOutputs(world, x, y, z, false);
         }
         super.onBreak(world, x, y, z);
-    }
-
-    public void neighborUpdate(World world, int x, int y, int z, int id) {
-        world.scheduleBlockUpdate(x, y, z, id, getTickRate());
-    }
-
-    public void onTick(World world, int x, int y, int z, Random random) {
-        boolean receivingPower = isInputtingMechanicalPower(world, x, y, z);
-        boolean isOn = isGearBoxOn(world, x, y, z);
-        boolean isRedstonePowered = world.canTransferPower(x, y, z) || world.canTransferPower(x, y + 1, z);
-        if (isRedstonePowered) {
-            receivingPower = false;
-        }
-        // Check if gear box activity changed
-        if (isOn != receivingPower) {
-            if (isOn) {
-                // Shut down gear box
-                setGearBoxOnState(world, x, y, z, false);
-                validateOutputs(world, x, y, z, false);
-            } else {
-                // Activate gear box
-                world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.explode", 0.05F, 1.0F);
-                if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                    voicePacket(world, "random.explode", x, y, z, 0.05F, 1.0F);
-                }
-                emitGearBoxParticles(world, x, y, z, random);
-                setGearBoxOnState(world, x, y, z, true);
-                validateOutputs(world, x, y, z, true);
-            }
-        } else {
-            validateOutputs(world, x, y, z, false);
-        }
     }
 
     @Environment(EnvType.SERVER)
@@ -297,5 +266,32 @@ public class GearboxBlock extends TemplateBlock
     @Override
     public boolean canInputMechanicalPower(World world, int x, int y, int z, int side) {
         return getFacing(world, x, y, z) == side;
+    }
+
+    @Override
+    public void powerMachine(World world, int x, int y, int z) {
+        setGearBoxOnState(world, x, y, z, true);
+        handleGearBoxActivation(world, x, y, z, new Random());
+    }
+
+    @Override
+    public void unpowerMachine(World world, int x, int y, int z) {
+        setGearBoxOnState(world, x, y, z, false);
+        handleGearBoxDeactivation(world, x, y, z);
+    }
+
+    private void handleGearBoxDeactivation(World world, int x, int y, int z) {
+        setGearBoxOnState(world, x, y, z, false);
+        validateOutputs(world, x, y, z, false);
+    }
+
+    private void handleGearBoxActivation(World world, int x, int y, int z, Random random) {
+        world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.explode", 0.05F, 1.0F);
+        if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+            voicePacket(world, "random.explode", x, y, z, 0.05F, 1.0F);
+        }
+        emitGearBoxParticles(world, x, y, z, random);
+        setGearBoxOnState(world, x, y, z, true);
+        validateOutputs(world, x, y, z, true);
     }
 }

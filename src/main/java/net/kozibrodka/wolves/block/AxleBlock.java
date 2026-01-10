@@ -52,6 +52,7 @@ public class AxleBlock extends TemplateBlock {
         super.onPlaced(world, x, y, z);
         validatePowerLevel(world, x, y, z);
         world.scheduleBlockUpdate(x, y, z, BlockListener.axleBlock.id, getTickRate());
+        world.notifyNeighbors(x, y, z, world.getBlockId(x, y, z));
     }
 
     public void onTick(World world, int x, int y, int z, Random random) {
@@ -130,6 +131,10 @@ public class AxleBlock extends TemplateBlock {
         metadata |= powerLevel;
         world.setBlockMeta(x, y, z, metadata);
         world.blockUpdateEvent(x, y, z);
+        BlockPosition[] potentialMachines = getConnectionCandidates(world, x, y, z);
+        int axis = getAxisAlignment(world, x, y, z);
+        updateAdjacentMachine(world, potentialMachines[0], axis * 2 + 1,powerLevel > 0);
+        updateAdjacentMachine(world, potentialMachines[1], axis * 2,powerLevel > 0);
     }
 
     public boolean isAxleOrientedTowardsFacing(BlockView blockView, int x, int y, int z, int facing) {
@@ -200,23 +205,7 @@ public class AxleBlock extends TemplateBlock {
             return;
         }
         // Determine power source locations based on axis
-        BlockPosition[] potentialSources = new BlockPosition[2];
-        potentialSources[0] = new BlockPosition(x, y, z);
-        potentialSources[1] = new BlockPosition(x, y, z);
-        switch (axis) {
-            case 0: // '\0'
-                potentialSources[0].addFacingAsOffset(0);
-                potentialSources[1].addFacingAsOffset(1);
-                break;
-            case 1: // '\001'
-                potentialSources[0].addFacingAsOffset(2);
-                potentialSources[1].addFacingAsOffset(3);
-                break;
-            default:
-                potentialSources[0].addFacingAsOffset(4);
-                potentialSources[1].addFacingAsOffset(5);
-                break;
-        }
+        BlockPosition[] potentialSources = getConnectionCandidates(world, x, y, z);
         // Check both sources for power
         int maxNeighborPower = 0;
         int greaterPowerNeighbors = 0;
@@ -260,9 +249,29 @@ public class AxleBlock extends TemplateBlock {
         // Change power level if it is different to the old one
         if (newPower != currentPower) {
             setPowerLevel(world, x, y, z, newPower);
-            updateAdjacentMachine(world, potentialSources[0], axis * 2 + 1,newPower > 0);
-            updateAdjacentMachine(world, potentialSources[1], axis * 2,newPower > 0);
         }
+    }
+
+    private BlockPosition[] getConnectionCandidates(World world, int x, int y, int z) {
+        int axis = getAxisAlignment(world, x, y, z);
+        BlockPosition[] connectionCandidates = new BlockPosition[2];
+        connectionCandidates[0] = new BlockPosition(x, y, z);
+        connectionCandidates[1] = new BlockPosition(x, y, z);
+        switch (axis) {
+            case 0: // '\0'
+                connectionCandidates[0].addFacingAsOffset(0);
+                connectionCandidates[1].addFacingAsOffset(1);
+                break;
+            case 1: // '\001'
+                connectionCandidates[0].addFacingAsOffset(2);
+                connectionCandidates[1].addFacingAsOffset(3);
+                break;
+            default:
+                connectionCandidates[0].addFacingAsOffset(4);
+                connectionCandidates[1].addFacingAsOffset(5);
+                break;
+        }
+        return connectionCandidates;
     }
 
     private void updateAdjacentMachine(World world, BlockPosition potentialMachine, int side, boolean powered) {
