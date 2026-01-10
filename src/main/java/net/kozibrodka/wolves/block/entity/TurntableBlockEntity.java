@@ -162,8 +162,8 @@ public class TurntableBlockEntity extends BlockEntity {
             }
         }
         if (targetBlock instanceof RotatableBlock targetFCBlock) {
-            if (targetFCBlock.CanRotate(world, i, j, k)) {
-                targetFCBlock.Rotate(world, i, j, k, reverseDirection);
+            if (targetFCBlock.canRotate(world, i, j, k)) {
+                targetFCBlock.rotate(world, i, j, k, reverseDirection);
             }
         } else if (targetBlock instanceof RailBlock targetRail) {
             RotateRail(targetRail, i, j, k, reverseDirection);
@@ -195,7 +195,7 @@ public class TurntableBlockEntity extends BlockEntity {
         int iTargetid = world.getBlockId(i, j, k);
         Block targetBlock = Block.BLOCKS[iTargetid];
         if (targetBlock instanceof RotatableBlock targetFCBlock) {
-            return targetFCBlock.CanTransmitRotation(world, i, j, k);
+            return targetFCBlock.canTransmitRotation(world, i, j, k);
         }
         if (iTargetid == Block.GLASS.id) {
             return true;

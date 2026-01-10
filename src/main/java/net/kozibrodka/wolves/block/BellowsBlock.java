@@ -39,7 +39,7 @@ public class BellowsBlock extends TemplateBlock
     }
 
     public int getTextureId(BlockView blockAccess, int i, int j, int k, int iSide) {
-        int iFacing = GetFacing(blockAccess, i, j, k);
+        int iFacing = getFacing(blockAccess, i, j, k);
         if (iSide == iFacing) {
             return TextureListener.bellows_front;
         }
@@ -71,12 +71,12 @@ public class BellowsBlock extends TemplateBlock
         if (iFacing < 2) {
             iFacing = 2;
         }
-        SetFacing(world, i, j, k, iFacing);
+        setFacing(world, i, j, k, iFacing);
     }
 
     public void onPlaced(World world, int i, int j, int k, LivingEntity entityLiving) {
         int iFacing = UnsortedUtils.ConvertPlacingEntityOrientationToFlatBlockFacing(entityLiving);
-        SetFacing(world, i, j, k, iFacing);
+        setFacing(world, i, j, k, iFacing);
     }
 
     public void onPlaced(World world, int i, int j, int k) {
@@ -113,7 +113,7 @@ public class BellowsBlock extends TemplateBlock
     }
 
     public void onTick(World world, int i, int j, int k, Random random) {
-        boolean bReceivingMechanicalPower = IsInputtingMechanicalPower(world, i, j, k);
+        boolean bReceivingMechanicalPower = isInputtingMechanicalPower(world, i, j, k);
         boolean bMechanicalOn = IsBlockMechanicalOn(world, i, j, k);
         if (bMechanicalOn != bReceivingMechanicalPower) {
             if (bReceivingMechanicalPower) {
@@ -145,11 +145,11 @@ public class BellowsBlock extends TemplateBlock
         }
     }
 
-    public int GetFacing(BlockView iBlockAccess, int i, int j, int k) {
+    public int getFacing(BlockView iBlockAccess, int i, int j, int k) {
         return (iBlockAccess.getBlockMeta(i, j, k) & 3) + 2;
     }
 
-    public void SetFacing(World world, int i, int j, int k, int iFacing) {
+    public void setFacing(World world, int i, int j, int k, int iFacing) {
         int iMetaData = world.getBlockMeta(i, j, k) & -4;
         if (iFacing >= 2) {
             iFacing -= 2;
@@ -161,19 +161,19 @@ public class BellowsBlock extends TemplateBlock
     }
 
 
-    public boolean CanRotate(BlockView iBlockAccess, int i, int j, int l) {
+    public boolean canRotate(BlockView iBlockAccess, int i, int j, int l) {
         return true;
     }
 
-    public boolean CanTransmitRotation(BlockView iBlockAccess, int i, int j, int l) {
+    public boolean canTransmitRotation(BlockView iBlockAccess, int i, int j, int l) {
         return false;
     }
 
-    public void Rotate(World world, int i, int j, int k, boolean bReverse) {
-        int iFacing = GetFacing(world, i, j, k);
+    public void rotate(World world, int i, int j, int k, boolean bReverse) {
+        int iFacing = getFacing(world, i, j, k);
         int iNewFacing = UnsortedUtils.RotateFacingAroundJ(iFacing, bReverse);
         if (iNewFacing != iFacing) {
-            SetFacing(world, i, j, k, iNewFacing);
+            setFacing(world, i, j, k, iNewFacing);
             world.setBlocksDirty(i, j, k, i, j, k);
             world.scheduleBlockUpdate(i, j, k, BlockListener.bellows.id, getTickRate());
             world.blockUpdate(i, j, k, BlockListener.bellows.id);
@@ -181,15 +181,15 @@ public class BellowsBlock extends TemplateBlock
         UnsortedUtils.DestroyHorizontallyAttachedAxles(world, i, j, k);
     }
 
-    public boolean CanOutputMechanicalPower() {
+    public boolean canOutputMechanicalPower() {
         return false;
     }
 
-    public boolean CanInputMechanicalPower() {
+    public boolean canInputMechanicalPower() {
         return true;
     }
 
-    public boolean IsInputtingMechanicalPower(World world, int i, int j, int k) {
+    public boolean isInputtingMechanicalPower(World world, int i, int j, int k) {
         for (int iFacing = 2; iFacing <= 5; iFacing++) {
             BlockPosition targetPos = new BlockPosition(i, j, k);
             targetPos.AddFacingAsOffset(iFacing);
@@ -199,12 +199,12 @@ public class BellowsBlock extends TemplateBlock
             }
             Block targetBlock = Block.BLOCKS[iTargetid];
             MechanicalDevice device = (MechanicalDevice) targetBlock;
-            if (device.IsOutputtingMechanicalPower(world, targetPos.i, targetPos.j, targetPos.k)) {
+            if (device.isOutputtingMechanicalPower(world, targetPos.i, targetPos.j, targetPos.k)) {
                 return true;
             }
         }
 
-        int iSawFacing = GetFacing(world, i, j, k);
+        int iSawFacing = getFacing(world, i, j, k);
         for (int iFacing = 0; iFacing <= 5; iFacing++) {
             if (iFacing == iSawFacing || iFacing == 1) {
                 continue;
@@ -224,7 +224,7 @@ public class BellowsBlock extends TemplateBlock
         return false;
     }
 
-    public boolean IsOutputtingMechanicalPower(World world, int i, int j, int l) {
+    public boolean isOutputtingMechanicalPower(World world, int i, int j, int l) {
         return false;
     }
 
@@ -252,7 +252,7 @@ public class BellowsBlock extends TemplateBlock
     }
 
     private void blow(World world, int i, int j, int k) {
-        int iFacing = GetFacing(world, i, j, k);
+        int iFacing = getFacing(world, i, j, k);
         int iFacingSide1 = UnsortedUtils.RotateFacingAroundJ(iFacing, false);
         int iFacingSide2 = UnsortedUtils.RotateFacingAroundJ(iFacing, true);
         BlockPosition particlePos = new BlockPosition(i, j, k);

@@ -5,7 +5,6 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ItemListener;
-import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.utils.BlockPosition;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
@@ -304,7 +303,7 @@ public class AxleBlock extends TemplateBlock {
                 continue;
             }
             if (iTempid == BlockListener.gearBox.id) {
-                ((GearboxBlock) BlockListener.gearBox).Overpower(world, potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
+                ((GearboxBlock) BlockListener.gearBox).overpower(world, potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
             }
         }
 

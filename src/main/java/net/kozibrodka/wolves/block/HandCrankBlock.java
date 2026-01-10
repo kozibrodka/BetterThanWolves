@@ -14,19 +14,14 @@ import net.kozibrodka.wolves.utils.MechanicalDevice;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithInventoryRenderer;
-import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
-import net.modificationstation.stationapi.api.client.texture.atlas.Atlas;
-import net.modificationstation.stationapi.api.client.texture.atlas.Atlases;
 import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import net.modificationstation.stationapi.api.template.block.TemplateBlock;
 import net.modificationstation.stationapi.api.util.Identifier;
@@ -164,19 +159,19 @@ public class HandCrankBlock extends TemplateBlock
         }
     }
 
-    public boolean CanOutputMechanicalPower() {
+    public boolean canOutputMechanicalPower() {
         return true;
     }
 
-    public boolean CanInputMechanicalPower() {
+    public boolean canInputMechanicalPower() {
         return false;
     }
 
-    public boolean IsInputtingMechanicalPower(World world, int i, int j, int l) {
+    public boolean isInputtingMechanicalPower(World world, int i, int j, int l) {
         return false;
     }
 
-    public boolean IsOutputtingMechanicalPower(World world, int i, int j, int k) {
+    public boolean isOutputtingMechanicalPower(World world, int i, int j, int k) {
         return world.getBlockMeta(i, j, k) > 0;
     }
 
@@ -190,7 +185,7 @@ public class HandCrankBlock extends TemplateBlock
             if (tempBlock == null || !(tempBlock instanceof MechanicalDevice tempDevice)) {
                 continue;
             }
-            if (tempDevice.CanInputMechanicalPower()) {
+            if (tempDevice.canInputMechanicalPower()) {
                 iNumPotentialDevicesToPower++;
             }
         }

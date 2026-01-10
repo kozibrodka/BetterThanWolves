@@ -5,13 +5,13 @@ import net.minecraft.world.World;
 
 public interface RotatableBlock {
 
-    int GetFacing(BlockView iblockaccess, int i, int j, int k);
+    int getFacing(BlockView iblockaccess, int i, int j, int k);
 
-    void SetFacing(World world, int i, int j, int k, int l);
+    void setFacing(World world, int i, int j, int k, int l);
 
-    boolean CanRotate(BlockView iblockaccess, int i, int j, int k);
+    boolean canRotate(BlockView iblockaccess, int i, int j, int k);
 
-    boolean CanTransmitRotation(BlockView iblockaccess, int i, int j, int k);
+    boolean canTransmitRotation(BlockView iblockaccess, int i, int j, int k);
 
-    void Rotate(World world, int i, int j, int k, boolean flag);
+    void rotate(World world, int i, int j, int k, boolean flag);
 }

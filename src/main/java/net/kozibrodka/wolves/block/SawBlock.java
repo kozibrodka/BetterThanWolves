@@ -45,7 +45,7 @@ public class SawBlock extends TemplateBlock
     }
 
     public int getTextureId(BlockView blockAccess, int i, int j, int k, int iSide) {
-        int iFacing = GetFacing(blockAccess, i, j, k);
+        int iFacing = getFacing(blockAccess, i, j, k);
         return iSide != iFacing ? TextureListener.saw_side : TextureListener.saw_face;
     }
 
@@ -58,12 +58,12 @@ public class SawBlock extends TemplateBlock
     }
 
     public void onPlaced(World world, int i, int j, int k, int iFacing) {
-        SetFacing(world, i, j, k, UnsortedUtils.getOppositeFacing(iFacing));
+        setFacing(world, i, j, k, UnsortedUtils.getOppositeFacing(iFacing));
     }
 
     public void onPlaced(World world, int i, int j, int k, LivingEntity entityLiving) {
         int iFacing = UnsortedUtils.ConvertPlacingEntityOrientationToBlockFacing(entityLiving);
-        SetFacing(world, i, j, k, iFacing);
+        setFacing(world, i, j, k, iFacing);
     }
 
     public void onPlaced(World world, int i, int j, int k) {
@@ -80,7 +80,7 @@ public class SawBlock extends TemplateBlock
     }
 
     public Box getCollisionShape(World world, int i, int j, int k) {
-        int iFacing = GetFacing(world, i, j, k);
+        int iFacing = getFacing(world, i, j, k);
         switch (iFacing) {
             case 0: // '\0'
                 return Box.createCached((float) i, ((float) j + 1.0F) - 0.75F, (float) k, (float) i + 1.0F, (float) j + 1.0F, (float) k + 1.0F);
@@ -101,7 +101,7 @@ public class SawBlock extends TemplateBlock
     }
 
     public void updateBoundingBox(BlockView iblockaccess, int i, int j, int k) {
-        int iFacing = GetFacing(iblockaccess, i, j, k);
+        int iFacing = getFacing(iblockaccess, i, j, k);
         switch (iFacing) {
             case 0: // '\0'
                 setBoundingBox(0.0F, 0.25F, 0.0F, 1.0F, 1.0F, 1.0F);
@@ -142,7 +142,7 @@ public class SawBlock extends TemplateBlock
     }
 
     public void onTick(World world, int i, int j, int k, Random random) {
-        boolean bReceivingPower = IsInputtingMechanicalPower(world, i, j, k);
+        boolean bReceivingPower = isInputtingMechanicalPower(world, i, j, k);
         boolean bOn = IsBlockOn(world, i, j, k);
         if (bOn != bReceivingPower) {
             world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "random.explode", 0.2F, 1.25F);
@@ -155,7 +155,7 @@ public class SawBlock extends TemplateBlock
                 world.scheduleBlockUpdate(i, j, k, id, getTickRate() + random.nextInt(6));
             }
         } else if (bOn) {
-            int iFacing = GetFacing(world, i, j, k);
+            int iFacing = getFacing(world, i, j, k);
             BlockPosition targetPos = new BlockPosition(i, j, k);
             targetPos.AddFacingAsOffset(iFacing);
             if (!AttemptToSawBlock(world, targetPos.i, targetPos.j, targetPos.k, random, iFacing)) {
@@ -172,7 +172,7 @@ public class SawBlock extends TemplateBlock
 
     public void onEntityCollision(World world, int i, int j, int k, Entity entity) {
         if (IsBlockOn(world, i, j, k) && (entity instanceof LivingEntity)) {
-            int iFacing = GetFacing(world, i, j, k);
+            int iFacing = getFacing(world, i, j, k);
             float fHalfLength = 0.3125F;
             float fHalfWidth = 0.0078125F;
             float fBlockHeight = 0.25F;
@@ -221,31 +221,31 @@ public class SawBlock extends TemplateBlock
         }
     }
 
-    public int GetFacing(BlockView iBlockAccess, int i, int j, int k) {
+    public int getFacing(BlockView iBlockAccess, int i, int j, int k) {
         return iBlockAccess.getBlockMeta(i, j, k) & 7;
     }
 
-    public void SetFacing(World world, int i, int j, int k, int iFacing) {
+    public void setFacing(World world, int i, int j, int k, int iFacing) {
         int iMetaData = world.getBlockMeta(i, j, k) & -8;
         iMetaData |= iFacing;
         world.setBlockMeta(i, j, k, iMetaData);
     }
 
-    public boolean CanRotate(BlockView iBlockAccess, int i, int j, int k) {
-        int iFacing = GetFacing(iBlockAccess, i, j, k);
+    public boolean canRotate(BlockView iBlockAccess, int i, int j, int k) {
+        int iFacing = getFacing(iBlockAccess, i, j, k);
         return iFacing != 0;
     }
 
-    public boolean CanTransmitRotation(BlockView iBlockAccess, int i, int j, int k) {
-        int iFacing = GetFacing(iBlockAccess, i, j, k);
+    public boolean canTransmitRotation(BlockView iBlockAccess, int i, int j, int k) {
+        int iFacing = getFacing(iBlockAccess, i, j, k);
         return iFacing != 0 && iFacing != 1;
     }
 
-    public void Rotate(World world, int i, int j, int k, boolean bReverse) {
-        int iFacing = GetFacing(world, i, j, k);
+    public void rotate(World world, int i, int j, int k, boolean bReverse) {
+        int iFacing = getFacing(world, i, j, k);
         int iNewFacing = UnsortedUtils.RotateFacingAroundJ(iFacing, bReverse);
         if (iNewFacing != iFacing) {
-            SetFacing(world, i, j, k, iNewFacing);
+            setFacing(world, i, j, k, iNewFacing);
             world.setBlocksDirty(i, j, k, i, j, k);
             world.scheduleBlockUpdate(i, j, k, id, getTickRate());
             world.blockUpdate(i, j, k, i);
@@ -267,7 +267,7 @@ public class SawBlock extends TemplateBlock
     }
 
     void EmitSawParticles(World world, int i, int j, int k, Random random) {
-        int iFacing = GetFacing(world, i, j, k);
+        int iFacing = getFacing(world, i, j, k);
         float fBladeXPos = i;
         float fBladeYPos = j;
         float fBladeZPos = k;
@@ -323,7 +323,7 @@ public class SawBlock extends TemplateBlock
     }
 
     void EmitBloodParticles(World world, int i, int j, int k, Random random) {
-        int iFacing = GetFacing(world, i, j, k);
+        int iFacing = getFacing(world, i, j, k);
         BlockPosition iTargetPos = new BlockPosition(i, j, k);
         iTargetPos.AddFacingAsOffset(iFacing);
         for (int counter = 0; counter < 10; counter++) {
@@ -459,16 +459,16 @@ public class SawBlock extends TemplateBlock
         world.setBlock(i, j, k, 0);
     }
 
-    public boolean CanOutputMechanicalPower() {
+    public boolean canOutputMechanicalPower() {
         return false;
     }
 
-    public boolean CanInputMechanicalPower() {
+    public boolean canInputMechanicalPower() {
         return true;
     }
 
-    public boolean IsInputtingMechanicalPower(World world, int i, int j, int k) {
-        int iSawFacing = GetFacing(world, i, j, k);
+    public boolean isInputtingMechanicalPower(World world, int i, int j, int k) {
+        int iSawFacing = getFacing(world, i, j, k);
         for (int iFacing = 0; iFacing <= 5; iFacing++) {
             if (iFacing == iSawFacing) {
                 continue;
@@ -488,7 +488,7 @@ public class SawBlock extends TemplateBlock
         return false;
     }
 
-    public boolean IsOutputtingMechanicalPower(World world, int i, int j, int l) {
+    public boolean isOutputtingMechanicalPower(World world, int i, int j, int l) {
         return false;
     }
 
@@ -503,7 +503,7 @@ public class SawBlock extends TemplateBlock
         float f = 0.5F;
         float f1 = 0.5F;
         float f2 = 0.75F;
-        int l = GetFacing(tileView, x, y, z);
+        int l = getFacing(tileView, x, y, z);
         switch (l) {
             case 0: // '\0'
                 this.setBoundingBox(0.5F - f1, 1.0F - f2, 0.5F - f, 0.5F + f1, 1.0F, 0.5F + f);

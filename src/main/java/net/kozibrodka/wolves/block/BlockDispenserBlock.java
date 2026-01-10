@@ -56,7 +56,7 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
     }
 
     public int getTextureId(BlockView iblockaccess, int i, int j, int k, int iSide) {
-        int iFacing = GetFacing(iblockaccess, i, j, k);
+        int iFacing = getFacing(iblockaccess, i, j, k);
         if (iSide == iFacing) {
             return TextureListener.dispenser_face;
         }
@@ -89,13 +89,13 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
     }
 
     public void onPlaced(World world, int i, int j, int k, int iFacing) {
-        SetFacing(world, i, j, k, UnsortedUtils.getOppositeFacing(iFacing));
+        setFacing(world, i, j, k, UnsortedUtils.getOppositeFacing(iFacing));
         world.scheduleBlockUpdate(i, j, k, BlockListener.blockDispenser.id, getTickRate());
     }
 
     public void onPlaced(World world, int i, int j, int k, LivingEntity entityLiving) {
         int iFacing = UnsortedUtils.ConvertPlacingEntityOrientationToBlockFacing(entityLiving);
-        SetFacing(world, i, j, k, iFacing);
+        setFacing(world, i, j, k, iFacing);
         world.scheduleBlockUpdate(i, j, k, BlockListener.blockDispenser.id, getTickRate());
     }
 
@@ -139,29 +139,29 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
         }
     }
 
-    public int GetFacing(BlockView iBlockAccess, int i, int j, int k) {
+    public int getFacing(BlockView iBlockAccess, int i, int j, int k) {
         return iBlockAccess.getBlockMeta(i, j, k) & -9;
     }
 
-    public void SetFacing(World world, int i, int j, int k, int iFacing) {
+    public void setFacing(World world, int i, int j, int k, int iFacing) {
         int iMetaData = world.getBlockMeta(i, j, k) & 8;
         iMetaData |= iFacing;
         world.setBlockMeta(i, j, k, iMetaData);
     }
 
-    public boolean CanRotate(BlockView iBlockAccess, int i, int j, int l) {
+    public boolean canRotate(BlockView iBlockAccess, int i, int j, int l) {
         return true;
     }
 
-    public boolean CanTransmitRotation(BlockView iBlockAccess, int i, int j, int l) {
+    public boolean canTransmitRotation(BlockView iBlockAccess, int i, int j, int l) {
         return true;
     }
 
-    public void Rotate(World world, int i, int j, int k, boolean bReverse) {
-        int iFacing = GetFacing(world, i, j, k);
+    public void rotate(World world, int i, int j, int k, boolean bReverse) {
+        int iFacing = getFacing(world, i, j, k);
         int iNewFacing = UnsortedUtils.RotateFacingAroundJ(iFacing, bReverse);
         if (iNewFacing != iFacing) {
-            SetFacing(world, i, j, k, iNewFacing);
+            setFacing(world, i, j, k, iNewFacing);
             world.setBlocksDirty(i, j, k, i, j, k);
         }
     }
@@ -311,7 +311,7 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
     }
 
     private void ConsumeFacingBlock(World world, int i, int j, int k) {
-        int iFacingDirection = GetFacing(world, i, j, k);
+        int iFacingDirection = getFacing(world, i, j, k);
         BlockPosition targetPos = new BlockPosition(i, j, k);
         targetPos.AddFacingAsOffset(iFacingDirection);
         if (!ConsumeEntityAtTargetLoc(world, i, j, k, targetPos.i, targetPos.j, targetPos.k) && !world.isAir(targetPos.i, targetPos.j, targetPos.k)) {
@@ -349,7 +349,7 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
     }
 
     private void SpitOutItem(World world, int i, int j, int k, ItemStack ItemInstance, Random random) {
-        int facing = GetFacing(world, i, j, k);
+        int facing = getFacing(world, i, j, k);
         float deltaj = 0.0F;
         float f = 0.0F;
         float f1 = 0.0F;
@@ -397,7 +397,7 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
 
     private void DispenseBlockOrItem(World world, int i, int j, int k, Random random) {
         ValidateBlockDispenser(world, i, j, k);
-        int iFacing = GetFacing(world, i, j, k);
+        int iFacing = getFacing(world, i, j, k);
         BlockPosition targetPos = new BlockPosition(i, j, k);
         targetPos.AddFacingAsOffset(iFacing);
         int blockId = world.getBlockId(targetPos.i, targetPos.j, targetPos.k);

@@ -59,14 +59,14 @@ public class AnvilBlock extends TemplateBlock
         } else {
             iFacing = UnsortedUtils.getOppositeFacing(iFacing);
         }
-        SetFacing(world, i, j, k, iFacing);
+        setFacing(world, i, j, k, iFacing);
         world.scheduleBlockUpdate(i, j, k, this.id, this.getTickRate());
     }
 
     public void onPlaced(World world, int i, int j, int k, LivingEntity entityLiving) {
         world.playSound(i, j, k, "wolves:anvil_place", 1.0F, 1.2F);
         int iFacing = UnsortedUtils.ConvertPlacingEntityOrientationToFlatBlockFacing(entityLiving);
-        SetFacing(world, i, j, k, iFacing);
+        setFacing(world, i, j, k, iFacing);
     }
 
     public boolean onUse(World world, int i, int j, int k, PlayerEntity entityplayer) {
@@ -78,7 +78,7 @@ public class AnvilBlock extends TemplateBlock
     }
 
     public Box getCollisionShape(World world, int i, int j, int k) {
-        int iFacing = GetFacing(world, i, j, k);
+        int iFacing = getFacing(world, i, j, k);
         if (iFacing == 2 || iFacing == 3) {
             return Box.createCached(((float) i + 0.5F) - 0.25F, (float) j, (float) k, (float) i + 0.5F + 0.25F, (float) j + 1.0F, (float) k + 1.0F);
         } else {
@@ -87,7 +87,7 @@ public class AnvilBlock extends TemplateBlock
     }
 
     public void updateBoundingBox(BlockView iblockaccess, int i, int j, int k) {
-        int iFacing = GetFacing(iblockaccess, i, j, k);
+        int iFacing = getFacing(iblockaccess, i, j, k);
         if (iFacing == 2 || iFacing == 3) {
             setBoundingBox(0.25F, 0.0F, 0.0F, 0.75F, 1.0F, 1.0F);
         } else {
@@ -95,27 +95,27 @@ public class AnvilBlock extends TemplateBlock
         }
     }
 
-    public int GetFacing(BlockView iBlockAccess, int i, int j, int k) {
+    public int getFacing(BlockView iBlockAccess, int i, int j, int k) {
         return iBlockAccess.getBlockMeta(i, j, k);
     }
 
-    public void SetFacing(World world, int i, int j, int k, int iFacing) {
+    public void setFacing(World world, int i, int j, int k, int iFacing) {
         world.setBlockMeta(i, j, k, iFacing);
     }
 
-    public boolean CanRotate(BlockView iBlockAccess, int i, int j, int l) {
+    public boolean canRotate(BlockView iBlockAccess, int i, int j, int l) {
         return true;
     }
 
-    public boolean CanTransmitRotation(BlockView iBlockAccess, int i, int j, int l) {
+    public boolean canTransmitRotation(BlockView iBlockAccess, int i, int j, int l) {
         return true;
     }
 
-    public void Rotate(World world, int i, int j, int k, boolean bReverse) {
-        int iFacing = GetFacing(world, i, j, k);
+    public void rotate(World world, int i, int j, int k, boolean bReverse) {
+        int iFacing = getFacing(world, i, j, k);
         int iNewFacing = UnsortedUtils.RotateFacingAroundJ(iFacing, bReverse);
         if (iNewFacing != iFacing) {
-            SetFacing(world, i, j, k, iNewFacing);
+            setFacing(world, i, j, k, iNewFacing);
             world.setBlocksDirty(i, j, k, i, j, k);
             world.scheduleBlockUpdate(i, j, k, id, getTickRate());
             world.blockUpdate(i, j, j, id);
@@ -205,7 +205,7 @@ public class AnvilBlock extends TemplateBlock
 
     @Override
     public boolean renderWorld(BlockRenderManager tileRenderer, BlockView tileView, int x, int y, int z) {
-        int l = GetFacing(tileView, x, y, z);
+        int l = getFacing(tileView, x, y, z);
         SetBlockBoundsRotatedAboutJToFacing(0.0F, 0.0F, 0.25F, 1.0F, 0.125F, 0.75F, l);
         tileRenderer.renderBlock(this, x, y, z);
         SetBlockBoundsRotatedAboutJToFacing(0.375F, 0.125F, 0.375F, 0.625F, 0.5625F, 0.625F, l);

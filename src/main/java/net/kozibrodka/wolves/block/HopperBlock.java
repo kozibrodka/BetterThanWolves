@@ -102,7 +102,7 @@ public class HopperBlock extends TemplateBlockWithEntity
     }
 
     public void neighborUpdate(World world, int i, int j, int k, int iid) {
-        boolean bReceivingPower = IsInputtingMechanicalPower(world, i, j, k);
+        boolean bReceivingPower = isInputtingMechanicalPower(world, i, j, k);
         if (IsBlockOn(world, i, j, k) != bReceivingPower) {
             world.scheduleBlockUpdate(i, j, k, id, getTickRate());
         }
@@ -126,7 +126,7 @@ public class HopperBlock extends TemplateBlockWithEntity
     }
 
     public void onTick(World world, int i, int j, int k, Random random) {
-        boolean bReceivingPower = IsInputtingMechanicalPower(world, i, j, k);
+        boolean bReceivingPower = isInputtingMechanicalPower(world, i, j, k);
         boolean bOn = IsBlockOn(world, i, j, k);
         boolean bFull = IsHopperFull(world, i, j, k);
         boolean bRedstone = IsRedstoneOutputOn(world, i, j, k);
@@ -379,34 +379,34 @@ public class HopperBlock extends TemplateBlockWithEntity
         world.setBlock(i, j, k, 0);
     }
 
-    public int GetFacing(BlockView iBlockAccess, int i, int j, int l) {
+    public int getFacing(BlockView iBlockAccess, int i, int j, int l) {
         return 0;
     }
 
-    public void SetFacing(World world1, int l, int i1, int j1, int k1) {
+    public void setFacing(World world1, int l, int i1, int j1, int k1) {
     }
 
-    public boolean CanRotate(BlockView iBlockAccess, int i, int j, int l) {
+    public boolean canRotate(BlockView iBlockAccess, int i, int j, int l) {
         return true;
     }
 
-    public boolean CanTransmitRotation(BlockView iBlockAccess, int i, int j, int l) {
+    public boolean canTransmitRotation(BlockView iBlockAccess, int i, int j, int l) {
         return false;
     }
 
-    public void Rotate(World world, int i, int j, int k, boolean bReverse) {
+    public void rotate(World world, int i, int j, int k, boolean bReverse) {
         UnsortedUtils.DestroyHorizontallyAttachedAxles(world, i, j, k);
     }
 
-    public boolean CanOutputMechanicalPower() {
+    public boolean canOutputMechanicalPower() {
         return false;
     }
 
-    public boolean CanInputMechanicalPower() {
+    public boolean canInputMechanicalPower() {
         return true;
     }
 
-    public boolean IsInputtingMechanicalPower(World world, int i, int j, int k) {
+    public boolean isInputtingMechanicalPower(World world, int i, int j, int k) {
         for (int iFacing = 2; iFacing <= 5; iFacing++) {
             BlockPosition targetPos = new BlockPosition(i, j, k);
             targetPos.AddFacingAsOffset(iFacing);
@@ -423,7 +423,7 @@ public class HopperBlock extends TemplateBlockWithEntity
             }
             Block targetBlock = Block.BLOCKS[blockId];
             MechanicalDevice device = (MechanicalDevice) targetBlock;
-            if (device.IsOutputtingMechanicalPower(world, targetPos.i, targetPos.j, targetPos.k)) {
+            if (device.isOutputtingMechanicalPower(world, targetPos.i, targetPos.j, targetPos.k)) {
                 return true;
             }
         }
@@ -431,7 +431,7 @@ public class HopperBlock extends TemplateBlockWithEntity
         return false;
     }
 
-    public boolean IsOutputtingMechanicalPower(World world, int i, int j, int l) {
+    public boolean isOutputtingMechanicalPower(World world, int i, int j, int l) {
         return false;
     }
 
