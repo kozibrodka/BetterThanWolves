@@ -4,7 +4,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.api.AffectedByBellows;
-import net.kozibrodka.wolves.api.MechanicalPowerConsumer;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.network.SoundPacket;
@@ -29,13 +28,12 @@ import java.util.List;
 import java.util.Random;
 
 public class BellowsBlock extends TemplateBlock
-        implements MechanicalDevice, RotatableBlock, MechanicalPowerConsumer {
+        implements MechanicalDevice, RotatableBlock {
 
     public BellowsBlock(Identifier iid) {
         super(iid, Material.WOOD);
         setHardness(2.0F);
         setSoundGroup(WOOD_SOUND_GROUP);
-        setTickRandomly(true);
     }
 
     public int getTextureId(BlockView blockAccess, int i, int j, int k, int iSide) {
@@ -108,32 +106,6 @@ public class BellowsBlock extends TemplateBlock
         }
     }
 
-    public void neighborUpdate(World world, int i, int j, int k, int iid) {
-        world.scheduleBlockUpdate(i, j, k, BlockListener.bellows.id, getTickRate());
-    }
-
-    public void onTick(World world, int i, int j, int k, Random random) {
-        boolean bReceivingMechanicalPower = isInputtingMechanicalPower(world, i, j, k);
-        boolean bMechanicalOn = IsBlockMechanicalOn(world, i, j, k);
-        if (bMechanicalOn != bReceivingMechanicalPower) {
-            if (bReceivingMechanicalPower) {
-                blow(world, i, j, k);
-                world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "fire.ignite", 0.5F, world.random.nextFloat() * 0.4F + 2.0F);
-                if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                    voicePacket(world, "fire.ignite", i, j, k, 0.5F, world.random.nextFloat() * 0.4F + 2.0F);
-                }
-            } else {
-                LiftCollidingEntities(world, i, j, k);
-                world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "fire.ignite", 0.5F, world.random.nextFloat() * 0.4F + 2.0F);
-                if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                    voicePacket(world, "fire.ignite", i, j, k, 0.5F, world.random.nextFloat() * 0.4F + 2.0F);
-                }
-            }
-            SetBlockMechanicalOn(world, i, j, k, bReceivingMechanicalPower);
-            world.setBlocksDirty(i, j, k, i, j, k);
-        }
-    }
-
     @Environment(EnvType.SERVER)
     public void voicePacket(World world, String name, int x, int y, int z, float g, float h) {
         List list2 = world.players;
@@ -189,43 +161,36 @@ public class BellowsBlock extends TemplateBlock
         return true;
     }
 
-    public boolean isInputtingMechanicalPower(World world, int i, int j, int k) {
-        for (int iFacing = 2; iFacing <= 5; iFacing++) {
-            BlockPosition targetPos = new BlockPosition(i, j, k);
-            targetPos.addFacingAsOffset(iFacing);
-            int iTargetid = world.getBlockId(targetPos.x, targetPos.y, targetPos.z);
-            if (iTargetid != BlockListener.handCrank.id) {
-                continue;
-            }
-            Block targetBlock = Block.BLOCKS[iTargetid];
-            MechanicalDevice device = (MechanicalDevice) targetBlock;
-            if (device.isOutputtingMechanicalPower(world, targetPos.x, targetPos.y, targetPos.z)) {
-                return true;
-            }
+    @Override
+    public void powerMachine(World world, int x, int y, int z) {
+        blow(world, x, y, z);
+        world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "fire.ignite", 0.5F, world.random.nextFloat() * 0.4F + 2.0F);
+        if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+            voicePacket(world, "fire.ignite", x, y, z, 0.5F, world.random.nextFloat() * 0.4F + 2.0F);
         }
-
-        int iSawFacing = getFacing(world, i, j, k);
-        for (int iFacing = 0; iFacing <= 5; iFacing++) {
-            if (iFacing == iSawFacing || iFacing == 1) {
-                continue;
-            }
-            BlockPosition targetPos = new BlockPosition(i, j, k);
-            targetPos.addFacingAsOffset(iFacing);
-            int iTargetid = world.getBlockId(targetPos.x, targetPos.y, targetPos.z);
-            if (iTargetid != BlockListener.axleBlock.id) {
-                continue;
-            }
-            AxleBlock axleBlock = (AxleBlock) BlockListener.axleBlock;
-            if (axleBlock.isAxleOrientedTowardsFacing(world, targetPos.x, targetPos.y, targetPos.z, iFacing) && axleBlock.getPowerLevel(world, targetPos.x, targetPos.y, targetPos.z) > 0) {
-                return true;
-            }
-        }
-
-        return false;
+        SetBlockMechanicalOn(world, x, y, z, true);
+        world.setBlocksDirty(x, y, z, x, y, z);
     }
 
-    public boolean isOutputtingMechanicalPower(World world, int i, int j, int l) {
-        return false;
+    @Override
+    public void unpowerMachine(World world, int x, int y, int z) {
+        LiftCollidingEntities(world, x, y, z);
+        world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "fire.ignite", 0.5F, world.random.nextFloat() * 0.4F + 2.0F);
+        if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+            voicePacket(world, "fire.ignite", x, y, z, 0.5F, world.random.nextFloat() * 0.4F + 2.0F);
+        }
+        SetBlockMechanicalOn(world, x, y, z, false);
+        world.setBlocksDirty(x, y, z, x, y, z);
+    }
+
+    @Override
+    public boolean isMachinePowered(World world, int x, int y, int z) {
+        return IsBlockMechanicalOn(world, x, y, z);
+    }
+
+    @Override
+    public boolean canInputMechanicalPower(World world, int x, int y, int z, int side) {
+        return side != 1 && side != getFacing(world, x, y, z);
     }
 
     public boolean IsBlockMechanicalOn(BlockView iBlockAccess, int i, int j, int k) {
@@ -335,26 +300,4 @@ public class BellowsBlock extends TemplateBlock
     }
 
     private static final int m_iBellowsTickRate = 10;
-
-    @Override
-    public void receivePower(World world, int x, int y, int z, int side) {
-        blow(world, x, y, z);
-        world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "fire.ignite", 0.5F, world.random.nextFloat() * 0.4F + 2.0F);
-        if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-            voicePacket(world, "fire.ignite", x, y, z, 0.5F, world.random.nextFloat() * 0.4F + 2.0F);
-        }
-        SetBlockMechanicalOn(world, x, y, z, true);
-        world.setBlocksDirty(x, y, z, x, y, z);
-    }
-
-    @Override
-    public void stopReceivingPower(World world, int x, int y, int z, int side) {
-        LiftCollidingEntities(world, x, y, z);
-        world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "fire.ignite", 0.5F, world.random.nextFloat() * 0.4F + 2.0F);
-        if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-            voicePacket(world, "fire.ignite", x, y, z, 0.5F, world.random.nextFloat() * 0.4F + 2.0F);
-        }
-        SetBlockMechanicalOn(world, x, y, z, false);
-        world.setBlocksDirty(x, y, z, x, y, z);
-    }
 }

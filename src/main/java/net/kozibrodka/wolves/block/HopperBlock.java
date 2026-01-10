@@ -102,10 +102,6 @@ public class HopperBlock extends TemplateBlockWithEntity
     }
 
     public void neighborUpdate(World world, int i, int j, int k, int iid) {
-        boolean bReceivingPower = isInputtingMechanicalPower(world, i, j, k);
-        if (IsBlockOn(world, i, j, k) != bReceivingPower) {
-            world.scheduleBlockUpdate(i, j, k, id, getTickRate());
-        }
         ((HopperBlockEntity) world.getBlockEntity(i, j, k)).hopperEjectBlocked = false;
     }
 
@@ -126,18 +122,8 @@ public class HopperBlock extends TemplateBlockWithEntity
     }
 
     public void onTick(World world, int i, int j, int k, Random random) {
-        boolean bReceivingPower = isInputtingMechanicalPower(world, i, j, k);
-        boolean bOn = IsBlockOn(world, i, j, k);
         boolean bFull = IsHopperFull(world, i, j, k);
         boolean bRedstone = IsRedstoneOutputOn(world, i, j, k);
-        if (bOn != bReceivingPower) {
-            world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "random.explode", 0.2F, 1.25F);
-            if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                voicePacket(world, "random.explode", i, j, k, 0.2F, 1.25F);
-            }
-            EmitHopperParticles(world, i, j, k, random);
-            SetBlockOn(world, i, j, k, bReceivingPower);
-        }
         if (bFull != bRedstone) {
             world.playSound(i, j, k, "random.click", 0.25F, 1.2F);
             if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
@@ -406,33 +392,34 @@ public class HopperBlock extends TemplateBlockWithEntity
         return true;
     }
 
-    public boolean isInputtingMechanicalPower(World world, int i, int j, int k) {
-        for (int iFacing = 2; iFacing <= 5; iFacing++) {
-            BlockPosition targetPos = new BlockPosition(i, j, k);
-            targetPos.addFacingAsOffset(iFacing);
-            int blockId = world.getBlockId(targetPos.x, targetPos.y, targetPos.z);
-            if (blockId == BlockListener.axleBlock.id) {
-                AxleBlock axleBlock = (AxleBlock) BlockListener.axleBlock;
-                if (axleBlock.isAxleOrientedTowardsFacing(world, targetPos.x, targetPos.y, targetPos.z, iFacing) && axleBlock.getPowerLevel(world, targetPos.x, targetPos.y, targetPos.z) > 0) {
-                    return true;
-                }
-                continue;
-            }
-            if (blockId != BlockListener.handCrank.id) {
-                continue;
-            }
-            Block targetBlock = Block.BLOCKS[blockId];
-            MechanicalDevice device = (MechanicalDevice) targetBlock;
-            if (device.isOutputtingMechanicalPower(world, targetPos.x, targetPos.y, targetPos.z)) {
-                return true;
-            }
+    @Override
+    public void powerMachine(World world, int x, int y, int z) {
+        world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.explode", 0.2F, 1.25F);
+        if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+            voicePacket(world, "random.explode", x, y, z, 0.2F, 1.25F);
         }
-
-        return false;
+        EmitHopperParticles(world, x, y, z, new Random());
+        SetBlockOn(world, x, y, z, true);
     }
 
-    public boolean isOutputtingMechanicalPower(World world, int i, int j, int l) {
-        return false;
+    @Override
+    public void unpowerMachine(World world, int x, int y, int z) {
+        world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.explode", 0.2F, 1.25F);
+        if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+            voicePacket(world, "random.explode", x, y, z, 0.2F, 1.25F);
+        }
+        EmitHopperParticles(world, x, y, z, new Random());
+        SetBlockOn(world, x, y, z, false);
+    }
+
+    @Override
+    public boolean isMachinePowered(World world, int x, int y, int z) {
+        return IsBlockOn(world, x, y, z);
+    }
+
+    @Override
+    public boolean canInputMechanicalPower(World world, int x, int y, int z, int side) {
+        return side > 1;
     }
 
     private static final int hopperTickRate = 10;

@@ -142,19 +142,8 @@ public class SawBlock extends TemplateBlock
     }
 
     public void onTick(World world, int i, int j, int k, Random random) {
-        boolean bReceivingPower = isInputtingMechanicalPower(world, i, j, k);
         boolean bOn = IsBlockOn(world, i, j, k);
-        if (bOn != bReceivingPower) {
-            world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "random.explode", 0.2F, 1.25F);
-            if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                voicePacket(world, "random.explode", i, j, k, 0.2F, 1.25F);
-            }
-            EmitSawParticles(world, i, j, k, random);
-            SetBlockOn(world, i, j, k, bReceivingPower);
-            if (bReceivingPower) {
-                world.scheduleBlockUpdate(i, j, k, id, getTickRate() + random.nextInt(6));
-            }
-        } else if (bOn) {
+        if (bOn) {
             int iFacing = getFacing(world, i, j, k);
             BlockPosition targetPos = new BlockPosition(i, j, k);
             targetPos.addFacingAsOffset(iFacing);
@@ -467,29 +456,34 @@ public class SawBlock extends TemplateBlock
         return true;
     }
 
-    public boolean isInputtingMechanicalPower(World world, int i, int j, int k) {
-        int iSawFacing = getFacing(world, i, j, k);
-        for (int iFacing = 0; iFacing <= 5; iFacing++) {
-            if (iFacing == iSawFacing) {
-                continue;
-            }
-            BlockPosition targetPos = new BlockPosition(i, j, k);
-            targetPos.addFacingAsOffset(iFacing);
-            int blockId = world.getBlockId(targetPos.x, targetPos.y, targetPos.z);
-            if (blockId != BlockListener.axleBlock.id) {
-                continue;
-            }
-            AxleBlock axleBlock = (AxleBlock) BlockListener.axleBlock;
-            if (axleBlock.isAxleOrientedTowardsFacing(world, targetPos.x, targetPos.y, targetPos.z, iFacing) && axleBlock.getPowerLevel(world, targetPos.x, targetPos.y, targetPos.z) > 0) {
-                return true;
-            }
+    @Override
+    public void powerMachine(World world, int x, int y, int z) {
+        world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.explode", 0.2F, 1.25F);
+        if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+            voicePacket(world, "random.explode", x, y, z, 0.2F, 1.25F);
         }
-
-        return false;
+        EmitSawParticles(world, x, y, z, new Random());
+        SetBlockOn(world, x, y, z, true);
     }
 
-    public boolean isOutputtingMechanicalPower(World world, int i, int j, int l) {
-        return false;
+    @Override
+    public void unpowerMachine(World world, int x, int y, int z) {
+        world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.explode", 0.2F, 1.25F);
+        if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+            voicePacket(world, "random.explode", x, y, z, 0.2F, 1.25F);
+        }
+        EmitSawParticles(world, x, y, z, new Random());
+        SetBlockOn(world, x, y, z, false);
+    }
+
+    @Override
+    public boolean isMachinePowered(World world, int x, int y, int z) {
+        return IsBlockOn(world, x, y, z);
+    }
+
+    @Override
+    public boolean canInputMechanicalPower(World world, int x, int y, int z, int side) {
+        return side != getFacing(world, x, y, z);
     }
 
     private static final int iSawTickRate = 10;

@@ -13,22 +13,12 @@ public interface MechanicalDevice {
     }
 
     default boolean isOutputtingMechanicalPower(World world, int x, int y, int z, int side) {
-        return canInputMechanicalPower();
+        return canOutputMechanicalPower();
     }
 
-    boolean isInputtingMechanicalPower(World world, int i, int j, int k);
+    void powerMachine(World world, int x, int y, int z);
 
-    boolean isOutputtingMechanicalPower(World world, int i, int j, int k);
+    void unpowerMachine(World world, int x, int y, int z);
 
-    default void powerMachine(World world, int x, int y, int z) {
-        System.out.println("Powering machine");
-    }
-
-    default void unpowerMachine(World world, int x, int y, int z) {
-        System.out.println("Unpowering machine");
-    }
-
-    default boolean isMachinePowered(World world, int x, int y, int z) {
-        return false;
-    }
+    boolean isMachinePowered(World world, int x, int y, int z);
 }
