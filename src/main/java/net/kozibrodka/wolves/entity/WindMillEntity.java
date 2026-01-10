@@ -134,9 +134,9 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider {
         }
         if (getProvidingPower()) {
             if (centerId == BlockListener.axleBlock.id) {
-                ((AxleBlock) BlockListener.axleBlock).SetPowerLevel(world, centerX, centerY, centerZ, 0);
+                ((AxleBlock) BlockListener.axleBlock).setPowerLevel(world, centerX, centerY, centerZ, 0);
             } else if (centerId == BlockListener.nonCollidingAxleBlock.id) {
-                ((AxleBlock) BlockListener.nonCollidingAxleBlock).SetPowerLevel(world, centerX, centerY, centerZ, 0);
+                ((AxleBlock) BlockListener.nonCollidingAxleBlock).setPowerLevel(world, centerX, centerY, centerZ, 0);
             }
         }
         int xOffset;
@@ -194,11 +194,11 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider {
                 DestroyWithDrop();
                 return;
             }
-            if (!getProvidingPower() && ((AxleBlock) BlockListener.axleBlock).GetPowerLevel(world, centerX, centerY, centerZ) > 0) {
+            if (!getProvidingPower() && ((AxleBlock) BlockListener.axleBlock).getPowerLevel(world, centerX, centerY, centerZ) > 0) {
                 DestroyWithDrop();
                 return;
             }
-            if (!getProvidingPower() && ((AxleBlock) BlockListener.nonCollidingAxleBlock).GetPowerLevel(world, centerX, centerY, centerZ) > 0) {
+            if (!getProvidingPower() && ((AxleBlock) BlockListener.nonCollidingAxleBlock).getPowerLevel(world, centerX, centerY, centerZ) > 0) {
                 DestroyWithDrop();
                 return;
             }
@@ -206,18 +206,18 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider {
             if (fWindMillCurrentRotationSpeed > 0.01F || fWindMillCurrentRotationSpeed < -0.01F) {
                 if (!getProvidingPower()) {
                     setProvidingPower(true);
-                    ((AxleBlock) BlockListener.nonCollidingAxleBlock).SetPowerLevel(world, centerX, centerY, centerZ, 3);
+                    ((AxleBlock) BlockListener.nonCollidingAxleBlock).setPowerLevel(world, centerX, centerY, centerZ, 3);
                 }
             } else if (getProvidingPower()) {
                 setProvidingPower(false);
-                ((AxleBlock) BlockListener.nonCollidingAxleBlock).SetPowerLevel(world, centerX, centerY, centerZ, 0);
+                ((AxleBlock) BlockListener.nonCollidingAxleBlock).setPowerLevel(world, centerX, centerY, centerZ, 0);
             }
             if (getOverpowerTimer() >= 0) {
                 if (getOverpowerTimer() > 0) {
                     setOverpowerTimer(getOverpowerTimer() - 1);
                 }
                 if (getOverpowerTimer() <= 0) {
-                    ((AxleBlock) BlockListener.nonCollidingAxleBlock).Overpower(world, centerX, centerY, centerZ);
+                    ((AxleBlock) BlockListener.nonCollidingAxleBlock).overpower(world, centerX, centerY, centerZ);
                 }
             }
         }

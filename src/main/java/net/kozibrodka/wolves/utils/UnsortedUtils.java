@@ -283,8 +283,8 @@ public class UnsortedUtils {
                 continue;
             }
             AxleBlock axleBlock = (AxleBlock) BlockListener.axleBlock;
-            if (axleBlock.IsAxleOrientedTowardsFacing(world, tempPos.x, tempPos.y, tempPos.z, iFacing)) {
-                axleBlock.BreakAxle(world, tempPos.x, tempPos.y, tempPos.z);
+            if (axleBlock.isAxleOrientedTowardsFacing(world, tempPos.x, tempPos.y, tempPos.z, iFacing)) {
+                axleBlock.breakAxle(world, tempPos.x, tempPos.y, tempPos.z);
             }
         }
 

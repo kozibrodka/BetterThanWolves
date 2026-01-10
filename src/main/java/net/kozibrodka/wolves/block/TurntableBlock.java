@@ -176,7 +176,7 @@ public class TurntableBlock extends TemplateBlockWithEntity
         int blockId = world.getBlockId(targetPos.x, targetPos.y, targetPos.z);
         if (blockId == BlockListener.axleBlock.id) {
             AxleBlock axleBlock = (AxleBlock) BlockListener.axleBlock;
-            return axleBlock.IsAxleOrientedTowardsFacing(world, targetPos.x, targetPos.y, targetPos.z, 0) && axleBlock.GetPowerLevel(world, targetPos.x, targetPos.y, targetPos.z) > 0;
+            return axleBlock.isAxleOrientedTowardsFacing(world, targetPos.x, targetPos.y, targetPos.z, 0) && axleBlock.getPowerLevel(world, targetPos.x, targetPos.y, targetPos.z) > 0;
         }
         return false;
     }

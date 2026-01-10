@@ -113,9 +113,9 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider 
         }
         if (getProvidingPower()) {
             if (centerId == BlockListener.axleBlock.id) {
-                ((AxleBlock) BlockListener.axleBlock).SetPowerLevel(world, centerX, centerY, centerZ, 0);
+                ((AxleBlock) BlockListener.axleBlock).setPowerLevel(world, centerX, centerY, centerZ, 0);
             } else if (centerId == BlockListener.nonCollidingAxleBlock.id) {
-                ((AxleBlock) BlockListener.nonCollidingAxleBlock).SetPowerLevel(world, centerX, centerY, centerZ, 0);
+                ((AxleBlock) BlockListener.nonCollidingAxleBlock).setPowerLevel(world, centerX, centerY, centerZ, 0);
             }
         }
         int xOffset;
@@ -173,11 +173,11 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider 
                 destroyWithDrop();
                 return;
             }
-            if (!getProvidingPower() && ((AxleBlock) BlockListener.axleBlock).GetPowerLevel(world, centerX, centerY, centerZ) > 0) {
+            if (!getProvidingPower() && ((AxleBlock) BlockListener.axleBlock).getPowerLevel(world, centerX, centerY, centerZ) > 0) {
                 destroyWithDrop();
                 return;
             }
-            if (!getProvidingPower() && ((AxleBlock) BlockListener.nonCollidingAxleBlock).GetPowerLevel(world, centerX, centerY, centerZ) > 0) {
+            if (!getProvidingPower() && ((AxleBlock) BlockListener.nonCollidingAxleBlock).getPowerLevel(world, centerX, centerY, centerZ) > 0) {
                 destroyWithDrop();
                 return;
             }
@@ -185,11 +185,11 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider 
             if (fWaterWheelCurrentRotationSpeed > 0.01F || fWaterWheelCurrentRotationSpeed < -0.01F) {
                 if (!getProvidingPower()) {
                     setProvidingPower(true);
-                    ((AxleBlock) BlockListener.nonCollidingAxleBlock).SetPowerLevel(world, centerX, centerY, centerZ, 3);
+                    ((AxleBlock) BlockListener.nonCollidingAxleBlock).setPowerLevel(world, centerX, centerY, centerZ, 3);
                 }
             } else if (getProvidingPower()) {
                 setProvidingPower(false);
-                ((AxleBlock) BlockListener.nonCollidingAxleBlock).SetPowerLevel(world, centerX, centerY, centerZ, 0);
+                ((AxleBlock) BlockListener.nonCollidingAxleBlock).setPowerLevel(world, centerX, centerY, centerZ, 0);
             }
         }
         if (iWaterWheelTimeSinceHit > 0) {

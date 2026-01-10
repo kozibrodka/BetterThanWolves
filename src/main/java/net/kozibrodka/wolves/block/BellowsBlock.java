@@ -216,7 +216,7 @@ public class BellowsBlock extends TemplateBlock
                 continue;
             }
             AxleBlock axleBlock = (AxleBlock) BlockListener.axleBlock;
-            if (axleBlock.IsAxleOrientedTowardsFacing(world, targetPos.x, targetPos.y, targetPos.z, iFacing) && axleBlock.GetPowerLevel(world, targetPos.x, targetPos.y, targetPos.z) > 0) {
+            if (axleBlock.isAxleOrientedTowardsFacing(world, targetPos.x, targetPos.y, targetPos.z, iFacing) && axleBlock.getPowerLevel(world, targetPos.x, targetPos.y, targetPos.z) > 0) {
                 return true;
             }
         }

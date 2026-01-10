@@ -43,8 +43,8 @@ public class GearboxBlock extends TemplateBlock
         }
         BlockPosition sideBlockPos = new BlockPosition(x, y, z);
         sideBlockPos.addFacingAsOffset(side);
-        if (blockView.getBlockId(sideBlockPos.x, sideBlockPos.y, sideBlockPos.z) == BlockListener.axleBlock.id && ((AxleBlock) BlockListener.axleBlock).IsAxleOrientedTowardsFacing(blockView, sideBlockPos.x, sideBlockPos.y, sideBlockPos.z, side)
-                || blockView.getBlockId(sideBlockPos.x, sideBlockPos.y, sideBlockPos.z) == BlockListener.nonCollidingAxleBlock.id && ((AxleBlock) BlockListener.nonCollidingAxleBlock).IsAxleOrientedTowardsFacing(blockView, sideBlockPos.x, sideBlockPos.y, sideBlockPos.z, side)) {
+        if (blockView.getBlockId(sideBlockPos.x, sideBlockPos.y, sideBlockPos.z) == BlockListener.axleBlock.id && ((AxleBlock) BlockListener.axleBlock).isAxleOrientedTowardsFacing(blockView, sideBlockPos.x, sideBlockPos.y, sideBlockPos.z, side)
+                || blockView.getBlockId(sideBlockPos.x, sideBlockPos.y, sideBlockPos.z) == BlockListener.nonCollidingAxleBlock.id && ((AxleBlock) BlockListener.nonCollidingAxleBlock).isAxleOrientedTowardsFacing(blockView, sideBlockPos.x, sideBlockPos.y, sideBlockPos.z, side)) {
             return TextureListener.gearbox_output;
         } else {
             return TextureListener.gearbox_side;
@@ -89,7 +89,7 @@ public class GearboxBlock extends TemplateBlock
     }
 
     public void neighborUpdate(World world, int x, int y, int z, int id) {
-        world.scheduleBlockUpdate(x, y, z, BlockListener.gearBox.id, getTickRate());
+        world.scheduleBlockUpdate(x, y, z, id, getTickRate());
     }
 
     public void onTick(World world, int x, int y, int z, Random random) {
@@ -221,25 +221,25 @@ public class GearboxBlock extends TemplateBlock
                 axleBlock = (AxleBlock) BlockListener.nonCollidingAxleBlock;
             }
             // Skip misaligned axles
-            if (!axleBlock.IsAxleOrientedTowardsFacing(world, tempPos.x, tempPos.y, tempPos.z, facing)) {
+            if (!axleBlock.isAxleOrientedTowardsFacing(world, tempPos.x, tempPos.y, tempPos.z, facing)) {
                 continue;
             }
             // Check if axle is already powered
-            int tempPowerLevel = axleBlock.GetPowerLevel(world, tempPos.x, tempPos.y, tempPos.z);
+            int tempPowerLevel = axleBlock.getPowerLevel(world, tempPos.x, tempPos.y, tempPos.z);
             if (tempPowerLevel > 0 && destroyIfAlreadyPowered) {
-                axleBlock.BreakAxle(world, tempPos.x, tempPos.y, tempPos.z);
+                axleBlock.breakAxle(world, tempPos.x, tempPos.y, tempPos.z);
                 continue;
             }
             // Activate axle
             if (isGearBoxOn) {
                 if (tempPowerLevel != 3) {
-                    axleBlock.SetPowerLevel(world, tempPos.x, tempPos.y, tempPos.z, 3);
+                    axleBlock.setPowerLevel(world, tempPos.x, tempPos.y, tempPos.z, 3);
                 }
                 continue;
             }
             // Deactivate axle
             if (tempPowerLevel != 0) {
-                axleBlock.SetPowerLevel(world, tempPos.x, tempPos.y, tempPos.z, 0);
+                axleBlock.setPowerLevel(world, tempPos.x, tempPos.y, tempPos.z, 0);
             }
         }
 
@@ -282,8 +282,8 @@ public class GearboxBlock extends TemplateBlock
         BlockPosition targetBlockPos = new BlockPosition(x, y, z);
         targetBlockPos.addFacingAsOffset(facing);
         int targetId = world.getBlockId(targetBlockPos.x, targetBlockPos.y, targetBlockPos.z);
-        return targetId == BlockListener.axleBlock.id && ((AxleBlock) BlockListener.axleBlock).IsAxleOrientedTowardsFacing(world, targetBlockPos.x, targetBlockPos.y, targetBlockPos.z, facing) && ((AxleBlock) BlockListener.axleBlock).GetPowerLevel(world, targetBlockPos.x, targetBlockPos.y, targetBlockPos.z) > 0
-                || targetId == BlockListener.nonCollidingAxleBlock.id && ((AxleBlock) BlockListener.nonCollidingAxleBlock).IsAxleOrientedTowardsFacing(world, targetBlockPos.x, targetBlockPos.y, targetBlockPos.z, facing) && ((AxleBlock) BlockListener.nonCollidingAxleBlock).GetPowerLevel(world, targetBlockPos.x, targetBlockPos.y, targetBlockPos.z) > 0;
+        return targetId == BlockListener.axleBlock.id && ((AxleBlock) BlockListener.axleBlock).isAxleOrientedTowardsFacing(world, targetBlockPos.x, targetBlockPos.y, targetBlockPos.z, facing) && ((AxleBlock) BlockListener.axleBlock).getPowerLevel(world, targetBlockPos.x, targetBlockPos.y, targetBlockPos.z) > 0
+                || targetId == BlockListener.nonCollidingAxleBlock.id && ((AxleBlock) BlockListener.nonCollidingAxleBlock).isAxleOrientedTowardsFacing(world, targetBlockPos.x, targetBlockPos.y, targetBlockPos.z, facing) && ((AxleBlock) BlockListener.nonCollidingAxleBlock).getPowerLevel(world, targetBlockPos.x, targetBlockPos.y, targetBlockPos.z) > 0;
     }
 
     public boolean isOutputtingMechanicalPower(World world, int x, int y, int z) {
