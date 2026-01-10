@@ -33,16 +33,15 @@ import net.minecraft.recipe.SmeltingRecipeManager;
 import net.modificationstation.stationapi.api.registry.BlockRegistry;
 import net.modificationstation.stationapi.api.registry.ItemRegistry;
 
-public class CauldronBlockEntity extends BlockEntity
-        implements Inventory {
+public class CauldronBlockEntity extends BlockEntity implements Inventory {
 
     public CauldronBlockEntity() {
         cauldronContents = new ItemStack[27];
-        m_iCauldronCookCounter = 0;
-        m_iRenderCooldownCounter = 0;
-        m_bContainsValidIngrediantsForState = false;
-        m_bForceValidateOnUpdate = false;
-        m_iFireFactor = 0;
+        cauldronCookCounter = 0;
+        renderCooldownCounter = 0;
+        containsValidIngredientsForState = false;
+        forceValidateOnUpdate = false;
+        fireFactor = 0;
     }
 
     public void readNbt(NbtCompound nbttagcompound) {
@@ -58,20 +57,20 @@ public class CauldronBlockEntity extends BlockEntity
         }
 
         if (nbttagcompound.contains("m_iCauldronCookCounter")) {
-            m_iCauldronCookCounter = nbttagcompound.getInt("m_iCauldronCookCounter");
+            cauldronCookCounter = nbttagcompound.getInt("m_iCauldronCookCounter");
         }
         if (nbttagcompound.contains("m_iRenderCooldownCounter")) {
-            m_iRenderCooldownCounter = nbttagcompound.getInt("m_iRenderCooldownCounter");
+            renderCooldownCounter = nbttagcompound.getInt("m_iRenderCooldownCounter");
         }
         if (nbttagcompound.contains("m_bContainsValidIngrediantsForState")) {
-            m_bContainsValidIngrediantsForState = nbttagcompound.getBoolean("m_bContainsValidIngrediantsForState");
+            containsValidIngredientsForState = nbttagcompound.getBoolean("m_bContainsValidIngrediantsForState");
         } else {
-            m_bForceValidateOnUpdate = true;
+            forceValidateOnUpdate = true;
         }
         if (nbttagcompound.contains("m_iFireFactor")) {
-            m_iFireFactor = nbttagcompound.getInt("m_iFireFactor");
+            fireFactor = nbttagcompound.getInt("m_iFireFactor");
         } else {
-            m_bForceValidateOnUpdate = true;
+            forceValidateOnUpdate = true;
         }
     }
 
@@ -88,37 +87,37 @@ public class CauldronBlockEntity extends BlockEntity
         }
 
         nbttagcompound.put("Items", nbttaglist);
-        nbttagcompound.putInt("m_iCauldronCookCounter", m_iCauldronCookCounter);
-        nbttagcompound.putInt("m_iRenderCooldownCounter", m_iRenderCooldownCounter);
+        nbttagcompound.putInt("m_iCauldronCookCounter", cauldronCookCounter);
+        nbttagcompound.putInt("m_iRenderCooldownCounter", renderCooldownCounter);
     }
 
     public void tick() {
         if (world.isRemote) {
             return;
         }
-        int iFireUnderState = ((CauldronBlock) BlockListener.cauldron).GetFireUnderState(world, x, y, z);
-        if (iFireUnderState > 0) {
-            if (m_bForceValidateOnUpdate) {
-                ValidateContentsForState(iFireUnderState);
-                m_bForceValidateOnUpdate = false;
+        int fireHeat = ((CauldronBlock) BlockListener.cauldron).getFireHeat(world, x, y, z);
+        if (fireHeat > 0) {
+            if (forceValidateOnUpdate) {
+                ValidateContentsForState(fireHeat);
+                forceValidateOnUpdate = false;
             }
-            ValidateFireFactor(iFireUnderState);
-            if (iFireUnderState == 2) {
-                if (m_iRenderCooldownCounter <= 0) {
-                    m_iCauldronCookCounter = 0;
+            ValidateFireFactor(fireHeat);
+            if (fireHeat == 2) {
+                if (renderCooldownCounter <= 0) {
+                    cauldronCookCounter = 0;
                 }
-                m_iRenderCooldownCounter = 20;
+                renderCooldownCounter = 20;
                 PerformStokedFireUpdate();
-            } else if (m_iRenderCooldownCounter > 0) {
-                m_iRenderCooldownCounter--;
-                if (m_iRenderCooldownCounter <= 0) {
-                    m_iCauldronCookCounter = 0;
+            } else if (renderCooldownCounter > 0) {
+                renderCooldownCounter--;
+                if (renderCooldownCounter <= 0) {
+                    cauldronCookCounter = 0;
                 }
             } else {
                 PerformNormalFireUpdate();
             }
         } else {
-            m_iCauldronCookCounter = 0;
+            cauldronCookCounter = 0;
         }
     }
 
@@ -154,7 +153,7 @@ public class CauldronBlockEntity extends BlockEntity
         if (world == null) {
             return;
         }
-        int iFireUnderState = ((CauldronBlock) BlockListener.cauldron).GetFireUnderState(world, x, y, z);
+        int iFireUnderState = ((CauldronBlock) BlockListener.cauldron).getFireHeat(world, x, y, z);
         ValidateContentsForState(iFireUnderState);
     }
 
@@ -166,30 +165,30 @@ public class CauldronBlockEntity extends BlockEntity
         }
     }
 
-    public void NotifyOfChangeInFireUnder(int iFireUnderState) {
-        ValidateContentsForState(iFireUnderState);
-        ValidateFireFactor(iFireUnderState);
+    public void NotifyOfChangeInFireUnder(int fireHeat) {
+        ValidateContentsForState(fireHeat);
+        ValidateFireFactor(fireHeat);
     }
 
     public void ValidateContentsForState(int iFireUnderState) {
-        m_bContainsValidIngrediantsForState = false;
+        containsValidIngredientsForState = false;
         if (iFireUnderState == 1) {
             if (CauldronCraftingManager.getInstance().getCraftingResult(this) != null) {
-                m_bContainsValidIngrediantsForState = true;
+                containsValidIngredientsForState = true;
             } else if (GetUncookedItemInventoryIndex() >= 0) {
-                m_bContainsValidIngrediantsForState = true;
+                containsValidIngredientsForState = true;
             } else if (InventoryHandler.getFirstOccupiedStackOfItem(this, ItemRegistry.INSTANCE.getId(ItemListener.dung)) >= 0 && ContainsFood()) {
-                m_bContainsValidIngrediantsForState = true;
+                containsValidIngredientsForState = true;
             }
         } else if (iFireUnderState == 2) {
             if (InventoryHandler.getFirstOccupiedStackOfItem(this, BlockRegistry.INSTANCE.getId(Block.TNT)) >= 0) {
-                m_bContainsValidIngrediantsForState = true;
+                containsValidIngredientsForState = true;
             } else if (InventoryHandler.getFirstOccupiedStackOfItem(this, ItemRegistry.INSTANCE.getId(Item.GUNPOWDER)) >= 0) {
-                m_bContainsValidIngrediantsForState = true;
+                containsValidIngredientsForState = true;
             } else if (InventoryHandler.getFirstOccupiedStackOfItem(this, ItemRegistry.INSTANCE.getId(ItemListener.hellfireDust)) >= 0) {
-                m_bContainsValidIngrediantsForState = true;
+                containsValidIngredientsForState = true;
             } else if (StokedCauldronCraftingManager.getInstance().getCraftingResult(this) != null) {
-                m_bContainsValidIngrediantsForState = true;
+                containsValidIngredientsForState = true;
             }
         }
     }
@@ -213,16 +212,16 @@ public class CauldronBlockEntity extends BlockEntity
             }
 
         }
-        m_iFireFactor = iFireFactor;
+        fireFactor = iFireFactor;
     }
 
     private void PerformNormalFireUpdate() {
-        if (m_bContainsValidIngrediantsForState) {
-            m_iCauldronCookCounter += m_iFireFactor;
-            if (m_iCauldronCookCounter >= 1950) {
+        if (containsValidIngredientsForState) {
+            cauldronCookCounter += fireFactor;
+            if (cauldronCookCounter >= 1950) {
                 int iDungIndex = InventoryHandler.getFirstOccupiedStackOfItem(this, ItemRegistry.INSTANCE.getId(ItemListener.dung));
                 if (iDungIndex >= 0 && DestroyAllFoodInInventory()) {
-                    m_iCauldronCookCounter = 0;
+                    cauldronCookCounter = 0;
                     return;
                 }
                 if (CauldronCraftingManager.getInstance().getCraftingResult(this) != null) {
@@ -236,17 +235,17 @@ public class CauldronBlockEntity extends BlockEntity
                 } else {
                     AttemptToCookFood();
                 }
-                m_iCauldronCookCounter = 0;
+                cauldronCookCounter = 0;
             }
         } else {
-            m_iCauldronCookCounter = 0;
+            cauldronCookCounter = 0;
         }
     }
 
     private void PerformStokedFireUpdate() {
-        if (m_bContainsValidIngrediantsForState) {
-            m_iCauldronCookCounter += m_iFireFactor;
-            if (m_iCauldronCookCounter >= 1950) {
+        if (containsValidIngredientsForState) {
+            cauldronCookCounter += fireFactor;
+            if (cauldronCookCounter >= 1950) {
                 if (InventoryHandler.getFirstOccupiedStackOfItem(this, ItemRegistry.INSTANCE.getId(ItemListener.hellfireDust)) >= 0 || InventoryHandler.getFirstOccupiedStackOfItem(this, BlockRegistry.INSTANCE.getId(Block.TNT)) >= 0 || InventoryHandler.getFirstOccupiedStackOfItem(this, ItemRegistry.INSTANCE.getId(Item.GUNPOWDER)) >= 0) {
                     BlowUpCauldron();
                 } else if (StokedCauldronCraftingManager.getInstance().getCraftingResult(this) != null) {
@@ -258,10 +257,10 @@ public class CauldronBlockEntity extends BlockEntity
                         UnsortedUtils.ejectStackWithRandomOffset(world, x, y + 1, z, cookedStack);
                     }
                 }
-                m_iCauldronCookCounter = 0;
+                cauldronCookCounter = 0;
             }
         } else {
-            m_iCauldronCookCounter = 0;
+            cauldronCookCounter = 0;
         }
     }
 
@@ -278,11 +277,11 @@ public class CauldronBlockEntity extends BlockEntity
     }
 
     public int getCookProgressScaled(int iScale) {
-        return (m_iCauldronCookCounter * iScale) / 1950;
+        return (cauldronCookCounter * iScale) / 1950;
     }
 
     public boolean IsCooking() {
-        return m_iCauldronCookCounter > 0;
+        return cauldronCookCounter > 0;
     }
 
     public int GetUncookedItemInventoryIndex() {
@@ -370,11 +369,11 @@ public class CauldronBlockEntity extends BlockEntity
     private final int iHellfireDustRequiredToConcentrate = 8;
     private final int iCauldronTimeToCook = 1950;
     private ItemStack[] cauldronContents;
-    public int m_iCauldronCookCounter;
-    private int m_iRenderCooldownCounter;
-    private boolean m_bContainsValidIngrediantsForState;
-    private boolean m_bForceValidateOnUpdate;
-    private int m_iFireFactor;
+    public int cauldronCookCounter;
+    private int renderCooldownCounter;
+    private boolean containsValidIngredientsForState;
+    private boolean forceValidateOnUpdate;
+    private int fireFactor;
     static final boolean $assertionsDisabled; /* synthetic field */
 
     static {

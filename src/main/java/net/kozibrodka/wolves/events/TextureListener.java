@@ -77,6 +77,9 @@ public class TextureListener {
         vase_black = registerBlockTexture("block/fcBlockVase_black");
         cauldron_top = registerBlockTexture("block/fcBlockCauldron_top");
         cauldron_side = registerBlockTexture("block/fcBlockCauldron_side");
+        cauldron_side_left = registerBlockTexture("block/fcBlockCauldron_side_left");
+        cauldron_side_right = registerBlockTexture("block/fcBlockCauldron_side_right");
+        cauldron_side_down = registerBlockTexture("block/fcBlockCauldron_side_down");
         cauldron_bottom = registerBlockTexture("block/fcBlockCauldron_down");
         hopper_bottom = registerBlockTexture("block/fcBlockHopper_down");
         hopper_side = registerBlockTexture("block/fcBlockHopper_side");
@@ -212,6 +215,9 @@ public class TextureListener {
     public static int vase_black;
     public static int cauldron_top;
     public static int cauldron_side;
+    public static int cauldron_side_left;
+    public static int cauldron_side_right;
+    public static int cauldron_side_down;
     public static int cauldron_bottom;
     public static int hopper_side;
     public static int hopper_top;

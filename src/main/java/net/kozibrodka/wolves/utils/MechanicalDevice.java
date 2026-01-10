@@ -16,9 +16,9 @@ public interface MechanicalDevice {
         return canOutputMechanicalPower();
     }
 
-    void powerMachine(World world, int x, int y, int z);
+    void powerMachine(World world, int x, int y, int z, int side);
 
-    void unpowerMachine(World world, int x, int y, int z);
+    void unpowerMachine(World world, int x, int y, int z, int side);
 
     boolean isMachinePowered(World world, int x, int y, int z);
 }

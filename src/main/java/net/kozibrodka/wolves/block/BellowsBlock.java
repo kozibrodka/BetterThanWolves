@@ -162,7 +162,7 @@ public class BellowsBlock extends TemplateBlock
     }
 
     @Override
-    public void powerMachine(World world, int x, int y, int z) {
+    public void powerMachine(World world, int x, int y, int z, int side) {
         blow(world, x, y, z);
         world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "fire.ignite", 0.5F, world.random.nextFloat() * 0.4F + 2.0F);
         if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
@@ -173,7 +173,7 @@ public class BellowsBlock extends TemplateBlock
     }
 
     @Override
-    public void unpowerMachine(World world, int x, int y, int z) {
+    public void unpowerMachine(World world, int x, int y, int z, int side) {
         LiftCollidingEntities(world, x, y, z);
         world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "fire.ignite", 0.5F, world.random.nextFloat() * 0.4F + 2.0F);
         if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {

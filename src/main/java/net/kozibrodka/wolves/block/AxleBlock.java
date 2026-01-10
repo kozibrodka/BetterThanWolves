@@ -322,9 +322,9 @@ public class AxleBlock extends TemplateBlock {
             }
             boolean isMachinePowered = device.isMachinePowered(world, x, y, z);
             if (powered && !isMachinePowered) {
-                device.powerMachine(world, x, y, z);
+                device.powerMachine(world, x, y, z, side);
             } else if (!powered && isMachinePowered) {
-                device.unpowerMachine(world, x, y, z);
+                device.unpowerMachine(world, x, y, z, side);
             }
         }
     }

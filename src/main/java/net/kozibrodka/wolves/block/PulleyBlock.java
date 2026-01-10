@@ -138,7 +138,7 @@ public class PulleyBlock extends TemplateBlockWithEntity
     }
 
     @Override
-    public void powerMachine(World world, int x, int y, int z) {
+    public void powerMachine(World world, int x, int y, int z, int side) {
         world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.explode", 0.2F, 1.25F);
         if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
             voicePacket(world, "random.explode", x, y, z, 0.2F, 1.25F);
@@ -149,7 +149,7 @@ public class PulleyBlock extends TemplateBlockWithEntity
     }
 
     @Override
-    public void unpowerMachine(World world, int x, int y, int z) {
+    public void unpowerMachine(World world, int x, int y, int z, int side) {
         world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.explode", 0.2F, 1.25F);
         if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
             voicePacket(world, "random.explode", x, y, z, 0.2F, 1.25F);

@@ -114,7 +114,7 @@ public class ScreenPacket extends Packet implements ManagedPacket<ScreenPacket> 
         if (Objects.equals(tile, "cauldron")) {
             CauldronBlockEntity tile = (CauldronBlockEntity) player.world.getBlockEntity(this.x, this.y, this.z);
             if (tile != null) {
-                int a = tile.m_iCauldronCookCounter;
+                int a = tile.cauldronCookCounter;
                 PacketHelper.sendTo(player, new ScreenPacket("cauldron", a, this.x, this.y, this.z));
             }
         }

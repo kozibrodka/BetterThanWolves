@@ -155,13 +155,13 @@ public class TurntableBlock extends TemplateBlockWithEntity
     }
 
     @Override
-    public void powerMachine(World world, int x, int y, int z) {
+    public void powerMachine(World world, int x, int y, int z, int side) {
         EmitTurntableParticles(world, x, y, z, new Random());
         SetBlockMechanicalOn(world, x, y, z, true);
     }
 
     @Override
-    public void unpowerMachine(World world, int x, int y, int z) {
+    public void unpowerMachine(World world, int x, int y, int z, int side) {
         EmitTurntableParticles(world, x, y, z, new Random());
         SetBlockMechanicalOn(world, x, y, z, false);
     }

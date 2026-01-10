@@ -285,13 +285,13 @@ public class GearboxBlock extends TemplateBlock
     }
 
     @Override
-    public void powerMachine(World world, int x, int y, int z) {
+    public void powerMachine(World world, int x, int y, int z, int side) {
         setGearBoxOnState(world, x, y, z, true);
         handleGearBoxActivation(world, x, y, z, new Random());
     }
 
     @Override
-    public void unpowerMachine(World world, int x, int y, int z) {
+    public void unpowerMachine(World world, int x, int y, int z, int side) {
         setGearBoxOnState(world, x, y, z, false);
         handleGearBoxDeactivation(world, x, y, z);
     }

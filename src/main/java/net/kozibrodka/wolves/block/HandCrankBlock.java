@@ -155,11 +155,11 @@ public class HandCrankBlock extends TemplateBlock
     }
 
     @Override
-    public void powerMachine(World world, int x, int y, int z) {
+    public void powerMachine(World world, int x, int y, int z, int side) {
     }
 
     @Override
-    public void unpowerMachine(World world, int x, int y, int z) {
+    public void unpowerMachine(World world, int x, int y, int z, int side) {
     }
 
     @Override

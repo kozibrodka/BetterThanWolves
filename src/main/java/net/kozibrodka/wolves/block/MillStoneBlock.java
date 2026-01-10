@@ -169,12 +169,12 @@ public class MillStoneBlock extends TemplateBlockWithEntity
     }
 
     @Override
-    public void powerMachine(World world, int x, int y, int z) {
+    public void powerMachine(World world, int x, int y, int z, int side) {
         SetBlockOn(world, x, y, z, true);
     }
 
     @Override
-    public void unpowerMachine(World world, int x, int y, int z) {
+    public void unpowerMachine(World world, int x, int y, int z, int side) {
         SetBlockOn(world, x, y, z, false);
     }
 
