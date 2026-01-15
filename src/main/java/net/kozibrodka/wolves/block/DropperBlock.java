@@ -79,6 +79,10 @@ public class DropperBlock extends TemplateBlockWithEntity implements MechanicalD
     @Override
     public void powerMachine(World world, int x, int y, int z, int side) {
         world.setBlockMeta(x, y, z, 1);
+        BlockEntity blockEntity = world.getBlockEntity(x, y, z);
+        if (blockEntity instanceof DropperBlockEntity dropperBlockEntity) {
+            dropperBlockEntity.requestDrop();
+        }
     }
 
     @Override

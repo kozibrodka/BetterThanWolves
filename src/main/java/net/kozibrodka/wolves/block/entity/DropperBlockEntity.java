@@ -1,7 +1,9 @@
 package net.kozibrodka.wolves.block.entity;
 
+import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.utils.InventoryHandler;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -9,11 +11,53 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 
 public class DropperBlockEntity extends BlockEntity implements Inventory {
-    private ItemStack[] hopperContents;
+    private static final int WEIGHT = 1;
+    private static final int STORAGE = 0;
+
+    private ItemStack[] dropperContents;
     private boolean dropDone;
 
     public DropperBlockEntity() {
-        hopperContents = new ItemStack[2];
+        dropperContents = new ItemStack[2];
+        dropDone = true;
+    }
+
+    @Override
+    public void tick() {
+        ItemStack weight = dropperContents[WEIGHT];
+        if (weight == null) {
+            return;
+        }
+        if (weight.itemId != ItemListener.weight.id) {
+            return;
+        }
+        ItemStack storage = dropperContents[STORAGE];
+        if (storage == null) {
+            return;
+        }
+        storage = storage.copy();
+        if (storage.count < weight.count) {
+            return;
+        }
+        if (world.getBlockId(x, y - 1, z) != 0) {
+            return;
+        }
+        if (dropDone) {
+            return;
+        }
+        ItemStack drop = storage.copy();
+        drop.count = weight.count;
+        storage.count -= weight.count;
+        if (storage.count == 0) {
+            dropperContents[STORAGE] = null;
+        } else {
+            dropperContents[STORAGE] = storage;
+        }
+        dropDone = true;
+        world.spawnEntity(new ItemEntity(world, x, y - 1, z, drop));
+    }
+
+    public void requestDrop() {
         dropDone = false;
     }
 
@@ -24,7 +68,7 @@ public class DropperBlockEntity extends BlockEntity implements Inventory {
 
     @Override
     public ItemStack getStack(int slot) {
-        return hopperContents[slot];
+        return dropperContents[slot];
     }
 
     @Override
@@ -34,7 +78,7 @@ public class DropperBlockEntity extends BlockEntity implements Inventory {
 
     @Override
     public void setStack(int slot, ItemStack stack) {
-        hopperContents[slot] = stack;
+        dropperContents[slot] = stack;
         if (stack != null && stack.count > getMaxCountPerStack()) {
             stack.count = getMaxCountPerStack();
         }
@@ -63,12 +107,12 @@ public class DropperBlockEntity extends BlockEntity implements Inventory {
     public void readNbt(NbtCompound nbtCompound) {
         super.readNbt(nbtCompound);
         NbtList nbtList = nbtCompound.getList("Items");
-        hopperContents = new ItemStack[size()];
+        dropperContents = new ItemStack[size()];
         for (int i = 0; i < nbtList.size(); i++) {
             NbtCompound itemCompound = (NbtCompound) nbtList.get(i);
             int j = itemCompound.getByte("Slot") & 0xff;
-            if (j < hopperContents.length) {
-                hopperContents[j] = new ItemStack(itemCompound);
+            if (j < dropperContents.length) {
+                dropperContents[j] = new ItemStack(itemCompound);
             }
         }
         dropDone = nbtCompound.getBoolean("DropDone");
@@ -77,11 +121,11 @@ public class DropperBlockEntity extends BlockEntity implements Inventory {
     public void writeNbt(NbtCompound nbtCompound) {
         super.writeNbt(nbtCompound);
         NbtList nbtList = new NbtList();
-        for (int i = 0; i < hopperContents.length; i++) {
-            if (hopperContents[i] != null) {
+        for (int i = 0; i < dropperContents.length; i++) {
+            if (dropperContents[i] != null) {
                 NbtCompound itemCompound = new NbtCompound();
                 itemCompound.putByte("Slot", (byte) i);
-                hopperContents[i].writeNbt(itemCompound);
+                dropperContents[i].writeNbt(itemCompound);
                 nbtList.add(itemCompound);
             }
         }
