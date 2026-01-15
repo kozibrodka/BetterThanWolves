@@ -6,6 +6,7 @@ import net.kozibrodka.wolves.events.ScreenHandlerListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.network.ScreenPacket;
 import net.kozibrodka.wolves.utils.InventoryHandler;
+import net.kozibrodka.wolves.utils.MechanicalDevice;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
@@ -16,7 +17,7 @@ import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockWithEntity;
 import net.modificationstation.stationapi.api.util.Identifier;
 
-public class DropperBlock extends TemplateBlockWithEntity {
+public class DropperBlock extends TemplateBlockWithEntity implements MechanicalDevice {
     public DropperBlock(Identifier identifier, Material material) {
         super(identifier, material);
         setTranslationKey(identifier.namespace, identifier.path);
@@ -63,5 +64,35 @@ public class DropperBlock extends TemplateBlockWithEntity {
     public void onBreak(World world, int x, int y, int z) {
         InventoryHandler.ejectInventoryContents(world, x, y, z, (Inventory) world.getBlockEntity(x, y, z));
         super.onBreak(world, x, y, z);
+    }
+
+    @Override
+    public boolean canOutputMechanicalPower() {
+        return false;
+    }
+
+    @Override
+    public boolean canInputMechanicalPower() {
+        return true;
+    }
+
+    @Override
+    public void powerMachine(World world, int x, int y, int z, int side) {
+        world.setBlockMeta(x, y, z, 1);
+    }
+
+    @Override
+    public void unpowerMachine(World world, int x, int y, int z, int side) {
+        world.setBlockMeta(x, y, z, 0);
+    }
+
+    @Override
+    public boolean isMachinePowered(World world, int x, int y, int z) {
+        return isBlockOn(world, x, y, z);
+    }
+
+    @Override
+    public boolean canInputMechanicalPower(World world, int x, int y, int z, int side) {
+        return side > 1;
     }
 }
