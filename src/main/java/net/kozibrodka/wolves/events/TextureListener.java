@@ -128,6 +128,7 @@ public class TextureListener {
         ItemListener.nothing.setTexture(Identifier.of(NAMESPACE, "item/nothing"));
         ItemListener.wickerWeaving.setTexture(Identifier.of(NAMESPACE, "item/wickerWeaving"));
         ItemListener.wickerSheet.setTexture(Identifier.of(NAMESPACE, "item/wickerSheet"));
+        ItemListener.weight.setTexture(Identifier.of(NAMESPACE, "item/weight"));
 
         BlockListener.detectorRailObsidian.asItem().setTextureId(registerBlockTexture("block/fcRailDetector_obsidian"));
         BlockListener.detectorRailWood.asItem().setTextureId(registerBlockTexture("block/fcRailDetector_wood"));
