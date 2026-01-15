@@ -79,7 +79,7 @@ public class HopperBlockEntity extends BlockEntity
             }
         }
 
-        if (nbttagcompound.contains("grindCounter")) {
+        if (nbttagcompound.contains("ejectCounter")) {
             ejectCounter = nbttagcompound.getInt("ejectCounter");
         }
     }

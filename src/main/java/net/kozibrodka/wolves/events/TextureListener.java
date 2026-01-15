@@ -114,6 +114,10 @@ public class TextureListener {
         detector_side = registerBlockTexture("block/fcBlockDetector_side");
         detector_top = registerBlockTexture("block/fcBlockDetector_top");
         detector_bottom = registerBlockTexture("block/fcBlockDetector_down");
+        dropper_top = registerBlockTexture("block/dropper_top");
+        dropper_side = registerBlockTexture("block/dropper_side");
+        dropper_bottom = registerBlockTexture("block/dropper_bottom");
+        dropper_bottom_open = registerBlockTexture("block/dropper_bottom_open");
         BlockListener.blockOfGrates.specifyTextures(getBlockTexture("item/fcGrate"));
         BlockListener.collisionBlock.specifyTextures(getBlockTexture("block/blank"));
         BlockListener.obstructionBlock.specifyTextures(getBlockTexture("block/blank"));
@@ -252,4 +256,8 @@ public class TextureListener {
     public static int detector_side;
     public static int detector_top;
     public static int detector_bottom;
+    public static int dropper_top;
+    public static int dropper_side;
+    public static int dropper_bottom;
+    public static int dropper_bottom_open;
 }

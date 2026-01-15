@@ -58,6 +58,7 @@ public class BlockListener {
     public static TemplateBlock blockOfWicker; //Mango Pack Addon
     public static LazyBlockTemplate blockOfGrates; //Another Mango Pack Addon
     public static LazyBlockTemplate blockOfSteel;
+    public static Block dropper;
 
     public static TemplateBlock panelNumber1;
     public static TemplateBlock panelNumber2;
@@ -108,6 +109,7 @@ public class BlockListener {
         collisionBlock = new CollisionBlock(NAMESPACE.id("collision_block"), Material.WOOD, 1.5F, Block.WOOD_SOUND_GROUP);
         obstructionBlock = new ObstructionBlock(NAMESPACE.id("obstruction_block"), Material.WOOD, 1.5F, Block.WOOD_SOUND_GROUP);
         blockOfSteel = new LazyBlockTemplate(NAMESPACE.id("block_of_steel"), Material.METAL, 2.5F, Block.METAL_SOUND_GROUP);
+        dropper = new DropperBlock(NAMESPACE.id("dropper"), Material.METAL).setHardness(2.5F).setSoundGroup(Block.METAL_SOUND_GROUP);
 
         //TODO: Omni slabs are really cursed and kinda bad. Also applies to Cornets/Moudlings - should be option in CFG to remove them
 

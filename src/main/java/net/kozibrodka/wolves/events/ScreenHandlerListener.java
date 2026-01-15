@@ -28,6 +28,7 @@ public class ScreenHandlerListener {
         event.register(NAMESPACE.id("openCauldron"), new GuiHandler((GuiHandler.ScreenFactoryNoMessage) this::openCauldron, CauldronBlockEntity::new));
         event.register(NAMESPACE.id("openBlockDispenser"), new GuiHandler((GuiHandler.ScreenFactoryNoMessage) this::openBlockDispenser, BlockDispenserBlockEntity::new));
         event.register(NAMESPACE.id("openPulley"), new GuiHandler((GuiHandler.ScreenFactoryNoMessage) this::openPulley, PulleyBlockEntity::new));
+        event.register(NAMESPACE.id("openDropper"), new GuiHandler((GuiHandler.ScreenFactoryNoMessage) this::openDropper, DropperBlockEntity::new));
     }
 
     @Environment(EnvType.CLIENT)
@@ -71,5 +72,10 @@ public class ScreenHandlerListener {
     @Environment(EnvType.CLIENT)
     public Screen openPulley(PlayerEntity player, Inventory inventoryBase) {
         return new PulleyScreen(player.inventory, (PulleyBlockEntity) inventoryBase, TempGuiX, TempGuiY, TempGuiZ);
+    }
+
+    @Environment(EnvType.CLIENT)
+    public Screen openDropper(PlayerEntity player, Inventory inventoryBase) {
+        return new DropperScreen(player.inventory, (DropperBlockEntity) inventoryBase, TempGuiX, TempGuiY, TempGuiZ);
     }
 }

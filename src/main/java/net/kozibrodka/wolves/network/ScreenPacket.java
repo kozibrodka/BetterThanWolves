@@ -3,6 +3,7 @@ package net.kozibrodka.wolves.network;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.FabricLoader;
+import net.kozibrodka.wolves.block.DropperBlock;
 import net.kozibrodka.wolves.block.HopperBlock;
 import net.kozibrodka.wolves.block.PulleyBlock;
 import net.kozibrodka.wolves.block.entity.BlockDispenserBlockEntity;
@@ -138,6 +139,13 @@ public class ScreenPacket extends Packet implements ManagedPacket<ScreenPacket> 
                 int a = tile.iNextSlotIndexToDispense;
                 PacketHelper.sendTo(player, new ScreenPacket("dispenser", a, this.x, this.y, this.z));
             }
+        }
+        if (Objects.equals(tile, "dropper")) {
+            int a = 0;
+            if (((DropperBlock) BlockListener.dropper).isBlockOn(player.world, this.x, this.y, this.z)) {
+                a = 10;
+            }
+            PacketHelper.sendTo(player, new ScreenPacket("dropper", a, this.x, this.y, this.z));
         }
 
 
