@@ -201,7 +201,7 @@ public class CauldronBlock extends TemplateBlockWithEntity implements RotatableB
                 double fFullBoxTop = (double) y + 1.05D;
                 if (targetEntityItem.boundingBox.minY < fFullBoxTop) {
                     double offset = fFullBoxTop - targetEntityItem.boundingBox.minY;
-                    targetEntityItem.setPos(targetEntityItem.x, targetEntityItem.y + offset, targetEntityItem.z);
+                    targetEntityItem.setPosition(targetEntityItem.x, targetEntityItem.y + offset, targetEntityItem.z);
                 }
             }
 

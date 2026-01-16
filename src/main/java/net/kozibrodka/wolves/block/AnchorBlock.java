@@ -168,9 +168,9 @@ public class AnchorBlock extends TemplateBlock implements BlockWithWorldRenderer
             if (world.getBlockId(i, offsetY - 1, k) != BlockListener.rope.id) {
                 addRopeToPlayerInventory(world, i, j, k, entityPlayer);
                 Block targetBlock = BlockListener.rope;
-                world.playSound((float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, targetBlock.soundGroup.getSound(), (targetBlock.soundGroup.method_1976() + 1.0F) / 5.0F, targetBlock.soundGroup.method_1977() * 0.8F);
+                world.playSound((float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, targetBlock.soundGroup.getSound(), (targetBlock.soundGroup.getVolume() + 1.0F) / 5.0F, targetBlock.soundGroup.getPitch() * 0.8F);
                 if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                    voicePacket(world, targetBlock.soundGroup.getSound(), i, j, k, (targetBlock.soundGroup.method_1976() + 1.0F) / 5.0F, targetBlock.soundGroup.method_1977() * 0.8F);
+                    voicePacket(world, targetBlock.soundGroup.getSound(), i, j, k, (targetBlock.soundGroup.getVolume() + 1.0F) / 5.0F, targetBlock.soundGroup.getPitch() * 0.8F);
                 }
                 world.setBlock(i, offsetY, k, 0);
                 break;
@@ -192,7 +192,7 @@ public class AnchorBlock extends TemplateBlock implements BlockWithWorldRenderer
 
     private void addRopeToPlayerInventory(World world, int i, int j, int k, PlayerEntity entityPlayer) {
         ItemStack ropeStack = new ItemStack(ItemListener.ropeItem);
-        if (entityPlayer.inventory.method_671(ropeStack)) {
+        if (entityPlayer.inventory.contains(ropeStack)) {
             world.playSound(entityPlayer, "random.pop", 0.2F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
             if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
                 voicePacket(world, "random.pop", i, j, k, 0.2F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);

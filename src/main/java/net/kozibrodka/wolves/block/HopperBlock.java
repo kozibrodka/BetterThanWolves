@@ -215,7 +215,7 @@ public class HopperBlock extends TemplateBlockWithEntity
                 double fHopperFullBoxTop = (double) j + 1.05D;
                 if (targetEntityItem.boundingBox.minY < fHopperFullBoxTop) {
                     double offset = fHopperFullBoxTop - targetEntityItem.boundingBox.minY;
-                    targetEntityItem.setPos(targetEntityItem.x, targetEntityItem.y + offset, targetEntityItem.z);
+                    targetEntityItem.setPosition(targetEntityItem.x, targetEntityItem.y + offset, targetEntityItem.z);
                 }
             }
 //            if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER){
@@ -246,7 +246,7 @@ public class HopperBlock extends TemplateBlockWithEntity
 
     @Environment(EnvType.SERVER)
     public boolean powerServer(BlockView iBlockAccess, int i, int j, int k, int l) {
-        World level = ((MinecraftServer) net.fabricmc.loader.api.FabricLoader.getInstance().getGameInstance()).method_2157(0);
+        World level = ((MinecraftServer) net.fabricmc.loader.api.FabricLoader.getInstance().getGameInstance()).getWorld(0);
         return IsRedstoneOutputOn(level, i, j, k);
         //TODO: dimension?
     }

@@ -81,7 +81,7 @@ public class StokedFireBlock extends TemplateFireBlock implements BlockWithWorld
                         if (k1 > j + 1) {
                             l1 += (k1 - (j + 1)) * 100;
                         }
-                        int i2 = this.method_1827(world, i1, k1, j1);
+                        int i2 = this.getBurnChance(world, i1, k1, j1);
                         if (i2 <= 0) {
                             continue;
                         }
@@ -133,7 +133,7 @@ public class StokedFireBlock extends TemplateFireBlock implements BlockWithWorld
 
     @Override
     public void onPlaced(World arg, int i, int j, int k) {
-        if (arg.getBlockId(i, j - 1, k) != Block.OBSIDIAN.id || !Block.NETHER_PORTAL.method_736(arg, i, j, k)) {
+        if (arg.getBlockId(i, j - 1, k) != Block.OBSIDIAN.id || !Block.NETHER_PORTAL.create(arg, i, j, k)) {
             if (!arg.shouldSuffocate(i, j - 1, k) && !this.areBlocksAroundFlammable(arg, i, j, k) && arg.getBlockId(i, j - 1, k) != BlockListener.stokedFire.id && arg.getBlockId(i, j - 1, k) != Block.FIRE.id) {
                 arg.setBlock(i, j, k, 0);
             } else {
@@ -143,18 +143,18 @@ public class StokedFireBlock extends TemplateFireBlock implements BlockWithWorld
     }
 
     private boolean areBlocksAroundFlammable(World world, int x, int y, int z) {
-        if (this.isBlockFlammable(world, x + 1, y, z)) {
+        if (this.isFlammable(world, x + 1, y, z)) {
             return true;
-        } else if (this.isBlockFlammable(world, x - 1, y, z)) {
+        } else if (this.isFlammable(world, x - 1, y, z)) {
             return true;
-        } else if (this.isBlockFlammable(world, x, y - 1, z)) {
+        } else if (this.isFlammable(world, x, y - 1, z)) {
             return true;
-        } else if (this.isBlockFlammable(world, x, y + 1, z)) {
+        } else if (this.isFlammable(world, x, y + 1, z)) {
             return true;
-        } else if (this.isBlockFlammable(world, x, y, z - 1)) {
+        } else if (this.isFlammable(world, x, y, z - 1)) {
             return true;
         } else {
-            return this.isBlockFlammable(world, x, y, z + 1);
+            return this.isFlammable(world, x, y, z + 1);
         }
     }
 

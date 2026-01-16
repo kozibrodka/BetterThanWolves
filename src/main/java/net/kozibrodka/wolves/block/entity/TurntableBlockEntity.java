@@ -124,9 +124,9 @@ public class TurntableBlockEntity extends BlockEntity {
         Block targetBlock = Block.BLOCKS[targetId];
         TurntableResult result = TurntableRecipeRegistry.getInstance().getResult(new TurntableInput(targetBlock, targetMeta));
         if (result != null) {
-            world.playSound((float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, targetBlock.soundGroup.getSound(), (targetBlock.soundGroup.method_1977() + 1.0F) / 5.0F, targetBlock.soundGroup.method_1976() * 0.8F);
+            world.playSound((float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, targetBlock.soundGroup.getSound(), (targetBlock.soundGroup.getVolume() + 1.0F) / 5.0F, targetBlock.soundGroup.getPitch() * 0.8F);
             if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                voicePacket(world, targetBlock.soundGroup.getSound(), i, j, k, (targetBlock.soundGroup.method_1977() + 1.0F) / 5.0F, targetBlock.soundGroup.method_1976() * 0.8F);
+                voicePacket(world, targetBlock.soundGroup.getSound(), i, j, k, (targetBlock.soundGroup.getVolume() + 1.0F) / 5.0F, targetBlock.soundGroup.getPitch() * 0.8F);
             }
             rotateRegisteredBlock(i, j, k, result);
             return;
@@ -206,7 +206,7 @@ public class TurntableBlockEntity extends BlockEntity {
         if (targetBlock instanceof PistonBlock blockPiston) {
             int iMetaData = world.getBlockMeta(i, j, k);
             PistonBlock _tmp = blockPiston;
-            return !PistonBlock.method_762(iMetaData);
+            return !PistonBlock.isExtended(iMetaData);
         }
         if (iTargetid == Block.PISTON_HEAD.id || iTargetid == Block.MOVING_PISTON.id) {
             return false;
@@ -300,7 +300,7 @@ public class TurntableBlockEntity extends BlockEntity {
     private void RotateRail(RailBlock blockRail, int i, int j, int k, boolean bReverseDirection) {
         int iMetaData = world.getBlockMeta(i, j, k);
         int iDirection = iMetaData;
-        if (blockRail.method_1108()) {
+        if (blockRail.isAlwaysStraight()) {
             iDirection &= 7;
         }
         if (iDirection == 0) {
@@ -334,7 +334,7 @@ public class TurntableBlockEntity extends BlockEntity {
                 }
             }
         }
-        if (blockRail.method_1108()) {
+        if (blockRail.isAlwaysStraight()) {
             iMetaData = iMetaData & 8 | iDirection;
         } else {
             iMetaData = iDirection;

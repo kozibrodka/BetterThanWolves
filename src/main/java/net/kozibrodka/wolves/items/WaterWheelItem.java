@@ -29,7 +29,7 @@ public class WaterWheelItem extends TemplateItem {
                     itemStack.count--;
                     return true;
                 }
-                playerEntity.method_490("Not enough room to place Water Wheel");
+                playerEntity.sendMessage("Not enough room to place Water Wheel");
             }
         }
         return false;

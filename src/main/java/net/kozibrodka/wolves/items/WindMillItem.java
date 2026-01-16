@@ -31,7 +31,7 @@ public class WindMillItem extends TemplateItem {
                     itemStack.count--;
                     return true;
                 }
-                playerEntity.method_490("Not enough room to place Wind Mill (They are absolutely HUGE!)");
+                playerEntity.sendMessage("Not enough room to place Wind Mill (They are absolutely HUGE!)");
             }
         }
         return false;

@@ -93,7 +93,7 @@ public class LightBulbBlock extends TemplateBlock
 
     @Environment(EnvType.SERVER)
     public boolean powerServer(BlockView iBlockAccess, int i, int j, int k, int l) {
-        return ((MinecraftServer) net.fabricmc.loader.api.FabricLoader.getInstance().getGameInstance()).method_2157(0).canTransferPower(i, j, k);
+        return ((MinecraftServer) net.fabricmc.loader.api.FabricLoader.getInstance().getGameInstance()).getWorld(0).canTransferPower(i, j, k);
         //TODO: It gets the overworld always.
     }
 

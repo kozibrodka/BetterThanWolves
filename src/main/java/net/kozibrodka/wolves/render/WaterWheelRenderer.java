@@ -11,7 +11,7 @@ import org.lwjgl.opengl.GL11;
 public class WaterWheelRenderer extends EntityRenderer {
 
     public WaterWheelRenderer() {
-        field_2679 = 0.0F;
+        shadowDarkness = 0.0F;
         modelWaterWheel = new WaterWheelModel();
     }
 

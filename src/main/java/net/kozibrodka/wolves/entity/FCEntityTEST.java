@@ -23,7 +23,7 @@ public class FCEntityTEST extends Entity implements EntitySpawnDataProvider {
 
     public FCEntityTEST(World world, double x, double y, double z, int type) {
         this(world);
-        setPos(x, y, z);
+        setPosition(x, y, z);
         setColour(type);
         AlignBoundingBoxWithAxis();
     }
@@ -49,7 +49,7 @@ public class FCEntityTEST extends Entity implements EntitySpawnDataProvider {
     public boolean interact(PlayerEntity entityplayer) {
         ItemStack itemstack = entityplayer.inventory.getSelectedItem();
         if (itemstack != null && itemstack.itemId == Item.DYE.id) {
-            int var4 = WoolBlock.method_1(itemstack.getDamage());
+            int var4 = WoolBlock.getBlockMeta(itemstack.getDamage());
             setColour(var4);
             return true;
         }

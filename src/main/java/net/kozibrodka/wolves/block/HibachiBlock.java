@@ -124,7 +124,7 @@ public class HibachiBlock extends TemplateBlock {
             } else {
                 shouldIgnite = true;
             }
-        } else if (FIRE.isBlockFlammable(world, i, j + 1, k)) {
+        } else if (FIRE.isFlammable(world, i, j + 1, k)) {
             shouldIgnite = true;
         }
         return shouldIgnite;

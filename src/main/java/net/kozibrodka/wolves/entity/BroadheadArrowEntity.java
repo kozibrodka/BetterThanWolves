@@ -44,7 +44,7 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
     public BroadheadArrowEntity(World arg, double d, double e, double f) {
         super(arg);
         this.setBoundingBoxSpacing(0.5F, 0.5F);
-        this.setPos(d, e, f);
+        this.setPosition(d, e, f);
         this.standingEyeHeight = 0.0F;
     }
 
@@ -57,7 +57,7 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
         this.x -= MathHelper.cos(this.yaw / 180.0F * 3.1415927F) * 0.16F;
         this.y -= 0.10000000149011612D;
         this.z -= MathHelper.sin(this.yaw / 180.0F * 3.1415927F) * 0.16F;
-        this.setPos(this.x, this.y, this.z);
+        this.setPosition(this.x, this.y, this.z);
         this.standingEyeHeight = 0.0F;
         this.velocityX = -MathHelper.sin(this.yaw / 180.0F * 3.1415927F) * MathHelper.cos(this.pitch / 180.0F * 3.1415927F);
         this.velocityZ = MathHelper.cos(this.yaw / 180.0F * 3.1415927F) * MathHelper.cos(this.pitch / 180.0F * 3.1415927F);
@@ -255,7 +255,7 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
             this.velocityY *= var20;
             this.velocityZ *= var20;
             this.velocityY -= var10;
-            this.setPos(this.x, this.y, this.z);
+            this.setPosition(this.x, this.y, this.z);
         }
     }
 
@@ -283,9 +283,9 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
 
     public void onPlayerInteraction(PlayerEntity arg) {
         if (!this.world.isRemote) {
-            if (this.inGround && this.spawnedByPlayer && this.shake <= 0 && arg.inventory.method_671(new ItemStack(ItemListener.broadHeadArrow, 1))) {
+            if (this.inGround && this.spawnedByPlayer && this.shake <= 0 && arg.inventory.addStack(new ItemStack(ItemListener.broadHeadArrow, 1))) {
                 this.world.playSound(this, "random.pop", 0.2F, ((this.random.nextFloat() - this.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-                arg.method_491(this, 1);
+                arg.sendPickup(this, 1);
                 this.markDead();
             }
 

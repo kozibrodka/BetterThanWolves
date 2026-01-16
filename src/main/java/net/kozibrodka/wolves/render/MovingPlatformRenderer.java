@@ -22,7 +22,7 @@ public class MovingPlatformRenderer extends EntityRenderer {
 
     public MovingPlatformRenderer() {
         localRenderBlocks = new BlockRenderManager();
-        field_2679 = 0.0F;
+        shadowDarkness = 0.0F;
     }
 
     public void render(Entity entity, double d, double d1, double d2,

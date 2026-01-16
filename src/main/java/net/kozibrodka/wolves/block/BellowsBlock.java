@@ -292,7 +292,7 @@ public class BellowsBlock extends TemplateBlock
                 double tempEntityMinY = tempEntity.boundingBox.minY;
                 if (tempEntityMinY < (double) extendedMaxY) {
                     double entityYOffset = (double) extendedMaxY - tempEntityMinY;
-                    tempEntity.setPos(tempEntity.x, tempEntity.y + entityYOffset, tempEntity.z);
+                    tempEntity.setPosition(tempEntity.x, tempEntity.y + entityYOffset, tempEntity.z);
                 }
             }
 

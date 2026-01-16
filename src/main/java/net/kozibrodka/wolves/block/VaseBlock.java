@@ -95,7 +95,7 @@ public class VaseBlock extends TemplateBlockWithEntity
             VaseBlockEntity tileEntityVase = (VaseBlockEntity) world.getBlockEntity(i, j, k);
             int iTempStackSize = playerEquippedItemInstance.count;
             if (InventoryHandler.addItemInstanceToInventory(tileEntityVase, playerEquippedItemInstance)) {
-                entityPlayer.method_503();
+                entityPlayer.clearStackInHand();
                 world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "random.pop", 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                 if (net.fabricmc.loader.FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
                     voicePacket(world, "random.explode", i, j, k, 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
@@ -151,8 +151,8 @@ public class VaseBlock extends TemplateBlockWithEntity
     }
 
     public void BreakVase(World world, int i, int j, int k) {
-        ((Minecraft) FabricLoader.getInstance().getGameInstance()).field_2808.method_322(i, j, k, id, 0);
-        ((Minecraft) FabricLoader.getInstance().getGameInstance()).soundManager.playSound(soundGroup.getSound(), (float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, (soundGroup.method_1976() + 1.0F) / 2.0F, soundGroup.method_1977() * 0.8F);
+        ((Minecraft) FabricLoader.getInstance().getGameInstance()).particleManager.addBlockBreakParticles(i, j, k, id, 0);
+        ((Minecraft) FabricLoader.getInstance().getGameInstance()).soundManager.playSound(soundGroup.getSound(), (float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, (soundGroup.getVolume() + 1.0F) / 2.0F, soundGroup.getPitch() * 0.8F);
         world.setBlock(i, j, k, 0);
     }
 

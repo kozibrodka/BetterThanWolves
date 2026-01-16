@@ -12,13 +12,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(RailBlock.class)
 public class BlockRailMixin {
 
-    @Inject(method = "method_1109", at = @At("RETURN"), cancellable = true)
+    @Inject(method = "isRail*", at = @At("RETURN"), cancellable = true)
     private static void injected(World arg, int i, int j, int k, CallbackInfoReturnable<Boolean> tor) {
         int var4 = arg.getBlockId(i, j, k);
         tor.setReturnValue(Block.BLOCKS[var4] instanceof RailBlock);
     }
 
-    @Inject(method = "method_1107", at = @At("RETURN"), cancellable = true)
+    @Inject(method = "isRail*", at = @At("RETURN"), cancellable = true)
     private static void injected2(int blockID, CallbackInfoReturnable<Boolean> tor) {
         tor.setReturnValue(Block.BLOCKS[blockID] instanceof RailBlock);
     }

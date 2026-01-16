@@ -22,12 +22,12 @@ public class BlockDetectorRailMixin extends RailBlock {
         super(i, j, bl);
     }
 
-    @Redirect(method = "onEntityCollision", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/DetectorRailBlock;method_1144(Lnet/minecraft/world/World;IIII)V"))
+    @Redirect(method = "onEntityCollision", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/DetectorRailBlock;updatePoweredStatus(Lnet/minecraft/world/World;IIII)V"))
     private void injected(DetectorRailBlock instance, World i, int j, int k, int l, int var6) {
         railCheck(i, j, k, l, var6);
     }
 
-    @Redirect(method = "onTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/DetectorRailBlock;method_1144(Lnet/minecraft/world/World;IIII)V"))
+    @Redirect(method = "onTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/DetectorRailBlock;updatePoweredStatus(Lnet/minecraft/world/World;IIII)V"))
     private void injected2(DetectorRailBlock instance, World i, int j, int k, int l, int var6) {
         railCheck(i, j, k, l, var6);
     }

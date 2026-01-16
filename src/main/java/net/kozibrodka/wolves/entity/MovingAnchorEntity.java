@@ -49,7 +49,7 @@ public class MovingAnchorEntity extends Entity implements EntitySpawnDataProvide
         } else {
             velocityY = -0.05000000074505806D;
         }
-        setPos(x, y, z);
+        setPosition(x, y, z);
         lastTickX = prevX = x;
         lastTickY = prevY = y;
         lastTickZ = prevZ = z;
@@ -216,7 +216,7 @@ public class MovingAnchorEntity extends Entity implements EntitySpawnDataProvide
         prevX = x;
         prevY = y;
         prevZ = z;
-        setPos(newPosX, newPosY, newPosZ);
+        setPosition(newPosX, newPosY, newPosZ);
         TestForBlockCollisions();
     }
 
@@ -250,7 +250,7 @@ public class MovingAnchorEntity extends Entity implements EntitySpawnDataProvide
         if (entityMinY < anchorMaxY) {
             if (entityMinY > anchorMaxY - 0.25D) {
                 double entityYOffset = anchorMaxY - entityMinY;
-                entity.setPos(entity.x, entity.y + entityYOffset, entity.z);
+                entity.setPosition(entity.x, entity.y + entityYOffset, entity.z);
                 entity.fallDistance = 0.0F;
             } else if ((entity instanceof LivingEntity) && velocityY < 0.0D) {
                 double entityMaxY = entity.boundingBox.maxY;

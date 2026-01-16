@@ -41,7 +41,7 @@ public class LiftedBlockEntity extends Entity implements EntitySpawnDataProvider
         } else if (blockId == Block.REDSTONE_WIRE.id) {
             blockMetaData = 0;
         }
-        setPos((float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F);
+        setPosition((float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F);
         lastTickX = prevX = x;
         lastTickY = prevY = y;
         lastTickZ = prevZ = z;
@@ -109,7 +109,7 @@ public class LiftedBlockEntity extends Entity implements EntitySpawnDataProvider
                 prevX = x;
                 prevY = y;
                 prevZ = z;
-                setPos(newPosX, newPosY, newPosZ);
+                setPosition(newPosX, newPosY, newPosZ);
             } else {
                 associatedMovingPlatform = null;
             }

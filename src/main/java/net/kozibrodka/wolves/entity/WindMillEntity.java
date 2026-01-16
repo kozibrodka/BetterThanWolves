@@ -36,7 +36,7 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider {
 
     public WindMillEntity(World world, double x, double y, double z, boolean bIAligned) {
         this(world);
-        setPos(x, y, z);
+        setPosition(x, y, z);
         setAligned(bIAligned);
         renderDistanceMultiplier = 64.0F;
     }
@@ -252,7 +252,7 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider {
         if (ItemInstance != null && (ItemInstance.itemId == Item.DYE.id || ItemInstance.itemId == ItemListener.dung.id)) {
             int iColor = 0;
             if (ItemInstance.itemId == Item.DYE.id) {
-                iColor = WoolBlock.method_1(ItemInstance.getDamage());
+                iColor = WoolBlock.getBlockMeta(ItemInstance.getDamage());
             } else {
                 iColor = 12;
             }
@@ -338,7 +338,7 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider {
 
     private float ComputeRotation(int iCenterI, int iCenterJ, int iCenterK) {
         float fRotationAmount = 0.0F;
-        if (world.dimension.field_2176) {
+        if (world.dimension.evaporatesWater) {
             fRotationAmount = -0.0675F;
             setOverpowerTimer(-1);
         } else if (world.hasSkyLight(iCenterI, iCenterJ, iCenterK)) {

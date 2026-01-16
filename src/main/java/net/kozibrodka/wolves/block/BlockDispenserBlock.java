@@ -326,10 +326,10 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
                 if (AddBlockToInventory(world, i, j, k, targetBlock, blockMetaData)) {
                     if (net.fabricmc.loader.FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
                         renderPacket(world, targetPos.x, targetPos.y, targetPos.z, blockId, blockMetaData);
-                        voicePacket(world, targetBlock.soundGroup.getSound(), i, j, k, (targetBlock.soundGroup.method_1976() + 1.0F) / 2.0F, targetBlock.soundGroup.method_1977() * 0.8F);
+                        voicePacket(world, targetBlock.soundGroup.getSound(), i, j, k, (targetBlock.soundGroup.getVolume() + 1.0F) / 2.0F, targetBlock.soundGroup.getPitch() * 0.8F);
                     } else {
-                        ((Minecraft) FabricLoader.getInstance().getGameInstance()).field_2808.method_322(targetPos.x, targetPos.y, targetPos.z, blockId, blockMetaData);
-                        world.playSound((float) targetPos.x + 0.5F, (float) targetPos.y + 0.5F, (float) targetPos.z + 0.5F, targetBlock.soundGroup.getSound(), (targetBlock.soundGroup.method_1976() + 1.0F) / 2.0F, targetBlock.soundGroup.method_1977() * 0.8F);
+                        ((Minecraft) FabricLoader.getInstance().getGameInstance()).particleManager.addBlockBreakParticles(targetPos.x, targetPos.y, targetPos.z, blockId, blockMetaData);
+                        world.playSound((float) targetPos.x + 0.5F, (float) targetPos.y + 0.5F, (float) targetPos.z + 0.5F, targetBlock.soundGroup.getSound(), (targetBlock.soundGroup.getVolume() + 1.0F) / 2.0F, targetBlock.soundGroup.getPitch() * 0.8F);
                     }
                     world.setBlock(targetPos.x, targetPos.y, targetPos.z, 0);
                 }
@@ -515,9 +515,9 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
                         InventoryHandler.addSingleItemToInventory(tileEntityBlockDispenser, iteminstance.itemId, 0);
                     } else {
                         Block newBlock = Block.WHEAT;
-                        world.playSound((float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, newBlock.soundGroup.getSound(), (newBlock.soundGroup.method_1976() + 1.0F) / 2.0F, newBlock.soundGroup.method_1977() * 0.8F);
+                        world.playSound((float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, newBlock.soundGroup.getSound(), (newBlock.soundGroup.getVolume() + 1.0F) / 2.0F, newBlock.soundGroup.getPitch() * 0.8F);
                         if (net.fabricmc.loader.FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                            voicePacket(world, newBlock.soundGroup.getSound(), i, j, k, (newBlock.soundGroup.method_1976() + 1.0F) / 2.0F, newBlock.soundGroup.method_1977() * 0.8F);
+                            voicePacket(world, newBlock.soundGroup.getSound(), i, j, k, (newBlock.soundGroup.getVolume() + 1.0F) / 2.0F, newBlock.soundGroup.getPitch() * 0.8F);
                         }
                         bSuccessfullyDispensed = true;
                     }
@@ -546,9 +546,9 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
                                 newBlock.onPlaced(world, targetPos.x, targetPos.y, targetPos.z, iTargetDirection);
                             }
 
-                            world.playSound((float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, newBlock.soundGroup.getSound(), (newBlock.soundGroup.method_1976() + 1.0F) / 2.0F, newBlock.soundGroup.method_1977() * 0.8F);
+                            world.playSound((float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, newBlock.soundGroup.getSound(), (newBlock.soundGroup.getVolume() + 1.0F) / 2.0F, newBlock.soundGroup.getPitch() * 0.8F);
                             if (net.fabricmc.loader.FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                                voicePacket(world, newBlock.soundGroup.getSound(), i, j, k, (newBlock.soundGroup.method_1976() + 1.0F) / 2.0F, newBlock.soundGroup.method_1977() * 0.8F);
+                                voicePacket(world, newBlock.soundGroup.getSound(), i, j, k, (newBlock.soundGroup.getVolume() + 1.0F) / 2.0F, newBlock.soundGroup.getPitch() * 0.8F);
                             }
                             bSuccessfullyDispensed = true;
                         } else {

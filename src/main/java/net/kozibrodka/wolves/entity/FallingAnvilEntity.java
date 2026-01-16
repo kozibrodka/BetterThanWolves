@@ -31,7 +31,7 @@ public class FallingAnvilEntity extends Entity implements EntitySpawnDataProvide
         this.blocksSameBlockSpawning = true;
         this.setBoundingBoxSpacing(0.98F, 0.98F);
         this.standingEyeHeight = this.height / 2.0F;
-        this.setPos(d, e, f);
+        this.setPosition(d, e, f);
         this.velocityX = 0.0D;
         this.velocityY = 0.0D;
         this.velocityZ = 0.0D;

@@ -196,7 +196,7 @@ public class UnsortedUtils {
         } else if (zOverlap && Math.abs(zOffset) < 0.20000000000000001D) {
             entityZ += zOffset;
         }
-        entity.setPos(entityX, entityY, entityZ);
+        entity.setPosition(entityX, entityY, entityZ);
     }
 
 //    public static void ServerPositionAllPlayerEntitiesOutsideOfLocation(Level var0, int var1, int var2, int var3)

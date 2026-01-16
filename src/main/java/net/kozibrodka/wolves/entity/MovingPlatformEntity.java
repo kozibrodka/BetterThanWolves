@@ -42,7 +42,7 @@ public class MovingPlatformEntity extends Entity implements EntitySpawnDataProvi
         m_AssociatedAnchorLastKnownYPos = entityMovingAnchor.y;
         m_AssociatedAnchorLastKnownZPos = entityMovingAnchor.z;
         velocityY = entityMovingAnchor.velocityY;
-        setPos(x, y, z);
+        setPosition(x, y, z);
         lastTickX = prevX = x;
         lastTickY = prevY = y;
         lastTickZ = prevZ = z;
@@ -204,7 +204,7 @@ public class MovingPlatformEntity extends Entity implements EntitySpawnDataProvi
         prevX = x;
         prevY = y;
         prevZ = z;
-        setPos(newPosX, newPosY, newPosZ);
+        setPosition(newPosX, newPosY, newPosZ);
         TestForBlockCollisions();
     }
 
@@ -236,7 +236,7 @@ public class MovingPlatformEntity extends Entity implements EntitySpawnDataProvi
         if (entityMinY < platformMaxY) {
             if (entityMinY > platformMaxY - 0.25D) {
                 double entityYOffset = platformMaxY - entityMinY;
-                entity.setPos(entity.x, entity.y + entityYOffset, entity.z);
+                entity.setPosition(entity.x, entity.y + entityYOffset, entity.z);
             } else if ((entity instanceof LivingEntity) && velocityY < 0.0D) {
                 double entityMaxY = entity.boundingBox.maxY;
                 double platformMinY = boundingBox.minY;
