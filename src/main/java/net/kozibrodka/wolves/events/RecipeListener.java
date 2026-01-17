@@ -145,6 +145,7 @@ public class RecipeListener {
         if (ConfigListener.wolvesGlass.difficulty.wickerWeaving) {
             CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.wickerWeaving), "###", "###", "###", '#', Item.SUGAR_CANE);
         }
+        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.weight, 4), "I", "C", 'I', Item.IRON_INGOT, 'C', BlockListener.corner);
     }
 
     private static void addDyeRecipes() {
@@ -218,6 +219,11 @@ public class RecipeListener {
             });
             addAnvilRecipe(new ItemStack(ItemListener.bootsSteel, 1), new Object[]{
                     " # # ", " # # ", " # # ", " # # ", "## ##", '#', ItemListener.steel
+            });
+            addAnvilRecipe(new ItemStack(BlockListener.dropper, 1), new Object[]{
+                    "S   S", "S   S", "GAHAG", "SRPRS", "SSISS", 'S',
+                    ItemListener.steel, 'G', BlockListener.gearBox, 'A', BlockListener.axleBlock,
+                    'H', BlockListener.hopper, 'R', Item.REDSTONE, 'P', Block.STONE_PRESSURE_PLATE, 'I', Block.IRON_DOOR
             });
         } else {
             addAnvilRecipe(new ItemStack(ItemListener.refinedPickAxe, 1), new Object[]{
