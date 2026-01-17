@@ -1,7 +1,9 @@
 package net.kozibrodka.wolves.block.entity;
 
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.utils.InventoryHandler;
+import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -16,6 +18,7 @@ public class DropperBlockEntity extends BlockEntity implements Inventory {
 
     private ItemStack[] dropperContents;
     private boolean dropDone;
+    private boolean providePower;
 
     public DropperBlockEntity() {
         dropperContents = new ItemStack[2];
@@ -26,22 +29,35 @@ public class DropperBlockEntity extends BlockEntity implements Inventory {
     public void tick() {
         ItemStack weight = dropperContents[WEIGHT];
         if (weight == null) {
+            providePower = false;
+            megaNotification();
             return;
         }
         if (weight.itemId != ItemListener.weight.id) {
+            providePower = false;
+            megaNotification();
             return;
         }
         ItemStack storage = dropperContents[STORAGE];
         if (storage == null) {
+            providePower = false;
+            megaNotification();
             return;
         }
         storage = storage.copy();
         if (storage.count < weight.count) {
+            providePower = false;
+            megaNotification();
             return;
         }
-        if (world.getBlockId(x, y - 1, z) != 0) {
+        int belowId = world.getBlockId(x, y - 1, z);
+        if (!(belowId == 0 || Block.BLOCKS[belowId].getCollisionShape(world, x, y - 1, z) == null)) {
+            providePower = false;
+            megaNotification();
             return;
         }
+        providePower = true;
+        megaNotification();
         if (dropDone) {
             return;
         }
@@ -54,7 +70,26 @@ public class DropperBlockEntity extends BlockEntity implements Inventory {
             dropperContents[STORAGE] = storage;
         }
         dropDone = true;
-        world.spawnEntity(new ItemEntity(world, x, y - 1, z, drop));
+        ItemEntity itemEntity = new ItemEntity(world, x + 0.5, y - 0.5, z + 0.5, drop);
+        itemEntity.velocityX = 0;
+        itemEntity.velocityY = 0;
+        itemEntity.velocityZ = 0;
+        world.spawnEntity(itemEntity);
+    }
+
+    private void megaNotification() {
+        if (world.getBlockId(x + 1, y, z) == Block.REDSTONE_WIRE.id) {
+            Block.REDSTONE_WIRE.neighborUpdate(world, x + 1, y, z, BlockListener.dropper.id);
+        }
+        if (world.getBlockId(x - 1, y, z) == Block.REDSTONE_WIRE.id) {
+            Block.REDSTONE_WIRE.neighborUpdate(world, x - 1, y, z, BlockListener.dropper.id);
+        }
+        if (world.getBlockId(x, y, z + 1) == Block.REDSTONE_WIRE.id) {
+            Block.REDSTONE_WIRE.neighborUpdate(world, x, y, z + 1, BlockListener.dropper.id);
+        }
+        if (world.getBlockId(x, y, z - 1) == Block.REDSTONE_WIRE.id) {
+            Block.REDSTONE_WIRE.neighborUpdate(world, x, y, z - 1, BlockListener.dropper.id);
+        }
     }
 
     public void requestDrop() {
@@ -131,5 +166,9 @@ public class DropperBlockEntity extends BlockEntity implements Inventory {
         }
         nbtCompound.put("Items", nbtList);
         nbtCompound.putBoolean("DropDone", dropDone);
+    }
+
+    public boolean shouldProvidePower() {
+        return providePower;
     }
 }

@@ -11,6 +11,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.gui.screen.container.GuiHelper;
 import net.modificationstation.stationapi.api.network.packet.PacketHelper;
@@ -40,6 +41,15 @@ public class DropperBlock extends TemplateBlockWithEntity implements MechanicalD
     @Override
     protected BlockEntity createBlockEntity() {
         return new DropperBlockEntity();
+    }
+
+    @Override
+    public boolean isEmittingRedstonePowerInDirection(BlockView blockView, int x, int y, int z, int direction) {
+        BlockEntity blockEntity = blockView.getBlockEntity(x, y, z);
+        if (blockEntity instanceof DropperBlockEntity dropperBlockEntity) {
+            return dropperBlockEntity.shouldProvidePower();
+        }
+        return false;
     }
 
     public boolean onUse(World world, int x, int y, int z, PlayerEntity playerEntity) {

@@ -11,6 +11,7 @@ import net.fabricmc.api.EnvironmentInterface;
 import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.block.entity.CrucibleBlockEntity;
 import net.kozibrodka.wolves.container.CrucibleScreenHandler;
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ScreenHandlerListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.network.ScreenPacket;
@@ -241,16 +242,18 @@ public class CrucibleBlock extends TemplateBlockWithEntity
         setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
     }
 
-    public void SetHasFull(World world, int i, int j, int k, int slots) {
-        BlockEntity tileEntityBase = world.getBlockEntity(i, j, k);
+    public void SetHasFull(World world, int x, int y, int z, int slots) {
+        BlockEntity tileEntityBase = world.getBlockEntity(x, y, z);
         SETTING_TILE = true;
 
-        BlockState currentState = world.getBlockState(i, j, k);
-        world.setBlockStateWithNotify(i, j, k, currentState.with(FULL, slots));
+        BlockState currentState = world.getBlockState(x, y, z);
+        if (world.getBlockId(x, y, z) == BlockListener.crucible.id) {
+            world.setBlockStateWithNotify(x, y, z, currentState.with(FULL, slots));
+        }
 
         SETTING_TILE = false;
         tileEntityBase.cancelRemoval();
-        world.setBlockEntity(i, j, k, tileEntityBase);
+        world.setBlockEntity(x, y, z, tileEntityBase);
     }
 
     public void SetHasLava(World world, int i, int j, int k, boolean bOn) {
