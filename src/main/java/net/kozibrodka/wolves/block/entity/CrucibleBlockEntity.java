@@ -22,6 +22,8 @@ import net.modificationstation.stationapi.api.util.math.Direction;
 
 public class CrucibleBlockEntity extends BlockEntity implements Inventory {
 
+    private static final int RECIPE_TIME = 1950;
+
     public CrucibleBlockEntity() {
         crucibleContents = new ItemStack[27];
         crucibleCookCounter = 0;
@@ -126,7 +128,7 @@ public class CrucibleBlockEntity extends BlockEntity implements Inventory {
             }
             if (areItemsInRegistry()) {
                 crucibleCookCounter += stokedFireFactor;
-                if (crucibleCookCounter >= 1950) {
+                if (crucibleCookCounter >= RECIPE_TIME) {
                     craftFromRegistry();
                     crucibleCookCounter = 0;
                 }
@@ -177,7 +179,7 @@ public class CrucibleBlockEntity extends BlockEntity implements Inventory {
     }
 
     public int getCookProgressScaled(int scale) {
-        return (crucibleCookCounter * scale) / 1950;
+        return (crucibleCookCounter * scale) / RECIPE_TIME;
     }
 
     public boolean isCooking() {
@@ -206,6 +208,6 @@ public class CrucibleBlockEntity extends BlockEntity implements Inventory {
         Player Interaction Distance = 64D;
         Primary Fire Factor = 5;
         Secondary Fire Factor = 1;
-        Cook Time = 1950;
+        Cook Time = RECIPE_TIME;
      */
 }

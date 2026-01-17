@@ -302,13 +302,13 @@ public class CrucibleBlock extends TemplateBlockWithEntity
             case 5 -> Direction.NORTH;
             default -> Direction.UP;
         };
-        world.setBlockStateWithNotify(x, y, z, currentState.with(ROTATION, newDirection));
+        world.setBlockState(x, y, z, currentState.with(ROTATION, newDirection));
     }
 
     @Override
     public void unpowerMachine(World world, int x, int y, int z, int side) {
         BlockState currentState = world.getBlockState(x, y, z);
-        world.setBlockStateWithNotify(x, y, z, currentState.with(ROTATION, Direction.UP));
+        world.setBlockState(x, y, z, currentState.with(ROTATION, Direction.UP));
     }
 
     @Override
