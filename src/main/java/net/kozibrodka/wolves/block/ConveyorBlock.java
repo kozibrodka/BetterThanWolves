@@ -145,6 +145,22 @@ public class ConveyorBlock extends LazyBlockTemplate implements MechanicalDevice
     }
 
     @Override
+    public boolean canInputMechanicalPower(World world, int x, int y, int z, int side) {
+        int meta = world.getBlockMeta(x, y, z);
+        return switch (meta) {
+            case 2, 3, 8, 9 -> switch (side) {
+                case 0, 1, 2, 3 -> false;
+                default -> true;
+            };
+            case 4, 5, 10, 11 -> switch (side) {
+                case 0, 1, 4, 5 -> false;
+                default -> true;
+            };
+            default -> false;
+        };
+    }
+
+    @Override
     public void onEntityCollision(World world, int x, int y, int z, Entity entity) {
         int blockMeta = world.getBlockMeta(x, y, z);
         if (blockMeta < 6) {
