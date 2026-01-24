@@ -7,7 +7,6 @@ accessible method net/minecraft/entity/passive/ChickenEntity getHurtSound ()Ljav
 accessible field net/minecraft/client/network/ClientNetworkHandler minecraft Lnet/minecraft/client/Minecraft;
 accessible field net/minecraft/entity/Entity fallDistance F
 accessible method net/minecraft/block/FireBlock trySpreadingFire (Lnet/minecraft/world/World;IIIILjava/util/Random;I)V
-accessible method net/minecraft/block/FireBlock method_1827 (Lnet/minecraft/world/World;III)I
 accessible method net/minecraft/block/FireBlock getBurnChance (Lnet/minecraft/world/World;III)I
 accessible method net/minecraft/world/World blockUpdate (IIII)V
 accessible field net/minecraft/server/network/ServerPlayNetworkHandler player Lnet/minecraft/entity/player/ServerPlayerEntity;
