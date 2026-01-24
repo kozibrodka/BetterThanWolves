@@ -26,8 +26,7 @@ import net.modificationstation.stationapi.api.util.Identifier;
 import java.util.List;
 import java.util.Random;
 
-public class GearboxBlock extends TemplateBlock
-        implements MechanicalDevice, RotatableBlock {
+public class GearboxBlock extends TemplateBlock implements MechanicalDevice, RotatableBlock {
 
     public GearboxBlock(Identifier identifier) {
         super(identifier, Material.WOOD);
@@ -119,7 +118,10 @@ public class GearboxBlock extends TemplateBlock
     }
 
     private int getFacingFromMeta(int meta) {
-        return meta & 7;
+        if (meta > 7) {
+            meta -= 8;
+        }
+        return meta;
     }
 
     public void setFacing(World world, int x, int y, int z, int facing) {
@@ -256,19 +258,6 @@ public class GearboxBlock extends TemplateBlock
 
     public boolean canInputMechanicalPower() {
         return true;
-    }
-
-    public boolean isInputtingMechanicalPower(World world, int x, int y, int z) {
-        int facing = getFacing(world, x, y, z);
-        BlockPosition targetBlockPos = new BlockPosition(x, y, z);
-        targetBlockPos.addFacingAsOffset(facing);
-        int targetId = world.getBlockId(targetBlockPos.x, targetBlockPos.y, targetBlockPos.z);
-        return targetId == BlockListener.axleBlock.id && ((AxleBlock) BlockListener.axleBlock).isAxleOrientedTowardsFacing(world, targetBlockPos.x, targetBlockPos.y, targetBlockPos.z, facing) && ((AxleBlock) BlockListener.axleBlock).getPowerLevel(world, targetBlockPos.x, targetBlockPos.y, targetBlockPos.z) > 0
-                || targetId == BlockListener.nonCollidingAxleBlock.id && ((AxleBlock) BlockListener.nonCollidingAxleBlock).isAxleOrientedTowardsFacing(world, targetBlockPos.x, targetBlockPos.y, targetBlockPos.z, facing) && ((AxleBlock) BlockListener.nonCollidingAxleBlock).getPowerLevel(world, targetBlockPos.x, targetBlockPos.y, targetBlockPos.z) > 0;
-    }
-
-    public boolean isOutputtingMechanicalPower(World world, int x, int y, int z) {
-        return isGearBoxOn(world, x, y, z);
     }
 
     @Override
