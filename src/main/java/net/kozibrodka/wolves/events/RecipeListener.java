@@ -109,6 +109,7 @@ public class RecipeListener {
                 ItemListener.belt);
         CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.planter, 1, 1), "Y", "X", "#", '#', new ItemStack(BlockListener.planter, 1, 0), 'X', Item.WATER_BUCKET, 'Y', Block.DIRT);
         CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.conveyor, 1), "BBB", "PGP", "PPP", 'B', ItemListener.belt, 'P', Block.PLANKS, 'G', BlockListener.gearBox);
+        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.conveyorExtender, 1), "BBB", "PGP", "PPP", 'B', ItemListener.belt, 'P', Block.PLANKS, 'G', ItemListener.gear);
         if (ConfigListener.wolvesGlass.small_tweaks.wickerBlock) {
             CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.blockOfWicker, 1), "XX", "XX", 'X', ItemListener.wicker);
         }
