@@ -1,18 +1,33 @@
 plugins {
-	id 'maven-publish'
-	id 'fabric-loom' version '1.11.7'
-	id 'babric-loom-extension' version '1.10.2'
+    id 'net.fabricmc.fabric-loom-remap' version '1.14.10'
+    id 'babric-loom-extension' version '1.14.2'
+    id 'maven-publish'
 }
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
 
-archivesBaseName = project.archives_base_name
+base {
+    archivesName = project.archives_base_name
+}
+
 version = project.mod_version
 group = project.maven_group
 
 loom {
+    mixin {
+        useLegacyMixinAp = true
+    }
 	accessWidenerPath = file("src/main/resources/wolves.accesswidener")
+}
+
+loom.runs {
+    register("secondClient") {
+        client()
+        programArgs(["--username", "Player2", "--uuid", "cb7afd42-6488-4bb9-9dd3-151aa66d7049"])
+    }
 }
 
 repositories {
@@ -126,7 +141,7 @@ java {
 
 jar {
 	from("LICENSE") {
-		rename { "${it}_${project.archivesBaseName}"}
+		rename { "${it}_${project.archives_base_name}"}
 	}
 }
 
