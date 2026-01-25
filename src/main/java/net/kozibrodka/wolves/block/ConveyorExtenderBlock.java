@@ -2,7 +2,6 @@ package net.kozibrodka.wolves.block;
 
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
-import net.kozibrodka.wolves.utils.MechanicalDevice;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -12,13 +11,14 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.util.Identifier;
 
-public class ConveyorBlock extends LazyBlockTemplate implements MechanicalDevice {
+public class ConveyorExtenderBlock extends LazyBlockTemplate {
     private static final double ACCELERATION = 1.1;
     private static final double MAXIMUM_VELOCITY = 1.5;
     private static final double DECELERATION = 0.75;
     private static final double MINIMUM = 0.1;
 
-    public ConveyorBlock(Identifier identifier, Material material, float hardness, BlockSoundGroup blockSounds) {
+
+    public ConveyorExtenderBlock(Identifier identifier, Material material, float hardness, BlockSoundGroup blockSounds) {
         super(identifier, material, hardness, blockSounds);
     }
 
@@ -35,56 +35,56 @@ public class ConveyorBlock extends LazyBlockTemplate implements MechanicalDevice
                 case 1 -> TextureListener.conveyor_up;
                 case 2 -> TextureListener.conveyor_front;
                 case 3 -> TextureListener.conveyor_back;
-                default -> TextureListener.conveyor_side_inlet;
+                default -> TextureListener.conveyor_side;
             };
             case 3 -> switch (side) {
                 case 0 -> TextureListener.conveyor_bottom;
                 case 1 -> TextureListener.conveyor_down;
                 case 2 -> TextureListener.conveyor_back;
                 case 3 -> TextureListener.conveyor_front;
-                default -> TextureListener.conveyor_side_inlet;
+                default -> TextureListener.conveyor_side;
             };
             case 4 -> switch (side) {
                 case 0 -> TextureListener.conveyor_bottom;
                 case 1 -> TextureListener.conveyor_left;
                 case 4 -> TextureListener.conveyor_front;
                 case 5 -> TextureListener.conveyor_back;
-                default -> TextureListener.conveyor_side_inlet;
+                default -> TextureListener.conveyor_side;
             };
             case 5 -> switch (side) {
                 case 0 -> TextureListener.conveyor_bottom;
                 case 1 -> TextureListener.conveyor_right;
                 case 4 -> TextureListener.conveyor_back;
                 case 5 -> TextureListener.conveyor_front;
-                default -> TextureListener.conveyor_side_inlet;
+                default -> TextureListener.conveyor_side;
             };
             case 8 -> switch (side) {
                 case 0 -> TextureListener.conveyor_bottom;
                 case 1 -> TextureListener.conveyor_up_on;
                 case 2 -> TextureListener.conveyor_front_on;
                 case 3 -> TextureListener.conveyor_back_on;
-                default -> TextureListener.conveyor_side_inlet;
+                default -> TextureListener.conveyor_side;
             };
             case 9 -> switch (side) {
                 case 0 -> TextureListener.conveyor_bottom;
                 case 1 -> TextureListener.conveyor_down_on;
                 case 2 -> TextureListener.conveyor_back_on;
                 case 3 -> TextureListener.conveyor_front_on;
-                default -> TextureListener.conveyor_side_inlet;
+                default -> TextureListener.conveyor_side;
             };
             case 10 -> switch (side) {
                 case 0 -> TextureListener.conveyor_bottom;
                 case 1 -> TextureListener.conveyor_left_on;
                 case 4 -> TextureListener.conveyor_front_on;
                 case 5 -> TextureListener.conveyor_back_on;
-                default -> TextureListener.conveyor_side_inlet;
+                default -> TextureListener.conveyor_side;
             };
             case 11 -> switch (side) {
                 case 0 -> TextureListener.conveyor_bottom;
                 case 1 -> TextureListener.conveyor_right_on;
                 case 4 -> TextureListener.conveyor_back_on;
                 case 5 -> TextureListener.conveyor_front_on;
-                default -> TextureListener.conveyor_side_inlet;
+                default -> TextureListener.conveyor_side;
             };
             default -> 0;
         };
@@ -112,76 +112,6 @@ public class ConveyorBlock extends LazyBlockTemplate implements MechanicalDevice
         if (facing == 3) {
             world.setBlockMeta(x, y, z, 4);
         }
-    }
-
-    @Override
-    public boolean canOutputMechanicalPower() {
-        return false;
-    }
-
-    @Override
-    public boolean canInputMechanicalPower() {
-        return true;
-    }
-
-    @Override
-    public void powerMachine(World world, int x, int y, int z, int side) {
-        updateConveyor(world, x, y, z, true);
-    }
-
-    @Override
-    public void unpowerMachine(World world, int x, int y, int z, int side) {
-        updateConveyor(world, x, y, z, false);
-    }
-
-    private void updateConveyor(World world, int x, int y, int z, boolean enable) {
-        int meta = world.getBlockMeta(x, y, z);
-        if (enable && meta < 6) {
-            world.setBlockMeta(x, y, z, meta + 6);
-        } else if (!enable && meta >= 6) {
-            world.setBlockMeta(x, y, z, meta - 6);
-        }
-        if (meta >= 6) {
-            meta -= 6;
-        }
-        int xChange = 0;
-        int zChange = switch (meta) {
-            case 2 -> -1;
-            case 3 -> 1;
-            case 4 -> {
-                xChange = -1;
-                yield 0;
-            }
-            case 5 -> {
-                xChange = 1;
-                yield 0;
-            }
-            default -> 0;
-        };
-        if (world.getBlockId(x + xChange, y, z + zChange) == BlockListener.conveyorExtender.id) {
-            BlockListener.conveyorExtender.updateConveyor(world, x + xChange, y, z + zChange, enable, 16);
-        }
-    }
-
-    @Override
-    public boolean isMachinePowered(World world, int x, int y, int z) {
-        return world.getBlockMeta(x, y, z) >= 6;
-    }
-
-    @Override
-    public boolean canInputMechanicalPower(World world, int x, int y, int z, int side) {
-        int meta = world.getBlockMeta(x, y, z);
-        return switch (meta) {
-            case 2, 3, 8, 9 -> switch (side) {
-                case 0, 1, 2, 3 -> false;
-                default -> true;
-            };
-            case 4, 5, 10, 11 -> switch (side) {
-                case 0, 1, 4, 5 -> false;
-                default -> true;
-            };
-            default -> false;
-        };
     }
 
     @Override
@@ -238,5 +168,36 @@ public class ConveyorBlock extends LazyBlockTemplate implements MechanicalDevice
         }
         entity.velocityX = xVelocity;
         entity.velocityZ = zVelocity;
+    }
+
+    public void updateConveyor(World world, int x, int y, int z, boolean enable, int range) {
+        int meta = world.getBlockMeta(x, y, z);
+        if (enable && meta < 6) {
+            world.setBlockMeta(x, y, z, meta + 6);
+        } else if (!enable && meta >= 6) {
+            world.setBlockMeta(x, y, z, meta - 6);
+        }
+        if (meta >= 6) {
+            meta -= 6;
+        }
+        int xChange = 0;
+        int zChange = switch (meta) {
+            case 2 -> -1;
+            case 3 -> 1;
+            case 4 -> {
+                xChange = -1;
+                yield 0;
+            }
+            case 5 -> {
+                xChange = 1;
+                yield 0;
+            }
+            default -> 0;
+        };
+        if (range > 0) {
+            if (world.getBlockId(x + xChange, y, z + zChange) == BlockListener.conveyorExtender.id) {
+                BlockListener.conveyorExtender.updateConveyor(world, x + xChange, y, z + zChange, enable, range - 1);
+            }
+        }
     }
 }

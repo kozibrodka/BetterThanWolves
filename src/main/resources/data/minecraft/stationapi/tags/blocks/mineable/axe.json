@@ -15,6 +15,7 @@
     "wolves:non_colliding_axle_block",
     "wolves:collision_block",
     "wolves:obstruction_block",
-    "wolves:conveyor"
+    "wolves:conveyor",
+    "wolves:conveyor_extender"
   ]
 }

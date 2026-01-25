@@ -125,6 +125,7 @@ public class TextureListener {
         conveyor_up = registerBlockTexture("block/conveyor_up");
         conveyor_down = registerBlockTexture("block/conveyor_down");
         conveyor_bottom = registerBlockTexture("block/conveyor_bottom");
+        conveyor_side = registerBlockTexture("block/conveyor_side");
         conveyor_side_inlet = registerBlockTexture("block/conveyor_side_inlet");
         conveyor_front_on = registerBlockTexture("block/conveyor_front_on");
         conveyor_back_on = registerBlockTexture("block/conveyor_back_on");
@@ -282,6 +283,7 @@ public class TextureListener {
     public static int conveyor_up;
     public static int conveyor_down;
     public static int conveyor_bottom;
+    public static int conveyor_side;
     public static int conveyor_side_inlet;
     public static int conveyor_front_on;
     public static int conveyor_back_on;

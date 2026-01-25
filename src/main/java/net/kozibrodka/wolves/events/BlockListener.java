@@ -61,6 +61,7 @@ public class BlockListener {
     public static LazyBlockTemplate blockOfSteel;
     public static Block dropper;
     public static ConveyorBlock conveyor;
+    public static ConveyorExtenderBlock conveyorExtender;
 
     public static TemplateBlock panelNumber1;
     public static TemplateBlock panelNumber2;
@@ -113,6 +114,7 @@ public class BlockListener {
         blockOfSteel = new LazyBlockTemplate(NAMESPACE.id("block_of_steel"), Material.METAL, 2.5F, Block.METAL_SOUND_GROUP);
         dropper = new DropperBlock(NAMESPACE.id("dropper"), Material.PISTON_BREAKABLE).setHardness(2.5F).setSoundGroup(Block.METAL_SOUND_GROUP);
         conveyor = new ConveyorBlock(Identifier.of(NAMESPACE, "conveyor"), Material.WOOD, 1.5F, Block.WOOD_SOUND_GROUP);
+        conveyorExtender= new ConveyorExtenderBlock(Identifier.of(NAMESPACE, "conveyor_extender"), Material.WOOD, 1.5F, Block.WOOD_SOUND_GROUP);
 
         //TODO: Omni slabs are really cursed and kinda bad. Also applies to Cornets/Moudlings - should be option in CFG to remove them
 
