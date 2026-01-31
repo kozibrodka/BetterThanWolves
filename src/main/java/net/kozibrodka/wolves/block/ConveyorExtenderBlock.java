@@ -170,6 +170,55 @@ public class ConveyorExtenderBlock extends LazyBlockTemplate {
         entity.velocityZ = zVelocity;
     }
 
+    @Override
+    public void neighborUpdate(World world, int x, int y, int z, int id) {
+        int blockMeta = world.getBlockMeta(x, y, z);
+        if (blockMeta < 6) {
+            return;
+        }
+        int unwantedX = 0;
+        int unwantedZ = switch (blockMeta - 6) {
+            case 2 -> -1;
+            case 3 -> 1;
+            case 4 -> {
+                unwantedX = -1;
+                yield 0;
+            }
+            case 5 -> {
+                unwantedX = 1;
+                yield 0;
+            }
+            default -> 0;
+        };
+        unwantedX += x;
+        unwantedZ += z;
+        boolean hasPowerSource = isPowerSource(world, x + 1, y, z, unwantedX, unwantedZ);
+        if (!hasPowerSource) {
+            hasPowerSource = isPowerSource(world, x - 1, y, z, unwantedX, unwantedZ);
+        }
+        if (!hasPowerSource) {
+            hasPowerSource = isPowerSource(world, x, y, z + 1, unwantedX, unwantedZ);
+        }
+        if (!hasPowerSource) {
+            hasPowerSource = isPowerSource(world, x, y, z - 1, unwantedX, unwantedZ);
+        }
+        if (hasPowerSource) {
+            return;
+        }
+        world.setBlockMeta(x, y, z, blockMeta - 6);
+    }
+
+    private boolean isPowerSource(World world, int x, int y, int z, int unwantedX, int unwantedZ) {
+        if (x == unwantedX && z == unwantedZ) {
+            return false;
+        }
+        int blockId = world.getBlockId(x, y, z);
+        if (blockId != BlockListener.conveyorExtender.id && blockId != BlockListener.conveyor.id) {
+            return false;
+        }
+        return world.getBlockMeta(x, y, z) >= 6;
+    }
+
     public void updateConveyor(World world, int x, int y, int z, boolean enable, int range) {
         int meta = world.getBlockMeta(x, y, z);
         if (enable && meta < 6) {
