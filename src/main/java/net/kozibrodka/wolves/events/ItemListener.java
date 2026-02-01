@@ -65,6 +65,8 @@ public class ItemListener {
     public static Item nothing;
     public static WickerWeavingItem wickerWeaving;
     public static LazyItemTemplate wickerSheet;
+    public static Item debugItem1;
+    public static Item debugItem2;
 
     @Entrypoint.Namespace
     public static Namespace NAMESPACE;
@@ -125,6 +127,9 @@ public class ItemListener {
         nothing = new TemplateItem(NAMESPACE.id("nothing")).setTranslationKey(NAMESPACE, "nothing");
         wickerWeaving = new WickerWeavingItem(NAMESPACE.id("wicker_weaving"));
         wickerSheet = new LazyItemTemplate(NAMESPACE.id("wicker_sheet"));
+
+        debugItem1 = new DebugItem1(NAMESPACE.id("debugItem1")).setTranslationKey(NAMESPACE, "debugItem1");
+        debugItem2 = new DebugItem2(NAMESPACE.id("debugItem2")).setTranslationKey(NAMESPACE, "debugItem2");
 
         //TODO: ADDON IDEA: Refined Steel Minecarts - they would be X times faster than normal ones, great way to give more purpose for rail usage.
     }
