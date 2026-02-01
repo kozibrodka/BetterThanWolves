@@ -19,6 +19,15 @@ public class AutomaticAnvilBlockEntity extends BlockEntity implements Inventory 
     private int craftingProgress;
 
     @Override
+    public void tick() {
+
+    }
+
+//    private boolean checkMultiblockStructure() {
+//
+//    }
+
+    @Override
     public int size() {
         return INVENTORY_SIZE;
     }

@@ -18,6 +18,11 @@
     "wolves:crucible",
     "wolves:planter",
     "wolves:block_of_steel",
-    "wolves:dropper"
+    "wolves:dropper",
+    "wolves:automatic_anvil",
+    "wolves:anvil_frame",
+    "wolves:machine_power_input",
+    "wolves:input_bus",
+    "wolves:output_bus"
   ]
 }

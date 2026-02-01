@@ -17,6 +17,8 @@ import net.modificationstation.stationapi.api.util.Namespace;
 public class BlockListener {
 
     public static final Material CEMENT_MATERIAL = new CementMaterial(MapColor.GRAY);
+
+    // Original BTW blocks
     public static Block anvil;
     public static Block lightBulbOff;
     public static Block lightBulbOn;
@@ -53,15 +55,23 @@ public class BlockListener {
     public static Block vase;
     public static Block detectorBlock;
     public static Block nonCollidingAxleBlock;
+
+    // Technical blocks
     public static CollisionBlock collisionBlock;
     public static ObstructionBlock obstructionBlock;
 
-    public static TemplateBlock blockOfWicker; //Mango Pack Addon
-    public static LazyBlockTemplate blockOfGrates; //Another Mango Pack Addon
+    // New blocks
+    public static TemplateBlock blockOfWicker;
+    public static LazyBlockTemplate blockOfGrates;
     public static LazyBlockTemplate blockOfSteel;
     public static Block dropper;
     public static ConveyorBlock conveyor;
     public static ConveyorExtenderBlock conveyorExtender;
+    public static AutomaticAnvilBlock automaticAnvil;
+    public static LazyBlockTemplate anvilFrame;
+    public static MachinePowerInputBlock machinePowerInput;
+    public static MachineBusBlock inputBus;
+    public static MachineBusBlock outputBus;
 
     public static TemplateBlock panelNumber1;
     public static TemplateBlock panelNumber2;
@@ -115,6 +125,11 @@ public class BlockListener {
         dropper = new DropperBlock(NAMESPACE.id("dropper"), Material.PISTON_BREAKABLE).setHardness(2.5F).setSoundGroup(Block.METAL_SOUND_GROUP);
         conveyor = new ConveyorBlock(Identifier.of(NAMESPACE, "conveyor"), Material.WOOD, 1.5F, Block.WOOD_SOUND_GROUP);
         conveyorExtender= new ConveyorExtenderBlock(Identifier.of(NAMESPACE, "conveyor_extender"), Material.WOOD, 1.5F, Block.WOOD_SOUND_GROUP);
+        automaticAnvil = new AutomaticAnvilBlock(Identifier.of(NAMESPACE, "automatic_anvil"), Material.METAL, 2.5F, Block.METAL_SOUND_GROUP);
+        anvilFrame = new LazyBlockTemplate(Identifier.of(NAMESPACE, "anvil_frame"), Material.METAL, 2.5F, Block.METAL_SOUND_GROUP);
+        machinePowerInput = new MachinePowerInputBlock(Identifier.of(NAMESPACE,  "machine_power_input"), Material.METAL, 2.5F, Block.METAL_SOUND_GROUP);
+        inputBus = new MachineBusBlock(Identifier.of("input_bus"), Material.METAL, 2.5F, Block.METAL_SOUND_GROUP);
+        outputBus = new MachineBusBlock(Identifier.of("output_bus"), Material.METAL, 2.5F, Block.METAL_SOUND_GROUP);
 
         //TODO: Omni slabs are really cursed and kinda bad. Also applies to Cornets/Moudlings - should be option in CFG to remove them
 
