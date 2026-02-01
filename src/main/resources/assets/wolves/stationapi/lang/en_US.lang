@@ -113,6 +113,11 @@ tile.wolves.block_of_steel.name=Block of Soulforged Steel
 tile.wolves.dropper.name=Dropper
 tile.wolves.conveyor.name=Conveyor
 tile.wolves.conveyor_extender.name=Conveyor Extender
+tile.wolves.automatic_anvil.name=Automatic Anvil
+tile.wolves.anvil_frame.name=Anvil Frame
+tile.wolves.machine_power_input.name=Machine Power Input
+tile.wolves.input_bus.name=Input Bus
+tile.wolves.output_bus.name=Output Bus
 
 description.@.hemp=Obtained from harvesting hemp crops. Hemp crops can be grown 2 blocks high for efficient farming.
 description.@.hemp_seeds=Rarely dropped by tall grass. Planted on farmland to grow hemp crops.
