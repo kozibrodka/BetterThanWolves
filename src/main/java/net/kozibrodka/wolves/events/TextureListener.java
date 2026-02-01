@@ -16,6 +16,8 @@ public class TextureListener {
 
     @EventListener
     public void registerTextures(TextureRegisterEvent event) {
+        final String autoAnvil = "block/auto_anvil/";
+
         gearbox_front = registerBlockTexture("block/fcBlockGearBox_in");
         gearbox_output = registerBlockTexture("block/fcBlockGearBox_out");
         gearbox_side = registerBlockTexture("block/fcBlockGearBox_side");
@@ -137,6 +139,11 @@ public class TextureListener {
         BlockListener.collisionBlock.specifyTextures(getBlockTexture("block/blank"));
         BlockListener.obstructionBlock.specifyTextures(getBlockTexture("block/blank"));
         BlockListener.blockOfSteel.specifyTextures(getBlockTexture("block/steel"));
+        BlockListener.automaticAnvil.specifyTextures(getBlockTexture(autoAnvil + "controller"), getBlockTexture(autoAnvil + "side"), getBlockTexture(autoAnvil + "side"));
+        BlockListener.anvilFrame.specifyTextures(getBlockTexture(autoAnvil + "side"));
+        BlockListener.machinePowerInput.specifyTextures(getBlockTexture(autoAnvil + "power_input"), getBlockTexture(autoAnvil + "side"), getBlockTexture(autoAnvil + "side"));
+        BlockListener.inputBus.specifyTextures(getBlockTexture(autoAnvil + "item_input"), getBlockTexture(autoAnvil + "side"), getBlockTexture(autoAnvil + "side"));
+        BlockListener.outputBus.specifyTextures(getBlockTexture(autoAnvil + "side"), getBlockTexture(autoAnvil + "side"), getBlockTexture(autoAnvil + "item_output"));
 
         ItemListener.bucketCement.setTexture(Identifier.of(NAMESPACE, "item/bucketCement"));
         ItemListener.soulFilter.setTexture(Identifier.of(NAMESPACE, "item/soulFilter"));
