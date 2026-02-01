@@ -2,12 +2,15 @@ package net.kozibrodka.wolves.entity;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.events.EntityListener;
 import net.kozibrodka.wolves.events.ItemListener;
+import net.kozibrodka.wolves.network.SoundPacket;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.hit.HitResult;
@@ -15,13 +18,15 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import net.modificationstation.stationapi.api.server.entity.EntitySpawnDataProvider;
 import net.modificationstation.stationapi.api.server.entity.HasTrackingParameters;
 import net.modificationstation.stationapi.api.util.Identifier;
+import net.modificationstation.stationapi.api.util.TriState;
 
 import java.util.List;
 
-@HasTrackingParameters(trackingDistance = 160, updatePeriod = 2)
+@HasTrackingParameters(trackingDistance = 30, updatePeriod = 1, sendVelocity = TriState.TRUE)
 public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvider {
 
     private int xTile = -1;
@@ -31,7 +36,7 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
     private int inData = 0;
     private boolean inGround = false;
     public boolean spawnedByPlayer = false;
-    public int shake = 0;
+//    public int shake = 0;
     public LivingEntity owner;
     private int ticksInGround;
     private int ticksFlying = 0;
@@ -66,6 +71,25 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
     }
 
     protected void initDataTracker() {
+        dataTracker.startTracking(16, (byte) 0); //SHAKE
+    }
+
+    //SHAKE
+    public void setShake(int type)
+    {
+        dataTracker.set(16, (byte) type);
+    }
+
+    public int getShake()
+    {
+        return dataTracker.getByte(16);
+    }
+
+    @Environment(EnvType.CLIENT)
+    @Override
+    public void setPositionAndAnglesAvoidEntities(double x, double y, double z, float pitch, float yaw, int interpolationSteps) {
+        this.setPos(x, y, z);
+        this.setRotation(pitch, yaw);
     }
 
     public void method_1291(double d, double e, double f, float g, float h) {
@@ -127,8 +151,9 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
             }
         }
 
-        if (this.shake > 0) {
-            --this.shake;
+        if (getShake() > 0) {
+            setShake(getShake() - 1);
+//            --this.shake;
         }
 
         if (this.inGround) {
@@ -189,6 +214,9 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
                 if (var3.entity != null) {
                     if (var3.entity.damage(this.owner, 10)) {
                         this.world.playSound(this, "random.drr", 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
+                        if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+                            voicePacket(world, "random.drr", this.xTile, this.yTile, this.zTile, 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
+                        }
                         this.markDead();
                     } else {
                         this.velocityX *= -0.10000000149011612D;
@@ -212,8 +240,11 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
                     this.y -= this.velocityY / (double) var19 * 0.05000000074505806D;
                     this.z -= this.velocityZ / (double) var19 * 0.05000000074505806D;
                     this.world.playSound(this, "random.drr", 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
+                    if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+                        voicePacket(world, "random.drr", this.xTile, this.yTile, this.zTile, 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
+                    }
                     this.inGround = true;
-                    this.shake = 7;
+                    setShake(7);
                 }
             }
 
@@ -265,7 +296,8 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
         arg.putShort("zTile", (short) this.zTile);
         arg.putByte("inTile", (byte) this.inTile);
         arg.putByte("inData", (byte) this.inData);
-        arg.putByte("shake", (byte) this.shake);
+//        arg.putByte("shake", (byte) this.shake);
+        arg.putInt("shake", getShake());
         arg.putByte("inGround", (byte) (this.inGround ? 1 : 0));
         arg.putBoolean("player", this.spawnedByPlayer);
     }
@@ -276,19 +308,35 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
         this.zTile = arg.getShort("zTile");
         this.inTile = arg.getByte("inTile") & 255;
         this.inData = arg.getByte("inData") & 255;
-        this.shake = arg.getByte("shake") & 255;
+//        this.shake = arg.getByte("shake") & 255;
+        setShake(arg.getInt("shake"));
         this.inGround = arg.getByte("inGround") == 1;
         this.spawnedByPlayer = arg.getBoolean("player");
     }
 
     public void onPlayerInteraction(PlayerEntity arg) {
         if (!this.world.isRemote) {
-            if (this.inGround && this.spawnedByPlayer && this.shake <= 0 && arg.inventory.method_671(new ItemStack(ItemListener.broadHeadArrow, 1))) {
+            if (this.inGround && this.spawnedByPlayer && getShake() <= 0 && arg.inventory.method_671(new ItemStack(ItemListener.broadHeadArrow, 1))) {
                 this.world.playSound(this, "random.pop", 0.2F, ((this.random.nextFloat() - this.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+                    voicePacket(world, "random.pop", this.xTile, this.yTile, this.zTile, 0.2F, 1.25F);
+                }
                 arg.method_491(this, 1);
                 this.markDead();
+                //TODO: Animation of adding item to inventory upon pick-up? Works for vanilla arrow.
             }
 
+        }
+    }
+
+    @Environment(EnvType.SERVER)
+    public void voicePacket(World world, String name, int x, int y, int z, float g, float h) {
+        List list2 = world.players;
+        if (list2.size() != 0) {
+            for (int k = 0; k < list2.size(); k++) {
+                ServerPlayerEntity player1 = (ServerPlayerEntity) list2.get(k);
+                PacketHelper.sendTo(player1, new SoundPacket(name, x, y, z, g, h));
+            }
         }
     }
 

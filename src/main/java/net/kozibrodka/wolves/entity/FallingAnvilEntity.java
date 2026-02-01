@@ -11,10 +11,11 @@ import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.server.entity.EntitySpawnDataProvider;
 import net.modificationstation.stationapi.api.server.entity.HasTrackingParameters;
 import net.modificationstation.stationapi.api.util.Identifier;
+import net.modificationstation.stationapi.api.util.TriState;
 
 import java.util.List;
 
-@HasTrackingParameters(trackingDistance = 160, updatePeriod = 2)
+@HasTrackingParameters(trackingDistance = 160, updatePeriod = 1, sendVelocity = TriState.TRUE)
 public class FallingAnvilEntity extends Entity implements EntitySpawnDataProvider {
     public int tile;
     public int facing;
@@ -44,6 +45,12 @@ public class FallingAnvilEntity extends Entity implements EntitySpawnDataProvide
         this(level);
     }
 
+    @Environment(EnvType.CLIENT)
+    @Override
+    public void setPositionAndAnglesAvoidEntities(double x, double y, double z, float pitch, float yaw, int interpolationSteps) {
+        this.setPos(x, y, z);
+        this.setRotation(pitch, yaw);
+    }
 
     protected boolean bypassesSteppingEffects() {
         return false;

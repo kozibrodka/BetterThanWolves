@@ -34,7 +34,7 @@ public class BroadHeadArrowRenderer extends EntityRenderer {
             float var19 = (float) (10 + var11 * 10) / 32.0F;
             float var20 = 0.05625F;
             GL11.glEnable(32826);
-            float var21 = (float) fcentitybroadheadarrow.shake - h;
+            float var21 = (float) fcentitybroadheadarrow.getShake() - h;
             if (var21 > 0.0F) {
                 float var22 = -MathHelper.sin(var21 * 3.0F) * var21;
                 GL11.glRotatef(var22, 0.0F, 0.0F, 1.0F);
