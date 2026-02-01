@@ -23,5 +23,7 @@ public class BlockEntityListener {
         event.register(VaseBlockEntity.class, NAMESPACE.id("TileVase").toString());
         event.register(CementBlockEntity.class, NAMESPACE.id("TileCement").toString());
         event.register(DropperBlockEntity.class, NAMESPACE.id("Dropper").toString());
+        event.register(AutomaticAnvilBlockEntity.class, NAMESPACE.id("AutomaticAnvil").toString());
+        event.register(MachineBusBlockEntity.class, NAMESPACE.id("MachineBus").toString());
     }
 }
