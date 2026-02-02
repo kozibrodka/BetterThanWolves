@@ -21,6 +21,7 @@
     "WolfDump"
   ],
   "server": [
+    "ServerPlayerEntityMixin"
   ],
   "client": [
   ],

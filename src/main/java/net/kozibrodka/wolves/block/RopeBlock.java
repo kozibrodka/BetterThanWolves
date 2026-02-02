@@ -87,9 +87,9 @@ public class RopeBlock extends TemplateBlock implements BlockWithWorldRenderer {
 
     public void BreakRope(World world, int i, int j, int k) {
         UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, ItemListener.ropeItem.id, 0);
-        world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, soundGroup.getSound(), (soundGroup.method_1976() + 1.0F) / 2.0F, soundGroup.method_1977() * 0.8F);
+        world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, soundGroup.getSound(), (soundGroup.getVolume() + 1.0F) / 2.0F, soundGroup.getPitch() * 0.8F);
         if (net.fabricmc.loader.FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-            voicePacket(world, soundGroup.getSound(), i, j, k, (soundGroup.method_1976() + 1.0F) / 2.0F, soundGroup.method_1977() * 0.8F);
+            voicePacket(world, soundGroup.getSound(), i, j, k, (soundGroup.getVolume() + 1.0F) / 2.0F, soundGroup.getPitch() * 0.8F);
         }
         world.setBlock(i, j, k, 0);
     }

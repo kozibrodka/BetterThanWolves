@@ -20,7 +20,7 @@ import org.lwjgl.opengl.GL11;
 public class LiftedBlockRenderer extends EntityRenderer {
 
     public LiftedBlockRenderer() {
-        field_2679 = 0.0F;
+        shadowDarkness = 0.0F;
     }
 
     public void render(Entity entity, double d, double d1, double d2,
@@ -113,7 +113,7 @@ public class LiftedBlockRenderer extends EntityRenderer {
         tessellator.color(f, f, f);
         int i1 = blockrail.getTexture(0, i);
         Atlas.Sprite atlasTex = Atlases.getTerrain().getTexture(i1);
-        if (blockrail.method_1108()) //getIsPowered
+        if (blockrail.isAlwaysStraight()) //getIsPowered
         {
             i &= 7;
         }

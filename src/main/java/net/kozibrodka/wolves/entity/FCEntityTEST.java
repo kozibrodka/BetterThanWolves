@@ -29,7 +29,7 @@ public class FCEntityTEST extends Entity implements EntitySpawnDataProvider {
 
     public FCEntityTEST(World world, double x, double y, double z, int type) {
         this(world);
-        setPos(x, y, z);
+        setPosition(x, y, z);
         setColour(type);
         AlignBoundingBoxWithAxis();
     }
@@ -55,14 +55,14 @@ public class FCEntityTEST extends Entity implements EntitySpawnDataProvider {
     @Environment(EnvType.CLIENT)
     @Override
     public void setPositionAndAnglesAvoidEntities(double x, double y, double z, float pitch, float yaw, int interpolationSteps) {
-        this.setPos(x, y, z);
+        this.setPosition(x, y, z);
         this.setRotation(pitch, yaw);
     }
 
     public boolean interact(PlayerEntity entityplayer) {
         ItemStack itemstack = entityplayer.inventory.getSelectedItem();
         if (itemstack != null && itemstack.itemId == Item.DYE.id) {
-            int var4 = WoolBlock.method_1(itemstack.getDamage());
+            int var4 = WoolBlock.getBlockMeta(itemstack.getDamage());
             setColour(var4);
             return true;
         }
@@ -78,7 +78,7 @@ public class FCEntityTEST extends Entity implements EntitySpawnDataProvider {
     }
 
     @Override
-    public Box method_1379(Entity other) { //getCollisionAgainstShape
+    public Box getCollisionAgainstShape(Entity other) { //getCollisionAgainstShape
         if (world.isRemote) {
             return null;
         }

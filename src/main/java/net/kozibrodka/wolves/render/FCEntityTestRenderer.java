@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL11;
 public class FCEntityTestRenderer extends EntityRenderer {
 
     public FCEntityTestRenderer() {
-        field_2679 = 0.0F;
+        shadowDarkness = 0.0F;
         modelWindMill = new WindMillModelTEST();
     }
 

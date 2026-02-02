@@ -169,7 +169,7 @@ public class PulleyBlockEntity extends BlockEntity
                     AddRopeToInventory();
                     Block targetBlock = BlockListener.rope;
                     if (net.fabricmc.loader.FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                        voicePacket(world, targetBlock.soundGroup.getSound(), x, tempj, z, targetBlock.soundGroup.method_1976() / 4F, targetBlock.soundGroup.method_1977() * 0.8F);
+                        voicePacket(world, targetBlock.soundGroup.getSound(), x, tempj, z, targetBlock.soundGroup.getVolume() / 4F, targetBlock.soundGroup.getPitch() * 0.8F);
                     }
                     world.setBlock(x, tempj, z, 0);
                     return true;
@@ -193,7 +193,7 @@ public class PulleyBlockEntity extends BlockEntity
                         BlockListener.rope.onPlaced(world, x, tempj, z, 0);
                         Block targetBlock = BlockListener.rope;
                         if (net.fabricmc.loader.FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                            voicePacket(world, targetBlock.soundGroup.getSound(), x, tempj, z, targetBlock.soundGroup.method_1976() / 4F, targetBlock.soundGroup.method_1977() * 0.8F);
+                            voicePacket(world, targetBlock.soundGroup.getSound(), x, tempj, z, targetBlock.soundGroup.getVolume() / 4F, targetBlock.soundGroup.getPitch() * 0.8F);
                         }
                         RemoveRopeFromInventory();
                         int iBlockBelowTargetID = world.getBlockId(x, tempj - 1, z);

@@ -23,11 +23,11 @@ public class LargeOakMixin extends Feature {
     @Shadow
     World world;
     @Shadow
-    int[] field_648 = new int[]{0, 0, 0};
+    int[] origin = new int[]{0, 0, 0};
 
-    @Inject(method = "method_611", at = @At(value = "RETURN", ordinal = 0), cancellable = true)
+    @Inject(method = "canPlace", at = @At(value = "RETURN", ordinal = 0), cancellable = true)
     private void injected(CallbackInfoReturnable<Boolean> cir) {
-        if (!UnsortedUtils.CanPlantGrowOnBlock(world, field_648[0], field_648[1] - 1, field_648[2], Block.SAPLING))
+        if (!UnsortedUtils.CanPlantGrowOnBlock(world, origin[0], origin[1] - 1, origin[2], Block.SAPLING))
             cir.setReturnValue(false);
     }
 

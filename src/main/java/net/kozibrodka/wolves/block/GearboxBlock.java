@@ -96,7 +96,7 @@ public class GearboxBlock extends TemplateBlock
     public void onTick(World world, int i, int j, int k, Random random) {
         boolean bReceivingPower = IsInputtingMechanicalPower(world, i, j, k);
         boolean bOn = IsGearBoxOn(world, i, j, k);
-        boolean bIsRedstonePowered = world.canTransferPower(i, j, k) || world.canTransferPower(i, j + 1, k);
+        boolean bIsRedstonePowered = world.isStrongPowered(i, j, k) || world.isStrongPowered(i, j + 1, k);
         if (bIsRedstonePowered) {
             bReceivingPower = false;
         }
@@ -231,7 +231,7 @@ public class GearboxBlock extends TemplateBlock
     }
 
     public void Overpower(World world, int i, int j, int k) {
-        boolean bIsRedstonePowered = world.canTransferPower(i, j, k) || world.canTransferPower(i, j + 1, k);
+        boolean bIsRedstonePowered = world.isStrongPowered(i, j, k) || world.isStrongPowered(i, j + 1, k);
         if (!bIsRedstonePowered) {
             BreakGearBox(world, i, j, k);
         }

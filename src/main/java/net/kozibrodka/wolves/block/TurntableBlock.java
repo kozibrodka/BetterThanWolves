@@ -68,7 +68,7 @@ public class TurntableBlock extends TemplateBlockWithEntity
             EmitTurntableParticles(world, i, j, k, random);
             SetBlockMechanicalOn(world, i, j, k, bReceivingMechanicalPower);
         }
-        boolean bReceivingRedstonePower = world.canTransferPower(i, j, k);
+        boolean bReceivingRedstonePower = world.isStrongPowered(i, j, k);
         boolean bRedstoneOn = IsBlockRedstoneOn(world, i, j, k);
         if (bRedstoneOn != bReceivingRedstonePower) {
             SetBlockRedstoneOn(world, i, j, k, bReceivingRedstonePower);

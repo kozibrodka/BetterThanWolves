@@ -10,7 +10,7 @@ import org.lwjgl.opengl.GL11;
 public class WindMillRenderer extends EntityRenderer {
 
     public WindMillRenderer() {
-        field_2679 = 0.0F;
+        shadowDarkness = 0.0F;
         modelWindMill = new WindMillModel();
     }
 

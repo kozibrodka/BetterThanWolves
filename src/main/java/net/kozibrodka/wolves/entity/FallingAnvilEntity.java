@@ -32,7 +32,7 @@ public class FallingAnvilEntity extends Entity implements EntitySpawnDataProvide
         this.blocksSameBlockSpawning = true;
         this.setBoundingBoxSpacing(0.98F, 0.98F);
         this.standingEyeHeight = this.height / 2.0F;
-        this.setPos(d, e, f);
+        this.setPosition(d, e, f);
         this.velocityX = 0.0D;
         this.velocityY = 0.0D;
         this.velocityZ = 0.0D;
@@ -48,7 +48,7 @@ public class FallingAnvilEntity extends Entity implements EntitySpawnDataProvide
     @Environment(EnvType.CLIENT)
     @Override
     public void setPositionAndAnglesAvoidEntities(double x, double y, double z, float pitch, float yaw, int interpolationSteps) {
-        this.setPos(x, y, z);
+        this.setPosition(x, y, z);
         this.setRotation(pitch, yaw);
     }
 

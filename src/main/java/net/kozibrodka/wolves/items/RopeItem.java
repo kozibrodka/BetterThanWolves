@@ -26,7 +26,7 @@ public class RopeItem extends TemplateItem {
                     if (world.setBlock(i, tempj, k, BlockListener.rope.id)) {
                         BlockListener.rope.onPlaced(world, i, tempj, k, iFacing);
                         BlockListener.rope.onPlaced(world, i, tempj, k, entityplayer);
-                        world.playSound((float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, BlockListener.rope.soundGroup.getSound(), (BlockListener.rope.soundGroup.method_1976() + 1.0F) / 2.0F, BlockListener.rope.soundGroup.method_1977() * 0.8F);
+                        world.playSound((float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, BlockListener.rope.soundGroup.getSound(), (BlockListener.rope.soundGroup.getVolume() + 1.0F) / 2.0F, BlockListener.rope.soundGroup.getPitch() * 0.8F);
                         ItemInstance.count--;
                         return true;
                     } else {

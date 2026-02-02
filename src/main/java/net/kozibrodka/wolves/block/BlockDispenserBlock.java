@@ -129,7 +129,7 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
 
     public void onTick(World world, int i, int j, int k, Random random) {
         ValidateBlockDispenser(world, i, j, k);
-        boolean bIsPowered = world.canTransferPower(i, j, k) || world.canTransferPower(i, j + 1, k);
+        boolean bIsPowered = world.isStrongPowered(i, j, k) || world.isStrongPowered(i, j + 1, k);
         if (bIsPowered) {
             if (!IsOn(world, i, j, k)) {
                 TurnOn(world, i, j, k);
@@ -326,10 +326,10 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
                 if (AddBlockToInventory(world, i, j, k, targetBlock, blockMetaData)) {
                     if (net.fabricmc.loader.FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
                         renderPacket(world, targetPos.i, targetPos.j, targetPos.k, blockId, blockMetaData);
-                        voicePacket(world, targetBlock.soundGroup.getSound(), i, j, k, (targetBlock.soundGroup.method_1976() + 1.0F) / 2.0F, targetBlock.soundGroup.method_1977() * 0.8F);
+                        voicePacket(world, targetBlock.soundGroup.getSound(), i, j, k, (targetBlock.soundGroup.getVolume() + 1.0F) / 2.0F, targetBlock.soundGroup.getPitch() * 0.8F);
                     } else {
-                        ((Minecraft) FabricLoader.getInstance().getGameInstance()).field_2808.method_322(targetPos.i, targetPos.j, targetPos.k, blockId, blockMetaData);
-                        world.playSound((float) targetPos.i + 0.5F, (float) targetPos.j + 0.5F, (float) targetPos.k + 0.5F, targetBlock.soundGroup.getSound(), (targetBlock.soundGroup.method_1976() + 1.0F) / 2.0F, targetBlock.soundGroup.method_1977() * 0.8F);
+                        ((Minecraft) FabricLoader.getInstance().getGameInstance()).particleManager.addBlockBreakParticles(targetPos.i, targetPos.j, targetPos.k, blockId, blockMetaData);
+                        world.playSound((float) targetPos.i + 0.5F, (float) targetPos.j + 0.5F, (float) targetPos.k + 0.5F, targetBlock.soundGroup.getSound(), (targetBlock.soundGroup.getVolume() + 1.0F) / 2.0F, targetBlock.soundGroup.getPitch() * 0.8F);
                     }
                     world.setBlock(targetPos.i, targetPos.j, targetPos.k, 0);
                 }
@@ -515,9 +515,9 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
                         InventoryHandler.addSingleItemToInventory(tileEntityBlockDispenser, iteminstance.itemId, 0);
                     } else {
                         Block newBlock = Block.WHEAT;
-                        world.playSound((float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, newBlock.soundGroup.getSound(), (newBlock.soundGroup.method_1976() + 1.0F) / 2.0F, newBlock.soundGroup.method_1977() * 0.8F);
+                        world.playSound((float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, newBlock.soundGroup.getSound(), (newBlock.soundGroup.getVolume() + 1.0F) / 2.0F, newBlock.soundGroup.getPitch() * 0.8F);
                         if (net.fabricmc.loader.FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                            voicePacket(world, newBlock.soundGroup.getSound(), i, j, k, (newBlock.soundGroup.method_1976() + 1.0F) / 2.0F, newBlock.soundGroup.method_1977() * 0.8F);
+                            voicePacket(world, newBlock.soundGroup.getSound(), i, j, k, (newBlock.soundGroup.getVolume() + 1.0F) / 2.0F, newBlock.soundGroup.getPitch() * 0.8F);
                         }
                         bSuccessfullyDispensed = true;
                     }
@@ -546,9 +546,9 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
                                 newBlock.onPlaced(world, targetPos.i, targetPos.j, targetPos.k, iTargetDirection);
                             }
 
-                            world.playSound((float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, newBlock.soundGroup.getSound(), (newBlock.soundGroup.method_1976() + 1.0F) / 2.0F, newBlock.soundGroup.method_1977() * 0.8F);
+                            world.playSound((float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, newBlock.soundGroup.getSound(), (newBlock.soundGroup.getVolume() + 1.0F) / 2.0F, newBlock.soundGroup.getPitch() * 0.8F);
                             if (net.fabricmc.loader.FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                                voicePacket(world, newBlock.soundGroup.getSound(), i, j, k, (newBlock.soundGroup.method_1976() + 1.0F) / 2.0F, newBlock.soundGroup.method_1977() * 0.8F);
+                                voicePacket(world, newBlock.soundGroup.getSound(), i, j, k, (newBlock.soundGroup.getVolume() + 1.0F) / 2.0F, newBlock.soundGroup.getPitch() * 0.8F);
                             }
                             bSuccessfullyDispensed = true;
                         } else {

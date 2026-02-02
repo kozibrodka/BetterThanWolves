@@ -44,7 +44,7 @@ public class HibachiBlock extends TemplateBlock {
     }
 
     public void onTick(World world, int i, int j, int k, Random random) {
-        boolean bPowered = world.canTransferPower(i, j, k) || world.canTransferPower(i, j + 1, k);
+        boolean bPowered = world.isStrongPowered(i, j, k) || world.isStrongPowered(i, j + 1, k);
         if (bPowered) {
             if (!IsBBQLit(world, i, j, k)) {
                 BBQIgnite(world, i, j, k);
@@ -82,7 +82,7 @@ public class HibachiBlock extends TemplateBlock {
     public void neighborUpdate(World world, int i, int j, int k, int l) {
         boolean bShouldUpdate = false;
         if (l != FIRE.id) {
-            boolean bPowered = world.canTransferPower(i, j, k) || world.canTransferPower(i, j + 1, k);
+            boolean bPowered = world.isStrongPowered(i, j, k) || world.isStrongPowered(i, j + 1, k);
             if (IsBBQLit(world, i, j, k) != bPowered) {
                 bShouldUpdate = true;
             } else if (IsBBQLit(world, i, j, k)) {
@@ -124,7 +124,7 @@ public class HibachiBlock extends TemplateBlock {
             } else {
                 shouldIgnite = true;
             }
-        } else if (FIRE.isBlockFlammable(world, i, j + 1, k)) {
+        } else if (FIRE.isFlammable(world, i, j + 1, k)) {
             shouldIgnite = true;
         }
         return shouldIgnite;

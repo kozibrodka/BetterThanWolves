@@ -41,7 +41,7 @@ public class WaterWheelEntityOld extends Entity implements EntitySpawnDataProvid
     public WaterWheelEntityOld(World world, double x, double y, double z, boolean bJAligned)
     {
         this(world);
-        setPos(x, y, z);
+        setPosition(x, y, z);
         setAligned(bJAligned);
         AlignBoundingBoxWithAxis();
     }
@@ -88,7 +88,7 @@ public class WaterWheelEntityOld extends Entity implements EntitySpawnDataProvid
         return false;
     }
 
-    public Box method_1379(Entity entity)
+    public Box getCollisionAgainstShape(Entity entity)
     {
         return entity.boundingBox;
     }
@@ -413,35 +413,35 @@ public class WaterWheelEntityOld extends Entity implements EntitySpawnDataProvid
         if(iblockaccess.getBlockMeta(i, j, k) >= 8)
         {
             boolean flag = false;
-            if(flag || fluidBlock.isSolidBlock(iblockaccess, i, j, k - 1, 2))
+            if(flag || fluidBlock.isSolidFace(iblockaccess, i, j, k - 1, 2))
             {
                 flag = true;
             }
-            if(flag || fluidBlock.isSolidBlock(iblockaccess, i, j, k + 1, 3))
+            if(flag || fluidBlock.isSolidFace(iblockaccess, i, j, k + 1, 3))
             {
                 flag = true;
             }
-            if(flag || fluidBlock.isSolidBlock(iblockaccess, i - 1, j, k, 4))
+            if(flag || fluidBlock.isSolidFace(iblockaccess, i - 1, j, k, 4))
             {
                 flag = true;
             }
-            if(flag || fluidBlock.isSolidBlock(iblockaccess, i + 1, j, k, 5))
+            if(flag || fluidBlock.isSolidFace(iblockaccess, i + 1, j, k, 5))
             {
                 flag = true;
             }
-            if(flag || fluidBlock.isSolidBlock(iblockaccess, i, j + 1, k - 1, 2))
+            if(flag || fluidBlock.isSolidFace(iblockaccess, i, j + 1, k - 1, 2))
             {
                 flag = true;
             }
-            if(flag || fluidBlock.isSolidBlock(iblockaccess, i, j + 1, k + 1, 3))
+            if(flag || fluidBlock.isSolidFace(iblockaccess, i, j + 1, k + 1, 3))
             {
                 flag = true;
             }
-            if(flag || fluidBlock.isSolidBlock(iblockaccess, i - 1, j + 1, k, 4))
+            if(flag || fluidBlock.isSolidFace(iblockaccess, i - 1, j + 1, k, 4))
             {
                 flag = true;
             }
-            if(flag || fluidBlock.isSolidBlock(iblockaccess, i + 1, j + 1, k, 5))
+            if(flag || fluidBlock.isSolidFace(iblockaccess, i + 1, j + 1, k, 5))
             {
                 flag = true;
             }

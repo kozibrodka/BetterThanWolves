@@ -19,12 +19,12 @@ public class DebugItem1 extends TemplateItem {
 //        entityplayer.inventory.method_671(new ItemStack(ItemListener.refinedPickAxe, 1));
 //        entityplayer.inventory.method_671(new ItemStack(ItemListener.refinedAxe, 1));
 //        entityplayer.inventory.method_671(new ItemStack(ItemListener.refinedSword, 1));
-        entityplayer.inventory.method_671(new ItemStack(ItemListener.refinedShovel, 1));
-        entityplayer.inventory.method_671(new ItemStack(ItemListener.waterWheelItem, 1));
+        entityplayer.inventory.addStack(new ItemStack(ItemListener.refinedShovel, 1));
+        entityplayer.inventory.addStack(new ItemStack(ItemListener.waterWheelItem, 1));
 //        entityplayer.inventory.method_671(new ItemStack(ItemListener.windMillItem, 1));
 //        entityplayer.inventory.method_671(new ItemStack(BED, 1));
 //        entityplayer.inventory.method_671(new ItemStack(FLINT_AND_STEEL, 1));
-        entityplayer.inventory.method_671(new ItemStack(GOLDEN_APPLE, 1));
+        entityplayer.inventory.addStack(new ItemStack(GOLDEN_APPLE, 1));
 //        entityplayer.inventory.method_671(new ItemStack(Item.DYE, 1, 1));
 //        entityplayer.inventory.method_671(new ItemStack(Item.DYE, 1, 2));
 //        entityplayer.inventory.method_671(new ItemStack(GOLDEN_APPLE, 1));

@@ -149,7 +149,7 @@ public class RecipeListener {
 
     private static void addDyeRecipes() {
         for (int i = 0; i < 15; i++) {
-            CraftingRegistry.addShapelessRecipe(new ItemStack(BlockListener.vase, 1, WoolBlock.method_1(i)), new ItemStack(Item.DYE, 1, i), new ItemStack(BlockListener.vase, 1, 0));
+            CraftingRegistry.addShapelessRecipe(new ItemStack(BlockListener.vase, 1, WoolBlock.getBlockMeta(i)), new ItemStack(Item.DYE, 1, i), new ItemStack(BlockListener.vase, 1, 0));
         }
 
         if (ConfigListener.wolvesGlass.small_tweaks.deactivateDung) {
@@ -299,7 +299,7 @@ public class RecipeListener {
                 new ItemStack(ItemListener.flour, 1)
         });
         for (int i = 0; i < 15; i++) {
-            addCauldronRecipe(new ItemStack(Block.WOOL, 8, WoolBlock.method_1(i)), new ItemStack[]{
+            addCauldronRecipe(new ItemStack(Block.WOOL, 8, WoolBlock.getBlockMeta(i)), new ItemStack[]{
                     new ItemStack(Item.DYE, 1, i), new ItemStack(Block.WOOL, 8, 0)
             });
         }

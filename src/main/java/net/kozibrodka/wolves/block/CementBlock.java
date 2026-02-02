@@ -66,7 +66,7 @@ public class CementBlock extends TemplateBlockWithEntity
         return flag && i == 0;
     }
 
-    public boolean isSolidBlock(BlockView iblockaccess, int i, int j, int k, int l) {
+    public boolean isSolidFace(BlockView iblockaccess, int i, int j, int k, int l) {
         Material new_material = iblockaccess.getMaterial(i, j, k);
         if (new_material == material) {
             return false;
@@ -77,7 +77,7 @@ public class CementBlock extends TemplateBlockWithEntity
         if (l == 1) {
             return true;
         } else {
-            return super.isSolidBlock(iblockaccess, i, j, k, l);
+            return super.isSolidFace(iblockaccess, i, j, k, l);
         }
     }
 
@@ -111,7 +111,7 @@ public class CementBlock extends TemplateBlockWithEntity
         super.onPlaced(world, i, j, k);
         if (world.getBlockId(i, j, k) == id) {
             world.scheduleBlockUpdate(i, j, k, id, getTickRate());
-            if (world.isEmittingRedstonePower(i, j, k)) {
+            if (world.isPowered(i, j, k)) {
                 SetCementPowered(world, i, j, k, true);
             }
         }
@@ -126,7 +126,7 @@ public class CementBlock extends TemplateBlockWithEntity
     public void onTick(World world, int i, int j, int k, Random random) {
         int cementDist = GetCementSpreadDist(world, i, j, k);
         boolean bOldPowerState = IsCementPowered(world, i, j, k);
-        boolean bNewPowerState = world.isEmittingRedstonePower(i, j, k);
+        boolean bNewPowerState = world.isPowered(i, j, k);
         if (bOldPowerState != bNewPowerState) {
             SetCementPowered(world, i, j, k, bNewPowerState);
         }
