@@ -20,6 +20,7 @@ Game mechanics:
 - Animation of adding item to inventory upon pick-up? Works for vanilla arrow, not for BroadHeadArrow.
 - Pickaxe from steel doesnt break ORES fast
 - Falling Anvil correct Model Rendering
+- Pressure plate sound multiplayer (all plates including vanilla are soundless)
 
 Possbile extra features (oryginal BTW)""
 - Animated saw

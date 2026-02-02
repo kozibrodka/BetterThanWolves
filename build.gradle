@@ -1,15 +1,21 @@
 plugins {
 	id 'maven-publish'
-	id 'fabric-loom' version '1.11.7'
-	id 'babric-loom-extension' version '1.10.2'
+	id 'fabric-loom' version '1.14.10'
+	id 'babric-loom-extension' version '1.14.1'
 }
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
+version = property("mod_version")
+group = property("maven_group")
 
-archivesBaseName = project.archives_base_name
-version = project.mod_version
-group = project.maven_group
+base {
+	archivesName = project.archives_base_name
+}
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
 
 loom {
 	accessWidenerPath = file("src/main/resources/wolves.accesswidener")
