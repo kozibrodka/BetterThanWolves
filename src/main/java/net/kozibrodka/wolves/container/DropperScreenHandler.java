@@ -1,19 +1,23 @@
 package net.kozibrodka.wolves.container;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.kozibrodka.wolves.block.entity.DropperBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
 
 public class DropperScreenHandler extends ScreenHandler {
-    private final DropperBlockEntity localTileEntityHopper;
+    private final DropperBlockEntity dropperBlockEntity;
+    private boolean powered;
 
-    public DropperScreenHandler(Inventory playerinventory, DropperBlockEntity tileentityHopper) {
-        localTileEntityHopper = tileentityHopper;
-        addSlot(new Slot(tileentityHopper, 0, 80, 60));
-        addSlot(new Slot(tileentityHopper, 1, 80, 37));
+    public DropperScreenHandler(Inventory playerinventory, DropperBlockEntity dropperBlockEntity) {
+        this.dropperBlockEntity = dropperBlockEntity;
+        addSlot(new Slot(dropperBlockEntity, 0, 80, 60));
+        addSlot(new Slot(dropperBlockEntity, 1, 80, 37));
         for (int iRow = 0; iRow < 3; iRow++) {
             for (int iColumn = 0; iColumn < 9; iColumn++) {
                 addSlot(new Slot(playerinventory, iColumn + iRow * 9 + 9, 8 + iColumn * 18, 111 + iRow * 18));
@@ -28,7 +32,7 @@ public class DropperScreenHandler extends ScreenHandler {
     }
 
     public boolean canUse(PlayerEntity entityplayer) {
-        return localTileEntityHopper.canPlayerUse(entityplayer);
+        return dropperBlockEntity.canPlayerUse(entityplayer);
     }
 
     public ItemStack quickMove(int iSlotIndex) {
@@ -91,6 +95,28 @@ public class DropperScreenHandler extends ScreenHandler {
                 }
                 l++;
             } while (true);
+        }
+    }
+
+    @Override
+    public void sendContentUpdates() {
+        super.sendContentUpdates();
+        dropperBlockEntity.updatePowered();
+        for (Object listener : this.listeners) {
+            ScreenHandlerListener screenHandlerListener = (ScreenHandlerListener) listener;
+            if (powered != dropperBlockEntity.isPowered()) {
+                screenHandlerListener.onPropertyUpdate(this, 0, dropperBlockEntity.isPowered() ? 1 : 0);
+            }
+        }
+
+        powered = dropperBlockEntity.isPowered();
+    }
+
+    @Override
+    @Environment(EnvType.CLIENT)
+    public void setProperty(int id, int value) {
+        if (id == 0) {
+            dropperBlockEntity.forcefullyUpdatePowered(value == 1);
         }
     }
 }

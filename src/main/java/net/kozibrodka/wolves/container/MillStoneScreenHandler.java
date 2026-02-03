@@ -5,35 +5,38 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
 
 
 public class MillStoneScreenHandler extends ScreenHandler {
+    private final MillStoneBlockEntity millStoneBlockEntity;
+    private int grindingProgress;
 
-    public MillStoneScreenHandler(Inventory playerinventory, MillStoneBlockEntity tileentityMillStone) {
-        localTileEntityMillStone = tileentityMillStone;
+    public MillStoneScreenHandler(Inventory inventory, MillStoneBlockEntity millStoneBlockEntity) {
+        this.millStoneBlockEntity = millStoneBlockEntity;
         for (int iRow = 0; iRow < 3; iRow++) {
             for (int iColumn = 0; iColumn < 1; iColumn++) {
-                addSlot(new Slot(tileentityMillStone, iColumn + iRow, 8 + (iColumn + 4) * 18, 43 + iRow * 18));
+                addSlot(new Slot(millStoneBlockEntity, iColumn + iRow, 8 + (iColumn + 4) * 18, 43 + iRow * 18));
             }
 
         }
 
         for (int iRow = 0; iRow < 3; iRow++) {
             for (int iColumn = 0; iColumn < 9; iColumn++) {
-                addSlot(new Slot(playerinventory, iColumn + iRow * 9 + 9, 8 + iColumn * 18, 111 + iRow * 18));
+                addSlot(new Slot(inventory, iColumn + iRow * 9 + 9, 8 + iColumn * 18, 111 + iRow * 18));
             }
 
         }
 
         for (int iColumn = 0; iColumn < 9; iColumn++) {
-            addSlot(new Slot(playerinventory, iColumn, 8 + iColumn * 18, 169));
+            addSlot(new Slot(inventory, iColumn, 8 + iColumn * 18, 169));
         }
 
     }
 
-    public boolean canUse(PlayerEntity entityplayer) {
-        return localTileEntityMillStone.canPlayerUse(entityplayer);
+    public boolean canUse(PlayerEntity playerEntity) {
+        return millStoneBlockEntity.canPlayerUse(playerEntity);
     }
 
     public ItemStack getStackInSlot(int iSlotIndex) //func_27086_a
@@ -100,8 +103,23 @@ public class MillStoneScreenHandler extends ScreenHandler {
         }
     }
 
-    private final int iNumMillStoneSlotRows = 3;
-    private final int iNumMillStoneSlotColumns = 1;
-    private final int iNumMillStoneSlots = 3;
-    private final MillStoneBlockEntity localTileEntityMillStone;
+    @Override
+    public void sendContentUpdates() {
+        super.sendContentUpdates();
+        for (Object listener : this.listeners) {
+            ScreenHandlerListener screenHandlerListener = (ScreenHandlerListener) listener;
+            if (grindingProgress != millStoneBlockEntity.grindCounter) {
+                screenHandlerListener.onPropertyUpdate(this, 0, millStoneBlockEntity.grindCounter);
+            }
+        }
+
+        grindingProgress = millStoneBlockEntity.grindCounter;
+    }
+
+    @Override
+    public void setProperty(int id, int value) {
+        if (id == 0) {
+            millStoneBlockEntity.grindCounter = value;
+        }
+    }
 }

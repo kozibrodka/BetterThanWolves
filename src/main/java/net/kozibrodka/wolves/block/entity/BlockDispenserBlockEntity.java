@@ -13,8 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 
-import java.util.Random;
-
 // Referenced classes of package net.minecraft.src:
 //            TileEntity, InventoryBase, ItemInstance, FCUtilsInventory, 
 //            NBTTagCompound, ListTag, World, EntityPlayer
@@ -24,8 +22,7 @@ public class BlockDispenserBlockEntity extends BlockEntity
 
     public BlockDispenserBlockEntity() {
         dispenserContents = new ItemStack[9];
-        dispenserRandom = new Random();
-        iNextSlotIndexToDispense = 0;
+        nextDispenserSlot = 0;
     }
 
     public int size() {
@@ -43,19 +40,19 @@ public class BlockDispenserBlockEntity extends BlockEntity
     public ItemStack GetNextStackFromInventory() {
         ItemStack nextStack = null;
         int iTempSlot;
-        if (iNextSlotIndexToDispense >= dispenserContents.length || dispenserContents[iNextSlotIndexToDispense] == null) {
-            iTempSlot = FindNextValidSlotIndex(iNextSlotIndexToDispense);
+        if (nextDispenserSlot >= dispenserContents.length || dispenserContents[nextDispenserSlot] == null) {
+            iTempSlot = FindNextValidSlotIndex(nextDispenserSlot);
             if (iTempSlot < 0) {
                 return null;
             }
-            iNextSlotIndexToDispense = iTempSlot;
+            nextDispenserSlot = iTempSlot;
         }
-        nextStack = removeStack(iNextSlotIndexToDispense, 1);
-        iTempSlot = FindNextValidSlotIndex(iNextSlotIndexToDispense);
+        nextStack = removeStack(nextDispenserSlot, 1);
+        iTempSlot = FindNextValidSlotIndex(nextDispenserSlot);
         if (iTempSlot < 0) {
-            iNextSlotIndexToDispense = 0;
+            nextDispenserSlot = 0;
         } else {
-            iNextSlotIndexToDispense = iTempSlot;
+            nextDispenserSlot = iTempSlot;
         }
         return nextStack;
     }
@@ -105,7 +102,7 @@ public class BlockDispenserBlockEntity extends BlockEntity
         }
 
         if (nbttagcompound.contains("iNextSlotIndexToDispense")) {
-            iNextSlotIndexToDispense = nbttagcompound.getInt("iNextSlotIndexToDispense");
+            nextDispenserSlot = nbttagcompound.getInt("iNextSlotIndexToDispense");
         }
     }
 
@@ -122,7 +119,7 @@ public class BlockDispenserBlockEntity extends BlockEntity
         }
 
         nbttagcompound.put("Items", nbttaglist);
-        nbttagcompound.putInt("iNextSlotIndexToDispense", iNextSlotIndexToDispense);
+        nbttagcompound.putInt("iNextSlotIndexToDispense", nextDispenserSlot);
     }
 
     public int getMaxCountPerStack() {
@@ -138,6 +135,5 @@ public class BlockDispenserBlockEntity extends BlockEntity
     }
 
     private ItemStack[] dispenserContents;
-    private final Random dispenserRandom;
-    public int iNextSlotIndexToDispense;
+    public int nextDispenserSlot;
 }

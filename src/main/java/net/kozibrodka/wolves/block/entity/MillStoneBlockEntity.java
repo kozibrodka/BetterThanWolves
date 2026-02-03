@@ -39,12 +39,12 @@ public class MillStoneBlockEntity extends BlockEntity implements Inventory {
     static boolean isHarderThanWolvesPresent = net.fabricmc.loader.api.FabricLoader.getInstance().isModLoaded("harderthanwolves");
 
     private ItemStack[] millStoneContents;
-    public int iMillStoneGrindCounter;
+    public int grindCounter;
     private boolean manuallyPowered = false;
 
     public MillStoneBlockEntity() {
         millStoneContents = new ItemStack[3];
-        iMillStoneGrindCounter = 0;
+        grindCounter = 0;
     }
 
     @Override
@@ -90,7 +90,7 @@ public class MillStoneBlockEntity extends BlockEntity implements Inventory {
         }
 
         if (nbttagcompound.contains("grindCounter")) {
-            iMillStoneGrindCounter = nbttagcompound.getInt("grindCounter");
+            grindCounter = nbttagcompound.getInt("grindCounter");
         }
         manuallyPowered = nbttagcompound.getBoolean("manuallyPowered");
     }
@@ -108,7 +108,7 @@ public class MillStoneBlockEntity extends BlockEntity implements Inventory {
         }
 
         nbttagcompound.put("Items", nbttaglist);
-        nbttagcompound.putInt("grindCounter", iMillStoneGrindCounter);
+        nbttagcompound.putInt("grindCounter", grindCounter);
         nbttagcompound.putBoolean("manuallyPowered", manuallyPowered);
     }
 
@@ -139,11 +139,11 @@ public class MillStoneBlockEntity extends BlockEntity implements Inventory {
     }
 
     public int getGrindProgressScaled(int iScale) {
-        return (iMillStoneGrindCounter * iScale) / 200;
+        return (grindCounter * iScale) / 200;
     }
 
     public boolean IsGrinding() {
-        return iMillStoneGrindCounter > 0;
+        return grindCounter > 0;
     }
 
     public void tick() // updateEntity
@@ -154,7 +154,7 @@ public class MillStoneBlockEntity extends BlockEntity implements Inventory {
         int iUnmilledItemIndex = GetUnmilledItemInventoryIndex();
 
         if (iUnmilledItemIndex < 0) {
-            iMillStoneGrindCounter = 0;
+            grindCounter = 0;
             return;
         }
 
@@ -162,7 +162,7 @@ public class MillStoneBlockEntity extends BlockEntity implements Inventory {
             if (!((MillStoneBlock) BlockListener.millStone).IsBlockOn(world, x, y, z)) return;
         }
 
-        iMillStoneGrindCounter++;
+        grindCounter++;
 
         Item unmilledItem = millStoneContents[iUnmilledItemIndex].getItem();
 
@@ -196,9 +196,9 @@ public class MillStoneBlockEntity extends BlockEntity implements Inventory {
             }
         }
 
-        if (iMillStoneGrindCounter < 200) return;
+        if (grindCounter < 200) return;
 
-        iMillStoneGrindCounter = 0;
+        grindCounter = 0;
 
         ItemStack milledStack = MillingRecipeRegistry.getInstance().getResult(unmilledItemIdentifier);
         if (milledStack != null) {

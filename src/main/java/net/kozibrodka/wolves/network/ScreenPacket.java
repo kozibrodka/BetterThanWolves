@@ -101,7 +101,7 @@ public class ScreenPacket extends Packet implements ManagedPacket<ScreenPacket> 
         if (Objects.equals(tile, "mill")) {
             MillStoneBlockEntity tile = (MillStoneBlockEntity) player.world.getBlockEntity(this.x, this.y, this.z);
             if (tile != null) {
-                int a = tile.iMillStoneGrindCounter;
+                int a = tile.grindCounter;
                 PacketHelper.sendTo(player, new ScreenPacket("mill", a, this.x, this.y, this.z));
             }
         }
@@ -136,7 +136,7 @@ public class ScreenPacket extends Packet implements ManagedPacket<ScreenPacket> 
         if (Objects.equals(tile, "dispenser")) {
             BlockDispenserBlockEntity tile = (BlockDispenserBlockEntity) player.world.getBlockEntity(this.x, this.y, this.z);
             if (tile != null) {
-                int a = tile.iNextSlotIndexToDispense;
+                int a = tile.nextDispenserSlot;
                 PacketHelper.sendTo(player, new ScreenPacket("dispenser", a, this.x, this.y, this.z));
             }
         }

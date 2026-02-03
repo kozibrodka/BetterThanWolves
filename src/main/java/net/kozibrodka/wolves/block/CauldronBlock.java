@@ -10,10 +10,9 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.block.entity.CauldronBlockEntity;
 import net.kozibrodka.wolves.container.CauldronScreenHandler;
+import net.kozibrodka.wolves.events.BlockEntityListener;
 import net.kozibrodka.wolves.events.BlockListener;
-import net.kozibrodka.wolves.events.ScreenHandlerListener;
 import net.kozibrodka.wolves.events.TextureListener;
-import net.kozibrodka.wolves.network.ScreenPacket;
 import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.utils.InventoryHandler;
 import net.kozibrodka.wolves.utils.MechanicalDevice;
@@ -130,15 +129,9 @@ public class CauldronBlock extends TemplateBlockWithEntity implements RotatableB
         }
     }
 
-    public boolean onUse(World world, int i, int j, int k, PlayerEntity entityPlayer) {
-        CauldronBlockEntity tileentitycauldron = (CauldronBlockEntity) world.getBlockEntity(i, j, k);
-        ScreenHandlerListener.TempGuiX = i;
-        ScreenHandlerListener.TempGuiY = j;
-        ScreenHandlerListener.TempGuiZ = k;
-        if (world.isRemote) {
-            PacketHelper.send(new ScreenPacket("cauldron", 0, i, j, k));
-        }
-        GuiHelper.openGUI(entityPlayer, Identifier.of("wolves:openCauldron"), tileentitycauldron, new CauldronScreenHandler(entityPlayer.inventory, tileentitycauldron));
+    public boolean onUse(World world, int x, int y, int z, PlayerEntity playerEntity) {
+        CauldronBlockEntity cauldronBlockEntity = (CauldronBlockEntity) world.getBlockEntity(x, y, z);
+        GuiHelper.openGUI(playerEntity, Identifier.of(BlockEntityListener.NAMESPACE, "openCauldron"), cauldronBlockEntity, new CauldronScreenHandler(playerEntity.inventory, cauldronBlockEntity));
         return true;
     }
 

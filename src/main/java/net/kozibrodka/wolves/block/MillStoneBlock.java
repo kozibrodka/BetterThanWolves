@@ -4,10 +4,9 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.kozibrodka.wolves.block.entity.MillStoneBlockEntity;
 import net.kozibrodka.wolves.container.MillStoneScreenHandler;
+import net.kozibrodka.wolves.events.BlockEntityListener;
 import net.kozibrodka.wolves.events.BlockListener;
-import net.kozibrodka.wolves.events.ScreenHandlerListener;
 import net.kozibrodka.wolves.events.TextureListener;
-import net.kozibrodka.wolves.network.ScreenPacket;
 import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.utils.InventoryHandler;
 import net.kozibrodka.wolves.utils.MechanicalDevice;
@@ -55,15 +54,9 @@ public class MillStoneBlock extends TemplateBlockWithEntity
         world.scheduleBlockUpdate(i, j, k, BlockListener.millStone.id, getTickRate());
     }
 
-    public boolean onUse(World world, int i, int j, int k, PlayerEntity entityplayer) {
-        MillStoneBlockEntity tileEntityMillStone = (MillStoneBlockEntity) world.getBlockEntity(i, j, k);
-        ScreenHandlerListener.TempGuiX = i;
-        ScreenHandlerListener.TempGuiY = j;
-        ScreenHandlerListener.TempGuiZ = k;
-        if (world.isRemote) {
-            PacketHelper.send(new ScreenPacket("mill", 0, i, j, k));
-        }
-        GuiHelper.openGUI(entityplayer, Identifier.of("wolves:openMillStone"), tileEntityMillStone, new MillStoneScreenHandler(entityplayer.inventory, tileEntityMillStone));
+    public boolean onUse(World world, int x, int y, int z, PlayerEntity playerEntity) {
+        MillStoneBlockEntity millStoneBlockEntity = (MillStoneBlockEntity) world.getBlockEntity(x, y, z);
+        GuiHelper.openGUI(playerEntity, Identifier.of(BlockEntityListener.NAMESPACE, "openMillStone"), millStoneBlockEntity, new MillStoneScreenHandler(playerEntity.inventory, millStoneBlockEntity));
         return true;
     }
 

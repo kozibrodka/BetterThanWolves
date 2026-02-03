@@ -6,13 +6,12 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.kozibrodka.wolves.block.entity.BlockDispenserBlockEntity;
 import net.kozibrodka.wolves.container.BlockDispenserScreenHandler;
 import net.kozibrodka.wolves.entity.BroadheadArrowEntity;
+import net.kozibrodka.wolves.events.BlockEntityListener;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ItemListener;
-import net.kozibrodka.wolves.events.ScreenHandlerListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.network.ParticlePacket;
 import net.kozibrodka.wolves.network.RenderPacket;
-import net.kozibrodka.wolves.network.ScreenPacket;
 import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.utils.*;
 import net.minecraft.block.Block;
@@ -48,15 +47,14 @@ import java.util.List;
 import java.util.Random;
 
 
-public class BlockDispenserBlock extends TemplateBlockWithEntity
-        implements RotatableBlock {
+public class BlockDispenserBlock extends TemplateBlockWithEntity implements RotatableBlock {
 
     public BlockDispenserBlock(Identifier iid) {
         super(iid, Material.STONE);
     }
 
-    public int getTextureId(BlockView iblockaccess, int i, int j, int k, int iSide) {
-        int iFacing = getFacing(iblockaccess, i, j, k);
+    public int getTextureId(BlockView blockView, int i, int j, int k, int iSide) {
+        int iFacing = getFacing(blockView, i, j, k);
         if (iSide == iFacing) {
             return TextureListener.dispenser_face;
         }
@@ -99,18 +97,12 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
         world.scheduleBlockUpdate(i, j, k, BlockListener.blockDispenser.id, getTickRate());
     }
 
-    public boolean onUse(World world, int i, int j, int k, PlayerEntity entityplayer) {
+    public boolean onUse(World world, int i, int j, int k, PlayerEntity playerEntity) {
         if (world == null) {
             return true;
         }
-        BlockDispenserBlockEntity tileEntityBlockDispenser = (BlockDispenserBlockEntity) world.getBlockEntity(i, j, k);
-        ScreenHandlerListener.TempGuiX = i;
-        ScreenHandlerListener.TempGuiY = j;
-        ScreenHandlerListener.TempGuiZ = k;
-        if (world.isRemote) {
-            PacketHelper.send(new ScreenPacket("dispenser", 0, i, j, k));
-        }
-        GuiHelper.openGUI(entityplayer, Identifier.of("wolves:openBlockDispenser"), tileEntityBlockDispenser, new BlockDispenserScreenHandler(entityplayer.inventory, tileEntityBlockDispenser));
+        BlockDispenserBlockEntity blockDispenserBlockEntity = (BlockDispenserBlockEntity) world.getBlockEntity(i, j, k);
+        GuiHelper.openGUI(playerEntity, Identifier.of(BlockEntityListener.NAMESPACE, "openBlockDispenser"), blockDispenserBlockEntity, new BlockDispenserScreenHandler(playerEntity.inventory, blockDispenserBlockEntity));
         return true;
     }
 

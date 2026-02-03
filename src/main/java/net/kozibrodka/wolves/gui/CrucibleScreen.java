@@ -6,22 +6,17 @@ package net.kozibrodka.wolves.gui;
 
 import net.kozibrodka.wolves.block.entity.CrucibleBlockEntity;
 import net.kozibrodka.wolves.container.CrucibleScreenHandler;
-import net.kozibrodka.wolves.network.ClientScreenData;
-import net.kozibrodka.wolves.network.ScreenPacket;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.entity.player.PlayerInventory;
-import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import org.lwjgl.opengl.GL11;
 
 public class CrucibleScreen extends HandledScreen {
+    private final CrucibleBlockEntity associatedTileEntityCrucible;
 
-    public CrucibleScreen(PlayerInventory inventoryplayer, CrucibleBlockEntity fctileentitycrucible, int locX, int locY, int locZ) {
-        super(new CrucibleScreenHandler(inventoryplayer, fctileentitycrucible));
+    public CrucibleScreen(PlayerInventory playerInventory, CrucibleBlockEntity crucibleBlockEntity) {
+        super(new CrucibleScreenHandler(playerInventory, crucibleBlockEntity));
         backgroundHeight = 193;
-        associatedTileEntityCrucible = fctileentitycrucible;
-        guiX = locX;
-        guiY = locY;
-        guiZ = locZ;
+        associatedTileEntityCrucible = crucibleBlockEntity;
     }
 
     protected void drawForeground() {
@@ -36,27 +31,9 @@ public class CrucibleScreen extends HandledScreen {
         int j = (width - backgroundWidth) / 2;
         int k = (height - backgroundHeight) / 2;
         drawTexture(j, k, 0, 0, backgroundWidth, backgroundHeight);
-
-        if (associatedTileEntityCrucible.world == null) {
-            {
-                PacketHelper.send(new ScreenPacket("crucible", 0, guiX, guiY, guiZ));
-                if (ClientScreenData.IsCooking()) {
-                    int l = ClientScreenData.getCookProgressScaled(12);
-                    drawTexture(j + 81, (k + 19 + 12) - l, 176, 12 - l, 14, l + 2);
-                }
-            }
-        } else {
-            if (associatedTileEntityCrucible.isCooking()) {
-                int l = associatedTileEntityCrucible.getCookProgressScaled(12);
-                drawTexture(j + 81, (k + 19 + 12) - l, 176, 12 - l, 14, l + 2);
-            }
+        if (associatedTileEntityCrucible.isCooking()) {
+            int l = associatedTileEntityCrucible.getCookProgressScaled(12);
+            drawTexture(j + 81, (k + 19 + 12) - l, 176, 12 - l, 14, l + 2);
         }
     }
-
-    static final int iCrucibleGuiHeight = 193;
-    static final int iCrucibleFireIconHeight = 12;
-    private final CrucibleBlockEntity associatedTileEntityCrucible;
-    private final int guiX;
-    private final int guiY;
-    private final int guiZ;
 }

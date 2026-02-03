@@ -9,8 +9,10 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.modificationstation.stationapi.api.client.gui.screen.GuiHandler;
+import net.modificationstation.stationapi.api.client.registry.GuiHandlerRegistry;
 import net.modificationstation.stationapi.api.event.registry.GuiHandlerRegistryEvent;
 import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
+import net.modificationstation.stationapi.api.registry.Registry;
 import net.modificationstation.stationapi.api.util.Namespace;
 
 public class ScreenHandlerListener {
@@ -21,63 +23,57 @@ public class ScreenHandlerListener {
     @Environment(EnvType.CLIENT)
     @EventListener
     public void registerScreenHandlers(GuiHandlerRegistryEvent event) {
-        event.register(NAMESPACE.id("openAnvil"), new GuiHandler((GuiHandler.ScreenFactoryNoMessage) this::openAnvil, () -> null));
-        event.register(NAMESPACE.id("openHopper"), new GuiHandler((GuiHandler.ScreenFactoryNoMessage) this::openHopper, HopperBlockEntity::new));
-        event.register(NAMESPACE.id("openCrucible"), new GuiHandler((GuiHandler.ScreenFactoryNoMessage) this::openCrucible, CrucibleBlockEntity::new));
-        event.register(NAMESPACE.id("openMillStone"), new GuiHandler((GuiHandler.ScreenFactoryNoMessage) this::openMillStone, MillStoneBlockEntity::new));
-        event.register(NAMESPACE.id("openCauldron"), new GuiHandler((GuiHandler.ScreenFactoryNoMessage) this::openCauldron, CauldronBlockEntity::new));
-        event.register(NAMESPACE.id("openBlockDispenser"), new GuiHandler((GuiHandler.ScreenFactoryNoMessage) this::openBlockDispenser, BlockDispenserBlockEntity::new));
-        event.register(NAMESPACE.id("openPulley"), new GuiHandler((GuiHandler.ScreenFactoryNoMessage) this::openPulley, PulleyBlockEntity::new));
-        event.register(NAMESPACE.id("openDropper"), new GuiHandler((GuiHandler.ScreenFactoryNoMessage) this::openDropper, DropperBlockEntity::new));
-        event.register(NAMESPACE.id("openMachineBus"), new GuiHandler((GuiHandler.ScreenFactoryNoMessage) this::openMachineBus, MachineBusBlockEntity::new));
+        GuiHandlerRegistry registry = event.registry;
+
+        Registry.register(registry, NAMESPACE.id("openAnvil"), new GuiHandler((GuiHandler.ScreenFactoryNoMessage) this::openAnvil, () -> null));
+        Registry.register(registry, NAMESPACE.id("openHopper"), new GuiHandler((GuiHandler.ScreenFactoryNoMessage) this::openHopper, HopperBlockEntity::new));
+        Registry.register(registry, NAMESPACE.id("openCrucible"), new GuiHandler((GuiHandler.ScreenFactoryNoMessage) this::openCrucible, CrucibleBlockEntity::new));
+        Registry.register(registry, NAMESPACE.id("openMillStone"), new GuiHandler((GuiHandler.ScreenFactoryNoMessage) this::openMillStone, MillStoneBlockEntity::new));
+        Registry.register(registry, NAMESPACE.id("openCauldron"), new GuiHandler((GuiHandler.ScreenFactoryNoMessage) this::openCauldron, CauldronBlockEntity::new));
+        Registry.register(registry, NAMESPACE.id("openBlockDispenser"), new GuiHandler((GuiHandler.ScreenFactoryNoMessage) this::openBlockDispenser, BlockDispenserBlockEntity::new));
+        Registry.register(registry, NAMESPACE.id("openPulley"), new GuiHandler((GuiHandler.ScreenFactoryNoMessage) this::openPulley, PulleyBlockEntity::new));
+        Registry.register(registry, NAMESPACE.id("openDropper"), new GuiHandler((GuiHandler.ScreenFactoryNoMessage) this::openDropper, DropperBlockEntity::new));
+        Registry.register(registry, NAMESPACE.id("openMachineBus"), new GuiHandler((GuiHandler.ScreenFactoryNoMessage) this::openMachineBus, MachineBusBlockEntity::new));
     }
 
     @Environment(EnvType.CLIENT)
     public Screen openAnvil(PlayerEntity player, Inventory inventoryBase) {
-        return new AnvilScreen(player.inventory, player.world, TempAnvilX, TempAnvilY, TempAnvilZ);
+        return new AnvilScreen(player.inventory, player.world, (int) player.x, (int) player.y, (int) player.z);
     }
-
-    public static int TempAnvilX;
-    public static int TempAnvilY;
-    public static int TempAnvilZ;
-
-    public static int TempGuiX;
-    public static int TempGuiY;
-    public static int TempGuiZ;
 
     @Environment(EnvType.CLIENT)
     public Screen openHopper(PlayerEntity player, Inventory inventoryBase) {
-        return new HopperScreen(player.inventory, (HopperBlockEntity) inventoryBase, TempGuiX, TempGuiY, TempGuiZ);
+        return new HopperScreen(player.inventory, (HopperBlockEntity) inventoryBase);
     }
 
     @Environment(EnvType.CLIENT)
     public Screen openCrucible(PlayerEntity player, Inventory inventoryBase) {
-        return new CrucibleScreen(player.inventory, (CrucibleBlockEntity) inventoryBase, TempGuiX, TempGuiY, TempGuiZ);
+        return new CrucibleScreen(player.inventory, (CrucibleBlockEntity) inventoryBase);
     }
 
     @Environment(EnvType.CLIENT)
     public Screen openMillStone(PlayerEntity player, Inventory inventoryBase) {
-        return new MillStoneScreen(player.inventory, (MillStoneBlockEntity) inventoryBase, TempGuiX, TempGuiY, TempGuiZ);
+        return new MillStoneScreen(player.inventory, (MillStoneBlockEntity) inventoryBase);
     }
 
     @Environment(EnvType.CLIENT)
     public Screen openCauldron(PlayerEntity player, Inventory inventoryBase) {
-        return new CauldronScreen(player.inventory, (CauldronBlockEntity) inventoryBase, TempGuiX, TempGuiY, TempGuiZ);
+        return new CauldronScreen(player.inventory, (CauldronBlockEntity) inventoryBase);
     }
 
     @Environment(EnvType.CLIENT)
     public Screen openBlockDispenser(PlayerEntity player, Inventory inventoryBase) {
-        return new BlockDispenserScreen(player.inventory, (BlockDispenserBlockEntity) inventoryBase, TempGuiX, TempGuiY, TempGuiZ);
+        return new BlockDispenserScreen(player.inventory, (BlockDispenserBlockEntity) inventoryBase);
     }
 
     @Environment(EnvType.CLIENT)
     public Screen openPulley(PlayerEntity player, Inventory inventoryBase) {
-        return new PulleyScreen(player.inventory, (PulleyBlockEntity) inventoryBase, TempGuiX, TempGuiY, TempGuiZ);
+        return new PulleyScreen(player.inventory, (PulleyBlockEntity) inventoryBase);
     }
 
     @Environment(EnvType.CLIENT)
     public Screen openDropper(PlayerEntity player, Inventory inventoryBase) {
-        return new DropperScreen(player.inventory, (DropperBlockEntity) inventoryBase, TempGuiX, TempGuiY, TempGuiZ);
+        return new DropperScreen(player.inventory, (DropperBlockEntity) inventoryBase);
     }
 
     @Environment(EnvType.CLIENT)

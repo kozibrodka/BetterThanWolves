@@ -33,8 +33,13 @@ import net.modificationstation.stationapi.api.util.Identifier;
 import java.util.List;
 
 
-public class HopperBlockEntity extends BlockEntity
-        implements Inventory {
+public class HopperBlockEntity extends BlockEntity implements Inventory {
+    private ItemStack[] hopperContents;
+    private int ejectCounter;
+    public boolean hopperEjectBlocked;
+    public int clientOccupiedSlots;
+    public int clientFilterType;
+    private boolean ejecting;
 
     public HopperBlockEntity() {
         hopperContents = new ItemStack[19];
@@ -304,8 +309,16 @@ public class HopperBlockEntity extends BlockEntity
         return true;
     }
 
-    public boolean IsEjecting() {
-        return ((HopperBlock) BlockListener.hopper).IsBlockOn(world, x, y, z);
+    public boolean isEjecting() {
+        return ejecting;
+    }
+
+    public void updateEjecting() {
+        ejecting = ((HopperBlock) BlockListener.hopper).IsBlockOn(world, x, y, z);
+    }
+
+    public void setEjecting(boolean ejecting) {
+        this.ejecting = ejecting;
     }
 
     private void attemptItemEjection() {
@@ -479,10 +492,4 @@ public class HopperBlockEntity extends BlockEntity
             }
         }
     }
-
-    private ItemStack[] hopperContents;
-    private int ejectCounter;
-    public boolean hopperEjectBlocked;
-    public int clientOccupiedSlots;
-    public int clientFilterType;
 }

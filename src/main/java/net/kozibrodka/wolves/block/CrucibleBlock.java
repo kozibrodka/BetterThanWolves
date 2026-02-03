@@ -11,10 +11,9 @@ import net.fabricmc.api.EnvironmentInterface;
 import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.block.entity.CrucibleBlockEntity;
 import net.kozibrodka.wolves.container.CrucibleScreenHandler;
+import net.kozibrodka.wolves.events.BlockEntityListener;
 import net.kozibrodka.wolves.events.BlockListener;
-import net.kozibrodka.wolves.events.ScreenHandlerListener;
 import net.kozibrodka.wolves.events.TextureListener;
-import net.kozibrodka.wolves.network.ScreenPacket;
 import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.utils.CustomBlockRendering;
 import net.kozibrodka.wolves.utils.InventoryHandler;
@@ -76,15 +75,9 @@ public class CrucibleBlock extends TemplateBlockWithEntity
         return i != 1 ? TextureListener.crucible_side : TextureListener.crucible_top;
     }
 
-    public boolean onUse(World world, int i, int j, int k, PlayerEntity entityPlayer) {
-        CrucibleBlockEntity tileEntityCrucible = (CrucibleBlockEntity) world.getBlockEntity(i, j, k);
-        ScreenHandlerListener.TempGuiX = i;
-        ScreenHandlerListener.TempGuiY = j;
-        ScreenHandlerListener.TempGuiZ = k;
-        if (world.isRemote) {
-            PacketHelper.send(new ScreenPacket("crucible", 0, i, j, k));
-        }
-        GuiHelper.openGUI(entityPlayer, Identifier.of("wolves:openCrucible"), tileEntityCrucible, new CrucibleScreenHandler(entityPlayer.inventory, tileEntityCrucible));
+    public boolean onUse(World world, int x, int y, int z, PlayerEntity playerEntity) {
+        CrucibleBlockEntity crucibleBlockEntity = (CrucibleBlockEntity) world.getBlockEntity(x, y, z);
+        GuiHelper.openGUI(playerEntity, Identifier.of(BlockEntityListener.NAMESPACE, "openCrucible"), crucibleBlockEntity, new CrucibleScreenHandler(playerEntity.inventory, crucibleBlockEntity));
         return true;
     }
 

@@ -19,6 +19,7 @@ public class DropperBlockEntity extends BlockEntity implements Inventory {
     private ItemStack[] dropperContents;
     private boolean dropDone;
     private boolean providePower;
+    private boolean powered;
 
     public DropperBlockEntity() {
         dropperContents = new ItemStack[2];
@@ -170,5 +171,17 @@ public class DropperBlockEntity extends BlockEntity implements Inventory {
 
     public boolean shouldProvidePower() {
         return providePower;
+    }
+
+    public void updatePowered() {
+        powered = world.getBlockMeta(x, y, z) == 1;
+    }
+
+    public boolean isPowered() {
+        return powered;
+    }
+
+    public void forcefullyUpdatePowered(boolean powered) {
+        this.powered = powered;
     }
 }

@@ -5,13 +5,16 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
 
 
 public class CrucibleScreenHandler extends ScreenHandler {
+    private final CrucibleBlockEntity crucibleBlockEntity;
+    private int cookProgress;
 
     public CrucibleScreenHandler(Inventory playerinventory, CrucibleBlockEntity tileEntityCrucible) {
-        localTileEntityCrucible = tileEntityCrucible;
+        crucibleBlockEntity = tileEntityCrucible;
         for (int iRow = 0; iRow < 3; iRow++) {
             for (int iColumn = 0; iColumn < 9; iColumn++) {
                 addSlot(new Slot(tileEntityCrucible, iColumn + iRow * 9, 8 + iColumn * 18, 43 + iRow * 18));
@@ -33,7 +36,7 @@ public class CrucibleScreenHandler extends ScreenHandler {
     }
 
     public boolean canUse(PlayerEntity entityplayer) {
-        return localTileEntityCrucible.canPlayerUse(entityplayer);
+        return crucibleBlockEntity.canPlayerUse(entityplayer);
     }
 
     public ItemStack getStackInSlot(int iSlotIndex) {
@@ -99,8 +102,23 @@ public class CrucibleScreenHandler extends ScreenHandler {
         }
     }
 
-    private final int iNumCrucibleSlotRows = 3;
-    private final int iNumCrucibleSlotColumns = 9;
-    private final int iNumCrucibleSlots = 27;
-    private final CrucibleBlockEntity localTileEntityCrucible;
+    @Override
+    public void sendContentUpdates() {
+        super.sendContentUpdates();
+        for (Object listener : this.listeners) {
+            ScreenHandlerListener screenHandlerListener = (ScreenHandlerListener) listener;
+            if (cookProgress != crucibleBlockEntity.crucibleCookCounter) {
+                screenHandlerListener.onPropertyUpdate(this, 0, crucibleBlockEntity.crucibleCookCounter);
+            }
+        }
+
+        cookProgress = crucibleBlockEntity.crucibleCookCounter;
+    }
+
+    @Override
+    public void setProperty(int id, int value) {
+        if (id == 0) {
+            crucibleBlockEntity.crucibleCookCounter = cookProgress;
+        }
+    }
 }

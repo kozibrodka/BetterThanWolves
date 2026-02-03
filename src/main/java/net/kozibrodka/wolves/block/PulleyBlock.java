@@ -5,9 +5,8 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.block.entity.PulleyBlockEntity;
 import net.kozibrodka.wolves.container.PulleyScreenHandler;
-import net.kozibrodka.wolves.events.ScreenHandlerListener;
+import net.kozibrodka.wolves.events.BlockEntityListener;
 import net.kozibrodka.wolves.events.TextureListener;
-import net.kozibrodka.wolves.network.ScreenPacket;
 import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.utils.InventoryHandler;
 import net.kozibrodka.wolves.utils.MechanicalDevice;
@@ -44,15 +43,9 @@ public class PulleyBlock extends TemplateBlockWithEntity
         return iSide != 1 ? TextureListener.pulley_side : TextureListener.pulley_top;
     }
 
-    public boolean onUse(World world, int i, int j, int k, PlayerEntity entityplayer) {
-        PulleyBlockEntity tileEntityPulley = (PulleyBlockEntity) world.getBlockEntity(i, j, k);
-        ScreenHandlerListener.TempGuiX = i;
-        ScreenHandlerListener.TempGuiY = j;
-        ScreenHandlerListener.TempGuiZ = k;
-        if (world.isRemote) {
-            PacketHelper.send(new ScreenPacket("pulley", 0, i, j, k));
-        }
-        GuiHelper.openGUI(entityplayer, Identifier.of("wolves:openPulley"), tileEntityPulley, new PulleyScreenHandler(entityplayer.inventory, tileEntityPulley));
+    public boolean onUse(World world, int x, int y, int z, PlayerEntity playerEntity) {
+        PulleyBlockEntity pulleyBlockEntity = (PulleyBlockEntity) world.getBlockEntity(x, y, z);
+        GuiHelper.openGUI(playerEntity, Identifier.of(BlockEntityListener.NAMESPACE, "openPulley"), pulleyBlockEntity, new PulleyScreenHandler(playerEntity.inventory, pulleyBlockEntity));
         return true;
     }
 

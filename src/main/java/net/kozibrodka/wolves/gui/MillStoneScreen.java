@@ -2,22 +2,17 @@ package net.kozibrodka.wolves.gui;
 
 import net.kozibrodka.wolves.block.entity.MillStoneBlockEntity;
 import net.kozibrodka.wolves.container.MillStoneScreenHandler;
-import net.kozibrodka.wolves.network.ClientScreenData;
-import net.kozibrodka.wolves.network.ScreenPacket;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.entity.player.PlayerInventory;
-import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import org.lwjgl.opengl.GL11;
 
 public class MillStoneScreen extends HandledScreen {
+    private final MillStoneBlockEntity millStoneBlockEntity;
 
-    public MillStoneScreen(PlayerInventory inventoryplayer, MillStoneBlockEntity fctileentitymillstone, int locX, int locY, int locZ) {
-        super(new MillStoneScreenHandler(inventoryplayer, fctileentitymillstone));
+    public MillStoneScreen(PlayerInventory playerInventory, MillStoneBlockEntity millStoneBlockEntity) {
+        super(new MillStoneScreenHandler(playerInventory, millStoneBlockEntity));
         backgroundHeight = 193;
-        associatedTileEntityMillStone = fctileentitymillstone;
-        guiX = locX;
-        guiY = locY;
-        guiZ = locZ;
+        this.millStoneBlockEntity = millStoneBlockEntity;
     }
 
     protected void drawForeground() {
@@ -32,26 +27,9 @@ public class MillStoneScreen extends HandledScreen {
         int j = (width - backgroundWidth) / 2;
         int k = (height - backgroundHeight) / 2;
         drawTexture(j, k, 0, 0, backgroundWidth, backgroundHeight);
-        if (associatedTileEntityMillStone.world == null) {
-            {
-                PacketHelper.send(new ScreenPacket("mill", 0, guiX, guiY, guiZ));
-                if (ClientScreenData.isGrinding()) {
-                    int l = ClientScreenData.getGrindProgressScaled(12);
-                    drawTexture(j + 80, (k + 18 + 12) - l, 176, 12 - l, 14, l + 2);
-                }
-            }
-        } else {
-            if (associatedTileEntityMillStone.IsGrinding()) {
-                int l = associatedTileEntityMillStone.getGrindProgressScaled(12);
-                drawTexture(j + 80, (k + 18 + 12) - l, 176, 12 - l, 14, l + 2);
-            }
+        if (millStoneBlockEntity.IsGrinding()) {
+            int l = millStoneBlockEntity.getGrindProgressScaled(12);
+            drawTexture(j + 80, (k + 18 + 12) - l, 176, 12 - l, 14, l + 2);
         }
     }
-
-    static final int iMillStoneGuiHeight = 193;
-    static final int iMillStoneFireIconHeight = 12;
-    private final MillStoneBlockEntity associatedTileEntityMillStone;
-    private final int guiX;
-    private final int guiY;
-    private final int guiZ;
 }

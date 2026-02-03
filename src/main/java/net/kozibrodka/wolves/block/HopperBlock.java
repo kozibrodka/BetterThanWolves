@@ -12,11 +12,10 @@ import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.api.AffectedByBellows;
 import net.kozibrodka.wolves.block.entity.HopperBlockEntity;
 import net.kozibrodka.wolves.container.HopperScreenHandler;
+import net.kozibrodka.wolves.events.BlockEntityListener;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ItemListener;
-import net.kozibrodka.wolves.events.ScreenHandlerListener;
 import net.kozibrodka.wolves.events.TextureListener;
-import net.kozibrodka.wolves.network.ScreenPacket;
 import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.utils.*;
 import net.minecraft.block.Block;
@@ -105,15 +104,9 @@ public class HopperBlock extends TemplateBlockWithEntity
         ((HopperBlockEntity) world.getBlockEntity(i, j, k)).hopperEjectBlocked = false;
     }
 
-    public boolean onUse(World world, int i, int j, int k, PlayerEntity entityplayer) {
-        HopperBlockEntity tileEntityHopper = (HopperBlockEntity) world.getBlockEntity(i, j, k);
-        ScreenHandlerListener.TempGuiX = i;
-        ScreenHandlerListener.TempGuiY = j;
-        ScreenHandlerListener.TempGuiZ = k;
-        if (world.isRemote) {
-            PacketHelper.send(new ScreenPacket("hopper", 0, i, j, k));
-        }
-        GuiHelper.openGUI(entityplayer, Identifier.of("wolves:openHopper"), tileEntityHopper, new HopperScreenHandler(entityplayer.inventory, tileEntityHopper));
+    public boolean onUse(World world, int x, int y, int z, PlayerEntity playerEntity) {
+        HopperBlockEntity hopperBlockEntity = (HopperBlockEntity) world.getBlockEntity(x, y, z);
+        GuiHelper.openGUI(playerEntity, Identifier.of(BlockEntityListener.NAMESPACE, "openHopper"), hopperBlockEntity, new HopperScreenHandler(playerEntity.inventory, hopperBlockEntity));
         return true;
     }
 

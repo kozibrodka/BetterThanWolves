@@ -2,9 +2,8 @@ package net.kozibrodka.wolves.block;
 
 import net.kozibrodka.wolves.block.entity.DropperBlockEntity;
 import net.kozibrodka.wolves.container.DropperScreenHandler;
-import net.kozibrodka.wolves.events.ScreenHandlerListener;
+import net.kozibrodka.wolves.events.BlockEntityListener;
 import net.kozibrodka.wolves.events.TextureListener;
-import net.kozibrodka.wolves.network.ScreenPacket;
 import net.kozibrodka.wolves.utils.InventoryHandler;
 import net.kozibrodka.wolves.utils.MechanicalDevice;
 import net.minecraft.block.entity.BlockEntity;
@@ -14,7 +13,6 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.gui.screen.container.GuiHelper;
-import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockWithEntity;
 import net.modificationstation.stationapi.api.util.Identifier;
 
@@ -54,13 +52,7 @@ public class DropperBlock extends TemplateBlockWithEntity implements MechanicalD
 
     public boolean onUse(World world, int x, int y, int z, PlayerEntity playerEntity) {
         DropperBlockEntity dropperBlockEntity = (DropperBlockEntity) world.getBlockEntity(x, y, z);
-        ScreenHandlerListener.TempGuiX = x;
-        ScreenHandlerListener.TempGuiY = y;
-        ScreenHandlerListener.TempGuiZ = z;
-        if (world.isRemote) {
-            PacketHelper.send(new ScreenPacket("dropper", 0, x, y, z));
-        }
-        GuiHelper.openGUI(playerEntity, Identifier.of("wolves:openDropper"), dropperBlockEntity, new DropperScreenHandler(playerEntity.inventory, dropperBlockEntity));
+        GuiHelper.openGUI(playerEntity, Identifier.of(BlockEntityListener.NAMESPACE, "openDropper"), dropperBlockEntity, new DropperScreenHandler(playerEntity.inventory, dropperBlockEntity));
         return true;
     }
 

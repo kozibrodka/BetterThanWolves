@@ -5,35 +5,38 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
 
 
 public class BlockDispenserScreenHandler extends ScreenHandler {
+    private final BlockDispenserBlockEntity blockDispenserBlockEntity;
+    private int nextDispenserSlot;
 
-    public BlockDispenserScreenHandler(Inventory iinventory, BlockDispenserBlockEntity tileEntityBlockDispenser) {
-        localTileEntityBlockDispenser = tileEntityBlockDispenser;
+    public BlockDispenserScreenHandler(Inventory inventory, BlockDispenserBlockEntity blockDispenserBlockEntity) {
+        this.blockDispenserBlockEntity = blockDispenserBlockEntity;
         for (int i = 0; i < 3; i++) {
             for (int l = 0; l < 3; l++) {
-                addSlot(new Slot(tileEntityBlockDispenser, l + i * 3, 62 + l * 18, 17 + i * 18));
+                addSlot(new Slot(blockDispenserBlockEntity, l + i * 3, 62 + l * 18, 17 + i * 18));
             }
 
         }
 
         for (int j = 0; j < 3; j++) {
             for (int i1 = 0; i1 < 9; i1++) {
-                addSlot(new Slot(iinventory, i1 + j * 9 + 9, 8 + i1 * 18, 84 + j * 18));
+                addSlot(new Slot(inventory, i1 + j * 9 + 9, 8 + i1 * 18, 84 + j * 18));
             }
 
         }
 
         for (int k = 0; k < 9; k++) {
-            addSlot(new Slot(iinventory, k, 8 + k * 18, 142));
+            addSlot(new Slot(inventory, k, 8 + k * 18, 142));
         }
 
     }
 
     public boolean canUse(PlayerEntity entityplayer) {
-        return localTileEntityBlockDispenser.canPlayerUse(entityplayer);
+        return blockDispenserBlockEntity.canPlayerUse(entityplayer);
     }
 
     public ItemStack getStackInSlot(int iSlotIndex) {
@@ -101,11 +104,28 @@ public class BlockDispenserScreenHandler extends ScreenHandler {
 
     public ItemStack onSlotClick(int i, int j, boolean flag, PlayerEntity entityplayer) {
         if (i < 9) {
-            localTileEntityBlockDispenser.iNextSlotIndexToDispense = 0;
+            blockDispenserBlockEntity.nextDispenserSlot = 0;
         }
         return super.onSlotClick(i, j, flag, entityplayer);
     }
 
-    private final BlockDispenserBlockEntity localTileEntityBlockDispenser;
-    private final int iNumBlockDispenserSlots = 9;
+    @Override
+    public void sendContentUpdates() {
+        super.sendContentUpdates();
+        for (Object listener : this.listeners) {
+            ScreenHandlerListener screenHandlerListener = (ScreenHandlerListener) listener;
+            if (nextDispenserSlot != blockDispenserBlockEntity.nextDispenserSlot) {
+                screenHandlerListener.onPropertyUpdate(this, 0, blockDispenserBlockEntity.nextDispenserSlot);
+            }
+        }
+
+        nextDispenserSlot = blockDispenserBlockEntity.nextDispenserSlot;
+    }
+
+    @Override
+    public void setProperty(int id, int value) {
+        if (id == 0) {
+            blockDispenserBlockEntity.nextDispenserSlot = value;
+        }
+    }
 }

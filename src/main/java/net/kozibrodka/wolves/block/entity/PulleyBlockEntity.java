@@ -31,8 +31,8 @@ import net.modificationstation.stationapi.api.registry.ItemRegistry;
 import java.util.List;
 
 
-public class PulleyBlockEntity extends BlockEntity
-        implements Inventory {
+public class PulleyBlockEntity extends BlockEntity implements Inventory {
+    private boolean mechanicallyPowered;
 
     public PulleyBlockEntity() {
         pulleyContents = new ItemStack[2];
@@ -125,6 +125,18 @@ public class PulleyBlockEntity extends BlockEntity
 
     public boolean IsMechanicallyPowered() {
         return ((PulleyBlock) BlockListener.pulley).IsBlockOn(world, x, y, z);
+    }
+
+    public void updateMechanicallyPowered() {
+        mechanicallyPowered = IsMechanicallyPowered();
+    }
+
+    public boolean poweredForClient() {
+        return mechanicallyPowered;
+    }
+
+    public void forcefullyChangePoweredStatus(boolean mechanicallyPowered) {
+        this.mechanicallyPowered = mechanicallyPowered;
     }
 
     public boolean IsRedstonePowered() {
