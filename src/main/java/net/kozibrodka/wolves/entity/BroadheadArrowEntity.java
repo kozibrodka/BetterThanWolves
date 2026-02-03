@@ -322,9 +322,7 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
                     voicePacket(world, "random.pop", this.xTile, this.yTile, this.zTile, 0.2F, 1.25F);
                 }
                 arg.sendPickup(this, 1);
-                //TODO: line 255 ServerPlayerEntity Mixin.
                 this.markDead();
-                //TODO: Animation of adding item to inventory upon pick-up? Works for vanilla arrow.
             }
 
         }

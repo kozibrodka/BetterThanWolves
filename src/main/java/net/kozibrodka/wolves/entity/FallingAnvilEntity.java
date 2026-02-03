@@ -91,7 +91,7 @@ public class FallingAnvilEntity extends Entity implements EntitySpawnDataProvide
                 if (!list1.isEmpty()) {
                     for (int k = 0; k < list1.size(); k++) {
                         LivingEntity playertohit = (LivingEntity) list1.get(k);
-                        playertohit.damage(this, 10); //TODO DMG
+                        playertohit.damage(this, 10); //TODO DMG based on velocity
                     }
                 }
                 world.playSound(this.x, this.y, this.z, "wolves:anvil_land", 1.0F, 1.2F);

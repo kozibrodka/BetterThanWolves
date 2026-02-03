@@ -15,12 +15,12 @@ Game mechanics:
 - (DONE) Make wolf dumping rate depend on feeding
 - (DONE) Feature to stop wolves from dumping (they will not dump without excessive feeding)
 - Make stoked fire set entities on fire
-- Make Cement Render Correctly in Multiplayer
+- (DONE) Make Cement Render Correctly in Multiplayer - breaks if too much packets
 - Fix Multiplayer Entities - (currently working on)
-- Animation of adding item to inventory upon pick-up? Works for vanilla arrow, not for BroadHeadArrow.
 - Pickaxe from steel doesnt break ORES fast
 - Falling Anvil correct Model Rendering
 - Pressure plate sound multiplayer (all plates including vanilla are soundless)
+- Third person animation on modded tools
 
 Possbile extra features (oryginal BTW)""
 - Animated saw

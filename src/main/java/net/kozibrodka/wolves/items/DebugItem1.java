@@ -15,7 +15,6 @@ public class DebugItem1 extends TemplateItem {
     }
 
     public ItemStack use(ItemStack ItemInstance, World world, PlayerEntity entityplayer) {
-        //TODO: DELETE
 //        entityplayer.inventory.method_671(new ItemStack(ItemListener.refinedPickAxe, 1));
 //        entityplayer.inventory.method_671(new ItemStack(ItemListener.refinedAxe, 1));
 //        entityplayer.inventory.method_671(new ItemStack(ItemListener.refinedSword, 1));
@@ -29,7 +28,6 @@ public class DebugItem1 extends TemplateItem {
 //        entityplayer.inventory.method_671(new ItemStack(Item.DYE, 1, 2));
 //        entityplayer.inventory.method_671(new ItemStack(GOLDEN_APPLE, 1));
 //        entityplayer.inventory.method_671(new ItemStack(BlockListener.axleBlock, 64));
-        //TODO
         return ItemInstance;
     }
 }
