@@ -31,23 +31,27 @@ public class DropperBlockEntity extends BlockEntity implements Inventory {
         ItemStack weight = dropperContents[WEIGHT];
         if (weight == null) {
             providePower = false;
+            dropDone = true;
             megaNotification();
             return;
         }
         if (weight.itemId != ItemListener.weight.id) {
             providePower = false;
+            dropDone = true;
             megaNotification();
             return;
         }
         ItemStack storage = dropperContents[STORAGE];
         if (storage == null) {
             providePower = false;
+            dropDone = true;
             megaNotification();
             return;
         }
         storage = storage.copy();
         if (storage.count < weight.count) {
             providePower = false;
+            dropDone = true;
             megaNotification();
             return;
         }
