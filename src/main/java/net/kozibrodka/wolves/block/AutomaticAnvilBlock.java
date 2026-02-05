@@ -3,10 +3,12 @@ package net.kozibrodka.wolves.block;
 import net.kozibrodka.wolves.block.entity.AutomaticAnvilBlockEntity;
 import net.kozibrodka.wolves.container.AutomaticAnvilScreenHandler;
 import net.kozibrodka.wolves.events.BlockEntityListener;
+import net.kozibrodka.wolves.utils.InventoryHandler;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -58,4 +60,8 @@ public class AutomaticAnvilBlock extends LazyBlockWithEntityTemplate {
         return true;
     }
 
+    public void onBreak(World world, int x, int y, int z) {
+        InventoryHandler.ejectInventoryContents(world, x, y, z, (Inventory) world.getBlockEntity(x, y, z));
+        super.onBreak(world, x, y, z);
+    }
 }

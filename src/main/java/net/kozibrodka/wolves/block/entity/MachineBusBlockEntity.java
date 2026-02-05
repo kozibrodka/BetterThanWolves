@@ -28,7 +28,7 @@ public class MachineBusBlockEntity extends BlockEntity implements Inventory {
 
     @Override
     public void setStack(int slot, ItemStack stack) {
-
+        busItemStacks[slot] = stack;
     }
 
     @Override
