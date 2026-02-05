@@ -9,7 +9,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 
 public class MachineBusBlockEntity extends BlockEntity implements Inventory {
-    private final ItemStack[] busItemStacks = new ItemStack[0];
+    private final ItemStack[] busItemStacks = new ItemStack[1];
 
     @Override
     public int size() {
