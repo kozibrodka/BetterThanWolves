@@ -8,6 +8,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.util.Identifier;
 
+import java.util.Random;
+
 public class MachinePowerInputBlock extends LazyBlockTemplate implements MechanicalDevice {
     public MachinePowerInputBlock(Identifier identifier, Material material, float hardness, BlockSoundGroup blockSounds) {
         super(identifier, material, hardness, blockSounds);
@@ -15,6 +17,9 @@ public class MachinePowerInputBlock extends LazyBlockTemplate implements Mechani
 
     @Override
     public int getTexture(int side, int meta) {
+        if (meta >= 6) {
+            meta -= 6;
+        }
         if (side == meta) {
             return topTexture;
         }
@@ -53,7 +58,11 @@ public class MachinePowerInputBlock extends LazyBlockTemplate implements Mechani
 
     @Override
     public boolean canInputMechanicalPower(World world, int x, int y, int z, int side) {
-        return side == world.getBlockMeta(x, y, z);
+        int meta = world.getBlockMeta(x, y, z);
+        if (meta >= 6) {
+            meta -= 6;
+        }
+        return side == meta;
     }
 
     @Override
@@ -75,5 +84,17 @@ public class MachinePowerInputBlock extends LazyBlockTemplate implements Mechani
     @Override
     public boolean isMachinePowered(World world, int x, int y, int z) {
         return world.getBlockMeta(x, y, z) >= 6;
+    }
+
+    @Override
+    public void randomDisplayTick(World world, int x, int y, int z, Random random) {
+        if (world.getBlockMeta(x, y, z) >= 6) {
+            for (int counter = 0; counter < 5; counter++) {
+                float smokeX = (float) x + random.nextFloat();
+                float smokeY = (float) y + random.nextFloat() * 0.5F + 1.0F;
+                float smokeZ = (float) z + random.nextFloat();
+                world.addParticle("smoke", smokeX, smokeY, smokeZ, 0.0D, 0.0D, 0.0D);
+            }
+        }
     }
 }
