@@ -2,6 +2,7 @@ package net.kozibrodka.wolves.block.entity;
 
 import net.kozibrodka.wolves.container.autoanvil.AutoAnvilMatrix;
 import net.kozibrodka.wolves.container.autoanvil.InternalAutoAnvilScreenHandler;
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.recipe.AnvilCraftingManager;
 import net.kozibrodka.wolves.utils.InventoryHandler;
 import net.minecraft.block.entity.BlockEntity;
@@ -34,6 +35,7 @@ public class AutomaticAnvilBlockEntity extends BlockEntity implements Inventory 
         } else {
             checkTimer = 0;
             if (!checkMultiblockStructure()) {
+                craftingProgress = 0;
                 return;
             }
         }
@@ -49,6 +51,208 @@ public class AutomaticAnvilBlockEntity extends BlockEntity implements Inventory 
             }
             craftingProgress = 0;
         }
+    }
+
+    private boolean checkMultiblockStructure() {
+        // Calculate central coordinates
+        int meta = world.getBlockMeta(x, y, z) % 6;
+        int xCentered = x;
+        int zCentered = z;
+        switch (meta) {
+            case 2:
+                zCentered+=2;
+                break;
+            case 3:
+                zCentered-=2;
+                break;
+            case 4:
+                xCentered+=2;
+                break;
+            case 5:
+                xCentered-=2;
+                break;
+        }
+        // Check structural integrity
+        int frameCount = 0;
+        boolean foundPowerInput = false;
+        for (int xOffset = -2; xOffset <= 2; xOffset++) {
+            for (int zOffset = -2; zOffset <= 2; zOffset++) {
+                int blockId = world.getBlockId(xCentered + xOffset, y, zCentered + zOffset);
+                if (blockId == BlockListener.anvilFrame.id) {
+                    frameCount++;
+                } else if (blockId == BlockListener.machinePowerInput.id) {
+                    if (world.getBlockMeta(xCentered + xOffset, y, zCentered + zOffset) >= 6) {
+                        foundPowerInput = true;
+                    }
+                } else if (blockId != BlockListener.outputBus.id && blockId != BlockListener.automaticAnvil.id) {
+                    return false;
+                }
+            }
+        }
+        if (!foundPowerInput) {
+            return false;
+        }
+        if (frameCount < 22) {
+            return false;
+        }
+        for (int xOffset = -2; xOffset <= 2; xOffset++) {
+            for (int zOffset = -2; zOffset <= 2; zOffset++) {
+                int blockId = world.getBlockId(xCentered + xOffset, y + 1, zCentered + zOffset);
+                if (blockId != BlockListener.inputBus.id) {
+                    return false;
+                }
+            }
+        }
+        // Meta values to coordinates
+        // 2 -> z+
+        // 3 -> z-
+        // 4 -> x+
+        // 5 -> x-
+        // Automatic input
+        switch (meta) {
+            case 2:
+                for (int zOffset = 2; zOffset >= -2; zOffset--) {
+                    for (int xOffset = 2; xOffset >= -2; xOffset--) {
+                        if (world.getBlockEntity(xCentered + xOffset, y + 1, zCentered + zOffset) instanceof MachineBusBlockEntity machineBusBlockEntity) {
+                            if (machineBusBlockEntity.getStack(0) == null) {
+                                continue;
+                            }
+                            int ovenIndex = (-xOffset + 2) + (-zOffset + 2) * 5;
+                            if (anvilItemStacks[ovenIndex] == null) {
+                                anvilItemStacks[ovenIndex] = machineBusBlockEntity.getStack(0);
+                                machineBusBlockEntity.setStack(0, null);
+                            } else if (anvilItemStacks[ovenIndex].isItemEqual(machineBusBlockEntity.getStack(0))) {
+                                int totalCount = anvilItemStacks[ovenIndex].count + machineBusBlockEntity.getStack(0).count;
+                                if (totalCount <= machineBusBlockEntity.getStack(0).getMaxCount()) {
+                                    anvilItemStacks[ovenIndex].count = totalCount;
+                                    machineBusBlockEntity.setStack(0, null);
+                                } else {
+                                    int leftovers = totalCount - machineBusBlockEntity.getStack(0).getMaxCount();
+                                    anvilItemStacks[ovenIndex].count = machineBusBlockEntity.getStack(0).getMaxCount();
+                                    ItemStack changedItem = machineBusBlockEntity.getStack(0);
+                                    changedItem.count = leftovers;
+                                    machineBusBlockEntity.setStack(0, changedItem);
+                                }
+                            }
+                        }
+                    }
+                }
+                break;
+            case 3:
+                for (int zOffset = -2; zOffset <= 2; zOffset++) {
+                    for (int xOffset = -2; xOffset <= 2; xOffset++) {
+                        if (world.getBlockEntity(xCentered + xOffset, y + 1, zCentered + zOffset) instanceof MachineBusBlockEntity machineBusBlockEntity) {
+                            if (machineBusBlockEntity.getStack(0) == null) {
+                                continue;
+                            }
+                            int ovenIndex = (xOffset + 2) + (zOffset + 2) * 5;
+                            if (anvilItemStacks[ovenIndex] == null) {
+                                anvilItemStacks[ovenIndex] = machineBusBlockEntity.getStack(0);
+                                machineBusBlockEntity.setStack(0, null);
+                            } else if (anvilItemStacks[ovenIndex].isItemEqual(machineBusBlockEntity.getStack(0))) {
+                                int totalCount = anvilItemStacks[ovenIndex].count + machineBusBlockEntity.getStack(0).count;
+                                if (totalCount <= machineBusBlockEntity.getStack(0).getMaxCount()) {
+                                    anvilItemStacks[ovenIndex].count = totalCount;
+                                    machineBusBlockEntity.setStack(0, null);
+                                } else {
+                                    int leftovers = totalCount - machineBusBlockEntity.getStack(0).getMaxCount();
+                                    anvilItemStacks[ovenIndex].count = machineBusBlockEntity.getStack(0).getMaxCount();
+                                    ItemStack changedItem = machineBusBlockEntity.getStack(0);
+                                    changedItem.count = leftovers;
+                                    machineBusBlockEntity.setStack(0, changedItem);
+                                }
+                            }
+                        }
+                    }
+                }
+                break;
+            case 4:
+                for (int xOffset = 2; xOffset >= -2; xOffset--) {
+                    for (int zOffset = -2; zOffset <= 2; zOffset++) {
+                        if (world.getBlockEntity(xCentered + xOffset, y + 1, zCentered + zOffset) instanceof MachineBusBlockEntity machineBusBlockEntity) {
+                            if (machineBusBlockEntity.getStack(0) == null) {
+                                continue;
+                            }
+                            int ovenIndex = (zOffset + 2) + (-xOffset + 2) * 5;
+                            if (anvilItemStacks[ovenIndex] == null) {
+                                anvilItemStacks[ovenIndex] = machineBusBlockEntity.getStack(0);
+                                machineBusBlockEntity.setStack(0, null);
+                            } else if (anvilItemStacks[ovenIndex].isItemEqual(machineBusBlockEntity.getStack(0))) {
+                                int totalCount = anvilItemStacks[ovenIndex].count + machineBusBlockEntity.getStack(0).count;
+                                if (totalCount <= machineBusBlockEntity.getStack(0).getMaxCount()) {
+                                    anvilItemStacks[ovenIndex].count = totalCount;
+                                    machineBusBlockEntity.setStack(0, null);
+                                } else {
+                                    int leftovers = totalCount - machineBusBlockEntity.getStack(0).getMaxCount();
+                                    anvilItemStacks[ovenIndex].count = machineBusBlockEntity.getStack(0).getMaxCount();
+                                    ItemStack changedItem = machineBusBlockEntity.getStack(0);
+                                    changedItem.count = leftovers;
+                                    machineBusBlockEntity.setStack(0, changedItem);
+                                }
+                            }
+                        }
+                    }
+                }
+                break;
+            case 5:
+                for (int xOffset = -2; xOffset <= 2; xOffset++) {
+                    for (int zOffset = 2; zOffset >= -2; zOffset--) {
+                        if (world.getBlockEntity(xCentered + xOffset, y + 1, zCentered + zOffset) instanceof MachineBusBlockEntity machineBusBlockEntity) {
+                            if (machineBusBlockEntity.getStack(0) == null) {
+                                continue;
+                            }
+                            int ovenIndex = (-zOffset + 2) + (xOffset + 2) * 5;
+                            if (anvilItemStacks[ovenIndex] == null) {
+                                anvilItemStacks[ovenIndex] = machineBusBlockEntity.getStack(0);
+                                machineBusBlockEntity.setStack(0, null);
+                            } else if (anvilItemStacks[ovenIndex].isItemEqual(machineBusBlockEntity.getStack(0))) {
+                                int totalCount = anvilItemStacks[ovenIndex].count + machineBusBlockEntity.getStack(0).count;
+                                if (totalCount <= machineBusBlockEntity.getStack(0).getMaxCount()) {
+                                    anvilItemStacks[ovenIndex].count = totalCount;
+                                    machineBusBlockEntity.setStack(0, null);
+                                } else {
+                                    int leftovers = totalCount - machineBusBlockEntity.getStack(0).getMaxCount();
+                                    anvilItemStacks[ovenIndex].count = machineBusBlockEntity.getStack(0).getMaxCount();
+                                    ItemStack changedItem = machineBusBlockEntity.getStack(0);
+                                    changedItem.count = leftovers;
+                                    machineBusBlockEntity.setStack(0, changedItem);
+                                }
+                            }
+                        }
+                    }
+                }
+                break;
+        }
+        // Automatic output
+        for (int xOffset = -2; xOffset <= 2; xOffset++) {
+            for (int zOffset = -2; zOffset <= 2; zOffset++) {
+                // Standard output from output slot
+                BlockEntity target = world.getBlockEntity(xCentered + xOffset, y, zCentered + zOffset);
+                if (anvilItemStacks[OUTPUT] != null && target instanceof MachineBusBlockEntity machineBusBlockEntity
+                        && world.getBlockId(xCentered + xOffset, y, zCentered + zOffset) == BlockListener.outputBus.id) {
+                    if (machineBusBlockEntity.getStack(0) == null) {
+                        machineBusBlockEntity.setStack(0, anvilItemStacks[OUTPUT]);
+                        anvilItemStacks[OUTPUT] = null;
+                        return true;
+                    } else if (machineBusBlockEntity.getStack(0).isItemEqual(anvilItemStacks[OUTPUT])) {
+                        int totalCount = anvilItemStacks[OUTPUT].count + machineBusBlockEntity.getStack(0).count;
+                        if (totalCount <= machineBusBlockEntity.getStack(0).getMaxCount()) {
+                            ItemStack changedStack = machineBusBlockEntity.getStack(0);
+                            changedStack.count = totalCount;
+                            machineBusBlockEntity.setStack(0, changedStack);
+                            anvilItemStacks[OUTPUT] = null;
+                        } else {
+                            int leftovers = totalCount - machineBusBlockEntity.getStack(0).getMaxCount();
+                            ItemStack changedStack = machineBusBlockEntity.getStack(0);
+                            changedStack.count = changedStack.getMaxCount();
+                            machineBusBlockEntity.setStack(0, changedStack);
+                            anvilItemStacks[OUTPUT].count = leftovers;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     private boolean canCraft() {
@@ -112,10 +316,6 @@ public class AutomaticAnvilBlockEntity extends BlockEntity implements Inventory 
                 }
             }
         }
-    }
-
-    private boolean checkMultiblockStructure() {
-        return true;
     }
 
     @Override
