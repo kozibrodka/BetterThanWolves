@@ -128,8 +128,8 @@ public class BlockListener {
         automaticAnvil = new AutomaticAnvilBlock(Identifier.of(NAMESPACE, "automatic_anvil"), Material.METAL, 2.5F, Block.METAL_SOUND_GROUP);
         anvilFrame = new LazyBlockTemplate(Identifier.of(NAMESPACE, "anvil_frame"), Material.METAL, 2.5F, Block.METAL_SOUND_GROUP);
         machinePowerInput = new MachinePowerInputBlock(Identifier.of(NAMESPACE,  "machine_power_input"), Material.METAL, 2.5F, Block.METAL_SOUND_GROUP);
-        inputBus = new MachineBusBlock(Identifier.of("input_bus"), Material.METAL, 2.5F, Block.METAL_SOUND_GROUP);
-        outputBus = new MachineBusBlock(Identifier.of("output_bus"), Material.METAL, 2.5F, Block.METAL_SOUND_GROUP);
+        inputBus = new MachineBusBlock(Identifier.of(NAMESPACE, "input_bus"), Material.METAL, 2.5F, Block.METAL_SOUND_GROUP);
+        outputBus = new MachineBusBlock(Identifier.of(NAMESPACE, "output_bus"), Material.METAL, 2.5F, Block.METAL_SOUND_GROUP);
 
         //TODO: Omni slabs are really cursed and kinda bad. Also applies to Cornets/Moudlings - should be option in CFG to remove them
 
