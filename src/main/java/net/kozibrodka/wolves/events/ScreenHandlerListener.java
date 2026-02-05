@@ -34,6 +34,7 @@ public class ScreenHandlerListener {
         Registry.register(registry, NAMESPACE.id("openPulley"), new GuiHandler((GuiHandler.ScreenFactoryNoMessage) this::openPulley, PulleyBlockEntity::new));
         Registry.register(registry, NAMESPACE.id("openDropper"), new GuiHandler((GuiHandler.ScreenFactoryNoMessage) this::openDropper, DropperBlockEntity::new));
         Registry.register(registry, NAMESPACE.id("openMachineBus"), new GuiHandler((GuiHandler.ScreenFactoryNoMessage) this::openMachineBus, MachineBusBlockEntity::new));
+        Registry.register(registry, NAMESPACE.id("openAutomaticAnvil"), new GuiHandler((GuiHandler.ScreenFactoryNoMessage) this::openAutomaticAnvil, AutomaticAnvilBlockEntity::new));
     }
 
     @Environment(EnvType.CLIENT)
@@ -79,5 +80,10 @@ public class ScreenHandlerListener {
     @Environment(EnvType.CLIENT)
     public Screen openMachineBus(PlayerEntity player, Inventory inventory) {
         return new MachineBusScreen(player.inventory, (MachineBusBlockEntity) inventory);
+    }
+
+    @Environment(EnvType.CLIENT)
+    public Screen openAutomaticAnvil(PlayerEntity player, Inventory inventory) {
+        return new AutomaticAnvilScreen(player.inventory, (AutomaticAnvilBlockEntity) inventory);
     }
 }

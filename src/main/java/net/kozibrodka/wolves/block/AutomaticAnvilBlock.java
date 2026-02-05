@@ -1,12 +1,16 @@
 package net.kozibrodka.wolves.block;
 
 import net.kozibrodka.wolves.block.entity.AutomaticAnvilBlockEntity;
+import net.kozibrodka.wolves.container.AutomaticAnvilScreenHandler;
+import net.kozibrodka.wolves.events.BlockEntityListener;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.modificationstation.stationapi.api.gui.screen.container.GuiHelper;
 import net.modificationstation.stationapi.api.util.Identifier;
 
 public class AutomaticAnvilBlock extends LazyBlockWithEntityTemplate {
@@ -46,4 +50,12 @@ public class AutomaticAnvilBlock extends LazyBlockWithEntityTemplate {
     protected BlockEntity createBlockEntity() {
         return new AutomaticAnvilBlockEntity();
     }
+
+    @Override
+    public boolean onUse(World world, int x, int y, int z, PlayerEntity playerEntity) {
+        AutomaticAnvilBlockEntity automaticAnvilBlockEntity = (AutomaticAnvilBlockEntity) world.getBlockEntity(x, y, z);
+        GuiHelper.openGUI(playerEntity, Identifier.of(BlockEntityListener.NAMESPACE, "openAutomaticAnvil"), automaticAnvilBlockEntity, new AutomaticAnvilScreenHandler(playerEntity.inventory, automaticAnvilBlockEntity));
+        return true;
+    }
+
 }
