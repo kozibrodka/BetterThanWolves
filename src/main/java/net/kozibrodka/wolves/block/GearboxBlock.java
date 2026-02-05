@@ -93,7 +93,7 @@ public class GearboxBlock extends TemplateBlock implements MechanicalDevice, Rot
     }
 
     private boolean isPoweredByRedstone(World world, int x, int y, int z) {
-        return world.isEmittingRedstonePower(x, y, z) || world.isEmittingRedstonePower(x, y + 1, z);
+        return world.isPowered (x, y, z) || world.isPowered (x, y + 1, z);
     }
 
     @Environment(EnvType.SERVER)
@@ -229,7 +229,7 @@ public class GearboxBlock extends TemplateBlock implements MechanicalDevice, Rot
     }
 
     public void overpower(World world, int x, int y, int z) {
-        boolean isRedstonePowered = world.isStrongPowered(x, y, z) || world.canTransferPower(x, y + 1, z);
+        boolean isRedstonePowered = world.isStrongPowered(x, y, z) || world.isStrongPowered (x, y + 1, z);
         if (!isRedstonePowered) {
             breakGearBox(world, x, y, z);
         }

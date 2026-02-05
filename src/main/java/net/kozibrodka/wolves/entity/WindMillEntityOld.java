@@ -166,7 +166,7 @@ public class WindMillEntityOld extends Entity implements EntitySpawnDataProvider
             int iCenterid = world.getBlockId(iCenterI, iCenterJ, iCenterK);
             if(iCenterid == BlockListener.axleBlock.id)
             {
-                ((AxleBlock)BlockListener.axleBlock).SetPowerLevel(world, iCenterI, iCenterJ, iCenterK, 0);
+                ((AxleBlock)BlockListener.axleBlock).setPowerLevel(world, iCenterI, iCenterJ, iCenterK, 0);
             }
         }
         super.markDead();
@@ -205,7 +205,7 @@ public class WindMillEntityOld extends Entity implements EntitySpawnDataProvider
                 DestroyWithDrop();
                 return;
             }
-            if(!getProvidingPower() && ((AxleBlock)BlockListener.axleBlock).GetPowerLevel(world, iCenterI, iCenterJ, iCenterK) > 0)
+            if(!getProvidingPower() && ((AxleBlock)BlockListener.axleBlock).getPowerLevel(world, iCenterI, iCenterJ, iCenterK) > 0)
             {
                 DestroyWithDrop();
                 return;
@@ -216,13 +216,13 @@ public class WindMillEntityOld extends Entity implements EntitySpawnDataProvider
                 if(!getProvidingPower())
                 {
                     setProvidingPower(true);
-                    ((AxleBlock)BlockListener.axleBlock).SetPowerLevel(world, iCenterI, iCenterJ, iCenterK, 3);
+                    ((AxleBlock)BlockListener.axleBlock).setPowerLevel(world, iCenterI, iCenterJ, iCenterK, 3);
                 }
             } else
             if(getProvidingPower())
             {
                 setProvidingPower(false);
-                ((AxleBlock)BlockListener.axleBlock).SetPowerLevel(world, iCenterI, iCenterJ, iCenterK, 0);
+                ((AxleBlock)BlockListener.axleBlock).setPowerLevel(world, iCenterI, iCenterJ, iCenterK, 0);
             }
             if(getOverpowerTimer() >= 0)
             {
@@ -232,7 +232,7 @@ public class WindMillEntityOld extends Entity implements EntitySpawnDataProvider
                 }
                 if(getOverpowerTimer() <= 0)
                 {
-                    ((AxleBlock)BlockListener.axleBlock).Overpower(world, iCenterI, iCenterJ, iCenterK);
+                    ((AxleBlock)BlockListener.axleBlock).overpower(world, iCenterI, iCenterJ, iCenterK);
                 }
             }
         }

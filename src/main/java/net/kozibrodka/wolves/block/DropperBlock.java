@@ -42,7 +42,7 @@ public class DropperBlock extends TemplateBlockWithEntity implements MechanicalD
     }
 
     @Override
-    public boolean isEmittingRedstonePowerInDirection(BlockView blockView, int x, int y, int z, int direction) {
+    public boolean isPoweringSide(BlockView blockView, int x, int y, int z, int side) {
         BlockEntity blockEntity = blockView.getBlockEntity(x, y, z);
         if (blockEntity instanceof DropperBlockEntity dropperBlockEntity) {
             return dropperBlockEntity.shouldProvidePower();

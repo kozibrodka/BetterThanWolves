@@ -142,7 +142,7 @@ public class WaterWheelEntityOld extends Entity implements EntitySpawnDataProvid
             int iCenterid = world.getBlockId(iCenterI, iCenterJ, iCenterK);
             if(iCenterid == BlockListener.axleBlock.id)
             {
-                ((AxleBlock)BlockListener.axleBlock).SetPowerLevel(world, iCenterI, iCenterJ, iCenterK, 0);
+                ((AxleBlock)BlockListener.axleBlock).setPowerLevel(world, iCenterI, iCenterJ, iCenterK, 0);
             }
         }
         super.markDead();
@@ -186,7 +186,7 @@ public class WaterWheelEntityOld extends Entity implements EntitySpawnDataProvid
                 DestroyWithDrop();
                 return;
             }
-            if(!getProvidingPower() && ((AxleBlock)BlockListener.axleBlock).GetPowerLevel(world, iCenterI, iCenterJ, iCenterK) > 0)
+            if(!getProvidingPower() && ((AxleBlock)BlockListener.axleBlock).getPowerLevel(world, iCenterI, iCenterJ, iCenterK) > 0)
             {
                 DestroyWithDrop();
                 return;
@@ -205,13 +205,13 @@ public class WaterWheelEntityOld extends Entity implements EntitySpawnDataProvid
                 {
 //                    System.out.println("SERVI+ " + getAligned());
                     setProvidingPower(true);
-                    ((AxleBlock)BlockListener.axleBlock).SetPowerLevel(world, iCenterI, iCenterJ, iCenterK, 3);
+                    ((AxleBlock)BlockListener.axleBlock).setPowerLevel(world, iCenterI, iCenterJ, iCenterK, 3);
                 }
             } else
             if (getProvidingPower()) {
 //                    System.out.println("SERVI+ " + getAligned());
                 setProvidingPower(false);
-                ((AxleBlock) BlockListener.axleBlock).SetPowerLevel(world, iCenterI, iCenterJ, iCenterK, 0);
+                ((AxleBlock) BlockListener.axleBlock).setPowerLevel(world, iCenterI, iCenterJ, iCenterK, 0);
             }
 
         }
