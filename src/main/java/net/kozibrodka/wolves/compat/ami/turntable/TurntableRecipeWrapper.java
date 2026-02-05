@@ -1,8 +1,9 @@
 package net.kozibrodka.wolves.compat.ami.turntable;
 
 import net.glasslauncher.mods.alwaysmoreitems.api.recipe.RecipeWrapper;
+import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.recipe.TurntableRecipe;
-import net.kozibrodka.wolves.wrappers.TurntableRecipeWrapperWrapper;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -25,7 +26,8 @@ public class TurntableRecipeWrapper implements RecipeWrapper {
 
     @Override
     public List<?> getOutputs() {
-        return List.of(new ItemStack(recipe.turntableResult().turntableOutput().block().asItem(), 1, recipe.turntableResult().turntableOutput().blockMeta()), new ItemStack(recipe.turntableResult().turntableByproduct().item(), recipe.turntableResult().turntableByproduct().itemCount()));
+        Block resultBlock = recipe.turntableResult().turntableOutput().block();
+        return List.of(new ItemStack(resultBlock == Block.LOCKED_CHEST ? ItemListener.nothing : resultBlock.asItem(), 1, recipe.turntableResult().turntableOutput().blockMeta()), new ItemStack(recipe.turntableResult().turntableByproduct().item(), recipe.turntableResult().turntableByproduct().itemCount()));
     }
 
     @Override

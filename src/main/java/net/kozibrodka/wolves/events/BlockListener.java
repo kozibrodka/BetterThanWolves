@@ -56,10 +56,6 @@ public class BlockListener {
     public static Block detectorBlock;
     public static Block nonCollidingAxleBlock;
 
-    // Technical blocks
-    public static CollisionBlock collisionBlock;
-    public static ObstructionBlock obstructionBlock;
-
     // New blocks
     public static TemplateBlock blockOfWicker;
     public static LazyBlockTemplate blockOfGrates;
@@ -119,8 +115,6 @@ public class BlockListener {
         detectorBlock = new DetectorBlock(NAMESPACE.id("detector_block"), Material.PISTON_BREAKABLE).setTranslationKey(NAMESPACE, "detector_block");
         blockOfGrates = new LazyTransparentBlockTemplate(NAMESPACE.id("block_of_grates"), Material.WOOD, 1.5F, Block.WOOD_SOUND_GROUP);
         nonCollidingAxleBlock = new NonCollidingAxleBlock(NAMESPACE.id("non_colliding_axle_block")).setTranslationKey(NAMESPACE, "non_colliding_axle_block");
-        collisionBlock = new CollisionBlock(NAMESPACE.id("collision_block"), Material.WOOD, 1.5F, Block.WOOD_SOUND_GROUP);
-        obstructionBlock = new ObstructionBlock(NAMESPACE.id("obstruction_block"), Material.WOOD, 1.5F, Block.WOOD_SOUND_GROUP);
         blockOfSteel = new LazyBlockTemplate(NAMESPACE.id("block_of_steel"), Material.METAL, 2.5F, Block.METAL_SOUND_GROUP);
         dropper = new DropperBlock(NAMESPACE.id("dropper"), Material.PISTON_BREAKABLE).setHardness(2.5F).setSoundGroup(Block.METAL_SOUND_GROUP);
         conveyor = new ConveyorBlock(Identifier.of(NAMESPACE, "conveyor"), Material.WOOD, 1.5F, Block.WOOD_SOUND_GROUP);

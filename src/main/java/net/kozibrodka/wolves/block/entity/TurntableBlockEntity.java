@@ -180,7 +180,7 @@ public class TurntableBlockEntity extends BlockEntity {
             return;
         }
         craftingRotationCount = 0;
-        if (turntableOutput.block() != BlockListener.obstructionBlock) {
+        if (turntableOutput.block() != Block.LOCKED_CHEST) {
             world.setBlock(x, y, z, turntableOutput.block().id, turntableOutput.blockMeta());
         } else {
             world.setBlock(x, y, z, 0);

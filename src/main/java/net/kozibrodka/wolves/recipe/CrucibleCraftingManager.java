@@ -1,6 +1,6 @@
 package net.kozibrodka.wolves.recipe;
 
-import net.kozibrodka.wolves.events.BlockListener;
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ public class CrucibleCraftingManager extends MultiInputCraftingManager {
             for (int j = 0; j < inputStackCount; j++) {
                 adaptedInputs.add(recipe.getInputStack(j).copy());
             }
-            adaptedInputs.add(new ItemStack(BlockListener.collisionBlock));
+            adaptedInputs.add(new ItemStack(Block.LOCKED_CHEST));
             MultiInputRecipe newRecipe = new MultiInputRecipe(recipe.getCopyOfOutputStack(), adaptedInputs);
             adjustedRecipes.add(newRecipe);
         }

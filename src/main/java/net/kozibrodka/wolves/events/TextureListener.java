@@ -136,8 +136,6 @@ public class TextureListener {
         conveyor_up_on = registerBlockTexture("block/conveyor_up_on");
         conveyor_down_on = registerBlockTexture("block/conveyor_down_on");
         BlockListener.blockOfGrates.specifyTextures(getBlockTexture("item/fcGrate"));
-        BlockListener.collisionBlock.specifyTextures(getBlockTexture("block/blank"));
-        BlockListener.obstructionBlock.specifyTextures(getBlockTexture("block/blank"));
         BlockListener.blockOfSteel.specifyTextures(getBlockTexture("block/steel"));
         BlockListener.automaticAnvil.specifyTextures(getBlockTexture(autoAnvil + "controller"), getBlockTexture(autoAnvil + "side"), getBlockTexture(autoAnvil + "side"));
         BlockListener.anvilFrame.specifyTextures(getBlockTexture(autoAnvil + "side"));

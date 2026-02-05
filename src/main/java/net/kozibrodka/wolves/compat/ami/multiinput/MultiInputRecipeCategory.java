@@ -9,6 +9,7 @@ import net.glasslauncher.mods.alwaysmoreitems.gui.DrawableHelper;
 import net.kozibrodka.wolves.compat.ami.ItemRenderUtil;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ItemListener;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -70,7 +71,7 @@ public class MultiInputRecipeCategory implements RecipeCategory {
                 stoked = true;
                 crucible = false;
                 break;
-            } else if (((ItemStack) recipeWrapper.getInputs().get(i)).isItemEqual(new ItemStack(BlockListener.collisionBlock))) {
+            } else if (((ItemStack) recipeWrapper.getInputs().get(i)).isItemEqual(new ItemStack(Block.LOCKED_CHEST))) {
                 stoked = true;
                 crucible = true;
                 break;
