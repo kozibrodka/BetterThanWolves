@@ -201,8 +201,6 @@ public class UnsortedUtils {
 
 //    public static void ServerPositionAllPlayerEntitiesOutsideOfLocation(Level var0, int var1, int var2, int var3)
 //    {
-//        // TODO: EntityPlayerMP.class
-//        // TODO: getEntitiesWithinAABB
 //        List var4 = var0.getEntities(ServerPlayer.class, Box.createButWasteMemory((double)var1, (double)var2, (double)var3, (double)var1 + 1.0D, (double)var2 + 1.0D, (double)var3 + 1.0D));
 //
 //        if (var4 != null && var4.size() > 0)

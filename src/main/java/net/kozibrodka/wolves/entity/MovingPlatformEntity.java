@@ -1,5 +1,7 @@
 package net.kozibrodka.wolves.entity;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.EntityListener;
 import net.kozibrodka.wolves.utils.ReplaceableBlockChecker;
@@ -16,10 +18,11 @@ import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.server.entity.EntitySpawnDataProvider;
 import net.modificationstation.stationapi.api.server.entity.HasTrackingParameters;
 import net.modificationstation.stationapi.api.util.Identifier;
+import net.modificationstation.stationapi.api.util.TriState;
 
 import java.util.List;
 
-@HasTrackingParameters(trackingDistance = 160, updatePeriod = 2)
+@HasTrackingParameters(trackingDistance = 160, updatePeriod = 1, sendVelocity = TriState.TRUE)
 public class MovingPlatformEntity extends Entity implements EntitySpawnDataProvider {
 
     public MovingPlatformEntity(World world) {
@@ -71,8 +74,16 @@ public class MovingPlatformEntity extends Entity implements EntitySpawnDataProvi
         return false;
     }
 
-    public Box getCollisionAgainstShape(Entity entity) {
-        return entity.boundingBox;
+    @Environment(EnvType.CLIENT)
+    @Override
+    public void setPositionAndAnglesAvoidEntities(double x, double y, double z, float pitch, float yaw, int interpolationSteps) {
+        this.setPosition(x, y, z);
+        this.setRotation(pitch, yaw);
+    }
+
+    @Override
+    public Box getCollisionAgainstShape(Entity other) {
+        return other.boundingBox;
     }
 
     public Box getBoundingBox() {
@@ -231,12 +242,14 @@ public class MovingPlatformEntity extends Entity implements EntitySpawnDataProvi
 
     private void PushEntity(Entity entity) {
         // if(true)return;
+        //TODO what happening here on server?
         double platformMaxY = boundingBox.maxY + 0.074999999999999997D;
         double entityMinY = entity.boundingBox.minY;
         if (entityMinY < platformMaxY) {
             if (entityMinY > platformMaxY - 0.25D) {
                 double entityYOffset = platformMaxY - entityMinY;
                 entity.setPosition(entity.x, entity.y + entityYOffset, entity.z);
+                System.out.println("MOVE");//TODO: pakiecik?
             } else if ((entity instanceof LivingEntity) && velocityY < 0.0D) {
                 double entityMaxY = entity.boundingBox.maxY;
                 double platformMinY = boundingBox.minY;
@@ -276,5 +289,10 @@ public class MovingPlatformEntity extends Entity implements EntitySpawnDataProvi
     @Override
     public Identifier getHandlerIdentifier() {
         return Identifier.of(EntityListener.NAMESPACE, "MovingPlatform");
+    }
+
+    @Override
+    public boolean syncTrackerAtSpawn() {
+        return true;
     }
 }

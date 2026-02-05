@@ -78,7 +78,7 @@ public class FCEntityTEST extends Entity implements EntitySpawnDataProvider {
     }
 
     @Override
-    public Box getCollisionAgainstShape(Entity other) { //getCollisionAgainstShape
+    public Box getCollisionAgainstShape(Entity other) {
         if (world.isRemote) {
             return null;
         }

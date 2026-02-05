@@ -16,7 +16,6 @@ public class WaterWheelItem extends TemplateItem {
         maxCount = 1;
     }
 
-
     public boolean useOnBlock(ItemStack itemStack, PlayerEntity playerEntity, World world, int x, int y, int z, int l) {
         int targetId = world.getBlockId(x, y, z);
         if (targetId == BlockListener.axleBlock.id && !world.isRemote) {
@@ -24,7 +23,6 @@ public class WaterWheelItem extends TemplateItem {
             if (axisAlignment != 0) {
                 boolean aligned = axisAlignment == 2;
                 if (WaterWheelEntity.validateArea(world, x, y, z, aligned)) {
-                    WaterWheelEntity.placeCollisionBlocks(world, x, y, z, aligned);
                     world.spawnEntity(new WaterWheelEntity(world, (float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F, aligned));
                     itemStack.count--;
                     return true;

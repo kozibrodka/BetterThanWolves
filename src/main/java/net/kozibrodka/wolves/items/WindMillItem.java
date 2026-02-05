@@ -10,14 +10,11 @@ import net.modificationstation.stationapi.api.template.item.TemplateItem;
 import net.modificationstation.stationapi.api.util.Identifier;
 
 public class WindMillItem extends TemplateItem {
+
     public WindMillItem(Identifier iItemID) {
         super(iItemID);
         maxCount = 1;
     }
-
-    /**
-     * Block and Entity Classes not implemented yet
-     */
 
     public boolean useOnBlock(ItemStack itemStack, PlayerEntity playerEntity, World world, int x, int y, int z, int l) {
         int targetId = world.getBlockId(x, y, z);
@@ -26,7 +23,6 @@ public class WindMillItem extends TemplateItem {
             if (axisAlignment != 0) {
                 boolean aligned = axisAlignment == 2;
                 if (WindMillEntity.validateArea(world, x, y, z, aligned)) {
-                    WindMillEntity.placeCollisionBlocks(world, x, y, z, aligned);
                     world.spawnEntity(new WindMillEntity(world, (float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F, aligned));
                     itemStack.count--;
                     return true;

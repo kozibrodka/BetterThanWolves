@@ -13,8 +13,6 @@ public class ConfigListener {
     public static Namespace NAMESPACE;
 
     //TODO EXTRA: Saw animated, Anvil gravity, PANELS/options
-    //TODO: NEW
-    //TODO: custom recipes xhmi, big tree mixin, some mixin so stoked fire deals dmg
 
 }
 

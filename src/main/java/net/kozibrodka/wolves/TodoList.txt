@@ -8,13 +8,10 @@ API improvements:
     - Add easy integration for other mods
 - Convert hopper filters to registries
 
-Compatibility:
-- Less intrusive tree mixin
-
 Game mechanics:
 - (DONE) Make wolf dumping rate depend on feeding
 - (DONE) Feature to stop wolves from dumping (they will not dump without excessive feeding)
-- Make stoked fire set entities on fire
+- (DONE) Make stoked fire set entities on fire
 - (DONE) Make Cement Render Correctly in Multiplayer - breaks if too much packets
 - Fix Multiplayer Entities - (currently working on)
 - Pickaxe from steel doesnt break ORES fast

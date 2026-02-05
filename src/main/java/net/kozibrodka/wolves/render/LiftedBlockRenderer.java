@@ -27,8 +27,8 @@ public class LiftedBlockRenderer extends EntityRenderer {
                        float f, float f1) {
         World world = entity.world;
         LiftedBlockEntity fcentityblockliftedbyplatform = (LiftedBlockEntity) entity;
-        int i = fcentityblockliftedbyplatform.blockId;
-        int j = fcentityblockliftedbyplatform.blockMetaData;
+        int i = fcentityblockliftedbyplatform.getLiftedId();
+        int j = fcentityblockliftedbyplatform.getLiftedMeta();
         Block block = Block.BLOCKS[i];
         if (block != null) {
             if (block instanceof RailBlock blockrail) {

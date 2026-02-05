@@ -1,5 +1,7 @@
 package net.kozibrodka.wolves.entity;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.kozibrodka.wolves.block.AnchorBlock;
 import net.kozibrodka.wolves.block.RopeBlock;
 import net.kozibrodka.wolves.block.entity.PulleyBlockEntity;
@@ -21,10 +23,11 @@ import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.server.entity.EntitySpawnDataProvider;
 import net.modificationstation.stationapi.api.server.entity.HasTrackingParameters;
 import net.modificationstation.stationapi.api.util.Identifier;
+import net.modificationstation.stationapi.api.util.TriState;
 
 import java.util.List;
 
-@HasTrackingParameters(trackingDistance = 160, updatePeriod = 2)
+@HasTrackingParameters(trackingDistance = 160, updatePeriod = 1, sendVelocity = TriState.TRUE)
 public class MovingAnchorEntity extends Entity implements EntitySpawnDataProvider {
 
     public MovingAnchorEntity(World world) {
@@ -78,8 +81,16 @@ public class MovingAnchorEntity extends Entity implements EntitySpawnDataProvide
         return false;
     }
 
-    public Box getCollisionAgainstShape(Entity entity) {
-        return entity.boundingBox;
+    @Environment(EnvType.CLIENT)
+    @Override
+    public void setPositionAndAnglesAvoidEntities(double x, double y, double z, float pitch, float yaw, int interpolationSteps) {
+        this.setPosition(x, y, z);
+        this.setRotation(pitch, yaw);
+    }
+
+    @Override
+    public Box getCollisionAgainstShape(Entity other) {
+        return other.boundingBox;
     }
 
     public Box getBoundingBox() {
@@ -326,5 +337,10 @@ public class MovingAnchorEntity extends Entity implements EntitySpawnDataProvide
     @Override
     public Identifier getHandlerIdentifier() {
         return Identifier.of(EntityListener.NAMESPACE, "MovingAnchor");
+    }
+
+    @Override
+    public boolean syncTrackerAtSpawn() {
+        return true;
     }
 }

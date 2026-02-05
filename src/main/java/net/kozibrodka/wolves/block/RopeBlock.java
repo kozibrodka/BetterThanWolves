@@ -17,6 +17,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.modificationstation.stationapi.api.client.model.block.BlockWithInventoryRenderer;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
 import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import net.modificationstation.stationapi.api.template.block.TemplateBlock;
@@ -26,7 +27,8 @@ import java.util.List;
 import java.util.Random;
 
 @EnvironmentInterface(value = EnvType.CLIENT, itf = BlockWithWorldRenderer.class)
-public class RopeBlock extends TemplateBlock implements BlockWithWorldRenderer {
+@EnvironmentInterface(value = EnvType.CLIENT, itf = BlockWithInventoryRenderer.class)
+public class RopeBlock extends TemplateBlock implements BlockWithWorldRenderer, BlockWithInventoryRenderer {
 
     public RopeBlock(Identifier iid) {
         super(iid, Material.PISTON_BREAKABLE);
@@ -125,5 +127,15 @@ public class RopeBlock extends TemplateBlock implements BlockWithWorldRenderer {
             CustomBlockRendering.SetOverrideBlockTexture(tileRenderer, -1);
         }
         return true;
+    }
+
+    @Override
+    public void renderInventory(BlockRenderManager tileRenderer, int meta) {
+        float f = 0.0625F;
+        float f1 = 0.0625F;
+        float f2 = 1.0F;
+        this.setBoundingBox(0.5F - f1, 0.0F, 0.5F - f, 0.5F + f1, f2, 0.5F + f);
+        CustomBlockRendering.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.rope);
+        setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
     }
 }

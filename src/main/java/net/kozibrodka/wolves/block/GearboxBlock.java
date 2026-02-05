@@ -139,7 +139,7 @@ public class GearboxBlock extends TemplateBlock implements MechanicalDevice, Rot
     }
 
     public void rotate(World world, int x, int y, int z, boolean reverse) {
-        System.out.println("METODA ROTATE W GEARBOX");
+//        System.out.println("METODA ROTATE W GEARBOX");
         int facing = getFacing(world, x, y, z);
         int newFacing = UnsortedUtils.RotateFacingAroundJ(facing, reverse);
         if (newFacing != facing) {
