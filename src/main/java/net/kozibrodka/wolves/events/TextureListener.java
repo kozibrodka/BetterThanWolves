@@ -142,8 +142,8 @@ public class TextureListener {
         BlockListener.automaticAnvil.specifyTextures(getBlockTexture(autoAnvil + "controller"), getBlockTexture(autoAnvil + "side"), getBlockTexture(autoAnvil + "side"));
         BlockListener.anvilFrame.specifyTextures(getBlockTexture(autoAnvil + "side"));
         BlockListener.machinePowerInput.specifyTextures(getBlockTexture(autoAnvil + "power_input"), getBlockTexture(autoAnvil + "side"), getBlockTexture(autoAnvil + "side"));
-        BlockListener.inputBus.specifyTextures(getBlockTexture(autoAnvil + "item_input"), getBlockTexture(autoAnvil + "side"), getBlockTexture(autoAnvil + "side"));
-        BlockListener.outputBus.specifyTextures(getBlockTexture(autoAnvil + "side"), getBlockTexture(autoAnvil + "side"), getBlockTexture(autoAnvil + "item_output"));
+        BlockListener.inputBus.specifyTextures(getBlockTexture(autoAnvil + "item_input"), getBlockTexture(autoAnvil + "input_bus_side"), getBlockTexture(autoAnvil + "side"));
+        BlockListener.outputBus.specifyTextures(getBlockTexture(autoAnvil + "side"), getBlockTexture(autoAnvil + "output_bus_side"), getBlockTexture(autoAnvil + "item_output"));
 
         ItemListener.bucketCement.setTexture(Identifier.of(NAMESPACE, "item/bucketCement"));
         ItemListener.soulFilter.setTexture(Identifier.of(NAMESPACE, "item/soulFilter"));
