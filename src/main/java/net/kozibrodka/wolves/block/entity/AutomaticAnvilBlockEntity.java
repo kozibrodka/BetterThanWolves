@@ -25,7 +25,7 @@ public class AutomaticAnvilBlockEntity extends BlockEntity implements Inventory 
 
     private final ItemStack[] anvilItemStacks = new ItemStack[INVENTORY_SIZE];
 
-    private int craftingProgress;
+    public int craftingProgress;
     private int checkTimer;
 
     @Override

@@ -1,14 +1,18 @@
 package net.kozibrodka.wolves.container;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.kozibrodka.wolves.block.entity.AutomaticAnvilBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
 
 public class AutomaticAnvilScreenHandler extends ScreenHandler {
     private final AutomaticAnvilBlockEntity automaticAnvilBlockEntity;
+    private int craftingProgress;
 
     public AutomaticAnvilScreenHandler(PlayerInventory playerInventory, AutomaticAnvilBlockEntity automaticAnvilBlockEntity) {
         this.automaticAnvilBlockEntity = automaticAnvilBlockEntity;
@@ -35,6 +39,7 @@ public class AutomaticAnvilScreenHandler extends ScreenHandler {
         return automaticAnvilBlockEntity.canPlayerUse(player);
     }
 
+    @Override
     public ItemStack quickMove(int i) {
         ItemStack ItemInstance = null;
         Slot slot = (Slot) slots.get(i);
@@ -62,5 +67,25 @@ public class AutomaticAnvilScreenHandler extends ScreenHandler {
             }
         }
         return ItemInstance;
+    }
+
+    public void sendContentUpdates() {
+        super.sendContentUpdates();
+        for (Object listener : this.listeners) {
+            ScreenHandlerListener screenHandlerListener = (ScreenHandlerListener) listener;
+            if (craftingProgress != automaticAnvilBlockEntity.craftingProgress) {
+                screenHandlerListener.onPropertyUpdate(this, 0, automaticAnvilBlockEntity.craftingProgress);
+            }
+        }
+
+        craftingProgress = automaticAnvilBlockEntity.craftingProgress;
+    }
+
+    @Override
+    @Environment(EnvType.CLIENT)
+    public void setProperty(int id, int value) {
+        if (id == 0) {
+            automaticAnvilBlockEntity.craftingProgress = value;
+        }
     }
 }
