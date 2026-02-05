@@ -49,6 +49,7 @@ item.wolves.soul_filter.name=Soul Filter
 item.wolves.nothing.name=Nothing
 item.wolves.wicker_weaving.name=Wicker Weaving
 item.wolves.wicker_sheet.name=Wicker Sheet
+item.wolves.weight.name=Weight
 
 tile.wolves.anvil.name=Anvil
 tile.wolves.light_bulb_off.name=Light Block
@@ -109,6 +110,14 @@ tile.wolves.block_of_grates.name=Block of Grates
 tile.wolves.collision_block.name=Collision Block
 tile.wolves.obstruction_block.name=Obstruction Block
 tile.wolves.block_of_steel.name=Block of Soulforged Steel
+tile.wolves.dropper.name=Dropper
+tile.wolves.conveyor.name=Conveyor
+tile.wolves.conveyor_extender.name=Conveyor Extender
+tile.wolves.automatic_anvil.name=Automatic Anvil
+tile.wolves.anvil_frame.name=Anvil Frame
+tile.wolves.machine_power_input.name=Machine Power Input
+tile.wolves.input_bus.name=Input Bus
+tile.wolves.output_bus.name=Output Bus
 
 description.@.hemp=Obtained from harvesting hemp crops. Hemp crops can be grown 2 blocks high for efficient farming.
 description.@.hemp_seeds=Rarely dropped by tall grass. Planted on farmland to grow hemp crops.
@@ -117,3 +126,5 @@ description.@.axle=Component for transferring rotational force. Axles can be bui
 description.@.gear_box=Component for distributing rotational force. 1 side acts as an input, the other 5 are outputs.
 description.@.wicker_sheet=Created by weaving the "Wicker Weaving" item for long enough. Only obtainable if "Wicker Weaving" config option is enabled.
 description.@.wicker_weaving=Turns into "Wicker Sheet" if used long enough. A durability bar will go down until the wicker is fully woven. Only obtainable if "Wicker Weaving" config option is enabled.
+
+multiblock.wolves.automatic_anvil=Automatic Anvil

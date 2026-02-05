@@ -2,18 +2,14 @@ package net.kozibrodka.wolves.block;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.block.entity.MillStoneBlockEntity;
 import net.kozibrodka.wolves.container.MillStoneScreenHandler;
+import net.kozibrodka.wolves.events.BlockEntityListener;
 import net.kozibrodka.wolves.events.BlockListener;
-import net.kozibrodka.wolves.events.ScreenHandlerListener;
 import net.kozibrodka.wolves.events.TextureListener;
-import net.kozibrodka.wolves.network.ScreenPacket;
 import net.kozibrodka.wolves.network.SoundPacket;
-import net.kozibrodka.wolves.utils.BlockPosition;
 import net.kozibrodka.wolves.utils.InventoryHandler;
 import net.kozibrodka.wolves.utils.MechanicalDevice;
-import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
@@ -58,51 +54,14 @@ public class MillStoneBlock extends TemplateBlockWithEntity
         world.scheduleBlockUpdate(i, j, k, BlockListener.millStone.id, getTickRate());
     }
 
-    public void neighborUpdate(World world, int i, int j, int k, int iid) {
-        boolean bReceivingPower = IsInputtingMechanicalPower(world, i, j, k);
-        if (IsBlockOn(world, i, j, k) != bReceivingPower) {
-            world.scheduleBlockUpdate(i, j, k, BlockListener.millStone.id, getTickRate());
-        }
-    }
-
-    public boolean onUse(World world, int i, int j, int k, PlayerEntity entityplayer) {
-        MillStoneBlockEntity tileEntityMillStone = (MillStoneBlockEntity) world.getBlockEntity(i, j, k);
-        ScreenHandlerListener.TempGuiX = i;
-        ScreenHandlerListener.TempGuiY = j;
-        ScreenHandlerListener.TempGuiZ = k;
-        if (world.isRemote) {
-            PacketHelper.send(new ScreenPacket("mill", 0, i, j, k));
-        }
-        GuiHelper.openGUI(entityplayer, Identifier.of("wolves:openMillStone"), tileEntityMillStone, new MillStoneScreenHandler(entityplayer.inventory, tileEntityMillStone));
+    public boolean onUse(World world, int x, int y, int z, PlayerEntity playerEntity) {
+        MillStoneBlockEntity millStoneBlockEntity = (MillStoneBlockEntity) world.getBlockEntity(x, y, z);
+        GuiHelper.openGUI(playerEntity, Identifier.of(BlockEntityListener.NAMESPACE, "openMillStone"), millStoneBlockEntity, new MillStoneScreenHandler(playerEntity.inventory, millStoneBlockEntity));
         return true;
     }
 
     protected BlockEntity createBlockEntity() {
         return new MillStoneBlockEntity();
-    }
-
-    public void onTick(World world, int i, int j, int k, Random random) {
-        boolean bReceivingPower = IsInputtingMechanicalPower(world, i, j, k);
-        boolean bOn = IsBlockOn(world, i, j, k);
-        if (bOn != bReceivingPower) {
-            if (bOn) {
-                SetBlockOn(world, i, j, k, false);
-            } else {
-                MillStoneBlockEntity tileEntityMillStone = (MillStoneBlockEntity) world.getBlockEntity(i, j, k);
-                if (tileEntityMillStone.IsWholeCompanionCubeNextToBeProcessed()) {
-                    world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "mob.wolf.hurt", 5F, (world.random.nextFloat() - world.random.nextFloat()) * 0.2F + 1.0F);
-                    if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                        voicePacket(world, "mob.wolf.hurt", i, j, k, 5F, (world.random.nextFloat() - world.random.nextFloat()) * 0.2F + 1.0F);
-                    }
-                }
-                world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "random.explode", 0.2F, 1.25F);
-                if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                    voicePacket(world, "random.explode", i, j, k, 0.2F, 1.25F);
-                }
-                EmitMillingParticles(world, i, j, k, random);
-                SetBlockOn(world, i, j, k, true);
-            }
-        }
     }
 
     @Environment(EnvType.SERVER)
@@ -114,6 +73,46 @@ public class MillStoneBlock extends TemplateBlockWithEntity
                 PacketHelper.sendTo(player1, new SoundPacket(name, x, y, z, g, h));
             }
         }
+    }
+
+    @Override
+    public void neighborUpdate(World world, int x, int y, int z, int id) {
+        if (isPoweredHandCrank(world, x + 1, y, z)) {
+            powerManually(world, x, y, z);
+        } else if (isPoweredHandCrank(world, x - 1, y, z)) {
+            powerManually(world, x, y, z);
+        } else if (isPoweredHandCrank(world, x, y, z + 1)) {
+            powerManually(world, x, y, z);
+        } else if (isPoweredHandCrank(world, x, y, z - 1)) {
+            powerManually(world, x, y, z);
+        } else {
+            stopPoweringManually(world, x, y, z);
+        }
+    }
+
+    private boolean isPoweredHandCrank(World world, int x, int y, int z) {
+        return world.getBlockId(x, y, z) == BlockListener.handCrank.id && world.getBlockMeta(x, y, z) > 0;
+    }
+
+    private void powerManually(World world, int x, int y, int z) {
+        MillStoneBlockEntity millStoneBlockEntity = (MillStoneBlockEntity) world.getBlockEntity(x, y, z);
+        if (millStoneBlockEntity == null) {
+            return;
+        }
+        Random random = new Random();
+        EmitMillingParticles(world, x, y, z, random);
+        if (random.nextInt(5) == 0) {
+            world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.explode", 0.1F + random.nextFloat() * 0.1F, 1.25F + random.nextFloat() * 0.1F);
+        }
+        millStoneBlockEntity.powerManually();
+    }
+
+    private void stopPoweringManually(World world, int x, int y, int z) {
+        MillStoneBlockEntity millStoneBlockEntity = (MillStoneBlockEntity) world.getBlockEntity(x, y, z);
+        if (millStoneBlockEntity == null) {
+            return;
+        }
+        millStoneBlockEntity.stopPoweringManually();
     }
 
     public void randomDisplayTick(World world, int i, int j, int k, Random random) {
@@ -154,47 +153,32 @@ public class MillStoneBlock extends TemplateBlockWithEntity
 
     }
 
-    public boolean CanOutputMechanicalPower() {
+    public boolean canOutputMechanicalPower() {
         return false;
     }
 
-    public boolean CanInputMechanicalPower() {
+    public boolean canInputMechanicalPower() {
         return true;
     }
 
-    public boolean IsInputtingMechanicalPower(World world, int i, int j, int k) {
-        for (int iFacing = 0; iFacing <= 1; iFacing++) {
-            BlockPosition targetPos = new BlockPosition(i, j, k);
-            targetPos.AddFacingAsOffset(iFacing);
-            int blockId = world.getBlockId(targetPos.i, targetPos.j, targetPos.k);
-            if (blockId != BlockListener.axleBlock.id) {
-                continue;
-            }
-            AxleBlock axleBlock = (AxleBlock) BlockListener.axleBlock;
-            if (axleBlock.IsAxleOrientedTowardsFacing(world, targetPos.i, targetPos.j, targetPos.k, iFacing) && axleBlock.GetPowerLevel(world, targetPos.i, targetPos.j, targetPos.k) > 0) {
-                return true;
-            }
-        }
-
-        for (int iFacing = 2; iFacing <= 5; iFacing++) {
-            BlockPosition targetPos = new BlockPosition(i, j, k);
-            targetPos.AddFacingAsOffset(iFacing);
-            int blockId = world.getBlockId(targetPos.i, targetPos.j, targetPos.k);
-            if (blockId != BlockListener.handCrank.id) {
-                continue;
-            }
-            Block targetBlock = Block.BLOCKS[blockId];
-            MechanicalDevice device = (MechanicalDevice) targetBlock;
-            if (device.IsOutputtingMechanicalPower(world, targetPos.i, targetPos.j, targetPos.k)) {
-                return true;
-            }
-        }
-
-        return false;
+    @Override
+    public void powerMachine(World world, int x, int y, int z, int side) {
+        SetBlockOn(world, x, y, z, true);
     }
 
-    public boolean IsOutputtingMechanicalPower(World world, int i, int j, int l) {
-        return false;
+    @Override
+    public void unpowerMachine(World world, int x, int y, int z, int side) {
+        SetBlockOn(world, x, y, z, false);
+    }
+
+    @Override
+    public boolean isMachinePowered(World world, int x, int y, int z) {
+        return IsBlockOn(world, x, y, z);
+    }
+
+    @Override
+    public boolean canInputMechanicalPower(World world, int x, int y, int z, int side) {
+        return side < 2;
     }
 
     private static final int iMillStoneTickRate = 10;

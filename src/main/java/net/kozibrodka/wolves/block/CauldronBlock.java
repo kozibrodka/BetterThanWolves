@@ -10,12 +10,12 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.block.entity.CauldronBlockEntity;
 import net.kozibrodka.wolves.container.CauldronScreenHandler;
+import net.kozibrodka.wolves.events.BlockEntityListener;
 import net.kozibrodka.wolves.events.BlockListener;
-import net.kozibrodka.wolves.events.ScreenHandlerListener;
 import net.kozibrodka.wolves.events.TextureListener;
-import net.kozibrodka.wolves.network.ScreenPacket;
 import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.utils.InventoryHandler;
+import net.kozibrodka.wolves.utils.MechanicalDevice;
 import net.kozibrodka.wolves.utils.RotatableBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
@@ -37,8 +37,7 @@ import java.util.List;
 import java.util.Random;
 
 
-public class CauldronBlock extends TemplateBlockWithEntity
-        implements RotatableBlock {
+public class CauldronBlock extends TemplateBlockWithEntity implements RotatableBlock, MechanicalDevice {
 
     public CauldronBlock(Identifier iid) {
         super(iid, Material.METAL);
@@ -55,26 +54,84 @@ public class CauldronBlock extends TemplateBlockWithEntity
         super.onBreak(world, i, j, k);
     }
 
-    public int getTexture(int side) {
-        if (side == 1) {
+    public int getTexture(int side, int meta) {
+        if (meta == 0 && side == 1 || meta > 0 && side == meta) {
             return TextureListener.cauldron_top;
         }
-        if (side == 0) {
-            return TextureListener.cauldron_bottom;
-        } else {
-            return TextureListener.cauldron_side;
+        int backSide = meta;
+        backSide = switch (backSide) {
+            case 2 -> 3;
+            case 3 -> 2;
+            case 4 -> 5;
+            case 5 -> 4;
+            default -> backSide;
+        };
+        switch (meta) {
+            case 2:
+                if (side == backSide) {
+                    return TextureListener.cauldron_bottom;
+                }
+                if (side == 4) {
+                    return TextureListener.cauldron_side_left;
+                }
+                if (side == 5) {
+                    return TextureListener.cauldron_side_right;
+                }
+                return TextureListener.cauldron_side;
+            case 3:
+                if (side == backSide) {
+                    return TextureListener.cauldron_bottom;
+                }
+                if (side < 2) {
+                    return TextureListener.cauldron_side_down;
+                }
+                if (side == 4) {
+                    return TextureListener.cauldron_side_right;
+                }
+                if (side == 5) {
+                    return TextureListener.cauldron_side_left;
+                }
+                return TextureListener.cauldron_side;
+            case 4:
+                if (side == backSide) {
+                    return TextureListener.cauldron_bottom;
+                }
+                if (side < 2) {
+                    return TextureListener.cauldron_side_left;
+                }
+                if (side == 2) {
+                    return TextureListener.cauldron_side_right;
+                }
+                if (side == 3) {
+                    return TextureListener.cauldron_side_left;
+                }
+                return TextureListener.cauldron_side;
+            case 5:
+                if (side == backSide) {
+                    return TextureListener.cauldron_bottom;
+                }
+                if (side < 2) {
+                    return TextureListener.cauldron_side_right;
+                }
+                if (side == 2) {
+                    return TextureListener.cauldron_side_left;
+                }
+                if (side == 3) {
+                    return TextureListener.cauldron_side_right;
+                }
+                return TextureListener.cauldron_side;
+            default:
+                if (side == 0) {
+                    return TextureListener.cauldron_bottom;
+                } else {
+                    return TextureListener.cauldron_side;
+                }
         }
     }
 
-    public boolean onUse(World world, int i, int j, int k, PlayerEntity entityPlayer) {
-        CauldronBlockEntity tileentitycauldron = (CauldronBlockEntity) world.getBlockEntity(i, j, k);
-        ScreenHandlerListener.TempGuiX = i;
-        ScreenHandlerListener.TempGuiY = j;
-        ScreenHandlerListener.TempGuiZ = k;
-        if (world.isRemote) {
-            PacketHelper.send(new ScreenPacket("cauldron", 0, i, j, k));
-        }
-        GuiHelper.openGUI(entityPlayer, Identifier.of("wolves:openCauldron"), tileentitycauldron, new CauldronScreenHandler(entityPlayer.inventory, tileentitycauldron));
+    public boolean onUse(World world, int x, int y, int z, PlayerEntity playerEntity) {
+        CauldronBlockEntity cauldronBlockEntity = (CauldronBlockEntity) world.getBlockEntity(x, y, z);
+        GuiHelper.openGUI(playerEntity, Identifier.of(BlockEntityListener.NAMESPACE, "openCauldron"), cauldronBlockEntity, new CauldronScreenHandler(playerEntity.inventory, cauldronBlockEntity));
         return true;
     }
 
@@ -86,41 +143,55 @@ public class CauldronBlock extends TemplateBlockWithEntity
         return Box.createCached(i, j, k, i + 1, (double) j + 0.99000000953674316D, (double) k + 1.0D);
     }
 
-    public void randomDisplayTick(World world, int i, int j, int k, Random random) {
-        if (GetFireUnderState(world, i, j, k) > 0) {
+    public void randomDisplayTick(World world, int x, int y, int z, Random random) {
+        if (getFireHeat(world, x, y, z) > 0) {
             for (int counter = 0; counter < 5; counter++) {
-                float smokeX = (float) i + random.nextFloat();
-                float smokeY = (float) j + random.nextFloat() * 0.5F + 1.0F;
-                float smokeZ = (float) k + random.nextFloat();
+                float smokeX = (float) x + random.nextFloat();
+                float smokeY = (float) y + random.nextFloat() * 0.5F + 1.0F;
+                float smokeZ = (float) z + random.nextFloat();
                 world.addParticle("smoke", smokeX, smokeY, smokeZ, 0.0D, 0.0D, 0.0D);
             }
 
         }
     }
 
-    public void onEntityCollision(World world, int i, int j, int k, Entity entity) {
+    public int getFireHeat(World world, int x, int y, int z) {
+        int belowId = world.getBlockId(x, y - 1, z);
+        if (belowId == Block.FIRE.id) {
+            return 1;
+        }
+        if (belowId == BlockListener.stokedFire.id) {
+            return 2;
+        }
+        return 0;
+    }
+
+    public void onEntityCollision(World world, int x, int y, int z, Entity entity) {
+        if (world.getBlockMeta(x, y, z) != 0) {
+            return;
+        }
         List collisionList = null;
-        collisionList = world.collectEntitiesByClass(ItemEntity.class, Box.createCached((float) i, (double) (float) j + 0.99000000953674316D, (float) k, (float) (i + 1), (double) (float) j + 0.99000000953674316D + 0.05000000074505806D, (float) (k + 1)));
+        collisionList = world.collectEntitiesByClass(ItemEntity.class, Box.createCached((float) x, (double) (float) y + 0.99000000953674316D, (float) z, (float) (x + 1), (double) (float) y + 0.99000000953674316D + 0.05000000074505806D, (float) (z + 1)));
         if (collisionList != null && collisionList.size() > 0) {
-            CauldronBlockEntity tileEntityCauldron = (CauldronBlockEntity) world.getBlockEntity(i, j, k);
+            CauldronBlockEntity tileEntityCauldron = (CauldronBlockEntity) world.getBlockEntity(x, y, z);
             for (int listIndex = 0; listIndex < collisionList.size(); listIndex++) {
                 ItemEntity targetEntityItem = (ItemEntity) collisionList.get(listIndex);
                 if (targetEntityItem.dead) {
                     continue;
                 }
                 if (InventoryHandler.addItemInstanceToInventory(tileEntityCauldron, targetEntityItem.stack)) {
-                    world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "random.pop", 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                    world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.pop", 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                     if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                        voicePacket(world, "random.pop", i, j, k, 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                        voicePacket(world, "random.pop", x, y, z, 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                     }
                     targetEntityItem.markDead();
                     continue;
                 }
-                int iBlockAboveID = world.getBlockId(i, j + 1, k);
+                int iBlockAboveID = world.getBlockId(x, y + 1, z);
                 if (iBlockAboveID != Block.FLOWING_WATER.id && iBlockAboveID != Block.WATER.id) {
                     continue;
                 }
-                double fFullBoxTop = (double) j + 1.05D;
+                double fFullBoxTop = (double) y + 1.05D;
                 if (targetEntityItem.boundingBox.minY < fFullBoxTop) {
                     double offset = fFullBoxTop - targetEntityItem.boundingBox.minY;
                     targetEntityItem.setPosition(targetEntityItem.x, targetEntityItem.y + offset, targetEntityItem.z);
@@ -149,52 +220,70 @@ public class CauldronBlock extends TemplateBlockWithEntity
         ValidateFireUnderState(world, i, j, k);
     }
 
-    public int GetFacing(BlockView iBlockAccess, int i, int j, int l) {
+    public int getFacing(BlockView iBlockAccess, int i, int j, int l) {
         return 0;
     }
 
-    public void SetFacing(World world1, int l, int i1, int j1, int k1) {
+    public void setFacing(World world1, int l, int i1, int j1, int k1) {
     }
 
-    public boolean CanRotate(BlockView iBlockAccess, int i, int j, int l) {
+    public boolean canRotate(BlockView iBlockAccess, int i, int j, int l) {
         return false;
     }
 
-    public boolean CanTransmitRotation(BlockView iBlockAccess, int i, int j, int l) {
+    public boolean canTransmitRotation(BlockView iBlockAccess, int i, int j, int l) {
         return true;
     }
 
-    public void Rotate(World world1, int l, int i1, int j1, boolean flag) {
+    public void rotate(World world1, int l, int i1, int j1, boolean flag) {
     }
 
-    public int GetFireUnderState(BlockView iBlockAccess, int i, int j, int k) {
-        return iBlockAccess.getBlockMeta(i, j, k) & 3;
-    }
-
-    private void SetFireUnderState(World world, int i, int j, int k, int iState) {
-        int iMetaData = world.getBlockMeta(i, j, k) & -4;
-        iMetaData |= iState & 3;
-        world.setBlockMeta(i, j, k, iMetaData);
-        world.blockUpdateEvent(i, j, k);
-    }
-
-    private void ValidateFireUnderState(World world, int i, int j, int k) {
-        int iOldState = GetFireUnderState(world, i, j, k);
-        int iNewState = 0;
-        if (world.getBlockId(i, j - 1, k) == Block.FIRE.id) {
-            iNewState = 1;
-        } else if (world.getBlockId(i, j - 1, k) == BlockListener.stokedFire.id) {
-            iNewState = 2;
-        }
-        if (iNewState != iOldState) {
-            SetFireUnderState(world, i, j, k, iNewState);
-            CauldronBlockEntity tileEntityCauldron = (CauldronBlockEntity) world.getBlockEntity(i, j, k);
-            tileEntityCauldron.NotifyOfChangeInFireUnder(iNewState);
-        }
+    private void ValidateFireUnderState(World world, int x, int y, int z) {
+        int newFireState = getFireHeat(world, x, y, z);
+        CauldronBlockEntity cauldronBlockEntity = (CauldronBlockEntity) world.getBlockEntity(x, y, z);
+        cauldronBlockEntity.NotifyOfChangeInFireUnder(newFireState);
     }
 
     public final int cauldronTopTextureIndex = 17;
     public final int cauldronSideTextureIndex = 18;
     public final int cauldronBottomTextureIndex = 19;
     public static final double dCauldronCollisionBoxHeight = 0.99000000953674316D;
+
+    @Override
+    public boolean canOutputMechanicalPower() {
+        return false;
+    }
+
+    @Override
+    public boolean canInputMechanicalPower() {
+        return true;
+    }
+
+    @Override
+    public void powerMachine(World world, int x, int y, int z, int side) {
+        int rotation = side;
+        rotation = switch (rotation) {
+            case 2 -> 5;
+            case 3 -> 4;
+            case 4 -> 2;
+            case 5 -> 3;
+            default -> rotation;
+        };
+        world.setBlockMeta(x, y, z, rotation);
+    }
+
+    @Override
+    public void unpowerMachine(World world, int x, int y, int z, int side) {
+        world.setBlockMeta(x, y, z, 0);
+    }
+
+    @Override
+    public boolean isMachinePowered(World world, int x, int y, int z) {
+        return world.getBlockMeta(x, y, z) > 1;
+    }
+
+    @Override
+    public boolean canInputMechanicalPower(World world, int x, int y, int z, int side) {
+        return side > 1;
+    }
 }

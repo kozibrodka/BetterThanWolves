@@ -5,35 +5,38 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
 
 
 public class PulleyScreenHandler extends ScreenHandler {
+    private final PulleyBlockEntity pulleyBlockEntity;
+    private boolean powered;
 
-    public PulleyScreenHandler(Inventory playerinventory, PulleyBlockEntity tileEntityPulley) {
-        localTileEntityPulley = tileEntityPulley;
+    public PulleyScreenHandler(Inventory inventory, PulleyBlockEntity pulleyBlockEntity) {
+        this.pulleyBlockEntity = pulleyBlockEntity;
         for (int iRow = 0; iRow < 2; iRow++) {
             for (int iColumn = 0; iColumn < 1; iColumn++) {
-                addSlot(new Slot(tileEntityPulley, iColumn + iRow, 8 + (iColumn + 4) * 18, 43 + iRow * 18));
+                addSlot(new Slot(pulleyBlockEntity, iColumn + iRow, 8 + (iColumn + 4) * 18, 43 + iRow * 18));
             }
 
         }
 
         for (int iRow = 0; iRow < 3; iRow++) {
             for (int iColumn = 0; iColumn < 9; iColumn++) {
-                addSlot(new Slot(playerinventory, iColumn + iRow * 9 + 9, 8 + iColumn * 18, 93 + iRow * 18));
+                addSlot(new Slot(inventory, iColumn + iRow * 9 + 9, 8 + iColumn * 18, 93 + iRow * 18));
             }
 
         }
 
         for (int iColumn = 0; iColumn < 9; iColumn++) {
-            addSlot(new Slot(playerinventory, iColumn, 8 + iColumn * 18, 151));
+            addSlot(new Slot(inventory, iColumn, 8 + iColumn * 18, 151));
         }
 
     }
 
     public boolean canUse(PlayerEntity entityplayer) {
-        return localTileEntityPulley.canPlayerUse(entityplayer);
+        return pulleyBlockEntity.canPlayerUse(entityplayer);
     }
 
     public ItemStack getStackInSlot(int iSlotIndex) {
@@ -99,8 +102,24 @@ public class PulleyScreenHandler extends ScreenHandler {
         }
     }
 
-    private final int iNumPulleySlotRows = 2;
-    private final int iNumPulleySlotColumns = 1;
-    private final int iNumPulleySlots = 2;
-    private final PulleyBlockEntity localTileEntityPulley;
+    @Override
+    public void sendContentUpdates() {
+        super.sendContentUpdates();
+        pulleyBlockEntity.updateMechanicallyPowered();
+        for (Object listener : this.listeners) {
+            ScreenHandlerListener screenHandlerListener = (ScreenHandlerListener) listener;
+            if (pulleyBlockEntity.poweredForClient() != powered) {
+                screenHandlerListener.onPropertyUpdate(this, 0, pulleyBlockEntity.poweredForClient() ? 1 : 0);
+            }
+        }
+
+        powered = pulleyBlockEntity.IsMechanicallyPowered();
+    }
+
+    @Override
+    public void setProperty(int id, int value) {
+        if (id == 0) {
+            pulleyBlockEntity.forcefullyChangePoweredStatus(value == 1);
+        }
+    }
 }

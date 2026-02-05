@@ -26,33 +26,31 @@ import net.modificationstation.stationapi.api.util.Identifier;
 import java.util.List;
 import java.util.Random;
 
-public class GearboxBlock extends TemplateBlock
-        implements MechanicalDevice, RotatableBlock {
+public class GearboxBlock extends TemplateBlock implements MechanicalDevice, RotatableBlock {
 
-    public GearboxBlock(Identifier iid) {
-        super(iid, Material.WOOD);
+    public GearboxBlock(Identifier identifier) {
+        super(identifier, Material.WOOD);
         setHardness(2.0F);
         setSoundGroup(WOOD_SOUND_GROUP);
-        setTickRandomly(true);
     }
 
-    public int getTextureId(BlockView iblockaccess, int i, int j, int k, int iSide) {
-        int iFacing = GetFacing(iblockaccess, i, j, k);
-        if (iSide == iFacing) {
+    public int getTextureId(BlockView blockView, int x, int y, int z, int side) {
+        int iFacing = getFacing(blockView, x, y, z);
+        if (side == iFacing) {
             return TextureListener.gearbox_front;
         }
-        BlockPosition sideBlockPos = new BlockPosition(i, j, k);
-        sideBlockPos.AddFacingAsOffset(iSide);
-        if (iblockaccess.getBlockId(sideBlockPos.i, sideBlockPos.j, sideBlockPos.k) == BlockListener.axleBlock.id && ((AxleBlock) BlockListener.axleBlock).IsAxleOrientedTowardsFacing(iblockaccess, sideBlockPos.i, sideBlockPos.j, sideBlockPos.k, iSide)
-                || iblockaccess.getBlockId(sideBlockPos.i, sideBlockPos.j, sideBlockPos.k) == BlockListener.nonCollidingAxleBlock.id && ((AxleBlock) BlockListener.nonCollidingAxleBlock).IsAxleOrientedTowardsFacing(iblockaccess, sideBlockPos.i, sideBlockPos.j, sideBlockPos.k, iSide)) {
+        BlockPosition sideBlockPos = new BlockPosition(x, y, z);
+        sideBlockPos.addFacingAsOffset(side);
+        if (blockView.getBlockId(sideBlockPos.x, sideBlockPos.y, sideBlockPos.z) == BlockListener.axleBlock.id && ((AxleBlock) BlockListener.axleBlock).isAxleOrientedTowardsFacing(blockView, sideBlockPos.x, sideBlockPos.y, sideBlockPos.z, side)
+                || blockView.getBlockId(sideBlockPos.x, sideBlockPos.y, sideBlockPos.z) == BlockListener.nonCollidingAxleBlock.id && ((AxleBlock) BlockListener.nonCollidingAxleBlock).isAxleOrientedTowardsFacing(blockView, sideBlockPos.x, sideBlockPos.y, sideBlockPos.z, side)) {
             return TextureListener.gearbox_output;
         } else {
             return TextureListener.gearbox_side;
         }
     }
 
-    public int getTexture(int iSide) {
-        if (iSide == 3) {
+    public int getTexture(int side) {
+        if (side == 3) {
             return TextureListener.gearbox_front;
         } else {
             return TextureListener.gearbox_side;
@@ -63,59 +61,39 @@ public class GearboxBlock extends TemplateBlock
         return 10;
     }
 
-    public void onPlaced(World world, int i, int j, int k, int iFacing) {
-        SetFacing(world, i, j, k, UnsortedUtils.getOppositeFacing(iFacing));
+    public void onPlaced(World world, int x, int y, int z, int facing) {
+        setFacing(world, x, y, z, UnsortedUtils.getOppositeFacing(facing));
     }
 
-    public void onPlaced(World world, int i, int j, int k, LivingEntity entityLiving) //onBlockPlacedBy
-    {
-        int iFacing = UnsortedUtils.ConvertPlacingEntityOrientationToBlockFacing(entityLiving);
+    public void onPlaced(World world, int x, int y, int z, LivingEntity livingEntity) {
+        int facing = UnsortedUtils.ConvertPlacingEntityOrientationToBlockFacing(livingEntity);
         if (ConfigListener.wolvesGlass.small_tweaks.faceGearBoxAwayFromPlayer) {
-            iFacing = UnsortedUtils.getOppositeFacing(iFacing);
+            facing = UnsortedUtils.getOppositeFacing(facing);
         }
-        SetFacing(world, i, j, k, iFacing);
+        setFacing(world, x, y, z, facing);
     }
 
-    public void onPlaced(World world, int i, int j, int k) {
-        super.onPlaced(world, i, j, k);
-        world.scheduleBlockUpdate(i, j, k, BlockListener.gearBox.id, getTickRate());
+    public void onBreak(World world, int x, int y, int z) {
+        if (isGearBoxOn(world, x, y, z)) {
+            setGearBoxOnState(world, x, y, z, false);
+            validateOutputs(world, x, y, z, false);
+        }
+        super.onBreak(world, x, y, z);
     }
 
-    public void onBreak(World world, int i, int j, int k) {
-        if (IsGearBoxOn(world, i, j, k)) {
-            SetGearBoxOnState(world, i, j, k, false);
-            ValidateOutputs(world, i, j, k, false);
+    @Override
+    public void neighborUpdate(World world, int x, int y, int z, int id) {
+        super.neighborUpdate(world, x, y, z, id);
+        boolean redstonePowered = isPoweredByRedstone(world, x, y, z);
+        boolean gearBoxOn = isGearBoxOn(world, x, y, z);
+        if (redstonePowered && gearBoxOn) {
+            setGearBoxOnState(world, x, y, z, false);
+            handleGearBoxDeactivation(world, x, y, z);
         }
-        super.onBreak(world, i, j, k);
     }
 
-    public void neighborUpdate(World world, int i, int j, int k, int iid) {
-        world.scheduleBlockUpdate(i, j, k, BlockListener.gearBox.id, getTickRate());
-    }
-
-    public void onTick(World world, int i, int j, int k, Random random) {
-        boolean bReceivingPower = IsInputtingMechanicalPower(world, i, j, k);
-        boolean bOn = IsGearBoxOn(world, i, j, k);
-        boolean bIsRedstonePowered = world.isStrongPowered(i, j, k) || world.isStrongPowered(i, j + 1, k);
-        if (bIsRedstonePowered) {
-            bReceivingPower = false;
-        }
-        if (bOn != bReceivingPower) {
-            if (bOn) {
-                SetGearBoxOnState(world, i, j, k, false);
-                ValidateOutputs(world, i, j, k, false);
-            } else {
-                world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "random.explode", 0.05F, 1.0F);
-                if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                    voicePacket(world, "random.explode", i, j, k, 0.05F, 1.0F);
-                }
-                EmitGearBoxParticles(world, i, j, k, random);
-                SetGearBoxOnState(world, i, j, k, true);
-                ValidateOutputs(world, i, j, k, true);
-            }
-        } else {
-            ValidateOutputs(world, i, j, k, false);
-        }
+    private boolean isPoweredByRedstone(World world, int x, int y, int z) {
+        return world.isEmittingRedstonePower(x, y, z) || world.isEmittingRedstonePower(x, y + 1, z);
     }
 
     @Environment(EnvType.SERVER)
@@ -129,150 +107,201 @@ public class GearboxBlock extends TemplateBlock
         }
     }
 
-    public void randomDisplayTick(World world, int i, int j, int k, Random random) {
-        if (IsGearBoxOn(world, i, j, k)) {
-            EmitGearBoxParticles(world, i, j, k, random);
+    public void randomDisplayTick(World world, int x, int y, int z, Random random) {
+        if (isGearBoxOn(world, x, y, z)) {
+            emitGearBoxParticles(world, x, y, z, random);
         }
     }
 
-    public int GetFacing(BlockView iBlockAccess, int i, int j, int k) {
-        return iBlockAccess.getBlockMeta(i, j, k) & 7;
+    public int getFacing(BlockView blockView, int x, int y, int z) {
+        return getFacingFromMeta(blockView.getBlockMeta(x, y, z));
     }
 
-    public void SetFacing(World world, int i, int j, int k, int iFacing) {
-        int iMetaData = world.getBlockMeta(i, j, k) & 8;
-        iMetaData |= iFacing;
-        world.setBlockMeta(i, j, k, iMetaData);
+    private int getFacingFromMeta(int meta) {
+        if (meta > 7) {
+            meta -= 8;
+        }
+        return meta;
     }
 
-    public boolean CanRotate(BlockView iBlockAccess, int i, int j, int l) {
+    public void setFacing(World world, int x, int y, int z, int facing) {
+        int metadata = world.getBlockMeta(x, y, z) & 8;
+        metadata |= facing;
+        world.setBlockMeta(x, y, z, metadata);
+    }
+
+    public boolean canRotate(BlockView blockView, int x, int y, int z) {
         return true;
     }
 
-    public boolean CanTransmitRotation(BlockView iBlockAccess, int i, int j, int l) {
+    public boolean canTransmitRotation(BlockView blockView, int x, int y, int z) {
         return true;
     }
 
-    public void Rotate(World world, int i, int j, int k, boolean bReverse) {
+    public void rotate(World world, int x, int y, int z, boolean reverse) {
         System.out.println("METODA ROTATE W GEARBOX");
-        int iFacing = GetFacing(world, i, j, k);
-        int iNewFacing = UnsortedUtils.RotateFacingAroundJ(iFacing, bReverse);
-        if (iNewFacing != iFacing) {
-            SetFacing(world, i, j, k, iNewFacing);
-            world.setBlocksDirty(i, j, k, i, j, k);
-            world.scheduleBlockUpdate(i, j, k, BlockListener.gearBox.id, getTickRate());
-            world.blockUpdate(i, j, k, BlockListener.gearBox.id);
+        int facing = getFacing(world, x, y, z);
+        int newFacing = UnsortedUtils.RotateFacingAroundJ(facing, reverse);
+        if (newFacing != facing) {
+            setFacing(world, x, y, z, newFacing);
+            world.setBlocksDirty(x, y, z, x, y, z);
+            world.scheduleBlockUpdate(x, y, z, BlockListener.gearBox.id, getTickRate());
+            world.blockUpdate(x, y, z, BlockListener.gearBox.id);
         }
-        UnsortedUtils.DestroyHorizontallyAttachedAxles(world, i, j, k);
+        UnsortedUtils.DestroyHorizontallyAttachedAxles(world, x, y, z);
     }
 
-    public boolean IsGearBoxOn(BlockView iBlockAccess, int i, int j, int k) {
-        return (iBlockAccess.getBlockMeta(i, j, k) & 8) > 0;
+    public boolean isGearBoxOn(BlockView blockView, int x, int y, int z) {
+        return (blockView.getBlockMeta(x, y, z) & 8) > 0;
     }
 
-    public void SetGearBoxOnState(World world, int i, int j, int k, boolean bOn) {
-        int iMetaData = world.getBlockMeta(i, j, k) & 7;
-        if (bOn) {
-            iMetaData |= 8;
+    public void setGearBoxOnState(World world, int x, int y, int z, boolean isOn) {
+        int metadata = world.getBlockMeta(x, y, z) & 7;
+        if (isOn) {
+            metadata |= 8;
         }
-        world.setBlockMeta(i, j, k, iMetaData);
-        world.blockUpdateEvent(i, j, k);
+        world.setBlockMeta(x, y, z, metadata);
+        world.blockUpdateEvent(x, y, z);
     }
 
-    void EmitGearBoxParticles(World world, int i, int j, int k, Random random) {
+    void emitGearBoxParticles(World world, int x, int y, int z, Random random) {
         for (int counter = 0; counter < 5; counter++) {
-            float smokeX = (float) i + random.nextFloat();
-            float smokeY = (float) j + random.nextFloat() * 0.5F + 1.0F;
-            float smokeZ = (float) k + random.nextFloat();
+            float smokeX = (float) x + random.nextFloat();
+            float smokeY = (float) y + random.nextFloat() * 0.5F + 1.0F;
+            float smokeZ = (float) z + random.nextFloat();
             world.addParticle("smoke", smokeX, smokeY, smokeZ, 0.0D, 0.0D, 0.0D);
         }
 
     }
 
-    private void ValidateOutputs(World world, int i, int j, int k, boolean bDestroyIfAlreadyPowered) {
-        int blockFacing = GetFacing(world, i, j, k);
-        boolean isOn = IsGearBoxOn(world, i, j, k);
-//        if(world.isServerSide){
-//            return;
-//        }
-        for (int facing = 0; facing <= 5; facing++) {
+    /**
+     * Checks each output of the gear box for attached axles
+     * @param world World the block is in.
+     * @param x x coordinate of the block.
+     * @param y y coordinate of the block.
+     * @param z z coordinate of the block.
+     * @param destroyIfAlreadyPowered Determines if already powered axles should be destroyed.
+     */
+    private void validateOutputs(World world, int x, int y, int z, boolean destroyIfAlreadyPowered) {
+        int blockFacing = getFacing(world, x, y, z);
+        boolean isGearBoxOn = isGearBoxOn(world, x, y, z);
+        if(world.isRemote) {
+            return;
+        }
+        for (int facing = 0; facing <= 5; facing++) { // Iterate through all sides
             if (facing == blockFacing) {
                 continue;
             }
-            BlockPosition tempPos = new BlockPosition(i, j, k);
-            tempPos.AddFacingAsOffset(facing);
-            if (world.getBlockId(tempPos.i, tempPos.j, tempPos.k) != BlockListener.axleBlock.id && world.getBlockId(tempPos.i, tempPos.j, tempPos.k) != BlockListener.nonCollidingAxleBlock.id) {
+            // Check if block is an axle
+            BlockPosition tempPos = new BlockPosition(x, y, z);
+            tempPos.addFacingAsOffset(facing);
+            if (world.getBlockId(tempPos.x, tempPos.y, tempPos.z) != BlockListener.axleBlock.id && world.getBlockId(tempPos.x, tempPos.y, tempPos.z) != BlockListener.nonCollidingAxleBlock.id) {
                 continue;
             }
+            // Convert non-colliding axles into normal axles
             AxleBlock axleBlock = (AxleBlock) BlockListener.axleBlock;
-            if (world.getBlockId(tempPos.i, tempPos.j, tempPos.k) == BlockListener.nonCollidingAxleBlock.id) {
+            if (world.getBlockId(tempPos.x, tempPos.y, tempPos.z) == BlockListener.nonCollidingAxleBlock.id) {
                 axleBlock = (AxleBlock) BlockListener.nonCollidingAxleBlock;
             }
-            if (!axleBlock.IsAxleOrientedTowardsFacing(world, tempPos.i, tempPos.j, tempPos.k, facing)) {
+            // Skip misaligned axles
+            if (!axleBlock.isAxleOrientedTowardsFacing(world, tempPos.x, tempPos.y, tempPos.z, facing)) {
                 continue;
             }
-            int tempPowerLevel = axleBlock.GetPowerLevel(world, tempPos.i, tempPos.j, tempPos.k);
-            if (tempPowerLevel > 0 && bDestroyIfAlreadyPowered) {
-                axleBlock.BreakAxle(world, tempPos.i, tempPos.j, tempPos.k);
+            // Check if axle is already powered
+            int tempPowerLevel = axleBlock.getPowerLevel(world, tempPos.x, tempPos.y, tempPos.z);
+            if (tempPowerLevel > 0 && destroyIfAlreadyPowered) {
+                axleBlock.breakAxle(world, tempPos.x, tempPos.y, tempPos.z);
                 continue;
             }
-            if (isOn) {
+            // Activate axle
+            if (isGearBoxOn) {
                 if (tempPowerLevel != 3) {
-                    axleBlock.SetPowerLevel(world, tempPos.i, tempPos.j, tempPos.k, 3);
+                    axleBlock.setPowerLevel(world, tempPos.x, tempPos.y, tempPos.z, 3);
                 }
                 continue;
             }
+            // Deactivate axle
             if (tempPowerLevel != 0) {
-                axleBlock.SetPowerLevel(world, tempPos.i, tempPos.j, tempPos.k, 0);
+                axleBlock.setPowerLevel(world, tempPos.x, tempPos.y, tempPos.z, 0);
             }
-//            world.blockUpdateEvent(tempPos.i, tempPos.j, tempPos.k);
         }
 
     }
 
-    public void Overpower(World world, int i, int j, int k) {
-        boolean bIsRedstonePowered = world.isStrongPowered(i, j, k) || world.isStrongPowered(i, j + 1, k);
-        if (!bIsRedstonePowered) {
-            BreakGearBox(world, i, j, k);
+    public void overpower(World world, int x, int y, int z) {
+        boolean isRedstonePowered = world.isStrongPowered(x, y, z) || world.canTransferPower(x, y + 1, z);
+        if (!isRedstonePowered) {
+            breakGearBox(world, x, y, z);
         }
     }
 
-    public void BreakGearBox(World world, int i, int j, int k) {
-        for (int iTemp = 0; iTemp < 4; iTemp++) {
-            UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, Block.PLANKS.asItem().id, 0);
+    public void breakGearBox(World world, int x, int y, int z) {
+        for (int drops = 0; drops < 4; drops++) {
+            UnsortedUtils.EjectSingleItemWithRandomOffset(world, x, y, z, Block.PLANKS.asItem().id, 0);
         }
 
-        for (int iTemp = 0; iTemp < 3; iTemp++) {
-            UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, ItemListener.gear.id, 0);
+        for (int drops = 0; drops < 3; drops++) {
+            UnsortedUtils.EjectSingleItemWithRandomOffset(world, x, y, z, ItemListener.gear.id, 0);
         }
 
-        UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, Item.REDSTONE.id, 0);
-        world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "random.explode", 0.2F, 1.25F);
+        UnsortedUtils.EjectSingleItemWithRandomOffset(world, x, y, z, Item.REDSTONE.id, 0);
+        world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.explode", 0.2F, 1.25F);
         if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-            voicePacket(world, "random.explode", i, j, k, 0.05F, 1.0F);
+            voicePacket(world, "random.explode", x, y, z, 0.05F, 1.0F);
         }
-        world.setBlock(i, j, k, 0);
+        world.setBlock(x, y, z, 0);
     }
 
-    public boolean CanOutputMechanicalPower() {
+    public boolean canOutputMechanicalPower() {
         return true;
     }
 
-    public boolean CanInputMechanicalPower() {
+    public boolean canInputMechanicalPower() {
         return true;
     }
 
-    public boolean IsInputtingMechanicalPower(World world, int i, int j, int k) {
-        int iFacing = GetFacing(world, i, j, k);
-        BlockPosition targetBlockPos = new BlockPosition(i, j, k);
-        targetBlockPos.AddFacingAsOffset(iFacing);
-        int iTargetid = world.getBlockId(targetBlockPos.i, targetBlockPos.j, targetBlockPos.k);
-        return iTargetid == BlockListener.axleBlock.id && ((AxleBlock) BlockListener.axleBlock).IsAxleOrientedTowardsFacing(world, targetBlockPos.i, targetBlockPos.j, targetBlockPos.k, iFacing) && ((AxleBlock) BlockListener.axleBlock).GetPowerLevel(world, targetBlockPos.i, targetBlockPos.j, targetBlockPos.k) > 0
-                || iTargetid == BlockListener.nonCollidingAxleBlock.id && ((AxleBlock) BlockListener.nonCollidingAxleBlock).IsAxleOrientedTowardsFacing(world, targetBlockPos.i, targetBlockPos.j, targetBlockPos.k, iFacing) && ((AxleBlock) BlockListener.nonCollidingAxleBlock).GetPowerLevel(world, targetBlockPos.i, targetBlockPos.j, targetBlockPos.k) > 0;
+    @Override
+    public boolean canInputMechanicalPower(World world, int x, int y, int z, int side) {
+        if (isPoweredByRedstone(world, x, y, z)) {
+            return false;
+        }
+        return getFacing(world, x, y, z) == side;
     }
 
-    public boolean IsOutputtingMechanicalPower(World world, int i, int j, int k) {
-        return IsGearBoxOn(world, i, j, k);
+    @Override
+    public boolean isOutputtingMechanicalPower(World world, int x, int y, int z, int side) {
+        return isGearBoxOn(world, x, y, z) && getFacing(world, x, y, z) != side;
     }
 
+    @Override
+    public void powerMachine(World world, int x, int y, int z, int side) {
+        setGearBoxOnState(world, x, y, z, true);
+        handleGearBoxActivation(world, x, y, z, new Random());
+    }
+
+    @Override
+    public void unpowerMachine(World world, int x, int y, int z, int side) {
+        setGearBoxOnState(world, x, y, z, false);
+        handleGearBoxDeactivation(world, x, y, z);
+    }
+
+    private void handleGearBoxDeactivation(World world, int x, int y, int z) {
+        setGearBoxOnState(world, x, y, z, false);
+        validateOutputs(world, x, y, z, false);
+    }
+
+    private void handleGearBoxActivation(World world, int x, int y, int z, Random random) {
+        world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.explode", 0.05F, 1.0F);
+        if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+            voicePacket(world, "random.explode", x, y, z, 0.05F, 1.0F);
+        }
+        emitGearBoxParticles(world, x, y, z, random);
+        setGearBoxOnState(world, x, y, z, true);
+        validateOutputs(world, x, y, z, true);
+    }
+
+    @Override
+    public boolean isMachinePowered(World world, int x, int y, int z) {
+        return isGearBoxOn(world, x, y, z);
+    }
 }

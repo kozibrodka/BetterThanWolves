@@ -6,13 +6,12 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.kozibrodka.wolves.block.entity.BlockDispenserBlockEntity;
 import net.kozibrodka.wolves.container.BlockDispenserScreenHandler;
 import net.kozibrodka.wolves.entity.BroadheadArrowEntity;
+import net.kozibrodka.wolves.events.BlockEntityListener;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ItemListener;
-import net.kozibrodka.wolves.events.ScreenHandlerListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.network.ParticlePacket;
 import net.kozibrodka.wolves.network.RenderPacket;
-import net.kozibrodka.wolves.network.ScreenPacket;
 import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.utils.*;
 import net.minecraft.block.Block;
@@ -48,15 +47,14 @@ import java.util.List;
 import java.util.Random;
 
 
-public class BlockDispenserBlock extends TemplateBlockWithEntity
-        implements RotatableBlock {
+public class BlockDispenserBlock extends TemplateBlockWithEntity implements RotatableBlock {
 
     public BlockDispenserBlock(Identifier iid) {
         super(iid, Material.STONE);
     }
 
-    public int getTextureId(BlockView iblockaccess, int i, int j, int k, int iSide) {
-        int iFacing = GetFacing(iblockaccess, i, j, k);
+    public int getTextureId(BlockView blockView, int i, int j, int k, int iSide) {
+        int iFacing = getFacing(blockView, i, j, k);
         if (iSide == iFacing) {
             return TextureListener.dispenser_face;
         }
@@ -89,28 +87,22 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
     }
 
     public void onPlaced(World world, int i, int j, int k, int iFacing) {
-        SetFacing(world, i, j, k, UnsortedUtils.getOppositeFacing(iFacing));
+        setFacing(world, i, j, k, UnsortedUtils.getOppositeFacing(iFacing));
         world.scheduleBlockUpdate(i, j, k, BlockListener.blockDispenser.id, getTickRate());
     }
 
     public void onPlaced(World world, int i, int j, int k, LivingEntity entityLiving) {
         int iFacing = UnsortedUtils.ConvertPlacingEntityOrientationToBlockFacing(entityLiving);
-        SetFacing(world, i, j, k, iFacing);
+        setFacing(world, i, j, k, iFacing);
         world.scheduleBlockUpdate(i, j, k, BlockListener.blockDispenser.id, getTickRate());
     }
 
-    public boolean onUse(World world, int i, int j, int k, PlayerEntity entityplayer) {
+    public boolean onUse(World world, int i, int j, int k, PlayerEntity playerEntity) {
         if (world == null) {
             return true;
         }
-        BlockDispenserBlockEntity tileEntityBlockDispenser = (BlockDispenserBlockEntity) world.getBlockEntity(i, j, k);
-        ScreenHandlerListener.TempGuiX = i;
-        ScreenHandlerListener.TempGuiY = j;
-        ScreenHandlerListener.TempGuiZ = k;
-        if (world.isRemote) {
-            PacketHelper.send(new ScreenPacket("dispenser", 0, i, j, k));
-        }
-        GuiHelper.openGUI(entityplayer, Identifier.of("wolves:openBlockDispenser"), tileEntityBlockDispenser, new BlockDispenserScreenHandler(entityplayer.inventory, tileEntityBlockDispenser));
+        BlockDispenserBlockEntity blockDispenserBlockEntity = (BlockDispenserBlockEntity) world.getBlockEntity(i, j, k);
+        GuiHelper.openGUI(playerEntity, Identifier.of(BlockEntityListener.NAMESPACE, "openBlockDispenser"), blockDispenserBlockEntity, new BlockDispenserScreenHandler(playerEntity.inventory, blockDispenserBlockEntity));
         return true;
     }
 
@@ -139,29 +131,29 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
         }
     }
 
-    public int GetFacing(BlockView iBlockAccess, int i, int j, int k) {
+    public int getFacing(BlockView iBlockAccess, int i, int j, int k) {
         return iBlockAccess.getBlockMeta(i, j, k) & -9;
     }
 
-    public void SetFacing(World world, int i, int j, int k, int iFacing) {
+    public void setFacing(World world, int i, int j, int k, int iFacing) {
         int iMetaData = world.getBlockMeta(i, j, k) & 8;
         iMetaData |= iFacing;
         world.setBlockMeta(i, j, k, iMetaData);
     }
 
-    public boolean CanRotate(BlockView iBlockAccess, int i, int j, int l) {
+    public boolean canRotate(BlockView iBlockAccess, int i, int j, int l) {
         return true;
     }
 
-    public boolean CanTransmitRotation(BlockView iBlockAccess, int i, int j, int l) {
+    public boolean canTransmitRotation(BlockView iBlockAccess, int i, int j, int l) {
         return true;
     }
 
-    public void Rotate(World world, int i, int j, int k, boolean bReverse) {
-        int iFacing = GetFacing(world, i, j, k);
+    public void rotate(World world, int i, int j, int k, boolean bReverse) {
+        int iFacing = getFacing(world, i, j, k);
         int iNewFacing = UnsortedUtils.RotateFacingAroundJ(iFacing, bReverse);
         if (iNewFacing != iFacing) {
-            SetFacing(world, i, j, k, iNewFacing);
+            setFacing(world, i, j, k, iNewFacing);
             world.setBlocksDirty(i, j, k, i, j, k);
         }
     }
@@ -311,27 +303,27 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
     }
 
     private void ConsumeFacingBlock(World world, int i, int j, int k) {
-        int iFacingDirection = GetFacing(world, i, j, k);
+        int iFacingDirection = getFacing(world, i, j, k);
         BlockPosition targetPos = new BlockPosition(i, j, k);
-        targetPos.AddFacingAsOffset(iFacingDirection);
-        if (!ConsumeEntityAtTargetLoc(world, i, j, k, targetPos.i, targetPos.j, targetPos.k) && !world.isAir(targetPos.i, targetPos.j, targetPos.k)) {
-            int blockId = world.getBlockId(targetPos.i, targetPos.j, targetPos.k);
+        targetPos.addFacingAsOffset(iFacingDirection);
+        if (!ConsumeEntityAtTargetLoc(world, i, j, k, targetPos.x, targetPos.y, targetPos.z) && !world.isAir(targetPos.x, targetPos.y, targetPos.z)) {
+            int blockId = world.getBlockId(targetPos.x, targetPos.y, targetPos.z);
             Block targetBlock = Block.BLOCKS[blockId];
             if (targetBlock != null && IsBlockConsumable(targetBlock)) {
-                int blockMetaData = world.getBlockMeta(targetPos.i, targetPos.j, targetPos.k);
+                int blockMetaData = world.getBlockMeta(targetPos.x, targetPos.y, targetPos.z);
                 if (blockId == id) {
-                    BlockDispenserBlockEntity targetTileEentityDispenser = (BlockDispenserBlockEntity) world.getBlockEntity(targetPos.i, targetPos.j, targetPos.k);
+                    BlockDispenserBlockEntity targetTileEentityDispenser = (BlockDispenserBlockEntity) world.getBlockEntity(targetPos.x, targetPos.y, targetPos.z);
                     InventoryHandler.clearInventoryContents(targetTileEentityDispenser);
                 }
                 if (AddBlockToInventory(world, i, j, k, targetBlock, blockMetaData)) {
                     if (net.fabricmc.loader.FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                        renderPacket(world, targetPos.i, targetPos.j, targetPos.k, blockId, blockMetaData);
+                        renderPacket(world, targetPos.x, targetPos.y, targetPos.z, blockId, blockMetaData);
                         voicePacket(world, targetBlock.soundGroup.getSound(), i, j, k, (targetBlock.soundGroup.getVolume() + 1.0F) / 2.0F, targetBlock.soundGroup.getPitch() * 0.8F);
                     } else {
-                        ((Minecraft) FabricLoader.getInstance().getGameInstance()).particleManager.addBlockBreakParticles(targetPos.i, targetPos.j, targetPos.k, blockId, blockMetaData);
-                        world.playSound((float) targetPos.i + 0.5F, (float) targetPos.j + 0.5F, (float) targetPos.k + 0.5F, targetBlock.soundGroup.getSound(), (targetBlock.soundGroup.getVolume() + 1.0F) / 2.0F, targetBlock.soundGroup.getPitch() * 0.8F);
+                        ((Minecraft) FabricLoader.getInstance().getGameInstance()).particleManager.addBlockBreakParticles(targetPos.x, targetPos.y, targetPos.z, blockId, blockMetaData);
+                        world.playSound((float) targetPos.x + 0.5F, (float) targetPos.y + 0.5F, (float) targetPos.z + 0.5F, targetBlock.soundGroup.getSound(), (targetBlock.soundGroup.getVolume() + 1.0F) / 2.0F, targetBlock.soundGroup.getPitch() * 0.8F);
                     }
-                    world.setBlock(targetPos.i, targetPos.j, targetPos.k, 0);
+                    world.setBlock(targetPos.x, targetPos.y, targetPos.z, 0);
                 }
             }
         }
@@ -349,7 +341,7 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
     }
 
     private void SpitOutItem(World world, int i, int j, int k, ItemStack ItemInstance, Random random) {
-        int facing = GetFacing(world, i, j, k);
+        int facing = getFacing(world, i, j, k);
         float deltaj = 0.0F;
         float f = 0.0F;
         float f1 = 0.0F;
@@ -397,17 +389,17 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
 
     private void DispenseBlockOrItem(World world, int i, int j, int k, Random random) {
         ValidateBlockDispenser(world, i, j, k);
-        int iFacing = GetFacing(world, i, j, k);
+        int iFacing = getFacing(world, i, j, k);
         BlockPosition targetPos = new BlockPosition(i, j, k);
-        targetPos.AddFacingAsOffset(iFacing);
-        int blockId = world.getBlockId(targetPos.i, targetPos.j, targetPos.k);
+        targetPos.addFacingAsOffset(iFacing);
+        int blockId = world.getBlockId(targetPos.x, targetPos.y, targetPos.z);
         Block targetBlock = Block.BLOCKS[blockId];
         boolean shouldDispense = false;
         boolean bSuccessfullyDispensed = false;
 
         if (targetBlock == null) {
             shouldDispense = true;
-        } else if (ReplaceableBlockChecker.IsReplaceableBlock(world, targetPos.i, targetPos.j, targetPos.k) || !targetBlock.material.isSolid()) {
+        } else if (ReplaceableBlockChecker.IsReplaceableBlock(world, targetPos.x, targetPos.y, targetPos.z) || !targetBlock.material.isSolid()) {
             shouldDispense = true;
         }
 
@@ -430,9 +422,9 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
             }
             BlockDispenserBlockEntity tileEntityBlockDispenser = (BlockDispenserBlockEntity) world.getBlockEntity(i, j, k);
             ItemStack iteminstance = tileEntityBlockDispenser.GetNextStackFromInventory();
-            double d = (double) targetPos.i + (double) f * 0.5D + 0.5D;
-            double d1 = (double) targetPos.j + (double) deltaj + 0.5D;
-            double d2 = (double) targetPos.k + (double) f1 * 0.5D + 0.5D;
+            double d = (double) targetPos.x + (double) f * 0.5D + 0.5D;
+            double d1 = (double) targetPos.y + (double) deltaj + 0.5D;
+            double d2 = (double) targetPos.z + (double) f1 * 0.5D + 0.5D;
             if (iteminstance != null) {
                 if (deltaj < 0.1F && deltaj > -0.1F) {
                     deltaj = 0.1F;
@@ -511,7 +503,7 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
                     bSuccessfullyDispensed = true;
                 } else if (iteminstance.getItem() instanceof SeedsItem) {
                     iteminstance.count++;
-                    if (!iteminstance.getItem().useOnBlock(iteminstance, null, world, targetPos.i, targetPos.j - 1, targetPos.k, 1)) {
+                    if (!iteminstance.getItem().useOnBlock(iteminstance, null, world, targetPos.x, targetPos.y - 1, targetPos.z, 1)) {
                         InventoryHandler.addSingleItemToInventory(tileEntityBlockDispenser, iteminstance.itemId, 0);
                     } else {
                         Block newBlock = Block.WHEAT;
@@ -538,12 +530,12 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
                     if (newBlock != null) {
                         int newBlockId = newBlock.id;
                         int iTargetDirection = UnsortedUtils.getOppositeFacing(iFacing);
-                        if (world.canPlace(newBlockId, targetPos.i, targetPos.j, targetPos.k, true, iTargetDirection)) {
+                        if (world.canPlace(newBlockId, targetPos.x, targetPos.y, targetPos.z, true, iTargetDirection)) {
                             if (newBlockId == Block.PISTON.id || newBlockId == Block.STICKY_PISTON.id) {
-                                world.setBlock(targetPos.i, targetPos.j, targetPos.k, newBlockId, iFacing);
+                                world.setBlock(targetPos.x, targetPos.y, targetPos.z, newBlockId, iFacing);
                             } else {
-                                world.setBlock(targetPos.i, targetPos.j, targetPos.k, newBlockId, iteminstance.getItem().getPlacementMetadata(iteminstance.getDamage()));
-                                newBlock.onPlaced(world, targetPos.i, targetPos.j, targetPos.k, iTargetDirection);
+                                world.setBlock(targetPos.x, targetPos.y, targetPos.z, newBlockId, iteminstance.getItem().getPlacementMetadata(iteminstance.getDamage()));
+                                newBlock.onPlaced(world, targetPos.x, targetPos.y, targetPos.z, iTargetDirection);
                             }
 
                             world.playSound((float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, newBlock.soundGroup.getSound(), (newBlock.soundGroup.getVolume() + 1.0F) / 2.0F, newBlock.soundGroup.getPitch() * 0.8F);
@@ -554,7 +546,7 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity
                         } else {
                             InventoryHandler.addSingleItemToInventory(tileEntityBlockDispenser, iteminstance.itemId, iteminstance.getDamage());
                         }
-                    } else if (world.isAir(targetPos.i, targetPos.j, targetPos.k)) {
+                    } else if (world.isAir(targetPos.x, targetPos.y, targetPos.z)) {
                         SpitOutItem(world, i, j, k, iteminstance, random);
                         world.playSound(i, j, k, "random.click", 1.0F, 1.0F);
                         if (net.fabricmc.loader.FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {

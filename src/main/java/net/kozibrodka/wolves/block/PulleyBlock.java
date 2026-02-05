@@ -5,13 +5,13 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.block.entity.PulleyBlockEntity;
 import net.kozibrodka.wolves.container.PulleyScreenHandler;
-import net.kozibrodka.wolves.events.BlockListener;
-import net.kozibrodka.wolves.events.ScreenHandlerListener;
+import net.kozibrodka.wolves.events.BlockEntityListener;
 import net.kozibrodka.wolves.events.TextureListener;
-import net.kozibrodka.wolves.network.ScreenPacket;
 import net.kozibrodka.wolves.network.SoundPacket;
-import net.kozibrodka.wolves.utils.*;
-import net.minecraft.block.Block;
+import net.kozibrodka.wolves.utils.InventoryHandler;
+import net.kozibrodka.wolves.utils.MechanicalDevice;
+import net.kozibrodka.wolves.utils.RotatableBlock;
+import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
@@ -43,15 +43,9 @@ public class PulleyBlock extends TemplateBlockWithEntity
         return iSide != 1 ? TextureListener.pulley_side : TextureListener.pulley_top;
     }
 
-    public boolean onUse(World world, int i, int j, int k, PlayerEntity entityplayer) {
-        PulleyBlockEntity tileEntityPulley = (PulleyBlockEntity) world.getBlockEntity(i, j, k);
-        ScreenHandlerListener.TempGuiX = i;
-        ScreenHandlerListener.TempGuiY = j;
-        ScreenHandlerListener.TempGuiZ = k;
-        if (world.isRemote) {
-            PacketHelper.send(new ScreenPacket("pulley", 0, i, j, k));
-        }
-        GuiHelper.openGUI(entityplayer, Identifier.of("wolves:openPulley"), tileEntityPulley, new PulleyScreenHandler(entityplayer.inventory, tileEntityPulley));
+    public boolean onUse(World world, int x, int y, int z, PlayerEntity playerEntity) {
+        PulleyBlockEntity pulleyBlockEntity = (PulleyBlockEntity) world.getBlockEntity(x, y, z);
+        GuiHelper.openGUI(playerEntity, Identifier.of(BlockEntityListener.NAMESPACE, "openPulley"), pulleyBlockEntity, new PulleyScreenHandler(playerEntity.inventory, pulleyBlockEntity));
         return true;
     }
 
@@ -81,18 +75,7 @@ public class PulleyBlock extends TemplateBlockWithEntity
     }
 
     public void onTick(World world, int i, int j, int k, Random random) {
-        boolean bReceivingPower = IsInputtingMechanicalPower(world, i, j, k);
-        boolean bOn = IsBlockOn(world, i, j, k);
         boolean bStateChanged = false;
-        if (bOn != bReceivingPower) {
-            world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "random.explode", 0.2F, 1.25F);
-            if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                voicePacket(world, "random.explode", i, j, k, 0.2F, 1.25F);
-            }
-            EmitPulleyParticles(world, i, j, k, random);
-            SetBlockOn(world, i, j, k, bReceivingPower);
-            bStateChanged = true;
-        }
         boolean bRedstoneOn = IsRedstoneOn(world, i, j, k);
         boolean bReceivingRedstone = world.isStrongPowered(i, j, k) || world.isStrongPowered(i, j + 1, k);
         if (bRedstoneOn != bReceivingRedstone) {
@@ -120,60 +103,63 @@ public class PulleyBlock extends TemplateBlockWithEntity
         }
     }
 
-    public int GetFacing(BlockView iBlockAccess, int i, int j, int l) {
+    public int getFacing(BlockView iBlockAccess, int i, int j, int l) {
         return 0;
     }
 
-    public void SetFacing(World world1, int l, int i1, int j1, int k1) {
+    public void setFacing(World world1, int l, int i1, int j1, int k1) {
     }
 
-    public boolean CanRotate(BlockView iBlockAccess, int i, int j, int l) {
+    public boolean canRotate(BlockView iBlockAccess, int i, int j, int l) {
         return true;
     }
 
-    public boolean CanTransmitRotation(BlockView iBlockAccess, int i, int j, int l) {
+    public boolean canTransmitRotation(BlockView iBlockAccess, int i, int j, int l) {
         return true;
     }
 
-    public void Rotate(World world, int i, int j, int k, boolean bReverse) {
+    public void rotate(World world, int i, int j, int k, boolean bReverse) {
         UnsortedUtils.DestroyHorizontallyAttachedAxles(world, i, j, k);
     }
 
-    public boolean CanOutputMechanicalPower() {
+    public boolean canOutputMechanicalPower() {
         return false;
     }
 
-    public boolean CanInputMechanicalPower() {
+    public boolean canInputMechanicalPower() {
         return true;
     }
 
-    public boolean IsInputtingMechanicalPower(World world, int i, int j, int k) {
-        for (int iFacing = 2; iFacing <= 5; iFacing++) {
-            BlockPosition targetPos = new BlockPosition(i, j, k);
-            targetPos.AddFacingAsOffset(iFacing);
-            int blockId = world.getBlockId(targetPos.i, targetPos.j, targetPos.k);
-            if (blockId == BlockListener.axleBlock.id) {
-                AxleBlock axleBlock = (AxleBlock) BlockListener.axleBlock;
-                if (axleBlock.IsAxleOrientedTowardsFacing(world, targetPos.i, targetPos.j, targetPos.k, iFacing) && axleBlock.GetPowerLevel(world, targetPos.i, targetPos.j, targetPos.k) > 0) {
-                    return true;
-                }
-                continue;
-            }
-            if (blockId != BlockListener.handCrank.id) {
-                continue;
-            }
-            Block targetBlock = Block.BLOCKS[blockId];
-            MechanicalDevice device = (MechanicalDevice) targetBlock;
-            if (device.IsOutputtingMechanicalPower(world, targetPos.i, targetPos.j, targetPos.k)) {
-                return true;
-            }
+    @Override
+    public void powerMachine(World world, int x, int y, int z, int side) {
+        world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.explode", 0.2F, 1.25F);
+        if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+            voicePacket(world, "random.explode", x, y, z, 0.2F, 1.25F);
         }
-
-        return false;
+        EmitPulleyParticles(world, x, y, z, new Random());
+        SetBlockOn(world, x, y, z, true);
+        ((PulleyBlockEntity) world.getBlockEntity(x, y, z)).NotifyPulleyEntityOfBlockStateChange();
     }
 
-    public boolean IsOutputtingMechanicalPower(World world, int i, int j, int l) {
-        return false;
+    @Override
+    public void unpowerMachine(World world, int x, int y, int z, int side) {
+        world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.explode", 0.2F, 1.25F);
+        if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+            voicePacket(world, "random.explode", x, y, z, 0.2F, 1.25F);
+        }
+        EmitPulleyParticles(world, x, y, z, new Random());
+        SetBlockOn(world, x, y, z, false);
+        ((PulleyBlockEntity) world.getBlockEntity(x, y, z)).NotifyPulleyEntityOfBlockStateChange();
+    }
+
+    @Override
+    public boolean isMachinePowered(World world, int x, int y, int z) {
+        return IsBlockOn(world, x, y, z);
+    }
+
+    @Override
+    public boolean canInputMechanicalPower(World world, int x, int y, int z, int side) {
+        return side != 0;
     }
 
     public boolean IsBlockOn(BlockView iBlockAccess, int i, int j, int k) {

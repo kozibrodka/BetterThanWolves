@@ -1,0 +1,94 @@
+package net.kozibrodka.wolves.container;
+
+import net.kozibrodka.wolves.block.entity.MachineBusBlockEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.slot.Slot;
+
+public class MachineBusScreenHandler extends ScreenHandler {
+    private final MachineBusBlockEntity machineBusBlockEntity;
+
+    public MachineBusScreenHandler(Inventory playerinventory, MachineBusBlockEntity machineBusBlockEntity) {
+        this.machineBusBlockEntity = machineBusBlockEntity;
+        addSlot(new Slot(machineBusBlockEntity, 0, 80, 35));
+
+        for (int iRow = 0; iRow < 3; iRow++) {
+            for (int iColumn = 0; iColumn < 9; iColumn++) {
+                addSlot(new Slot(playerinventory, iColumn + iRow * 9 + 9, 8 + iColumn * 18, 84 + iRow * 18));
+            }
+
+        }
+        for (int iColumn = 0; iColumn < 9; iColumn++) {
+            addSlot(new Slot(playerinventory, iColumn, 8 + iColumn * 18, 142));
+        }
+
+    }
+
+    public boolean canUse(PlayerEntity playerEntity) {
+        return machineBusBlockEntity.canPlayerUse(playerEntity);
+    }
+
+//    public ItemStack quickMove(int iSlotIndex) {
+//        ItemStack ItemInstance = null;
+//        Slot slot = (Slot) slots.get(iSlotIndex);
+//        if (slot != null && slot.hasStack()) {
+//            ItemStack ItemInstance1 = slot.getStack();
+//            ItemInstance = ItemInstance1.copy();
+//            if (iSlotIndex < 19) {
+//                AttemptToPutStackInInventorySlotRange(ItemInstance1, 19, slots.size());
+//            } else {
+//                AttemptToPutStackInInventorySlotRange(ItemInstance1, 0, 18);
+//            }
+//            if (ItemInstance1.count == 0) {
+//                slot.setStack(null);
+//            } else {
+//                slot.markDirty();
+//            }
+//        }
+//        return ItemInstance;
+//    }
+//
+//    private void AttemptToPutStackInInventorySlotRange(ItemStack ItemInstance, int i, int j) {
+//        int k = i;
+//        if (ItemInstance.isStackable()) {
+//            for (; ItemInstance.count > 0 && k < j; k++) {
+//                Slot slot = (Slot) slots.get(k);
+//                ItemStack ItemInstance1 = slot.getStack();
+//                if (ItemInstance1 == null || ItemInstance1.itemId != ItemInstance.itemId || ItemInstance.hasSubtypes() && ItemInstance.getDamage() != ItemInstance1.getDamage()) {
+//                    continue;
+//                }
+//                int i1 = ItemInstance1.count + ItemInstance.count;
+//                if (i1 <= ItemInstance.getMaxCount()) {
+//                    ItemInstance.count = 0;
+//                    ItemInstance1.count = i1;
+//                    slot.markDirty();
+//                    continue;
+//                }
+//                if (ItemInstance1.count < ItemInstance.getMaxCount()) {
+//                    ItemInstance.count -= ItemInstance.getMaxCount() - ItemInstance1.count;
+//                    ItemInstance1.count = ItemInstance.getMaxCount();
+//                    slot.markDirty();
+//                }
+//            }
+//
+//        }
+//        if (ItemInstance.count > 0) {
+//            int l = i;
+//            do {
+//                if (l >= j) {
+//                    break;
+//                }
+//                Slot slot1 = (Slot) slots.get(l);
+//                ItemStack ItemInstance2 = slot1.getStack();
+//                if (ItemInstance2 == null) {
+//                    slot1.setStack(ItemInstance.copy());
+//                    slot1.markDirty();
+//                    ItemInstance.count = 0;
+//                    break;
+//                }
+//                l++;
+//            } while (true);
+//        }
+//    }
+}

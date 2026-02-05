@@ -77,7 +77,7 @@ public class CompanionCubeBlock extends TemplateBlock
     }
 
     public int getTextureId(BlockView iblockaccess, int i, int j, int k, int iSide) {
-        int iFacing = GetFacing(iblockaccess, i, j, k);
+        int iFacing = getFacing(iblockaccess, i, j, k);
         if (GetHalfCubeState(iblockaccess, i, j, k)) {
             if (iSide == 1) {
                 return TextureListener.companion_meat;
@@ -108,7 +108,7 @@ public class CompanionCubeBlock extends TemplateBlock
     }
 
     public void onPlaced(World world, int i, int j, int k, int iFacing) {
-        SetFacing(world, i, j, k, UnsortedUtils.getOppositeFacing(iFacing));
+        setFacing(world, i, j, k, UnsortedUtils.getOppositeFacing(iFacing));
     }
 
     public void onPlaced(World world, int i, int j, int k, LivingEntity entityliving) {
@@ -116,7 +116,7 @@ public class CompanionCubeBlock extends TemplateBlock
             SpawnHearts(world, i, j, k);
         }
         int iFacing = UnsortedUtils.ConvertPlacingEntityOrientationToBlockFacing(entityliving);
-        SetFacing(world, i, j, k, iFacing);
+        setFacing(world, i, j, k, iFacing);
     }
 
     public void onBreak(World world, int i, int j, int k) {
@@ -145,30 +145,30 @@ public class CompanionCubeBlock extends TemplateBlock
         return !GetHalfCubeState(world, i, j, k);
     }
 
-    public int GetFacing(BlockView iBlockAccess, int i, int j, int k) {
+    public int getFacing(BlockView iBlockAccess, int i, int j, int k) {
         return iBlockAccess.getBlockMeta(i, j, k) & -9;
     }
 
-    public void SetFacing(World world, int i, int j, int k, int iFacing) {
+    public void setFacing(World world, int i, int j, int k, int iFacing) {
         int iMetaData = world.getBlockMeta(i, j, k) & 8;
         iMetaData |= iFacing;
         world.setBlockMeta(i, j, k, iMetaData);
         world.blockUpdateEvent(i, j, k);
     }
 
-    public boolean CanRotate(BlockView iBlockAccess, int i, int j, int l) {
+    public boolean canRotate(BlockView iBlockAccess, int i, int j, int l) {
         return true;
     }
 
-    public boolean CanTransmitRotation(BlockView iBlockAccess, int i, int j, int l) {
+    public boolean canTransmitRotation(BlockView iBlockAccess, int i, int j, int l) {
         return true;
     }
 
-    public void Rotate(World world, int i, int j, int k, boolean bReverse) {
-        int iFacing = GetFacing(world, i, j, k);
+    public void rotate(World world, int i, int j, int k, boolean bReverse) {
+        int iFacing = getFacing(world, i, j, k);
         int iNewFacing = UnsortedUtils.RotateFacingAroundJ(iFacing, bReverse);
         if (iNewFacing != iFacing) {
-            SetFacing(world, i, j, k, iNewFacing);
+            setFacing(world, i, j, k, iNewFacing);
             world.setBlocksDirty(i, j, k, i, j, k);
             if (world.random.nextInt(12) == 0) {
                 world.playSound((float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, "mob.wolf.whine", 0.5F, 2.6F + (world.random.nextFloat() - world.random.nextFloat()) * 0.8F);

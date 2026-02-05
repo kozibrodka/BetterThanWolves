@@ -33,8 +33,13 @@ import net.modificationstation.stationapi.api.util.Identifier;
 import java.util.List;
 
 
-public class HopperBlockEntity extends BlockEntity
-        implements Inventory {
+public class HopperBlockEntity extends BlockEntity implements Inventory {
+    private ItemStack[] hopperContents;
+    private int ejectCounter;
+    public boolean hopperEjectBlocked;
+    public int clientOccupiedSlots;
+    public int clientFilterType;
+    private boolean ejecting;
 
     public HopperBlockEntity() {
         hopperContents = new ItemStack[19];
@@ -79,7 +84,7 @@ public class HopperBlockEntity extends BlockEntity
             }
         }
 
-        if (nbttagcompound.contains("grindCounter")) {
+        if (nbttagcompound.contains("ejectCounter")) {
             ejectCounter = nbttagcompound.getInt("ejectCounter");
         }
     }
@@ -304,8 +309,16 @@ public class HopperBlockEntity extends BlockEntity
         return true;
     }
 
-    public boolean IsEjecting() {
-        return ((HopperBlock) BlockListener.hopper).IsBlockOn(world, x, y, z);
+    public boolean isEjecting() {
+        return ejecting;
+    }
+
+    public void updateEjecting() {
+        ejecting = ((HopperBlock) BlockListener.hopper).IsBlockOn(world, x, y, z);
+    }
+
+    public void setEjecting(boolean ejecting) {
+        this.ejecting = ejecting;
     }
 
     private void attemptItemEjection() {
@@ -355,9 +368,9 @@ public class HopperBlockEntity extends BlockEntity
                                                 break;
                                             }
                                             BlockPosition tempOffset = new BlockPosition(iTempFacing);
-                                            int tempBlockId = world.getBlockId(iTargetI + tempOffset.i, iTargetJ + tempOffset.j, iTargetK + tempOffset.k);
+                                            int tempBlockId = world.getBlockId(iTargetI + tempOffset.x, iTargetJ + tempOffset.y, iTargetK + tempOffset.z);
                                             if (tempBlockId == Block.CHEST.id) {
-                                                targetTileEntityBase = world.getBlockEntity(iTargetI + tempOffset.i, iTargetJ + tempOffset.j, iTargetK + tempOffset.k);
+                                                targetTileEntityBase = world.getBlockEntity(iTargetI + tempOffset.x, iTargetJ + tempOffset.y, iTargetK + tempOffset.z);
                                                 if (targetTileEntityBase != null && (targetTileEntityBase instanceof Inventory)) {
                                                     if (InventoryHandler.addItemInstanceToInventory((Inventory) targetTileEntityBase, ejectStack)) {
                                                         iNumItemsStored = iEjectStackSize;
@@ -479,10 +492,4 @@ public class HopperBlockEntity extends BlockEntity
             }
         }
     }
-
-    private ItemStack[] hopperContents;
-    private int ejectCounter;
-    public boolean hopperEjectBlocked;
-    public int clientOccupiedSlots;
-    public int clientFilterType;
 }

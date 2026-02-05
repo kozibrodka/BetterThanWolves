@@ -14,19 +14,14 @@ import net.kozibrodka.wolves.utils.MechanicalDevice;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithInventoryRenderer;
-import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
-import net.modificationstation.stationapi.api.client.texture.atlas.Atlas;
-import net.modificationstation.stationapi.api.client.texture.atlas.Atlases;
 import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import net.modificationstation.stationapi.api.template.block.TemplateBlock;
 import net.modificationstation.stationapi.api.util.Identifier;
@@ -135,14 +130,6 @@ public class HandCrankBlock extends TemplateBlock
 
     @Environment(EnvType.SERVER)
     public void voicePacket(World world, int x, int y, int z, float g, float h) {
-
-//        List list1 = world.getEntities(ServerPlayer.class, Box.createButWasteMemory(x - 4D, y - 4D, z - 4D, x + 4D, y + 4D, z + 4D));
-//        if(list1.size() != 0) {
-//            ServerPlayer player1 = (ServerPlayer) list1.get(0);
-//            PacketHelper.sendTo(player1, new SoundPacket("random.click"));
-//            System.out.println("WYSYLAM PAKIET");
-//        }
-
         List list2 = world.players;
         if (list2.size() != 0) {
             for (int k = 0; k < list2.size(); k++) {
@@ -152,11 +139,6 @@ public class HandCrankBlock extends TemplateBlock
         }
     }
 
-//    public void randomDisplayTick(Level world, int i, int j, int k, Random random)
-//    {
-//        world.setBlocksDirty(i, j, k, i, j, k);
-//    }
-
     public void neighborUpdate(World world, int i, int j, int k, int iid) {
         if (!world.method_1783(i, j - 1, k)) {
             dropStacks(world, i, j, k, world.getBlockMeta(i, j, k));
@@ -164,33 +146,38 @@ public class HandCrankBlock extends TemplateBlock
         }
     }
 
-    public boolean CanOutputMechanicalPower() {
-        return true;
-    }
-
-    public boolean CanInputMechanicalPower() {
+    public boolean canOutputMechanicalPower() {
         return false;
     }
 
-    public boolean IsInputtingMechanicalPower(World world, int i, int j, int l) {
+    public boolean canInputMechanicalPower() {
         return false;
     }
 
-    public boolean IsOutputtingMechanicalPower(World world, int i, int j, int k) {
-        return world.getBlockMeta(i, j, k) > 0;
+    @Override
+    public void powerMachine(World world, int x, int y, int z, int side) {
+    }
+
+    @Override
+    public void unpowerMachine(World world, int x, int y, int z, int side) {
+    }
+
+    @Override
+    public boolean isMachinePowered(World world, int x, int y, int z) {
+        return false;
     }
 
     public boolean CheckForOverpower(World world, int i, int j, int k) {
         int iNumPotentialDevicesToPower = 0;
         for (int iTempFacing = 2; iTempFacing <= 5; iTempFacing++) {
             BlockPosition tempPos = new BlockPosition(i, j, k);
-            tempPos.AddFacingAsOffset(iTempFacing);
-            int iTempid = world.getBlockId(tempPos.i, tempPos.j, tempPos.k);
+            tempPos.addFacingAsOffset(iTempFacing);
+            int iTempid = world.getBlockId(tempPos.x, tempPos.y, tempPos.z);
             Block tempBlock = Block.BLOCKS[iTempid];
             if (tempBlock == null || !(tempBlock instanceof MechanicalDevice tempDevice)) {
                 continue;
             }
-            if (tempDevice.CanInputMechanicalPower()) {
+            if (tempDevice.canInputMechanicalPower()) {
                 iNumPotentialDevicesToPower++;
             }
         }
@@ -206,111 +193,6 @@ public class HandCrankBlock extends TemplateBlock
         world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "random.explode", 0.2F, 1.25F);
         world.setBlock(i, j, k, 0);
     }
-
-//    @Override
-//    public boolean renderWorld(BlockRenderManager tileRenderer, BlockView tileView, int x, int y, int z) {
-//        Tessellator tessellator = Tessellator.INSTANCE;
-//        float f = 0.5F;
-//        float f1 = 0.5F;
-//        float f2 = handCrankBaseHeight;
-//        this.setBoundingBox(0.5F - f1, 0.0F, 0.5F - f, 0.5F + f1, f2, 0.5F + f);
-//        tileRenderer.renderBlock(this, x, y, z);
-//        float f3 = this.getLuminance(tileView, x, y, z);
-//        if (Block.BLOCKS_LIGHT_LUMINANCE[this.id] > 0) {
-//            f3 = 1.0F;
-//        }
-//        tessellator.color(f3, f3, f3);
-//        int leverTexture = TextureListener.handcrack_lever;
-//        Atlas.Sprite testTex = Atlases.getTerrain().getTexture(leverTexture);
-//        float f4 = (float) (testTex.getStartU());
-//        float f5 = (float) (testTex.getEndU());
-//        float f6 = (float) (testTex.getStartV());
-//        float f7 = (float) (testTex.getEndV());
-//
-//        Vec3d[] avec3d = new Vec3d[8];
-//        float f8 = 0.0625F;
-//        float f9 = 0.0625F;
-//        float f10 = 0.9F;
-//        avec3d[0] = Vec3d.createCached(-f8, 0.0D, -f9);
-//        avec3d[1] = Vec3d.createCached(f8, 0.0D, -f9);
-//        avec3d[2] = Vec3d.createCached(f8, 0.0D, f9);
-//        avec3d[3] = Vec3d.createCached(-f8, 0.0D, f9);
-//        avec3d[4] = Vec3d.createCached(-f8, f10, -f9);
-//        avec3d[5] = Vec3d.createCached(f8, f10, -f9);
-//        avec3d[6] = Vec3d.createCached(f8, f10, f9);
-//        avec3d[7] = Vec3d.createCached(-f8, f10, f9);
-//        boolean flag = tileView.getBlockMeta(x, y, z) > 0;
-//        for (int k1 = 0; k1 < 8; k1++) {
-//            if (flag) {
-//                avec3d[k1].z -= 0.0625D;
-//                avec3d[k1].rotateX(0.35F);
-//            } else {
-//                avec3d[k1].z += 0.0625D;
-//                avec3d[k1].rotateX(-0.35F);
-//            }
-//            avec3d[k1].rotateY(1.570796F);
-//            avec3d[k1].x += (double) x + 0.5D;
-//            avec3d[k1].y += (float) y + 0.125F;
-//            avec3d[k1].z += (double) z + 0.5D;
-//        }
-//
-//        Vec3d vec3d = null;
-//        Vec3d vec3d1 = null;
-//        Vec3d vec3d2 = null;
-//        Vec3d vec3d3 = null;
-//        for (int l1 = 0; l1 < 6; l1++) {
-//            if (l1 == 0) {
-//                f4 = (float) (testTex.getStartU() + (7 / 512F));
-//                f5 = (float) (testTex.getEndU() - (7 / 512F));
-//                f6 = (float) (testTex.getStartV());
-//                f7 = (float) (testTex.getEndV() - (14 / 512F));
-//
-//            } else if (l1 == 2) {
-//                f4 = (float) (testTex.getStartU() + (7 / 512F));
-//                f5 = (float) (testTex.getEndU() - (7 / 512F));
-//                f6 = (float) (testTex.getStartV());
-//                f7 = (float) (testTex.getEndV());
-//            }
-//            if (l1 == 0) {
-//                vec3d = avec3d[0];
-//                vec3d1 = avec3d[1];
-//                vec3d2 = avec3d[2];
-//                vec3d3 = avec3d[3];
-//            } else if (l1 == 1) {
-//                vec3d = avec3d[7];
-//                vec3d1 = avec3d[6];
-//                vec3d2 = avec3d[5];
-//                vec3d3 = avec3d[4];
-//            } else if (l1 == 2) {
-//                vec3d = avec3d[1];
-//                vec3d1 = avec3d[0];
-//                vec3d2 = avec3d[4];
-//                vec3d3 = avec3d[5];
-//            } else if (l1 == 3) {
-//                vec3d = avec3d[2];
-//                vec3d1 = avec3d[1];
-//                vec3d2 = avec3d[5];
-//                vec3d3 = avec3d[6];
-//            } else if (l1 == 4) {
-//                vec3d = avec3d[3];
-//                vec3d1 = avec3d[2];
-//                vec3d2 = avec3d[6];
-//                vec3d3 = avec3d[7];
-//            } else if (l1 == 5) {
-//                vec3d = avec3d[0];
-//                vec3d1 = avec3d[3];
-//                vec3d2 = avec3d[7];
-//                vec3d3 = avec3d[4];
-//            }
-//            tessellator.vertex(vec3d.x, vec3d.y, vec3d.z, f4, f7);
-//            tessellator.vertex(vec3d1.x, vec3d1.y, vec3d1.z, f5, f7);
-//            tessellator.vertex(vec3d2.x, vec3d2.y, vec3d2.z, f5, f6);
-//            tessellator.vertex(vec3d3.x, vec3d3.y, vec3d3.z, f4, f6);
-//
-//        }
-//
-//        return true;
-//    }
 
     private static final int handCrankTickRate = 3;
     private static final int handCrankDelayBeforeReset = 15;

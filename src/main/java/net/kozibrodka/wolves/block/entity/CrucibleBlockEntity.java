@@ -17,8 +17,12 @@ import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
+import net.modificationstation.stationapi.api.block.BlockState;
+import net.modificationstation.stationapi.api.util.math.Direction;
 
 public class CrucibleBlockEntity extends BlockEntity implements Inventory {
+
+    private static final int RECIPE_TIME = 1950;
 
     public CrucibleBlockEntity() {
         crucibleContents = new ItemStack[27];
@@ -109,6 +113,12 @@ public class CrucibleBlockEntity extends BlockEntity implements Inventory {
         if (world.isRemote) {
             return;
         }
+        BlockState currentState = world.getBlockState(x, y, z);
+        Direction currentDirection = currentState.get(CrucibleBlock.ROTATION);
+        if (currentDirection != Direction.UP) {
+            dropContents(currentDirection);
+            return;
+        }
         int stokedFireFactor = getStokedFireFactor();
         if (stokedFireFactor > 0) {
             if (!overStokedFire) {
@@ -118,7 +128,7 @@ public class CrucibleBlockEntity extends BlockEntity implements Inventory {
             }
             if (areItemsInRegistry()) {
                 crucibleCookCounter += stokedFireFactor;
-                if (crucibleCookCounter >= 1950) {
+                if (crucibleCookCounter >= RECIPE_TIME) {
                     craftFromRegistry();
                     crucibleCookCounter = 0;
                 }
@@ -132,6 +142,23 @@ public class CrucibleBlockEntity extends BlockEntity implements Inventory {
                 world.setBlocksDirty(x, y, z, x, y, z);
             }
             crucibleCookCounter = 0;
+        }
+    }
+
+    private void dropContents(Direction direction) {
+        switch (direction) {
+            case SOUTH:
+                InventoryHandler.ejectInventoryContents(world, x, y, z - 1, this);
+                break;
+            case NORTH:
+                InventoryHandler.ejectInventoryContents(world, x, y, z + 1, this);
+                break;
+            case WEST:
+                InventoryHandler.ejectInventoryContents(world, x - 1, y, z, this);
+                break;
+            case EAST:
+                InventoryHandler.ejectInventoryContents(world, x + 1, y, z, this);
+                break;
         }
     }
 
@@ -152,7 +179,7 @@ public class CrucibleBlockEntity extends BlockEntity implements Inventory {
     }
 
     public int getCookProgressScaled(int scale) {
-        return (crucibleCookCounter * scale) / 1950;
+        return (crucibleCookCounter * scale) / RECIPE_TIME;
     }
 
     public boolean isCooking() {
@@ -181,6 +208,6 @@ public class CrucibleBlockEntity extends BlockEntity implements Inventory {
         Player Interaction Distance = 64D;
         Primary Fire Factor = 5;
         Secondary Fire Factor = 1;
-        Cook Time = 1950;
+        Cook Time = RECIPE_TIME;
      */
 }

@@ -12,11 +12,10 @@ import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.api.AffectedByBellows;
 import net.kozibrodka.wolves.block.entity.HopperBlockEntity;
 import net.kozibrodka.wolves.container.HopperScreenHandler;
+import net.kozibrodka.wolves.events.BlockEntityListener;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ItemListener;
-import net.kozibrodka.wolves.events.ScreenHandlerListener;
 import net.kozibrodka.wolves.events.TextureListener;
-import net.kozibrodka.wolves.network.ScreenPacket;
 import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.utils.*;
 import net.minecraft.block.Block;
@@ -102,22 +101,12 @@ public class HopperBlock extends TemplateBlockWithEntity
     }
 
     public void neighborUpdate(World world, int i, int j, int k, int iid) {
-        boolean bReceivingPower = IsInputtingMechanicalPower(world, i, j, k);
-        if (IsBlockOn(world, i, j, k) != bReceivingPower) {
-            world.scheduleBlockUpdate(i, j, k, id, getTickRate());
-        }
         ((HopperBlockEntity) world.getBlockEntity(i, j, k)).hopperEjectBlocked = false;
     }
 
-    public boolean onUse(World world, int i, int j, int k, PlayerEntity entityplayer) {
-        HopperBlockEntity tileEntityHopper = (HopperBlockEntity) world.getBlockEntity(i, j, k);
-        ScreenHandlerListener.TempGuiX = i;
-        ScreenHandlerListener.TempGuiY = j;
-        ScreenHandlerListener.TempGuiZ = k;
-        if (world.isRemote) {
-            PacketHelper.send(new ScreenPacket("hopper", 0, i, j, k));
-        }
-        GuiHelper.openGUI(entityplayer, Identifier.of("wolves:openHopper"), tileEntityHopper, new HopperScreenHandler(entityplayer.inventory, tileEntityHopper));
+    public boolean onUse(World world, int x, int y, int z, PlayerEntity playerEntity) {
+        HopperBlockEntity hopperBlockEntity = (HopperBlockEntity) world.getBlockEntity(x, y, z);
+        GuiHelper.openGUI(playerEntity, Identifier.of(BlockEntityListener.NAMESPACE, "openHopper"), hopperBlockEntity, new HopperScreenHandler(playerEntity.inventory, hopperBlockEntity));
         return true;
     }
 
@@ -126,18 +115,8 @@ public class HopperBlock extends TemplateBlockWithEntity
     }
 
     public void onTick(World world, int i, int j, int k, Random random) {
-        boolean bReceivingPower = IsInputtingMechanicalPower(world, i, j, k);
-        boolean bOn = IsBlockOn(world, i, j, k);
         boolean bFull = IsHopperFull(world, i, j, k);
         boolean bRedstone = IsRedstoneOutputOn(world, i, j, k);
-        if (bOn != bReceivingPower) {
-            world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "random.explode", 0.2F, 1.25F);
-            if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                voicePacket(world, "random.explode", i, j, k, 0.2F, 1.25F);
-            }
-            EmitHopperParticles(world, i, j, k, random);
-            SetBlockOn(world, i, j, k, bReceivingPower);
-        }
         if (bFull != bRedstone) {
             world.playSound(i, j, k, "random.click", 0.25F, 1.2F);
             if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
@@ -235,7 +214,7 @@ public class HopperBlock extends TemplateBlockWithEntity
 //            if(FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER){
 //                renderPacket(world, tileEntityHopper.x, tileEntityHopper.y, tileEntityHopper.z, tileEntityHopper.GetFilterType(), InventoryHandler.getOccupiedSlotCountWithinBounds(tileEntityHopper, 0, 17));
 //            }
-//            world.blockUpdateEvent(i, j, k);
+//            world.blockUpdateEvent(x, y, z);
         }
         //TODO: Interaction with minecarts?
     }
@@ -379,60 +358,61 @@ public class HopperBlock extends TemplateBlockWithEntity
         world.setBlock(i, j, k, 0);
     }
 
-    public int GetFacing(BlockView iBlockAccess, int i, int j, int l) {
+    public int getFacing(BlockView iBlockAccess, int i, int j, int l) {
         return 0;
     }
 
-    public void SetFacing(World world1, int l, int i1, int j1, int k1) {
+    public void setFacing(World world1, int l, int i1, int j1, int k1) {
     }
 
-    public boolean CanRotate(BlockView iBlockAccess, int i, int j, int l) {
+    public boolean canRotate(BlockView iBlockAccess, int i, int j, int l) {
         return true;
     }
 
-    public boolean CanTransmitRotation(BlockView iBlockAccess, int i, int j, int l) {
+    public boolean canTransmitRotation(BlockView iBlockAccess, int i, int j, int l) {
         return false;
     }
 
-    public void Rotate(World world, int i, int j, int k, boolean bReverse) {
+    public void rotate(World world, int i, int j, int k, boolean bReverse) {
         UnsortedUtils.DestroyHorizontallyAttachedAxles(world, i, j, k);
     }
 
-    public boolean CanOutputMechanicalPower() {
+    public boolean canOutputMechanicalPower() {
         return false;
     }
 
-    public boolean CanInputMechanicalPower() {
+    public boolean canInputMechanicalPower() {
         return true;
     }
 
-    public boolean IsInputtingMechanicalPower(World world, int i, int j, int k) {
-        for (int iFacing = 2; iFacing <= 5; iFacing++) {
-            BlockPosition targetPos = new BlockPosition(i, j, k);
-            targetPos.AddFacingAsOffset(iFacing);
-            int blockId = world.getBlockId(targetPos.i, targetPos.j, targetPos.k);
-            if (blockId == BlockListener.axleBlock.id) {
-                AxleBlock axleBlock = (AxleBlock) BlockListener.axleBlock;
-                if (axleBlock.IsAxleOrientedTowardsFacing(world, targetPos.i, targetPos.j, targetPos.k, iFacing) && axleBlock.GetPowerLevel(world, targetPos.i, targetPos.j, targetPos.k) > 0) {
-                    return true;
-                }
-                continue;
-            }
-            if (blockId != BlockListener.handCrank.id) {
-                continue;
-            }
-            Block targetBlock = Block.BLOCKS[blockId];
-            MechanicalDevice device = (MechanicalDevice) targetBlock;
-            if (device.IsOutputtingMechanicalPower(world, targetPos.i, targetPos.j, targetPos.k)) {
-                return true;
-            }
+    @Override
+    public void powerMachine(World world, int x, int y, int z, int side) {
+        world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.explode", 0.2F, 1.25F);
+        if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+            voicePacket(world, "random.explode", x, y, z, 0.2F, 1.25F);
         }
-
-        return false;
+        EmitHopperParticles(world, x, y, z, new Random());
+        SetBlockOn(world, x, y, z, true);
     }
 
-    public boolean IsOutputtingMechanicalPower(World world, int i, int j, int l) {
-        return false;
+    @Override
+    public void unpowerMachine(World world, int x, int y, int z, int side) {
+        world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.explode", 0.2F, 1.25F);
+        if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+            voicePacket(world, "random.explode", x, y, z, 0.2F, 1.25F);
+        }
+        EmitHopperParticles(world, x, y, z, new Random());
+        SetBlockOn(world, x, y, z, false);
+    }
+
+    @Override
+    public boolean isMachinePowered(World world, int x, int y, int z) {
+        return IsBlockOn(world, x, y, z);
+    }
+
+    @Override
+    public boolean canInputMechanicalPower(World world, int x, int y, int z, int side) {
+        return side > 1;
     }
 
     private static final int hopperTickRate = 10;
@@ -514,8 +494,8 @@ public class HopperBlock extends TemplateBlockWithEntity
     @Override
     public void affectBlock(World world, int i, int j, int k, BlockPosition tempTargetPos, int facing) {
         for (int l = 0; l < 2; l++) {
-            tempTargetPos.AddFacingAsOffset(facing);
-            if (!world.isAir(tempTargetPos.i, tempTargetPos.j, tempTargetPos.k)) return;
+            tempTargetPos.addFacingAsOffset(facing);
+            if (!world.isAir(tempTargetPos.x, tempTargetPos.y, tempTargetPos.z)) return;
         }
         BlockEntity tileEntityHopper = world.getBlockEntity(i, j, k);
         if (tileEntityHopper == null) return;

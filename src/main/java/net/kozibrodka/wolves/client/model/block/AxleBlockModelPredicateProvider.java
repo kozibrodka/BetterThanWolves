@@ -15,7 +15,7 @@ public class AxleBlockModelPredicateProvider implements BlockModelPredicateProvi
         if(block instanceof AxleBlock axleBlock)
         {
             int state = axleBlock.getAxisAlignment(blockView, blockPos.x, blockPos.y, blockPos.z);
-            if(axleBlock.GetPowerLevel(blockView, blockPos.x, blockPos.y, blockPos.z) > 0){
+            if(axleBlock.getPowerLevel(blockView, blockPos.x, blockPos.y, blockPos.z) > 0){
                 state += 3;
             }
             return state;

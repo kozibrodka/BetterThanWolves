@@ -41,6 +41,7 @@ public class InventoryHandler {
             float zOffset = world.random.nextFloat() * 0.7F + 0.15F;
             do {
                 if (itemStack.count <= 0) {
+                    inventory.setStack(slot, null);
                     continue slotLoop;
                 }
                 int randomStackSize = world.random.nextInt(21) + 10;

@@ -1,14 +1,56 @@
 {
   "multipart": [
     {
+      "when": {
+        "rotation": "up"
+      },
       "apply": {
         "model": "wolves:block/fcCrucible"
       }
     },
     {
       "when": {
+        "rotation": "north"
+      },
+      "apply": {
+        "model": "wolves:block/fcCrucible",
+        "x": 270
+      }
+    },
+    {
+      "when": {
+        "rotation": "south"
+      },
+      "apply": {
+        "model": "wolves:block/fcCrucible",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "rotation": "east"
+      },
+      "apply": {
+        "model": "wolves:block/fcCrucible",
+        "x": 270,
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "rotation": "west"
+      },
+      "apply": {
+        "model": "wolves:block/fcCrucible",
+        "x": 270,
+        "y": 90
+      }
+    },
+    {
+      "when": {
         "full": 1,
-        "lava": true
+        "lava": true,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_lava_1"
@@ -17,7 +59,8 @@
     {
       "when": {
         "full": 1,
-        "lava": false
+        "lava": false,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_gravel_1"
@@ -26,7 +69,8 @@
     {
       "when": {
         "full": 2,
-        "lava": true
+        "lava": true,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_lava_2"
@@ -35,7 +79,8 @@
     {
       "when": {
         "full": 2,
-        "lava": false
+        "lava": false,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_gravel_2"
@@ -44,7 +89,8 @@
     {
       "when": {
         "full": 3,
-        "lava": true
+        "lava": true,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_lava_3"
@@ -53,7 +99,8 @@
     {
       "when": {
         "full": 3,
-        "lava": false
+        "lava": false,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_gravel_3"
@@ -62,7 +109,8 @@
     {
       "when": {
         "full": 4,
-        "lava": true
+        "lava": true,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_lava_4"
@@ -71,7 +119,8 @@
     {
       "when": {
         "full": 4,
-        "lava": false
+        "lava": false,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_gravel_4"
@@ -80,7 +129,8 @@
     {
       "when": {
         "full": 5,
-        "lava": true
+        "lava": true,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_lava_5"
@@ -89,7 +139,8 @@
     {
       "when": {
         "full": 5,
-        "lava": false
+        "lava": false,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_gravel_5"
@@ -98,7 +149,8 @@
     {
       "when": {
         "full": 6,
-        "lava": true
+        "lava": true,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_lava_6"
@@ -107,7 +159,8 @@
     {
       "when": {
         "full": 6,
-        "lava": false
+        "lava": false,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_gravel_6"
@@ -116,7 +169,8 @@
     {
       "when": {
         "full": 7,
-        "lava": true
+        "lava": true,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_lava_7"
@@ -125,7 +179,8 @@
     {
       "when": {
         "full": 7,
-        "lava": false
+        "lava": false,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_gravel_7"
@@ -134,7 +189,8 @@
     {
       "when": {
         "full": 8,
-        "lava": true
+        "lava": true,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_lava_8"
@@ -143,7 +199,8 @@
     {
       "when": {
         "full": 8,
-        "lava": false
+        "lava": false,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_gravel_8"
@@ -152,7 +209,8 @@
     {
       "when": {
         "full": 9,
-        "lava": true
+        "lava": true,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_lava_9"
@@ -161,7 +219,8 @@
     {
       "when": {
         "full": 9,
-        "lava": false
+        "lava": false,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_gravel_9"
@@ -170,7 +229,8 @@
     {
       "when": {
         "full": 10,
-        "lava": true
+        "lava": true,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_lava_10"
@@ -179,7 +239,8 @@
     {
       "when": {
         "full": 10,
-        "lava": false
+        "lava": false,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_gravel_10"
@@ -188,7 +249,8 @@
     {
       "when": {
         "full": 11,
-        "lava": true
+        "lava": true,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_lava_11"
@@ -197,7 +259,8 @@
     {
       "when": {
         "full": 11,
-        "lava": false
+        "lava": false,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_gravel_11"
@@ -206,7 +269,8 @@
     {
       "when": {
         "full": 12,
-        "lava": true
+        "lava": true,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_lava_12"
@@ -215,7 +279,8 @@
     {
       "when": {
         "full": 12,
-        "lava": false
+        "lava": false,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_gravel_12"
@@ -224,7 +289,8 @@
     {
       "when": {
         "full": 13,
-        "lava": true
+        "lava": true,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_lava_13"
@@ -233,7 +299,8 @@
     {
       "when": {
         "full": 13,
-        "lava": false
+        "lava": false,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_gravel_13"
@@ -242,7 +309,8 @@
     {
       "when": {
         "full": 14,
-        "lava": true
+        "lava": true,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_lava_14"
@@ -251,7 +319,8 @@
     {
       "when": {
         "full": 14,
-        "lava": false
+        "lava": false,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_gravel_14"
@@ -260,7 +329,8 @@
     {
       "when": {
         "full": 15,
-        "lava": true
+        "lava": true,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_lava_15"
@@ -269,7 +339,8 @@
     {
       "when": {
         "full": 15,
-        "lava": false
+        "lava": false,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_gravel_15"
@@ -278,7 +349,8 @@
     {
       "when": {
         "full": 16,
-        "lava": true
+        "lava": true,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_lava_16"
@@ -287,7 +359,8 @@
     {
       "when": {
         "full": 16,
-        "lava": false
+        "lava": false,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_gravel_16"
@@ -296,7 +369,8 @@
     {
       "when": {
         "full": 17,
-        "lava": true
+        "lava": true,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_lava_17"
@@ -305,7 +379,8 @@
     {
       "when": {
         "full": 17,
-        "lava": false
+        "lava": false,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_gravel_17"
@@ -314,7 +389,8 @@
     {
       "when": {
         "full": 18,
-        "lava": true
+        "lava": true,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_lava_18"
@@ -323,7 +399,8 @@
     {
       "when": {
         "full": 18,
-        "lava": false
+        "lava": false,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_gravel_18"
@@ -332,7 +409,8 @@
     {
       "when": {
         "full": 19,
-        "lava": true
+        "lava": true,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_lava_19"
@@ -341,7 +419,8 @@
     {
       "when": {
         "full": 19,
-        "lava": false
+        "lava": false,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_gravel_19"
@@ -350,7 +429,8 @@
     {
       "when": {
         "full": 20,
-        "lava": true
+        "lava": true,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_lava_20"
@@ -359,7 +439,8 @@
     {
       "when": {
         "full": 20,
-        "lava": false
+        "lava": false,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_gravel_20"
@@ -368,7 +449,8 @@
     {
       "when": {
         "full": 21,
-        "lava": true
+        "lava": true,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_lava_21"
@@ -377,7 +459,8 @@
     {
       "when": {
         "full": 21,
-        "lava": false
+        "lava": false,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_gravel_21"
@@ -386,7 +469,8 @@
     {
       "when": {
         "full": 22,
-        "lava": true
+        "lava": true,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_lava_22"
@@ -395,7 +479,8 @@
     {
       "when": {
         "full": 22,
-        "lava": false
+        "lava": false,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_gravel_22"
@@ -404,7 +489,8 @@
     {
       "when": {
         "full": 23,
-        "lava": true
+        "lava": true,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_lava_23"
@@ -413,7 +499,8 @@
     {
       "when": {
         "full": 23,
-        "lava": false
+        "lava": false,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_gravel_23"
@@ -422,7 +509,8 @@
     {
       "when": {
         "full": 24,
-        "lava": true
+        "lava": true,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_lava_24"
@@ -431,7 +519,8 @@
     {
       "when": {
         "full": 24,
-        "lava": false
+        "lava": false,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_gravel_24"
@@ -440,7 +529,8 @@
     {
       "when": {
         "full": 25,
-        "lava": true
+        "lava": true,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_lava_25"
@@ -449,7 +539,8 @@
     {
       "when": {
         "full": 25,
-        "lava": false
+        "lava": false,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_gravel_25"
@@ -458,7 +549,8 @@
     {
       "when": {
         "full": 26,
-        "lava": true
+        "lava": true,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_lava_26"
@@ -467,7 +559,8 @@
     {
       "when": {
         "full": 26,
-        "lava": false
+        "lava": false,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_gravel_26"
@@ -476,7 +569,8 @@
     {
       "when": {
         "full": 27,
-        "lava": true
+        "lava": true,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_lava_27"
@@ -485,7 +579,8 @@
     {
       "when": {
         "full": 27,
-        "lava": false
+        "lava": false,
+        "rotation": "up"
       },
       "apply": {
         "model": "wolves:block/crucible_gravel_27"

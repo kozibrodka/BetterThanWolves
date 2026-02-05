@@ -70,11 +70,11 @@ public class LightBulbBlock extends TemplateBlock
 
     public boolean isEmittingRedstonePower(BlockView iBlockAccess, int i, int j, int k, int l) //isPoweringTo
     {
-//        return ((Minecraft) net.fabricmc.loader.FabricLoader.INSTANCE.getGameInstance()).level.canTransferPower(i, j, k);
+//        return ((Minecraft) net.fabricmc.loader.FabricLoader.INSTANCE.getGameInstance()).level.canTransferPower(x, y, z);
 
-//        return ((MinecraftServer) FabricLoader.getInstance().getGameInstance()).getLevel(0).canTransferPower(i, j, k);
+//        return ((MinecraftServer) FabricLoader.getInstance().getGameInstance()).getLevel(0).canTransferPower(x, y, z);
 //        FabricLoader.getInstance().getGameInstance();
-//        return iBlockAccess.getTileId(i, j, k) == BlockListener.lightBulbOn.id;
+//        return iBlockAccess.getTileId(x, y, z) == BlockListener.lightBulbOn.id;
         switch (FabricLoader.INSTANCE.getEnvironmentType()) {
             case CLIENT -> {
                 return powerClient(iBlockAccess, i, j, k, l);
@@ -98,22 +98,22 @@ public class LightBulbBlock extends TemplateBlock
     }
 
 
-    public int GetFacing(BlockView iBlockAccess, int i, int j, int l) {
+    public int getFacing(BlockView iBlockAccess, int i, int j, int l) {
         return 0;
     }
 
-    public void SetFacing(World world1, int l, int i1, int j1, int k1) {
+    public void setFacing(World world1, int l, int i1, int j1, int k1) {
     }
 
-    public boolean CanRotate(BlockView iBlockAccess, int i, int j, int l) {
+    public boolean canRotate(BlockView iBlockAccess, int i, int j, int l) {
         return false;
     }
 
-    public boolean CanTransmitRotation(BlockView iBlockAccess, int i, int j, int l) {
+    public boolean canTransmitRotation(BlockView iBlockAccess, int i, int j, int l) {
         return true;
     }
 
-    public void Rotate(World world1, int l, int i1, int j1, boolean flag) {
+    public void rotate(World world1, int l, int i1, int j1, boolean flag) {
     }
 
     private void LightBulbTurnOn(World world, int i, int j, int k) {

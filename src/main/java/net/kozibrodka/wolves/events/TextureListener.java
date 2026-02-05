@@ -16,6 +16,8 @@ public class TextureListener {
 
     @EventListener
     public void registerTextures(TextureRegisterEvent event) {
+        final String autoAnvil = "block/auto_anvil/";
+
         gearbox_front = registerBlockTexture("block/fcBlockGearBox_in");
         gearbox_output = registerBlockTexture("block/fcBlockGearBox_out");
         gearbox_side = registerBlockTexture("block/fcBlockGearBox_side");
@@ -77,6 +79,9 @@ public class TextureListener {
         vase_black = registerBlockTexture("block/fcBlockVase_black");
         cauldron_top = registerBlockTexture("block/fcBlockCauldron_top");
         cauldron_side = registerBlockTexture("block/fcBlockCauldron_side");
+        cauldron_side_left = registerBlockTexture("block/fcBlockCauldron_side_left");
+        cauldron_side_right = registerBlockTexture("block/fcBlockCauldron_side_right");
+        cauldron_side_down = registerBlockTexture("block/fcBlockCauldron_side_down");
         cauldron_bottom = registerBlockTexture("block/fcBlockCauldron_down");
         hopper_bottom = registerBlockTexture("block/fcBlockHopper_down");
         hopper_side = registerBlockTexture("block/fcBlockHopper_side");
@@ -111,16 +116,41 @@ public class TextureListener {
         detector_side = registerBlockTexture("block/fcBlockDetector_side");
         detector_top = registerBlockTexture("block/fcBlockDetector_top");
         detector_bottom = registerBlockTexture("block/fcBlockDetector_down");
+        dropper_top = registerBlockTexture("block/dropper_top");
+        dropper_side = registerBlockTexture("block/dropper_side");
+        dropper_bottom = registerBlockTexture("block/dropper_bottom");
+        dropper_bottom_open = registerBlockTexture("block/dropper_bottom_open");
+        conveyor_front = registerBlockTexture("block/conveyor_front");
+        conveyor_back = registerBlockTexture("block/conveyor_back");
+        conveyor_left = registerBlockTexture("block/conveyor_left");
+        conveyor_right = registerBlockTexture("block/conveyor_right");
+        conveyor_up = registerBlockTexture("block/conveyor_up");
+        conveyor_down = registerBlockTexture("block/conveyor_down");
+        conveyor_bottom = registerBlockTexture("block/conveyor_bottom");
+        conveyor_side = registerBlockTexture("block/conveyor_side");
+        conveyor_side_inlet = registerBlockTexture("block/conveyor_side_inlet");
+        conveyor_front_on = registerBlockTexture("block/conveyor_front_on");
+        conveyor_back_on = registerBlockTexture("block/conveyor_back_on");
+        conveyor_left_on = registerBlockTexture("block/conveyor_left_on");
+        conveyor_right_on = registerBlockTexture("block/conveyor_right_on");
+        conveyor_up_on = registerBlockTexture("block/conveyor_up_on");
+        conveyor_down_on = registerBlockTexture("block/conveyor_down_on");
         BlockListener.blockOfGrates.specifyTextures(getBlockTexture("item/fcGrate"));
         BlockListener.collisionBlock.specifyTextures(getBlockTexture("block/blank"));
         BlockListener.obstructionBlock.specifyTextures(getBlockTexture("block/blank"));
         BlockListener.blockOfSteel.specifyTextures(getBlockTexture("block/steel"));
+        BlockListener.automaticAnvil.specifyTextures(getBlockTexture(autoAnvil + "controller"), getBlockTexture(autoAnvil + "side"), getBlockTexture(autoAnvil + "side"));
+        BlockListener.anvilFrame.specifyTextures(getBlockTexture(autoAnvil + "side"));
+        BlockListener.machinePowerInput.specifyTextures(getBlockTexture(autoAnvil + "power_input"), getBlockTexture(autoAnvil + "side"), getBlockTexture(autoAnvil + "side"));
+        BlockListener.inputBus.specifyTextures(getBlockTexture(autoAnvil + "item_input"), getBlockTexture(autoAnvil + "input_bus_side"), getBlockTexture(autoAnvil + "side"));
+        BlockListener.outputBus.specifyTextures(getBlockTexture(autoAnvil + "side"), getBlockTexture(autoAnvil + "output_bus_side"), getBlockTexture(autoAnvil + "item_output"));
 
         ItemListener.bucketCement.setTexture(Identifier.of(NAMESPACE, "item/bucketCement"));
         ItemListener.soulFilter.setTexture(Identifier.of(NAMESPACE, "item/soulFilter"));
         ItemListener.nothing.setTexture(Identifier.of(NAMESPACE, "item/nothing"));
         ItemListener.wickerWeaving.setTexture(Identifier.of(NAMESPACE, "item/wickerWeaving"));
         ItemListener.wickerSheet.setTexture(Identifier.of(NAMESPACE, "item/wickerSheet"));
+        ItemListener.weight.setTexture(Identifier.of(NAMESPACE, "item/weight"));
 
         BlockListener.detectorRailObsidian.asItem().setTextureId(registerBlockTexture("block/fcRailDetector_obsidian"));
         BlockListener.detectorRailWood.asItem().setTextureId(registerBlockTexture("block/fcRailDetector_wood"));
@@ -212,6 +242,9 @@ public class TextureListener {
     public static int vase_black;
     public static int cauldron_top;
     public static int cauldron_side;
+    public static int cauldron_side_left;
+    public static int cauldron_side_right;
+    public static int cauldron_side_down;
     public static int cauldron_bottom;
     public static int hopper_side;
     public static int hopper_top;
@@ -246,4 +279,23 @@ public class TextureListener {
     public static int detector_side;
     public static int detector_top;
     public static int detector_bottom;
+    public static int dropper_top;
+    public static int dropper_side;
+    public static int dropper_bottom;
+    public static int dropper_bottom_open;
+    public static int conveyor_front;
+    public static int conveyor_back;
+    public static int conveyor_left;
+    public static int conveyor_right;
+    public static int conveyor_up;
+    public static int conveyor_down;
+    public static int conveyor_bottom;
+    public static int conveyor_side;
+    public static int conveyor_side_inlet;
+    public static int conveyor_front_on;
+    public static int conveyor_back_on;
+    public static int conveyor_left_on;
+    public static int conveyor_right_on;
+    public static int conveyor_up_on;
+    public static int conveyor_down_on;
 }

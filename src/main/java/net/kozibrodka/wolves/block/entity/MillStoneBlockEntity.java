@@ -35,13 +35,16 @@ import net.modificationstation.stationapi.api.util.Identifier;
 import java.util.List;
 
 
-public class MillStoneBlockEntity extends BlockEntity
-        implements Inventory {
+public class MillStoneBlockEntity extends BlockEntity implements Inventory {
     static boolean isHarderThanWolvesPresent = net.fabricmc.loader.api.FabricLoader.getInstance().isModLoaded("harderthanwolves");
+
+    private ItemStack[] millStoneContents;
+    public int grindCounter;
+    private boolean manuallyPowered = false;
 
     public MillStoneBlockEntity() {
         millStoneContents = new ItemStack[3];
-        iMillStoneGrindCounter = 0;
+        grindCounter = 0;
     }
 
     @Override
@@ -87,8 +90,9 @@ public class MillStoneBlockEntity extends BlockEntity
         }
 
         if (nbttagcompound.contains("grindCounter")) {
-            iMillStoneGrindCounter = nbttagcompound.getInt("grindCounter");
+            grindCounter = nbttagcompound.getInt("grindCounter");
         }
+        manuallyPowered = nbttagcompound.getBoolean("manuallyPowered");
     }
 
     public void writeNbt(NbtCompound nbttagcompound) {
@@ -104,7 +108,8 @@ public class MillStoneBlockEntity extends BlockEntity
         }
 
         nbttagcompound.put("Items", nbttaglist);
-        nbttagcompound.putInt("grindCounter", iMillStoneGrindCounter);
+        nbttagcompound.putInt("grindCounter", grindCounter);
+        nbttagcompound.putBoolean("manuallyPowered", manuallyPowered);
     }
 
     public int getMaxCountPerStack() {
@@ -134,11 +139,11 @@ public class MillStoneBlockEntity extends BlockEntity
     }
 
     public int getGrindProgressScaled(int iScale) {
-        return (iMillStoneGrindCounter * iScale) / 200;
+        return (grindCounter * iScale) / 200;
     }
 
     public boolean IsGrinding() {
-        return iMillStoneGrindCounter > 0;
+        return grindCounter > 0;
     }
 
     public void tick() // updateEntity
@@ -149,13 +154,15 @@ public class MillStoneBlockEntity extends BlockEntity
         int iUnmilledItemIndex = GetUnmilledItemInventoryIndex();
 
         if (iUnmilledItemIndex < 0) {
-            iMillStoneGrindCounter = 0;
+            grindCounter = 0;
             return;
         }
 
-        if (!((MillStoneBlock) BlockListener.millStone).IsBlockOn(world, x, y, z)) return;
+        if (!manuallyPowered) {
+            if (!((MillStoneBlock) BlockListener.millStone).IsBlockOn(world, x, y, z)) return;
+        }
 
-        iMillStoneGrindCounter++;
+        grindCounter++;
 
         Item unmilledItem = millStoneContents[iUnmilledItemIndex].getItem();
 
@@ -189,9 +196,9 @@ public class MillStoneBlockEntity extends BlockEntity
             }
         }
 
-        if (iMillStoneGrindCounter < 200) return;
+        if (grindCounter < 200) return;
 
-        iMillStoneGrindCounter = 0;
+        grindCounter = 0;
 
         ItemStack milledStack = MillingRecipeRegistry.getInstance().getResult(unmilledItemIdentifier);
         if (milledStack != null) {
@@ -217,8 +224,8 @@ public class MillStoneBlockEntity extends BlockEntity
     public void EjectStack(ItemStack stack) {
         BlockPosition targetPos = new BlockPosition(x, y, z);
         int iDirection = 2 + world.random.nextInt(4);
-        targetPos.AddFacingAsOffset(iDirection);
-        UnsortedUtils.ejectStackWithRandomOffset(world, targetPos.i, targetPos.j, targetPos.k, stack);
+        targetPos.addFacingAsOffset(iDirection);
+        UnsortedUtils.ejectStackWithRandomOffset(world, targetPos.x, targetPos.y, targetPos.z, stack);
     }
 
     public boolean AddSingleItemToInventory(int iItemShiftedIndex) {
@@ -340,10 +347,16 @@ public class MillStoneBlockEntity extends BlockEntity
         }
     }
 
+    public void powerManually() {
+        manuallyPowered = true;
+    }
+
+    public void stopPoweringManually() {
+        manuallyPowered = false;
+    }
+
     private final int iMillStoneInventorySize = 3;
     private final int iMillStoneStackSizeLimit = 64;
     private final double dMillStoneMaxPlayerInteractionDist = 64D;
     private final int iMillStoneTimeToGrind = 200;
-    private ItemStack[] millStoneContents;
-    public int iMillStoneGrindCounter;
 }

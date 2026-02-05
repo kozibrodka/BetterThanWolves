@@ -4,11 +4,21 @@ import net.minecraft.world.World;
 
 public interface MechanicalDevice {
 
-    boolean CanOutputMechanicalPower();
+    boolean canOutputMechanicalPower();
 
-    boolean CanInputMechanicalPower();
+    boolean canInputMechanicalPower();
 
-    boolean IsInputtingMechanicalPower(World world, int i, int j, int k);
+    default boolean canInputMechanicalPower(World world, int x, int y, int z, int side) {
+        return canInputMechanicalPower();
+    }
 
-    boolean IsOutputtingMechanicalPower(World world, int i, int j, int k);
+    default boolean isOutputtingMechanicalPower(World world, int x, int y, int z, int side) {
+        return canOutputMechanicalPower();
+    }
+
+    void powerMachine(World world, int x, int y, int z, int side);
+
+    void unpowerMachine(World world, int x, int y, int z, int side);
+
+    boolean isMachinePowered(World world, int x, int y, int z);
 }

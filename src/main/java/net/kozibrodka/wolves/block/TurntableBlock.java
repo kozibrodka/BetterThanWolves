@@ -2,7 +2,6 @@ package net.kozibrodka.wolves.block;
 
 import net.kozibrodka.wolves.block.entity.TurntableBlockEntity;
 import net.kozibrodka.wolves.events.BlockListener;
-import net.kozibrodka.wolves.utils.BlockPosition;
 import net.kozibrodka.wolves.utils.MechanicalDevice;
 import net.kozibrodka.wolves.utils.RotatableBlock;
 import net.minecraft.block.Block;
@@ -35,15 +34,6 @@ public class TurntableBlock extends TemplateBlockWithEntity
         );
     }
 
-//    public int getTextureForSide(int iSide)
-//    {
-//        if(iSide == 0)
-//        {
-//            return TextureListener.turntable_bottom;
-//        }
-//        return iSide != 1 ? TextureListener.turntable_side : TextureListener.turntable_top;
-//    }
-
     public int getTickRate() {
         return iTurntableTickRate;
     }
@@ -62,12 +52,6 @@ public class TurntableBlock extends TemplateBlockWithEntity
     }
 
     public void onTick(World world, int i, int j, int k, Random random) {
-        boolean bReceivingMechanicalPower = IsInputtingMechanicalPower(world, i, j, k);
-        boolean bMechanicalOn = IsBlockMechanicalOn(world, i, j, k);
-        if (bMechanicalOn != bReceivingMechanicalPower) {
-            EmitTurntableParticles(world, i, j, k, random);
-            SetBlockMechanicalOn(world, i, j, k, bReceivingMechanicalPower);
-        }
         boolean bReceivingRedstonePower = world.isStrongPowered(i, j, k);
         boolean bRedstoneOn = IsBlockRedstoneOn(world, i, j, k);
         if (bRedstoneOn != bReceivingRedstonePower) {
@@ -108,22 +92,22 @@ public class TurntableBlock extends TemplateBlockWithEntity
         world.blockUpdateEvent(i, j, k);
     }
 
-    public int GetFacing(BlockView iBlockAccess, int i, int j, int l) {
+    public int getFacing(BlockView iBlockAccess, int i, int j, int l) {
         return 0;
     }
 
-    public void SetFacing(World world1, int l, int i1, int j1, int k1) {
+    public void setFacing(World world1, int l, int i1, int j1, int k1) {
     }
 
-    public boolean CanRotate(BlockView iBlockAccess, int i, int j, int l) {
+    public boolean canRotate(BlockView iBlockAccess, int i, int j, int l) {
         return false;
     }
 
-    public boolean CanTransmitRotation(BlockView iBlockAccess, int i, int j, int l) {
+    public boolean canTransmitRotation(BlockView iBlockAccess, int i, int j, int l) {
         return false;
     }
 
-    public void Rotate(World world1, int l, int i1, int j1, boolean flag) {
+    public void rotate(World world1, int l, int i1, int j1, boolean flag) {
     }
 
     public boolean IsBlockMechanicalOn(World world, int i, int j, int k) {
@@ -162,29 +146,36 @@ public class TurntableBlock extends TemplateBlockWithEntity
 
     }
 
-    public boolean CanOutputMechanicalPower() {
+    public boolean canOutputMechanicalPower() {
         return false;
     }
 
-    public boolean CanInputMechanicalPower() {
+    public boolean canInputMechanicalPower() {
         return true;
     }
 
-    public boolean IsInputtingMechanicalPower(World world, int i, int j, int k) {
-        BlockPosition targetPos = new BlockPosition(i, j, k);
-        targetPos.AddFacingAsOffset(0);
-        int blockId = world.getBlockId(targetPos.i, targetPos.j, targetPos.k);
-        if (blockId == BlockListener.axleBlock.id) {
-            AxleBlock axleBlock = (AxleBlock) BlockListener.axleBlock;
-            return axleBlock.IsAxleOrientedTowardsFacing(world, targetPos.i, targetPos.j, targetPos.k, 0) && axleBlock.GetPowerLevel(world, targetPos.i, targetPos.j, targetPos.k) > 0;
-        }
-        return false;
+    @Override
+    public void powerMachine(World world, int x, int y, int z, int side) {
+        EmitTurntableParticles(world, x, y, z, new Random());
+        SetBlockMechanicalOn(world, x, y, z, true);
     }
 
-    public boolean IsOutputtingMechanicalPower(World world, int i, int j, int l) {
-        return false;
+    @Override
+    public void unpowerMachine(World world, int x, int y, int z, int side) {
+        EmitTurntableParticles(world, x, y, z, new Random());
+        SetBlockMechanicalOn(world, x, y, z, false);
     }
-    
+
+    @Override
+    public boolean isMachinePowered(World world, int x, int y, int z) {
+        return IsBlockMechanicalOn(world, x, y, z);
+    }
+
+    @Override
+    public boolean canInputMechanicalPower(World world, int x, int y, int z, int side) {
+        return side == 0;
+    }
+
     private static final int iTurntableTickRate = 10;
 
     public static final IntProperty CLICK = IntProperty.of("click", 0, 3);

@@ -5,13 +5,16 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
 
 
 public class HopperScreenHandler extends ScreenHandler {
+    private final HopperBlockEntity hopperBlockEntity;
+    private boolean ejecting;
 
     public HopperScreenHandler(Inventory playerinventory, HopperBlockEntity tileentityHopper) {
-        localTileEntityHopper = tileentityHopper;
+        hopperBlockEntity = tileentityHopper;
         for (int iRow = 0; iRow < 2; iRow++) {
             for (int iColumn = 0; iColumn < 9; iColumn++) {
                 addSlot(new Slot(tileentityHopper, iColumn + iRow * 9, 8 + iColumn * 18, 60 + iRow * 18));
@@ -34,7 +37,7 @@ public class HopperScreenHandler extends ScreenHandler {
     }
 
     public boolean canUse(PlayerEntity entityplayer) {
-        return localTileEntityHopper.canPlayerUse(entityplayer);
+        return hopperBlockEntity.canPlayerUse(entityplayer);
     }
 
     public ItemStack getStackInSlot(int iSlotIndex) {
@@ -100,8 +103,22 @@ public class HopperScreenHandler extends ScreenHandler {
         }
     }
 
-    private final int iNumHopperSlotRows = 2;
-    private final int iNumHopperSlotColumns = 9;
-    private final int iNumHopperSlots = 18;
-    private final HopperBlockEntity localTileEntityHopper;
+    @Override
+    public void sendContentUpdates() {
+        super.sendContentUpdates();
+        for (Object listener : this.listeners) {
+            ScreenHandlerListener screenHandlerListener = (ScreenHandlerListener) listener;
+            hopperBlockEntity.updateEjecting();
+            if (hopperBlockEntity.isEjecting() != ejecting) {
+                screenHandlerListener.onPropertyUpdate(this, 0, hopperBlockEntity.isEjecting() ? 1 : 0);
+            }
+        }
+    }
+
+    @Override
+    public void setProperty(int id, int value) {
+        if (id == 0) {
+            hopperBlockEntity.setEjecting(value == 1);
+        }
+    }
 }

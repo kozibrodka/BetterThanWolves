@@ -5,16 +5,19 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.slot.Slot;
 
 
 public class CauldronScreenHandler extends ScreenHandler {
+    private final CauldronBlockEntity cauldronBlockEntity;
+    private int cookProgress;
 
-    public CauldronScreenHandler(Inventory playerinventory, CauldronBlockEntity tileentitycauldron) {
-        localTileEntityCauldron = tileentitycauldron;
+    public CauldronScreenHandler(Inventory playerinventory, CauldronBlockEntity cauldronBlockEntity) {
+        this.cauldronBlockEntity = cauldronBlockEntity;
         for (int iRow = 0; iRow < 3; iRow++) {
             for (int iColumn = 0; iColumn < 9; iColumn++) {
-                addSlot(new Slot(tileentitycauldron, iColumn + iRow * 9, 8 + iColumn * 18, 43 + iRow * 18));
+                addSlot(new Slot(cauldronBlockEntity, iColumn + iRow * 9, 8 + iColumn * 18, 43 + iRow * 18));
             }
 
         }
@@ -33,7 +36,7 @@ public class CauldronScreenHandler extends ScreenHandler {
     }
 
     public boolean canUse(PlayerEntity entityplayer) {
-        return localTileEntityCauldron.canPlayerUse(entityplayer);
+        return cauldronBlockEntity.canPlayerUse(entityplayer);
     }
 
     public ItemStack getStackInSlot(int iSlotIndex) {
@@ -99,8 +102,23 @@ public class CauldronScreenHandler extends ScreenHandler {
         }
     }
 
-    private final int iNumCauldronSlotRows = 3;
-    private final int iNumCauldronSlotColumns = 9;
-    private final int iNumCauldronSlots = 27;
-    private final CauldronBlockEntity localTileEntityCauldron;
+    @Override
+    public void sendContentUpdates() {
+        super.sendContentUpdates();
+        for (Object listener : this.listeners) {
+            ScreenHandlerListener screenHandlerListener = (ScreenHandlerListener) listener;
+            if (cookProgress != cauldronBlockEntity.cauldronCookCounter) {
+                screenHandlerListener.onPropertyUpdate(this, 0, cauldronBlockEntity.cauldronCookCounter);
+            }
+        }
+
+        cookProgress = cauldronBlockEntity.cauldronCookCounter;
+    }
+
+    @Override
+    public void setProperty(int id, int value) {
+        if (id == 0) {
+            cauldronBlockEntity.cauldronCookCounter = cookProgress;
+        }
+    }
 }

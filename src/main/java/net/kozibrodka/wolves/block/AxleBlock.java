@@ -5,10 +5,11 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ItemListener;
-import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.utils.BlockPosition;
+import net.kozibrodka.wolves.utils.MechanicalDevice;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
@@ -25,8 +26,8 @@ import java.util.Random;
 
 public class AxleBlock extends TemplateBlock {
 
-    public AxleBlock(Identifier iid) {
-        super(iid, Material.WOOD);
+    public AxleBlock(Identifier id) {
+        super(id, Material.WOOD);
         setHardness(2.0F);
         setSoundGroup(WOOD_SOUND_GROUP);
     }
@@ -43,35 +44,58 @@ public class AxleBlock extends TemplateBlock {
         return false;
     }
 
-    public void onPlaced(World world, int i, int j, int k, int iFacing) {
-        SetAxisAlignmentBasedOnFacing(world, i, j, k, iFacing);
+    public void onPlaced(World world, int x, int y, int z, int facing) {
+        setAxisAlignmentBasedOnFacing(world, x, y, z, facing);
     }
 
-    public void onPlaced(World world, int i, int j, int k) {
-        super.onPlaced(world, i, j, k);
-        SetPowerLevel(world, i, j, k, 0);
-        world.scheduleBlockUpdate(i, j, k, BlockListener.axleBlock.id, getTickRate());
+    public void onPlaced(World world, int x, int y, int z) {
+        super.onPlaced(world, x, y, z);
+        validatePowerLevel(world, x, y, z);
+        world.scheduleBlockUpdate(x, y, z, BlockListener.axleBlock.id, getTickRate());
+        world.notifyNeighbors(x, y, z, world.getBlockId(x, y, z));
     }
 
-    public void onTick(World world, int i, int j, int k, Random random) {
-        ValidatePowerLevel(world, i, j, k);
+    @Override
+    public void onBreak(World world, int x, int y, int z) {
+        super.onBreak(world, x, y, z);
+        BlockPosition[] potentialMachines = getConnectionCandidates(world, x, y, z);
+        int axis = getAxisAlignment(world, x, y, z);
+        updateAdjacentMachine(world, potentialMachines[0], axis * 2 + 1, false);
+        updateAdjacentMachine(world, potentialMachines[1], axis * 2, false);
     }
 
-    public Box getCollisionShape(World world, int i, int j, int k) {
-        int iAxis = getAxisAlignment(world, i, j, k);
-        switch (iAxis) {
-            case 0: // '\0'
-                return Box.createCached(((float) i + 0.5F) - 0.125F, (float) j, ((float) k + 0.5F) - 0.125F, (float) i + 0.5F + 0.125F, (float) j + 1.0F, (float) k + 0.5F + 0.125F);
-
-            case 1: // '\001'
-                return Box.createCached(((float) i + 0.5F) - 0.125F, ((float) j + 0.5F) - 0.125F, (float) k, (float) i + 0.5F + 0.125F, (float) j + 0.5F + 0.125F, (float) k + 1.0F);
+    public void onTick(World world, int x, int y, int z, Random random) {
+        BlockPosition[] potentialSources = getConnectionCandidates(world, x, y, z);
+        int axis = getAxisAlignment(world, x, y, z);
+        int powerSourceCount = 0;
+        if (isProvidingPower(world, potentialSources[0], axis * 2 + 1)) {
+            powerSourceCount++;
         }
-        return Box.createCached((float) i, ((float) j + 0.5F) - 0.125F, ((float) k + 0.5F) - 0.125F, (float) i + 1.0F, (float) j + 0.5F + 0.125F, (float) k + 0.5F + 0.125F);
+        if (isProvidingPower(world, potentialSources[1], axis * 2)) {
+            powerSourceCount++;
+        }
+        if (powerSourceCount > 1) {
+            breakAxle(world, x, y, z);
+        } else if (powerSourceCount == 1) {
+            setPowerLevel(world, x, y, z, 3);
+        }
     }
 
-    public void updateBoundingBox(BlockView iBlockAccess, int i, int j, int k) {
-        int iAxis = getAxisAlignment(iBlockAccess, i, j, k);
-        switch (iAxis) {
+    public Box getCollisionShape(World world, int x, int y, int z) {
+        int axis = getAxisAlignment(world, x, y, z);
+        return switch (axis) {
+            case 0 -> // '\0'
+                    Box.createCached(((float) x + 0.5F) - 0.125F, (float) y, ((float) z + 0.5F) - 0.125F, (float) x + 0.5F + 0.125F, (float) y + 1.0F, (float) z + 0.5F + 0.125F);
+            case 1 -> // '\001'
+                    Box.createCached(((float) x + 0.5F) - 0.125F, ((float) y + 0.5F) - 0.125F, (float) z, (float) x + 0.5F + 0.125F, (float) y + 0.5F + 0.125F, (float) z + 1.0F);
+            default ->
+                    Box.createCached((float) x, ((float) y + 0.5F) - 0.125F, ((float) z + 0.5F) - 0.125F, (float) x + 1.0F, (float) y + 0.5F + 0.125F, (float) z + 0.5F + 0.125F);
+        };
+    }
+
+    public void updateBoundingBox(BlockView blockView, int x, int y, int z) {
+        int axis = getAxisAlignment(blockView, x, y, z);
+        switch (axis) {
             case 0: // '\0'
                 setBoundingBox(0.375F, 0.0F, 0.375F, 0.625F, 1.0F, 0.625F);
                 break;
@@ -86,78 +110,83 @@ public class AxleBlock extends TemplateBlock {
         }
     }
 
-    public void neighborUpdate(World world, int i, int j, int k, int iid) {
-        ValidatePowerLevel(world, i, j, k);
-        world.scheduleBlockUpdate(i, j, k, id, getTickRate());
+    public void neighborUpdate(World world, int x, int y, int z, int id) {
+        validatePowerLevel(world, x, y, z);
+        int powerLevel = getPowerLevel(world, x, y, z);
+        if (powerLevel <= 0) {
+            return;
+        }
+        if (id == 0) {
+            return;
+        }
+        updatePotentialMachines(world, x, y, z, powerLevel);
     }
 
-    public void randomDisplayTick(World world, int i, int j, int k, Random random) {
-        if (GetPowerLevel(world, i, j, k) > 0) {
-            EmitAxleParticles(world, i, j, k, random);
+    public void randomDisplayTick(World world, int x, int y, int z, Random random) {
+        if (getPowerLevel(world, x, y, z) > 0) {
+            emitAxleParticles(world, x, y, z, random);
         }
     }
 
-    public int getAxisAlignment(BlockView iBlockAccess, int i, int j, int k) {
-        return iBlockAccess.getBlockMeta(i, j, k) >> 2;
+    public int getAxisAlignment(BlockView blockView, int x, int y, int z) {
+        return blockView.getBlockMeta(x, y, z) >> 2;
     }
 
-    public void SetAxisAlignmentBasedOnFacing(World world, int i, int j, int k, int iFacing) {
-        int iAxis;
-        switch (iFacing) {
-            case 0: // '\0'
-            case 1: // '\001'
-                iAxis = 0;
-                break;
-
-            case 2: // '\002'
-            case 3: // '\003'
-                iAxis = 1;
-                break;
-
-            default:
-                iAxis = 2;
-                break;
-        }
-        int iMetaData = world.getBlockMeta(i, j, k) & 3;
-        iMetaData |= iAxis << 2;
-        world.setBlockMeta(i, j, k, iMetaData);
-        world.blockUpdateEvent(i, j, k);
+    public void setAxisAlignmentBasedOnFacing(World world, int x, int y, int z, int facing) {
+        int axis = switch (facing) { // '\0'
+            case 0, 1 -> // '\001'
+                    0; // '\002'
+            case 2, 3 -> // '\003'
+                    1;
+            default -> 2;
+        };
+        int metadata = world.getBlockMeta(x, y, z) & 3;
+        metadata |= axis << 2;
+        world.setBlockMeta(x, y, z, metadata);
+        world.blockUpdateEvent(x, y, z);
     }
 
-    public int GetPowerLevel(BlockView iBlockAccess, int i, int j, int k) {
-        return iBlockAccess.getBlockMeta(i, j, k) & 3;
+    public int getPowerLevel(BlockView blockView, int x, int y, int z) {
+        return blockView.getBlockMeta(x, y, z) & 3;
     }
 
-    public void SetPowerLevel(World world, int i, int j, int k, int iPowerLevel) {
+    public void setPowerLevel(World world, int x, int y, int z, int powerLevel) {
         if (world.isRemote) {
             return;
             //TODO: Maybe more of those conditions in other blocks
         }
-        iPowerLevel &= 3;
-        int iMetaData = world.getBlockMeta(i, j, k) & 0xc;
-        iMetaData |= iPowerLevel;
-        world.setBlockMeta(i, j, k, iMetaData);
-        world.blockUpdateEvent(i, j, k);
-//        world.method_202(i, j, k, i, j, k);
+        powerLevel &= 3;
+        int metadata = world.getBlockMeta(x, y, z) & 0xc;
+        metadata |= powerLevel;
+        world.setBlockMeta(x, y, z, metadata);
+        world.blockUpdateEvent(x, y, z);
+        updatePotentialMachines(world, x, y, z, powerLevel);
     }
 
-    public boolean IsAxleOrientedTowardsFacing(BlockView iBlockAccess, int i, int j, int k, int iFacing) {
-        int iAxis = getAxisAlignment(iBlockAccess, i, j, k);
-        switch (iAxis) {
+    private void updatePotentialMachines(World world, int x, int y, int z, int powerLevel) {
+        BlockPosition[] potentialMachines = getConnectionCandidates(world, x, y, z);
+        int axis = getAxisAlignment(world, x, y, z);
+        updateAdjacentMachine(world, potentialMachines[0], axis * 2 + 1, powerLevel > 0);
+        updateAdjacentMachine(world, potentialMachines[1], axis * 2, powerLevel > 0);
+    }
+
+    public boolean isAxleOrientedTowardsFacing(BlockView blockView, int x, int y, int z, int facing) {
+        int axis = getAxisAlignment(blockView, x, y, z);
+        switch (axis) {
             case 0: // '\0'
-                if (iFacing == 0 || iFacing == 1) {
+                if (facing == 0 || facing == 1) {
                     return true;
                 }
                 break;
 
             case 1: // '\001'
-                if (iFacing == 2 || iFacing == 3) {
+                if (facing == 2 || facing == 3) {
                     return true;
                 }
                 break;
 
             default:
-                if (iFacing == 4 || iFacing == 5) {
+                if (facing == 4 || facing == 5) {
                     return true;
                 }
                 break;
@@ -165,21 +194,21 @@ public class AxleBlock extends TemplateBlock {
         return false;
     }
 
-    public void BreakAxle(World world, int i, int j, int k) {
-        if (world.getBlockId(i, j, k) == BlockListener.axleBlock.id || world.getBlockId(i, j, k) == BlockListener.nonCollidingAxleBlock.id) {
-            for (int iTemp = 0; iTemp < 5; iTemp++) {
-                UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, ItemListener.hempFibers.id, 0);
+    public void breakAxle(World world, int x, int y, int z) {
+        if (world.getBlockId(x, y, z) == BlockListener.axleBlock.id || world.getBlockId(x, y, z) == BlockListener.nonCollidingAxleBlock.id) {
+            for (int drops = 0; drops < 5; drops++) {
+                UnsortedUtils.EjectSingleItemWithRandomOffset(world, x, y, z, ItemListener.hempFibers.id, 0);
             }
 
-            for (int iTemp = 0; iTemp < 2; iTemp++) {
-                UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, Item.STICK.id, 0);
+            for (int drops = 0; drops < 2; drops++) {
+                UnsortedUtils.EjectSingleItemWithRandomOffset(world, x, y, z, Item.STICK.id, 0);
             }
 
-            world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "random.explode", 0.2F, 1.25F);
+            world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.explode", 0.2F, 1.25F);
             if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                voicePacket(world, "random.explode", i, j, k, 0.2F, 1.25F);
+                voicePacket(world, "random.explode", x, y, z, 0.2F, 1.25F);
             }
-            world.setBlock(i, j, k, 0);
+            world.setBlock(x, y, z, 0);
         }
     }
 
@@ -194,117 +223,174 @@ public class AxleBlock extends TemplateBlock {
         }
     }
 
-    private void ValidatePowerLevel(World world, int i, int j, int k) {
-        int currentPower = GetPowerLevel(world, i, j, k);
-        int axis = getAxisAlignment(world, i, j, k);
-        if (currentPower != 3) {
-            BlockPosition[] potentialSources = new BlockPosition[2];
-            potentialSources[0] = new BlockPosition(i, j, k);
-            potentialSources[1] = new BlockPosition(i, j, k);
-            switch (axis) {
-                case 0: // '\0'
-                    potentialSources[0].AddFacingAsOffset(0);
-                    potentialSources[1].AddFacingAsOffset(1);
-                    break;
-                case 1: // '\001'
-                    potentialSources[0].AddFacingAsOffset(2);
-                    potentialSources[1].AddFacingAsOffset(3);
-                    break;
-                default:
-                    potentialSources[0].AddFacingAsOffset(4);
-                    potentialSources[1].AddFacingAsOffset(5);
-                    break;
+    /**
+     * Check if adjacent axles have power and handle the situation.
+     * @param world World the block is in.
+     * @param x x coordinate of the block.
+     * @param y y coordinate of the block.
+     * @param z z coordinate of the block.
+     */
+    private void validatePowerLevel(World world, int x, int y, int z) {
+        int currentPower = getPowerLevel(world, x, y, z);
+        int axis = getAxisAlignment(world, x, y, z);
+        // Skip if the axle already is fully powered
+        if (currentPower == 3) {
+            return;
+        }
+        // Determine power source locations based on axis
+        BlockPosition[] potentialSources = getConnectionCandidates(world, x, y, z);
+        // Check both sources for power
+        int maxNeighborPower = 0;
+        int greaterPowerNeighbors = 0;
+        for (int tempSource = 0; tempSource < 2; tempSource++) {
+            // Skip if source is not an axle
+            int tempId = world.getBlockId(potentialSources[tempSource].x, potentialSources[tempSource].y, potentialSources[tempSource].z);
+            if (tempId != BlockListener.axleBlock.id && tempId != BlockListener.nonCollidingAxleBlock.id) {
+                continue;
             }
-            int maxNeighborPower = 0;
-            int greaterPowerNeighbors = 0;
-            for (int tempSource = 0; tempSource < 2; tempSource++) {
-                int tempId = world.getBlockId(potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
-                if (tempId != BlockListener.axleBlock.id && tempId != BlockListener.nonCollidingAxleBlock.id) {
-                    continue;
-                }
-                int tempAxis = getAxisAlignment(world, potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
-                if (tempAxis != axis) {
-                    continue;
-                }
-                int tempPowerLevel = GetPowerLevel(world, potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
-                if (tempPowerLevel > maxNeighborPower) {
-                    maxNeighborPower = tempPowerLevel;
-                }
-                if (tempPowerLevel > currentPower) {
-                    greaterPowerNeighbors++;
-                }
+            // Skip if other axle is misaligned
+            int tempAxis = getAxisAlignment(world, potentialSources[tempSource].x, potentialSources[tempSource].y, potentialSources[tempSource].z);
+            if (tempAxis != axis) {
+                continue;
             }
-
-            if (greaterPowerNeighbors >= 2) {
-                BreakAxle(world, i, j, k);
+            // Determine most powerful neighbour
+            int tempPowerLevel = getPowerLevel(world, potentialSources[tempSource].x, potentialSources[tempSource].y, potentialSources[tempSource].z);
+            if (tempPowerLevel > maxNeighborPower) {
+                maxNeighborPower = tempPowerLevel;
+            }
+            // Calculate amount of neighbours with more power than the axle itself
+            if (tempPowerLevel > currentPower) {
+                greaterPowerNeighbors++;
+            }
+        }
+        // Break axle and stop validation if two neighbours have more power
+        if (greaterPowerNeighbors >= 2) {
+            breakAxle(world, x, y, z);
+            return;
+        }
+        // Check if axle branch is too long
+        int newPower;
+        if (maxNeighborPower > currentPower) {
+            if (maxNeighborPower == 1) {
+                breakAxle(world, x, y, z);
                 return;
             }
-            int newPower = currentPower;
-            if (maxNeighborPower > currentPower) {
-                if (maxNeighborPower == 1) {
-                    BreakAxle(world, i, j, k);
-                    return;
-                }
-                newPower = maxNeighborPower - 1;
-            } else {
-                newPower = 0;
+            newPower = maxNeighborPower - 1;
+        } else {
+            newPower = 0;
+        }
+        // Change power level if it is different to the old one
+        if (newPower != currentPower) {
+            setPowerLevel(world, x, y, z, newPower);
+        }
+    }
+
+    private BlockPosition[] getConnectionCandidates(World world, int x, int y, int z) {
+        int axis = getAxisAlignment(world, x, y, z);
+        BlockPosition[] connectionCandidates = new BlockPosition[2];
+        connectionCandidates[0] = new BlockPosition(x, y, z);
+        connectionCandidates[1] = new BlockPosition(x, y, z);
+        switch (axis) {
+            case 0: // '\0'
+                connectionCandidates[0].addFacingAsOffset(0);
+                connectionCandidates[1].addFacingAsOffset(1);
+                break;
+            case 1: // '\001'
+                connectionCandidates[0].addFacingAsOffset(2);
+                connectionCandidates[1].addFacingAsOffset(3);
+                break;
+            default:
+                connectionCandidates[0].addFacingAsOffset(4);
+                connectionCandidates[1].addFacingAsOffset(5);
+                break;
+        }
+        return connectionCandidates;
+    }
+
+    private void updateAdjacentMachine(World world, BlockPosition potentialMachine, int side, boolean powered) {
+        int x = potentialMachine.x;
+        int y = potentialMachine.y;
+        int z = potentialMachine.z;
+        int machineId = world.getBlockId(x, y, z);
+        if (machineId == 0) {
+            return;
+        }
+        Block machineBlock = Block.BLOCKS[machineId];
+        if (machineBlock instanceof MechanicalDevice device) {
+            if (!device.canInputMechanicalPower(world, x, y, z, side)) {
+                return;
             }
-            if (newPower != currentPower) {
-//                System.out.println("ZNIAMIA");
-                SetPowerLevel(world, i, j, k, newPower);
-//                world.method_243(i, j, k);
-//                world.method_202(i, j, k, i, j, k);
+            boolean isMachinePowered = device.isMachinePowered(world, x, y, z);
+            if (powered && !isMachinePowered) {
+                device.powerMachine(world, x, y, z, side);
+            } else if (!powered && isMachinePowered) {
+                device.unpowerMachine(world, x, y, z, side);
             }
         }
     }
 
-    private void EmitAxleParticles(World world, int i, int j, int k, Random random) {
+    private boolean isProvidingPower(World world, BlockPosition potentialSource, int side) {
+        int x = potentialSource.x;
+        int y = potentialSource.y;
+        int z = potentialSource.z;
+        int machineId = world.getBlockId(x, y, z);
+        if (machineId == 0) {
+            return false;
+        }
+        Block machineBlock = Block.BLOCKS[machineId];
+        if (machineBlock instanceof MechanicalDevice device) {
+            return device.isOutputtingMechanicalPower(world, x, y, z, side);
+        }
+        return false;
+    }
+
+    private void emitAxleParticles(World world, int x, int y, int z, Random random) {
         for (int counter = 0; counter < 2; counter++) {
-            float smokeX = (float) i + random.nextFloat();
-            float smokeY = (float) j + random.nextFloat() * 0.5F + 0.625F;
-            float smokeZ = (float) k + random.nextFloat();
+            float smokeX = (float) x + random.nextFloat();
+            float smokeY = (float) y + random.nextFloat() * 0.5F + 0.625F;
+            float smokeZ = (float) z + random.nextFloat();
             world.addParticle("smoke", smokeX, smokeY, smokeZ, 0.0D, 0.0D, 0.0D);
         }
 
     }
 
-    public void Overpower(World world, int i, int j, int k) {
-        int iCurrentPower = GetPowerLevel(world, i, j, k);
-        int iAxis = getAxisAlignment(world, i, j, k);
+    public void overpower(World world, int x, int y, int z) {
+        int currentPower = getPowerLevel(world, x, y, z);
+        int axis = getAxisAlignment(world, x, y, z);
         BlockPosition[] potentialSources = new BlockPosition[2];
-        potentialSources[0] = new BlockPosition(i, j, k);
-        potentialSources[1] = new BlockPosition(i, j, k);
-        switch (iAxis) {
+        potentialSources[0] = new BlockPosition(x, y, z);
+        potentialSources[1] = new BlockPosition(x, y, z);
+        switch (axis) {
             case 0: // '\0'
-                potentialSources[0].AddFacingAsOffset(0);
-                potentialSources[1].AddFacingAsOffset(1);
+                potentialSources[0].addFacingAsOffset(0);
+                potentialSources[1].addFacingAsOffset(1);
                 break;
 
             case 1: // '\001'
-                potentialSources[0].AddFacingAsOffset(2);
-                potentialSources[1].AddFacingAsOffset(3);
+                potentialSources[0].addFacingAsOffset(2);
+                potentialSources[1].addFacingAsOffset(3);
                 break;
 
             default:
-                potentialSources[0].AddFacingAsOffset(4);
-                potentialSources[1].AddFacingAsOffset(5);
+                potentialSources[0].addFacingAsOffset(4);
+                potentialSources[1].addFacingAsOffset(5);
                 break;
         }
         for (int tempSource = 0; tempSource < 2; tempSource++) {
-            int iTempid = world.getBlockId(potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
-            if (iTempid == BlockListener.axleBlock.id || iTempid == BlockListener.nonCollidingAxleBlock.id) {
-                int iTempAxis = getAxisAlignment(world, potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
-                if (iTempAxis != iAxis) {
+            int tempId = world.getBlockId(potentialSources[tempSource].x, potentialSources[tempSource].y, potentialSources[tempSource].z);
+            if (tempId == BlockListener.axleBlock.id || tempId == BlockListener.nonCollidingAxleBlock.id) {
+                int tempAxis = getAxisAlignment(world, potentialSources[tempSource].x, potentialSources[tempSource].y, potentialSources[tempSource].z);
+                if (tempAxis != axis) {
                     continue;
                 }
-                int iTempPowerLevel = GetPowerLevel(world, potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
-                if (iTempPowerLevel < iCurrentPower) {
-                    Overpower(world, potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
+                int tempPowerLevel = getPowerLevel(world, potentialSources[tempSource].x, potentialSources[tempSource].y, potentialSources[tempSource].z);
+                if (tempPowerLevel < currentPower) {
+                    overpower(world, potentialSources[tempSource].x, potentialSources[tempSource].y, potentialSources[tempSource].z);
                 }
                 continue;
             }
-            if (iTempid == BlockListener.gearBox.id) {
-                ((GearboxBlock) BlockListener.gearBox).Overpower(world, potentialSources[tempSource].i, potentialSources[tempSource].j, potentialSources[tempSource].k);
+            if (tempId == BlockListener.gearBox.id) {
+                ((GearboxBlock) BlockListener.gearBox).overpower(world, potentialSources[tempSource].x, potentialSources[tempSource].y, potentialSources[tempSource].z);
             }
         }
 

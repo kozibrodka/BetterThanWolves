@@ -86,22 +86,22 @@ public class UnfiredPotteryBlock extends TemplateBlockWithEntity
         return new UnfiredPotteryBlockEntity();
     }
 
-    public int GetFacing(BlockView iBlockAccess, int i, int j, int l) {
+    public int getFacing(BlockView iBlockAccess, int i, int j, int l) {
         return 0;
     }
 
-    public void SetFacing(World world1, int l, int i1, int j1, int k1) {
+    public void setFacing(World world1, int l, int i1, int j1, int k1) {
     }
 
-    public boolean CanRotate(BlockView iBlockAccess, int i, int j, int l) {
+    public boolean canRotate(BlockView iBlockAccess, int i, int j, int l) {
         return false;
     }
 
-    public boolean CanTransmitRotation(BlockView iBlockAccess, int i, int j, int l) {
+    public boolean canTransmitRotation(BlockView iBlockAccess, int i, int j, int l) {
         return false;
     }
 
-    public void Rotate(World world1, int l, int i1, int j1, boolean flag) {
+    public void rotate(World world1, int l, int i1, int j1, boolean flag) {
     }
 
     public void Cook(World world, int i, int j, int k) {

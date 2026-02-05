@@ -77,8 +77,8 @@ public class DetectorBlock extends TemplateBlock {
             }
         }
         BlockPosition tempPos = new BlockPosition(x, y, z);
-        tempPos.AddFacingAsOffset(getFacing(level, x, y, z));
-        List list = level.collectEntitiesByClass(Entity.class, Box.createCached(tempPos.i, tempPos.j, tempPos.k, 1 + tempPos.i, 1 + tempPos.j, 1 + tempPos.k));
+        tempPos.addFacingAsOffset(getFacing(level, x, y, z));
+        List list = level.collectEntitiesByClass(Entity.class, Box.createCached(tempPos.x, tempPos.y, tempPos.z, 1 + tempPos.x, 1 + tempPos.y, 1 + tempPos.z));
         if (list == null) {
             deactivateDetector(level, x, y, z);
             return;
@@ -145,8 +145,8 @@ public class DetectorBlock extends TemplateBlock {
 
     private boolean isObstructed(World level, int x, int y, int z) {
         BlockPosition tempPos = new BlockPosition(x, y, z);
-        tempPos.AddFacingAsOffset(getFacing(level, x, y, z));
-        return level.getBlockId(tempPos.i, tempPos.j, tempPos.k) != 0;
+        tempPos.addFacingAsOffset(getFacing(level, x, y, z));
+        return level.getBlockId(tempPos.x, tempPos.y, tempPos.z) != 0;
     }
 
     @Override

@@ -11,12 +11,13 @@ import net.fabricmc.api.EnvironmentInterface;
 import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.block.entity.CrucibleBlockEntity;
 import net.kozibrodka.wolves.container.CrucibleScreenHandler;
-import net.kozibrodka.wolves.events.ScreenHandlerListener;
+import net.kozibrodka.wolves.events.BlockEntityListener;
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
-import net.kozibrodka.wolves.network.ScreenPacket;
 import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.utils.CustomBlockRendering;
 import net.kozibrodka.wolves.utils.InventoryHandler;
+import net.kozibrodka.wolves.utils.MechanicalDevice;
 import net.kozibrodka.wolves.utils.RotatableBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
@@ -36,15 +37,17 @@ import net.modificationstation.stationapi.api.gui.screen.container.GuiHelper;
 import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import net.modificationstation.stationapi.api.state.StateManager;
 import net.modificationstation.stationapi.api.state.property.BooleanProperty;
+import net.modificationstation.stationapi.api.state.property.DirectionProperty;
 import net.modificationstation.stationapi.api.state.property.IntProperty;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockWithEntity;
 import net.modificationstation.stationapi.api.util.Identifier;
+import net.modificationstation.stationapi.api.util.math.Direction;
 
 import java.util.List;
 
 @EnvironmentInterface(value = EnvType.CLIENT, itf = BlockWithInventoryRenderer.class)
 public class CrucibleBlock extends TemplateBlockWithEntity
-        implements RotatableBlock, BlockWithInventoryRenderer {
+        implements RotatableBlock, BlockWithInventoryRenderer, MechanicalDevice {
 
     public CrucibleBlock(Identifier iid) {
         super(iid, Material.GLASS);
@@ -53,6 +56,7 @@ public class CrucibleBlock extends TemplateBlockWithEntity
         setDefaultState(getDefaultState()
                 .with(LAVA, false)
                 .with(FULL, 0)
+                .with(ROTATION, Direction.UP)
         );
     }
 
@@ -71,15 +75,9 @@ public class CrucibleBlock extends TemplateBlockWithEntity
         return i != 1 ? TextureListener.crucible_side : TextureListener.crucible_top;
     }
 
-    public boolean onUse(World world, int i, int j, int k, PlayerEntity entityPlayer) {
-        CrucibleBlockEntity tileEntityCrucible = (CrucibleBlockEntity) world.getBlockEntity(i, j, k);
-        ScreenHandlerListener.TempGuiX = i;
-        ScreenHandlerListener.TempGuiY = j;
-        ScreenHandlerListener.TempGuiZ = k;
-        if (world.isRemote) {
-            PacketHelper.send(new ScreenPacket("crucible", 0, i, j, k));
-        }
-        GuiHelper.openGUI(entityPlayer, Identifier.of("wolves:openCrucible"), tileEntityCrucible, new CrucibleScreenHandler(entityPlayer.inventory, tileEntityCrucible));
+    public boolean onUse(World world, int x, int y, int z, PlayerEntity playerEntity) {
+        CrucibleBlockEntity crucibleBlockEntity = (CrucibleBlockEntity) world.getBlockEntity(x, y, z);
+        GuiHelper.openGUI(playerEntity, Identifier.of(BlockEntityListener.NAMESPACE, "openCrucible"), crucibleBlockEntity, new CrucibleScreenHandler(playerEntity.inventory, crucibleBlockEntity));
         return true;
     }
 
@@ -98,29 +96,34 @@ public class CrucibleBlock extends TemplateBlockWithEntity
         return Box.createCached(i, j, k, i + 1, (double) j + 0.99000000953674316D, (double) k + 1.0D);
     }
 
-    public void onEntityCollision(World world, int i, int j, int k, Entity entity) {
+    public void onEntityCollision(World world, int x, int y, int z, Entity entity) {
+        BlockState currentState = world.getBlockState(x, y, z);
+        Direction currentDirection = currentState.get(ROTATION);
+        if (currentDirection != Direction.UP) {
+            return;
+        }
         List collisionList = null;
-        collisionList = world.collectEntitiesByClass(ItemEntity.class, Box.createCached((float) i, (double) (float) j + 0.99000000953674316D, (float) k, (float) (i + 1), (double) (float) j + 0.99000000953674316D + 0.05000000074505806D, (float) (k + 1)));
+        collisionList = world.collectEntitiesByClass(ItemEntity.class, Box.createCached((float) x, (double) (float) y + 0.99000000953674316D, (float) z, (float) (x + 1), (double) (float) y + 0.99000000953674316D + 0.05000000074505806D, (float) (z + 1)));
         if (collisionList != null && collisionList.size() > 0) {
-            CrucibleBlockEntity tileEntityCrucible = (CrucibleBlockEntity) world.getBlockEntity(i, j, k);
+            CrucibleBlockEntity tileEntityCrucible = (CrucibleBlockEntity) world.getBlockEntity(x, y, z);
             for (int listIndex = 0; listIndex < collisionList.size(); listIndex++) {
                 ItemEntity targetEntityItem = (ItemEntity) collisionList.get(listIndex);
                 if (targetEntityItem.dead) {
                     continue;
                 }
                 if (InventoryHandler.addItemInstanceToInventory(tileEntityCrucible, targetEntityItem.stack)) {
-                    world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "random.pop", 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                    world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.pop", 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                     if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                        voicePacket(world, "random.pop", i, j, k, 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                        voicePacket(world, "random.pop", x, y, z, 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                     }
                     targetEntityItem.markDead();
                     continue;
                 }
-                int iBlockAboveID = world.getBlockId(i, j + 1, k);
+                int iBlockAboveID = world.getBlockId(x, y + 1, z);
                 if (iBlockAboveID != Block.FLOWING_WATER.id && iBlockAboveID != Block.WATER.id) {
                     continue;
                 }
-                double fFullBoxTop = (double) j + 1.05D;
+                double fFullBoxTop = (double) y + 1.05D;
                 if (targetEntityItem.boundingBox.minY < fFullBoxTop) {
                     double offset = fFullBoxTop - targetEntityItem.boundingBox.minY;
                     targetEntityItem.setPosition(targetEntityItem.x, targetEntityItem.y + offset, targetEntityItem.z);
@@ -141,22 +144,22 @@ public class CrucibleBlock extends TemplateBlockWithEntity
         }
     }
 
-    public int GetFacing(BlockView iBlockAccess, int i, int j, int l) {
+    public int getFacing(BlockView iBlockAccess, int i, int j, int l) {
         return 0;
     }
 
-    public void SetFacing(World world1, int l, int i1, int j1, int k1) {
+    public void setFacing(World world1, int l, int i1, int j1, int k1) {
     }
 
-    public boolean CanRotate(BlockView iBlockAccess, int i, int j, int l) {
+    public boolean canRotate(BlockView iBlockAccess, int i, int j, int l) {
         return false;
     }
 
-    public boolean CanTransmitRotation(BlockView iBlockAccess, int i, int j, int l) {
+    public boolean canTransmitRotation(BlockView iBlockAccess, int i, int j, int l) {
         return false;
     }
 
-    public void Rotate(World world1, int l, int i1, int j1, boolean flag) {
+    public void rotate(World world1, int l, int i1, int j1, boolean flag) {
     }
 
     public static final float m_fCrucibleHeight = 1F;
@@ -232,16 +235,18 @@ public class CrucibleBlock extends TemplateBlockWithEntity
         setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
     }
 
-    public void SetHasFull(World world, int i, int j, int k, int slots) {
-        BlockEntity tileEntityBase = world.getBlockEntity(i, j, k);
+    public void SetHasFull(World world, int x, int y, int z, int slots) {
+        BlockEntity tileEntityBase = world.getBlockEntity(x, y, z);
         SETTING_TILE = true;
 
-        BlockState currentState = world.getBlockState(i, j, k);
-        world.setBlockStateWithNotify(i, j, k, currentState.with(FULL, slots));
+        BlockState currentState = world.getBlockState(x, y, z);
+        if (world.getBlockId(x, y, z) == BlockListener.crucible.id) {
+            world.setBlockStateWithNotify(x, y, z, currentState.with(FULL, slots));
+        }
 
         SETTING_TILE = false;
         tileEntityBase.cancelRemoval();
-        world.setBlockEntity(i, j, k, tileEntityBase);
+        world.setBlockEntity(x, y, z, tileEntityBase);
     }
 
     public void SetHasLava(World world, int i, int j, int k, boolean bOn) {
@@ -261,10 +266,53 @@ public class CrucibleBlock extends TemplateBlockWithEntity
 
     public static final BooleanProperty LAVA = BooleanProperty.of("lava");
     public static final IntProperty FULL = IntProperty.of("full", 0, 27);
+    public static final DirectionProperty ROTATION = DirectionProperty.of("rotation", Direction.UP, Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST);
 
     public void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(LAVA);
         builder.add(FULL);
+        builder.add(ROTATION);
     }
 
+    @Override
+    public boolean canOutputMechanicalPower() {
+        return false;
+    }
+
+    @Override
+    public boolean canInputMechanicalPower() {
+        return false;
+    }
+
+    @Override
+    public void powerMachine(World world, int x, int y, int z, int side) {
+        BlockState currentState = world.getBlockState(x, y, z);
+        Direction newDirection;
+        newDirection = switch (side) {
+            case 2 -> Direction.EAST;
+            case 3 -> Direction.WEST;
+            case 4 -> Direction.SOUTH;
+            case 5 -> Direction.NORTH;
+            default -> Direction.UP;
+        };
+        world.setBlockState(x, y, z, currentState.with(ROTATION, newDirection));
+    }
+
+    @Override
+    public void unpowerMachine(World world, int x, int y, int z, int side) {
+        BlockState currentState = world.getBlockState(x, y, z);
+        world.setBlockState(x, y, z, currentState.with(ROTATION, Direction.UP));
+    }
+
+    @Override
+    public boolean isMachinePowered(World world, int x, int y, int z) {
+        BlockState currentState = world.getBlockState(x, y, z);
+        Direction currentDirection = currentState.get(ROTATION);
+        return currentDirection != Direction.UP;
+    }
+
+    @Override
+    public boolean canInputMechanicalPower(World world, int x, int y, int z, int side) {
+        return side > 1;
+    }
 }

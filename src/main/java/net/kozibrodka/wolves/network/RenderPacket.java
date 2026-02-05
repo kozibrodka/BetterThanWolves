@@ -73,7 +73,7 @@ public class RenderPacket extends Packet implements ManagedPacket<RenderPacket> 
     @Environment(EnvType.CLIENT)
     public void handleClient(NetworkHandler networkHandler) {
         Minecraft.INSTANCE.particleManager.addBlockBreakParticles(x, y, z, block, meta);
-//        Minecraft.class.cast(net.fabricmc.loader.api.FabricLoader.getInstance().getGameInstance()).particleManager.addTileBreakParticles(targetPos.i, targetPos.j, targetPos.k, iTargetid, iTargetMetaData);
+//        Minecraft.class.cast(net.fabricmc.loader.api.FabricLoader.getInstance().getGameInstance()).particleManager.addTileBreakParticles(targetPos.x, targetPos.y, targetPos.z, iTargetid, iTargetMetaData);
 //        if(block == 1){ //TURNTABLE
 //            TurntableTileEntity tile = (TurntableTileEntity) minecraft.level.getTileEntity(this.x,this.y,this.z);
 //            if(tile != null) {

@@ -13,7 +13,7 @@ public class NonCollidingAxleBlock extends AxleBlock {
     }
 
     @Override
-    public Box getCollisionShape(World world, int i, int j, int k) {
+    public Box getCollisionShape(World world, int x, int y, int z) {
         return null;
     }
 

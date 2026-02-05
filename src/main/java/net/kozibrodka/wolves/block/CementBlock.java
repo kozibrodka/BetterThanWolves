@@ -73,8 +73,8 @@ public class CementBlock extends TemplateBlockWithEntity
         return flag && i == 0;
     }
 
-    public boolean isSolidFace(BlockView iblockaccess, int i, int j, int k, int l) {
-        Material new_material = iblockaccess.getMaterial(i, j, k);
+    public boolean isSolidFace(BlockView blockView, int i, int j, int k, int l) {
+        Material new_material = blockView.getMaterial(i, j, k);
         if (new_material == material) {
             return false;
         }
@@ -84,7 +84,7 @@ public class CementBlock extends TemplateBlockWithEntity
         if (l == 1) {
             return true;
         } else {
-            return super.isSolidFace(iblockaccess, i, j, k, l);
+            return super.isSolidFace(blockView, i, j, k, l);
         }
     }
 
