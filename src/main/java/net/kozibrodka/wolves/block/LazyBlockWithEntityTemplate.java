@@ -36,6 +36,13 @@ public class LazyBlockWithEntityTemplate extends TemplateBlockWithEntity {
     }
 
     @Override
+    public int getTexture(int side, int meta) {
+        if (side == 0) return bottomTexture;
+        if (side == 1) return topTexture;
+        return sideTexture;
+    }
+
+    @Override
     protected BlockEntity createBlockEntity() {
         return null;
     }
