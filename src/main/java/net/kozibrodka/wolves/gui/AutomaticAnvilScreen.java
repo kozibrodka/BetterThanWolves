@@ -7,9 +7,11 @@ import net.minecraft.entity.player.PlayerInventory;
 import org.lwjgl.opengl.GL11;
 
 public class AutomaticAnvilScreen extends HandledScreen {
+    private final AutomaticAnvilBlockEntity automaticAnvilBlockEntity;
 
     public AutomaticAnvilScreen(PlayerInventory playerInventory, AutomaticAnvilBlockEntity automaticAnvilBlockEntity) {
         super(new AutomaticAnvilScreenHandler(playerInventory, automaticAnvilBlockEntity));
+        this.automaticAnvilBlockEntity = automaticAnvilBlockEntity;
         backgroundHeight = 202;
     }
 
@@ -30,5 +32,7 @@ public class AutomaticAnvilScreen extends HandledScreen {
         int j = (width - backgroundWidth) / 2;
         int k = (height - backgroundHeight) / 2;
         drawTexture(j, k, 0, 0, backgroundWidth, backgroundHeight);
+        int i1 = automaticAnvilBlockEntity.getScaledCraftingProgress(24);
+        this.drawTexture(j + 107, k + 70, 176, 14, i1 + 1, 16);
     }
 }

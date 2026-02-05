@@ -22,6 +22,9 @@ public class AutomaticAnvilBlock extends LazyBlockWithEntityTemplate {
 
     @Override
     public int getTexture(int side, int meta) {
+        if (meta == 0 && side == 3) {
+            return topTexture;
+        }
         if (side == meta) {
             return topTexture;
         }

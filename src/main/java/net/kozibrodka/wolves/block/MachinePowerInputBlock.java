@@ -17,6 +17,9 @@ public class MachinePowerInputBlock extends LazyBlockTemplate implements Mechani
 
     @Override
     public int getTexture(int side, int meta) {
+        if (meta == 0 && side == 3) {
+            return topTexture;
+        }
         if (meta >= 6) {
             meta -= 6;
         }
