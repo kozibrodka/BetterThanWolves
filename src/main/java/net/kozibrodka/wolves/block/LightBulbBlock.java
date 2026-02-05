@@ -58,7 +58,7 @@ public class LightBulbBlock extends TemplateBlock
     }
 
     public void onTick(World world, int i, int j, int k, Random random) {
-        boolean bPowered = world.isEmittingRedstonePower(i, j, k);
+        boolean bPowered = world.isPowered(i, j, k);
         if (bPowered) {
             if (!IsLightOn(world, i, j, k)) {
                 LightBulbTurnOn(world, i, j, k);
@@ -88,12 +88,12 @@ public class LightBulbBlock extends TemplateBlock
 
     @Environment(EnvType.CLIENT)
     public boolean powerClient(BlockView iBlockAccess, int i, int j, int k, int l) {
-        return ((Minecraft) FabricLoader.INSTANCE.getGameInstance()).world.canTransferPower(i, j, k);
+        return ((Minecraft) FabricLoader.INSTANCE.getGameInstance()).world.isStrongPowered(i, j, k);
     }
 
     @Environment(EnvType.SERVER)
     public boolean powerServer(BlockView iBlockAccess, int i, int j, int k, int l) {
-        return ((MinecraftServer) net.fabricmc.loader.api.FabricLoader.getInstance().getGameInstance()).getWorld(0).canTransferPower(i, j, k);
+        return ((MinecraftServer) net.fabricmc.loader.api.FabricLoader.getInstance().getGameInstance()).getWorld(0).isStrongPowered(i, j, k);
         //TODO: It gets the overworld always.
     }
 

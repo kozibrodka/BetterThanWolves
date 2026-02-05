@@ -19,7 +19,7 @@ public class AnvilScreen extends HandledScreen {
 
     public void removed() {
         super.removed();
-        container.onClosed(minecraft.player);
+        handler.onClosed(minecraft.player);
     }
 
     protected void drawForeground() {

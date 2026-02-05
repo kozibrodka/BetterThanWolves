@@ -17,6 +17,10 @@ public class CementBlockEntity extends BlockEntity {
         dryTime = 0;
     }
 
+//    protected void initDataTracker() {
+//        dataTracker.startTracking(16, (byte) 0); //SHAKE
+//    }
+
     public void writeNbt(NbtCompound nbttagcompound) {
         super.writeNbt(nbttagcompound);
         nbttagcompound.putInt("dryTime", dryTime);

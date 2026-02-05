@@ -14,7 +14,7 @@ import java.lang.reflect.Field;
 
 /**
  * This util is an illogical amalgamation.
- * TODO: Create separate util for moving blocks. Replace block models with JSON models. Fix item rendering for the JSON models.
+ * TODO: Create separate util for moving blocks. dont implement json, fuck json.
  */
 public class CustomBlockRendering {
 

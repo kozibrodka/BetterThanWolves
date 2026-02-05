@@ -244,7 +244,7 @@ public class HopperBlock extends TemplateBlockWithEntity
         //TODO: dimension?
     }
 
-    public boolean canTransferPowerInDirection(World world, int i, int j, int i1, int j1) {
+    public boolean isStrongPoweringSide(World world, int i, int j, int i1, int j1) {
         return false;
     }
 

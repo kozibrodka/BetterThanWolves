@@ -1,9 +1,6 @@
 package net.kozibrodka.wolves.events;
 
-import net.kozibrodka.wolves.network.ParticlePacket;
-import net.kozibrodka.wolves.network.RenderPacket;
-import net.kozibrodka.wolves.network.ScreenPacket;
-import net.kozibrodka.wolves.network.SoundPacket;
+import net.kozibrodka.wolves.network.*;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.modificationstation.stationapi.api.event.network.packet.PacketRegisterEvent;
 import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
@@ -21,6 +18,7 @@ public class PacketListener {
         Registry.register(PacketTypeRegistry.INSTANCE, NAMESPACE.id("sound"), SoundPacket.TYPE);
         Registry.register(PacketTypeRegistry.INSTANCE, NAMESPACE.id("gui"), ScreenPacket.TYPE);
         Registry.register(PacketTypeRegistry.INSTANCE, NAMESPACE.id("render"), RenderPacket.TYPE);
+        Registry.register(PacketTypeRegistry.INSTANCE, NAMESPACE.id("cement"), CementPacket.TYPE);
     }
 
 }

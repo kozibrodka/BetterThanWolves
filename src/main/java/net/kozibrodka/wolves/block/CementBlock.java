@@ -6,24 +6,31 @@
 package net.kozibrodka.wolves.block;
 
 import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.api.EnvironmentInterface;
+import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.block.entity.CementBlockEntity;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
+import net.kozibrodka.wolves.network.CementPacket;
+import net.kozibrodka.wolves.network.SoundPacket;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.block.BlockRenderManager;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
 import net.modificationstation.stationapi.api.client.texture.atlas.Atlas;
 import net.modificationstation.stationapi.api.client.texture.atlas.Atlases;
+import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockWithEntity;
 import net.modificationstation.stationapi.api.util.Identifier;
 
+import java.util.List;
 import java.util.Random;
 
 @EnvironmentInterface(value = EnvType.CLIENT, itf = BlockWithWorldRenderer.class)
@@ -111,7 +118,7 @@ public class CementBlock extends TemplateBlockWithEntity
         super.onPlaced(world, i, j, k);
         if (world.getBlockId(i, j, k) == id) {
             world.scheduleBlockUpdate(i, j, k, id, getTickRate());
-            if (world.isEmittingRedstonePower(i, j, k)) {
+            if (world.isPowered(i, j, k)) {
                 SetCementPowered(world, i, j, k, true);
             }
         }
@@ -126,7 +133,7 @@ public class CementBlock extends TemplateBlockWithEntity
     public void onTick(World world, int i, int j, int k, Random random) {
         int cementDist = GetCementSpreadDist(world, i, j, k);
         boolean bOldPowerState = IsCementPowered(world, i, j, k);
-        boolean bNewPowerState = world.isEmittingRedstonePower(i, j, k);
+        boolean bNewPowerState = world.isPowered(i, j, k);
         if (bOldPowerState != bNewPowerState) {
             SetCementPowered(world, i, j, k, bNewPowerState);
         }
@@ -244,6 +251,12 @@ public class CementBlock extends TemplateBlockWithEntity
         tileEntity.spreadDist = iSpreadDist;
         world.notifyNeighbors(i, j, k, id);
         world.setBlocksDirty(i, j, k, i, j, k);
+
+        if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+            cementPacket(world, i,j,k, 1, iSpreadDist);
+//            System.out.println("SERVER SEND: " + i +" "+ j +" "+k);
+            System.out.println(tileEntity);
+        }
     }
 
     public boolean IsCementSourceBlock(BlockView blockAccess, int i, int j, int k) {
@@ -264,10 +277,27 @@ public class CementBlock extends TemplateBlockWithEntity
         tileEntity.dryTime = iDryTime;
         world.notifyNeighbors(i, j, k, id);
         world.setBlocksDirty(i, j, k, i, j, k);
+
+        if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
+            cementPacket(world, i,j,k, 0, iDryTime);
+//            System.out.println("SERVER SEND: " + i +" "+ j +" "+k);
+//            System.out.println(tileEntity);
+        }
     }
 
     public boolean IsCementPartiallyDry(BlockView blockAccess, int i, int j, int k) {
         return GetCementDryTime(blockAccess, i, j, k) >= 8;
+    }
+
+    @Environment(EnvType.SERVER)
+    public void cementPacket(World world, int x, int y, int z, int b, int arg) {
+        List list2 = world.players;
+        if (list2.size() != 0) {
+            for (int k = 0; k < list2.size(); k++) {
+                ServerPlayerEntity player1 = (ServerPlayerEntity) list2.get(k);
+                PacketHelper.sendTo(player1, new CementPacket(x, y, z, b, arg));
+            }
+        }
     }
 
     private int CheckNeighboursCloserToSourceForMinDryTime(World world, int i, int j, int k) {
@@ -379,6 +409,8 @@ public class CementBlock extends TemplateBlockWithEntity
     boolean[] tempSpreadToSideFlags;
     int[] tempClosestDownslopeToSideDist;
 
+    //TODO: bottom side texure of cement wtf??
+    //TODO: server sync works fine as long as there is not TRILION packets, example put cement on top of mountain,
     @Override
     public boolean renderWorld(BlockRenderManager tileRenderer, BlockView tileView, int x, int y, int z) {
         boolean flag = false;

@@ -70,7 +70,7 @@ public class RenderPacket extends Packet implements ManagedPacket<RenderPacket> 
         }
     }
 
-    @Environment(EnvType.CLIENT) //TODO: NOT QUITE WOTKING ;(
+    @Environment(EnvType.CLIENT)
     public void handleClient(NetworkHandler networkHandler) {
         Minecraft.INSTANCE.particleManager.addBlockBreakParticles(x, y, z, block, meta);
 //        Minecraft.class.cast(net.fabricmc.loader.api.FabricLoader.getInstance().getGameInstance()).particleManager.addTileBreakParticles(targetPos.x, targetPos.y, targetPos.z, iTargetid, iTargetMetaData);

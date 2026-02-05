@@ -78,7 +78,7 @@ public class MovingAnchorEntity extends Entity implements EntitySpawnDataProvide
         return false;
     }
 
-    public Box method_1379(Entity entity) {
+    public Box getCollisionAgainstShape(Entity entity) {
         return entity.boundingBox;
     }
 

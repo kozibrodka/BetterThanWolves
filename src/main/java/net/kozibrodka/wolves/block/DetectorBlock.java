@@ -171,12 +171,12 @@ public class DetectorBlock extends TemplateBlock {
     }
 
     @Override
-    public boolean isEmittingRedstonePowerInDirection(BlockView blockView, int x, int y, int z, int direction) {
+    public boolean isPoweringSide(BlockView blockView, int x, int y, int z, int direction) {
         return isBlockOn(blockView, x, y, z);
     }
 
     @Override
-    public boolean canTransferPowerInDirection(World world, int i, int j, int i1, int j1) {
+    public boolean isStrongPoweringSide(World world, int i, int j, int i1, int j1) {
         return false;
     }
 

@@ -71,7 +71,7 @@ public class LiftedBlockEntity extends Entity implements EntitySpawnDataProvider
         return false;
     }
 
-    public Box method_1379(Entity entity) {
+    public Box getCollisionAgainstShape(Entity entity) {
         return null;
     }
 

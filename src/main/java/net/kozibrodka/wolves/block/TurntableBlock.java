@@ -52,7 +52,7 @@ public class TurntableBlock extends TemplateBlockWithEntity
     }
 
     public void onTick(World world, int i, int j, int k, Random random) {
-        boolean bReceivingRedstonePower = world.canTransferPower(i, j, k);
+        boolean bReceivingRedstonePower = world.isStrongPowered(i, j, k);
         boolean bRedstoneOn = IsBlockRedstoneOn(world, i, j, k);
         if (bRedstoneOn != bReceivingRedstonePower) {
             SetBlockRedstoneOn(world, i, j, k, bReceivingRedstonePower);

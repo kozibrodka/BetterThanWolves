@@ -77,7 +77,7 @@ public class PulleyBlock extends TemplateBlockWithEntity
     public void onTick(World world, int i, int j, int k, Random random) {
         boolean bStateChanged = false;
         boolean bRedstoneOn = IsRedstoneOn(world, i, j, k);
-        boolean bReceivingRedstone = world.canTransferPower(i, j, k) || world.canTransferPower(i, j + 1, k);
+        boolean bReceivingRedstone = world.isStrongPowered(i, j, k) || world.isStrongPowered(i, j + 1, k);
         if (bRedstoneOn != bReceivingRedstone) {
             world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "random.explode", 0.2F, 1.25F);
             if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {

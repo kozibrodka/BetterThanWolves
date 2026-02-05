@@ -229,7 +229,7 @@ public class GearboxBlock extends TemplateBlock implements MechanicalDevice, Rot
     }
 
     public void overpower(World world, int x, int y, int z) {
-        boolean isRedstonePowered = world.canTransferPower(x, y, z) || world.canTransferPower(x, y + 1, z);
+        boolean isRedstonePowered = world.isStrongPowered(x, y, z) || world.canTransferPower(x, y + 1, z);
         if (!isRedstonePowered) {
             breakGearBox(world, x, y, z);
         }

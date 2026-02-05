@@ -1,5 +1,7 @@
 package net.kozibrodka.wolves.entity;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ConfigListener;
 import net.minecraft.block.WoolBlock;
@@ -13,12 +15,16 @@ import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.server.entity.EntitySpawnDataProvider;
 import net.modificationstation.stationapi.api.server.entity.HasTrackingParameters;
 import net.modificationstation.stationapi.api.util.Identifier;
+import net.modificationstation.stationapi.api.util.TriState;
 
-@HasTrackingParameters(trackingDistance = 160, updatePeriod = 2)
+import java.util.List;
+
+@HasTrackingParameters(trackingDistance = 160, updatePeriod = 1, sendVelocity = TriState.TRUE)
 public class FCEntityTEST extends Entity implements EntitySpawnDataProvider {
     public FCEntityTEST(World arg) {
         super(arg);
         setBoundingBoxSpacing(12.8F, 12.8F);
+//        standingEyeHeight = height / 2.0F;
     }
 
     public FCEntityTEST(World world, double x, double y, double z, int type) {
@@ -46,6 +52,13 @@ public class FCEntityTEST extends Entity implements EntitySpawnDataProvider {
         return true;
     }
 
+    @Environment(EnvType.CLIENT)
+    @Override
+    public void setPositionAndAnglesAvoidEntities(double x, double y, double z, float pitch, float yaw, int interpolationSteps) {
+        this.setPosition(x, y, z);
+        this.setRotation(pitch, yaw);
+    }
+
     public boolean interact(PlayerEntity entityplayer) {
         ItemStack itemstack = entityplayer.inventory.getSelectedItem();
         if (itemstack != null && itemstack.itemId == Item.DYE.id) {
@@ -64,22 +77,36 @@ public class FCEntityTEST extends Entity implements EntitySpawnDataProvider {
         return true;
     }
 
+    @Override
+    public Box getCollisionAgainstShape(Entity other) { //getCollisionAgainstShape
+        if (world.isRemote) {
+            return null;
+        }
+        return other == passenger ? null : other.boundingBox;
+    }
+
+    @Override
+    public boolean isPushable() {
+        return false;
+    }
+
+    @Override
+    public Box getBoundingBox() {
+        return boundingBox;
+    }
 
     protected boolean bypassesSteppingEffects() {
         return false;
     }
 
-    public Box method_1379(Entity entity) {
-        return entity.boundingBox;
-    }
+//    public Box method_1379(Entity entity) {
+//        return entity.boundingBox;
+//    }
 
-    public Box getBoundingBox() {
-        return boundingBox;
-    }
+//    public Box getBoundingBox() {
+//        return boundingBox;
+//    }
 
-    public boolean isPushable() {
-        return false;
-    }
 
     public boolean isCollidable() {
         return !dead;
@@ -109,10 +136,10 @@ public class FCEntityTEST extends Entity implements EntitySpawnDataProvider {
             }
         }
         if (!world.isRemote) {
-            System.out.println(this.y);
+//            System.out.println(this.y);
         } else {
-            this.y = this.trackedPosY / 32;
-            System.out.println(this.y + "  " + this.lastTickY + "  " + this.trackedPosY);
+//            this.y = this.trackedPosY / 32;
+//            System.out.println(this.y + "  " + this.lastTickY + "  " + this.trackedPosY);
         }
     }
 

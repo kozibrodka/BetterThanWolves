@@ -4,17 +4,18 @@ plugins {
     id 'maven-publish'
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-}
+version = property("mod_version")
+group = property("maven_group")
 
 base {
-    archivesName = project.archives_base_name
+	archivesName = project.archives_base_name
 }
 
-version = project.mod_version
-group = project.maven_group
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
 
 loom {
     mixin {

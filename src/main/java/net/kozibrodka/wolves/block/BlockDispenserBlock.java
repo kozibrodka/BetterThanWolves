@@ -121,7 +121,7 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity implements Rota
 
     public void onTick(World world, int i, int j, int k, Random random) {
         ValidateBlockDispenser(world, i, j, k);
-        boolean bIsPowered = world.canTransferPower(i, j, k) || world.canTransferPower(i, j + 1, k);
+        boolean bIsPowered = world.isStrongPowered(i, j, k) || world.isStrongPowered(i, j + 1, k);
         if (bIsPowered) {
             if (!IsOn(world, i, j, k)) {
                 TurnOn(world, i, j, k);

@@ -11,10 +11,11 @@ import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.server.entity.EntitySpawnDataProvider;
 import net.modificationstation.stationapi.api.server.entity.HasTrackingParameters;
 import net.modificationstation.stationapi.api.util.Identifier;
+import net.modificationstation.stationapi.api.util.TriState;
 
 import java.util.List;
 
-@HasTrackingParameters(trackingDistance = 160, updatePeriod = 2)
+@HasTrackingParameters(trackingDistance = 160, updatePeriod = 1, sendVelocity = TriState.TRUE)
 public class FallingAnvilEntity extends Entity implements EntitySpawnDataProvider {
     public int tile;
     public int facing;
@@ -44,6 +45,12 @@ public class FallingAnvilEntity extends Entity implements EntitySpawnDataProvide
         this(level);
     }
 
+    @Environment(EnvType.CLIENT)
+    @Override
+    public void setPositionAndAnglesAvoidEntities(double x, double y, double z, float pitch, float yaw, int interpolationSteps) {
+        this.setPosition(x, y, z);
+        this.setRotation(pitch, yaw);
+    }
 
     protected boolean bypassesSteppingEffects() {
         return false;
@@ -84,7 +91,7 @@ public class FallingAnvilEntity extends Entity implements EntitySpawnDataProvide
                 if (!list1.isEmpty()) {
                     for (int k = 0; k < list1.size(); k++) {
                         LivingEntity playertohit = (LivingEntity) list1.get(k);
-                        playertohit.damage(this, 10); //TODO DMG
+                        playertohit.damage(this, 10); //TODO DMG based on velocity
                     }
                 }
                 world.playSound(this.x, this.y, this.z, "wolves:anvil_land", 1.0F, 1.2F);

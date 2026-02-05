@@ -192,7 +192,7 @@ public class AnchorBlock extends TemplateBlock implements BlockWithWorldRenderer
 
     private void addRopeToPlayerInventory(World world, int i, int j, int k, PlayerEntity entityPlayer) {
         ItemStack ropeStack = new ItemStack(ItemListener.ropeItem);
-        if (entityPlayer.inventory.contains(ropeStack)) {
+        if (entityPlayer.inventory.addStack(ropeStack)) {
             world.playSound(entityPlayer, "random.pop", 0.2F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
             if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
                 voicePacket(world, "random.pop", i, j, k, 0.2F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
