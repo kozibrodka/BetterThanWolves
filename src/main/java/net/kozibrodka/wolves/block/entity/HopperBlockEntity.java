@@ -122,6 +122,7 @@ public class HopperBlockEntity extends BlockEntity implements Inventory {
             return;
         }
         if (!((HopperBlock) BlockListener.hopper).IsBlockOn(world, x, y, z)) return;
+        pullFromInventory();
         if (hopperEjectBlocked) {
             ejectCounter = 0;
             return;
@@ -139,6 +140,18 @@ public class HopperBlockEntity extends BlockEntity implements Inventory {
             hopperSoulOverload();
         }
         ejectCounter = 0;
+    }
+
+    private void pullFromInventory() {
+        if (world.getBlockEntity(x, y + 1, z) instanceof Inventory inventory) {
+            int itemIndex = InventoryHandler.getFirstOccupiedStackExcludingItem(inventory, ItemRegistry.INSTANCE.getId(Item.CLAY));
+            if (itemIndex == -1) {
+                return;
+            }
+            if (InventoryHandler.addItemInstanceToInventory(this, inventory.getStack(itemIndex))) {
+                inventory.setStack(itemIndex, null);
+            }
+        }
     }
 
     public boolean attemptSoulFiltering() {
