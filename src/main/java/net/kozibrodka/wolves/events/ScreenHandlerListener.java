@@ -20,6 +20,10 @@ public class ScreenHandlerListener {
     @Entrypoint.Namespace
     public static Namespace NAMESPACE;
 
+    public static int anvilX;
+    public static int anvilY;
+    public static int anvilZ;
+
     @Environment(EnvType.CLIENT)
     @EventListener
     public void registerScreenHandlers(GuiHandlerRegistryEvent event) {
@@ -39,7 +43,7 @@ public class ScreenHandlerListener {
 
     @Environment(EnvType.CLIENT)
     public Screen openAnvil(PlayerEntity player, Inventory inventoryBase) {
-        return new AnvilScreen(player.inventory, player.world, (int) player.x, (int) player.y, (int) player.z);
+        return new AnvilScreen(player.inventory, player.world, anvilX, anvilY, anvilZ);
     }
 
     @Environment(EnvType.CLIENT)

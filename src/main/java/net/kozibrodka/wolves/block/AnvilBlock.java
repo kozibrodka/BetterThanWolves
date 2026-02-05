@@ -10,6 +10,7 @@ import net.fabricmc.api.EnvironmentInterface;
 import net.kozibrodka.wolves.container.AnvilScreenHandler;
 import net.kozibrodka.wolves.entity.FallingAnvilEntity;
 import net.kozibrodka.wolves.events.BlockEntityListener;
+import net.kozibrodka.wolves.events.ScreenHandlerListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.utils.CustomBlockRendering;
 import net.kozibrodka.wolves.utils.RotatableBlock;
@@ -71,6 +72,9 @@ public class AnvilBlock extends TemplateBlock
 
     public boolean onUse(World world, int x, int y, int z, PlayerEntity playerEntity) {
         GuiHelper.openGUI(playerEntity, Identifier.of(BlockEntityListener.NAMESPACE, "openAnvil"), playerEntity.inventory, new AnvilScreenHandler(playerEntity.inventory, world, x, y, z));
+        ScreenHandlerListener.anvilX = x;
+        ScreenHandlerListener.anvilY = y;
+        ScreenHandlerListener.anvilZ = z;
         return true;
     }
 
