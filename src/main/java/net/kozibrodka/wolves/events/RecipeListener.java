@@ -278,6 +278,21 @@ public class RecipeListener {
         addAnvilRecipe(new ItemStack(Block.RAIL, 48), new Object[]{
                 "#X#", "#X#", "#X#", '#', ItemListener.steel, 'X', ItemListener.haft
         });
+        addAnvilRecipe(new ItemStack(BlockListener.automaticAnvil, 1), new Object[]{
+                " FGF ", "GCACG", " FGF ", 'G', ItemListener.gear, 'F', BlockListener.anvilFrame, 'A', BlockListener.anvil, 'C', Block.CRAFTING_TABLE
+        });
+        addAnvilRecipe(new ItemStack(BlockListener.anvilFrame, 10), new Object[]{
+                "X###X", "#X#X#", "##X##", "#X#X#", "X###X", 'X', ItemListener.steel, '#', new ItemStack(BlockListener.omniSlab, 1, 1)
+        });
+        addAnvilRecipe(new ItemStack(BlockListener.machinePowerInput, 1), new Object[]{
+                "FGF", "GBG", "FGF", 'G', ItemListener.gear, 'F', BlockListener.anvilFrame, 'B', BlockListener.gearBox
+        });
+        addAnvilRecipe(new ItemStack(BlockListener.inputBus, 1), new Object[]{
+                "FHF", "GCG", "FGF", 'G', ItemListener.gear, 'F', BlockListener.anvilFrame, 'C', Block.CHEST, 'H', BlockListener.hopper
+        });
+        addAnvilRecipe(new ItemStack(BlockListener.outputBus, 1), new Object[]{
+                "FGF", "GCG", "FHF", 'G', ItemListener.gear, 'F', BlockListener.anvilFrame, 'C', Block.CHEST, 'H', BlockListener.hopper
+        });
         if (isNewFrontierCraftPresent) {
             NFCRecipes.addAnvilRecipes();
         }
