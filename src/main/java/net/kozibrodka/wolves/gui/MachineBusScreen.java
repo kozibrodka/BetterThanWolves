@@ -14,8 +14,8 @@ public class MachineBusScreen extends HandledScreen {
     }
 
     protected void drawForeground() {
-        textRenderer.draw("Machine Bus", 70, 6, 0x404040);
-        textRenderer.draw("Inventory", 8, (backgroundHeight - 96) + 2, 0x404040);
+        textRenderer.draw("Machine Bus", 8, 6, 0x404040);
+        textRenderer.draw("Inventory", 8, (backgroundHeight - 120), 0x404040);
     }
 
     protected void drawBackground(float f) {

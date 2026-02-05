@@ -11,16 +11,16 @@ public class MachineBusScreenHandler extends ScreenHandler {
 
     public MachineBusScreenHandler(Inventory playerinventory, MachineBusBlockEntity machineBusBlockEntity) {
         this.machineBusBlockEntity = machineBusBlockEntity;
-        addSlot(new Slot(machineBusBlockEntity, 0, 80, 37));
+        addSlot(new Slot(machineBusBlockEntity, 0, 80, 35));
 
         for (int iRow = 0; iRow < 3; iRow++) {
             for (int iColumn = 0; iColumn < 9; iColumn++) {
-                addSlot(new Slot(playerinventory, iColumn + iRow * 9 + 9, 8 + iColumn * 18, 111 + iRow * 18));
+                addSlot(new Slot(playerinventory, iColumn + iRow * 9 + 9, 8 + iColumn * 18, 84 + iRow * 18));
             }
 
         }
         for (int iColumn = 0; iColumn < 9; iColumn++) {
-            addSlot(new Slot(playerinventory, iColumn, 8 + iColumn * 18, 169));
+            addSlot(new Slot(playerinventory, iColumn, 8 + iColumn * 18, 142));
         }
 
     }
