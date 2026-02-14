@@ -1,5 +1,5 @@
 Station API and mappings:
-- Move to newest BINY-Mappings
+- DONE) Move to newest BINY-Mappings
 
 API improvements:
 - Rework rotational force
@@ -13,16 +13,31 @@ Game mechanics:
 - (DONE) Feature to stop wolves from dumping (they will not dump without excessive feeding)
 - (DONE) Make stoked fire set entities on fire
 - (DONE) Make Cement Render Correctly in Multiplayer - breaks if too much packets
-- Fix Multiplayer Entities - (currently working on)
-- Pickaxe from steel doesnt break ORES fast
-- Falling Anvil correct Model Rendering
+- (DONE) Fix Multiplayer Entities
+- (DONE) Falling Anvil correct Model Rendering
+- (DONE) Pickaxe from steel doesnt break ORES fast
+- (DONE) Fix elevator on Multiplayer smoothenss,
+- (DONE) falling anvil Smoothness
+- (DONE) Third person animation on modded tools
+- (DONE) Hooper interacion with minecart
+- (DONE) Add recipes for Panels.
+- windmill box vanilla bug,
+- (DONE) anvil too high on spawn + lamp server isPoweringSide dimension
+- (DONE) Fix Hibachi + Lamps behabiour.
+- (DONE) MinecartSteel spawn on server, minecart speed, animation?
 - Pressure plate sound multiplayer (all plates including vanilla are soundless)
-- Third person animation on modded tools
+- (DONE) WaterWheel and windmill dmg by hand on server + animation
+
+- Client GUI powered on/off not showing BUG
+- Fix Hopper soulfiltering - bring back oryginal design.
 
 Possbile extra features (oryginal BTW)""
 - Animated saw
-- Omni Slab into Vertical Slabs
-- Minecart from regorfed Steel
+- (DONE) Omni Slab into Vertical Slabs
+- (DONE) Minecart from regorfed Steel
+- steel frame Painting - with those cool x32 textures.
+- Backport cool stuff from 1.8.1 - 1.2.5 version maybe  - Buddy Block? transmitter block? - https://www.youtube.com/watch?v=IGBo0P3ZKts&list=PLC10F5BB68A5B956E&index=18
+- ^ right now i dont see anything thats interesting in newer versions.
 
 Configurable content (Move some content to separate add-on):
 - Creeper oyster shearing

@@ -143,12 +143,59 @@ public class TextureListener {
         BlockListener.inputBus.specifyTextures(getBlockTexture(autoAnvil + "item_input"), getBlockTexture(autoAnvil + "input_bus_side"), getBlockTexture(autoAnvil + "side"));
         BlockListener.outputBus.specifyTextures(getBlockTexture(autoAnvil + "side"), getBlockTexture(autoAnvil + "output_bus_side"), getBlockTexture(autoAnvil + "item_output"));
 
-        ItemListener.bucketCement.setTexture(Identifier.of(NAMESPACE, "item/bucketCement"));
         ItemListener.soulFilter.setTexture(Identifier.of(NAMESPACE, "item/soulFilter"));
         ItemListener.nothing.setTexture(Identifier.of(NAMESPACE, "item/nothing"));
         ItemListener.wickerWeaving.setTexture(Identifier.of(NAMESPACE, "item/wickerWeaving"));
         ItemListener.wickerSheet.setTexture(Identifier.of(NAMESPACE, "item/wickerSheet"));
         ItemListener.weight.setTexture(Identifier.of(NAMESPACE, "item/weight"));
+        ItemListener.steelMinecart.setTexture(Identifier.of(NAMESPACE, "item/steelMinecart"));
+
+        ItemListener.bucketCement.setTexture(Identifier.of(NAMESPACE, "item/fcBucketCement"));
+        ItemListener.wolfRaw.setTexture(Identifier.of(NAMESPACE, "item/fcWolfRaw"));
+        ItemListener.wolfCooked.setTexture(Identifier.of(NAMESPACE, "item/fcWolfCooked"));
+        ItemListener.netherCoal.setTexture(Identifier.of(NAMESPACE, "item/fcNetherCoal"));
+        ItemListener.hempSeeds.setTexture(Identifier.of(NAMESPACE, "item/fcHempSeeds"));
+        ItemListener.hemp.setTexture(Identifier.of(NAMESPACE, "item/fcHemp"));
+        ItemListener.gear.setTexture(Identifier.of(NAMESPACE, "item/fcGear"));
+        ItemListener.flour.setTexture(Identifier.of(NAMESPACE, "item/fcFlour"));
+        ItemListener.hempFibers.setTexture(Identifier.of(NAMESPACE, "item/fcHempFibers"));
+        ItemListener.scouredLeather.setTexture(Identifier.of(NAMESPACE, "item/fcScouredLeather"));
+        ItemListener.donut.setTexture(Identifier.of(NAMESPACE, "item/fcDonut"));
+        ItemListener.ropeItem.setTexture(Identifier.of(NAMESPACE, "item/fcRopeItem"));
+        ItemListener.rollersItem.setTexture(Identifier.of(NAMESPACE, "item/fcRollersItem"));
+        ItemListener.dung.setTexture(Identifier.of(NAMESPACE, "item/fcDung"));
+        ItemListener.waterWheelItem.setTexture(Identifier.of(NAMESPACE, "item/fcWaterWheelItem"));
+        ItemListener.windMillBladeItem.setTexture(Identifier.of(NAMESPACE, "item/fcWindMillBladeItem"));
+        ItemListener.windMillItem.setTexture(Identifier.of(NAMESPACE, "item/fcWindMillItem"));
+        ItemListener.hempCloth.setTexture(Identifier.of(NAMESPACE, "item/fcHempCloth"));
+        ItemListener.grate.setTexture(Identifier.of(NAMESPACE, "item/fcGrate"));
+        ItemListener.wicker.setTexture(Identifier.of(NAMESPACE, "item/fcWicker"));
+        ItemListener.tannedLeather.setTexture(Identifier.of(NAMESPACE, "item/fcTannedLeather"));
+        ItemListener.strap.setTexture(Identifier.of(NAMESPACE, "item/fcStrap"));
+        ItemListener.belt.setTexture(Identifier.of(NAMESPACE, "item/fcBelt"));
+        ItemListener.foulFood.setTexture(Identifier.of(NAMESPACE, "item/fcFoulFood"));
+        ItemListener.woodBlade.setTexture(Identifier.of(NAMESPACE, "item/fcWoodBlade"));
+        ItemListener.glue.setTexture(Identifier.of(NAMESPACE, "item/fcGlue"));
+        ItemListener.tallow.setTexture(Identifier.of(NAMESPACE, "item/fcTallow"));
+        ItemListener.haft.setTexture(Identifier.of(NAMESPACE, "item/fcHaft"));
+        ItemListener.steel.setTexture(Identifier.of(NAMESPACE, "item/fcSteel"));
+        ItemListener.refinedPickAxe.setTexture(Identifier.of(NAMESPACE, "item/fcRefinedPickAxe"));
+        ItemListener.refinedShovel.setTexture(Identifier.of(NAMESPACE, "item/fcRefinedShovel"));
+        ItemListener.refinedHoe.setTexture(Identifier.of(NAMESPACE, "item/fcRefinedHoe"));
+        ItemListener.refinedAxe.setTexture(Identifier.of(NAMESPACE, "item/fcRefinedAxe"));
+        ItemListener.refinedSword.setTexture(Identifier.of(NAMESPACE, "item/fcRefinedSword"));
+        ItemListener.groundNetherrack.setTexture(Identifier.of(NAMESPACE, "item/fcGroundNetherrack"));
+        ItemListener.hellfireDust.setTexture(Identifier.of(NAMESPACE, "item/fcHellfireDust"));
+        ItemListener.concentratedHellfire.setTexture(Identifier.of(NAMESPACE, "item/fcConcentratedHellfire"));
+        ItemListener.armourPlateSteel.setTexture(Identifier.of(NAMESPACE, "item/fcArmorPlate"));
+        ItemListener.helmetSteel.setTexture(Identifier.of(NAMESPACE, "item/fcPlateHelm"));
+        ItemListener.chestPlateSteel.setTexture(Identifier.of(NAMESPACE, "item/fcPlateBreastPlate"));
+        ItemListener.leggingsSteel.setTexture(Identifier.of(NAMESPACE, "item/fcPlateLeggings"));
+        ItemListener.bootsSteel.setTexture(Identifier.of(NAMESPACE, "item/fcPlateBoots"));
+        ItemListener.compositeBow.setTexture(Identifier.of(NAMESPACE, "item/fcCompositeBow"));
+        ItemListener.broadHeadArrowhead.setTexture(Identifier.of(NAMESPACE, "item/fcBroadheadArrowhead"));
+        ItemListener.broadHeadArrow.setTexture(Identifier.of(NAMESPACE, "item/fcBroadheadArrow"));
+        ItemListener.coalDust.setTexture(Identifier.of(NAMESPACE, "item/fcCoalDust"));
 
         BlockListener.detectorRailObsidian.asItem().setTextureId(registerBlockTexture("block/fcRailDetector_obsidian"));
         BlockListener.detectorRailWood.asItem().setTextureId(registerBlockTexture("block/fcRailDetector_wood"));
@@ -172,6 +219,7 @@ public class TextureListener {
         event.renderers.put(MovingPlatformEntity.class, new MovingPlatformRenderer());
         event.renderers.put(MovingAnchorEntity.class, new MovingAnchorRenderer());
         event.renderers.put(FallingAnvilEntity.class, new FallingAnvilRenderer());
+        event.renderers.put(SteelMinecartEntity.class, new SteelMinecartRenderer());
         event.renderers.put(FCEntityTEST.class, new FCEntityTestRenderer());
     }
 

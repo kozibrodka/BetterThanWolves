@@ -7,8 +7,8 @@ import net.kozibrodka.wolves.block.AxleBlock;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.EntityListener;
 import net.kozibrodka.wolves.events.ItemListener;
+import net.kozibrodka.wolves.network.DamagePacket;
 import net.kozibrodka.wolves.network.InteractWindPacket;
-import net.kozibrodka.wolves.network.ScreenPacket;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.WoolBlock;
 import net.minecraft.entity.Entity;
@@ -24,7 +24,7 @@ import net.modificationstation.stationapi.api.server.entity.HasTrackingParameter
 import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.util.TriState;
 
-@HasTrackingParameters(trackingDistance = 160, updatePeriod = 1, sendVelocity = TriState.TRUE)
+@HasTrackingParameters(trackingDistance = 160, updatePeriod = 1, sendVelocity = TriState.FALSE)
 public class WindMillEntity extends Entity implements EntitySpawnDataProvider
 {
 
@@ -32,11 +32,8 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider
     {
         super(world);
         //TODO: vanilla bug, when entity bounding box is in more than 1 chunk???
-        iWindMillCurrentDamage = 0;
-        iWindMillTimeSinceHit = 0;
-        iWindMillRockDirection = 1;
+        setMillRockDirection(1);
         fWindMillCurrentRotationSpeed = 0.0F;
-        iCurrentBladeColoringIndex = 0;
         iFullUpdateTickCount = 0;
         blocksSameBlockSpawning = true;
         setBoundingBoxSpacing(12.8F, 12.8F);
@@ -77,6 +74,10 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider
         dataTracker.startTracking(21, (byte) 0); //BLADE COLOR 1
         dataTracker.startTracking(22, (byte) 0); //BLADE COLOR 2
         dataTracker.startTracking(23, (byte) 0); //BLADE COLOR 3
+        dataTracker.startTracking(24, (byte) 0); //Current BLADE Color INDEX
+        dataTracker.startTracking(25, (byte) 0); //currentDamage
+        dataTracker.startTracking(26, (byte) 0); //timeSinceHit
+        dataTracker.startTracking(27, (byte) 0); //rockDirection
     }
 
     public void writeNbt(NbtCompound nbttagcompound)
@@ -89,6 +90,10 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider
         nbttagcompound.putInt("iBladeColors1", getBladeColor(1));
         nbttagcompound.putInt("iBladeColors2", getBladeColor(2));
         nbttagcompound.putInt("iBladeColors3", getBladeColor(3));
+        nbttagcompound.putInt("currentBlade", getCurrentBladeColorIndex());
+        nbttagcompound.putInt("currentDamage", getMillCurrentDamage());
+        nbttagcompound.putInt("timeSinceHit", getMillTimeSinceHit());
+        nbttagcompound.putInt("rockDirection", getMillRockDirection());
     }
 
     public void readNbt(NbtCompound nbttagcompound)
@@ -101,6 +106,10 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider
         setBladeColor(1, nbttagcompound.getInt("iBladeColors1"));
         setBladeColor(2, nbttagcompound.getInt("iBladeColors2"));
         setBladeColor(3, nbttagcompound.getInt("iBladeColors3"));
+        setCurrentBladeColorIndex(nbttagcompound.getInt("currentBlade"));
+        setMillCurrentDamage(nbttagcompound.getInt("currentDamage"));
+        setMillTimeSinceHit(nbttagcompound.getInt("timeSinceHit"));
+        setMillRockDirection(nbttagcompound.getInt("rockDirection"));
         AlignBoundingBoxWithAxis();
     }
 
@@ -113,18 +122,19 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider
 
     @Override
     public void setPosition(double x, double y, double z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        try {
-            if(getAligned())
-            {
-                boundingBox.set(x - 0.40000000596046448D, y - 6.4000000953674316D, z - 6.4000000953674316D, x + 0.40000000596046448D, y + 6.4000000953674316D, z + 6.4000000953674316D);
-            } else
-            {
-                boundingBox.set(x - 6.4000000953674316D, y - 6.4000000953674316D, z - 0.40000000596046448D, x + 6.4000000953674316D, y + 6.4000000953674316D, z + 0.40000000596046448D);
+        if(!receivedP) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+            if (dataTracker.entries.containsKey(16)) {
+                if (getAligned()) {
+                    boundingBox.set(x - 0.40000000596046448D, y - 6.4000000953674316D, z - 6.4000000953674316D, x + 0.40000000596046448D, y + 6.4000000953674316D, z + 6.4000000953674316D);
+                    receivedP = true;
+                } else {
+                    boundingBox.set(x - 6.4000000953674316D, y - 6.4000000953674316D, z - 0.40000000596046448D, x + 6.4000000953674316D, y + 6.4000000953674316D, z + 0.40000000596046448D);
+                    receivedP = true;
+                }
             }
-        } catch (Exception e) {
         }
     }
 
@@ -157,24 +167,24 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider
     {
         if(world.isRemote || dead)
         {
+            PacketHelper.send(new DamagePacket("wind", i, this.id));
             return true;
         }
-        iWindMillRockDirection = -iWindMillRockDirection;
-        iWindMillTimeSinceHit = 10;
+        setMillRockDirection(-getMillRockDirection());
+        setMillTimeSinceHit(10);
         scheduleVelocityUpdate();
-        iWindMillCurrentDamage += i * 5;
-        if(iWindMillCurrentDamage > 40)
-        {
-            DestroyWithDrop();
+        setMillCurrentDamage(getMillCurrentDamage()+(i * 5));
+        if(getMillCurrentDamage() > 40){
+            destroyWithDrop();
         }
         return true;
     }
 
     public void animateHurt()
     {
-        iWindMillRockDirection = -iWindMillRockDirection;
-        iWindMillTimeSinceHit = 10;
-        iWindMillCurrentDamage += iWindMillCurrentDamage * 5;
+        setMillRockDirection(-getMillRockDirection());
+        setMillTimeSinceHit(10);
+        setMillCurrentDamage(getMillCurrentDamage()*5);
     }
 
     public void markDead()
@@ -193,7 +203,7 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider
         super.markDead();
     }
 
-    public void DestroyWithDrop()
+    public void destroyWithDrop()
     {
         if(!dead)
         {
@@ -218,17 +228,17 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider
             int iCenterid = world.getBlockId(iCenterI, iCenterJ, iCenterK);
             if(iCenterid != BlockListener.axleBlock.id)
             {
-                DestroyWithDrop();
+                destroyWithDrop();
                 return;
             }
             if(!validateArea(world, iCenterI, iCenterJ, iCenterK, getAligned()))
             {
-                DestroyWithDrop();
+                destroyWithDrop();
                 return;
             }
             if(!getProvidingPower() && ((AxleBlock)BlockListener.axleBlock).getPowerLevel(world, iCenterI, iCenterJ, iCenterK) > 0)
             {
-                DestroyWithDrop();
+                destroyWithDrop();
                 return;
             }
             fWindMillCurrentRotationSpeed = ComputeRotation(iCenterI, iCenterJ, iCenterK);
@@ -257,13 +267,13 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider
                 }
             }
         }
-        if(iWindMillTimeSinceHit > 0)
+        if(getMillTimeSinceHit() > 0)
         {
-            iWindMillTimeSinceHit--;
+            setMillTimeSinceHit(getMillTimeSinceHit()-1);
         }
-        if(iWindMillCurrentDamage > 0)
+        if(getMillCurrentDamage() > 0)
         {
-            iWindMillCurrentDamage--;
+            setMillCurrentDamage(getMillCurrentDamage()-1);
         }
         setMillRotation(getMillRotation()+fWindMillCurrentRotationSpeed);
         if(getMillRotation() > 360F)
@@ -303,18 +313,15 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider
                 iColor = 12;
             }
             if (world.isRemote) {
-                PacketHelper.send(new InteractWindPacket(iCurrentBladeColoringIndex, iColor, this.id));
-                iCurrentBladeColoringIndex++;
-                if (iCurrentBladeColoringIndex >= 4) {
-                    iCurrentBladeColoringIndex = 0;
-                }
-//                entityplayer.swingHand();
+                PacketHelper.send(new InteractWindPacket(getCurrentBladeColorIndex(), iColor, this.id));
+                entityplayer.swingHand();
             } else {
-                setBladeColor(iCurrentBladeColoringIndex, iColor);
-                iCurrentBladeColoringIndex++;
-                if (iCurrentBladeColoringIndex >= 4) {
-                    iCurrentBladeColoringIndex = 0;
+                setBladeColor(getCurrentBladeColorIndex(), iColor);
+                setCurrentBladeColorIndex(getCurrentBladeColorIndex() + 1);
+                if (getCurrentBladeColorIndex() >= 4) {
+                    setCurrentBladeColorIndex(0);
                 }
+                entityplayer.swingHand();
                 ItemInstance.count--;
                 if (ItemInstance.count == 0) {
                     entityplayer.inventory.setStack(entityplayer.inventory.selectedSlot, null);
@@ -328,7 +335,7 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider
     {
         if(!dead)
         {
-            DestroyWithDrop();
+            destroyWithDrop();
         }
     }
 
@@ -415,12 +422,13 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider
 //    public boolean bProvidingPower;
 //    public int iOverpowerTimer;
 //    public int iBladeColors[];
-    public int iWindMillCurrentDamage;
-    public int iWindMillTimeSinceHit;
-    public int iWindMillRockDirection;
+//    public int iCurrentBladeColoringIndex;
+//    public int iWindMillCurrentDamage;
+//    public int iWindMillTimeSinceHit;
+//    public int iWindMillRockDirection;
     public float fWindMillCurrentRotationSpeed;
-    public int iCurrentBladeColoringIndex;
     public int iFullUpdateTickCount;
+    public boolean receivedP;
 
     @Override
     public Identifier getHandlerIdentifier() {
@@ -503,6 +511,48 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider
             case 2 -> dataTracker.set(22, (byte) color);
             case 3 -> dataTracker.set(23, (byte) color);
         }
+    }
+
+    //CurrentBladeColorIndex
+    public int getCurrentBladeColorIndex()
+    {
+        return dataTracker.getByte(24);
+    }
+
+    public void setCurrentBladeColorIndex(int i)
+    {
+        dataTracker.set(24, (byte) i);
+    }
+
+    //CurrentDamage
+    public int getMillCurrentDamage()
+    {
+        return dataTracker.getByte(25);
+    }
+
+    public void setMillCurrentDamage(int i)
+    {
+        dataTracker.set(25, (byte) i);
+    }
+    //TimeSinceHit
+    public int getMillTimeSinceHit()
+    {
+        return dataTracker.getByte(26);
+    }
+
+    public void setMillTimeSinceHit(int i)
+    {
+        dataTracker.set(26, (byte) i);
+    }
+    //RockDirection
+    public int getMillRockDirection()
+    {
+        return dataTracker.getByte(27);
+    }
+
+    public void setMillRockDirection(int i)
+    {
+        dataTracker.set(27, (byte) i);
     }
 
     @Override

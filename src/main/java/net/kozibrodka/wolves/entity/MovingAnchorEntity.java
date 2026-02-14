@@ -2,6 +2,7 @@ package net.kozibrodka.wolves.entity;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.loader.api.FabricLoader;
 import net.kozibrodka.wolves.block.AnchorBlock;
 import net.kozibrodka.wolves.block.RopeBlock;
 import net.kozibrodka.wolves.block.entity.PulleyBlockEntity;
@@ -15,6 +16,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.Box;
@@ -84,8 +86,11 @@ public class MovingAnchorEntity extends Entity implements EntitySpawnDataProvide
     @Environment(EnvType.CLIENT)
     @Override
     public void setPositionAndAnglesAvoidEntities(double x, double y, double z, float pitch, float yaw, int interpolationSteps) {
-        this.setPosition(x, y, z);
-        this.setRotation(pitch, yaw);
+        if(!receivedP) {
+            this.setPosition(x, y, z);
+            this.setRotation(pitch, yaw);
+            receivedP = true;
+        }
     }
 
     @Override
@@ -109,8 +114,46 @@ public class MovingAnchorEntity extends Entity implements EntitySpawnDataProvide
         return 0.0F;
     }
 
+    public void remoteTick(){
+        PulleyBlockEntity tileEntityPulley = null;
+        int oldJ = MathHelper.floor(y - (double) standingEyeHeight);
+        int i = MathHelper.floor(x);
+        int k = MathHelper.floor(z);
+        int associatedPulleyid = world.getBlockId(associatedPulleyPos.x, associatedPulleyPos.y, associatedPulleyPos.z);
+        int iBlockAboveID = world.getBlockId(i, oldJ + 1, k);
+        int i2BlockAboveID = world.getBlockId(i, oldJ + 2, k);
+        if (associatedPulleyid == BlockListener.pulley.id && (iBlockAboveID == BlockListener.pulley.id || iBlockAboveID == BlockListener.rope.id || i2BlockAboveID == BlockListener.pulley.id || i2BlockAboveID == BlockListener.rope.id)) {
+            tileEntityPulley = (PulleyBlockEntity) world.getBlockEntity(associatedPulleyPos.x, associatedPulleyPos.y, associatedPulleyPos.z);
+            if (velocityY > 0.0D) {
+                if (tileEntityPulley.isLowering()) {
+                    velocityY = -velocityY;
+                }
+            } else if (tileEntityPulley.IsRaising()) {
+                velocityY = -velocityY;
+            }
+        }
+        MoveEntityInternal(velocityX, velocityY, velocityZ);
+        double newPosY = y;
+        int newJ = MathHelper.floor(newPosY - (double) standingEyeHeight);
+        List list = world.getEntities(this, boundingBox.expand(0.0D, 0.14999999999999999D, 0.0D));
+        if (list != null && list.size() > 0) {
+            for (int j1 = 0; j1 < list.size(); j1++) {
+                Entity entity = (Entity) list.get(j1);
+                if (entity.isPushable() || (entity instanceof ItemEntity)) {
+                    PushEntity(entity);
+                    continue;
+                }
+                if (entity.dead) {
+                    continue;
+                }
+            }
+
+        }
+    }
+
     public void tick() {
         if (dead || world.isRemote) {
+            remoteTick();
             return;
         }
         PulleyBlockEntity tileEntityPulley = null;
@@ -149,7 +192,7 @@ public class MovingAnchorEntity extends Entity implements EntitySpawnDataProvide
                     continue;
                 }
                 if (entity instanceof WindMillEntity entityWindMill) {
-                    entityWindMill.DestroyWithDrop();
+                    entityWindMill.destroyWithDrop();
                 }
             }
 
@@ -256,21 +299,30 @@ public class MovingAnchorEntity extends Entity implements EntitySpawnDataProvide
     }
 
     private void PushEntity(Entity entity) {
-        double anchorMaxY = boundingBox.maxY + 0.074999999999999997D;
-        double entityMinY = entity.boundingBox.minY;
-        if (entityMinY < anchorMaxY) {
-            if (entityMinY > anchorMaxY - 0.25D) {
-                double entityYOffset = anchorMaxY - entityMinY;
-                entity.setPosition(entity.x, entity.y + entityYOffset, entity.z);
-                entity.fallDistance = 0.0F;
-            } else if ((entity instanceof LivingEntity) && velocityY < 0.0D) {
-                double entityMaxY = entity.boundingBox.maxY;
-                double anchorMinY = boundingBox.minY;
-                if (anchorMinY < entityMaxY - 0.25D) {
-                    entity.damage(null, 1);
+            double anchorMaxY = boundingBox.maxY + 0.074999999999999997D;
+            double entityMinY = entity.boundingBox.minY;
+            if (entityMinY < anchorMaxY) {
+                if (entityMinY > anchorMaxY - 0.25D) {
+                    double entityYOffset = anchorMaxY - entityMinY;
+                    if(!(FabricLoader.getInstance().getEnvironmentType().equals(EnvType.SERVER) && entity instanceof PlayerEntity)) {
+                        entity.setPosition(entity.x, entity.y + entityYOffset, entity.z);
+                    }
+                    entity.fallDistance = 0.0F;
+                } else if ((entity instanceof LivingEntity) && velocityY < 0.0D) {
+                    double entityMaxY = entity.boundingBox.maxY;
+                    double anchorMinY = boundingBox.minY;
+                    if (anchorMinY < entityMaxY - 0.25D) {
+                        if(FabricLoader.getInstance().getEnvironmentType().equals(EnvType.SERVER) && entity instanceof PlayerEntity){
+                            if(entityMaxY - anchorMinY < 2.1D) { //około 2.31 wychodzi przy zmianie kierunku platfy
+                                entity.damage(null, 1);
+                            }
+                        }else{
+                            entity.damage(null, 1);
+                        }
+                    }
                 }
             }
-        }
+
     }
 
     public void ForceStopByPlatform() {
@@ -333,6 +385,7 @@ public class MovingAnchorEntity extends Entity implements EntitySpawnDataProvide
     public static final float fMovementSpeed = 0.05F;
     private final BlockPosition associatedPulleyPos;
     private double sentVel;
+    public boolean receivedP;
 
     @Override
     public Identifier getHandlerIdentifier() {

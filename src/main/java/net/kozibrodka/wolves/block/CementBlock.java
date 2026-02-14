@@ -409,7 +409,7 @@ public class CementBlock extends TemplateBlockWithEntity
     boolean[] tempSpreadToSideFlags;
     int[] tempClosestDownslopeToSideDist;
 
-    //TODO: bottom side texure of cement wtf??
+    //TODO: bottom side texure of cement wtf, some rendering bug happens sometimes??
     //TODO: server sync works fine as long as there is not TRILION packets, example put cement on top of mountain,
     @Override
     public boolean renderWorld(BlockRenderManager tileRenderer, BlockView tileView, int x, int y, int z) {

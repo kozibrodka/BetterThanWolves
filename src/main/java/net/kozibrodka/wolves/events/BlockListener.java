@@ -1,6 +1,7 @@
 package net.kozibrodka.wolves.events;
 
 import net.kozibrodka.wolves.block.*;
+import net.kozibrodka.wolves.block.item.StoneSlabBlock;
 import net.kozibrodka.wolves.materials.CementMaterial;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.minecraft.block.Block;
@@ -68,11 +69,14 @@ public class BlockListener {
     public static MachinePowerInputBlock machinePowerInput;
     public static MachineBusBlock inputBus;
     public static MachineBusBlock outputBus;
-
-    public static TemplateBlock panelNumber1;
-    public static TemplateBlock panelNumber2;
-    public static TemplateBlock panelNumber3;
-    public static TemplateBlock panelNumber4;
+    public static TemplateBlock stoneSlabBlock;
+    public static TemplateBlock panelStoneS;
+    public static TemplateBlock panelSandstone;
+    public static TemplateBlock panelWooden;
+    public static TemplateBlock panelCobblestone;
+    public static TemplateBlock panelBricks;
+    public static TemplateBlock panelMossy;
+    public static TemplateBlock panelStone;
 
     @Entrypoint.Namespace
     public static Namespace NAMESPACE;
@@ -103,6 +107,15 @@ public class BlockListener {
         anchor = new AnchorBlock(NAMESPACE.id("anchor")).setTranslationKey(NAMESPACE, "anchor");
         rope = new RopeBlock(NAMESPACE.id("rope")).setTranslationKey(NAMESPACE, "rope");
         omniSlab = new OmniSlabBlock(NAMESPACE.id("omniSlab")).setTranslationKey(NAMESPACE, "omni_slab");
+        stoneSlabBlock = (TemplateBlock) new StoneSlabBlock(Identifier.of(NAMESPACE, "stone_slab_block"), Material.STONE).setTranslationKey(NAMESPACE, "stone_slab_block");
+        panelStoneS = (TemplateBlock) new PanelBlock(NAMESPACE.id( "panel_stone_s"), stoneSlabBlock).setTranslationKey(NAMESPACE, "panel_stone_s");
+        panelSandstone = (TemplateBlock) new PanelBlock(NAMESPACE.id( "panel_sandstone"), Block.SANDSTONE).setTranslationKey(NAMESPACE, "panel_sandstone");
+        panelWooden = (TemplateBlock) new PanelBlock(NAMESPACE.id( "panel_planks"), Block.PLANKS).setTranslationKey(NAMESPACE, "panel_planks");
+        panelCobblestone = (TemplateBlock) new PanelBlock(NAMESPACE.id( "panel_cbble"), Block.COBBLESTONE).setTranslationKey(NAMESPACE, "panel_cbble");
+        panelBricks = (TemplateBlock) new PanelBlock(NAMESPACE.id( "panel_bricks"), Block.BRICKS).setTranslationKey(NAMESPACE, "panel_bricks");
+        panelMossy = (TemplateBlock) new PanelBlock(NAMESPACE.id( "panel_mossy"), Block.MOSSY_COBBLESTONE).setTranslationKey(NAMESPACE, "panel_mossy");
+        panelStone = (TemplateBlock) new PanelBlock(NAMESPACE.id( "panel_stone"), Block.STONE).setTranslationKey(NAMESPACE, "panel_stone");
+        //
         axleBlock = new AxleBlock(NAMESPACE.id("axleBlock")).setTranslationKey(NAMESPACE, "axle_block");
         gearBox = new GearboxBlock(NAMESPACE.id("gearBox")).setTranslationKey(NAMESPACE, "gear_box");
         turntable = new TurntableBlock(NAMESPACE.id("turntable")).setTranslationKey(NAMESPACE, "turntable");
@@ -125,15 +138,9 @@ public class BlockListener {
         inputBus = new MachineBusBlock(Identifier.of(NAMESPACE, "input_bus"), Material.METAL, 2.5F, Block.METAL_SOUND_GROUP);
         outputBus = new MachineBusBlock(Identifier.of(NAMESPACE, "output_bus"), Material.METAL, 2.5F, Block.METAL_SOUND_GROUP);
 
-        //TODO: Omni slabs are really cursed and kinda bad. Also applies to Cornets/Moudlings - should be option in CFG to remove them
-
-        //TODO: I like the idea of Vanilla providing SLABS (can be placed only horizontally - with fixed placement (basically modern slabs)) & BTW providing PANELS
-        //if(ConfigListener.wolvesGlass.small_tweaks.initPanels){
-        //    panelNumber1 = (TemplateBlock) new PanelBlock(MOD_ID.id( "fcPanel1"), Block.SAND).setTranslationKey(MOD_ID, "fc_panel_1"); //test panels later hide
-        //    panelNumber2 = (TemplateBlock) new PanelBlock(MOD_ID.id( "fcPanel2"), Block.PUMPKIN).setTranslationKey(MOD_ID, "fcPanel_2");
-        //    panelNumber3 = (TemplateBlock) new PanelBlock(MOD_ID.id( "fcPanel3"), crucible).setTranslationKey(MOD_ID, "fc_panel3");
-        //    panelNumber4 = (TemplateBlock) new PanelBlock(MOD_ID.id( "fcPanel4"), Block.NETHER_PORTAL).setTranslationKey(MOD_ID, "fc_panel_4");
-        //}
+        //TODO: Gui's doesnt work on SINGPLAYER correctly - power of machine.
+        //TODO: Hopper soul filter - bring back oryginal design.
+        //TODO: Sound volume is like oryginal? check why.
 
     }
 }

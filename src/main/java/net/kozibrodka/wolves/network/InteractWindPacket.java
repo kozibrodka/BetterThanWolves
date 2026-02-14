@@ -94,6 +94,11 @@ public class InteractWindPacket extends Packet implements ManagedPacket<Interact
                 if (itemInstance.count == 0) {
                     player.inventory.setStack(player.inventory.selectedSlot, null);
                 }
+
+                entity1.setCurrentBladeColorIndex(entity1.getCurrentBladeColorIndex() + 1);
+                if (entity1.getCurrentBladeColorIndex() >= 4) {
+                    entity1.setCurrentBladeColorIndex(0);
+                }
             }
         }
     }

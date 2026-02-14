@@ -157,11 +157,11 @@ public class AnvilBlock extends TemplateBlock
     }
 
     public void onTick(World arg, int i, int j, int k, Random random) {
-        this.method_436(arg, i, j, k);
+        this.processFall(arg, i, j, k);
     }
 
-    private void method_436(World arg, int i, int j, int k) {
-        if (method_435(arg, i, j - 1, k) && j >= 0) {
+    private void processFall(World arg, int i, int j, int k) {
+        if (canFallThrough(arg, i, j - 1, k) && j >= 0) {
             int facing = arg.getBlockMeta(i, j, k);
             byte var8 = 32;
             if (!fallInstantly && arg.isRegionLoaded(i - var8, j - var8, k - var8, i + var8, j + var8, k + var8)) {
@@ -170,7 +170,7 @@ public class AnvilBlock extends TemplateBlock
             } else {
                 arg.setBlock(i, j, k, 0);
 
-                while (method_435(arg, i, j - 1, k) && j > 0) {
+                while (canFallThrough(arg, i, j - 1, k) && j > 0) {
                     --j;
                 }
 
@@ -182,7 +182,7 @@ public class AnvilBlock extends TemplateBlock
 
     }
 
-    public static boolean method_435(World arg, int i, int j, int k) {
+    public static boolean canFallThrough(World arg, int i, int j, int k) {
         int var4 = arg.getBlockId(i, j, k);
         if (var4 == 0) {
             return true;

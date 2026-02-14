@@ -1,12 +1,15 @@
 package net.kozibrodka.wolves.utils;
 
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.loader.api.FabricLoader;
 import net.kozibrodka.wolves.block.AxleBlock;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
@@ -142,7 +145,7 @@ public class UnsortedUtils {
             for (int listIndex = 0; listIndex < list.size(); listIndex++) {
                 Entity entity = (Entity) list.get(listIndex);
                 if (entity.isPushable() || (entity instanceof ItemEntity)) {
-                    PositionEntityOutsideOfLocation(world, entity, i, j, k);
+                        PositionEntityOutsideOfLocation(world, entity, i, j, k);
                 }
             }
 

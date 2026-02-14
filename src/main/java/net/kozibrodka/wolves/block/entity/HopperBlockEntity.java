@@ -3,7 +3,9 @@ package net.kozibrodka.wolves.block.entity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.FabricLoader;
+import net.fabricmc.loader.impl.lib.accesswidener.AccessWidener;
 import net.kozibrodka.wolves.block.HopperBlock;
+import net.kozibrodka.wolves.entity.WindMillEntity;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.network.SoundPacket;
@@ -13,6 +15,7 @@ import net.kozibrodka.wolves.utils.InventoryHandler;
 import net.kozibrodka.wolves.utils.ReplaceableBlockChecker;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityRegistry;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
@@ -25,6 +28,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.util.math.Box;
+import net.minecraft.world.ServerWorld;
 import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import net.modificationstation.stationapi.api.registry.ItemRegistry;
@@ -208,11 +212,38 @@ public class HopperBlockEntity extends BlockEntity implements Inventory {
         world.setBlocksDirty(x, y, z, x, y, z);
         hopperEjectBlocked = false;
         int iOccupiedStacks = InventoryHandler.getOccupiedSlotCountWithinBounds(this, 0, 17);
+        if(world.getBlockId(x,y,z) == BlockListener.hopper.id){
 //        ((Hopper)BlockListener.hopper).SetHopperFull(level, x, y, z, iOccupiedStacks == 18);
-        ((HopperBlock) BlockListener.hopper).SetHopperFull(world, x, y, z, iOccupiedStacks);
+            ((HopperBlock) BlockListener.hopper).SetHopperFull(world, x, y, z, iOccupiedStacks);
 //        ((Hopper)BlockListener.hopper).SetHasFilter(level, x, y, z, GetFilterType() > 0);
-        ((HopperBlock) BlockListener.hopper).SetHasFilter(world, x, y, z, GetFilterType());
+            ((HopperBlock) BlockListener.hopper).SetHasFilter(world, x, y, z, GetFilterType());
+        }
     }
+
+    public void detectedByMinecart(ItemStack[] inventory){
+//        System.out.println("DOSZŁO");
+        for(int var3 = 0; var3 < inventory.length; ++var3) {
+            if (inventory[var3] != null) {
+//                System.out.println(inventory[var3] + " " +  inventory[var3].itemId + " " + inventory[var3].count);
+//                ItemStack flintItemInstance = new ItemStack(inventory[var3].getItem());
+
+                ItemStack flintItemInstance = new ItemStack(inventory[var3].itemId, inventory[var3].count, inventory[var3].getDamage());
+                ItemEntity flintEntityitem = new ItemEntity(world, this.x + 0.5D, this.y + 0.5D, this.z + 0.5D, flintItemInstance);
+                flintEntityitem.pickupDelay = 10;
+                world.spawnEntity(flintEntityitem);
+                inventory[var3] = null;
+//                if(inventory[var3].count == 1){
+//                    inventory[var3] = null;
+//                }else {
+//                    inventory[var3].count--;
+//                }
+
+                break;
+            }
+
+        }
+    }
+
 
     public int GetFilterType() {
         ItemStack filterStack = getStack(18);

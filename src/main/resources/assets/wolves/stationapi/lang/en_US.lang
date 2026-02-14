@@ -50,6 +50,7 @@ item.wolves.nothing.name=Nothing
 item.wolves.wicker_weaving.name=Wicker Weaving
 item.wolves.wicker_sheet.name=Wicker Sheet
 item.wolves.weight.name=Weight
+item.wolves.steel_minecart.name=Soulforged Steel Minecart
 
 tile.wolves.anvil.name=Anvil
 tile.wolves.light_bulb_off.name=Light Block
@@ -116,6 +117,16 @@ tile.wolves.anvil_frame.name=Anvil Frame
 tile.wolves.machine_power_input.name=Machine Power Input
 tile.wolves.input_bus.name=Input Bus
 tile.wolves.output_bus.name=Output Bus
+tile.wolves.stone_slab_block.name=Stone Slab Block
+tile.wolves.panel_stone_s.name=Stone Panel
+tile.wolves.panel_sandstone.name=Sandstone Panel
+tile.wolves.panel_planks.name=Wooden Panel
+tile.wolves.panel_cbble.name=Cobblestone Panel
+tile.wolves.panel_bricks.name=Brick Panel
+tile.wolves.panel_mossy.name=Mossy Cobblestone Panel
+tile.wolves.panel_stone.name=Stone Smooth Panel
+
+
 
 description.@.hemp=Obtained from harvesting hemp crops. Hemp crops can be grown 2 blocks high for efficient farming.
 description.@.hemp_seeds=Rarely dropped by tall grass. Planted on farmland to grow hemp crops.

@@ -10,6 +10,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.BlockView;
+import net.minecraft.world.ServerWorld;
 import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.template.block.TemplateBlock;
 import net.modificationstation.stationapi.api.util.Identifier;
@@ -68,8 +69,11 @@ public class LightBulbBlock extends TemplateBlock
         }
     }
 
-    public boolean isEmittingRedstonePower(BlockView iBlockAccess, int i, int j, int k, int l) //isPoweringTo
+    public boolean isPoweringSide(BlockView iBlockAccess, int i, int j, int k, int l) //isPoweringTo
     {
+//        return ModLoader.getMinecraftInstance().theWorld.isBlockGettingPowered(i, j, k);
+
+
 //        return ((Minecraft) net.fabricmc.loader.FabricLoader.INSTANCE.getGameInstance()).level.canTransferPower(x, y, z);
 
 //        return ((MinecraftServer) FabricLoader.getInstance().getGameInstance()).getLevel(0).canTransferPower(x, y, z);
@@ -93,8 +97,11 @@ public class LightBulbBlock extends TemplateBlock
 
     @Environment(EnvType.SERVER)
     public boolean powerServer(BlockView iBlockAccess, int i, int j, int k, int l) {
-        return ((MinecraftServer) net.fabricmc.loader.api.FabricLoader.getInstance().getGameInstance()).getWorld(0).isStrongPowered(i, j, k);
-        //TODO: It gets the overworld always.
+        if(iBlockAccess instanceof ServerWorld world1){
+            return world1.isStrongPowered(i,j,k);
+        }else{
+            return false;
+        }
     }
 
 

@@ -1,6 +1,9 @@
 package net.kozibrodka.wolves.mixin;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.kozibrodka.wolves.events.BlockListener;
+import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.RailBlock;
 import net.minecraft.world.World;
@@ -25,6 +28,14 @@ public class BlockRailMixin {
 
     @Inject(method = "canPlaceAt", at = @At("RETURN"), cancellable = true)
     private void injected3(World arg, int i, int j, int k, CallbackInfoReturnable<Boolean> tor) {
-        tor.setReturnValue(arg.shouldSuffocate(i, j - 1, k) || arg.getBlockId(i, j - 1, k) == BlockListener.hopper.id); //TODO: not enough
+        tor.setReturnValue(arg.shouldSuffocate(i, j - 1, k) || arg.getBlockId(i, j - 1, k) == BlockListener.hopper.id);
     }
-}
+
+    @WrapOperation(method = "neighborUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;shouldSuffocate(III)Z", ordinal = 0))
+    public boolean injected5(World instance, int x, int y, int z, Operation<Boolean> original) {
+        if (instance.getBlockId(x, y, z) == BlockListener.hopper.id){
+            return true;
+        }
+        return original.call(instance, x, y, z);
+    }
+    }

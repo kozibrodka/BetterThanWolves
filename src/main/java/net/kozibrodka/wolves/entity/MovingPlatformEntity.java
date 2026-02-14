@@ -2,19 +2,23 @@ package net.kozibrodka.wolves.entity;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.loader.api.FabricLoader;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.EntityListener;
+import net.kozibrodka.wolves.network.PlatformPacket;
 import net.kozibrodka.wolves.utils.ReplaceableBlockChecker;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import net.modificationstation.stationapi.api.server.entity.EntitySpawnDataProvider;
 import net.modificationstation.stationapi.api.server.entity.HasTrackingParameters;
 import net.modificationstation.stationapi.api.util.Identifier;
@@ -77,8 +81,11 @@ public class MovingPlatformEntity extends Entity implements EntitySpawnDataProvi
     @Environment(EnvType.CLIENT)
     @Override
     public void setPositionAndAnglesAvoidEntities(double x, double y, double z, float pitch, float yaw, int interpolationSteps) {
-        this.setPosition(x, y, z);
-        this.setRotation(pitch, yaw);
+        if(!receivedP) {
+            this.setPosition(x, y, z);
+            this.setRotation(pitch, yaw);
+            receivedP = true;
+        }
     }
 
     @Override
@@ -102,8 +109,46 @@ public class MovingPlatformEntity extends Entity implements EntitySpawnDataProvi
         return 0.0F;
     }
 
+    @Environment(EnvType.CLIENT)
+    public void remoteTick(){
+        int i = MathHelper.floor(x);
+        int oldCentreJ = MathHelper.floor(y);
+        int k = MathHelper.floor(z);
+        MovingAnchorEntity associatedMovingAnchor = null;
+        List list = world.collectEntitiesByClass(MovingAnchorEntity.class, Box.createCached(m_AssociatedAnchorLastKnownXPos - 0.25D, m_AssociatedAnchorLastKnownYPos - 0.25D, m_AssociatedAnchorLastKnownZPos - 0.25D, m_AssociatedAnchorLastKnownXPos + 0.25D, m_AssociatedAnchorLastKnownYPos + 0.25D, m_AssociatedAnchorLastKnownZPos + 0.25D));
+        if (list != null && list.size() > 0) {
+            associatedMovingAnchor = (MovingAnchorEntity) list.get(0);
+            if (!associatedMovingAnchor.dead) {
+                velocityY = associatedMovingAnchor.velocityY;
+                m_AssociatedAnchorLastKnownXPos = associatedMovingAnchor.x;
+                m_AssociatedAnchorLastKnownYPos = associatedMovingAnchor.y;
+                m_AssociatedAnchorLastKnownZPos = associatedMovingAnchor.z;
+            } else {
+                associatedMovingAnchor = null;
+            }
+        }
+        double oldPosY = y;
+        MoveEntityInternal(velocityX, velocityY, velocityZ);
+        double newPosY = y;
+        list = world.getEntities(this, boundingBox.expand(0.0D, 0.14999999999999999D, 0.0D));
+        if (list != null && list.size() > 0) {
+            for (int j1 = 0; j1 < list.size(); j1++) {
+                Entity entity = (Entity) list.get(j1);
+                if (entity.isPushable() || (entity instanceof ItemEntity)) {
+                    PushEntity(entity);
+                    continue;
+                }
+                if (entity.dead) {
+                    continue;
+                }
+            }
+
+        }
+    }
+
     public void tick() {
         if (dead || world.isRemote) {
+            remoteTick();
             return;
         }
         int i = MathHelper.floor(x);
@@ -141,7 +186,7 @@ public class MovingPlatformEntity extends Entity implements EntitySpawnDataProvi
                     continue;
                 }
                 if (entity instanceof WindMillEntity entityWindMill) {
-                    entityWindMill.DestroyWithDrop();
+                    entityWindMill.destroyWithDrop();
                 }
             }
 
@@ -241,23 +286,32 @@ public class MovingPlatformEntity extends Entity implements EntitySpawnDataProvi
     }
 
     private void PushEntity(Entity entity) {
-        // if(true)return;
-        //TODO what happening here on server?
-        double platformMaxY = boundingBox.maxY + 0.074999999999999997D;
-        double entityMinY = entity.boundingBox.minY;
-        if (entityMinY < platformMaxY) {
-            if (entityMinY > platformMaxY - 0.25D) {
-                double entityYOffset = platformMaxY - entityMinY;
-                entity.setPosition(entity.x, entity.y + entityYOffset, entity.z);
-                System.out.println("MOVE");//TODO: pakiecik?
-            } else if ((entity instanceof LivingEntity) && velocityY < 0.0D) {
-                double entityMaxY = entity.boundingBox.maxY;
-                double platformMinY = boundingBox.minY;
-                if (platformMinY < entityMaxY - 0.25D) {
-                    entity.damage(null, 1);
+
+            double platformMaxY = boundingBox.maxY + 0.074999999999999997D;
+            double entityMinY = entity.boundingBox.minY;
+            if (entityMinY < platformMaxY) {
+                if (entityMinY > platformMaxY - 0.25D) {
+                    double entityYOffset = platformMaxY - entityMinY;
+                    if(!(FabricLoader.getInstance().getEnvironmentType().equals(EnvType.SERVER) && entity instanceof PlayerEntity)) {
+                        entity.setPosition(entity.x, entity.y + entityYOffset, entity.z);
+                    }
+                } else if ((entity instanceof LivingEntity) && velocityY < 0.0D) {
+                    double entityMaxY = entity.boundingBox.maxY;
+                    double platformMinY = boundingBox.minY;
+                    if (platformMinY < entityMaxY - 0.25D) {
+                        if(FabricLoader.getInstance().getEnvironmentType().equals(EnvType.SERVER) && entity instanceof PlayerEntity)
+                        {
+                            if(entityMaxY - platformMinY < 2.1D) { //około 2.31 wychodzi przy zmianie kierunku platfy
+                                entity.damage(null, 1);
+                            }
+//                            System.out.println("DOBULE: " + platformMinY + "  " + (entityMaxY - 0.25D));
+                        }else{
+                            entity.damage(null, 1);
+                        }
+                    }
                 }
             }
-        }
+
     }
 
     private void ConvertToBlock(int i, int j, int k, MovingAnchorEntity associatedAnchor) {
@@ -279,12 +333,24 @@ public class MovingPlatformEntity extends Entity implements EntitySpawnDataProvi
             moveEntities = false;
         }
         UnsortedUtils.PositionAllMoveableEntitiesOutsideOfLocation(world, i, j, k);
+        if(FabricLoader.getInstance().getEnvironmentType().equals(EnvType.SERVER)) {
+            List list = world.getEntities(this, boundingBox.expand(0.0D, 0.5D, 0.0D));
+            if (list != null && list.size() > 0) {
+                for (int j1 = 0; j1 < list.size(); j1++) {
+                    Entity entity = (Entity) list.get(j1);
+                    if ((entity instanceof PlayerEntity)) {
+                        PacketHelper.sendTo((PlayerEntity) entity, new PlatformPacket(j));
+                    }
+                }
+            }
+        }
         markDead();
     }
 
     private double m_AssociatedAnchorLastKnownXPos;
     private double m_AssociatedAnchorLastKnownYPos;
     private double m_AssociatedAnchorLastKnownZPos;
+    public boolean receivedP;
 
     @Override
     public Identifier getHandlerIdentifier() {

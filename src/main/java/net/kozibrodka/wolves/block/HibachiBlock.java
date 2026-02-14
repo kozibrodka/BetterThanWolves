@@ -90,6 +90,11 @@ public class HibachiBlock extends TemplateBlock {
                 if (iBlockAboveID != Block.FIRE.id && iBlockAboveID != BlockListener.stokedFire.id && BBQShouldIgniteAbove(world, i, j, k)) {
                     bShouldUpdate = true;
                 }
+            } else if(!IsBBQLit(world, i, j, k) && !bPowered){
+                int iBlockAboveID = world.getBlockId(i, j + 1, k);
+                if (iBlockAboveID == Block.FIRE.id || iBlockAboveID == BlockListener.stokedFire.id) {
+                    bShouldUpdate = true;
+                }
             }
         }
         if (bShouldUpdate) {

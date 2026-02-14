@@ -168,7 +168,6 @@ public class StokedFireBlock extends TemplateFireBlock implements BlockWithWorld
         entity.damage(null, 2);
     }
 
-    // TODO: Replace this messy code. And make the top stoked fire visually connect better to the bottom block. - think its done?
     @Override
     public boolean renderWorld(BlockRenderManager tileRenderer, BlockView blockView, int i, int j, int k) {
         Tessellator var5 = Tessellator.INSTANCE;

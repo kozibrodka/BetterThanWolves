@@ -27,6 +27,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.entity.vehicle.MinecartEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -146,6 +147,7 @@ public class HopperBlock extends TemplateBlockWithEntity
 
     public void onEntityCollision(World world, int i, int j, int k, Entity entity) {
         List collisionList = null;
+        List collisionList2 = null;
         if (world.isRemote) {
             return;
         }
@@ -188,6 +190,7 @@ public class HopperBlock extends TemplateBlockWithEntity
                                 flintEntityitem.pickupDelay = 10;
                                 world.spawnEntity(flintEntityitem);
                             }
+                            //TODO: BRING Back groundnetherrack ejecting + sound. + old logic
                         } else if (InventoryHandler.addItemWithinSlotBounds(tileEntityHopper, targetEntityItem.stack, 0, 17)) {
                             world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "random.pop", 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                             if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
@@ -216,7 +219,6 @@ public class HopperBlock extends TemplateBlockWithEntity
 //            }
 //            world.blockUpdateEvent(x, y, z);
         }
-        //TODO: Interaction with minecarts?
     }
 
     public boolean isEmittingRedstonePower(BlockView iBlockAccess, int i, int j, int k, int l) {

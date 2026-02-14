@@ -14,3 +14,11 @@ accessible method net/minecraft/entity/passive/WolfEntity getHurtSound ()Ljava/l
 accessible method net/minecraft/entity/passive/WolfEntity getSoundVolume ()F
 accessible field net/minecraft/client/Minecraft INSTANCE Lnet/minecraft/client/Minecraft;
 accessible field net/minecraft/entity/data/DataTracker entries Ljava/util/Map;
+accessible field net/minecraft/entity/vehicle/MinecartEntity clientInterpolationSteps I
+accessible field net/minecraft/entity/vehicle/MinecartEntity clientX D
+accessible field net/minecraft/entity/vehicle/MinecartEntity clientY D
+accessible field net/minecraft/entity/vehicle/MinecartEntity clientZ D
+accessible field net/minecraft/entity/vehicle/MinecartEntity clientPitch D
+accessible field net/minecraft/entity/vehicle/MinecartEntity clientYaw D
+accessible field net/minecraft/entity/vehicle/MinecartEntity yawFlipped Z
+accessible field net/minecraft/entity/vehicle/MinecartEntity ADJACENT_RAIL_POSITIONS_BY_SHAPE [[[I

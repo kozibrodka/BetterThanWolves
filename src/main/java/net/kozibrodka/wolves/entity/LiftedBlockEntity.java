@@ -79,8 +79,11 @@ public class LiftedBlockEntity extends Entity implements EntitySpawnDataProvider
     @Environment(EnvType.CLIENT)
     @Override
     public void setPositionAndAnglesAvoidEntities(double x, double y, double z, float pitch, float yaw, int interpolationSteps) {
-        this.setPosition(x, y, z);
-        this.setRotation(pitch, yaw);
+        if(!receivedP) {
+            this.setPosition(x, y, z);
+            this.setRotation(pitch, yaw);
+            receivedP = true;
+        }
     }
 
     @Override
@@ -107,8 +110,28 @@ public class LiftedBlockEntity extends Entity implements EntitySpawnDataProvider
         return 0.0F;
     }
 
+    public void remoteTick(){
+        MovingPlatformEntity associatedMovingPlatform = null;
+        List collisionList = world.collectEntitiesByClass(MovingPlatformEntity.class, Box.createCached(x - 0.25D, y - 1.25D, z - 0.25D, x + 0.25D, y - 0.75D, z + 0.25D));
+        if (collisionList != null && collisionList.size() > 0) {
+            associatedMovingPlatform = (MovingPlatformEntity) collisionList.get(0);
+            if (!associatedMovingPlatform.dead) {
+                double newPosX = associatedMovingPlatform.x;
+                double newPosY = associatedMovingPlatform.y + 1.0D;
+                double newPosZ = associatedMovingPlatform.z;
+                prevX = x;
+                prevY = y;
+                prevZ = z;
+                setPosition(newPosX, newPosY, newPosZ);
+            } else {
+                associatedMovingPlatform = null;
+            }
+        }
+    }
+
     public void tick() {
         if (dead || world.isRemote) {
+            remoteTick();
             return;
         }
         MovingPlatformEntity associatedMovingPlatform = null;
@@ -178,6 +201,7 @@ public class LiftedBlockEntity extends Entity implements EntitySpawnDataProvider
 
 //    public int blockId;
 //    public int blockMetaData;
+    public boolean receivedP;
 
     //BlockID
     public int getLiftedId()

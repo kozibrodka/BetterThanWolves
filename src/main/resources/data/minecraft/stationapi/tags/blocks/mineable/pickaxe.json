@@ -23,6 +23,12 @@
     "wolves:anvil_frame",
     "wolves:machine_power_input",
     "wolves:input_bus",
-    "wolves:output_bus"
+    "wolves:output_bus",
+    "wolves:panel_stone_s",
+    "wolves:panel_sandstone",
+    "wolves:panel_cbble",
+    "wolves:panel_bricks",
+    "wolves:panel_mossy",
+    "wolves:panel_stone"
   ]
 }

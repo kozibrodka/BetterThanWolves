@@ -43,6 +43,7 @@ public class ScreenHandlerListener {
 
     @Environment(EnvType.CLIENT)
     public Screen openAnvil(PlayerEntity player, Inventory inventoryBase) {
+        //TODO: can this be handled differently?
         return new AnvilScreen(player.inventory, player.world, anvilX, anvilY, anvilZ);
     }
 

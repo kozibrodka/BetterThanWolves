@@ -12,7 +12,7 @@ public class ConfigListener {
     @Entrypoint.Namespace
     public static Namespace NAMESPACE;
 
-    //TODO EXTRA: Saw animated, Anvil gravity, PANELS/options
+    //TODO EXTRA: Saw animated
 
 }
 

@@ -14,6 +14,7 @@
     "BlockSugarCaneMixin",
     "HempSeedDrop",
     "ItemSeedsMixin",
+    "MinecartEntityMixin",
     "OakTreeMixin",
     "PlantBlockMixin",
     "SeedsItemMixin",

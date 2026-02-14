@@ -63,6 +63,7 @@ public class ItemListener {
     public static Item coalDust;
     public static Item soulFilter;
     public static Item nothing;
+    public static Item steelMinecart;
     public static WickerWeavingItem wickerWeaving;
     public static LazyItemTemplate wickerSheet;
     public static LazyItemTemplate weight;
@@ -120,6 +121,7 @@ public class ItemListener {
         chestPlateSteel = new RefinedArmorItem(NAMESPACE.id("chestPlateSteel"), 1).setTranslationKey(NAMESPACE, "chest_plate_steel");
         leggingsSteel = new RefinedArmorItem(NAMESPACE.id("leggingsSteel"), 2).setTranslationKey(NAMESPACE, "leggings_steel");
         bootsSteel = new RefinedArmorItem(NAMESPACE.id("bootsSteel"), 3).setTranslationKey(NAMESPACE, "boots_steel");
+        steelMinecart = new SteelMinecartItem(NAMESPACE.id("steel_minecart")).setTranslationKey(NAMESPACE, "steel_minecart");
         compositeBow = new CompositeBowItem(NAMESPACE.id("compositeBow")).setTranslationKey(NAMESPACE, "composite_bow");
         broadHeadArrowhead = new TemplateItem(NAMESPACE.id("broadHeadArrowhead")).setTranslationKey(NAMESPACE, "broad_head_arrowhead");
         broadHeadArrow = new TemplateItem(NAMESPACE.id("broadHeadArrow")).setTranslationKey(NAMESPACE, "broad_head_arrow");
@@ -133,6 +135,6 @@ public class ItemListener {
         debugItem1 = new DebugItem1(NAMESPACE.id("debugItem1")).setTranslationKey(NAMESPACE, "debugItem1");
         debugItem2 = new DebugItem2(NAMESPACE.id("debugItem2")).setTranslationKey(NAMESPACE, "debugItem2");
 
-        //TODO: ADDON IDEA: Refined Steel Minecarts - they would be X times faster than normal ones, great way to give more purpose for rail usage.
+        //TODO: Inventory render bug, on high to the left slots.
     }
 }

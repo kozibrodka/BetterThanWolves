@@ -153,7 +153,6 @@ public class AxleBlock extends TemplateBlock {
     public void setPowerLevel(World world, int x, int y, int z, int powerLevel) {
         if (world.isRemote) {
             return;
-            //TODO: Maybe more of those conditions in other blocks
         }
         powerLevel &= 3;
         int metadata = world.getBlockMeta(x, y, z) & 0xc;

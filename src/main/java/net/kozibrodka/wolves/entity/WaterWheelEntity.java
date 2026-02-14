@@ -7,6 +7,8 @@ import net.kozibrodka.wolves.block.AxleBlock;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.EntityListener;
 import net.kozibrodka.wolves.events.ItemListener;
+import net.kozibrodka.wolves.network.DamagePacket;
+import net.kozibrodka.wolves.network.InteractWindPacket;
 import net.minecraft.block.Block;
 import net.minecraft.block.LiquidBlock;
 import net.minecraft.entity.Entity;
@@ -16,12 +18,13 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import net.modificationstation.stationapi.api.server.entity.EntitySpawnDataProvider;
 import net.modificationstation.stationapi.api.server.entity.HasTrackingParameters;
 import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.util.TriState;
 
-@HasTrackingParameters(trackingDistance = 160, updatePeriod = 1, sendVelocity = TriState.TRUE)
+@HasTrackingParameters(trackingDistance = 160, updatePeriod = 1, sendVelocity = TriState.FALSE)
 public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
 {
 
@@ -31,9 +34,10 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
         setProvidingPower(false);
         setWheelRotation(0.0F);
 //        setAligned(true);
-        iWaterWheelCurrentDamage = 0;
-        iWaterWheelTimeSinceHit = 0;
-        iWaterWheelRockDirection = 1;
+//        iWaterWheelCurrentDamage = 0;
+//        iWaterWheelTimeSinceHit = 0;
+//        iWaterWheelRockDirection = 1;
+        setWheelRockDirection(1);
         fWaterWheelCurrentRotationSpeed = 0.0F;
         iFullUpdateTickCount = 0;
         blocksSameBlockSpawning = true;
@@ -70,6 +74,9 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
         dataTracker.startTracking(16, (byte) 0); //ALIGNED
         dataTracker.startTracking(17, (int) 0); //WHEEL ROTATION
         dataTracker.startTracking(18, (byte) 0); //PROVIDING POWER
+        dataTracker.startTracking(19, (byte) 0); //currentDamage
+        dataTracker.startTracking(20, (byte) 0); //timeSinceHit
+        dataTracker.startTracking(21, (byte) 0); //rockDirection
     }
 
     protected void writeNbt(NbtCompound nbttagcompound)
@@ -77,6 +84,9 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
         nbttagcompound.putBoolean("bWaterWheelIAligned", getAligned());
         nbttagcompound.putFloat("fRotation", getWheelRotation());
         nbttagcompound.putBoolean("bProvidingPower", getProvidingPower());
+        nbttagcompound.putInt("currentDamage", getWheelCurrentDamage());
+        nbttagcompound.putInt("timeSinceHit", getWheelTimeSinceHit());
+        nbttagcompound.putInt("rockDirection", getWheelRockDirection());
     }
 
     protected void readNbt(NbtCompound nbttagcompound)
@@ -84,6 +94,9 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
         setAligned(nbttagcompound.getBoolean("bWaterWheelIAligned"));
         setWheelRotation(nbttagcompound.getFloat("fRotation"));
         setProvidingPower(nbttagcompound.getBoolean("bProvidingPower"));
+        setWheelCurrentDamage(nbttagcompound.getInt("currentDamage"));
+        setWheelTimeSinceHit(nbttagcompound.getInt("timeSinceHit"));
+        setWheelRockDirection(nbttagcompound.getInt("rockDirection"));
         AlignBoundingBoxWithAxis();
     }
 
@@ -101,19 +114,19 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
 
     @Override
     public void setPosition(double x, double y, double z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        //TODO: check for null instead of try catch. how?
-        try {
-            if(getAligned())
-            {
-                boundingBox.set(x - 0.40000000596046448D, y - 2.4000000953674316D, z - 2.4000000953674316D, x + 0.40000000596046448D, y + 2.4000000953674316D, z + 2.4000000953674316D);
-            } else
-            {
-                boundingBox.set(x - 2.4000000953674316D, y - 2.4000000953674316D, z - 0.40000000596046448D, x + 2.4000000953674316D, y + 2.4000000953674316D, z + 0.40000000596046448D);
+        if(!receivedP) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+            if (dataTracker.entries.containsKey(16)) {
+                if (getAligned()) {
+                    boundingBox.set(x - 0.40000000596046448D, y - 2.4000000953674316D, z - 2.4000000953674316D, x + 0.40000000596046448D, y + 2.4000000953674316D, z + 2.4000000953674316D);
+                    receivedP = true;
+                } else {
+                    boundingBox.set(x - 2.4000000953674316D, y - 2.4000000953674316D, z - 0.40000000596046448D, x + 2.4000000953674316D, y + 2.4000000953674316D, z + 0.40000000596046448D);
+                    receivedP = true;
+                }
             }
-        } catch (Exception e) {
         }
     }
 
@@ -141,24 +154,36 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
     {
         if(world.isRemote || dead)
         {
+            PacketHelper.send(new DamagePacket("water", i, this.id));
             return true;
         }
-        iWaterWheelRockDirection = -iWaterWheelRockDirection;
-        iWaterWheelTimeSinceHit = 10;
+        setWheelRockDirection(-getWheelRockDirection());
+        setWheelTimeSinceHit(10);
         scheduleVelocityUpdate();
-        iWaterWheelCurrentDamage += i * 5;
-        if(iWaterWheelCurrentDamage > 40)
-        {
+        setWheelCurrentDamage(getWheelCurrentDamage()+(i * 5));
+        if(getWheelCurrentDamage() > 40){
             destroyWithDrop();
         }
+//        iWaterWheelRockDirection = -iWaterWheelRockDirection;
+//        iWaterWheelTimeSinceHit = 10;
+//        scheduleVelocityUpdate();
+//        iWaterWheelCurrentDamage += i * 5;
+//        if(iWaterWheelCurrentDamage > 40)
+//        {
+//            destroyWithDrop();
+//        }
         return true;
     }
 
     public void animateHurt()
     {
-        iWaterWheelRockDirection = -iWaterWheelRockDirection;
-        iWaterWheelTimeSinceHit = 10;
-        iWaterWheelCurrentDamage += iWaterWheelCurrentDamage * 5;
+//        iWaterWheelRockDirection = -iWaterWheelRockDirection;
+//        iWaterWheelTimeSinceHit = 10;
+//        iWaterWheelCurrentDamage += iWaterWheelCurrentDamage * 5;
+
+        setWheelRockDirection(-getWheelRockDirection());
+        setWheelTimeSinceHit(10);
+        setWheelCurrentDamage(getWheelCurrentDamage()*5);
     }
 
     public void markDead()
@@ -230,13 +255,21 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
             }
 
         }
-        if(iWaterWheelTimeSinceHit > 0)
+//        if(iWaterWheelTimeSinceHit > 0)
+//        {
+//            iWaterWheelTimeSinceHit--;
+//        }
+//        if(iWaterWheelCurrentDamage > 0)
+//        {
+//            iWaterWheelCurrentDamage--;
+//        }
+        if(getWheelTimeSinceHit() > 0)
         {
-            iWaterWheelTimeSinceHit--;
+            setWheelTimeSinceHit(getWheelTimeSinceHit()-1);
         }
-        if(iWaterWheelCurrentDamage > 0)
+        if(getWheelCurrentDamage() > 0)
         {
-            iWaterWheelCurrentDamage--;
+            setWheelCurrentDamage(getWheelCurrentDamage()-1);
         }
 
         setWheelRotation(getWheelRotation()+fWaterWheelCurrentRotationSpeed);
@@ -499,14 +532,15 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
     public static final int iWaterWheelMaxDamage = 40;
     public static final float fWaterWheelRotationPerTick = 0.25F;
     public static final int iWaterWheelTicksPerFullUpdate = 20;
-    public int iWaterWheelCurrentDamage;
-    public int iWaterWheelTimeSinceHit;
-    public int iWaterWheelRockDirection;
+//    public int iWaterWheelCurrentDamage;
+//    public int iWaterWheelTimeSinceHit;
+//    public int iWaterWheelRockDirection;
     public float fWaterWheelCurrentRotationSpeed;
     public int iFullUpdateTickCount;
     private float sentRotationSpeed;
     public int waterTick;
     public boolean typechoosen;
+    public boolean receivedP;
 
 //    public boolean bWaterWheelIAligned;
 //    public float fRotation;
@@ -520,10 +554,7 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
     //ALIGNED
     public boolean getAligned()
     {
-        if (dataTracker.entries.containsKey(16)){
-            return (dataTracker.getByte(16) & 1) != 0;
-        }
-        return false;
+        return (dataTracker.getByte(16) & 1) != 0;
     }
 
     public void setAligned(boolean flag)
@@ -564,6 +595,38 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
             dataTracker.set(18, (byte) 0);
         }
     }
+
+    //CurrentDamage
+    public int getWheelCurrentDamage()
+    {
+        return dataTracker.getByte(19);
+    }
+
+    public void setWheelCurrentDamage(int i)
+    {
+        dataTracker.set(19, (byte) i);
+    }
+    //TimeSinceHit
+    public int getWheelTimeSinceHit()
+    {
+        return dataTracker.getByte(20);
+    }
+
+    public void setWheelTimeSinceHit(int i)
+    {
+        dataTracker.set(20, (byte) i);
+    }
+    //RockDirection
+    public int getWheelRockDirection()
+    {
+        return dataTracker.getByte(21);
+    }
+
+    public void setWheelRockDirection(int i)
+    {
+        dataTracker.set(21, (byte) i);
+    }
+
     @Override
     public boolean syncTrackerAtSpawn() {
         return true;

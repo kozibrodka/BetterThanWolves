@@ -11,6 +11,7 @@ public class EntityListener {
     @Entrypoint.Namespace
     public static Namespace NAMESPACE;
 
+    //TODO: z jakiej odległości renderuje sie entity?
     @EventListener
     public static void registerEntities(EntityRegister event) {
         event.register(WaterWheelEntity.class, NAMESPACE.id("WaterWheel").toString());
@@ -20,6 +21,7 @@ public class EntityListener {
         event.register(MovingPlatformEntity.class, NAMESPACE.id("MovingPlatform").toString());
         event.register(MovingAnchorEntity.class, NAMESPACE.id("MovingAnchor").toString());
         event.register(FallingAnvilEntity.class, NAMESPACE.id("FallingAnvil").toString());
+        event.register(SteelMinecartEntity.class, NAMESPACE.id("SteelMinecart").toString());
         event.register(FCEntityTEST.class, NAMESPACE.id("StapiTEST").toString());
     }
 
@@ -32,6 +34,7 @@ public class EntityListener {
         event.register(NAMESPACE.id("MovingPlatform"), MovingPlatformEntity::new);
         event.register(NAMESPACE.id("MovingAnchor"), MovingAnchorEntity::new);
         event.register(NAMESPACE.id("FallingAnvil"), FallingAnvilEntity::new);
+        event.register(NAMESPACE.id("SteelMinecart"), SteelMinecartEntity::new);
         event.register(NAMESPACE.id("StapiTEST"), FCEntityTEST::new);
     }
 }
