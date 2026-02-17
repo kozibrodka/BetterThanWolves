@@ -71,10 +71,11 @@ public class AnvilBlock extends TemplateBlock
     }
 
     public boolean onUse(World world, int x, int y, int z, PlayerEntity playerEntity) {
-        GuiHelper.openGUI(playerEntity, Identifier.of(BlockEntityListener.NAMESPACE, "openAnvil"), playerEntity.inventory, new AnvilScreenHandler(playerEntity.inventory, world, x, y, z));
+//        GuiHelper.openGUI(playerEntity, Identifier.of(BlockEntityListener.NAMESPACE, "openAnvil"), playerEntity.inventory, new AnvilScreenHandler(playerEntity.inventory, world, x, y, z));
         ScreenHandlerListener.anvilX = x;
         ScreenHandlerListener.anvilY = y;
         ScreenHandlerListener.anvilZ = z;
+        GuiHelper.openGUI(playerEntity, Identifier.of(BlockEntityListener.NAMESPACE, "openAnvil"), playerEntity.inventory, new AnvilScreenHandler(playerEntity.inventory, world, x, y, z));
         return true;
     }
 
