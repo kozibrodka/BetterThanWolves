@@ -35,6 +35,7 @@ Possbile extra features (oryginal BTW)""
 - Animated saw
 - (DONE) Omni Slab into Vertical Slabs
 - (DONE) Minecart from regorfed Steel
+- BOAT ENFORCED WITH STEEL - doesnt break from collision!!
 - steel frame Painting - with those cool x32 textures.
 - Backport cool stuff from 1.8.1 - 1.2.5 version maybe  - Buddy Block? transmitter block? - https://www.youtube.com/watch?v=IGBo0P3ZKts&list=PLC10F5BB68A5B956E&index=18
 - ^ right now i dont see anything thats interesting in newer versions.
