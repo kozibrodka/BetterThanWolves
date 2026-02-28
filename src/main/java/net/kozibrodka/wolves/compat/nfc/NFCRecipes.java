@@ -14,6 +14,10 @@ public class NFCRecipes {
         CraftingRegistry.addShapelessRecipe(new ItemStack(BlockListener.unfiredPlanter, 1, 0), new ItemStack(net.kozibrodka.wolves.events.BlockListener.unfiredPottery, 1, 1));
     }
 
+    public static void addShapedCraftingRecipes() {
+        CraftingRegistry.addShapedRecipe(new ItemStack(net.kozibrodka.wolves.events.BlockListener.converter, 1), " L ", "AFA", " G ", 'A', ItemListener.aluminiumIngot, 'L', ItemListener.aluminiumGear, 'G', net.kozibrodka.wolves.events.BlockListener.gearBox, 'F', BlockListener.machineFrame);
+    }
+
     public static void addCrucibleRecipes() {
         RecipeListener.addCrucibleRecipe(new ItemStack(net.kozibrodka.wolves.events.ItemListener.steel, 4), new ItemStack[]{new ItemStack(ItemListener.steelIngot, 2), new ItemStack(net.kozibrodka.wolves.events.ItemListener.concentratedHellfire), new ItemStack(net.kozibrodka.wolves.events.ItemListener.coalDust), new ItemStack(ItemListener.anthracite)});
 

@@ -1,10 +1,20 @@
 package net.kozibrodka.wolves.events;
 
 import net.fabricmc.loader.api.FabricLoader;
-//import net.glasslauncher.mods.alwaysmoreitems.recipe.multiblock.BlockPatternEntry;
-//import net.glasslauncher.mods.alwaysmoreitems.registry.multiblock.MultiBlockRecipeRegistry;
 import net.kozibrodka.wolves.compat.nfc.NFCRecipes;
-import net.kozibrodka.wolves.recipe.*;
+import net.kozibrodka.wolves.recipe.AnvilCraftingManager;
+import net.kozibrodka.wolves.recipe.CauldronCraftingManager;
+import net.kozibrodka.wolves.recipe.CrucibleCraftingManager;
+import net.kozibrodka.wolves.recipe.HopperPurifyingRecipeRegistry;
+import net.kozibrodka.wolves.recipe.MillingRecipeRegistry;
+import net.kozibrodka.wolves.recipe.SawingRecipeRegistry;
+import net.kozibrodka.wolves.recipe.StokedCauldronCraftingManager;
+import net.kozibrodka.wolves.recipe.TurntableByproduct;
+import net.kozibrodka.wolves.recipe.TurntableInput;
+import net.kozibrodka.wolves.recipe.TurntableOutput;
+import net.kozibrodka.wolves.recipe.TurntableRecipe;
+import net.kozibrodka.wolves.recipe.TurntableRecipeRegistry;
+import net.kozibrodka.wolves.recipe.TurntableResult;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.minecraft.block.Block;
 import net.minecraft.block.WoolBlock;
@@ -13,14 +23,10 @@ import net.minecraft.item.ItemStack;
 import net.modificationstation.stationapi.api.event.recipe.RecipeRegisterEvent;
 import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
 import net.modificationstation.stationapi.api.recipe.CraftingRegistry;
-import net.modificationstation.stationapi.api.recipe.SmeltingRegistry;
 import net.modificationstation.stationapi.api.registry.BlockRegistry;
 import net.modificationstation.stationapi.api.registry.ItemRegistry;
 import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.util.Namespace;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class RecipeListener {
     @Entrypoint.Namespace
@@ -84,6 +90,9 @@ public class RecipeListener {
     }
 
     private static void addBlockRecipes() {
+        if (isNewFrontierCraftPresent) {
+            NFCRecipes.addShapedCraftingRecipes();
+        }
         CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.anvil, 1), "###", " # ", "###", '#', ItemListener.steel);
         CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.lightBulbOff, 1), " # ", "#X#", " Y ", '#', Block.GLASS, 'X', Item.GLOWSTONE_DUST, 'Y', Item.REDSTONE);
         if (!isHarderThanWolvesPresent) {
