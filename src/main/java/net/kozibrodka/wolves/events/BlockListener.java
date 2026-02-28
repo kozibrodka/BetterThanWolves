@@ -1,6 +1,48 @@
 package net.kozibrodka.wolves.events;
 
-import net.kozibrodka.wolves.block.*;
+import net.fabricmc.loader.api.FabricLoader;
+import net.kozibrodka.wolves.block.AnchorBlock;
+import net.kozibrodka.wolves.block.AnvilBlock;
+import net.kozibrodka.wolves.block.AutomaticAnvilBlock;
+import net.kozibrodka.wolves.block.AxleBlock;
+import net.kozibrodka.wolves.block.BellowsBlock;
+import net.kozibrodka.wolves.block.BlockDispenserBlock;
+import net.kozibrodka.wolves.block.CauldronBlock;
+import net.kozibrodka.wolves.block.CementBlock;
+import net.kozibrodka.wolves.block.CompanionCubeBlock;
+import net.kozibrodka.wolves.block.ConverterBlock;
+import net.kozibrodka.wolves.block.ConveyorBlock;
+import net.kozibrodka.wolves.block.ConveyorExtenderBlock;
+import net.kozibrodka.wolves.block.CornerBlock;
+import net.kozibrodka.wolves.block.CrucibleBlock;
+import net.kozibrodka.wolves.block.DetectorBlock;
+import net.kozibrodka.wolves.block.DetectorRailVariants;
+import net.kozibrodka.wolves.block.DropperBlock;
+import net.kozibrodka.wolves.block.GearboxBlock;
+import net.kozibrodka.wolves.block.HandCrankBlock;
+import net.kozibrodka.wolves.block.HempCropBlock;
+import net.kozibrodka.wolves.block.HibachiBlock;
+import net.kozibrodka.wolves.block.HopperBlock;
+import net.kozibrodka.wolves.block.LazyBlockTemplate;
+import net.kozibrodka.wolves.block.LazyTransparentBlockTemplate;
+import net.kozibrodka.wolves.block.LightBulbBlock;
+import net.kozibrodka.wolves.block.MachineBusBlock;
+import net.kozibrodka.wolves.block.MachinePowerInputBlock;
+import net.kozibrodka.wolves.block.MillStoneBlock;
+import net.kozibrodka.wolves.block.MouldingBlock;
+import net.kozibrodka.wolves.block.NonCollidingAxleBlock;
+import net.kozibrodka.wolves.block.OmniSlabBlock;
+import net.kozibrodka.wolves.block.PanelBlock;
+import net.kozibrodka.wolves.block.PlanterBlock;
+import net.kozibrodka.wolves.block.PlatformBlock;
+import net.kozibrodka.wolves.block.PulleyBlock;
+import net.kozibrodka.wolves.block.RopeBlock;
+import net.kozibrodka.wolves.block.SawBlock;
+import net.kozibrodka.wolves.block.StokedFireBlock;
+import net.kozibrodka.wolves.block.TurntableBlock;
+import net.kozibrodka.wolves.block.UnfiredPotteryBlock;
+import net.kozibrodka.wolves.block.VaseBlock;
+import net.kozibrodka.wolves.block.WickerBlock;
 import net.kozibrodka.wolves.block.item.StoneSlabBlock;
 import net.kozibrodka.wolves.materials.CementMaterial;
 import net.mine_diver.unsafeevents.listener.EventListener;
@@ -16,6 +58,8 @@ import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.util.Namespace;
 
 public class BlockListener {
+
+    static boolean isNewFrontierCraftPresent = FabricLoader.getInstance().isModLoaded("nfc");
 
     public static final Material CEMENT_MATERIAL = new CementMaterial(MapColor.GRAY);
 
@@ -78,6 +122,9 @@ public class BlockListener {
     public static TemplateBlock panelMossy;
     public static TemplateBlock panelStone;
 
+    // Crossover content
+    public static LazyBlockTemplate converter;
+
     @Entrypoint.Namespace
     public static Namespace NAMESPACE;
 
@@ -137,6 +184,11 @@ public class BlockListener {
         machinePowerInput = new MachinePowerInputBlock(Identifier.of(NAMESPACE,  "machine_power_input"), Material.METAL, 2.5F, Block.METAL_SOUND_GROUP);
         inputBus = new MachineBusBlock(Identifier.of(NAMESPACE, "input_bus"), Material.METAL, 2.5F, Block.METAL_SOUND_GROUP);
         outputBus = new MachineBusBlock(Identifier.of(NAMESPACE, "output_bus"), Material.METAL, 2.5F, Block.METAL_SOUND_GROUP);
+        if (isNewFrontierCraftPresent) {
+            converter = new ConverterBlock(Identifier.of(NAMESPACE, "converter"), Material.METAL, 1.5F, Block.METAL_SOUND_GROUP);
+        } else { // Load a dummy version of the block to keep tool tags and other things intact
+            converter = new LazyBlockTemplate(Identifier.of(NAMESPACE, "converter"), Material.METAL, 1.5F, Block.METAL_SOUND_GROUP);
+        }
 
         //TODO: Gui's doesnt work on SINGPLAYER correctly - power of machine.
         //TODO: Hopper soul filter - bring back oryginal design.

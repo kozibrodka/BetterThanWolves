@@ -1,7 +1,23 @@
 package net.kozibrodka.wolves.events;
 
-import net.kozibrodka.wolves.entity.*;
-import net.kozibrodka.wolves.render.*;
+import net.kozibrodka.wolves.entity.BroadheadArrowEntity;
+import net.kozibrodka.wolves.entity.FCEntityTEST;
+import net.kozibrodka.wolves.entity.FallingAnvilEntity;
+import net.kozibrodka.wolves.entity.LiftedBlockEntity;
+import net.kozibrodka.wolves.entity.MovingAnchorEntity;
+import net.kozibrodka.wolves.entity.MovingPlatformEntity;
+import net.kozibrodka.wolves.entity.SteelMinecartEntity;
+import net.kozibrodka.wolves.entity.WaterWheelEntity;
+import net.kozibrodka.wolves.entity.WindMillEntity;
+import net.kozibrodka.wolves.render.BroadHeadArrowRenderer;
+import net.kozibrodka.wolves.render.FCEntityTestRenderer;
+import net.kozibrodka.wolves.render.FallingAnvilRenderer;
+import net.kozibrodka.wolves.render.LiftedBlockRenderer;
+import net.kozibrodka.wolves.render.MovingAnchorRenderer;
+import net.kozibrodka.wolves.render.MovingPlatformRenderer;
+import net.kozibrodka.wolves.render.SteelMinecartRenderer;
+import net.kozibrodka.wolves.render.WaterWheelRenderer;
+import net.kozibrodka.wolves.render.WindMillRenderer;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.modificationstation.stationapi.api.client.event.render.entity.EntityRendererRegisterEvent;
 import net.modificationstation.stationapi.api.client.event.texture.TextureRegisterEvent;
@@ -17,6 +33,7 @@ public class TextureListener {
     @EventListener
     public void registerTextures(TextureRegisterEvent event) {
         final String autoAnvil = "block/auto_anvil/";
+        final String converter = "block/converter/";
 
         gearbox_front = registerBlockTexture("block/fcBlockGearBox_in");
         gearbox_output = registerBlockTexture("block/fcBlockGearBox_out");
@@ -142,6 +159,7 @@ public class TextureListener {
         BlockListener.machinePowerInput.specifyTextures(getBlockTexture(autoAnvil + "power_input"), getBlockTexture(autoAnvil + "side"), getBlockTexture(autoAnvil + "side"));
         BlockListener.inputBus.specifyTextures(getBlockTexture(autoAnvil + "item_input"), getBlockTexture(autoAnvil + "input_bus_side"), getBlockTexture(autoAnvil + "side"));
         BlockListener.outputBus.specifyTextures(getBlockTexture(autoAnvil + "side"), getBlockTexture(autoAnvil + "output_bus_side"), getBlockTexture(autoAnvil + "item_output"));
+        BlockListener.converter.specifyTextures(getBlockTexture(converter + "output"), getBlockTexture(converter + "frame"), getBlockTexture(converter + "input"));
 
         ItemListener.soulFilter.setTexture(Identifier.of(NAMESPACE, "item/soulFilter"));
         ItemListener.nothing.setTexture(Identifier.of(NAMESPACE, "item/nothing"));
