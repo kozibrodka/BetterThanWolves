@@ -165,7 +165,7 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider
 
     public boolean damage(Entity entity, int i)
     {
-        if(world.isRemote || dead)
+        if(world.isRemote || dead) // todo: dead why?? mistake?
         {
             PacketHelper.send(new DamagePacket("wind", i, this.id));
             return true;
