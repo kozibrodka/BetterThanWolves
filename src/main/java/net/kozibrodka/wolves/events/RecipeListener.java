@@ -355,6 +355,10 @@ public class RecipeListener {
         addAnvilRecipe(new ItemStack(ItemListener.steelMinecart, 1), new Object[]{
                 "# #", "###", '#', ItemListener.steel
         });
+        addAnvilRecipe(new ItemStack(ItemListener.weight, 12), new Object[]{
+                "I", "C", 'I', ItemListener.steel, 'C', BlockListener.corner
+        });
+
         if (isNewFrontierCraftPresent) {
             NFCRecipes.addAnvilRecipes();
         }

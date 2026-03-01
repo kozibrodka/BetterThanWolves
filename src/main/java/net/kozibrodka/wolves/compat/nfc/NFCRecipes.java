@@ -21,6 +21,9 @@ public class NFCRecipes {
         } else {
             CraftingRegistry.addShapedRecipe(new ItemStack(net.kozibrodka.wolves.events.BlockListener.converter, 1), " L ", "AFA", " G ", 'A', ItemListener.aluminiumIngot, 'L', ItemListener.aluminiumGear, 'G', net.kozibrodka.wolves.events.BlockListener.gearBox, 'F', BlockListener.machineFrame);
         }
+        CraftingRegistry.addShapedRecipe(new ItemStack(net.kozibrodka.wolves.events.ItemListener.weight, 2), "I", "C", 'I', ItemListener.bronzeIngot, 'C', net.kozibrodka.wolves.events.BlockListener.corner);
+        CraftingRegistry.addShapedRecipe(new ItemStack(net.kozibrodka.wolves.events.ItemListener.weight, 2), "I", "C", 'I', ItemListener.brassIngot, 'C', net.kozibrodka.wolves.events.BlockListener.corner);
+        CraftingRegistry.addShapedRecipe(new ItemStack(net.kozibrodka.wolves.events.ItemListener.weight, 8), "I", "C", 'I', ItemListener.steelIngot, 'C', net.kozibrodka.wolves.events.BlockListener.corner);
     }
 
     public static void addCrucibleRecipes() {
