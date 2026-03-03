@@ -32,6 +32,7 @@ public class PulleyScreen extends HandledScreen {
         int j = (width - backgroundWidth) / 2;
         int k = (height - backgroundHeight) / 2;
         drawTexture(j, k, 0, 0, backgroundWidth, backgroundHeight);
+        pulleyBlockEntity.updateMechanicallyPowered();
         if (pulleyBlockEntity.poweredForClient()) {
             drawTexture(j + 80, k + 18, 176, 0, 14, 14);
         }

@@ -11,6 +11,7 @@ import net.kozibrodka.wolves.recipe.HopperPurifyingRecipeRegistry;
 import net.kozibrodka.wolves.utils.BlockPosition;
 import net.kozibrodka.wolves.utils.InventoryHandler;
 import net.kozibrodka.wolves.utils.ReplaceableBlockChecker;
+import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.EntityRegistry;
@@ -40,6 +41,7 @@ public class HopperBlockEntity extends BlockEntity implements Inventory {
     public int clientOccupiedSlots;
     public int clientFilterType;
     private boolean ejecting;
+    private boolean updatedByServer;
 
     public HopperBlockEntity() {
         hopperContents = new ItemStack[19];
@@ -174,31 +176,13 @@ public class HopperBlockEntity extends BlockEntity implements Inventory {
         if (item == null) return false;
         if (result == null) return false;
 
-        for (int outputSlot = 0; outputSlot < 18; outputSlot++) {
-            if (getStack(outputSlot) == null) {
-                convertToHellfireDust(inputSlot, outputSlot, true, result);
-                return true;
-            } else if (result.isItemEqual(getStack(outputSlot)) && getStack(outputSlot).count + result.count <= getStack(outputSlot).getMaxCount()) {
-                Identifier itemIdentifier = ItemRegistry.INSTANCE.getId(item.getItem());
-                convertToHellfireDust(inputSlot, outputSlot, false, HopperPurifyingRecipeRegistry.getInstance().getResult(itemIdentifier));
-                return true;
-            }
+        int aboveId = world.getBlockId(x, y + 1, z);
+        if (aboveId == 0 || Block.BLOCKS[aboveId].getCollisionShape(world, x, y + 1, z) == null) {
+            UnsortedUtils.ejectStackWithRandomOffset(world, x, y + 1, z, result);
+            removeStack(inputSlot, result.count);
+            return true;
         }
         return false;
-    }
-
-    public void convertToHellfireDust(int inputSlot, int outputSlot, boolean emptySlot, ItemStack result) {
-        if (emptySlot) {
-            setStack(outputSlot, result);
-        } else {
-            ItemStack outputItem = getStack(outputSlot);
-            outputItem.count += result.count;
-            setStack(outputSlot, outputItem);
-        }
-        ItemStack inputItem = getStack(inputSlot);
-        inputItem.count--;
-        if (inputItem.count <= 0) setStack(inputSlot, null);
-        else setStack(inputSlot, inputItem);
     }
 
     public void markDirty() {
@@ -353,11 +337,19 @@ public class HopperBlockEntity extends BlockEntity implements Inventory {
         return ejecting;
     }
 
-    public void updateEjecting() {
+    public void forcefullyUpdateEjecting() {
         ejecting = ((HopperBlock) BlockListener.hopper).IsBlockOn(world, x, y, z);
     }
 
+    public void updateEjecting() {
+        if (updatedByServer || world == null) {
+            return;
+        }
+        forcefullyUpdateEjecting();
+    }
+
     public void setEjecting(boolean ejecting) {
+        updatedByServer = true;
         this.ejecting = ejecting;
     }
 

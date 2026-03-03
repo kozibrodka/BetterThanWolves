@@ -1,5 +1,6 @@
 package net.kozibrodka.wolves.compat.nfc;
 
+import net.kozibrodka.wolves.events.ConfigListener;
 import net.kozibrodka.wolves.events.RecipeListener;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -12,6 +13,17 @@ public class NFCRecipes {
 
     public static void addShapelessCraftingRecipes() {
         CraftingRegistry.addShapelessRecipe(new ItemStack(BlockListener.unfiredPlanter, 1, 0), new ItemStack(net.kozibrodka.wolves.events.BlockListener.unfiredPottery, 1, 1));
+    }
+
+    public static void addShapedCraftingRecipes() {
+        if (ConfigListener.wolvesGlass.small_tweaks.companionCubeConverter) {
+            CraftingRegistry.addShapedRecipe(new ItemStack(net.kozibrodka.wolves.events.BlockListener.converter, 1), "ALA", "ACA", "AGA", 'A', ItemListener.aluminiumIngot, 'L', ItemListener.aluminiumGear, 'G', net.kozibrodka.wolves.events.BlockListener.gearBox, 'C', net.kozibrodka.wolves.events.BlockListener.companionCube);
+        } else {
+            CraftingRegistry.addShapedRecipe(new ItemStack(net.kozibrodka.wolves.events.BlockListener.converter, 1), " L ", "AFA", " G ", 'A', ItemListener.aluminiumIngot, 'L', ItemListener.aluminiumGear, 'G', net.kozibrodka.wolves.events.BlockListener.gearBox, 'F', BlockListener.machineFrame);
+        }
+        CraftingRegistry.addShapedRecipe(new ItemStack(net.kozibrodka.wolves.events.ItemListener.weight, 2), "I", "C", 'I', ItemListener.bronzeIngot, 'C', net.kozibrodka.wolves.events.BlockListener.corner);
+        CraftingRegistry.addShapedRecipe(new ItemStack(net.kozibrodka.wolves.events.ItemListener.weight, 2), "I", "C", 'I', ItemListener.brassIngot, 'C', net.kozibrodka.wolves.events.BlockListener.corner);
+        CraftingRegistry.addShapedRecipe(new ItemStack(net.kozibrodka.wolves.events.ItemListener.weight, 8), "I", "C", 'I', ItemListener.steelIngot, 'C', net.kozibrodka.wolves.events.BlockListener.corner);
     }
 
     public static void addCrucibleRecipes() {

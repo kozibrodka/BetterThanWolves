@@ -23,4 +23,7 @@ public class SmallTweaksConfig {
 
     @ConfigEntry(name = "Add recipe for steel block (game restart required!)", description = "Only affects recipe, no risk of world corruption")
     public Boolean steelBlock = true;
+
+    @ConfigEntry(name = "Companion cube converter (game restart required!)", description = "Only affects recipe, no risk of world corruption. Makes the converter use a companion cube to craft")
+    public Boolean companionCubeConverter = false;
 }

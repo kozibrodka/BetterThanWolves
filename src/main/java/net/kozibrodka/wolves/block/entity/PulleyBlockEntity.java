@@ -33,6 +33,7 @@ import java.util.List;
 
 public class PulleyBlockEntity extends BlockEntity implements Inventory {
     private boolean mechanicallyPowered;
+    private boolean updatedByServer;
 
     public PulleyBlockEntity() {
         pulleyContents = new ItemStack[2];
@@ -127,8 +128,15 @@ public class PulleyBlockEntity extends BlockEntity implements Inventory {
         return ((PulleyBlock) BlockListener.pulley).IsBlockOn(world, x, y, z);
     }
 
-    public void updateMechanicallyPowered() {
+    public void forcefullyUpdateMechanicallyPowered() {
         mechanicallyPowered = IsMechanicallyPowered();
+    }
+
+    public void updateMechanicallyPowered() {
+        if (updatedByServer) {
+            return;
+        }
+        forcefullyUpdateMechanicallyPowered();
     }
 
     public boolean poweredForClient() {
@@ -136,6 +144,7 @@ public class PulleyBlockEntity extends BlockEntity implements Inventory {
     }
 
     public void forcefullyChangePoweredStatus(boolean mechanicallyPowered) {
+        updatedByServer = true;
         this.mechanicallyPowered = mechanicallyPowered;
     }
 

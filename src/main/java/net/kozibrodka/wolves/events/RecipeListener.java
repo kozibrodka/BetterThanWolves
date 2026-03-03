@@ -1,10 +1,22 @@
 package net.kozibrodka.wolves.events;
 
 import net.fabricmc.loader.api.FabricLoader;
-//import net.glasslauncher.mods.alwaysmoreitems.recipe.multiblock.BlockPatternEntry;
-//import net.glasslauncher.mods.alwaysmoreitems.registry.multiblock.MultiBlockRecipeRegistry;
+import net.glasslauncher.mods.alwaysmoreitems.recipe.multiblock.BlockPatternEntry;
+import net.glasslauncher.mods.alwaysmoreitems.registry.multiblock.MultiBlockRecipeRegistry;
 import net.kozibrodka.wolves.compat.nfc.NFCRecipes;
-import net.kozibrodka.wolves.recipe.*;
+import net.kozibrodka.wolves.recipe.AnvilCraftingManager;
+import net.kozibrodka.wolves.recipe.CauldronCraftingManager;
+import net.kozibrodka.wolves.recipe.CrucibleCraftingManager;
+import net.kozibrodka.wolves.recipe.HopperPurifyingRecipeRegistry;
+import net.kozibrodka.wolves.recipe.MillingRecipeRegistry;
+import net.kozibrodka.wolves.recipe.SawingRecipeRegistry;
+import net.kozibrodka.wolves.recipe.StokedCauldronCraftingManager;
+import net.kozibrodka.wolves.recipe.TurntableByproduct;
+import net.kozibrodka.wolves.recipe.TurntableInput;
+import net.kozibrodka.wolves.recipe.TurntableOutput;
+import net.kozibrodka.wolves.recipe.TurntableRecipe;
+import net.kozibrodka.wolves.recipe.TurntableRecipeRegistry;
+import net.kozibrodka.wolves.recipe.TurntableResult;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.minecraft.block.Block;
 import net.minecraft.block.WoolBlock;
@@ -13,7 +25,6 @@ import net.minecraft.item.ItemStack;
 import net.modificationstation.stationapi.api.event.recipe.RecipeRegisterEvent;
 import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
 import net.modificationstation.stationapi.api.recipe.CraftingRegistry;
-import net.modificationstation.stationapi.api.recipe.SmeltingRegistry;
 import net.modificationstation.stationapi.api.registry.BlockRegistry;
 import net.modificationstation.stationapi.api.registry.ItemRegistry;
 import net.modificationstation.stationapi.api.util.Identifier;
@@ -28,6 +39,7 @@ public class RecipeListener {
 
     static boolean isHarderThanWolvesPresent = FabricLoader.getInstance().isModLoaded("harderthanwolves");
     static boolean isNewFrontierCraftPresent = FabricLoader.getInstance().isModLoaded("nfc");
+    static boolean isAmiPresent = FabricLoader.getInstance().isModLoaded("alwaysmoreitems");
 
     @EventListener
     public void registerRecipes(RecipeRegisterEvent event) {
@@ -52,7 +64,9 @@ public class RecipeListener {
             addHopperRecipes();
             addSawingRecipes();
             addTurntableRecipes();
-//            addMultiblockRecipes();
+            if (isAmiPresent) {
+                addMultiblockRecipes();
+            }
             if (isNewFrontierCraftPresent) {
                 NFCRecipes.addShapelessCraftingRecipes();
             }
@@ -84,6 +98,9 @@ public class RecipeListener {
     }
 
     private static void addBlockRecipes() {
+        if (isNewFrontierCraftPresent) {
+            NFCRecipes.addShapedCraftingRecipes();
+        }
         CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.anvil, 1), "###", " # ", "###", '#', ItemListener.steel);
         CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.lightBulbOff, 1), " # ", "#X#", " Y ", '#', Block.GLASS, 'X', Item.GLOWSTONE_DUST, 'Y', Item.REDSTONE);
         if (!isHarderThanWolvesPresent) {
@@ -346,6 +363,10 @@ public class RecipeListener {
         addAnvilRecipe(new ItemStack(ItemListener.steelMinecart, 1), new Object[]{
                 "# #", "###", '#', ItemListener.steel
         });
+        addAnvilRecipe(new ItemStack(ItemListener.weight, 12), new Object[]{
+                "I", "C", 'I', ItemListener.steel, 'C', BlockListener.corner
+        });
+
         if (isNewFrontierCraftPresent) {
             NFCRecipes.addAnvilRecipes();
         }
@@ -499,30 +520,30 @@ public class RecipeListener {
         TurntableRecipeRegistry.getInstance().addRotation(Block.DISPENSER.id, new Integer[][]{new Integer[]{4, 2, 5, 3}});
     }
 
-//    private static void addMultiblockRecipes() {
-//        String[][] automaticAnvilLayers = new String[][] {
-//                new String[]{"fpcof", "fffff", "fffff", "fffff", "fffff"},
-//                new String[]{"iiiii", "iiiii", "iiiii", "iiiii", "iiiii"}
-//        };
-//        List<BlockPatternEntry> automaticAnvilPatterns = List.of(
-//                new BlockPatternEntry('f', BlockListener.anvilFrame.getDefaultState(), 0, new ItemStack(BlockListener.anvilFrame.asItem())),
-//                new BlockPatternEntry('p', BlockListener.machinePowerInput.getDefaultState(), 2, new ItemStack(BlockListener.machinePowerInput.asItem())),
-//                new BlockPatternEntry('c', BlockListener.automaticAnvil.getDefaultState(), 2, new ItemStack(BlockListener.automaticAnvil.asItem())),
-//                new BlockPatternEntry('o', BlockListener.outputBus.getDefaultState(), 0, new ItemStack(BlockListener.outputBus.asItem())),
-//                new BlockPatternEntry('i', BlockListener.inputBus.getDefaultState(), 0, new ItemStack(BlockListener.inputBus.asItem()))
-//        );
-//        List<Object> automaticAnvilDescription = new ArrayList<>() {
-//            {
-//                this.add("Automatic Anvil");
-//                this.add("Automatically processes anvil recipes.");
-//                this.add("Each input bus represents a slot.");
-//                this.add("Output bus and power input can be");
-//                this.add("placed anywhere in the lower half.");
-//                this.add("Power input must be powered like a gear box.");
-//            }
-//        };
-//        MultiBlockRecipeRegistry.INSTANCE.addMultiblockRecipe(Identifier.of(NAMESPACE, "automatic_anvil"), automaticAnvilDescription, automaticAnvilLayers, automaticAnvilPatterns);
-//    }
+    private static void addMultiblockRecipes() {
+        String[][] automaticAnvilLayers = new String[][] {
+                new String[]{"fpcof", "fffff", "fffff", "fffff", "fffff"},
+                new String[]{"iiiii", "iiiii", "iiiii", "iiiii", "iiiii"}
+        };
+        List<BlockPatternEntry> automaticAnvilPatterns = List.of(
+                new BlockPatternEntry('f', BlockListener.anvilFrame.getDefaultState(), 0, new ItemStack(BlockListener.anvilFrame.asItem())),
+                new BlockPatternEntry('p', BlockListener.machinePowerInput.getDefaultState(), 2, new ItemStack(BlockListener.machinePowerInput.asItem())),
+                new BlockPatternEntry('c', BlockListener.automaticAnvil.getDefaultState(), 2, new ItemStack(BlockListener.automaticAnvil.asItem())),
+                new BlockPatternEntry('o', BlockListener.outputBus.getDefaultState(), 0, new ItemStack(BlockListener.outputBus.asItem())),
+                new BlockPatternEntry('i', BlockListener.inputBus.getDefaultState(), 0, new ItemStack(BlockListener.inputBus.asItem()))
+        );
+        List<Object> automaticAnvilDescription = new ArrayList<>() {
+            {
+                this.add("Automatic Anvil");
+                this.add("Automatically processes anvil recipes.");
+                this.add("Each input bus represents a slot.");
+                this.add("Output bus and power input can be");
+                this.add("placed anywhere in the lower half.");
+                this.add("Power input must be powered like a gear box.");
+            }
+        };
+        MultiBlockRecipeRegistry.INSTANCE.addMultiblockRecipe(Identifier.of(NAMESPACE, "automatic_anvil"), automaticAnvilDescription, automaticAnvilLayers, automaticAnvilPatterns);
+    }
 
     private static void addCrucibleRecipes() {
         // Material processing

@@ -125,7 +125,7 @@ tile.wolves.panel_cbble.name=Cobblestone Panel
 tile.wolves.panel_bricks.name=Brick Panel
 tile.wolves.panel_mossy.name=Mossy Cobblestone Panel
 tile.wolves.panel_stone.name=Stone Smooth Panel
-
+tile.wolves.converter.name=Mechanical Power Converter
 
 
 description.@.hemp=Obtained from harvesting hemp crops. Hemp crops can be grown 2 blocks high for efficient farming.
