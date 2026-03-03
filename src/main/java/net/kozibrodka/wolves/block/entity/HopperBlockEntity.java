@@ -91,6 +91,9 @@ public class HopperBlockEntity extends BlockEntity implements Inventory {
         if (nbttagcompound.contains("ejectCounter")) {
             ejectCounter = nbttagcompound.getInt("ejectCounter");
         }
+        if (nbttagcompound.contains("accumulatedHeat")) {
+            accumulatedHeat = nbttagcompound.getInt("accumulatedHeat");
+        }
     }
 
     public void writeNbt(NbtCompound nbttagcompound) {
@@ -107,6 +110,7 @@ public class HopperBlockEntity extends BlockEntity implements Inventory {
 
         nbttagcompound.put("Items", nbttaglist);
         nbttagcompound.putInt("ejectCounter", ejectCounter);
+        nbttagcompound.putInt("accumulatedHeat", accumulatedHeat);
     }
 
     public int getMaxCountPerStack() {
