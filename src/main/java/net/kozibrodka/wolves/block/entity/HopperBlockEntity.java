@@ -5,6 +5,7 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.block.HopperBlock;
 import net.kozibrodka.wolves.events.BlockListener;
+import net.kozibrodka.wolves.events.ConfigListener;
 import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.recipe.HopperPurifyingRecipeRegistry;
@@ -42,6 +43,7 @@ public class HopperBlockEntity extends BlockEntity implements Inventory {
     public int clientFilterType;
     private boolean ejecting;
     private boolean updatedByServer;
+    private int accumulatedHeat;
 
     public HopperBlockEntity() {
         hopperContents = new ItemStack[19];
@@ -123,7 +125,18 @@ public class HopperBlockEntity extends BlockEntity implements Inventory {
         if (world.isRemote) {
             return;
         }
-        if (!((HopperBlock) BlockListener.hopper).IsBlockOn(world, x, y, z)) return;
+        if (!((HopperBlock) BlockListener.hopper).IsBlockOn(world, x, y, z)) {
+            if (!ConfigListener.wolvesGlass.difficulty.complexSoulFiltering) {
+                if (attemptSoulFiltering()) {
+                    accumulatedHeat++;
+                    if (accumulatedHeat >= 8) {
+                        hopperSoulOverload();
+                    }
+                }
+            }
+            return;
+        }
+        accumulatedHeat = 0;
         pullFromInventory();
         if (hopperEjectBlocked) {
             ejectCounter = 0;
@@ -134,6 +147,9 @@ public class HopperBlockEntity extends BlockEntity implements Inventory {
         if (!attemptSoulFiltering()) {
             attemptItemEjection();
             ejectCounter = 0;
+            return;
+        }
+        if (!ConfigListener.wolvesGlass.difficulty.complexSoulFiltering) {
             return;
         }
         hopperContents[18].damage(1, null);
@@ -243,7 +259,9 @@ public class HopperBlockEntity extends BlockEntity implements Inventory {
             if (filterStack.itemId == ItemListener.rollersItem.id) {
                 return 5;
             }
-            if (filterStack.itemId == ItemListener.soulFilter.id) {
+            boolean complexSoulFiltering = ConfigListener.wolvesGlass.difficulty.complexSoulFiltering;
+            if (complexSoulFiltering && filterStack.itemId == ItemListener.soulFilter.id
+            || !complexSoulFiltering && filterStack.itemId == Block.SOUL_SAND.asItem().id) {
                 return 6;
             }
         }

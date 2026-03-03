@@ -8,7 +8,9 @@ import net.glasslauncher.mods.alwaysmoreitems.api.recipe.RecipeWrapper;
 import net.glasslauncher.mods.alwaysmoreitems.gui.DrawableHelper;
 import net.kozibrodka.wolves.compat.ami.ItemRenderUtil;
 import net.kozibrodka.wolves.events.BlockListener;
+import net.kozibrodka.wolves.events.ConfigListener;
 import net.kozibrodka.wolves.events.ItemListener;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -59,6 +61,10 @@ public class HopperPurifyingRecipeCategory implements RecipeCategory {
         guiItemStacks.init(2, false, xOffset + 58, yOffset - 18);
         guiItemStacks.setFromRecipe(0, recipeWrapper.getInputs().get(0));
         guiItemStacks.setFromRecipe(1, recipeWrapper.getOutputs().get(0));
-        guiItemStacks.setFromRecipe(2, new ItemStack(ItemListener.soulFilter));
+        if (ConfigListener.wolvesGlass.difficulty.complexSoulFiltering) {
+            guiItemStacks.setFromRecipe(2, new ItemStack(ItemListener.soulFilter));
+        } else {
+            guiItemStacks.setFromRecipe(2, new ItemStack(Block.SOUL_SAND));
+        }
     }
 }

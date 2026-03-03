@@ -9,4 +9,7 @@ public class DifficultyConfig {
     @ConfigEntry(name = "Difficult Soulforged Steel Recipes (game restart required!)", description = "Makes soulforged steel recipes use the entire 5x5 anvil crafting grid while also balancing the recycling recipes accordingly")
     public Boolean difficultSoulforgedSteelRecipes = false;
 
+    @ConfigEntry(name = "Complex Soul Filtering (game restart required!)", description = "Changes soul filtering to use a soul filter instead of soul sand with extra requirements")
+    public Boolean complexSoulFiltering = false;
+
 }
