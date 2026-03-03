@@ -113,7 +113,7 @@ public class PulleyScreenHandler extends ScreenHandler {
             }
         }
 
-        powered = pulleyBlockEntity.IsMechanicallyPowered();
+        powered = pulleyBlockEntity.poweredForClient();
     }
 
     @Override
