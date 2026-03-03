@@ -106,7 +106,7 @@ public class HopperScreenHandler extends ScreenHandler {
     @Override
     public void sendContentUpdates() {
         super.sendContentUpdates();
-        hopperBlockEntity.updateEjecting();
+        hopperBlockEntity.forcefullyUpdateEjecting();
         for (Object listener : this.listeners) {
             ScreenHandlerListener screenHandlerListener = (ScreenHandlerListener) listener;
             if (hopperBlockEntity.isEjecting() != ejecting) {

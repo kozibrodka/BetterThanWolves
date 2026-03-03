@@ -30,6 +30,7 @@ public class HopperScreen extends HandledScreen {
         int j = (width - backgroundWidth) / 2;
         int k = (height - backgroundHeight) / 2;
         drawTexture(j, k, 0, 0, backgroundWidth, backgroundHeight);
+        associatedTileEntityHopper.updateEjecting();
         if (associatedTileEntityHopper.isEjecting()) {
             drawTexture(j + 80, k + 18, 176, 0, 14, 14);
         }

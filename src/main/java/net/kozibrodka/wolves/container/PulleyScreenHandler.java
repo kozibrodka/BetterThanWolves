@@ -105,7 +105,7 @@ public class PulleyScreenHandler extends ScreenHandler {
     @Override
     public void sendContentUpdates() {
         super.sendContentUpdates();
-        pulleyBlockEntity.updateMechanicallyPowered();
+        pulleyBlockEntity.forcefullyUpdateMechanicallyPowered();
         for (Object listener : this.listeners) {
             ScreenHandlerListener screenHandlerListener = (ScreenHandlerListener) listener;
             if (pulleyBlockEntity.poweredForClient() != powered) {

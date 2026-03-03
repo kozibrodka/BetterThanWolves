@@ -40,6 +40,7 @@ public class HopperBlockEntity extends BlockEntity implements Inventory {
     public int clientOccupiedSlots;
     public int clientFilterType;
     private boolean ejecting;
+    private boolean updatedByServer;
 
     public HopperBlockEntity() {
         hopperContents = new ItemStack[19];
@@ -353,11 +354,19 @@ public class HopperBlockEntity extends BlockEntity implements Inventory {
         return ejecting;
     }
 
-    public void updateEjecting() {
+    public void forcefullyUpdateEjecting() {
         ejecting = ((HopperBlock) BlockListener.hopper).IsBlockOn(world, x, y, z);
     }
 
+    public void updateEjecting() {
+        if (updatedByServer || world == null) {
+            return;
+        }
+        forcefullyUpdateEjecting();
+    }
+
     public void setEjecting(boolean ejecting) {
+        updatedByServer = true;
         this.ejecting = ejecting;
     }
 
