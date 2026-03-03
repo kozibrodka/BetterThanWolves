@@ -25,6 +25,7 @@ import net.minecraft.item.ItemStack;
 import net.modificationstation.stationapi.api.event.recipe.RecipeRegisterEvent;
 import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
 import net.modificationstation.stationapi.api.recipe.CraftingRegistry;
+import net.modificationstation.stationapi.api.recipe.SmeltingRegistry;
 import net.modificationstation.stationapi.api.registry.BlockRegistry;
 import net.modificationstation.stationapi.api.registry.ItemRegistry;
 import net.modificationstation.stationapi.api.util.Identifier;
@@ -345,7 +346,7 @@ public class RecipeListener {
             addAnvilRecipe(new ItemStack(BlockListener.panelMossy, 6), new Object[]{
                     "#", "#", "#", '#', Block.MOSSY_COBBLESTONE
             });
-//            SmeltingRegistry.addSmeltingRecipe(new ItemStack(BlockListener.panelStoneS.id, 1, 0), new ItemStack(BlockListener.panelStone, 1,0));
+            SmeltingRegistry.addSmeltingRecipe(new ItemStack(BlockListener.panelStoneS, 1, 0), new ItemStack(BlockListener.panelStone, 1,0));
         }else{
             addAnvilRecipe(new ItemStack(BlockListener.anvilFrame, 10), new Object[]{
                     "X###X", "#X#X#", "##X##", "#X#X#", "X###X", 'X', ItemListener.steel, '#', new ItemStack(BlockListener.omniSlab, 1, 1)
