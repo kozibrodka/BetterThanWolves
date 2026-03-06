@@ -109,8 +109,14 @@ dependencies {
 	modImplementation("net.danygames2014:WhatsThis:${project.whatsthis_version}") {
 		transitive false
 	}
+    if (project.hasProperty("spawneggs_version")) {
+        modImplementation("net.danygames2014:spawneggs:${project.spawneggs_version}") {
+            transitive = false
+        }
+    }
 
-	// Crossover content
+
+    // Crossover content
 	modImplementation("maven.modrinth:new-frontier-craft:${project.nfc_version}") {
 		transitive false
 	}
