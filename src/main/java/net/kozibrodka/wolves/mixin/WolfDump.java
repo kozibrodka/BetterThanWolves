@@ -10,6 +10,7 @@ import net.minecraft.item.FoodItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -20,11 +21,15 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.List;
+
 @Mixin(WolfEntity.class)
 public abstract class WolfDump extends AnimalEntity {
 
     @Unique
     private int foodCounter;
+    @Unique
+    private int foodCheckCooldown;
 
     @Shadow
     public abstract boolean isTamed();
@@ -38,6 +43,12 @@ public abstract class WolfDump extends AnimalEntity {
         if (ConfigListener.wolvesGlass.small_tweaks.deactivateDung) {
             foodCounter = 0;
             return;
+        }
+        if (foodCheckCooldown <= 0) {
+            locateFood();
+            foodCheckCooldown = 20;
+        } else {
+            foodCheckCooldown--;
         }
         if (foodCounter < 1) return;
         int dungBooster = 1;
@@ -65,12 +76,12 @@ public abstract class WolfDump extends AnimalEntity {
 
     @Inject(at = @At("HEAD"), method = "interact")
     private void detectFeeding(PlayerEntity playerEntity, CallbackInfoReturnable<Boolean> cir) {
-        ItemStack var2 = playerEntity.inventory.getSelectedItem();
+        ItemStack selectedItem = playerEntity.inventory.getSelectedItem();
         if (this.isTamed()) {
-            if (var2 != null && Item.ITEMS[var2.itemId] instanceof FoodItem var3) {
-                if (var3.isMeat() && this.dataTracker.getInt(18) == 20) {
-                    --var2.count;
-                    if (var2.count <= 0) {
+            if (selectedItem != null && Item.ITEMS[selectedItem.itemId] instanceof FoodItem foodItem) {
+                if (foodItem.isMeat() && this.dataTracker.getInt(18) == 20) {
+                    --selectedItem.count;
+                    if (selectedItem.count <= 0) {
                         playerEntity.inventory.setStack(playerEntity.inventory.selectedSlot, null);
                     }
                     foodCounter++;
@@ -87,5 +98,26 @@ public abstract class WolfDump extends AnimalEntity {
     @Inject(at = @At("TAIL"), method = "writeNbt")
     private void writeFoodCounter(NbtCompound nbtCompound, CallbackInfo callbackInfo) {
         nbtCompound.putInt("FoodCounter", foodCounter);
+    }
+
+    @Unique
+    private void locateFood() {
+        List list = world.collectEntitiesByClass(ItemEntity.class, Box.createCached(x - 2.5D, y - 1.0D, z - 2.5D, x + 2.5D, y + 1.0D, z + 2.5D));
+        if(!list.isEmpty()) {
+            for (Object o : list) {
+                ItemEntity itemEntity = (ItemEntity) o;
+                if (itemEntity.pickupDelay != 0) {
+                    continue;
+                }
+                int itemId = itemEntity.stack.itemId;
+                Item item = Item.ITEMS[itemId];
+                if ((item instanceof FoodItem) && ((FoodItem) item).isMeat()) {
+                    world.playSound(this, "random.pop", 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                    itemEntity.markDead();
+                    heal(((FoodItem) Item.RAW_PORKCHOP).getHealthRestored());
+                    foodCounter++;
+                }
+            }
+        }
     }
 }
