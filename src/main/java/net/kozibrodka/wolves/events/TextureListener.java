@@ -171,7 +171,7 @@ public class TextureListener {
         ItemListener.bucketCement.setTexture(Identifier.of(NAMESPACE, "item/fcBucketCement"));
         ItemListener.wolfRaw.setTexture(Identifier.of(NAMESPACE, "item/fcWolfRaw"));
         ItemListener.wolfCooked.setTexture(Identifier.of(NAMESPACE, "item/fcWolfCooked"));
-        ItemListener.netherCoal.setTexture(Identifier.of(NAMESPACE, "item/fcNetherCoal"));
+        ItemListener.netherCoal.setTexture(Identifier.of(NAMESPACE, "item/fcNethercoal"));
         ItemListener.hempSeeds.setTexture(Identifier.of(NAMESPACE, "item/fcHempSeeds"));
         ItemListener.hemp.setTexture(Identifier.of(NAMESPACE, "item/fcHemp"));
         ItemListener.gear.setTexture(Identifier.of(NAMESPACE, "item/fcGear"));
