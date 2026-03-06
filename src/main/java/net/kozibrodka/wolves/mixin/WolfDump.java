@@ -29,10 +29,27 @@ public abstract class WolfDump extends AnimalEntity {
     @Unique
     private int foodCounter;
     @Unique
+    private boolean ateBadFood = false;
+    @Unique
     private int foodCheckCooldown;
 
     @Shadow
     public abstract boolean isTamed();
+
+    @Shadow
+    public abstract void setAngry(boolean angry);
+
+    @Shadow
+    public abstract boolean isInSittingPose();
+
+    @Shadow
+    public abstract void setSitting(boolean inSittingPose);
+
+    @Shadow
+    public abstract boolean isAngry();
+
+    @Shadow
+    public abstract void setTamed(boolean tamed);
 
     public WolfDump(World arg) {
         super(arg);
@@ -40,6 +57,15 @@ public abstract class WolfDump extends AnimalEntity {
 
     @Inject(at = @At("TAIL"), method = "tick")
     private void tick(CallbackInfo callbackInfo) {
+        if (ateBadFood) {
+            if (isInSittingPose()) {
+                setSitting(false);
+            }
+            setAngry(true);
+            if (isTamed()) {
+                setTamed(false);
+            }
+        }
         if (ConfigListener.wolvesGlass.small_tweaks.deactivateDung) {
             foodCounter = 0;
             return;
@@ -76,15 +102,24 @@ public abstract class WolfDump extends AnimalEntity {
 
     @Inject(at = @At("HEAD"), method = "interact")
     private void detectFeeding(PlayerEntity playerEntity, CallbackInfoReturnable<Boolean> cir) {
-        ItemStack selectedItem = playerEntity.inventory.getSelectedItem();
+        ItemStack selectedItemStack = playerEntity.inventory.getSelectedItem();
         if (this.isTamed()) {
-            if (selectedItem != null && Item.ITEMS[selectedItem.itemId] instanceof FoodItem foodItem) {
-                if (foodItem.isMeat() && this.dataTracker.getInt(18) == 20) {
-                    --selectedItem.count;
-                    if (selectedItem.count <= 0) {
+            if (selectedItemStack != null) {
+                Item selectedItem = selectedItemStack.getItem();
+                if (selectedItem != null && selectedItem == ItemListener.wolfRaw) {
+                    --selectedItemStack.count;
+                    if (selectedItemStack.count <= 0) {
                         playerEntity.inventory.setStack(playerEntity.inventory.selectedSlot, null);
                     }
-                    foodCounter++;
+                    ateBadFood = true;
+                } else if (selectedItem instanceof FoodItem foodItem) {
+                    if (foodItem.isMeat() && this.dataTracker.getInt(18) == 20) {
+                        --selectedItemStack.count;
+                        if (selectedItemStack.count <= 0) {
+                            playerEntity.inventory.setStack(playerEntity.inventory.selectedSlot, null);
+                        }
+                        foodCounter++;
+                    }
                 }
             }
         }
@@ -93,11 +128,13 @@ public abstract class WolfDump extends AnimalEntity {
     @Inject(at = @At("TAIL"), method = "readNbt")
     private void readFoodCounter(NbtCompound nbtCompound, CallbackInfo callbackInfo) {
         foodCounter = nbtCompound.getInt("FoodCounter");
+        ateBadFood = nbtCompound.getBoolean("AteBadFood");
     }
 
     @Inject(at = @At("TAIL"), method = "writeNbt")
     private void writeFoodCounter(NbtCompound nbtCompound, CallbackInfo callbackInfo) {
         nbtCompound.putInt("FoodCounter", foodCounter);
+        nbtCompound.putBoolean("AteBadFood", ateBadFood);
     }
 
     @Unique
