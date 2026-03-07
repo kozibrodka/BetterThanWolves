@@ -346,7 +346,7 @@ public class RecipeListener {
             addAnvilRecipe(new ItemStack(BlockListener.panelMossy, 6), new Object[]{
                     "#", "#", "#", '#', Block.MOSSY_COBBLESTONE
             });
-            SmeltingRegistry.addSmeltingRecipe(new ItemStack(BlockListener.panelStoneS, 1, 0), new ItemStack(BlockListener.panelStone, 1,0));
+            SmeltingRegistry.addSmeltingRecipe(new ItemStack(BlockListener.panelCobblestone, 1, 0), new ItemStack(BlockListener.panelStone, 1,0));
         }else{
             addAnvilRecipe(new ItemStack(BlockListener.anvilFrame, 10), new Object[]{
                     "X###X", "#X#X#", "##X##", "#X#X#", "X###X", 'X', ItemListener.steel, '#', new ItemStack(BlockListener.omniSlab, 1, 1)

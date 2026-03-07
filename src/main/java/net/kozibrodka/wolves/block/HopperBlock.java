@@ -243,7 +243,6 @@ public class HopperBlock extends TemplateBlockWithEntity
     public boolean powerServer(BlockView iBlockAccess, int i, int j, int k, int l) {
         World level = ((MinecraftServer) net.fabricmc.loader.api.FabricLoader.getInstance().getGameInstance()).getWorld(0);
         return IsRedstoneOutputOn(level, i, j, k);
-        //TODO: dimension?
     }
 
     public boolean isStrongPoweringSide(World world, int i, int j, int i1, int j1) {

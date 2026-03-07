@@ -28,14 +28,14 @@ Game mechanics:
 - Pressure plate sound multiplayer (all plates including vanilla are soundless)
 - (DONE) WaterWheel and windmill dmg by hand on server + animation
 
-- Client GUI powered on/off not showing BUG
+- (DONE) Client GUI powered on/off not showing BUG
 - Fix Hopper soulfiltering - bring back oryginal design.
 
 Possbile extra features (oryginal BTW)""
 - Animated saw
 - (DONE) Omni Slab into Vertical Slabs
 - (DONE) Minecart from regorfed Steel
-- BOAT ENFORCED WITH STEEL - doesnt break from collision!!
+- BOAT ENFORCED WITH STEEL - doesnt break from collision
 - steel frame Painting - with those cool x32 textures.
 - Backport cool stuff from 1.8.1 - 1.2.5 version maybe  - Buddy Block? transmitter block? - https://www.youtube.com/watch?v=IGBo0P3ZKts&list=PLC10F5BB68A5B956E&index=18
 - ^ right now i dont see anything thats interesting in newer versions.

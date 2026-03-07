@@ -23,6 +23,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.modificationstation.stationapi.api.client.model.block.BlockWithInventoryRenderer;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
 import net.modificationstation.stationapi.api.client.texture.atlas.Atlas;
 import net.modificationstation.stationapi.api.client.texture.atlas.Atlases;
@@ -409,8 +410,8 @@ public class CementBlock extends TemplateBlockWithEntity
     boolean[] tempSpreadToSideFlags;
     int[] tempClosestDownslopeToSideDist;
 
-    //TODO: bottom side texure of cement wtf, some rendering bug happens sometimes??
     //TODO: server sync works fine as long as there is not TRILION packets, example put cement on top of mountain,
+
     @Override
     public boolean renderWorld(BlockRenderManager tileRenderer, BlockView tileView, int x, int y, int z) {
         boolean flag = false;
@@ -511,12 +512,12 @@ public class CementBlock extends TemplateBlockWithEntity
                 f15 = z + 1;
             }
             flag3 = true;
+            float zoom = 64F;
             double d6 = atlasTX2.getStartU();
             double d7 = atlasTX2.getEndU();
-            double d8 = atlasTX2.getStartV() + ((1.0F - f9) * 16F) / 512F;
-            double d9 = atlasTX2.getStartV() + ((1.0F - f10) * 16F) / 512F;
+            double d8 = atlasTX2.getStartV() + ((1.0F - f9) / zoom);
+            double d9 = atlasTX2.getStartV() + ((1.0F - f10) / zoom);
             double d10 = atlasTX2.getEndV();
-
             float f16 = this.getLuminance(tileView, k1, i2, j2);
             if (i1 < 2) {
                 f16 *= f2;
@@ -570,4 +571,5 @@ public class CementBlock extends TemplateBlockWithEntity
             return 1.0F;
         }
     }
+
 }

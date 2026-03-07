@@ -11,7 +11,7 @@ public class EntityListener {
     @Entrypoint.Namespace
     public static Namespace NAMESPACE;
 
-    //TODO: z jakiej odległości renderuje sie entity?
+    //TODO: is entity renderdistance correct? might need testing.
     @EventListener
     public static void registerEntities(EntityRegister event) {
         event.register(WaterWheelEntity.class, NAMESPACE.id("WaterWheel").toString());
