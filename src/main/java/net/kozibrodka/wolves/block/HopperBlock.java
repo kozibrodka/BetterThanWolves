@@ -17,7 +17,12 @@ import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.network.SoundPacket;
-import net.kozibrodka.wolves.utils.*;
+import net.kozibrodka.wolves.utils.BlockPosition;
+import net.kozibrodka.wolves.utils.CustomBlockRendering;
+import net.kozibrodka.wolves.utils.InventoryHandler;
+import net.kozibrodka.wolves.utils.MechanicalDevice;
+import net.kozibrodka.wolves.utils.RotatableBlock;
+import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.material.Material;
@@ -27,7 +32,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.entity.vehicle.MinecartEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -192,9 +196,17 @@ public class HopperBlock extends TemplateBlockWithEntity
                             }
                             //TODO: BRING Back groundnetherrack ejecting + sound. + old logic
                         } else if (InventoryHandler.addItemWithinSlotBounds(tileEntityHopper, targetEntityItem.stack, 0, 17)) {
-                            world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "random.pop", 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                            if (iFilterType == 6) {
+                                world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "mob.ghast.moan", 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                            } else {
+                                world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "random.pop", 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                            }
                             if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                                voicePacket(world, "random.pop", i, j, k, 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                                if (iFilterType == 6) {
+                                    voicePacket(world, "mob.ghast.moan", i, j, k, 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                                } else {
+                                    voicePacket(world, "random.pop", i, j, k, 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                                }
                             }
                             targetEntityItem.markDead();
                             bSwallowed = true;
