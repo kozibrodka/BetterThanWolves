@@ -194,7 +194,7 @@ public class AxleBlock extends TemplateBlock {
     }
 
     public void breakAxle(World world, int x, int y, int z) {
-        if (world.getBlockId(x, y, z) == BlockListener.axleBlock.id || world.getBlockId(x, y, z) == BlockListener.nonCollidingAxleBlock.id) {
+        if (world.getBlockId(x, y, z) == BlockListener.axleBlock.id) {
             for (int drops = 0; drops < 5; drops++) {
                 UnsortedUtils.EjectSingleItemWithRandomOffset(world, x, y, z, ItemListener.hempFibers.id, 0);
             }
@@ -244,7 +244,7 @@ public class AxleBlock extends TemplateBlock {
         for (int tempSource = 0; tempSource < 2; tempSource++) {
             // Skip if source is not an axle
             int tempId = world.getBlockId(potentialSources[tempSource].x, potentialSources[tempSource].y, potentialSources[tempSource].z);
-            if (tempId != BlockListener.axleBlock.id && tempId != BlockListener.nonCollidingAxleBlock.id) {
+            if (tempId != BlockListener.axleBlock.id) {
                 continue;
             }
             // Skip if other axle is misaligned
@@ -377,7 +377,7 @@ public class AxleBlock extends TemplateBlock {
         }
         for (int tempSource = 0; tempSource < 2; tempSource++) {
             int tempId = world.getBlockId(potentialSources[tempSource].x, potentialSources[tempSource].y, potentialSources[tempSource].z);
-            if (tempId == BlockListener.axleBlock.id || tempId == BlockListener.nonCollidingAxleBlock.id) {
+            if (tempId == BlockListener.axleBlock.id) {
                 int tempAxis = getAxisAlignment(world, potentialSources[tempSource].x, potentialSources[tempSource].y, potentialSources[tempSource].z);
                 if (tempAxis != axis) {
                     continue;

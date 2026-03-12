@@ -14,6 +14,5 @@ public class ModelPredicateProviderListener {
     @EventListener
     public void registerBlockModelPredicateProviders(BlockModelPredicateProviderRegistryEvent event){
         event.registry.register(BlockListener.axleBlock, Identifier.of(NAMESPACE, "axle_state"), new AxleBlockModelPredicateProvider());
-        event.registry.register(BlockListener.nonCollidingAxleBlock, Identifier.of(NAMESPACE, "axle_state"), new AxleBlockModelPredicateProvider());
     }
 }

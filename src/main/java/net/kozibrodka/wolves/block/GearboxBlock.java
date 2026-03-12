@@ -41,8 +41,7 @@ public class GearboxBlock extends TemplateBlock implements MechanicalDevice, Rot
         }
         BlockPosition sideBlockPos = new BlockPosition(x, y, z);
         sideBlockPos.addFacingAsOffset(side);
-        if (blockView.getBlockId(sideBlockPos.x, sideBlockPos.y, sideBlockPos.z) == BlockListener.axleBlock.id && ((AxleBlock) BlockListener.axleBlock).isAxleOrientedTowardsFacing(blockView, sideBlockPos.x, sideBlockPos.y, sideBlockPos.z, side)
-                || blockView.getBlockId(sideBlockPos.x, sideBlockPos.y, sideBlockPos.z) == BlockListener.nonCollidingAxleBlock.id && ((AxleBlock) BlockListener.nonCollidingAxleBlock).isAxleOrientedTowardsFacing(blockView, sideBlockPos.x, sideBlockPos.y, sideBlockPos.z, side)) {
+        if (blockView.getBlockId(sideBlockPos.x, sideBlockPos.y, sideBlockPos.z) == BlockListener.axleBlock.id && ((AxleBlock) BlockListener.axleBlock).isAxleOrientedTowardsFacing(blockView, sideBlockPos.x, sideBlockPos.y, sideBlockPos.z, side)) {
             return TextureListener.gearbox_output;
         } else {
             return TextureListener.gearbox_side;
@@ -195,14 +194,11 @@ public class GearboxBlock extends TemplateBlock implements MechanicalDevice, Rot
             // Check if block is an axle
             BlockPosition tempPos = new BlockPosition(x, y, z);
             tempPos.addFacingAsOffset(facing);
-            if (world.getBlockId(tempPos.x, tempPos.y, tempPos.z) != BlockListener.axleBlock.id && world.getBlockId(tempPos.x, tempPos.y, tempPos.z) != BlockListener.nonCollidingAxleBlock.id) {
+            if (world.getBlockId(tempPos.x, tempPos.y, tempPos.z) != BlockListener.axleBlock.id) {
                 continue;
             }
             // Convert non-colliding axles into normal axles
             AxleBlock axleBlock = (AxleBlock) BlockListener.axleBlock;
-            if (world.getBlockId(tempPos.x, tempPos.y, tempPos.z) == BlockListener.nonCollidingAxleBlock.id) {
-                axleBlock = (AxleBlock) BlockListener.nonCollidingAxleBlock;
-            }
             // Skip misaligned axles
             if (!axleBlock.isAxleOrientedTowardsFacing(world, tempPos.x, tempPos.y, tempPos.z, facing)) {
                 continue;

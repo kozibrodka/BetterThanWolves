@@ -30,7 +30,6 @@ import net.kozibrodka.wolves.block.MachineBusBlock;
 import net.kozibrodka.wolves.block.MachinePowerInputBlock;
 import net.kozibrodka.wolves.block.MillStoneBlock;
 import net.kozibrodka.wolves.block.MouldingBlock;
-import net.kozibrodka.wolves.block.NonCollidingAxleBlock;
 import net.kozibrodka.wolves.block.OmniSlabBlock;
 import net.kozibrodka.wolves.block.PanelBlock;
 import net.kozibrodka.wolves.block.PlanterBlock;
@@ -99,7 +98,6 @@ public class BlockListener {
     public static Block planter;
     public static Block vase;
     public static Block detectorBlock;
-    public static Block nonCollidingAxleBlock;
 
     // New blocks
     public static TemplateBlock blockOfWicker;
@@ -174,7 +172,6 @@ public class BlockListener {
         vase = new VaseBlock(NAMESPACE.id("vase")).setTranslationKey(NAMESPACE, "vase");
         detectorBlock = new DetectorBlock(NAMESPACE.id("detector_block"), Material.PISTON_BREAKABLE).setTranslationKey(NAMESPACE, "detector_block");
         blockOfGrates = new LazyTransparentBlockTemplate(NAMESPACE.id("block_of_grates"), Material.WOOD, 1.5F, Block.WOOD_SOUND_GROUP);
-        nonCollidingAxleBlock = new NonCollidingAxleBlock(NAMESPACE.id("non_colliding_axle_block")).setTranslationKey(NAMESPACE, "non_colliding_axle_block");
         blockOfSteel = new LazyBlockTemplate(NAMESPACE.id("block_of_steel"), Material.METAL, 2.5F, Block.METAL_SOUND_GROUP);
         dropper = new DropperBlock(NAMESPACE.id("dropper"), Material.PISTON_BREAKABLE).setHardness(2.5F).setSoundGroup(Block.METAL_SOUND_GROUP);
         conveyor = new ConveyorBlock(Identifier.of(NAMESPACE, "conveyor"), Material.WOOD, 1.5F, Block.WOOD_SOUND_GROUP);
