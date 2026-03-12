@@ -423,7 +423,7 @@ public class RecipeListener {
         addCauldronRecipe(new ItemStack(Item.DYE, 1, 2), new ItemStack[]{
                 new ItemStack(Block.CACTUS)
         });
-        if (!isHarderThanWolvesPresent) {
+        if (!isHarderThanWolvesPresent && ConfigListener.wolvesGlass.difficulty.complexSoulFiltering) {
             addCauldronRecipe(new ItemStack(ItemListener.soulFilter, 1), new ItemStack[]{
                     new ItemStack(ItemListener.hempCloth, 2), new ItemStack(Block.SOUL_SAND, 1)
             });
