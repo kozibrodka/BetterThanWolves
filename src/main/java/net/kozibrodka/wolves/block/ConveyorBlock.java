@@ -2,6 +2,7 @@ package net.kozibrodka.wolves.block;
 
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
+import net.kozibrodka.wolves.utils.Conveyor;
 import net.kozibrodka.wolves.utils.MechanicalDevice;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -12,7 +13,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.util.Identifier;
 
-public class ConveyorBlock extends LazyBlockTemplate implements MechanicalDevice {
+public class ConveyorBlock extends LazyBlockTemplate implements MechanicalDevice, Conveyor {
     private static final double ACCELERATION = 1.1;
     private static final double MAXIMUM_VELOCITY = 1.5;
     private static final double DECELERATION = 0.75;
@@ -159,7 +160,7 @@ public class ConveyorBlock extends LazyBlockTemplate implements MechanicalDevice
             default -> 0;
         };
         if (world.getBlockId(x + xChange, y, z + zChange) == BlockListener.conveyorExtender.id) {
-            BlockListener.conveyorExtender.updateConveyor(world, x + xChange, y, z + zChange, enable, 16);
+            BlockListener.conveyorExtender.updateConveyor(world, x + xChange, y, z + zChange, enable, 15);
         }
     }
 
@@ -238,5 +239,13 @@ public class ConveyorBlock extends LazyBlockTemplate implements MechanicalDevice
         }
         entity.velocityX = xVelocity;
         entity.velocityZ = zVelocity;
+    }
+
+    @Override
+    public boolean hasPowerSource(World world, int x, int y, int z, int distance) {
+        if (distance > 16) {
+            return false;
+        }
+        return world.getBlockMeta(x, y, z) >= 6;
     }
 }

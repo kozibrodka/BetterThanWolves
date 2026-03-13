@@ -2,6 +2,8 @@ package net.kozibrodka.wolves.block;
 
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
+import net.kozibrodka.wolves.utils.Conveyor;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -11,7 +13,9 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.util.Identifier;
 
-public class ConveyorExtenderBlock extends LazyBlockTemplate {
+import java.util.Random;
+
+public class ConveyorExtenderBlock extends LazyBlockTemplate implements Conveyor {
     private static final double ACCELERATION = 1.1;
     private static final double MAXIMUM_VELOCITY = 1.5;
     private static final double DECELERATION = 0.75;
@@ -112,6 +116,103 @@ public class ConveyorExtenderBlock extends LazyBlockTemplate {
         if (facing == 3) {
             world.setBlockMeta(x, y, z, 4);
         }
+        world.scheduleBlockUpdate(x, y, z, BlockListener.conveyorExtender.id, 1);
+    }
+
+    @Override
+    public void onTick(World world, int x, int y, int z, Random random) {
+        boolean hasPowerSource = hasPowerSource(world, x, y, z, 1);
+        if (!hasPowerSource) {
+            return;
+        }
+        int currentMeta = world.getBlockMeta(x, y, z);
+        if (currentMeta < 6) {
+            world.setBlockMeta(x, y, z, currentMeta + 6);
+        }
+    }
+
+    @Override
+    public boolean hasPowerSource(World world, int x, int y, int z, int distance) {
+        if (distance > 16) {
+            return false;
+        }
+        int blockMeta = world.getBlockMeta(x, y, z);
+        if (blockMeta >= 6) {
+            blockMeta -= 6;
+        }
+        int blockId;
+        Block adjacentBlock;
+        switch (blockMeta) {
+            case 2:
+                blockId = world.getBlockId(x + 1, y, z);
+                adjacentBlock = Block.BLOCKS[blockId];
+                if (adjacentBlock instanceof Conveyor conveyor && world.getBlockMeta(x + 1, y, z) == 10) {
+                    return conveyor.hasPowerSource(world, x + 1, y, z, distance + 1);
+                }
+                blockId = world.getBlockId(x - 1, y, z);
+                adjacentBlock = Block.BLOCKS[blockId];
+                if (adjacentBlock instanceof Conveyor conveyor && world.getBlockMeta(x - 1, y, z) == 11) {
+                    return conveyor.hasPowerSource(world, x - 1, y, z, distance + 1);
+                }
+                blockId = world.getBlockId(x, y, z + 1);
+                adjacentBlock = Block.BLOCKS[blockId];
+                if (adjacentBlock instanceof Conveyor conveyor && world.getBlockMeta(x, y, z + 1) == 8) {
+                    return conveyor.hasPowerSource(world, x, y, z + 1, distance + 1);
+                }
+                break;
+            case 3:
+                blockId = world.getBlockId(x + 1, y, z);
+                adjacentBlock = Block.BLOCKS[blockId];
+                if (adjacentBlock instanceof Conveyor conveyor && world.getBlockMeta(x + 1, y, z) == 10) {
+                    return conveyor.hasPowerSource(world, x + 1, y, z, distance + 1);
+                }
+                blockId = world.getBlockId(x - 1, y, z);
+                adjacentBlock = Block.BLOCKS[blockId];
+                if (adjacentBlock instanceof Conveyor conveyor && world.getBlockMeta(x - 1, y, z) == 11) {
+                    return conveyor.hasPowerSource(world, x - 1, y, z, distance + 1);
+                }
+                blockId = world.getBlockId(x, y, z - 1);
+                adjacentBlock = Block.BLOCKS[blockId];
+                if (adjacentBlock instanceof Conveyor conveyor && world.getBlockMeta(x, y, z - 1) == 9) {
+                    return conveyor.hasPowerSource(world, x, y, z - 1, distance + 1);
+                }
+                break;
+            case 4:
+                blockId = world.getBlockId(x + 1, y, z);
+                adjacentBlock = Block.BLOCKS[blockId];
+                if (adjacentBlock instanceof Conveyor conveyor && world.getBlockMeta(x + 1, y, z) == 10) {
+                    return conveyor.hasPowerSource(world, x + 1, y, z, distance + 1);
+                }
+                blockId = world.getBlockId(x, y, z + 1);
+                adjacentBlock = Block.BLOCKS[blockId];
+                if (adjacentBlock instanceof Conveyor conveyor && world.getBlockMeta(x, y, z + 1) == 8) {
+                    return conveyor.hasPowerSource(world, x, y, z + 1, distance + 1);
+                }
+                blockId = world.getBlockId(x, y, z - 1);
+                adjacentBlock = Block.BLOCKS[blockId];
+                if (adjacentBlock instanceof Conveyor conveyor && world.getBlockMeta(x, y, z - 1) == 9) {
+                    return conveyor.hasPowerSource(world, x, y, z - 1, distance + 1);
+                }
+                break;
+            case 5:
+                blockId = world.getBlockId(x - 1, y, z);
+                adjacentBlock = Block.BLOCKS[blockId];
+                if (adjacentBlock instanceof Conveyor conveyor && world.getBlockMeta(x - 1, y, z) == 11) {
+                    return conveyor.hasPowerSource(world, x - 1, y, z, distance + 1);
+                }
+                blockId = world.getBlockId(x, y, z + 1);
+                adjacentBlock = Block.BLOCKS[blockId];
+                if (adjacentBlock instanceof Conveyor conveyor && world.getBlockMeta(x, y, z + 1) == 8) {
+                    return conveyor.hasPowerSource(world, x, y, z + 1, distance + 1);
+                }
+                blockId = world.getBlockId(x, y, z - 1);
+                adjacentBlock = Block.BLOCKS[blockId];
+                if (adjacentBlock instanceof Conveyor conveyor && world.getBlockMeta(x, y, z - 1) == 9) {
+                    return conveyor.hasPowerSource(world, x, y, z - 1, distance + 1);
+                }
+                break;
+        }
+        return false;
     }
 
     @Override
