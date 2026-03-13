@@ -241,7 +241,7 @@ public class GearboxBlock extends TemplateBlock implements MechanicalDevice, Rot
         }
 
         UnsortedUtils.EjectSingleItemWithRandomOffset(world, x, y, z, Item.REDSTONE.id, 0);
-        world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.explode", 0.2F, 1.25F);
+        world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.explode", 0.3F, 1.25F);
         if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
             voicePacket(world, "random.explode", x, y, z, 0.05F, 1.0F);
         }
@@ -287,7 +287,7 @@ public class GearboxBlock extends TemplateBlock implements MechanicalDevice, Rot
     }
 
     private void handleGearBoxActivation(World world, int x, int y, int z, Random random) {
-        world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.explode", 0.05F, 1.0F);
+        world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.explode", 0.1F, 1.0F);
         if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
             voicePacket(world, "random.explode", x, y, z, 0.05F, 1.0F);
         }
