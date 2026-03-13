@@ -10,7 +10,6 @@ import net.kozibrodka.wolves.block.BlockDispenserBlock;
 import net.kozibrodka.wolves.block.CauldronBlock;
 import net.kozibrodka.wolves.block.CementBlock;
 import net.kozibrodka.wolves.block.CompanionCubeBlock;
-import net.kozibrodka.wolves.block.ConverterBlock;
 import net.kozibrodka.wolves.block.ConveyorBlock;
 import net.kozibrodka.wolves.block.ConveyorExtenderBlock;
 import net.kozibrodka.wolves.block.CornerBlock;
@@ -43,6 +42,7 @@ import net.kozibrodka.wolves.block.UnfiredPotteryBlock;
 import net.kozibrodka.wolves.block.VaseBlock;
 import net.kozibrodka.wolves.block.WickerBlock;
 import net.kozibrodka.wolves.block.item.StoneSlabBlock;
+import net.kozibrodka.wolves.compat.nfc.NFCBlocks;
 import net.kozibrodka.wolves.materials.CementMaterial;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.minecraft.block.Block;
@@ -182,7 +182,7 @@ public class BlockListener {
         inputBus = new MachineBusBlock(Identifier.of(NAMESPACE, "input_bus"), Material.METAL, 2.5F, Block.METAL_SOUND_GROUP);
         outputBus = new MachineBusBlock(Identifier.of(NAMESPACE, "output_bus"), Material.METAL, 2.5F, Block.METAL_SOUND_GROUP);
         if (isNewFrontierCraftPresent) {
-            converter = new ConverterBlock(Identifier.of(NAMESPACE, "converter"), Material.METAL, 1.5F, Block.METAL_SOUND_GROUP);
+            converter = NFCBlocks.getConverterBlock(NAMESPACE);
         } else { // Load a dummy version of the block to keep tool tags and other things intact
             converter = new LazyBlockTemplate(Identifier.of(NAMESPACE, "converter"), Material.METAL, 1.5F, Block.METAL_SOUND_GROUP);
         }
