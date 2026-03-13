@@ -231,10 +231,10 @@ public class ConveyorBlock extends LazyBlockTemplate implements MechanicalDevice
             zVelocity = MINIMUM;
         }
         if (Math.signum(xVelocity) != Math.signum(xChange)) {
-            xVelocity *= -1;
+            xVelocity = -xVelocity;
         }
         if (Math.signum(zVelocity) != Math.signum(zChange)) {
-            zVelocity *= -1;
+            zVelocity = -zVelocity;
         }
         entity.velocityX = xVelocity;
         entity.velocityZ = zVelocity;
