@@ -242,10 +242,10 @@ public class ConveyorBlock extends LazyBlockTemplate implements MechanicalDevice
     }
 
     @Override
-    public boolean hasPowerSource(World world, int x, int y, int z, int distance) {
+    public int getPowerSourceDistance(World world, int x, int y, int z, int distance) {
         if (distance > 16) {
-            return false;
+            return -1;
         }
-        return world.getBlockMeta(x, y, z) >= 6;
+        return world.getBlockMeta(x, y, z) >= 6 ? distance : -1;
     }
 }
