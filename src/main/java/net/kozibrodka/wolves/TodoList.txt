@@ -29,7 +29,7 @@ Game mechanics:
 - (DONE) WaterWheel and windmill dmg by hand on server + animation
 
 - (DONE) Client GUI powered on/off not showing BUG
-- Fix Hopper soulfiltering - bring back oryginal design.
+- (DONE) Fix Hopper soulfiltering - bring back oryginal design.
 
 Possbile extra features (oryginal BTW)""
 - Animated saw

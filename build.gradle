@@ -114,6 +114,7 @@ dependencies {
             transitive = false
         }
     }
+	modImplementation(files("lib/mpentityfix_fabric1~client.jar"))
 
 
     // Crossover content

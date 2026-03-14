@@ -22,18 +22,21 @@ public class PlatformPacket extends Packet implements ManagedPacket<PlatformPack
     public static final PacketType<PlatformPacket> TYPE = PacketType.builder(true, true, PlatformPacket::new).build();
 
     private double y;
+    private int action;
 
     public PlatformPacket() {
     }
 
-    public PlatformPacket(double posY) {
+    public PlatformPacket(double posY, int code) {
         this.y = posY;
+        this.action = code;
     }
 
     @Override
     public void read(DataInputStream stream) {
         try {
             this.y = stream.readDouble();
+            this.action = stream.readInt();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -43,6 +46,7 @@ public class PlatformPacket extends Packet implements ManagedPacket<PlatformPack
     public void write(DataOutputStream stream) {
         try {
             stream.writeDouble(this.y);
+            stream.writeInt(this.action);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -59,13 +63,22 @@ public class PlatformPacket extends Packet implements ManagedPacket<PlatformPack
     @Environment(EnvType.CLIENT)
     public void handleClient(NetworkHandler networkHandler) {
         ClientPlayerEntity player = (ClientPlayerEntity) PlayerHelper.getPlayerFromPacketHandler(networkHandler);
-        if(player != null) {
+        if(player == null){
+            return;
+        }
+
+        if(action == 1) {
             double a = 0.2D; // 0.2D
             double b = 2.8D; // 2.8D
             if((player.y - y) > 2.5D){
 //                player.setPosition(player.x, player.y + a, player.z);
                 player.setPosition(player.x, this.y + b, player.z); // jak serwer dopiero startuje moze gracz wpaść
             }
+        }
+
+        if(action == 2){
+            double e = 0.1D;
+            player.setPosition(player.x, player.y + e, player.z);
         }
     }
 

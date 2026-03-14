@@ -151,6 +151,22 @@ public class MovingPlatformEntity extends Entity implements EntitySpawnDataProvi
             remoteTick();
             return;
         }
+        if(!startcheck && velocityY > 0){
+//            System.out.println(this.velocityY);
+            startcheck = true;
+            if(FabricLoader.getInstance().getEnvironmentType().equals(EnvType.SERVER)) {
+                List list = world.getEntities(this, boundingBox.expand(0.0D, 0.5D, 0.0D));
+                if (list != null && list.size() > 0) {
+                    for (int j1 = 0; j1 < list.size(); j1++) {
+                        Entity entity = (Entity) list.get(j1);
+                        if ((entity instanceof PlayerEntity)) {
+                            PacketHelper.sendTo((PlayerEntity) entity, new PlatformPacket(this.y,2));
+                        }
+                    }
+                }
+            }
+//            startcheck = true;
+        }
         int i = MathHelper.floor(x);
         int oldCentreJ = MathHelper.floor(y);
         int k = MathHelper.floor(z);
@@ -339,7 +355,7 @@ public class MovingPlatformEntity extends Entity implements EntitySpawnDataProvi
                 for (int j1 = 0; j1 < list.size(); j1++) {
                     Entity entity = (Entity) list.get(j1);
                     if ((entity instanceof PlayerEntity)) {
-                        PacketHelper.sendTo((PlayerEntity) entity, new PlatformPacket(j));
+                        PacketHelper.sendTo((PlayerEntity) entity, new PlatformPacket(j,1));
                     }
                 }
             }
@@ -351,6 +367,7 @@ public class MovingPlatformEntity extends Entity implements EntitySpawnDataProvi
     private double m_AssociatedAnchorLastKnownYPos;
     private double m_AssociatedAnchorLastKnownZPos;
     public boolean receivedP;
+    public boolean startcheck;
 
     @Override
     public Identifier getHandlerIdentifier() {

@@ -187,8 +187,6 @@ public class BlockListener {
             converter = new LazyBlockTemplate(Identifier.of(NAMESPACE, "converter"), Material.METAL, 1.5F, Block.METAL_SOUND_GROUP);
         }
 
-        //TODO: Hopper soul filter - bring back oryginal design.
-        //TODO: Sound volume is like oryginal? check why.
 
     }
 }

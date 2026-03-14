@@ -194,7 +194,6 @@ public class HopperBlock extends TemplateBlockWithEntity
                                 flintEntityitem.pickupDelay = 10;
                                 world.spawnEntity(flintEntityitem);
                             }
-                            //TODO: BRING Back groundnetherrack ejecting + sound. + old logic
                         } else if (InventoryHandler.addItemWithinSlotBounds(tileEntityHopper, targetEntityItem.stack, 0, 17)) {
                             if (iFilterType == 6) {
                                 world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "mob.ghast.moan", 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
