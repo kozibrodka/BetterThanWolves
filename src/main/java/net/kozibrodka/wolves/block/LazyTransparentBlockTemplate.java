@@ -1,5 +1,7 @@
 package net.kozibrodka.wolves.block;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.EnvironmentInterface;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.utils.CustomBlockRendering;
 import net.minecraft.block.material.Material;
@@ -10,6 +12,8 @@ import net.modificationstation.stationapi.api.client.model.block.BlockWithInvent
 import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
 import net.modificationstation.stationapi.api.util.Identifier;
 
+@EnvironmentInterface(value = EnvType.CLIENT, itf = BlockWithWorldRenderer.class)
+@EnvironmentInterface(value = EnvType.CLIENT, itf = BlockWithInventoryRenderer.class)
 public class LazyTransparentBlockTemplate extends LazyBlockTemplate implements BlockWithWorldRenderer, BlockWithInventoryRenderer {
 
 
