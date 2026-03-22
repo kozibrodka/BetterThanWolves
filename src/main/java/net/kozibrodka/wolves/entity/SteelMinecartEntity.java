@@ -139,6 +139,9 @@ public class SteelMinecartEntity extends MinecartEntity implements EntitySpawnDa
 
 //            double var4 = 0.4; //
             double var4 = 0.5; //TODO how much 0.5D, dlaczego na > się zatrzymuje na podjeździe?
+            if(world.dimension.isNether){
+                var4 = 0.4;
+            }
             boolean var6 = false;
             double var7 = (double)0.0078125F;
             int var9 = this.world.getBlockId(var1, var2, var3);
