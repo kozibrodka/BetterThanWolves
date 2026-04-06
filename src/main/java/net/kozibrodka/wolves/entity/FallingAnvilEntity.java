@@ -106,9 +106,7 @@ public class FallingAnvilEntity extends Entity implements EntitySpawnDataProvide
                     }
                 }
                 world.playSound(this.x, this.y, this.z, "wolves:anvil_land", 1.0F, 1.2F);
-                if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                    voicePacket(world, "wolves:anvil_land", (int)this.x, (int)this.y, (int)this.z, 1.0F, 1.2F);
-                }
+                world.broadcastEntityEvent(this, (byte)6);
                 this.markDead();
                 if (!this.world.isRemote) {
                     this.world.setBlockWithoutNotifyingNeighbors(var1, var2, var3, this.tile, getFacingMeta());
@@ -123,26 +121,23 @@ public class FallingAnvilEntity extends Entity implements EntitySpawnDataProvide
                     }
                 }
                 world.playSound(this.x, this.y, this.z, "wolves:anvil_land", 1.0F, 1.2F);
-                if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                    voicePacket(world, "wolves:anvil_land", (int)this.x, (int)this.y, (int)this.z, 1.0F, 1.2F);
-                }
+                world.broadcastEntityEvent(this, (byte)6);
                 this.markDead();
             }
             world.blockUpdateEvent(var1, var2, var3);
         }
     }
 
-    @Environment(EnvType.SERVER)
-    public void voicePacket(World world, String name, int x, int y, int z, float g, float h) {
-        List list2 = world.players;
-        if (list2.size() != 0) {
-            for (int k = 0; k < list2.size(); k++) {
-                ServerPlayerEntity player1 = (ServerPlayerEntity) list2.get(k);
-                PacketHelper.sendTo(player1, new SoundPacket(name, x, y, z, g, h));
-            }
+    @Override
+    @Environment(EnvType.CLIENT)
+    public void processServerEntityStatus(byte status) {
+        if (status == 6) {
+            world.playSound(this.x, this.y, this.z, "wolves:anvil_land", 1.0F, 1.2F);
+        } else {
+            super.processServerEntityStatus(status);
         }
     }
-
+    
     protected void writeNbt(NbtCompound arg) {
         arg.putByte("Tile", (byte) this.tile);
         arg.putInt("Facing", getFacingMeta());

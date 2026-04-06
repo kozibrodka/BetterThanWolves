@@ -36,7 +36,7 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
     private int inData = 0;
     private boolean inGround = false;
     public boolean spawnedByPlayer = false;
-//    public int shake = 0;
+    public int shake = 0;
     public LivingEntity owner;
     private int ticksInGround;
     private int ticksFlying = 0;
@@ -71,19 +71,8 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
     }
 
     protected void initDataTracker() {
-        dataTracker.startTracking(16, (byte) 0); //SHAKE
     }
 
-    //SHAKE
-    public void setShake(int type)
-    {
-        dataTracker.set(16, (byte) type);
-    }
-
-    public int getShake()
-    {
-        return dataTracker.getByte(16);
-    }
 
     @Environment(EnvType.CLIENT)
     @Override
@@ -132,7 +121,13 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
     public void tick() {
         super.tick();
         //ADDED
-        if (dead || world.isRemote) {
+        if(world.isRemote){
+            if (shake > 0) {
+                --this.shake;
+            }
+            return;
+        }
+        if (dead) {
             return;
         }
         //ADDED
@@ -151,9 +146,8 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
             }
         }
 
-        if (getShake() > 0) {
-            setShake(getShake() - 1);
-//            --this.shake;
+        if (shake > 0) {
+            --this.shake;
         }
 
         if (this.inGround) {
@@ -214,9 +208,7 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
                 if (var3.entity != null) {
                     if (var3.entity.damage(this.owner, 10)) {
                         this.world.playSound(this, "random.drr", 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
-                        if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                            voicePacket(world, "random.drr", this.xTile, this.yTile, this.zTile, 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
-                        }
+                        world.broadcastEntityEvent(this, (byte)7);
                         this.markDead();
                     } else {
                         this.velocityX *= -0.10000000149011612D;
@@ -240,11 +232,9 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
                     this.y -= this.velocityY / (double) var19 * 0.05000000074505806D;
                     this.z -= this.velocityZ / (double) var19 * 0.05000000074505806D;
                     this.world.playSound(this, "random.drr", 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
-                    if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                        voicePacket(world, "random.drr", this.xTile, this.yTile, this.zTile, 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
-                    }
+                    world.broadcastEntityEvent(this, (byte)6);
                     this.inGround = true;
-                    setShake(7);
+                    shake = 7;
                 }
             }
 
@@ -296,8 +286,7 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
         arg.putShort("zTile", (short) this.zTile);
         arg.putByte("inTile", (byte) this.inTile);
         arg.putByte("inData", (byte) this.inData);
-//        arg.putByte("shake", (byte) this.shake);
-        arg.putInt("shake", getShake());
+        arg.putByte("shake", (byte) this.shake);
         arg.putByte("inGround", (byte) (this.inGround ? 1 : 0));
         arg.putBoolean("player", this.spawnedByPlayer);
     }
@@ -308,19 +297,16 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
         this.zTile = arg.getShort("zTile");
         this.inTile = arg.getByte("inTile") & 255;
         this.inData = arg.getByte("inData") & 255;
-//        this.shake = arg.getByte("shake") & 255;
-        setShake(arg.getInt("shake"));
+        this.shake = arg.getByte("shake") & 255;
         this.inGround = arg.getByte("inGround") == 1;
         this.spawnedByPlayer = arg.getBoolean("player");
     }
 
     public void onPlayerInteraction(PlayerEntity arg) {
         if (!this.world.isRemote) {
-            if (this.inGround && this.spawnedByPlayer && getShake() <= 0 && arg.inventory.addStack(new ItemStack(ItemListener.broadHeadArrow, 1))) {
+            if (this.inGround && this.spawnedByPlayer && shake <= 0 && arg.inventory.addStack(new ItemStack(ItemListener.broadHeadArrow, 1))) {
                 this.world.playSound(this, "random.pop", 0.2F, ((this.random.nextFloat() - this.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-                if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                    voicePacket(world, "random.pop", this.xTile, this.yTile, this.zTile, 0.2F, 1.25F);
-                }
+                world.broadcastEntityEvent(this, (byte)8);
                 arg.sendPickup(this, 1);
                 this.markDead();
             }
@@ -328,14 +314,18 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
         }
     }
 
-    @Environment(EnvType.SERVER)
-    public void voicePacket(World world, String name, int x, int y, int z, float g, float h) {
-        List list2 = world.players;
-        if (list2.size() != 0) {
-            for (int k = 0; k < list2.size(); k++) {
-                ServerPlayerEntity player1 = (ServerPlayerEntity) list2.get(k);
-                PacketHelper.sendTo(player1, new SoundPacket(name, x, y, z, g, h));
-            }
+    @Override
+    @Environment(EnvType.CLIENT)
+    public void processServerEntityStatus(byte status) {
+        if (status == 6) {
+            shake = 7;
+            this.world.playSound(this, "random.drr", 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
+        }  else if (status == 7) {
+            this.world.playSound(this, "random.drr", 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
+        }  else if (status == 8){
+            this.world.playSound(this, "random.pop", 0.2F, ((this.random.nextFloat() - this.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+        }  else {
+            super.processServerEntityStatus(status);
         }
     }
 

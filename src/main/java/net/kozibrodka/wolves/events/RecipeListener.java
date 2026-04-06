@@ -316,7 +316,7 @@ public class RecipeListener {
                     "###", "###", "###", '#', ItemListener.steel
             });
         }
-        addAnvilRecipe(new ItemStack(Block.RAIL, 48), new Object[]{
+        addAnvilRecipe(new ItemStack(Block.RAIL, 64), new Object[]{
                 "#X#", "#X#", "#X#", '#', ItemListener.steel, 'X', ItemListener.haft
         });
         addAnvilRecipe(new ItemStack(BlockListener.automaticAnvil, 1), new Object[]{
