@@ -2,15 +2,15 @@ package net.kozibrodka.wolves.entity;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.loader.FabricLoader;
+import net.fabricmc.loader.api.FabricLoader;
 import net.kozibrodka.wolves.events.EntityListener;
 import net.kozibrodka.wolves.events.ItemListener;
-import net.kozibrodka.wolves.network.SoundPacket;
+import net.kozibrodka.wolves.utils.ArrowOwnerUtil;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.hit.HitResult;
@@ -18,7 +18,6 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import net.modificationstation.stationapi.api.server.entity.EntitySpawnDataProvider;
 import net.modificationstation.stationapi.api.server.entity.HasTrackingParameters;
 import net.modificationstation.stationapi.api.util.Identifier;
@@ -40,6 +39,7 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
     public LivingEntity owner;
     private int ticksInGround;
     private int ticksFlying = 0;
+    private boolean isServerCreated;
 
     public BroadheadArrowEntity(World arg) {
         super(arg);
@@ -51,11 +51,13 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
         this.setBoundingBoxSpacing(0.5F, 0.5F);
         this.setPosition(d, e, f);
         this.standingEyeHeight = 0.0F;
+        isServerCreated = true;
     }
 
     public BroadheadArrowEntity(World arg, LivingEntity arg2) {
         super(arg);
         this.owner = arg2;
+        dataTracker.set(16, owner.id);
         this.spawnedByPlayer = arg2 instanceof PlayerEntity;
         this.setBoundingBoxSpacing(0.5F, 0.5F);
         this.setPositionAndAnglesKeepPrevAngles(arg2.x, arg2.y + (double) arg2.getEyeHeight(), arg2.z, arg2.yaw, arg2.pitch);
@@ -71,6 +73,7 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
     }
 
     protected void initDataTracker() {
+        dataTracker.startTracking(16, -1);
     }
 
 
@@ -124,6 +127,14 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
         if(world.isRemote){
             if (shake > 0) {
                 --this.shake;
+            }
+            int ownerID = dataTracker.getInt(16);
+            if(isServerCreated && ownerID != -1){
+                //todo sound
+                if(!ArrowOwnerUtil.isClientPlayer(ownerID)) {
+                    world.playSound(this, "random.bow", 1.0F, 1.0F / (random.nextFloat() * 0.4F + 0.8F));
+                }
+                isServerCreated = false;
             }
             return;
         }
