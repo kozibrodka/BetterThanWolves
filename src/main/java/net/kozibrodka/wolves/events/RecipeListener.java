@@ -624,7 +624,7 @@ public class RecipeListener {
             addCrucibleRecipe(new ItemStack(ItemListener.steel, 8), new ItemStack[]{new ItemStack(ItemListener.chestPlateSteel, 1, -1)});
             addCrucibleRecipe(new ItemStack(ItemListener.steel, 7), new ItemStack[]{new ItemStack(BlockListener.anvil)});
             addCrucibleRecipe(new ItemStack(ItemListener.steel, 7), new ItemStack[]{new ItemStack(ItemListener.leggingsSteel, 1, -1)});
-            addCrucibleRecipe(new ItemStack(ItemListener.steel, 5), new ItemStack[]{new ItemStack(ItemListener.helmetSteel, 1, -1)});
+            addCrucibleRecipe(new ItemStack(ItemListener.steel, 6), new ItemStack[]{new ItemStack(ItemListener.helmetSteel, 1, -1)});
             addCrucibleRecipe(new ItemStack(ItemListener.steel, 5), new ItemStack[]{new ItemStack(ItemListener.refinedAxe, 1, -1)});
             addCrucibleRecipe(new ItemStack(ItemListener.steel, 4), new ItemStack[]{new ItemStack(ItemListener.bootsSteel, 1, -1)});
             addCrucibleRecipe(new ItemStack(ItemListener.steel, 3), new ItemStack[]{new ItemStack(ItemListener.refinedPickAxe, 1, -1)});
