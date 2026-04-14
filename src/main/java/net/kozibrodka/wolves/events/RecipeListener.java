@@ -37,6 +37,7 @@ import java.util.List;
 public class RecipeListener {
     @Entrypoint.Namespace
     public static Namespace NAMESPACE;
+    private static boolean addedRecipes = false;
 
     static boolean isHarderThanWolvesPresent = FabricLoader.getInstance().isModLoaded("harderthanwolves");
     static boolean isNewFrontierCraftPresent = FabricLoader.getInstance().isModLoaded("nfc");
@@ -48,33 +49,30 @@ public class RecipeListener {
     }
 
     public static void addAllModRecipes(RecipeRegisterEvent event) {
-        Identifier type = event.recipeId;
-        if (type == RecipeRegisterEvent.Vanilla.CRAFTING_SHAPED.type()) {
-            addBlockRecipes();
-            addItemRecipes();
-            addAlternateVanillaRecipes();
-            addShapedAnvilRecipes();
+        if (addedRecipes) {
+            return;
         }
-        if (type == RecipeRegisterEvent.Vanilla.CRAFTING_SHAPELESS.type()) {
-            addDyeRecipes();
-            addShapelessCraftingRecipes();
-            addConversionRecipes();
-            addShapelessAnvilRecipes();
-            addCauldronRecipes();
-            addMillingRecipes();
-            addHopperRecipes();
-            addSawingRecipes();
-            addTurntableRecipes();
-            if (isAmiPresent) {
-                addMultiblockRecipes();
-            }
-            if (isNewFrontierCraftPresent) {
-                NFCRecipes.addShapelessCraftingRecipes();
-            }
+        addedRecipes = true;
+        addBlockRecipes();
+        addItemRecipes();
+        addAlternateVanillaRecipes();
+        addShapedAnvilRecipes();
+        addDyeRecipes();
+        addShapelessCraftingRecipes();
+        addConversionRecipes();
+        addShapelessAnvilRecipes();
+        addCauldronRecipes();
+        addMillingRecipes();
+        addHopperRecipes();
+        addSawingRecipes();
+        addTurntableRecipes();
+        if (isAmiPresent) {
+            addMultiblockRecipes();
         }
-        if (type == RecipeRegisterEvent.Vanilla.SMELTING.type()) {
-            addCrucibleRecipes();
+        if (isNewFrontierCraftPresent) {
+            NFCRecipes.addShapelessCraftingRecipes();
         }
+        addCrucibleRecipes();
         addDebugRecipes();
     }
 
