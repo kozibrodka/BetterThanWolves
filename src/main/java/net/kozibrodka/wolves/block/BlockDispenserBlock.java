@@ -36,6 +36,7 @@ import net.minecraft.entity.projectile.thrown.SnowballEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.entity.vehicle.MinecartEntity;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SeedsItem;
@@ -425,16 +426,16 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity implements Rota
                 f = -1F;
             }
             BlockDispenserBlockEntity tileEntityBlockDispenser = (BlockDispenserBlockEntity) world.getBlockEntity(i, j, k);
-            ItemStack iteminstance = tileEntityBlockDispenser.GetNextStackFromInventory();
+            ItemStack dispensedItemStack = tileEntityBlockDispenser.GetNextStackFromInventory();
             double d = (double) targetPos.x + (double) f * 0.5D + 0.5D;
             double d1 = (double) targetPos.y + (double) deltaj + 0.5D;
             double d2 = (double) targetPos.z + (double) f1 * 0.5D + 0.5D;
-            if (iteminstance != null) {
+            if (dispensedItemStack != null) {
                 if (deltaj < 0.1F && deltaj > -0.1F) {
                     deltaj = 0.1F;
                 }
 
-                if (iteminstance.itemId == Item.ARROW.id) {
+                if (dispensedItemStack.itemId == Item.ARROW.id) {
                     ArrowEntity entityarrow = new ArrowEntity(world, d, d1, d2);
                     entityarrow.setVelocity(f, deltaj, f1, 1.1F, 6F);
                     world.spawnEntity(entityarrow);
@@ -443,7 +444,7 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity implements Rota
                         voicePacket(world, "random.bow", i, j, k, 1.0F, 1.2F);
                     }
                     bSuccessfullyDispensed = true;
-                } else if (iteminstance.itemId == ItemListener.broadHeadArrow.id) {
+                } else if (dispensedItemStack.itemId == ItemListener.broadHeadArrow.id) {
                     BroadheadArrowEntity entityarrow = new BroadheadArrowEntity(world, d, d1, d2);
                     entityarrow.method_1291(f, deltaj, f1, 1.1F, 6F);
                     entityarrow.velocityX *= 1.5D;
@@ -455,7 +456,7 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity implements Rota
                         voicePacket(world, "random.bow", i, j, k, 1.0F, 1.2F);
                     }
                     bSuccessfullyDispensed = true;
-                } else if (iteminstance.itemId == Item.EGG.id) {
+                } else if (dispensedItemStack.itemId == Item.EGG.id) {
                     EggEntity entityegg = new EggEntity(world, d, d1, d2);
                     entityegg.setVelocity(f, deltaj, f1, 1.1F, 6F);
                     world.spawnEntity(entityegg);
@@ -464,7 +465,7 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity implements Rota
                         voicePacket(world, "random.bow", i, j, k, 1.0F, 1.2F);
                     }
                     bSuccessfullyDispensed = true;
-                } else if (iteminstance.itemId == Item.SNOWBALL.id) {
+                } else if (dispensedItemStack.itemId == Item.SNOWBALL.id) {
                     SnowballEntity entitysnowball = new SnowballEntity(world, d, d1, d2);
                     entitysnowball.setVelocity(f, deltaj, f1, 1.1F, 6F);
                     world.spawnEntity(entitysnowball);
@@ -473,7 +474,7 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity implements Rota
                         voicePacket(world, "random.bow", i, j, k, 1.0F, 1.2F);
                     }
                     bSuccessfullyDispensed = true;
-                } else if (iteminstance.itemId == Item.MINECART.id) {
+                } else if (dispensedItemStack.itemId == Item.MINECART.id) {
                     MinecartEntity entityMinecart = new MinecartEntity(world, d + (double) f * 0.75D, d1 - 0.5D, d2 + (double) f1 * 0.75D, 0);
                     world.spawnEntity(entityMinecart);
                     world.playSound(i, j, k, "random.click", 1.0F, 1.0F);
@@ -481,7 +482,7 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity implements Rota
                         voicePacket(world, "random.click", i, j, k, 1.0F, 1.0F);
                     }
                     bSuccessfullyDispensed = true;
-                } else if (iteminstance.itemId == Item.CHEST_MINECART.id) {
+                } else if (dispensedItemStack.itemId == Item.CHEST_MINECART.id) {
                     MinecartEntity entityMinecart = new MinecartEntity(world, d + (double) f * 0.75D, d1 - 0.5D, d2 + (double) f1 * 0.75D, 1);
                     world.spawnEntity(entityMinecart);
                     world.playSound(i, j, k, "random.click", 1.0F, 1.0F);
@@ -489,7 +490,7 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity implements Rota
                         voicePacket(world, "random.click", i, j, k, 1.0F, 1.0F);
                     }
                     bSuccessfullyDispensed = true;
-                } else if (iteminstance.itemId == Item.FURNACE_MINECART.id) {
+                } else if (dispensedItemStack.itemId == Item.FURNACE_MINECART.id) {
                     MinecartEntity entityMinecart = new MinecartEntity(world, d + (double) f * 0.75D, d1 - 0.5D, d2 + (double) f1 * 0.75D, 2);
                     world.spawnEntity(entityMinecart);
                     world.playSound(i, j, k, "random.click", 1.0F, 1.0F);
@@ -497,7 +498,7 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity implements Rota
                         voicePacket(world, "random.click", i, j, k, 1.0F, 1.0F);
                     }
                     bSuccessfullyDispensed = true;
-                } else if (iteminstance.itemId == Item.BOAT.id) {
+                } else if (dispensedItemStack.itemId == Item.BOAT.id) {
                     BoatEntity entityBoat = new BoatEntity(world, d + (double) f, d1 - 0.5D, d2 + (double) f1);
                     world.spawnEntity(entityBoat);
                     world.playSound(i, j, k, "random.click", 1.0F, 1.0F);
@@ -505,10 +506,10 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity implements Rota
                         voicePacket(world, "random.click", i, j, k, 1.0F, 1.0F);
                     }
                     bSuccessfullyDispensed = true;
-                } else if (iteminstance.getItem() instanceof SeedsItem) {
-                    iteminstance.count++;
-                    if (!iteminstance.getItem().useOnBlock(iteminstance, null, world, targetPos.x, targetPos.y - 1, targetPos.z, 1)) {
-                        InventoryHandler.addSingleItemToInventory(tileEntityBlockDispenser, iteminstance.itemId, 0);
+                } else if (dispensedItemStack.getItem() instanceof SeedsItem) {
+                    dispensedItemStack.count++;
+                    if (!dispensedItemStack.getItem().useOnBlock(dispensedItemStack, null, world, targetPos.x, targetPos.y - 1, targetPos.z, 1)) {
+                        InventoryHandler.addSingleItemToInventory(tileEntityBlockDispenser, dispensedItemStack.itemId, 0);
                     } else {
                         Block newBlock = Block.WHEAT;
                         world.playSound((float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, newBlock.soundGroup.getSound(), (newBlock.soundGroup.getVolume() + 1.0F) / 2.0F, newBlock.soundGroup.getPitch() * 0.8F);
@@ -519,15 +520,15 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity implements Rota
                     }
                 } else {
                     Block newBlock = null;
-                    if (iteminstance.itemId < 256) {
-                        newBlock = Block.BLOCKS[iteminstance.itemId];
-                    } else if (iteminstance.itemId == Item.SUGAR_CANE.id) {
+                    if (dispensedItemStack.getItem() instanceof BlockItem blockItem) {
+                        newBlock = blockItem.getBlock();
+                    } else if (dispensedItemStack.itemId == Item.SUGAR_CANE.id) {
                         newBlock = Block.SUGAR_CANE;
-                    } else if (iteminstance.itemId == Item.CAKE.id) {
+                    } else if (dispensedItemStack.itemId == Item.CAKE.id) {
                         newBlock = Block.CAKE;
-                    } else if (iteminstance.itemId == Item.REPEATER.id) {
+                    } else if (dispensedItemStack.itemId == Item.REPEATER.id) {
                         newBlock = Block.REPEATER;
-                    } else if (iteminstance.itemId == Item.REDSTONE.id) {
+                    } else if (dispensedItemStack.itemId == Item.REDSTONE.id) {
                         newBlock = Block.REDSTONE_WIRE;
                     }
 
@@ -538,7 +539,7 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity implements Rota
                             if (newBlockId == Block.PISTON.id || newBlockId == Block.STICKY_PISTON.id) {
                                 world.setBlock(targetPos.x, targetPos.y, targetPos.z, newBlockId, iFacing);
                             } else {
-                                world.setBlock(targetPos.x, targetPos.y, targetPos.z, newBlockId, iteminstance.getItem().getPlacementMetadata(iteminstance.getDamage()));
+                                world.setBlock(targetPos.x, targetPos.y, targetPos.z, newBlockId, dispensedItemStack.getItem().getPlacementMetadata(dispensedItemStack.getDamage()));
                                 newBlock.onPlaced(world, targetPos.x, targetPos.y, targetPos.z, iTargetDirection);
                             }
 
@@ -548,17 +549,17 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity implements Rota
                             }
                             bSuccessfullyDispensed = true;
                         } else {
-                            InventoryHandler.addSingleItemToInventory(tileEntityBlockDispenser, iteminstance.itemId, iteminstance.getDamage());
+                            InventoryHandler.addSingleItemToInventory(tileEntityBlockDispenser, dispensedItemStack.itemId, dispensedItemStack.getDamage());
                         }
                     } else if (world.isAir(targetPos.x, targetPos.y, targetPos.z)) {
-                        SpitOutItem(world, i, j, k, iteminstance, random);
+                        SpitOutItem(world, i, j, k, dispensedItemStack, random);
                         world.playSound(i, j, k, "random.click", 1.0F, 1.0F);
                         if (net.fabricmc.loader.FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
                             voicePacket(world, "random.click", i, j, k, 1.0F, 1.0F);
                         }
                         bSuccessfullyDispensed = true;
                     } else {
-                        InventoryHandler.addSingleItemToInventory(tileEntityBlockDispenser, iteminstance.itemId, iteminstance.getDamage());
+                        InventoryHandler.addSingleItemToInventory(tileEntityBlockDispenser, dispensedItemStack.itemId, dispensedItemStack.getDamage());
                     }
                 }
             }
