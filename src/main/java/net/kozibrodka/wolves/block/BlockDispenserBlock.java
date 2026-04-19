@@ -13,7 +13,11 @@ import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.network.ParticlePacket;
 import net.kozibrodka.wolves.network.RenderPacket;
 import net.kozibrodka.wolves.network.SoundPacket;
-import net.kozibrodka.wolves.utils.*;
+import net.kozibrodka.wolves.utils.BlockPosition;
+import net.kozibrodka.wolves.utils.InventoryHandler;
+import net.kozibrodka.wolves.utils.ReplaceableBlockChecker;
+import net.kozibrodka.wolves.utils.RotatableBlock;
+import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.DispenserBlockEntity;
@@ -279,7 +283,7 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity implements Rota
                         voicePacket(world, targetWolf.getHurtSound(), (int) targetEntity.x, (int) targetEntity.y, (int) targetEntity.z, targetWolf.getSoundVolume(), (world.random.nextFloat() - world.random.nextFloat()) * 0.2F + 1.0F);
                     }
                     targetEntity.markDead();
-                    InventoryHandler.addSingleItemToInventory(tileEentityDispenser, BlockListener.companionCube.id, 0);
+                    InventoryHandler.addSingleItemToInventory(tileEentityDispenser, BlockListener.companionCube.asItem().id, 0);
                     for (int tempCount = 0; tempCount < 2; tempCount++) {
                         SpitOutItem(world, i, j, k, new ItemStack(Item.STRING), world.random);
                     }
