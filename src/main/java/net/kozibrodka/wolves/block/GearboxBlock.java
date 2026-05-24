@@ -86,11 +86,7 @@ public class GearboxBlock extends TemplateBlock implements MechanicalDevice, Rot
         boolean redstonePowered = isPoweredByRedstone(world, x, y, z);
         boolean gearBoxOn = isGearBoxOn(world, x, y, z);
         if (redstonePowered && gearBoxOn) {
-            setGearBoxOnState(world, x, y, z, false);
             handleGearBoxDeactivation(world, x, y, z);
-        } else if (!redstonePowered && !gearBoxOn) {
-            setGearBoxOnState(world, x, y, z, true);
-            handleGearBoxActivation(world, x, y, z, localRandom);
         }
     }
 
@@ -274,13 +270,11 @@ public class GearboxBlock extends TemplateBlock implements MechanicalDevice, Rot
 
     @Override
     public void powerMachine(World world, int x, int y, int z, int side) {
-        setGearBoxOnState(world, x, y, z, true);
         handleGearBoxActivation(world, x, y, z, localRandom);
     }
 
     @Override
     public void unpowerMachine(World world, int x, int y, int z, int side) {
-        setGearBoxOnState(world, x, y, z, false);
         handleGearBoxDeactivation(world, x, y, z);
     }
 
