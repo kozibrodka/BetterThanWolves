@@ -241,7 +241,7 @@ public class CrucibleBlock extends TemplateBlockWithEntity
 
         BlockState currentState = world.getBlockState(x, y, z);
         if (world.getBlockId(x, y, z) == BlockListener.crucible.id) {
-            world.setBlockStateWithNotify(x, y, z, currentState.with(FULL, slots));
+            world.setBlockState(x, y, z, currentState.with(FULL, slots));
         }
 
         SETTING_TILE = false;
@@ -257,7 +257,7 @@ public class CrucibleBlock extends TemplateBlockWithEntity
         SETTING_TILE = true;
 
         BlockState currentState = world.getBlockState(i, j, k);
-        world.setBlockStateWithNotify(i, j, k, currentState.with(LAVA, bOn));
+        world.setBlockState(i, j, k, currentState.with(LAVA, bOn));
 
         SETTING_TILE = false;
         tileEntityBase.cancelRemoval();

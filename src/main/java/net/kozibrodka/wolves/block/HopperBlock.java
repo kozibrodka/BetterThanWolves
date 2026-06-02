@@ -277,7 +277,7 @@ public class HopperBlock extends TemplateBlockWithEntity
         SETTING_TILE = true;
 
         BlockState currentState = world.getBlockState(i, j, k);
-        world.setBlockStateWithNotify(i, j, k, currentState.with(POWER, bOn));
+        world.setBlockState(i, j, k, currentState.with(POWER, bOn));
 
         SETTING_TILE = false;
         tileEntityBase.cancelRemoval();
@@ -297,7 +297,7 @@ public class HopperBlock extends TemplateBlockWithEntity
         SETTING_TILE = true;
 
         BlockState currentState = world.getBlockState(i, j, k);
-        world.setBlockStateWithNotify(i, j, k, currentState.with(FULL, bOn));
+        world.setBlockState(i, j, k, currentState.with(FULL, bOn));
 
         SETTING_TILE = false;
         tileEntityBase.cancelRemoval();
@@ -317,7 +317,7 @@ public class HopperBlock extends TemplateBlockWithEntity
         SETTING_TILE = true;
 
         BlockState currentState = world.getBlockState(i, j, k);
-        world.setBlockStateWithNotify(i, j, k, currentState.with(REDOUTPUT, bOn));
+        world.setBlockState(i, j, k, currentState.with(REDOUTPUT, bOn));
 
         SETTING_TILE = false;
         tileEntityBase.cancelRemoval();
@@ -337,7 +337,7 @@ public class HopperBlock extends TemplateBlockWithEntity
         SETTING_TILE = true;
 
         BlockState currentState = world.getBlockState(i, j, k);
-        world.setBlockStateWithNotify(i, j, k, currentState.with(FILTER, bOn));
+        world.setBlockState(i, j, k, currentState.with(FILTER, bOn));
 
         SETTING_TILE = false;
         tileEntityBase.cancelRemoval();

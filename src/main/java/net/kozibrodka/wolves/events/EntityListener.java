@@ -1,8 +1,16 @@
 package net.kozibrodka.wolves.events;
 
-import net.kozibrodka.wolves.entity.*;
+import net.kozibrodka.wolves.entity.BroadheadArrowEntity;
+import net.kozibrodka.wolves.entity.FCEntityTEST;
+import net.kozibrodka.wolves.entity.FallingAnvilEntity;
+import net.kozibrodka.wolves.entity.LiftedBlockEntity;
+import net.kozibrodka.wolves.entity.MovingAnchorEntity;
+import net.kozibrodka.wolves.entity.MovingPlatformEntity;
+import net.kozibrodka.wolves.entity.SteelMinecartEntity;
+import net.kozibrodka.wolves.entity.WaterWheelEntity;
+import net.kozibrodka.wolves.entity.WindMillEntity;
 import net.mine_diver.unsafeevents.listener.EventListener;
-import net.modificationstation.stationapi.api.event.entity.EntityRegister;
+import net.modificationstation.stationapi.api.event.entity.EntityRegisterEvent;
 import net.modificationstation.stationapi.api.event.registry.EntityHandlerRegistryEvent;
 import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
 import net.modificationstation.stationapi.api.util.Namespace;
@@ -13,16 +21,16 @@ public class EntityListener {
 
     //TODO: is entity renderdistance correct? might need testing.
     @EventListener
-    public static void registerEntities(EntityRegister event) {
-        event.register(WaterWheelEntity.class, NAMESPACE.id("WaterWheel").toString());
-        event.register(WindMillEntity.class, NAMESPACE.id("WindMill").toString());
-        event.register(BroadheadArrowEntity.class, NAMESPACE.id("BroadheadArrow").toString());
-        event.register(LiftedBlockEntity.class, NAMESPACE.id("BlockLiftedByPlatform").toString());
-        event.register(MovingPlatformEntity.class, NAMESPACE.id("MovingPlatform").toString());
-        event.register(MovingAnchorEntity.class, NAMESPACE.id("MovingAnchor").toString());
-        event.register(FallingAnvilEntity.class, NAMESPACE.id("FallingAnvil").toString());
-        event.register(SteelMinecartEntity.class, NAMESPACE.id("SteelMinecart").toString());
-        event.register(FCEntityTEST.class, NAMESPACE.id("StapiTEST").toString());
+    public static void registerEntities(EntityRegisterEvent event) {
+        event.register(NAMESPACE.id("WaterWheel"), WaterWheelEntity.class);
+        event.register(NAMESPACE.id("WindMill"), WindMillEntity.class);
+        event.register(NAMESPACE.id("BroadheadArrow"), BroadheadArrowEntity.class);
+        event.register(NAMESPACE.id("BlockLiftedByPlatform"), LiftedBlockEntity.class);
+        event.register(NAMESPACE.id("MovingPlatform"), MovingPlatformEntity.class);
+        event.register(NAMESPACE.id("MovingAnchor"), MovingAnchorEntity.class);
+        event.register(NAMESPACE.id("FallingAnvil"), FallingAnvilEntity.class);
+        event.register(NAMESPACE.id("SteelMinecart"), SteelMinecartEntity.class);
+        event.register(NAMESPACE.id("StapiTEST"), FCEntityTEST.class);
     }
 
     @EventListener

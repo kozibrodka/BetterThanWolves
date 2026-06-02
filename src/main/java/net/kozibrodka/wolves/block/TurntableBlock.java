@@ -77,7 +77,7 @@ public class TurntableBlock extends TemplateBlockWithEntity
             if (++iClick > 3) {
                 iClick = 0;
             }
-            world.setBlockStateWithNotify(i, j, k, currentState.with(CLICK, iClick));
+            world.setBlockState(i, j, k, currentState.with(CLICK, iClick));
             canUseTile(world, i, j, k, iClick);
             return true;
         } else {
@@ -120,7 +120,7 @@ public class TurntableBlock extends TemplateBlockWithEntity
 
     public void SetBlockMechanicalOn(World world, int i, int j, int k, boolean bOn) {
         BlockState currentState = world.getBlockState(i, j, k);
-        world.setBlockStateWithNotify(i, j, k, currentState.with(POWER, bOn));
+        world.setBlockState(i, j, k, currentState.with(POWER, bOn));
     }
 
     public boolean IsBlockRedstoneOn(World world, int i, int j, int k) {
@@ -133,7 +133,7 @@ public class TurntableBlock extends TemplateBlockWithEntity
 
     public void SetBlockRedstoneOn(World world, int i, int j, int k, boolean bOn) {
         BlockState currentState = world.getBlockState(i, j, k);
-        world.setBlockStateWithNotify(i, j, k, currentState.with(REDSTONE, bOn));
+        world.setBlockState(i, j, k, currentState.with(REDSTONE, bOn));
     }
 
     void EmitTurntableParticles(World world, int i, int j, int k, Random random) {
