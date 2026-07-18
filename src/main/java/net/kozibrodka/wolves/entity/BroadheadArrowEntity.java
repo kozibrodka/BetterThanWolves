@@ -130,7 +130,6 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
             }
             int ownerID = dataTracker.getInt(16);
             if(isServerCreated && ownerID != -1){
-                //todo sound
                 if(!ArrowOwnerUtil.isClientPlayer(ownerID)) {
                     world.playSound(this, "random.bow", 1.0F, 1.0F / (random.nextFloat() * 0.4F + 0.8F));
                 }

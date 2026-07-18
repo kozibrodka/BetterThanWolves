@@ -55,7 +55,7 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
     }
 
     public WaterWheelEntity(World level, Double aDouble, Double aDouble1, Double aDouble2) {
-        this(level);
+        this(level); //TODO  updatePeriod = 1, possible optymalization, but impossible with hurt animation
     }
 
     private void AlignBoundingBoxWithAxis()

@@ -1,6 +1,7 @@
 package net.kozibrodka.wolves.block;
 
 import net.kozibrodka.wolves.events.BlockListener;
+import net.kozibrodka.wolves.events.ConfigListener;
 import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.utils.SoilTemplate;
@@ -59,7 +60,8 @@ public class HempCropBlock extends TemplatePlantBlock {
                 if (l < 7) {
                     if (random.nextInt(20) == 0) {
                         l++;
-                        world.setBlock(i, j, k, this.id, l);
+                        world.setBlockMeta(i, j, k, l);
+                        world.blockUpdateEvent(i, j, k);
                     }
                 } else {
                     int targetj = j + 1;
@@ -111,15 +113,32 @@ public class HempCropBlock extends TemplatePlantBlock {
 
     @Override
     public boolean onBonemealUse(World world, int x, int y, int z, BlockState state) {
-        if (world.getBlockMeta(x, y, z) == 7) {
-            if (world.getBlockId(x, y + 1, z) == 0 && world.getBlockId(x, y - 1, z) != BlockListener.hempCrop.id) {
-                world.setBlock(x, y + 1, z, BlockListener.hempCrop.id, 7);
-                return true;
+        /// Should be fine, not entirely sure how will Hemps on top who are not fully grown behave, but i expect no issues.
+        if(ConfigListener.wolvesGlass.difficulty.boneMealHempFarming){
+            int downMeta = world.getBlockMeta(x,y,z);
+            if (world.getBlockMeta(x, y, z) == 7) {
+                if(world.getBlockId(x, y - 1, z) != BlockListener.hempCrop.id){
+                    if(world.getBlockId(x, y + 1, z) == 0){
+                        world.setBlock(x, y + 1, z, BlockListener.hempCrop.id, 0);
+                        return true;
+                    }
+                    if(world.getBlockId(x, y + 1, z) == BlockListener.hempCrop.id){
+                        int upMeta = world.getBlockMeta(x, y + 1, z);
+                        if(upMeta < 7){
+                            world.setBlockMeta(x, y + 1, z, upMeta + 1);
+                            world.blockUpdateEvent(x,y + 1, z);
+                            return true;
+                        }
+                    }
+                }
+                return false;
             }
+            world.setBlockMeta(x, y, z, downMeta + 1);
+            world.blockUpdateEvent(x, y, z);
+            return true;
+        }else{
             return false;
         }
-        world.setBlockMeta(x, y, z, 7);
-        return true;
     }
 
     @Override

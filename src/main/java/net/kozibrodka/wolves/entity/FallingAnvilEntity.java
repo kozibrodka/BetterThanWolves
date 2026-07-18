@@ -111,7 +111,7 @@ public class FallingAnvilEntity extends Entity implements EntitySpawnDataProvide
                 if (!this.world.isRemote) {
                     this.world.setBlockWithoutNotifyingNeighbors(var1, var2, var3, this.tile, getFacingMeta());
                 }
-            } else if (this.timeFalling > 200 && !this.world.isRemote) { //TODO: should destroy after 100 ticks like sand? + dmg ammount balance
+            } else if (this.timeFalling > 200 && !this.world.isRemote) {
                 this.dropItem(this.tile, 1);
                 List list1 = world.collectEntitiesByClass(LivingEntity.class, this.boundingBox);
                 if (!list1.isEmpty()) {
