@@ -113,30 +113,22 @@ public class HempCropBlock extends TemplatePlantBlock {
 
     @Override
     public boolean onBonemealUse(World world, int x, int y, int z, BlockState state) {
-        /// Should be fine, not entirely sure how will Hemps on top who are not fully grown behave, but i expect no issues.
-        if(ConfigListener.wolvesGlass.difficulty.boneMealHempFarming){
-            int downMeta = world.getBlockMeta(x,y,z);
-            if (world.getBlockMeta(x, y, z) == 7) {
-                if(world.getBlockId(x, y - 1, z) != BlockListener.hempCrop.id){
-                    if(world.getBlockId(x, y + 1, z) == 0){
-                        world.setBlock(x, y + 1, z, BlockListener.hempCrop.id, 0);
+        if (ConfigListener.wolvesGlass.difficulty.boneMealHempFarming) {
+            int downMeta = world.getBlockMeta(x, y, z);
+            if (world.getBlockMeta(x, y, z) == 7) { // Check if hemp is fully grown
+                if (world.getBlockId(x, y - 1, z) != BlockListener.hempCrop.id) { // Check if this is the ground crop
+                    if (world.getBlockId(x, y + 1, z) == 0) { // Check for air above and grow new hemp crop on top
+                        world.setBlock(x, y + 1, z, BlockListener.hempCrop.id, 7);
                         return true;
-                    }
-                    if(world.getBlockId(x, y + 1, z) == BlockListener.hempCrop.id){
-                        int upMeta = world.getBlockMeta(x, y + 1, z);
-                        if(upMeta < 7){
-                            world.setBlockMeta(x, y + 1, z, upMeta + 1);
-                            world.blockUpdateEvent(x,y + 1, z);
-                            return true;
-                        }
                     }
                 }
                 return false;
             }
+            // Grow hemp crop by one
             world.setBlockMeta(x, y, z, downMeta + 1);
             world.blockUpdateEvent(x, y, z);
             return true;
-        }else{
+        } else{
             return false;
         }
     }
