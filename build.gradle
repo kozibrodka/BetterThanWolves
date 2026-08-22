@@ -115,6 +115,9 @@ dependencies {
         }
     }
 	modImplementation(files("lib/mpentityfix_fabric1~client.jar"))
+	dependencies {
+		modImplementation("net.danygames2014:UniWrench:${project.uniwrench_version}")
+	}
 
 
     // Crossover content
