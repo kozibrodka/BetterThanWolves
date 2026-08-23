@@ -224,7 +224,7 @@ public class RecipeListener {
             CraftingRegistry.addShapelessRecipe(new ItemStack(BlockListener.vase, 1, 12), new ItemStack(Block.LOG), new ItemStack(BlockListener.vase, 1, 0));
         } else {
             CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 12), new ItemStack(ItemListener.dung), new ItemStack(Block.WOOL, 1, 0));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(BlockListener.vase, 1, 12), new ItemStack(ItemListener.dung), new ItemStack(BlockListener.vase, 1, 0));
+            CraftingRegistry.addShapelessRecipe(new ItemStack(BlockListener.vase, 1, 8), new ItemStack(ItemListener.dung), new ItemStack(BlockListener.vase, 1, 0));
         }
     }
 
