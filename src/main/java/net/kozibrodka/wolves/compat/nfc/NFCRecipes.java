@@ -29,13 +29,12 @@ public class NFCRecipes {
 
     private static void addShapedCraftingRecipes() {
         if (ConfigListener.wolvesGlass.small_tweaks.companionCubeConverter) {
-            CraftingRegistry.addShapedRecipe(new ItemStack(net.kozibrodka.wolves.events.BlockListener.converter, 1), "ALA", "ACA", "AGA", 'A', ItemListener.aluminiumIngot, 'L', ItemListener.aluminiumGear, 'G', net.kozibrodka.wolves.events.BlockListener.gearBox, 'C', net.kozibrodka.wolves.events.BlockListener.companionCube);
+            CraftingRegistry.addShapedRecipe(new ItemStack(net.kozibrodka.wolves.events.BlockListener.converter, 1), "ALA", "ACA", "AGA", 'A', RecipeListener.getIngotTagKey(RecipeListener.ALUMINIUM), 'L', ItemListener.aluminiumGear, 'G', net.kozibrodka.wolves.events.BlockListener.gearBox, 'C', net.kozibrodka.wolves.events.BlockListener.companionCube);
         } else {
-            CraftingRegistry.addShapedRecipe(new ItemStack(net.kozibrodka.wolves.events.BlockListener.converter, 1), " L ", "AFA", " G ", 'A', ItemListener.aluminiumIngot, 'L', ItemListener.aluminiumGear, 'G', net.kozibrodka.wolves.events.BlockListener.gearBox, 'F', BlockListener.machineFrame);
+            CraftingRegistry.addShapedRecipe(new ItemStack(net.kozibrodka.wolves.events.BlockListener.converter, 1), " L ", "AFA", " G ", 'A', RecipeListener.getIngotTagKey(RecipeListener.ALUMINIUM), 'L', ItemListener.aluminiumGear, 'G', net.kozibrodka.wolves.events.BlockListener.gearBox, 'F', BlockListener.machineFrame);
         }
-        CraftingRegistry.addShapedRecipe(new ItemStack(net.kozibrodka.wolves.events.ItemListener.weight, 2), "I", "C", 'I', ItemListener.bronzeIngot, 'C', net.kozibrodka.wolves.events.BlockListener.corner);
-        CraftingRegistry.addShapedRecipe(new ItemStack(net.kozibrodka.wolves.events.ItemListener.weight, 2), "I", "C", 'I', ItemListener.brassIngot, 'C', net.kozibrodka.wolves.events.BlockListener.corner);
-        CraftingRegistry.addShapedRecipe(new ItemStack(net.kozibrodka.wolves.events.ItemListener.weight, 8), "I", "C", 'I', ItemListener.steelIngot, 'C', net.kozibrodka.wolves.events.BlockListener.corner);
+        CraftingRegistry.addShapedRecipe(new ItemStack(net.kozibrodka.wolves.events.ItemListener.weight, 2), "I", "C", 'I', RecipeListener.getIngotTagKey(RecipeListener.BRONZE), 'C', net.kozibrodka.wolves.events.BlockListener.corner);
+        CraftingRegistry.addShapedRecipe(new ItemStack(net.kozibrodka.wolves.events.ItemListener.weight, 2), "I", "C", 'I', RecipeListener.getIngotTagKey(RecipeListener.BRASS), 'C', net.kozibrodka.wolves.events.BlockListener.corner);
     }
 
     private static void addCrucibleRecipes() {
