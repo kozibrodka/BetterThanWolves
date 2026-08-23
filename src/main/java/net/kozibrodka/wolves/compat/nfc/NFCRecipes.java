@@ -8,14 +8,26 @@ import net.minecraft.item.ItemStack;
 import net.modificationstation.stationapi.api.recipe.CraftingRegistry;
 import net.newfrontiercraft.nfc.events.init.BlockListener;
 import net.newfrontiercraft.nfc.events.init.ItemListener;
+import net.newfrontiercraft.nfc.registry.CropFarmHarvestingRegistry;
+import net.newfrontiercraft.nfc.utils.ChanceDrop;
+import net.newfrontiercraft.nfc.utils.ExtendedHarvestingResult;
+import net.newfrontiercraft.nfc.utils.ItemMeta;
 
 public class NFCRecipes {
 
-    public static void addShapelessCraftingRecipes() {
+    public static void addAllRecipes() {
+        addShapelessCraftingRecipes();
+        addShapedCraftingRecipes();
+        addCrucibleRecipes();
+        addAnvilRecipes();
+        addCropFarming();
+    }
+
+    private static void addShapelessCraftingRecipes() {
         CraftingRegistry.addShapelessRecipe(new ItemStack(BlockListener.unfiredPlanter, 1, 0), new ItemStack(net.kozibrodka.wolves.events.BlockListener.unfiredPottery, 1, 1));
     }
 
-    public static void addShapedCraftingRecipes() {
+    private static void addShapedCraftingRecipes() {
         if (ConfigListener.wolvesGlass.small_tweaks.companionCubeConverter) {
             CraftingRegistry.addShapedRecipe(new ItemStack(net.kozibrodka.wolves.events.BlockListener.converter, 1), "ALA", "ACA", "AGA", 'A', ItemListener.aluminiumIngot, 'L', ItemListener.aluminiumGear, 'G', net.kozibrodka.wolves.events.BlockListener.gearBox, 'C', net.kozibrodka.wolves.events.BlockListener.companionCube);
         } else {
@@ -26,7 +38,7 @@ public class NFCRecipes {
         CraftingRegistry.addShapedRecipe(new ItemStack(net.kozibrodka.wolves.events.ItemListener.weight, 8), "I", "C", 'I', ItemListener.steelIngot, 'C', net.kozibrodka.wolves.events.BlockListener.corner);
     }
 
-    public static void addCrucibleRecipes() {
+    private static void addCrucibleRecipes() {
         RecipeListener.addCrucibleRecipe(new ItemStack(net.kozibrodka.wolves.events.ItemListener.steel, 4), new ItemStack[]{new ItemStack(ItemListener.steelIngot, 2), new ItemStack(net.kozibrodka.wolves.events.ItemListener.concentratedHellfire), new ItemStack(net.kozibrodka.wolves.events.ItemListener.coalDust), new ItemStack(ItemListener.anthracite)});
 
         // Recycling (aluminium)
@@ -262,12 +274,19 @@ public class NFCRecipes {
         RecipeListener.addCrucibleRecipe(new ItemStack(ItemListener.osmiumIngot, 1), new ItemStack[]{new ItemStack(ItemListener.osmiumShovel, 1, -1)});
     }
 
-    public static void addAnvilRecipes() {
+    private static void addAnvilRecipes() {
         RecipeListener.addAnvilRecipe(new ItemStack(Block.POWERED_RAIL, 24), new Object[]{
                 "#X#", "YXY", "#+#", '#', net.kozibrodka.wolves.events.ItemListener.steel, 'X', net.kozibrodka.wolves.events.ItemListener.haft, 'Y', ItemListener.copperIngot, '+', Item.REDSTONE
         });
         RecipeListener.addAnvilRecipe(new ItemStack(Block.POWERED_RAIL, 30), new Object[]{
                 "#X#", "YZY", "#+#", '#', net.kozibrodka.wolves.events.ItemListener.steel, 'X', net.kozibrodka.wolves.events.ItemListener.haft, 'Y', ItemListener.copperIngot, 'Z', Item.GOLD_INGOT, '+', Item.REDSTONE
         });
+    }
+
+    private static void addCropFarming() {
+        CropFarmHarvestingRegistry.getInstance().addRecipe(new ItemMeta(net.kozibrodka.wolves.events.BlockListener.hempCrop.asItem(), 7), new ExtendedHarvestingResult(new ChanceDrop[]{
+                new ChanceDrop(new ItemMeta(net.kozibrodka.wolves.events.ItemListener.hemp, 0), 1.0F),
+                new ChanceDrop(new ItemMeta(net.kozibrodka.wolves.events.ItemListener.hempSeeds, 0), 0.5F)
+        }, null, 0));
     }
 }

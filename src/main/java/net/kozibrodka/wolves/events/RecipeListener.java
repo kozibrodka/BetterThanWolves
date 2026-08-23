@@ -66,7 +66,7 @@ public class RecipeListener {
             addMultiblockRecipes();
         }
         if (BetterThanWolves.isNewFrontierCraftPresent) {
-            NFCRecipes.addShapelessCraftingRecipes();
+            NFCRecipes.addAllRecipes();
         }
         addCrucibleRecipes();
         addDebugRecipes();
@@ -93,9 +93,6 @@ public class RecipeListener {
     }
 
     private static void addBlockRecipes() {
-        if (BetterThanWolves.isNewFrontierCraftPresent) {
-            NFCRecipes.addShapedCraftingRecipes();
-        }
         CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.anvil, 1), "###", " # ", "###", '#', ItemListener.steel);
         CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.lightBulbOff, 1), " # ", "#X#", " Y ", '#', Block.GLASS, 'X', Item.GLOWSTONE_DUST, 'Y', Item.REDSTONE);
         if (!BetterThanWolves.isHarderThanWolvesPresent) {
@@ -361,10 +358,6 @@ public class RecipeListener {
                 ItemListener.steel, 'G', BlockListener.gearBox, 'A', BlockListener.axleBlock,
                 'H', BlockListener.hopper, 'R', Item.REDSTONE, 'P', Block.STONE_PRESSURE_PLATE, 'I', Item.IRON_DOOR
         });
-
-        if (BetterThanWolves.isNewFrontierCraftPresent) {
-            NFCRecipes.addAnvilRecipes();
-        }
     }
 
     private static void addShapelessAnvilRecipes() {
@@ -542,12 +535,8 @@ public class RecipeListener {
 
     private static void addCrucibleRecipes() {
         // Material processing
-        if (!BetterThanWolves.isHarderThanWolvesPresent) {
-            if (BetterThanWolves.isNewFrontierCraftPresent) {
-                NFCRecipes.addCrucibleRecipes();
-            } else {
-                addCrucibleRecipe(new ItemStack(ItemListener.steel, 4), new ItemStack[]{new ItemStack(Item.IRON_INGOT, 3), new ItemStack(ItemListener.concentratedHellfire), new ItemStack(ItemListener.coalDust)});
-            }
+        if (!BetterThanWolves.isHarderThanWolvesPresent && !BetterThanWolves.isNewFrontierCraftPresent) {
+            addCrucibleRecipe(new ItemStack(ItemListener.steel, 4), new ItemStack[]{new ItemStack(Item.IRON_INGOT, 3), new ItemStack(ItemListener.concentratedHellfire), new ItemStack(ItemListener.coalDust)});
         }
 
         // Recycling (iron)
