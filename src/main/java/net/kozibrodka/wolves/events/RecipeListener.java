@@ -324,6 +324,12 @@ public class RecipeListener {
             addAnvilRecipe(new ItemStack(ItemListener.refinedSword, 1), new Object[]{
                     "#", "#", "X", '#', ItemListener.steel, 'X', ItemListener.haft
             });
+            addAnvilRecipe(new ItemStack(ItemListener.refinedMattock, 1), new Object[]{
+                    "###", " X#", " X ", '#', ItemListener.steel, 'X', ItemListener.haft
+            });
+            addAnvilRecipe(new ItemStack(ItemListener.refinedMattock, 1), new Object[]{
+                    "###", "#X ", " X ", '#', ItemListener.steel, 'X', ItemListener.haft
+            });
             addAnvilRecipe(new ItemStack(ItemListener.armourPlateSteel, 1), new Object[]{
                     "#X#", '#', ItemListener.strap, 'X', ItemListener.steel
             });
