@@ -25,14 +25,17 @@ public class BlockDispenserBlockEntity extends BlockEntity
         nextDispenserSlot = 0;
     }
 
+    @Override
     public int size() {
         return 9;
     }
 
+    @Override
     public ItemStack getStack(int i) {
         return dispenserContents[i];
     }
 
+    @Override
     public ItemStack removeStack(int iSlot, int iAmount) {
         return InventoryHandler.decreaseStackSize(this, iSlot, iAmount);
     }
@@ -77,6 +80,7 @@ public class BlockDispenserBlockEntity extends BlockEntity
         }
     }
 
+    @Override
     public void setStack(int iSlot, ItemStack ItemInstance) {
         dispenserContents[iSlot] = ItemInstance;
         if (ItemInstance != null && ItemInstance.count > getMaxCountPerStack()) {
@@ -85,10 +89,12 @@ public class BlockDispenserBlockEntity extends BlockEntity
         markDirty();
     }
 
+    @Override
     public String getName() {
         return "BlockDispenser";
     }
 
+    @Override
     public void readNbt(NbtCompound nbttagcompound) {
         super.readNbt(nbttagcompound);
         NbtList nbttaglist = nbttagcompound.getList("Items");
@@ -106,6 +112,7 @@ public class BlockDispenserBlockEntity extends BlockEntity
         }
     }
 
+    @Override
     public void writeNbt(NbtCompound nbttagcompound) {
         super.writeNbt(nbttagcompound);
         NbtList nbttaglist = new NbtList();
@@ -122,10 +129,12 @@ public class BlockDispenserBlockEntity extends BlockEntity
         nbttagcompound.putInt("iNextSlotIndexToDispense", nextDispenserSlot);
     }
 
+    @Override
     public int getMaxCountPerStack() {
         return 64;
     }
 
+    @Override
     public boolean canPlayerUse(PlayerEntity entityplayer) {
         if (world.getBlockEntity(x, y, z) != this) {
             return false;

@@ -66,7 +66,6 @@ public class PlatformPacket extends Packet implements ManagedPacket<PlatformPack
         if(player == null){
             return;
         }
-
         if(action == 1) {
             double a = 0.2D; // 0.2D
             double b = 2.8D; // 2.8D
@@ -75,7 +74,6 @@ public class PlatformPacket extends Packet implements ManagedPacket<PlatformPack
                 player.setPosition(player.x, this.y + b, player.z); // jak serwer dopiero startuje moze gracz wpaść
             }
         }
-
         if(action == 2){
             double e = 0.1D;
             player.setPosition(player.x, player.y + e, player.z);

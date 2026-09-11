@@ -16,14 +16,17 @@ public class CornerBlock extends TemplateBlock {
         textureId = 4;
     }
 
+    @Override
     public boolean isOpaque() {
         return false;
     }
 
+    @Override
     public boolean isFullCube() {
         return false;
     }
 
+    @Override
     public Box getCollisionShape(World world, int i, int j, int k) {
         float minX = i;
         float maxX = minX + 0.5F;
@@ -46,6 +49,7 @@ public class CornerBlock extends TemplateBlock {
         return Box.createCached(minX, minY, minZ, maxX, maxY, maxZ);
     }
 
+    @Override
     public void updateBoundingBox(BlockView iblockaccess, int i, int j, int k) {
         float minX = 0.0F;
         float maxX = minX + 0.5F;
@@ -68,6 +72,7 @@ public class CornerBlock extends TemplateBlock {
         setBoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
     }
 
+    @Override
     public void onPlaced(World world, int i, int j, int k, int iFacing) {
         boolean bIOffset = false;
         boolean bJOffset = false;
@@ -97,6 +102,7 @@ public class CornerBlock extends TemplateBlock {
         SetCornerAlignment(world, i, j, k, bIOffset, bJOffset, bKOffset);
     }
 
+    @Override
     public void setupRenderBoundingBox() {
         setBoundingBox(0.25F, 0.25F, 0.25F, 0.75F, 0.75F, 0.75F);
     }

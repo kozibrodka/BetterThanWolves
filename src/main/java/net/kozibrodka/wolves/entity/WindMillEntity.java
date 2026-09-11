@@ -7,8 +7,7 @@ import net.kozibrodka.wolves.block.AxleBlock;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.EntityListener;
 import net.kozibrodka.wolves.events.ItemListener;
-import net.kozibrodka.wolves.network.DamagePacket;
-import net.kozibrodka.wolves.network.InteractWindPacket;
+import net.kozibrodka.wolves.network.LoadRotationPacket;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.WoolBlock;
 import net.minecraft.entity.Entity;
@@ -24,15 +23,14 @@ import net.modificationstation.stationapi.api.server.entity.HasTrackingParameter
 import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.util.TriState;
 
-@HasTrackingParameters(trackingDistance = 160, updatePeriod = 1, sendVelocity = TriState.FALSE)
+@HasTrackingParameters(trackingDistance = 240, updatePeriod = Integer.MAX_VALUE, sendVelocity = TriState.FALSE)
 public class WindMillEntity extends Entity implements EntitySpawnDataProvider
 {
 
     public WindMillEntity(World world)
     {
-        super(world);
-        //TODO: vanilla bug, when entity bounding box is in more than 1 chunk???
-        setMillRockDirection(1);
+        super(world); /// It seems that sometimes, when entity bouding box is no chunk border (propably?), it can be "cut"
+        iWindMillRockDirection = 1;
         fWindMillCurrentRotationSpeed = 0.0F;
         iFullUpdateTickCount = 0;
         blocksSameBlockSpawning = true;
@@ -45,72 +43,90 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider
     {
         this(world);
         setPosition(x, y, z);
-        setAligned(bIAligned);
+        bWindMillIAligned = bIAligned;
+        AlignBoundingBoxWithAxis();
+        setAligned(bWindMillIAligned);
+    }
+
+    public WindMillEntity(World level, double x, double y, double z) {
+        this(level);
+        setPosition(x, y, z);
         AlignBoundingBoxWithAxis();
     }
 
-    public WindMillEntity(World level, Double aDouble, Double aDouble1, Double aDouble2) {
-        this(level);
+    @Override
+    @Environment(EnvType.CLIENT)
+    public void processServerEntityStatus(byte status) {
+        if (status >= 6 && status < 14) {
+            int dmg = status - 6;
+            iWindMillRockDirection = -iWindMillRockDirection;
+            iWindMillTimeSinceHit = 10;
+            scheduleVelocityUpdate();
+            iWindMillCurrentDamage += dmg * 5;
+        }else if(status >= 16 && status < 32){
+            setBladeColor(0, status - 16);
+        }else if(status >= 36 && status < 52){
+            setBladeColor(1, status - 36);
+        }else if(status >= 56 && status < 72){
+            setBladeColor(2, status - 56);
+        }else if(status >= 76 && status < 92){
+            setBladeColor(3, status - 76);
+        }else
+        {
+            super.processServerEntityStatus(status);
+        }
     }
 
     private void AlignBoundingBoxWithAxis()
     {
-        if(getAligned())
+        if(bWindMillIAligned)
         {
-            boundingBox.set(x - 0.40000000596046448D, y - 6.4000000953674316D, z - 6.4000000953674316D, x + 0.40000000596046448D, y + 6.4000000953674316D, z + 6.4000000953674316D);
+            boundingBox.set(x - fHalfMillDepth, y - fHalfMillWidth, z - fHalfMillWidth, x + fHalfMillDepth, y + fHalfMillWidth, z + fHalfMillWidth);
         } else
         {
-            boundingBox.set(x - 6.4000000953674316D, y - 6.4000000953674316D, z - 0.40000000596046448D, x + 6.4000000953674316D, y + 6.4000000953674316D, z + 0.40000000596046448D);
+            boundingBox.set(x - fHalfMillWidth, y - fHalfMillWidth, z - fHalfMillDepth, x + fHalfMillWidth, y + fHalfMillWidth, z + fHalfMillDepth);
         }
     }
 
+    @Override
     protected void initDataTracker()
     {
-        dataTracker.startTracking(16, (byte) 0); //ALIGNED
-        dataTracker.startTracking(17, (int) 0); //WHEEL ROTATION
-        dataTracker.startTracking(18, (byte) 0); //PROVIDING POWER
-        dataTracker.startTracking(19, (byte) 0); //OVERPOWER TIMER
+        dataTracker.startTracking(16, (byte) 0); //Facing
+        dataTracker.startTracking(17, (int) 0); //Rotation
         dataTracker.startTracking(20, (byte) 0); //BLADE COLOR 0
         dataTracker.startTracking(21, (byte) 0); //BLADE COLOR 1
         dataTracker.startTracking(22, (byte) 0); //BLADE COLOR 2
         dataTracker.startTracking(23, (byte) 0); //BLADE COLOR 3
-        dataTracker.startTracking(24, (byte) 0); //Current BLADE Color INDEX
-        dataTracker.startTracking(25, (byte) 0); //currentDamage
-        dataTracker.startTracking(26, (byte) 0); //timeSinceHit
-        dataTracker.startTracking(27, (byte) 0); //rockDirection
     }
 
+    @Override
     public void writeNbt(NbtCompound nbttagcompound)
     {
-        nbttagcompound.putBoolean("bWindMillIAligned", getAligned());
-        nbttagcompound.putFloat("fRotation", getMillRotation());
-        nbttagcompound.putBoolean("bProvidingPower", getProvidingPower());
-        nbttagcompound.putInt("iOverpowerTimer", getOverpowerTimer());
+        nbttagcompound.putBoolean("bWindMillIAligned", bWindMillIAligned);
+        nbttagcompound.putFloat("fRotation", fRotation);
+        nbttagcompound.putBoolean("bProvidingPower", bProvidingPower);
+        nbttagcompound.putInt("iOverpowerTimer", iOverpowerTimer);
+        nbttagcompound.putInt("iColorIndex", iCurrentBladeColoringIndex);
         nbttagcompound.putInt("iBladeColors0", getBladeColor(0));
         nbttagcompound.putInt("iBladeColors1", getBladeColor(1));
         nbttagcompound.putInt("iBladeColors2", getBladeColor(2));
         nbttagcompound.putInt("iBladeColors3", getBladeColor(3));
-        nbttagcompound.putInt("currentBlade", getCurrentBladeColorIndex());
-        nbttagcompound.putInt("currentDamage", getMillCurrentDamage());
-        nbttagcompound.putInt("timeSinceHit", getMillTimeSinceHit());
-        nbttagcompound.putInt("rockDirection", getMillRockDirection());
     }
 
+    @Override
     public void readNbt(NbtCompound nbttagcompound)
     {
-        setAligned(nbttagcompound.getBoolean("bWindMillIAligned"));
-        setMillRotation(nbttagcompound.getFloat("fRotation"));
-        setProvidingPower(nbttagcompound.getBoolean("bProvidingPower"));
-        setOverpowerTimer(nbttagcompound.getInt("iOverpowerTimer"));
+        bWindMillIAligned = nbttagcompound.getBoolean("bWindMillIAligned");
+        fRotation = nbttagcompound.getFloat("fRotation");
+        bProvidingPower = nbttagcompound.getBoolean("bProvidingPower");
+        iOverpowerTimer = nbttagcompound.getInt("iOverpowerTimer");
+        iCurrentBladeColoringIndex = nbttagcompound.getInt("iColorIndex");
         setBladeColor(0, nbttagcompound.getInt("iBladeColors0"));
         setBladeColor(1, nbttagcompound.getInt("iBladeColors1"));
         setBladeColor(2, nbttagcompound.getInt("iBladeColors2"));
         setBladeColor(3, nbttagcompound.getInt("iBladeColors3"));
-        setCurrentBladeColorIndex(nbttagcompound.getInt("currentBlade"));
-        setMillCurrentDamage(nbttagcompound.getInt("currentDamage"));
-        setMillTimeSinceHit(nbttagcompound.getInt("timeSinceHit"));
-        setMillRockDirection(nbttagcompound.getInt("rockDirection"));
         AlignBoundingBoxWithAxis();
+        setAligned(bWindMillIAligned);
     }
 
     @Environment(EnvType.CLIENT)
@@ -121,75 +137,73 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider
     }
 
     @Override
-    public void setPosition(double x, double y, double z) {
-        if(!receivedP) {
-            this.x = x;
-            this.y = y;
-            this.z = z;
-            if (dataTracker.entries.containsKey(16)) {
-                if (getAligned()) {
-                    boundingBox.set(x - 0.40000000596046448D, y - 6.4000000953674316D, z - 6.4000000953674316D, x + 0.40000000596046448D, y + 6.4000000953674316D, z + 6.4000000953674316D);
-                    receivedP = true;
-                } else {
-                    boundingBox.set(x - 6.4000000953674316D, y - 6.4000000953674316D, z - 0.40000000596046448D, x + 6.4000000953674316D, y + 6.4000000953674316D, z + 0.40000000596046448D);
-                    receivedP = true;
-                }
-            }
-        }
-    }
-
     protected boolean bypassesSteppingEffects()
     {
         return false;
     }
 
+    @Override
     public Box getCollisionAgainstShape(Entity entity)
     {
         return entity.boundingBox;
     }
 
+    @Override
     public Box getBoundingBox()
     {
         return boundingBox;
     }
 
+    @Override
     public boolean isPushable()
     {
         return false;
     }
 
+    @Override
     public boolean isCollidable()
     {
         return !dead;
     }
 
-    public boolean damage(Entity entity, int i)
+    @Override
+    public float getEyeHeight() {
+        return -1.0F;
+    }
+
+    @Override
+    public boolean damage(Entity entity, int amount)
     {
-        if(world.isRemote || dead) // todo: dead why?? mistake?
+        if(world.isRemote || dead)
         {
-            PacketHelper.send(new DamagePacket("wind", i, this.id));
             return true;
         }
-        setMillRockDirection(-getMillRockDirection());
-        setMillTimeSinceHit(10);
+        iWindMillRockDirection = -iWindMillRockDirection;
+        iWindMillTimeSinceHit = 10;
         scheduleVelocityUpdate();
-        setMillCurrentDamage(getMillCurrentDamage()+(i * 5));
-        if(getMillCurrentDamage() > 40){
+        iWindMillCurrentDamage += amount * 5;
+        if(amount < 8 && iWindMillCurrentDamage <= 40){
+            world.broadcastEntityEvent(this, (byte)(amount+6));
+        }
+        if(iWindMillCurrentDamage > 40)
+        {
             destroyWithDrop();
         }
         return true;
     }
 
+    @Override
     public void animateHurt()
     {
-        setMillRockDirection(-getMillRockDirection());
-        setMillTimeSinceHit(10);
-        setMillCurrentDamage(getMillCurrentDamage()*5);
+        iWindMillRockDirection = -iWindMillRockDirection;
+        iWindMillTimeSinceHit = 10;
+        iWindMillCurrentDamage += iWindMillCurrentDamage * 5;
     }
 
+    @Override
     public void markDead()
     {
-        if(getProvidingPower())
+        if(bProvidingPower)
         {
             int iCenterI = (int)(x - 0.5D);
             int iCenterJ = (int)(y - 0.5D);
@@ -212,12 +226,49 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider
         }
     }
 
+    public void clientTick(){
+        iFullUpdateTickCount--;
+        if(iFullUpdateTickCount <= 0)
+        {
+            iFullUpdateTickCount = 20;
+            int iCenterI = (int)(x - 0.5D);
+            int iCenterJ = (int)(y - 0.5D);
+            int iCenterK = (int)(z - 0.5D);
+            fWindMillCurrentRotationSpeed = ComputeRotation(iCenterI, iCenterJ, iCenterK);
+        }
+        if(iWindMillTimeSinceHit > 0)
+        {
+            iWindMillTimeSinceHit--;
+        }
+        if(iWindMillCurrentDamage > 0)
+        {
+            iWindMillCurrentDamage--;
+        }
+        fRotation = (fRotation+fWindMillCurrentRotationSpeed);
+        if(fRotation > 360F)
+        {
+            fRotation = (fRotation-360F);
+        } else
+        if(fRotation < -360F)
+        {
+            fRotation = (fRotation+360F);
+        }
+    }
+
+    @Override
     public void tick()
     {
-        if(dead || world.isRemote)
-        {
+        if(world.isRemote){
+            if(!clientAsked){
+                bWindMillIAligned = getAligned();
+                AlignBoundingBoxWithAxis();
+//                PacketHelper.send(new LoadRotationPacket(0, this.id)); /// Synchronizacja rotacji, powoduje przeskok przy dołączeniu, jedynie wizualna koretka nie wiem czy jest sens
+                clientAsked = true;
+            }
+            clientTick();
             return;
         }
+        if(dead) {return;}
         iFullUpdateTickCount--;
         if(iFullUpdateTickCount <= 0)
         {
@@ -231,12 +282,12 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider
                 destroyWithDrop();
                 return;
             }
-            if(!validateArea(world, iCenterI, iCenterJ, iCenterK, getAligned()))
+            if(!validateArea(world, iCenterI, iCenterJ, iCenterK, bWindMillIAligned))
             {
                 destroyWithDrop();
                 return;
             }
-            if(!getProvidingPower() && ((AxleBlock)BlockListener.axleBlock).getPowerLevel(world, iCenterI, iCenterJ, iCenterK) > 0)
+            if(!bProvidingPower && ((AxleBlock)BlockListener.axleBlock).getPowerLevel(world, iCenterI, iCenterJ, iCenterK) > 0)
             {
                 destroyWithDrop();
                 return;
@@ -244,48 +295,49 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider
             fWindMillCurrentRotationSpeed = ComputeRotation(iCenterI, iCenterJ, iCenterK);
             if(fWindMillCurrentRotationSpeed > 0.01F || fWindMillCurrentRotationSpeed < -0.01F)
             {
-                if(!getProvidingPower())
+                if(!bProvidingPower)
                 {
-                    setProvidingPower(true);
+                    bProvidingPower = true;
                     ((AxleBlock)BlockListener.axleBlock).setPowerLevel(world, iCenterI, iCenterJ, iCenterK, 3);
                 }
             } else
-            if(getProvidingPower())
+            if(bProvidingPower)
             {
-                setProvidingPower(false);
+                bProvidingPower = false;
                 ((AxleBlock)BlockListener.axleBlock).setPowerLevel(world, iCenterI, iCenterJ, iCenterK, 0);
             }
-            if(getOverpowerTimer() >= 0)
+            if(iOverpowerTimer >= 0)
             {
-                if(getOverpowerTimer() > 0)
+                if(iOverpowerTimer > 0)
                 {
-                    setOverpowerTimer(getOverpowerTimer()-1);
+                    iOverpowerTimer--;
                 }
-                if(getOverpowerTimer() <= 0)
+                if(iOverpowerTimer <= 0)
                 {
                     ((AxleBlock)BlockListener.axleBlock).overpower(world, iCenterI, iCenterJ, iCenterK);
                 }
             }
         }
-        if(getMillTimeSinceHit() > 0)
+        if(iWindMillTimeSinceHit > 0)
         {
-            setMillTimeSinceHit(getMillTimeSinceHit()-1);
+            iWindMillTimeSinceHit--;
         }
-        if(getMillCurrentDamage() > 0)
+        if(iWindMillCurrentDamage > 0)
         {
-            setMillCurrentDamage(getMillCurrentDamage()-1);
+            iWindMillCurrentDamage--;
         }
-        setMillRotation(getMillRotation()+fWindMillCurrentRotationSpeed);
-        if(getMillRotation() > 360F)
+        fRotation = (fRotation+fWindMillCurrentRotationSpeed);
+        if(fRotation > 360F)
         {
-            setMillRotation(getMillRotation()-360F);
+            fRotation = (fRotation-360F);
         } else
-        if(getMillRotation() < -360F)
+        if(fRotation < -360F)
         {
-            setMillRotation(getMillRotation()+360F);
+            fRotation = (fRotation+360F);
         }
     }
 
+    @Override
     public float getShadowRadius()
     {
         return 0.0F;
@@ -302,6 +354,7 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider
         }
     }
 
+    @Override
     public boolean interact(PlayerEntity entityplayer)
     {
         ItemStack ItemInstance = entityplayer.inventory.getSelectedItem();
@@ -313,13 +366,21 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider
                 iColor = 12;
             }
             if (world.isRemote) {
-                PacketHelper.send(new InteractWindPacket(getCurrentBladeColorIndex(), iColor, this.id));
-                entityplayer.swingHand();
+                if(entityplayer.canSee(this)){
+                    entityplayer.swingHand();
+                }
             } else {
-                setBladeColor(getCurrentBladeColorIndex(), iColor);
-                setCurrentBladeColorIndex(getCurrentBladeColorIndex() + 1);
-                if (getCurrentBladeColorIndex() >= 4) {
-                    setCurrentBladeColorIndex(0);
+                setBladeColor(iCurrentBladeColoringIndex, iColor);
+                switch (iCurrentBladeColoringIndex){
+                    case 0: world.broadcastEntityEvent(this, (byte) (16 + iColor)); break;
+                    case 1: world.broadcastEntityEvent(this, (byte) (36 + iColor)); break;
+                    case 2: world.broadcastEntityEvent(this, (byte) (56 + iColor)); break;
+                    case 3: world.broadcastEntityEvent(this, (byte) (76 + iColor)); break;
+                }
+                iCurrentBladeColoringIndex++;
+                if(iCurrentBladeColoringIndex >= 4)
+                {
+                    iCurrentBladeColoringIndex = 0;
                 }
                 entityplayer.swingHand();
                 ItemInstance.count--;
@@ -331,6 +392,7 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider
         return true;
     }
 
+    @Override
     public void move(double deltaX, double deltaY, double deltaZ)
     {
         if(!dead)
@@ -388,26 +450,29 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider
         if(world.dimension.evaporatesWater)
         {
             fRotationAmount = -0.0675F;
-            setOverpowerTimer(-1);
+            iOverpowerTimer = -1;
         } else
         if(world.hasSkyLight(iCenterI, iCenterJ, iCenterK))
         {
             if(UnsortedUtils.IsBlockBeingPrecipitatedOn(world, iCenterI, 128, iCenterK))
             {
                 fRotationAmount = -2F;
-                if(getOverpowerTimer() < 0)
+                if(iOverpowerTimer < 0)
                 {
-                    setOverpowerTimer(30);
+                    iOverpowerTimer = 30;
                 }
             } else
             {
                 fRotationAmount = -0.125F;
-                setOverpowerTimer(-1);
+                iOverpowerTimer = -1;
             }
         }
         return fRotationAmount;
     }
 
+    public static final double fHalfMillDepth = 0.4D;
+    public static final double fHalfMillWidth = 6.4D;
+    
     public static final float fWindMillHeight = 12.8F;
     public static final float fWindMillWidth = 12.8F;
     public static final float fWindMillDepth = 0.8F;
@@ -417,80 +482,27 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider
     public static final float fWindMillRotationPerTickInHell = -0.0675F;
     public static final int iWindMillTicksPerFullUpdate = 20;
     public static final int iWindMillUpdatesToOverpower = 30;
-    //    public boolean bWindMillIAligned;
-//    public float fRotation;
-//    public boolean bProvidingPower;
-//    public int iOverpowerTimer;
-//    public int iBladeColors[];
-//    public int iCurrentBladeColoringIndex;
-//    public int iWindMillCurrentDamage;
-//    public int iWindMillTimeSinceHit;
-//    public int iWindMillRockDirection;
+
+    public boolean bWindMillIAligned;
+    public float fRotation;
+    public boolean bProvidingPower;
+    public int iOverpowerTimer;
+    public int iBladeColors[];
+    public int iCurrentBladeColoringIndex;
+    public int iWindMillCurrentDamage;
+    public int iWindMillTimeSinceHit;
+    public int iWindMillRockDirection;
+
     public float fWindMillCurrentRotationSpeed;
     public int iFullUpdateTickCount;
+    public boolean clientAsked;
     public boolean receivedP;
 
     @Override
     public Identifier getHandlerIdentifier() {
         return Identifier.of(EntityListener.NAMESPACE, "WindMill");
     }
-
-    //ALIGNED
-    public boolean getAligned()
-    {
-        return (dataTracker.getByte(16) & 1) != 0;
-    }
-
-    public void setAligned(boolean flag)
-    {
-        if(flag)
-        {
-            dataTracker.set(16,  (byte)1);
-        } else
-        {
-            dataTracker.set(16,  (byte)0);
-        }
-    }
-
-    //ROTATION (FLOAT)
-    public float getMillRotation()
-    {
-        return Float.intBitsToFloat(dataTracker.getInt(17));
-    }
-
-    public void setMillRotation(float age)
-    {
-        dataTracker.set(17, Float.floatToRawIntBits(age));
-    }
-
-    //POWER
-    public boolean getProvidingPower()
-    {
-        return (dataTracker.getByte(18) & 1) != 0;
-    }
-
-    public void setProvidingPower(boolean flag)
-    {
-        if(flag)
-        {
-            dataTracker.set(18, (byte) 1);
-        } else
-        {
-            dataTracker.set(18, (byte) 0);
-        }
-    }
-
-    //OVERPOWER
-    public int getOverpowerTimer()
-    {
-        return dataTracker.getByte(19);
-    }
-
-    public void setOverpowerTimer(int i)
-    {
-        dataTracker.set(19, (byte) i);
-    }
-
+    
     //COLORS
     public int getBladeColor(int blade)
     {
@@ -513,46 +525,17 @@ public class WindMillEntity extends Entity implements EntitySpawnDataProvider
         }
     }
 
-    //CurrentBladeColorIndex
-    public int getCurrentBladeColorIndex()
-    {
-        return dataTracker.getByte(24);
-    }
+    public boolean getAligned() {return (dataTracker.getByte(16) & 1) != 0;}
 
-    public void setCurrentBladeColorIndex(int i)
+    public void setAligned(boolean flag)
     {
-        dataTracker.set(24, (byte) i);
-    }
-
-    //CurrentDamage
-    public int getMillCurrentDamage()
-    {
-        return dataTracker.getByte(25);
-    }
-
-    public void setMillCurrentDamage(int i)
-    {
-        dataTracker.set(25, (byte) i);
-    }
-    //TimeSinceHit
-    public int getMillTimeSinceHit()
-    {
-        return dataTracker.getByte(26);
-    }
-
-    public void setMillTimeSinceHit(int i)
-    {
-        dataTracker.set(26, (byte) i);
-    }
-    //RockDirection
-    public int getMillRockDirection()
-    {
-        return dataTracker.getByte(27);
-    }
-
-    public void setMillRockDirection(int i)
-    {
-        dataTracker.set(27, (byte) i);
+        if(flag)
+        {
+            dataTracker.set(16, (byte) 1);
+        } else
+        {
+            dataTracker.set(16, (byte) 0);
+        }
     }
 
     @Override

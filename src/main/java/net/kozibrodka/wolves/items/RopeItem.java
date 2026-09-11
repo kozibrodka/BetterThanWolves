@@ -14,8 +14,9 @@ public class RopeItem extends TemplateItem {
         super(iItemID);
     }
 
+    @Override
     public boolean useOnBlock(ItemStack ItemInstance, PlayerEntity entityplayer, World world, int i, int j, int k, int iFacing) {
-        if (ItemInstance.count == 0) {
+        if (ItemInstance.count == 0) { /// useOnBlock odpala się jedynie po stronie hosta.
             return false;
         }
         int blockId = world.getBlockId(i, j, k);
@@ -26,7 +27,7 @@ public class RopeItem extends TemplateItem {
                     if (world.setBlock(i, tempj, k, BlockListener.rope.id)) {
                         BlockListener.rope.onPlaced(world, i, tempj, k, iFacing);
                         BlockListener.rope.onPlaced(world, i, tempj, k, entityplayer);
-                        world.playSound((float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, BlockListener.rope.soundGroup.getSound(), (BlockListener.rope.soundGroup.getVolume() + 1.0F) / 2.0F, BlockListener.rope.soundGroup.getPitch() * 0.8F);
+                        world.playSound((float) i + 0.5F, (float) tempj + 0.5F, (float) k + 0.5F, BlockListener.rope.soundGroup.getSound(), (BlockListener.rope.soundGroup.getVolume() + 1.0F) / 2.0F, BlockListener.rope.soundGroup.getPitch() * 0.8F);
                         ItemInstance.count--;
                         return true;
                     } else {

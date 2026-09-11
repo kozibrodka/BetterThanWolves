@@ -9,6 +9,7 @@ import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.utils.BlockPosition;
 import net.kozibrodka.wolves.utils.MechanicalDevice;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
+import net.kozibrodka.wolves.utils.WolvesMpUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -32,22 +33,27 @@ public class AxleBlock extends TemplateBlock {
         setSoundGroup(WOOD_SOUND_GROUP);
     }
 
+    @Override
     public int getTickRate() {
         return 1;
     }
 
+    @Override
     public boolean isOpaque() {
         return false;
     }
 
+    @Override
     public boolean isFullCube() {
         return false;
     }
 
+    @Override
     public void onPlaced(World world, int x, int y, int z, int facing) {
         setAxisAlignmentBasedOnFacing(world, x, y, z, facing);
     }
 
+    @Override
     public void onPlaced(World world, int x, int y, int z) {
         super.onPlaced(world, x, y, z);
         world.scheduleBlockUpdate(x, y, z, BlockListener.axleBlock.id, getTickRate());
@@ -63,6 +69,7 @@ public class AxleBlock extends TemplateBlock {
         updateAdjacentMachine(world, potentialMachines[1], axis * 2, false);
     }
 
+    @Override
     public void onTick(World world, int x, int y, int z, Random random) {
         BlockPosition[] potentialSources = getConnectionCandidates(world, x, y, z);
         int axis = getAxisAlignment(world, x, y, z);
@@ -82,6 +89,7 @@ public class AxleBlock extends TemplateBlock {
         }
     }
 
+    @Override
     public Box getCollisionShape(World world, int x, int y, int z) {
         int axis = getAxisAlignment(world, x, y, z);
         return switch (axis) {
@@ -94,6 +102,7 @@ public class AxleBlock extends TemplateBlock {
         };
     }
 
+    @Override
     public void updateBoundingBox(BlockView blockView, int x, int y, int z) {
         int axis = getAxisAlignment(blockView, x, y, z);
         switch (axis) {
@@ -111,6 +120,7 @@ public class AxleBlock extends TemplateBlock {
         }
     }
 
+    @Override
     public void neighborUpdate(World world, int x, int y, int z, int id) {
         validatePowerLevel(world, x, y, z);
         int powerLevel = getPowerLevel(world, x, y, z);
@@ -123,6 +133,7 @@ public class AxleBlock extends TemplateBlock {
         updatePotentialMachines(world, x, y, z, powerLevel);
     }
 
+    @Override
     public void randomDisplayTick(World world, int x, int y, int z, Random random) {
         if (getPowerLevel(world, x, y, z) > 0) {
             emitAxleParticles(world, x, y, z, random);
@@ -199,27 +210,14 @@ public class AxleBlock extends TemplateBlock {
             for (int drops = 0; drops < 5; drops++) {
                 UnsortedUtils.EjectSingleItemWithRandomOffset(world, x, y, z, ItemListener.hempFibers.id, 0);
             }
-
             for (int drops = 0; drops < 2; drops++) {
                 UnsortedUtils.EjectSingleItemWithRandomOffset(world, x, y, z, Item.STICK.id, 0);
             }
-
             world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.explode", 0.3F, 1.25F);
-            if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                voicePacket(world, "random.explode", x, y, z, 0.3F, 1.25F);
+            if (WolvesMpUtils.isEnvServ()) {
+                WolvesMpUtils.soundPacket(world, x, y, z, "random.explode",0.3F, 1.25F);
             }
             world.setBlock(x, y, z, 0);
-        }
-    }
-
-    @Environment(EnvType.SERVER)
-    public void voicePacket(World world, String name, int x, int y, int z, float g, float h) {
-        List list2 = world.players;
-        if (list2.size() != 0) {
-            for (int k = 0; k < list2.size(); k++) {
-                ServerPlayerEntity player1 = (ServerPlayerEntity) list2.get(k);
-                PacketHelper.sendTo(player1, new SoundPacket(name, x, y, z, g, h));
-            }
         }
     }
 

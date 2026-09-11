@@ -18,29 +18,36 @@ public class EmptyPlanterBlock extends TemplateBlock
         setTickRandomly(true);
     }
 
+    @Override
     public boolean isOpaque() {
         return false;
     }
 
+    @Override
     public boolean isFullCube() {
         return false;
     }
 
+    @Override
     public int getFacing(BlockView iBlockAccess, int i, int j, int l) {
         return 0;
     }
 
+    @Override
     public void setFacing(World world1, int l, int i1, int j1, int k1) {
     }
 
+    @Override
     public boolean canRotate(BlockView iBlockAccess, int i, int j, int l) {
         return false;
     }
 
+    @Override
     public boolean canTransmitRotation(BlockView iBlockAccess, int i, int j, int l) {
         return false;
     }
 
+    @Override
     public void rotate(World world1, int l, int i1, int j1, boolean flag) {
     }
 

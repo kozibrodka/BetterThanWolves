@@ -19,7 +19,7 @@ import net.minecraft.world.biome.Biome;
 import java.util.List;
 
 /**
- * This is a TERRIBLE and really inefficient way of sorting utils.
+ * This is a TERRIBLE and really inefficient way of sorting utils.  - nothing wrong with this file.
  * TODO: Relocate methods into appropriate utils or discard them entirely.
  */
 public class UnsortedUtils {

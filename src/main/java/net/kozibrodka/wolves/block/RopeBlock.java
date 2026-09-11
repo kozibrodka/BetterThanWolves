@@ -9,6 +9,7 @@ import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.utils.CustomBlockRendering;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
+import net.kozibrodka.wolves.utils.WolvesMpUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.entity.Entity;
@@ -38,14 +39,17 @@ public class RopeBlock extends TemplateBlock implements BlockWithWorldRenderer, 
         ascensionSpeed = 0.2F;
     }
 
+    @Override
     public int getTexture(int iSide) {
         return TextureListener.rope;
     }
 
+    @Override
     public int getDroppedItemId(int i, Random random) {
         return ItemListener.ropeItem.id;
     }
 
+    @Override
     public void neighborUpdate(World world, int i, int j, int k, int iid) {
         int iBlockAboveID = world.getBlockId(i, j + 1, k);
         if (iBlockAboveID != id && iBlockAboveID != BlockListener.anchor.id && iBlockAboveID != BlockListener.pulley.id) {
@@ -54,27 +58,32 @@ public class RopeBlock extends TemplateBlock implements BlockWithWorldRenderer, 
         }
     }
 
-    public boolean canPlaceAt(World world, int i, int j, int k) {
-        int iBlockAboveID = world.getBlockId(i, j + 1, k);
-        return iBlockAboveID == id || iBlockAboveID == BlockListener.anchor.id;
+    @Override
+    public void onBlockAction(World world, int x, int y, int z, int code, int pitch) {
+        world.playSound((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F, BlockListener.rope.soundGroup.getSound(), (BlockListener.rope.soundGroup.getVolume() + 1.0F) / 2.0F, BlockListener.rope.soundGroup.getPitch() * 0.8F);
     }
 
+    @Override
     public boolean isOpaque() {
         return false;
     }
 
+    @Override
     public boolean isFullCube() {
         return false;
     }
 
+    @Override
     public Box getCollisionShape(World world, int i, int j, int k) {
         return Box.createCached(((float) i + 0.5F) - 0.0625F, (float) j, ((float) k + 0.5F) - 0.0625F, (float) i + 0.5F + 0.0625F, (float) j + 1.0F, (float) k + 0.5F + 0.0625F);
     }
 
+    @Override
     public void updateBoundingBox(BlockView iBlockAccess, int i, int j, int k) {
         setBoundingBox(0.4375F, 0.0F, 0.4375F, 0.5625F, 1.0F, 0.5625F);
     }
 
+    @Override
     public void onEntityCollision(World world, int i, int j, int k, Entity entity) {
         if (entity instanceof LivingEntity) {
             entity.fallDistance = 0.0F;
@@ -90,21 +99,10 @@ public class RopeBlock extends TemplateBlock implements BlockWithWorldRenderer, 
     public void BreakRope(World world, int i, int j, int k) {
         UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, ItemListener.ropeItem.id, 0);
         world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, soundGroup.getSound(), (soundGroup.getVolume() + 1.0F) / 2.0F, soundGroup.getPitch() * 0.8F);
-        if (net.fabricmc.loader.FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-            voicePacket(world, soundGroup.getSound(), i, j, k, (soundGroup.getVolume() + 1.0F) / 2.0F, soundGroup.getPitch() * 0.8F);
+        if (WolvesMpUtils.isEnvServ()) {
+            WolvesMpUtils.soundPacket(world, i, j, k, soundGroup.getSound(), (soundGroup.getVolume() + 1.0F) / 2.0F, soundGroup.getPitch() * 0.8F);
         }
         world.setBlock(i, j, k, 0);
-    }
-
-    @Environment(EnvType.SERVER)
-    public void voicePacket(World world, String name, int x, int y, int z, float g, float h) {
-        List list2 = world.players;
-        if (list2.size() != 0) {
-            for (int k = 0; k < list2.size(); k++) {
-                ServerPlayerEntity player1 = (ServerPlayerEntity) list2.get(k);
-                PacketHelper.sendTo(player1, new SoundPacket(name, x, y, z, g, h));
-            }
-        }
     }
 
     public static final float fRopeWidth = 0.125F;

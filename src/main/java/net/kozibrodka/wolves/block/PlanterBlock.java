@@ -33,22 +33,27 @@ public class PlanterBlock extends TemplateBlock
         setTickRandomly(true);
     }
 
+    @Override
     public int getTexture(int i) {
         return TextureListener.planter;
     }
 
+    @Override
     public boolean isOpaque() {
         return false;
     }
 
+    @Override
     public boolean isFullCube() {
         return false;
     }
 
+    @Override
     public int getDroppedItemMeta(int iMetaData) {
         return iMetaData & 1;
     }
 
+    @Override
     public void onTick(World world, int i, int j, int k, Random random) {
         int iOldGrowthState = GetGrowthState(world, i, j, k);
         int iNewGrowthState = 0;
@@ -68,32 +73,40 @@ public class PlanterBlock extends TemplateBlock
         }
     }
 
+    @Override
     public int getFacing(BlockView iBlockAccess, int i, int j, int l) {
         return 0;
     }
 
+    @Override
     public void setFacing(World world1, int l, int i1, int j1, int k1) {
     }
 
+    @Override
     public boolean canRotate(BlockView iBlockAccess, int i, int j, int l) {
         return false;
     }
 
+    @Override
     public boolean canTransmitRotation(BlockView iBlockAccess, int i, int j, int l) {
         return false;
     }
 
+    @Override
     public void rotate(World world1, int l, int i1, int j1, boolean flag) {
     }
 
+    @Override
     public boolean CanPlantGrowOnBlock(World world, int i, int j, int k, Block plantBlock) {
         return DoesPlanterContainSoil(world, i, j, k);
     }
 
+    @Override
     public boolean IsBlockHydrated(World world, int i, int j, int k) {
         return DoesPlanterContainSoil(world, i, j, k);
     }
 
+    @Override
     public boolean IsBlockConsideredNeighbouringWater(World world, int i, int j, int k) {
         return DoesPlanterContainSoil(world, i, j, k);
     }

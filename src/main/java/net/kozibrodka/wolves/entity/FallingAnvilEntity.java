@@ -8,6 +8,7 @@ import net.kozibrodka.wolves.events.ConfigListener;
 import net.kozibrodka.wolves.network.SoundPacket;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.MathHelper;
@@ -20,12 +21,10 @@ import net.modificationstation.stationapi.api.util.TriState;
 
 import java.util.List;
 
-@HasTrackingParameters(trackingDistance = 160, updatePeriod = 1, sendVelocity = TriState.FALSE)
+@HasTrackingParameters(trackingDistance = 240, updatePeriod = Integer.MAX_VALUE, sendVelocity = TriState.FALSE)
 public class FallingAnvilEntity extends Entity implements EntitySpawnDataProvider {
     public int tile;
-//    public int facing;
     public int timeFalling = 0;
-    public boolean receivedP;
 
     public FallingAnvilEntity(World arg) {
         super(arg);
@@ -47,34 +46,57 @@ public class FallingAnvilEntity extends Entity implements EntitySpawnDataProvide
         this.prevZ = f;
     }
 
-    public FallingAnvilEntity(World level, Double aDouble, Double aDouble1, Double aDouble2) {
-        this(level);
+    public FallingAnvilEntity(World level, double x, double y, double z) {
+        super(level);
+        tile = BlockListener.anvil.id;
+        setPosition(x, y, z);
     }
 
     @Environment(EnvType.CLIENT)
     @Override
     public void setPositionAndAnglesAvoidEntities(double x, double y, double z, float pitch, float yaw, int interpolationSteps) {
-        if(!receivedP) {
-            this.setPosition(x, y, z);
-            this.setRotation(pitch, yaw);
-            tile = BlockListener.anvil.id;
-            receivedP = true;
-        }
+        this.setPosition(x, y, z);
+        this.setRotation(pitch, yaw);
     }
 
+    @Override
     protected boolean bypassesSteppingEffects() {
         return false;
     }
 
+    @Override
     protected void initDataTracker() {
-        dataTracker.startTracking(16, (byte) 0); //metaData
+        dataTracker.startTracking(16, (byte) 0); //facing
     }
 
+    @Override
     public boolean isCollidable() {
         return !this.dead;
     }
 
+    public void clientTick(){
+        this.prevX = this.x;
+        this.prevY = this.y;
+        this.prevZ = this.z;
+        ++this.timeFalling;
+        this.velocityY -= 0.03999999910593033D;
+        this.move(this.velocityX, this.velocityY, this.velocityZ);
+        this.velocityX *= 0.9800000190734863D;
+        this.velocityY *= 0.9800000190734863D;
+        this.velocityZ *= 0.9800000190734863D;
+        if (this.onGround) {
+            this.velocityX *= 0.699999988079071D;
+            this.velocityZ *= 0.699999988079071D;
+            this.velocityY *= -0.5D;
+        }
+    }
+
+    @Override
     public void tick() {
+        if(world.isRemote){
+            clientTick();
+            return;
+        }
         if (this.tile == 0) {
             this.markDead();
         } else {
@@ -105,6 +127,7 @@ public class FallingAnvilEntity extends Entity implements EntitySpawnDataProvide
                         playertohit.damage(this, (timeFalling/2));
                     }
                 }
+                System.out.println("CLIENT");
                 world.playSound(this.x, this.y, this.z, "wolves:anvil_land", 1.0F, 1.2F);
                 world.broadcastEntityEvent(this, (byte)6);
                 this.markDead();
@@ -138,11 +161,13 @@ public class FallingAnvilEntity extends Entity implements EntitySpawnDataProvide
         }
     }
     
+    @Override
     protected void writeNbt(NbtCompound arg) {
         arg.putByte("Tile", (byte) this.tile);
         arg.putInt("Facing", getFacingMeta());
     }
 
+    @Override
     protected void readNbt(NbtCompound arg) {
         this.tile = arg.getByte("Tile") & 255;
         setFacingMeta(arg.getInt("Facing"));
@@ -159,14 +184,10 @@ public class FallingAnvilEntity extends Entity implements EntitySpawnDataProvide
         dataTracker.set(16, (byte) i);
     }
 
+    @Override
     @Environment(EnvType.CLIENT)
     public float getShadowRadius() {
         return 0.0F;
-    }
-
-    @Environment(EnvType.CLIENT)
-    public World getFallingLevel() {
-        return this.world;
     }
 
     @Override

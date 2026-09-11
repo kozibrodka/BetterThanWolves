@@ -26,7 +26,8 @@ import net.modificationstation.stationapi.api.util.TriState;
 
 import java.util.List;
 
-@HasTrackingParameters(trackingDistance = 160, updatePeriod = 1, sendVelocity = TriState.TRUE)
+//@HasTrackingParameters(trackingDistance = 160, updatePeriod = 1, sendVelocity = TriState.TRUE)
+@HasTrackingParameters(trackingDistance = 240, updatePeriod = Integer.MAX_VALUE, sendVelocity = TriState.TRUE)
 public class MovingPlatformEntity extends Entity implements EntitySpawnDataProvider {
 
     public MovingPlatformEntity(World world) {
@@ -53,27 +54,41 @@ public class MovingPlatformEntity extends Entity implements EntitySpawnDataProvi
         lastTickX = prevX = x;
         lastTickY = prevY = y;
         lastTickZ = prevZ = z;
+        dataTracker.set(16, (int) m_AssociatedAnchorLastKnownXPos);
+        dataTracker.set(17, (int) m_AssociatedAnchorLastKnownYPos);
+        dataTracker.set(18, (int) m_AssociatedAnchorLastKnownZPos);
     }
 
-    public MovingPlatformEntity(World level, Double aDouble, Double aDouble1, Double aDouble2) {
+    public MovingPlatformEntity(World level, double x, double y, double z) {
         this(level);
+        setPosition(x, y, z);
     }
 
+    @Override
     protected void initDataTracker() {
+        dataTracker.startTracking(16, (int) 0);
+        dataTracker.startTracking(17, (int) 0);
+        dataTracker.startTracking(18, (int) 0);
     }
 
+    @Override
     protected void writeNbt(NbtCompound nbttagcompound) {
         nbttagcompound.putDouble("m_AssociatedAnchorLastKnownXPos", m_AssociatedAnchorLastKnownXPos);
         nbttagcompound.putDouble("m_AssociatedAnchorLastKnownYPos", m_AssociatedAnchorLastKnownYPos);
         nbttagcompound.putDouble("m_AssociatedAnchorLastKnownZPos", m_AssociatedAnchorLastKnownZPos);
     }
 
+    @Override
     protected void readNbt(NbtCompound nbttagcompound) {
         m_AssociatedAnchorLastKnownXPos = nbttagcompound.getDouble("m_AssociatedAnchorLastKnownXPos");
         m_AssociatedAnchorLastKnownYPos = nbttagcompound.getDouble("m_AssociatedAnchorLastKnownYPos");
         m_AssociatedAnchorLastKnownZPos = nbttagcompound.getDouble("m_AssociatedAnchorLastKnownZPos");
+        dataTracker.set(16, (int) m_AssociatedAnchorLastKnownXPos);
+        dataTracker.set(17, (int) m_AssociatedAnchorLastKnownYPos);
+        dataTracker.set(18, (int) m_AssociatedAnchorLastKnownZPos);
     }
 
+    @Override
     protected boolean bypassesSteppingEffects() {
         return false;
     }
@@ -81,11 +96,8 @@ public class MovingPlatformEntity extends Entity implements EntitySpawnDataProvi
     @Environment(EnvType.CLIENT)
     @Override
     public void setPositionAndAnglesAvoidEntities(double x, double y, double z, float pitch, float yaw, int interpolationSteps) {
-        if(!receivedP) {
-            this.setPosition(x, y, z);
-            this.setRotation(pitch, yaw);
-            receivedP = true;
-        }
+        this.setPosition(x, y, z);
+        this.setRotation(pitch, yaw);
     }
 
     @Override
@@ -93,27 +105,35 @@ public class MovingPlatformEntity extends Entity implements EntitySpawnDataProvi
         return other.boundingBox;
     }
 
+    @Override
     public Box getBoundingBox() {
         return boundingBox;
     }
 
+    @Override
     public boolean isPushable() {
         return false;
     }
 
+    @Override
     public boolean isCollidable() {
         return !dead;
     }
 
+    @Override
     public float getShadowRadius() {
         return 0.0F;
     }
 
     @Environment(EnvType.CLIENT)
     public void remoteTick(){
-        int i = MathHelper.floor(x);
-        int oldCentreJ = MathHelper.floor(y);
-        int k = MathHelper.floor(z);
+        if(!receivedP){
+            m_AssociatedAnchorLastKnownXPos = dataTracker.getInt(16);
+            m_AssociatedAnchorLastKnownYPos = dataTracker.getInt(17);
+            m_AssociatedAnchorLastKnownZPos = dataTracker.getInt(18);
+            receivedP = true;
+        }
+
         MovingAnchorEntity associatedMovingAnchor = null;
         List list = world.collectEntitiesByClass(MovingAnchorEntity.class, Box.createCached(m_AssociatedAnchorLastKnownXPos - 0.25D, m_AssociatedAnchorLastKnownYPos - 0.25D, m_AssociatedAnchorLastKnownZPos - 0.25D, m_AssociatedAnchorLastKnownXPos + 0.25D, m_AssociatedAnchorLastKnownYPos + 0.25D, m_AssociatedAnchorLastKnownZPos + 0.25D));
         if (list != null && list.size() > 0) {
@@ -127,9 +147,7 @@ public class MovingPlatformEntity extends Entity implements EntitySpawnDataProvi
                 associatedMovingAnchor = null;
             }
         }
-        double oldPosY = y;
         MoveEntityInternal(velocityX, velocityY, velocityZ);
-        double newPosY = y;
         list = world.getEntities(this, boundingBox.expand(0.0D, 0.14999999999999999D, 0.0D));
         if (list != null && list.size() > 0) {
             for (int j1 = 0; j1 < list.size(); j1++) {
@@ -146,13 +164,13 @@ public class MovingPlatformEntity extends Entity implements EntitySpawnDataProvi
         }
     }
 
+    @Override
     public void tick() {
         if (dead || world.isRemote) {
             remoteTick();
             return;
         }
         if(!startcheck && velocityY > 0){
-//            System.out.println(this.velocityY);
             startcheck = true;
             if(FabricLoader.getInstance().getEnvironmentType().equals(EnvType.SERVER)) {
                 List list = world.getEntities(this, boundingBox.expand(0.0D, 0.5D, 0.0D));
@@ -165,7 +183,6 @@ public class MovingPlatformEntity extends Entity implements EntitySpawnDataProvi
                     }
                 }
             }
-//            startcheck = true;
         }
         int i = MathHelper.floor(x);
         int oldCentreJ = MathHelper.floor(y);
@@ -256,6 +273,7 @@ public class MovingPlatformEntity extends Entity implements EntitySpawnDataProvi
         }
     }
 
+    @Override
     public void move(double deltaX, double deltaY, double deltaZ) {
         DestroyPlatformWithDrop();
     }

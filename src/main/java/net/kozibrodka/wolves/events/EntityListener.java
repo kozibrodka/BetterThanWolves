@@ -1,25 +1,19 @@
 package net.kozibrodka.wolves.events;
 
-import net.kozibrodka.wolves.entity.BroadheadArrowEntity;
-import net.kozibrodka.wolves.entity.FCEntityTEST;
-import net.kozibrodka.wolves.entity.FallingAnvilEntity;
-import net.kozibrodka.wolves.entity.LiftedBlockEntity;
-import net.kozibrodka.wolves.entity.MovingAnchorEntity;
-import net.kozibrodka.wolves.entity.MovingPlatformEntity;
-import net.kozibrodka.wolves.entity.SteelMinecartEntity;
-import net.kozibrodka.wolves.entity.WaterWheelEntity;
-import net.kozibrodka.wolves.entity.WindMillEntity;
+import net.kozibrodka.wolves.entity.*;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.modificationstation.stationapi.api.event.entity.EntityRegisterEvent;
 import net.modificationstation.stationapi.api.event.registry.EntityHandlerRegistryEvent;
 import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
+import net.modificationstation.stationapi.api.registry.Registry;
+import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.util.Namespace;
+import net.modificationstation.stationapi.api.util.Null;
 
 public class EntityListener {
     @Entrypoint.Namespace
-    public static Namespace NAMESPACE;
+    public static Namespace NAMESPACE = Null.get();;
 
-    //TODO: is entity renderdistance correct? might need testing.
     @EventListener
     public static void registerEntities(EntityRegisterEvent event) {
         event.register(NAMESPACE.id("WaterWheel"), WaterWheelEntity.class);
@@ -31,10 +25,11 @@ public class EntityListener {
         event.register(NAMESPACE.id("FallingAnvil"), FallingAnvilEntity.class);
         event.register(NAMESPACE.id("SteelMinecart"), SteelMinecartEntity.class);
         event.register(NAMESPACE.id("StapiTEST"), FCEntityTEST.class);
+        event.register(NAMESPACE.id("WaterTEST2"), FCEntityTest2.class);
     }
 
     @EventListener
-    public static void registerMobHandlers(EntityHandlerRegistryEvent event) {
+    public static void registerEntityHandlers(EntityHandlerRegistryEvent event) {
         event.register(NAMESPACE.id("WaterWheel"), WaterWheelEntity::new);
         event.register(NAMESPACE.id("WindMill"), WindMillEntity::new);
         event.register(NAMESPACE.id("BroadheadArrow"), BroadheadArrowEntity::new);
@@ -44,5 +39,6 @@ public class EntityListener {
         event.register(NAMESPACE.id("FallingAnvil"), FallingAnvilEntity::new);
         event.register(NAMESPACE.id("SteelMinecart"), SteelMinecartEntity::new);
         event.register(NAMESPACE.id("StapiTEST"), FCEntityTEST::new);
+        event.register(NAMESPACE.id("WaterTEST2"), FCEntityTest2::new);
     }
 }

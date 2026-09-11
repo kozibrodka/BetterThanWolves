@@ -36,6 +36,7 @@ public class PulleyBlock extends TemplateBlockWithEntity
         setSoundGroup(WOOD_SOUND_GROUP);
     }
 
+    @Override
     public int getTexture(int iSide) {
         if (iSide == 0) {
             return TextureListener.pulley_bottom;
@@ -43,21 +44,25 @@ public class PulleyBlock extends TemplateBlockWithEntity
         return iSide != 1 ? TextureListener.pulley_side : TextureListener.pulley_top;
     }
 
+    @Override
     public boolean onUse(World world, int x, int y, int z, PlayerEntity playerEntity) {
         PulleyBlockEntity pulleyBlockEntity = (PulleyBlockEntity) world.getBlockEntity(x, y, z);
         GuiHelper.openGUI(playerEntity, Identifier.of(BlockEntityListener.NAMESPACE, "openPulley"), pulleyBlockEntity, new PulleyScreenHandler(playerEntity.inventory, pulleyBlockEntity));
         return true;
     }
 
+    @Override
     protected BlockEntity createBlockEntity() {
         return new PulleyBlockEntity();
     }
 
+    @Override
     public void onPlaced(World world, int i, int j, int k) {
         super.onPlaced(world, i, j, k);
         world.scheduleBlockUpdate(i, j, k, id, getTickRate());
     }
 
+    @Override
     public void onBreak(World world, int i, int j, int k) {
         BlockEntity tileEntity = world.getBlockEntity(i, j, k);
         if (tileEntity != null) {
@@ -66,23 +71,23 @@ public class PulleyBlock extends TemplateBlockWithEntity
         super.onBreak(world, i, j, k);
     }
 
+    @Override
     public void neighborUpdate(World world, int i, int j, int k, int iid) {
         world.scheduleBlockUpdate(i, j, k, id, getTickRate());
     }
 
+    @Override
     public int getTickRate() {
         return iPulleyTickRate;
     }
 
+    @Override
     public void onTick(World world, int i, int j, int k, Random random) {
         boolean bStateChanged = false;
         boolean bRedstoneOn = IsRedstoneOn(world, i, j, k);
         boolean bReceivingRedstone = world.isStrongPowered(i, j, k) || world.isStrongPowered(i, j + 1, k);
         if (bRedstoneOn != bReceivingRedstone) {
-            world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "random.explode", 0.2F, 1.25F);
-            if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                voicePacket(world, "random.explode", i, j, k, 0.2F, 1.25F);
-            }
+            world.playNoteBlockActionAt(i,j,k, 0, 0); ///
             EmitPulleyParticles(world, i, j, k, random);
             SetRedstoneOn(world, i, j, k, bReceivingRedstone);
             bStateChanged = true;
@@ -92,50 +97,48 @@ public class PulleyBlock extends TemplateBlockWithEntity
         }
     }
 
-    @Environment(EnvType.SERVER)
-    public void voicePacket(World world, String name, int x, int y, int z, float g, float h) {
-        List list2 = world.players;
-        if (list2.size() != 0) {
-            for (int k = 0; k < list2.size(); k++) {
-                ServerPlayerEntity player1 = (ServerPlayerEntity) list2.get(k);
-                PacketHelper.sendTo(player1, new SoundPacket(name, x, y, z, g, h));
-            }
-        }
+    @Override
+    public void onBlockAction(World world, int x, int y, int z, int code, int pitch) {
+        world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.explode", 0.2F, 1.25F);
     }
 
+    @Override
     public int getFacing(BlockView iBlockAccess, int i, int j, int l) {
         return 0;
     }
 
+    @Override
     public void setFacing(World world1, int l, int i1, int j1, int k1) {
     }
 
+    @Override
     public boolean canRotate(BlockView iBlockAccess, int i, int j, int l) {
         return true;
     }
 
+    @Override
     public boolean canTransmitRotation(BlockView iBlockAccess, int i, int j, int l) {
         return true;
     }
 
+    @Override
     public void rotate(World world, int i, int j, int k, boolean bReverse) {
         UnsortedUtils.DestroyHorizontallyAttachedAxles(world, i, j, k);
     }
 
+    @Override
     public boolean canOutputMechanicalPower() {
         return false;
     }
 
+    @Override
     public boolean canInputMechanicalPower() {
         return true;
     }
 
     @Override
     public void powerMachine(World world, int x, int y, int z, int side) {
-        world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.explode", 0.2F, 1.25F);
-        if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-            voicePacket(world, "random.explode", x, y, z, 0.2F, 1.25F);
-        }
+        world.playNoteBlockActionAt(x,y,z, 0, 0); ///
         EmitPulleyParticles(world, x, y, z, new Random());
         SetBlockOn(world, x, y, z, true);
         ((PulleyBlockEntity) world.getBlockEntity(x, y, z)).NotifyPulleyEntityOfBlockStateChange();
@@ -143,10 +146,7 @@ public class PulleyBlock extends TemplateBlockWithEntity
 
     @Override
     public void unpowerMachine(World world, int x, int y, int z, int side) {
-        world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.explode", 0.2F, 1.25F);
-        if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-            voicePacket(world, "random.explode", x, y, z, 0.2F, 1.25F);
-        }
+        world.playNoteBlockActionAt(x,y,z, 0, 0); ///
         EmitPulleyParticles(world, x, y, z, new Random());
         SetBlockOn(world, x, y, z, false);
         ((PulleyBlockEntity) world.getBlockEntity(x, y, z)).NotifyPulleyEntityOfBlockStateChange();

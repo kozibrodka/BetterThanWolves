@@ -34,6 +34,7 @@ public class PlatformBlock extends TemplateBlock
         ResetPlatformConsideredForConnectedTestArray();
     }
 
+    @Override
     public int getTexture(int iSide) {
         if (iSide == 1) {
             return TextureListener.platform_top;
@@ -41,33 +42,40 @@ public class PlatformBlock extends TemplateBlock
         return iSide != 0 ? TextureListener.platform_side : TextureListener.platform_top;
     }
 
+    @Override
     public boolean isOpaque() {
         return false;
     }
 
+    @Override
     public boolean isFullCube() {
         return true;
     } //ZMIANA KODU
 
     public boolean canSuffocate(World world, int i, int j, int l) {
         return true;
-    }
+    } //forge method?, delete propably
 
+    @Override
     public int getFacing(BlockView iBlockAccess, int i, int j, int l) {
         return 0;
     }
 
+    @Override
     public void setFacing(World world1, int l, int i1, int j1, int k1) {
     }
 
+    @Override
     public boolean canRotate(BlockView iBlockAccess, int i, int j, int l) {
         return false;
     }
 
+    @Override
     public boolean canTransmitRotation(BlockView iBlockAccess, int i, int j, int l) {
         return true;
     }
 
+    @Override
     public void rotate(World world1, int l, int i1, int j1, boolean flag) {
     }
 

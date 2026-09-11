@@ -1,5 +1,4 @@
 Station API and mappings:
-- DONE) Move to newest BINY-Mappings
 
 API improvements:
 - Rework rotational force
@@ -27,18 +26,23 @@ Game mechanics:
 - (DONE) MinecartSteel spawn on server, minecart speed, animation?
 - Pressure plate sound multiplayer (all plates including vanilla are soundless)
 - (DONE) WaterWheel and windmill dmg by hand on server + animation
+- (DONE) Cake screaming, missing from oryginal
+- Anvil Block new SoundGroup instead of world.playsound on Placed
 
 - (DONE) Client GUI powered on/off not showing BUG
 - (DONE) Fix Hopper soulfiltering - bring back oryginal design.
 
-Possbile extra features (oryginal BTW)""
+Possbile extra features (oryginal BTW)"" //TODO
 - Animated saw
 - (DONE) Omni Slab into Vertical Slabs
 - (DONE) Minecart from regorfed Steel
 - BOAT ENFORCED WITH STEEL - doesnt break from collision
 - steel frame Painting - with those cool x32 textures.
-- Backport cool stuff from 1.8.1 - 1.2.5 version maybe  - Buddy Block? transmitter block? - https://www.youtube.com/watch?v=IGBo0P3ZKts&list=PLC10F5BB68A5B956E&index=18
-- ^ right now i dont see anything thats interesting in newer versions.
+- (DONE) Buddy Block
+- Mattock tool
+- Lens Block, soczewka z lampą
+- /// old idea | Backport cool stuff from 1.8.1 - 1.2.5 version maybe  - Buddy Block? transmitter block? - https://www.youtube.com/watch?v=IGBo0P3ZKts&list=PLC10F5BB68A5B956E&index=18
+
 
 Configurable content (Move some content to separate add-on):
 - Creeper oyster shearing

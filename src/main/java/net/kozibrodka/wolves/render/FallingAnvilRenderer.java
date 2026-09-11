@@ -26,6 +26,7 @@ public class FallingAnvilRenderer extends EntityRenderer {
         this.shadowDarkness = 0.5F;
     }
 
+    @Override
     public void render(Entity entity, double d, double d1, double d2,
                        float f, float f1) {
         World world = entity.world;
@@ -35,10 +36,6 @@ public class FallingAnvilRenderer extends EntityRenderer {
         float f2 = 0.3125F;
         GL11.glTranslatef((float) d, (float) d1, (float) d2);
         GL11.glDisable(2896 /*GL_LIGHTING*/);
-//        int i = MathHelper.floor(entity.x);
-//        int j = MathHelper.floor(entity.y);
-//        int k = MathHelper.floor(entity.z);
-//        int l = MathHelper.floor(entityAnvil.getFacingMeta());
         int i = MathHelper.floor(entity.x);
         int j = MathHelper.floor(entity.y);
         int k = MathHelper.floor(entity.z);
@@ -61,27 +58,11 @@ public class FallingAnvilRenderer extends EntityRenderer {
         CustomBlockRendering.RenderMovingBlockWithMetadata(tileRenderer, block, world, i, j, k, 0);
         SetBlockBoundsRotatedAboutJToFacing(0.0F, 0.875F, 0.4375F, 0.125F, 1.0F, 0.5625F, l);
         CustomBlockRendering.RenderMovingBlockWithMetadata(tileRenderer, block, world, i, j, k, 0);
-//
-//        block.setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-//        CustomBlockRendering.RenderMovingBlock(tileRenderer, block, world, i, j, k);
 
         GL11.glEnable(2896 /*GL_LIGHTING*/);
         GL11.glPopMatrix();
     }
 
-//    public void render2(Entity entity, double d, double e, double f, float g, float h) {
-//        FallingAnvilEntity fallingBlockEntity = (FallingAnvilEntity) entity;
-//        GL11.glPushMatrix();
-//        GL11.glTranslatef((float)d, (float)e, (float)f);
-//        this.bindTexture("/terrain.png");
-//        Block var10 = Block.BLOCKS[Block.BRICKS.id];
-//        Block var10 = Block.BLOCKS[BlockListener.anvil.id];
-//        World var11 = fallingBlockEntity.world;
-//        GL11.glDisable(2896);
-//        this.tileRenderer.renderFallingBlockEntity(var10, var11, MathHelper.floor(fallingBlockEntity.x), MathHelper.floor(fallingBlockEntity.y), MathHelper.floor(fallingBlockEntity.z));
-//        GL11.glEnable(2896);
-//        GL11.glPopMatrix();
-//    }
 
     public void SetBlockBoundsRotatedAboutJToFacing(float x1, float y1, float z1, float x2, float y2, float z2, int iFacing) {
         float rotatedX1;

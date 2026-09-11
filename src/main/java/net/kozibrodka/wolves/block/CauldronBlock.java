@@ -44,16 +44,19 @@ public class CauldronBlock extends TemplateBlockWithEntity implements RotatableB
         setTickRandomly(true);
     }
 
+    @Override
     public void onPlaced(World world, int i, int j, int k) {
         super.onPlaced(world, i, j, k);
         world.scheduleBlockUpdate(i, j, k, id, getTickRate());
     }
 
+    @Override
     public void onBreak(World world, int i, int j, int k) {
         InventoryHandler.ejectInventoryContents(world, i, j, k, (Inventory) world.getBlockEntity(i, j, k));
         super.onBreak(world, i, j, k);
     }
 
+    @Override
     public int getTexture(int side, int meta) {
         if (meta == 0 && side == 1 || meta > 0 && side == meta) {
             return TextureListener.cauldron_top;
@@ -129,20 +132,24 @@ public class CauldronBlock extends TemplateBlockWithEntity implements RotatableB
         }
     }
 
+    @Override
     public boolean onUse(World world, int x, int y, int z, PlayerEntity playerEntity) {
         CauldronBlockEntity cauldronBlockEntity = (CauldronBlockEntity) world.getBlockEntity(x, y, z);
         GuiHelper.openGUI(playerEntity, Identifier.of(BlockEntityListener.NAMESPACE, "openCauldron"), cauldronBlockEntity, new CauldronScreenHandler(playerEntity.inventory, cauldronBlockEntity));
         return true;
     }
 
+    @Override
     protected BlockEntity createBlockEntity() {
         return new CauldronBlockEntity();
     }
 
+    @Override
     public Box getCollisionShape(World world, int i, int j, int k) {
         return Box.createCached(i, j, k, i + 1, (double) j + 0.99000000953674316D, (double) k + 1.0D);
     }
 
+    @Override
     public void randomDisplayTick(World world, int x, int y, int z, Random random) {
         if (getFireHeat(world, x, y, z) > 0) {
             for (int counter = 0; counter < 5; counter++) {
@@ -166,6 +173,7 @@ public class CauldronBlock extends TemplateBlockWithEntity implements RotatableB
         return 0;
     }
 
+    @Override
     public void onEntityCollision(World world, int x, int y, int z, Entity entity) {
         if (world.getBlockMeta(x, y, z) != 0) {
             return;
@@ -180,10 +188,7 @@ public class CauldronBlock extends TemplateBlockWithEntity implements RotatableB
                     continue;
                 }
                 if (InventoryHandler.addItemInstanceToInventory(tileEntityCauldron, targetEntityItem.stack)) {
-                    world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.pop", 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-                    if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                        voicePacket(world, "random.pop", x, y, z, 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-                    }
+                    world.playNoteBlockActionAt(x,y,z, 0, 0);
                     targetEntityItem.markDead();
                     continue;
                 }
@@ -201,40 +206,41 @@ public class CauldronBlock extends TemplateBlockWithEntity implements RotatableB
         }
     }
 
-    @Environment(EnvType.SERVER)
-    public void voicePacket(World world, String name, int x, int y, int z, float g, float h) {
-        List list2 = world.players;
-        if (list2.size() != 0) {
-            for (int k = 0; k < list2.size(); k++) {
-                ServerPlayerEntity player1 = (ServerPlayerEntity) list2.get(k);
-                PacketHelper.sendTo(player1, new SoundPacket(name, x, y, z, g, h));
-            }
-        }
+    @Override
+    public void onBlockAction(World world, int x, int y, int z, int code, int pitch) {
+        world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.pop", 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
     }
 
+    @Override
     public void onTick(World world, int i, int j, int k, Random random) {
         ValidateFireUnderState(world, i, j, k);
     }
 
+    @Override
     public void neighborUpdate(World world, int i, int j, int k, int iid) {
         ValidateFireUnderState(world, i, j, k);
     }
 
+    @Override
     public int getFacing(BlockView iBlockAccess, int i, int j, int l) {
         return 0;
     }
 
+    @Override
     public void setFacing(World world1, int l, int i1, int j1, int k1) {
     }
 
+    @Override
     public boolean canRotate(BlockView iBlockAccess, int i, int j, int l) {
         return false;
     }
 
+    @Override
     public boolean canTransmitRotation(BlockView iBlockAccess, int i, int j, int l) {
         return true;
     }
 
+    @Override
     public void rotate(World world1, int l, int i1, int j1, boolean flag) {
     }
 

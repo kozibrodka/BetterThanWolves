@@ -31,7 +31,9 @@ item.wolves.steel.name=Steel Ingot
 item.wolves.refined_pick_axe.name=Refined Pickaxe
 item.wolves.refined_shovel.name=Refined Shovel
 item.wolves.refined_hoe.name=Refined Hoe
-item.wolves.refined_axe.name=Battle Axe
+item.wolves.refined_battle_axe.name=Battle Axe
+item.wolves.refined_axe.name=Refined Axe
+item.wolves.refined_mattock.name=Refined Mattock
 item.wolves.refined_sword.name=Long Sword
 item.wolves.ground_netherrack.name=Ground Netherrack
 item.wolves.hellfire_dust.name=Hellfire Dust
@@ -126,6 +128,9 @@ tile.wolves.panel_bricks.name=Brick Panel
 tile.wolves.panel_mossy.name=Mossy Panel
 tile.wolves.panel_stone.name=Smooth Panel
 tile.wolves.converter.name=Mechanical Power Converter
+tile.wolves.buddyBlock.name=Buddy Block
+tile.wolves.rope.name=Rope
+tile.wolves.lens.name=Lens
 
 
 description.@.hemp=Obtained from harvesting hemp crops. Hemp crops can be grown 2 blocks high for efficient farming.

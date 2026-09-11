@@ -13,10 +13,7 @@ import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.recipe.*;
-import net.kozibrodka.wolves.utils.BlockPosition;
-import net.kozibrodka.wolves.utils.ReplaceableBlockChecker;
-import net.kozibrodka.wolves.utils.RotatableBlock;
-import net.kozibrodka.wolves.utils.UnsortedUtils;
+import net.kozibrodka.wolves.utils.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.PistonBlock;
 import net.minecraft.block.RailBlock;
@@ -55,6 +52,7 @@ public class TurntableBlockEntity extends BlockEntity {
         switchSetting = 0;
     }
 
+    @Override
     public void readNbt(NbtCompound nbttagcompound) {
         super.readNbt(nbttagcompound);
         rotationCount = nbttagcompound.getInt("rotationCount");
@@ -67,6 +65,7 @@ public class TurntableBlockEntity extends BlockEntity {
         }
     }
 
+    @Override
     public void writeNbt(NbtCompound nbttagcompound) {
         super.writeNbt(nbttagcompound);
         nbttagcompound.putInt("rotationCount", rotationCount);
@@ -74,6 +73,7 @@ public class TurntableBlockEntity extends BlockEntity {
         nbttagcompound.putInt("craftingRotationCount", switchSetting);
     }
 
+    @Override
     public void tick() {
         if (world.isRemote) {
             return;
@@ -95,8 +95,8 @@ public class TurntableBlockEntity extends BlockEntity {
 
     private void rotateTurntable() {
         world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.click", 0.05F, 1.0F);
-        if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-            voicePacket(world, "random.click", x, y, z, 0.05F, 1.0F);
+        if (WolvesMpUtils.isEnvServ()) {
+            WolvesMpUtils.soundPacket(world, x, y, z, "random.click", 0.05F, 1.0F);
         }
         boolean reverseDirection = ((TurntableBlock) BlockListener.turntable).IsBlockRedstoneOn(world, x, y, z);
         int iTempJ = y + 1;
@@ -125,8 +125,8 @@ public class TurntableBlockEntity extends BlockEntity {
         TurntableResult result = TurntableRecipeRegistry.getInstance().getResult(new TurntableInput(targetBlock, targetMeta));
         if (result != null) {
             world.playSound((float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, targetBlock.soundGroup.getSound(), (targetBlock.soundGroup.getVolume() + 1.0F) / 5.0F, targetBlock.soundGroup.getPitch() * 0.8F);
-            if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                voicePacket(world, targetBlock.soundGroup.getSound(), i, j, k, (targetBlock.soundGroup.getVolume() + 1.0F) / 5.0F, targetBlock.soundGroup.getPitch() * 0.8F);
+            if (WolvesMpUtils.isEnvServ()) {
+                WolvesMpUtils.soundPacket(world, i, j, k, targetBlock.soundGroup.getSound(), (targetBlock.soundGroup.getVolume() + 1.0F) / 5.0F, targetBlock.soundGroup.getPitch() * 0.8F);
             }
             rotateRegisteredBlock(i, j, k, result);
             return;
@@ -352,14 +352,4 @@ public class TurntableBlockEntity extends BlockEntity {
         world.setBlocksDirty(i, j, k, i, j, k);
     }
 
-    @Environment(EnvType.SERVER)
-    public void voicePacket(World world, String name, int x, int y, int z, float g, float h) {
-        List list2 = world.players;
-        if (list2.size() != 0) {
-            for (int k = 0; k < list2.size(); k++) {
-                ServerPlayerEntity player1 = (ServerPlayerEntity) list2.get(k);
-                PacketHelper.sendTo(player1, new SoundPacket(name, x, y, z, g, h));
-            }
-        }
-    }
 }

@@ -40,18 +40,22 @@ public class CompanionCubeBlock extends TemplateBlock
         textureId = 20;
     }
 
+    @Override
     public int getDroppedItemMeta(int iMetaData) {
         return (iMetaData & 8) <= 0 ? 0 : 1;
     }
 
+    @Override
     public boolean isOpaque() {
         return false;
     }
 
+    @Override
     public boolean isFullCube() {
         return true;
     } //ZMIANA KODU
 
+    @Override
     public Box getCollisionShape(World world, int i, int j, int k) {
         if (GetHalfCubeState(world, i, j, k)) {
             return Box.createCached(i, j, k, (float) (i + 1), (float) j + 0.5F, (float) (k + 1));
@@ -60,6 +64,7 @@ public class CompanionCubeBlock extends TemplateBlock
         }
     }
 
+    @Override
     public Box getBoundingBox(World world, int i, int j, int k) {
         if (GetHalfCubeState(world, i, j, k)) {
             return Box.createCached(i, j, k, (float) (i + 1), (float) j + 0.5F, (float) (k + 1));
@@ -68,6 +73,7 @@ public class CompanionCubeBlock extends TemplateBlock
         }
     }
 
+    @Override
     public void updateBoundingBox(BlockView iblockaccess, int i, int j, int k) {
         if (GetHalfCubeState(iblockaccess, i, j, k)) {
             setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 0.5F, 1.0F);
@@ -76,6 +82,7 @@ public class CompanionCubeBlock extends TemplateBlock
         }
     }
 
+    @Override
     public int getTextureId(BlockView iblockaccess, int i, int j, int k, int iSide) {
         int iFacing = getFacing(iblockaccess, i, j, k);
         if (GetHalfCubeState(iblockaccess, i, j, k)) {
@@ -88,6 +95,7 @@ public class CompanionCubeBlock extends TemplateBlock
         return TextureListener.companion_side;
     }
 
+    @Override
     public int getTexture(int i) {
         if (i == 3) {
             return TextureListener.companion_face;
@@ -96,6 +104,7 @@ public class CompanionCubeBlock extends TemplateBlock
         }
     }
 
+    @Override
     public int getTexture(int iSide, int iMetaData) {
         if (iMetaData > 0) {
             if (iSide == 1) {
@@ -107,10 +116,12 @@ public class CompanionCubeBlock extends TemplateBlock
         return TextureListener.companion_side;
     }
 
+    @Override
     public void onPlaced(World world, int i, int j, int k, int iFacing) {
         setFacing(world, i, j, k, UnsortedUtils.getOppositeFacing(iFacing));
     }
 
+    @Override
     public void onPlaced(World world, int i, int j, int k, LivingEntity entityliving) {
         if (!GetHalfCubeState(world, i, j, k)) {
             SpawnHearts(world, i, j, k);
@@ -119,12 +130,14 @@ public class CompanionCubeBlock extends TemplateBlock
         setFacing(world, i, j, k, iFacing);
     }
 
+    @Override
     public void onBreak(World world, int i, int j, int k) {
         if (!GetHalfCubeState(world, i, j, k)) {
             world.playSound((float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, "mob.wolf.whine", 0.5F, 2.6F + (world.random.nextFloat() - world.random.nextFloat()) * 0.8F);
         }
     }
 
+    @Override
     public void onPlaced(World world, int i, int j, int k) {
         int iBlockBelowID = world.getBlockId(i, j - 1, k);
         if (iBlockBelowID == id) {
@@ -145,49 +158,45 @@ public class CompanionCubeBlock extends TemplateBlock
         return !GetHalfCubeState(world, i, j, k);
     }
 
+    @Override
     public int getFacing(BlockView iBlockAccess, int i, int j, int k) {
         return iBlockAccess.getBlockMeta(i, j, k) & -9;
     }
 
+    @Override
     public void setFacing(World world, int i, int j, int k, int iFacing) {
         int iMetaData = world.getBlockMeta(i, j, k) & 8;
         iMetaData |= iFacing;
         world.setBlockMeta(i, j, k, iMetaData);
-        world.blockUpdateEvent(i, j, k);
     }
 
+    @Override
     public boolean canRotate(BlockView iBlockAccess, int i, int j, int l) {
         return true;
     }
 
+    @Override
     public boolean canTransmitRotation(BlockView iBlockAccess, int i, int j, int l) {
         return true;
     }
 
+    @Override
     public void rotate(World world, int i, int j, int k, boolean bReverse) {
         int iFacing = getFacing(world, i, j, k);
         int iNewFacing = UnsortedUtils.RotateFacingAroundJ(iFacing, bReverse);
         if (iNewFacing != iFacing) {
             setFacing(world, i, j, k, iNewFacing);
             world.setBlocksDirty(i, j, k, i, j, k);
+            world.blockUpdateEvent(i, j, k);
             if (world.random.nextInt(12) == 0) {
-                world.playSound((float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, "mob.wolf.whine", 0.5F, 2.6F + (world.random.nextFloat() - world.random.nextFloat()) * 0.8F);
-                if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                    voicePacket(world, "mob.wolf.whine", i, j, k, 0.5F, 2.6F + (world.random.nextFloat() - world.random.nextFloat()) * 0.8F);
-                }
+                world.playNoteBlockActionAt(i,j,k, 0, 0); ///
             }
         }
     }
 
-    @Environment(EnvType.SERVER)
-    public void voicePacket(World world, String name, int x, int y, int z, float g, float h) {
-        List list2 = world.players;
-        if (list2.size() != 0) {
-            for (int k = 0; k < list2.size(); k++) {
-                ServerPlayerEntity player1 = (ServerPlayerEntity) list2.get(k);
-                PacketHelper.sendTo(player1, new SoundPacket(name, x, y, z, g, h));
-            }
-        }
+    @Override
+    public void onBlockAction(World world, int x, int y, int z, int code, int pitch) {
+        world.playSound((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F, "mob.wolf.whine", 0.5F, 2.6F + (world.random.nextFloat() - world.random.nextFloat()) * 0.8F);
     }
 
     public boolean GetHalfCubeState(BlockView iBlockAccess, int i, int j, int k) {

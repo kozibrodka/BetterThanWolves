@@ -152,6 +152,13 @@ public class TextureListener {
         conveyor_right_on = registerBlockTexture("block/conveyor_right_on");
         conveyor_up_on = registerBlockTexture("block/conveyor_up_on");
         conveyor_down_on = registerBlockTexture("block/conveyor_down_on");
+        buddy_on = registerBlockTexture("block/fcBlockBuddy_on");
+        buddy_off = registerBlockTexture("block/fcBlockBuddy_off");
+        buddy_face_on = registerBlockTexture("block/fcBlockBuddy_face_on");
+        buddy_face_off = registerBlockTexture("block/fcBlockBuddy_face_off");
+        lens_back = registerBlockTexture("block/fcBlockLens_back");
+        lens_side = registerBlockTexture("block/fcBlockLens_side");
+        lens_front = registerBlockTexture("block/fcBlockLens_front");
         BlockListener.blockOfGrates.specifyTextures(getBlockTexture("item/fcGrate"));
         BlockListener.blockOfSteel.specifyTextures(getBlockTexture("block/steel"));
         BlockListener.automaticAnvil.specifyTextures(getBlockTexture(autoAnvil + "controller"), getBlockTexture(autoAnvil + "side"), getBlockTexture(autoAnvil + "side"));
@@ -200,8 +207,10 @@ public class TextureListener {
         ItemListener.refinedPickAxe.setTexture(Identifier.of(NAMESPACE, "item/fcRefinedPickAxe"));
         ItemListener.refinedShovel.setTexture(Identifier.of(NAMESPACE, "item/fcRefinedShovel"));
         ItemListener.refinedHoe.setTexture(Identifier.of(NAMESPACE, "item/fcRefinedHoe"));
-        ItemListener.refinedAxe.setTexture(Identifier.of(NAMESPACE, "item/fcRefinedAxe"));
+        ItemListener.refinedBattleAxe.setTexture(Identifier.of(NAMESPACE, "item/fcRefinedBattleAxe"));
         ItemListener.refinedSword.setTexture(Identifier.of(NAMESPACE, "item/fcRefinedSword"));
+        ItemListener.refinedAxe.setTexture(Identifier.of(NAMESPACE, "item/fcRefinedAxe"));
+//        ItemListener.refinedMattock.setTexture(Identifier.of(NAMESPACE, "item/fcRefinedMattock"));
         ItemListener.groundNetherrack.setTexture(Identifier.of(NAMESPACE, "item/fcGroundNetherrack"));
         ItemListener.hellfireDust.setTexture(Identifier.of(NAMESPACE, "item/fcHellfireDust"));
         ItemListener.concentratedHellfire.setTexture(Identifier.of(NAMESPACE, "item/fcConcentratedHellfire"));
@@ -362,4 +371,11 @@ public class TextureListener {
     public static int conveyor_right_on;
     public static int conveyor_up_on;
     public static int conveyor_down_on;
+    public static int buddy_on;
+    public static int buddy_off;
+    public static int buddy_face_on;
+    public static int buddy_face_off;
+    public static int lens_back;
+    public static int lens_side;
+    public static int lens_front;
 }

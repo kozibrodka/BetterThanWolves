@@ -25,6 +25,7 @@ import net.minecraft.item.ItemStack;
 import net.modificationstation.stationapi.api.event.recipe.RecipeRegisterEvent;
 import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
 import net.modificationstation.stationapi.api.recipe.CraftingRegistry;
+import net.modificationstation.stationapi.api.recipe.FuelRegistry;
 import net.modificationstation.stationapi.api.recipe.SmeltingRegistry;
 import net.modificationstation.stationapi.api.registry.BlockRegistry;
 import net.modificationstation.stationapi.api.registry.ItemRegistry;
@@ -103,6 +104,7 @@ public class RecipeListener {
         }
         addCrucibleRecipes();
         addDebugRecipes();
+        addFurnaceFuel();
     }
 
     public static void addAnvilRecipe(ItemStack output, Object[] inputs) {
@@ -143,7 +145,7 @@ public class RecipeListener {
             CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.blockDispenser), "###", "# #", "YXY", '#', Block.MOSSY_COBBLESTONE, 'X', getDustTagKey(REDSTONE), 'Y', getStoneTagKey());
         }
         CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.cauldron), "#Y#", "#X#", "###", '#', getIngotTagKey(IRON), 'X', Item.BONE, 'Y', Item.WATER_BUCKET);
-        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.detectorRailWood, 6), "X X", "X#X", "XRX", 'X', getIngotTagKey(IRON), 'R', getDustTagKey(REDSTONE), '#', Block.STONE_PRESSURE_PLATE);
+        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.detectorRailWood, 6), "X X", "X#X", "XRX", 'X', getIngotTagKey(IRON), 'R', getDustTagKey(REDSTONE), '#', Block.WOODEN_PRESSURE_PLATE);
         CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.detectorRailObsidian, 6), "X X", "X#X", "XRX", 'X', getIngotTagKey(IRON), 'R', getDustTagKey(REDSTONE), '#', BlockListener.pressurePlateObsidian);
         if (!BetterThanWolves.isHarderThanWolvesPresent) {
             CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.detectorBlock), "X#X", "###", "ZYZ", '#', getCobblestoneTagKey(), 'X', new ItemStack(Item.DYE, 1, 4), 'Y', getDustTagKey(REDSTONE), 'Z',
@@ -154,7 +156,7 @@ public class RecipeListener {
         CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.axleBlock), "#", "X", "#", '#', getPlanksTagKey(), 'X', ItemListener.ropeItem);
         CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.axleBlock), "#", "X", "#", '#', BlockListener.moulding, 'X', ItemListener.ropeItem);
         CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.gearBox), "#X#", "XYX", "#X#", '#', getPlanksTagKey(), 'X', ItemListener.gear, 'Y', getDustTagKey(REDSTONE));
-        if(ConfigListener.wolvesGlass.small_tweaks.verticalSlabs) {
+        if(ConfigListener.wolvesGlass.content.verticalSlabs) {
             CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.hopper), "# #", "XYX", " Z ", '#', new ItemStack(BlockListener.panelWooden, 1), 'X', ItemListener.gear, 'Y', Block.STONE_PRESSURE_PLATE, 'Z',
                     BlockListener.corner);
             CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.gearBox), "#X#", "XYX", "#X#", '#', new ItemStack(BlockListener.panelWooden, 1), 'X', ItemListener.gear, 'Y', getDustTagKey(REDSTONE));
@@ -172,12 +174,12 @@ public class RecipeListener {
                     ItemListener.belt);
         }
         CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.planter, 1, 1), "Y", "X", "#", '#', new ItemStack(BlockListener.planter, 1, 0), 'X', Item.WATER_BUCKET, 'Y', Block.DIRT);
-        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.conveyor, 1), "BBB", "PGP", "PPP", 'B', ItemListener.belt, 'P', getPlanksTagKey(), 'G', BlockListener.gearBox);
-        CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.conveyorExtender, 1), "BBB", "PGP", "PPP", 'B', ItemListener.belt, 'P', getPlanksTagKey(), 'G', ItemListener.gear);
-        if (ConfigListener.wolvesGlass.small_tweaks.wickerBlock) {
-            CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.blockOfWicker, 1), "XX", "XX", 'X', ItemListener.wicker);
+        if (ConfigListener.wolvesGlass.content.machine_blocks) {
+            CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.conveyor, 1), "BBB", "PGP", "PPP", 'B', ItemListener.belt, 'P', getPlanksTagKey(), 'G', BlockListener.gearBox);
+            CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.conveyorExtender, 1), "BBB", "PGP", "PPP", 'B', ItemListener.belt, 'P', getPlanksTagKey(), 'G', ItemListener.gear);
         }
-        if (ConfigListener.wolvesGlass.small_tweaks.grateBlock) {
+        if (ConfigListener.wolvesGlass.content.cosmetic_blocks) {
+            CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.blockOfWicker, 1), "XX", "XX", 'X', ItemListener.wicker);
             CraftingRegistry.addShapedRecipe(new ItemStack(BlockListener.blockOfGrates, 1), "XX", "XX", 'X', ItemListener.grate);
         }
     }
@@ -199,7 +201,7 @@ public class RecipeListener {
         CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.rollersItem, 1), "###", "###", "###", '#', BlockListener.moulding);
         CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.strap, 8), "#", '#', ItemListener.tannedLeather);
         CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.belt, 1), " # ", "# #", " # ", '#', ItemListener.strap);
-        if(ConfigListener.wolvesGlass.small_tweaks.verticalSlabs) {
+        if(ConfigListener.wolvesGlass.content.verticalSlabs) {
             CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.woodBlade, 1), "#  ", "#X#", "#  ", '#', new ItemStack(BlockListener.panelWooden, 1), 'X', getSlimeBallTagKey());
         }else{
             CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.woodBlade, 1), "#  ", "#X#", "#  ", '#', new ItemStack(BlockListener.omniSlab, 1, 1), 'X', getSlimeBallTagKey());
@@ -210,8 +212,10 @@ public class RecipeListener {
         if (ConfigListener.wolvesGlass.difficulty.wickerWeaving) {
             CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.wickerWeaving), "###", "###", "###", '#', Item.SUGAR_CANE);
         }
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.weight, 4), "I", "C", 'I', getIngotTagKey(IRON), 'C', BlockListener.corner);
-        CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.weight, 6), "I", "C", 'I', getIngotTagKey(STEEL), 'C', BlockListener.corner);
+        if(ConfigListener.wolvesGlass.content.machine_blocks) {
+            CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.weight, 4), "I", "C", 'I', getIngotTagKey(IRON), 'C', BlockListener.corner);
+            CraftingRegistry.addShapedRecipe(new ItemStack(ItemListener.weight, 6), "I", "C", 'I', getIngotTagKey(STEEL), 'C', BlockListener.corner);
+        }
     }
 
     private static void addDyeRecipes() {
@@ -229,10 +233,11 @@ public class RecipeListener {
     }
 
     private static void addAlternateVanillaRecipes() {
+        CraftingRegistry.addShapedRecipe(new ItemStack(Block.STICKY_PISTON, 1), "#", "X", '#', ItemListener.glue, 'X', Block.PISTON);
         CraftingRegistry.addShapedRecipe(new ItemStack(Block.FENCE, 2), "###", '#', BlockListener.moulding);
         CraftingRegistry.addShapedRecipe(new ItemStack(Block.WOODEN_STAIRS, 1), "# ", "##", '#', BlockListener.moulding);
-        if(ConfigListener.wolvesGlass.small_tweaks.verticalSlabs) {
-            CraftingRegistry.addShapedRecipe(new ItemStack(Item.SIGN, 1), "###", "###", " X ", '#', new ItemStack(BlockListener.panelWooden, 1), 'X', getStickTagKey());
+        if(ConfigListener.wolvesGlass.content.verticalSlabs) {
+            CraftingRegistry.addShapedRecipe(new ItemStack(Item.SIGN, 1), "###", "###", " X ", '#', new ItemStack(BlockListener.panelWooden, 1), 'X', Item.STICK);
             CraftingRegistry.addShapedRecipe(new ItemStack(Item.WOODEN_DOOR, 1), "##", "##", "##", '#', new ItemStack(BlockListener.panelWooden, 1));
             CraftingRegistry.addShapedRecipe(new ItemStack(Block.TRAPDOOR, 2), "###", "###", '#', new ItemStack(BlockListener.panelWooden, 1));
         }else{
@@ -251,7 +256,7 @@ public class RecipeListener {
     }
 
     private static void addConversionRecipes() {
-        if(ConfigListener.wolvesGlass.small_tweaks.verticalSlabs) {
+        if(ConfigListener.wolvesGlass.content.verticalSlabs) {
             CraftingRegistry.addShapelessRecipe(new ItemStack(Block.PLANKS), new ItemStack(BlockListener.panelWooden, 1), new ItemStack(BlockListener.panelWooden, 1));
             CraftingRegistry.addShapelessRecipe(new ItemStack(Block.STONE), new ItemStack(BlockListener.panelStone, 1), new ItemStack(BlockListener.panelStone, 1));
             CraftingRegistry.addShapelessRecipe(new ItemStack(BlockListener.panelWooden, 1), new ItemStack(BlockListener.moulding, 1, 0), new ItemStack(BlockListener.moulding, 1, 0));
@@ -276,7 +281,7 @@ public class RecipeListener {
             addAnvilRecipe(new ItemStack(ItemListener.refinedHoe, 1), new Object[]{
                     "###  ", "  X  ", "  X  ", "  X  ", "  X  ", '#', ItemListener.steel, 'X', ItemListener.haft
             });
-            addAnvilRecipe(new ItemStack(ItemListener.refinedAxe, 1), new Object[]{
+            addAnvilRecipe(new ItemStack(ItemListener.refinedBattleAxe, 1), new Object[]{
                     "#####", "# X #", "  X  ", "  X  ", "  X  ", '#', ItemListener.steel, 'X', ItemListener.haft
             });
             addAnvilRecipe(new ItemStack(ItemListener.refinedSword, 1), new Object[]{
@@ -307,8 +312,14 @@ public class RecipeListener {
             addAnvilRecipe(new ItemStack(ItemListener.refinedHoe, 1), new Object[]{
                     "##", " X", " X", '#', ItemListener.steel, 'X', ItemListener.haft
             });
-            addAnvilRecipe(new ItemStack(ItemListener.refinedAxe, 1), new Object[]{
+            addAnvilRecipe(new ItemStack(ItemListener.refinedBattleAxe, 1), new Object[]{
                     "###", "#X#", " X ", '#', ItemListener.steel, 'X', ItemListener.haft
+            });
+            addAnvilRecipe(new ItemStack(ItemListener.refinedAxe, 1), new Object[]{
+                    "## ", "#X ", " X ", '#', ItemListener.steel, 'X', ItemListener.haft
+            });
+            addAnvilRecipe(new ItemStack(ItemListener.refinedAxe, 1), new Object[]{
+                    " ##", " X#", " X ", '#', ItemListener.steel, 'X', ItemListener.haft
             });
             addAnvilRecipe(new ItemStack(ItemListener.refinedSword, 1), new Object[]{
                     "#", "#", "X", '#', ItemListener.steel, 'X', ItemListener.haft
@@ -329,7 +340,7 @@ public class RecipeListener {
                     "# #", "# #", '#', ItemListener.steel
             });
         }
-        if (ConfigListener.wolvesGlass.small_tweaks.steelBlock) {
+        if (ConfigListener.wolvesGlass.content.cosmetic_blocks) {
             addAnvilRecipe(new ItemStack(BlockListener.blockOfSteel, 1), new Object[]{
                     "###", "###", "###", '#', ItemListener.steel
             });
@@ -337,13 +348,26 @@ public class RecipeListener {
         addAnvilRecipe(new ItemStack(Block.RAIL, 64), new Object[]{
                 "#X#", "#X#", "#X#", '#', ItemListener.steel, 'X', ItemListener.haft
         });
-        addAnvilRecipe(new ItemStack(BlockListener.automaticAnvil, 1), new Object[]{
-                " FGF ", "GCACG", " FGF ", 'G', ItemListener.gear, 'F', BlockListener.anvilFrame, 'A', BlockListener.anvil, 'C', Block.CRAFTING_TABLE
-        });
-        if(ConfigListener.wolvesGlass.small_tweaks.verticalSlabs) {
-            addAnvilRecipe(new ItemStack(BlockListener.anvilFrame, 10), new Object[]{
-                    "X###X", "#X#X#", "##X##", "#X#X#", "X###X", 'X', ItemListener.steel, '#', new ItemStack(BlockListener.panelWooden, 1)
+        if(ConfigListener.wolvesGlass.content.autoanvil_blocks){
+            addAnvilRecipe(new ItemStack(BlockListener.automaticAnvil, 1), new Object[]{
+                    " FGF ", "GCACG", " FGF ", 'G', ItemListener.gear, 'F', BlockListener.anvilFrame, 'A', BlockListener.anvil, 'C', Block.CRAFTING_TABLE
             });
+            addAnvilRecipe(new ItemStack(BlockListener.machinePowerInput, 1), new Object[]{
+                    "FGF", "GBG", "FGF", 'G', ItemListener.gear, 'F', BlockListener.anvilFrame, 'B', BlockListener.gearBox
+            });
+            addAnvilRecipe(new ItemStack(BlockListener.inputBus, 1), new Object[]{
+                    "FHF", "GCG", "FGF", 'G', ItemListener.gear, 'F', BlockListener.anvilFrame, 'C', Block.CHEST, 'H', BlockListener.hopper
+            });
+            addAnvilRecipe(new ItemStack(BlockListener.outputBus, 1), new Object[]{
+                    "FGF", "GCG", "FHF", 'G', ItemListener.gear, 'F', BlockListener.anvilFrame, 'C', Block.CHEST, 'H', BlockListener.hopper
+            });
+        }
+        if(ConfigListener.wolvesGlass.content.verticalSlabs) {
+            if(ConfigListener.wolvesGlass.content.autoanvil_blocks) {
+                addAnvilRecipe(new ItemStack(BlockListener.anvilFrame, 10), new Object[]{
+                        "X###X", "#X#X#", "##X##", "#X#X#", "X###X", 'X', ItemListener.steel, '#', new ItemStack(BlockListener.panelWooden, 1)
+                });
+            }
             addAnvilRecipe(new ItemStack(BlockListener.panelStoneS, 6), new Object[]{
                     "#", "#", "#", '#', Block.STONE
             });
@@ -361,37 +385,36 @@ public class RecipeListener {
             });
             SmeltingRegistry.addSmeltingRecipe(new ItemStack(BlockListener.panelCobblestone, 1, 0), new ItemStack(BlockListener.panelStone, 1,0));
         }else{
-            addAnvilRecipe(new ItemStack(BlockListener.anvilFrame, 10), new Object[]{
-                    "X###X", "#X#X#", "##X##", "#X#X#", "X###X", 'X', ItemListener.steel, '#', new ItemStack(BlockListener.omniSlab, 1, 1)
+            if(ConfigListener.wolvesGlass.content.autoanvil_blocks) {
+                addAnvilRecipe(new ItemStack(BlockListener.anvilFrame, 10), new Object[]{
+                        "X###X", "#X#X#", "##X##", "#X#X#", "X###X", 'X', ItemListener.steel, '#', new ItemStack(BlockListener.omniSlab, 1, 1)
+                });
+            }
+        }
+        if(ConfigListener.wolvesGlass.content.steelminecart) {
+            addAnvilRecipe(new ItemStack(ItemListener.steelMinecart, 1), new Object[]{
+                    "# #", "###", '#', ItemListener.steel
             });
         }
-        addAnvilRecipe(new ItemStack(BlockListener.machinePowerInput, 1), new Object[]{
-                "FGF", "GBG", "FGF", 'G', ItemListener.gear, 'F', BlockListener.anvilFrame, 'B', BlockListener.gearBox
-        });
-        addAnvilRecipe(new ItemStack(BlockListener.inputBus, 1), new Object[]{
-                "FHF", "GCG", "FGF", 'G', ItemListener.gear, 'F', BlockListener.anvilFrame, 'C', Block.CHEST, 'H', BlockListener.hopper
-        });
-        addAnvilRecipe(new ItemStack(BlockListener.outputBus, 1), new Object[]{
-                "FGF", "GCG", "FHF", 'G', ItemListener.gear, 'F', BlockListener.anvilFrame, 'C', Block.CHEST, 'H', BlockListener.hopper
-        });
-        addAnvilRecipe(new ItemStack(ItemListener.steelMinecart, 1), new Object[]{
-                "# #", "###", '#', ItemListener.steel
-        });
-        addAnvilRecipe(new ItemStack(ItemListener.weight, 12), new Object[]{
-                "I", "C", 'I', ItemListener.steel, 'C', BlockListener.corner
-        });
-        addAnvilRecipe(new ItemStack(BlockListener.dropper, 1), new Object[]{
-                "S   S", "S   S", "GAHAG", "SRPRS", "SSISS", 'S',
-                ItemListener.steel, 'G', BlockListener.gearBox, 'A', BlockListener.axleBlock,
-                'H', BlockListener.hopper, 'R', Item.REDSTONE, 'P', Block.STONE_PRESSURE_PLATE, 'I', Item.IRON_DOOR
-        });
+        if (ConfigListener.wolvesGlass.content.machine_blocks) {
+            addAnvilRecipe(new ItemStack(BlockListener.dropper, 1), new Object[]{
+                    "S   S", "S   S", "GAHAG", "SRPRS", "SSISS", 'S',
+                    ItemListener.steel, 'G', BlockListener.gearBox, 'A', BlockListener.axleBlock,
+                    'H', BlockListener.hopper, 'R', Item.REDSTONE, 'P', Block.STONE_PRESSURE_PLATE, 'I', Item.IRON_DOOR
+            });
+            addAnvilRecipe(new ItemStack(ItemListener.weight, 12), new Object[]{
+                    "I", "C", 'I', ItemListener.steel, 'C', BlockListener.corner
+            });
+        }
+        addAnvilRecipe(new ItemStack(BlockListener.buddyBlock, 1), new Object[]{"##X", "#Y#", "X##", '#', ItemListener.steel, 'X', new ItemStack(Item.DYE,1,4), 'Y', Block.LIT_REDSTONE_TORCH}); /// OG - 'X', mod_FCBetterThanWolves.fcPolishedLapis + harder 5x5 recipe
+
     }
 
     private static void addShapelessAnvilRecipes() {
         addShapelessAnvilRecipe(new ItemStack(ItemListener.broadHeadArrowhead, 4), new Object[]{
                 ItemListener.steel
         });
-        if(!ConfigListener.wolvesGlass.small_tweaks.verticalSlabs) {
+        if(!ConfigListener.wolvesGlass.content.verticalSlabs) {
             addShapelessAnvilRecipe(new ItemStack(BlockListener.omniSlab, 1, 0), new Object[]{
                     Block.STONE
             });
@@ -557,7 +580,9 @@ public class RecipeListener {
                 this.add("Power input must be powered like a gear box.");
             }
         };
-        MultiBlockRecipeRegistry.INSTANCE.addMultiblockRecipe(Identifier.of(NAMESPACE, "automatic_anvil"), automaticAnvilDescription, automaticAnvilLayers, automaticAnvilPatterns);
+        if(ConfigListener.wolvesGlass.content.autoanvil_blocks) {
+            MultiBlockRecipeRegistry.INSTANCE.addMultiblockRecipe(Identifier.of(NAMESPACE, "automatic_anvil"), automaticAnvilDescription, automaticAnvilLayers, automaticAnvilPatterns);
+        }
     }
 
     private static void addCrucibleRecipes() {
@@ -625,7 +650,7 @@ public class RecipeListener {
             addCrucibleRecipe(new ItemStack(ItemListener.steel, 18), new ItemStack[]{new ItemStack(ItemListener.helmetSteel, 1, -1)});
             addCrucibleRecipe(new ItemStack(ItemListener.steel, 12), new ItemStack[]{new ItemStack(ItemListener.bootsSteel, 1, -1)});
             addCrucibleRecipe(new ItemStack(ItemListener.steel, 5), new ItemStack[]{new ItemStack(ItemListener.refinedPickAxe, 1, -1)});
-            addCrucibleRecipe(new ItemStack(ItemListener.steel, 7), new ItemStack[]{new ItemStack(ItemListener.refinedAxe, 1, -1)});
+            addCrucibleRecipe(new ItemStack(ItemListener.steel, 7), new ItemStack[]{new ItemStack(ItemListener.refinedBattleAxe, 1, -1)});
             addCrucibleRecipe(new ItemStack(ItemListener.steel, 6), new ItemStack[]{new ItemStack(ItemListener.refinedSword, 1, -1)});
             addCrucibleRecipe(new ItemStack(ItemListener.steel, 3), new ItemStack[]{new ItemStack(ItemListener.refinedHoe, 1, -1)});
             addCrucibleRecipe(new ItemStack(ItemListener.steel, 6), new ItemStack[]{new ItemStack(ItemListener.refinedShovel, 1, -1)});
@@ -635,7 +660,8 @@ public class RecipeListener {
             addCrucibleRecipe(new ItemStack(ItemListener.steel, 7), new ItemStack[]{new ItemStack(BlockListener.anvil)});
             addCrucibleRecipe(new ItemStack(ItemListener.steel, 7), new ItemStack[]{new ItemStack(ItemListener.leggingsSteel, 1, -1)});
             addCrucibleRecipe(new ItemStack(ItemListener.steel, 6), new ItemStack[]{new ItemStack(ItemListener.helmetSteel, 1, -1)});
-            addCrucibleRecipe(new ItemStack(ItemListener.steel, 5), new ItemStack[]{new ItemStack(ItemListener.refinedAxe, 1, -1)});
+            addCrucibleRecipe(new ItemStack(ItemListener.steel, 5), new ItemStack[]{new ItemStack(ItemListener.refinedBattleAxe, 1, -1)});
+            addCrucibleRecipe(new ItemStack(ItemListener.steel, 3), new ItemStack[]{new ItemStack(ItemListener.refinedAxe, 1, -1)});
             addCrucibleRecipe(new ItemStack(ItemListener.steel, 4), new ItemStack[]{new ItemStack(ItemListener.bootsSteel, 1, -1)});
             addCrucibleRecipe(new ItemStack(ItemListener.steel, 3), new ItemStack[]{new ItemStack(ItemListener.refinedPickAxe, 1, -1)});
             addCrucibleRecipe(new ItemStack(ItemListener.steel, 2), new ItemStack[]{new ItemStack(ItemListener.refinedSword, 1, -1)});
@@ -646,7 +672,9 @@ public class RecipeListener {
         addCrucibleRecipe(new ItemStack(ItemListener.steel, 7), new ItemStack[]{new ItemStack(BlockListener.anvil)});
         addCrucibleRecipe(new ItemStack(ItemListener.steel, 1), new ItemStack[]{new ItemStack(ItemListener.broadHeadArrowhead, 4)});
         addCrucibleRecipe(new ItemStack(ItemListener.steel, 1), new ItemStack[]{new ItemStack(ItemListener.broadHeadArrow, 16)});
-        addCrucibleRecipe(new ItemStack(ItemListener.steel, 5), new ItemStack[]{new ItemStack(ItemListener.steelMinecart)});
+        if(ConfigListener.wolvesGlass.content.steelminecart) {
+            addCrucibleRecipe(new ItemStack(ItemListener.steel, 5), new ItemStack[]{new ItemStack(ItemListener.steelMinecart)});
+        }
 
     }
 
@@ -659,7 +687,7 @@ public class RecipeListener {
         SawingRecipeRegistry.getInstance().addSawingRecipe(new ItemStack(Block.LOG, 1, 1), new ItemStack(Block.PLANKS, 4));
         SawingRecipeRegistry.getInstance().addSawingRecipe(new ItemStack(Block.LOG, 1, 2), new ItemStack(Block.PLANKS, 4));
 
-        if(ConfigListener.wolvesGlass.small_tweaks.verticalSlabs) {
+        if(ConfigListener.wolvesGlass.content.verticalSlabs) {
             SawingRecipeRegistry.getInstance().addSawingRecipe(new ItemStack(Block.PLANKS, 1), new ItemStack(BlockListener.panelWooden, 2));
             SawingRecipeRegistry.getInstance().addSawingRecipe(new ItemStack(BlockListener.panelWooden, 1, 0), new ItemStack(BlockListener.moulding, 2));
             SawingRecipeRegistry.getInstance().addSawingRecipe(new ItemStack(BlockListener.panelWooden, 1, 1), new ItemStack(BlockListener.moulding, 2));
@@ -700,6 +728,10 @@ public class RecipeListener {
     }
 
     private static void addDebugRecipes() {
+    }
+
+    private static void addFurnaceFuel(){
+        FuelRegistry.addFuelItem(ItemListener.netherCoal, 3200);
     }
 
     public static TagKey<Item> getPlanksTagKey() {

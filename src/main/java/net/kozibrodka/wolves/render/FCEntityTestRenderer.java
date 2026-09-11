@@ -13,6 +13,7 @@ public class FCEntityTestRenderer extends EntityRenderer {
         modelWindMill = new WindMillModelTEST();
     }
 
+    @Override
     public void render(Entity entity, double d, double d1, double d2,
                        float f, float f1) {
         FCEntityTEST fcentitywindmill = (FCEntityTEST) entity;

@@ -2,6 +2,7 @@ package net.kozibrodka.wolves.events;
 
 import net.kozibrodka.wolves.items.*;
 import net.mine_diver.unsafeevents.listener.EventListener;
+import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 import net.minecraft.item.ToolMaterial;
 import net.modificationstation.stationapi.api.event.registry.ItemRegistryEvent;
@@ -12,6 +13,7 @@ import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
 import net.modificationstation.stationapi.api.registry.BlockRegistry;
 import net.modificationstation.stationapi.api.tag.TagKey;
 import net.modificationstation.stationapi.api.template.item.*;
+import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.util.Namespace;
 
 public class ItemListener {
@@ -47,8 +49,10 @@ public class ItemListener {
     public static Item refinedPickAxe;
     public static Item refinedShovel;
     public static Item refinedHoe;
-    public static Item refinedAxe;
+    public static Item refinedBattleAxe;
     public static Item refinedSword;
+    public static Item refinedAxe;
+    public static Item refinedMattock;
     public static Item groundNetherrack;
     public static Item hellfireDust;
     public static Item concentratedHellfire;
@@ -108,11 +112,14 @@ public class ItemListener {
         tallow = new TemplateItem(NAMESPACE.id("tallow")).setTranslationKey(NAMESPACE, "tallow");
         haft = new TemplateItem(NAMESPACE.id("haft")).setTranslationKey(NAMESPACE, "haft");
         steel = new TemplateItem(NAMESPACE.id("steel")).setTranslationKey(NAMESPACE, "steel");
-        refinedPickAxe = new TemplatePickaxeItem(NAMESPACE.id("refinedPickAxe"), soulforgedSteelMaterial).setTranslationKey(NAMESPACE, "refined_pick_axe");
-        refinedShovel = new TemplateShovelItem(NAMESPACE.id("refinedShovel"), soulforgedSteelMaterial).setTranslationKey(NAMESPACE, "refined_shovel");
+        refinedPickAxe = new RefinedPickaxeItem(NAMESPACE.id("refinedPickAxe"), soulforgedSteelMaterial).setTranslationKey(NAMESPACE, "refined_pick_axe");
+        refinedShovel = new RefinedShovelItem(NAMESPACE.id("refinedShovel"), soulforgedSteelMaterial).setTranslationKey(NAMESPACE, "refined_shovel");
         refinedHoe = new TemplateHoeItem(NAMESPACE.id("refinedHoe"), soulforgedSteelMaterial).setTranslationKey(NAMESPACE, "refined_hoe");
-        refinedAxe = new TemplateAxeItem(NAMESPACE.id("refinedAxe"), soulforgedSteelMaterial).setTranslationKey(NAMESPACE, "refined_axe");
+        refinedBattleAxe = new RefinedBattleAxeItem(NAMESPACE.id("refinedBattleAxe"), soulforgedSteelMaterial).setTranslationKey(NAMESPACE, "refined_battle_axe");
         refinedSword = new TemplateSwordItem(NAMESPACE.id("refinedSword"), soulforgedSteelMaterial).setTranslationKey(NAMESPACE, "refined_sword");
+        refinedAxe = new RefinedAxeItem(NAMESPACE.id("refinedAxe"), soulforgedSteelMaterial).setTranslationKey(NAMESPACE, "refined_axe");
+//        refinedMattock = new RefinedMattockItem(NAMESPACE.id("refinedMattock"), soulforgedSteelMaterial).setTranslationKey(NAMESPACE, "refined_mattock");
+//        refinedMattock = new RefinedMattockItem(NAMESPACE.id("refinedMattock"), ToolMaterial.DIAMOND).setTranslationKey(NAMESPACE, "refined_mattock");
         groundNetherrack = new TemplateItem(NAMESPACE.id("groundNetherrack")).setTranslationKey(NAMESPACE, "ground_netherrack");
         hellfireDust = new TemplateItem(NAMESPACE.id("hellfireDust")).setTranslationKey(NAMESPACE, "hellfire_dust");
         concentratedHellfire = new TemplateItem(NAMESPACE.id("concentratedHellfire")).setTranslationKey(NAMESPACE, "concentrated_hellfire");
@@ -132,9 +139,9 @@ public class ItemListener {
         wickerSheet = new LazyItemTemplate(NAMESPACE.id("wicker_sheet"));
         weight = new LazyItemTemplate(NAMESPACE.id("weight"));
 
-        debugItem1 = new DebugItem1(NAMESPACE.id("debugItem1")).setTranslationKey(NAMESPACE, "debugItem1");
-        debugItem2 = new DebugItem2(NAMESPACE.id("debugItem2")).setTranslationKey(NAMESPACE, "debugItem2");
+//        debugItem1 = new DebugItem1(NAMESPACE.id("debugItem1")).setTranslationKey(NAMESPACE, "debugItem1");
+//        debugItem2 = new DebugItem2(NAMESPACE.id("debugItem2")).setTranslationKey(NAMESPACE, "debugItem2");
+        /// IF Entityies work well after update - no issues, then i can delete those debug items and entityies from workplace i think.
 
-        //TODO: Inventory render bug, on high to the left slots.
     }
 }

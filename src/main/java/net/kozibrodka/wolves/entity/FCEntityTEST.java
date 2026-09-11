@@ -116,6 +116,7 @@ public class FCEntityTEST extends Entity implements EntitySpawnDataProvider {
         if (dead) {
             return;
         }
+//        super.tick();
         iFullUpdateTickCount--;
         if (iFullUpdateTickCount <= 0) {
             iFullUpdateTickCount = 20;

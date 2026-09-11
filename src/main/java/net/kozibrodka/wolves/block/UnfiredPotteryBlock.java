@@ -35,22 +35,27 @@ public class UnfiredPotteryBlock extends TemplateBlockWithEntity
         setSoundGroup(GRAVEL_SOUND_GROUP);
     }
 
+    @Override
     public int getTexture(int iSide) {
         return TextureListener.unfiredpottery;
     }
 
+    @Override
     public int getDroppedItemMeta(int itemMetaData) {
         return itemMetaData;
     }
 
+    @Override
     public boolean isOpaque() {
         return false;
     }
 
+    @Override
     public boolean isFullCube() {
         return false;
     }
 
+    @Override
     public Box getCollisionShape(World world, int i, int j, int k) {
         int blockMetaData = world.getBlockMeta(i, j, k);
         switch (blockMetaData) {
@@ -64,6 +69,7 @@ public class UnfiredPotteryBlock extends TemplateBlockWithEntity
         return Box.createCached((float) i, (float) j, (float) k, (float) i + 1.0F, (float) j + 1.0F, (float) k + 1.0F);
     }
 
+    @Override
     public void updateBoundingBox(BlockView iBlockAccess, int i, int j, int k) {
         int blockMetaData = iBlockAccess.getBlockMeta(i, j, k);
         switch (blockMetaData) {
@@ -82,25 +88,31 @@ public class UnfiredPotteryBlock extends TemplateBlockWithEntity
         }
     }
 
+    @Override
     protected BlockEntity createBlockEntity() {
         return new UnfiredPotteryBlockEntity();
     }
 
+    @Override
     public int getFacing(BlockView iBlockAccess, int i, int j, int l) {
         return 0;
     }
 
+    @Override
     public void setFacing(World world1, int l, int i1, int j1, int k1) {
     }
 
+    @Override
     public boolean canRotate(BlockView iBlockAccess, int i, int j, int l) {
         return false;
     }
 
+    @Override
     public boolean canTransmitRotation(BlockView iBlockAccess, int i, int j, int l) {
         return false;
     }
 
+    @Override
     public void rotate(World world1, int l, int i1, int j1, boolean flag) {
     }
 

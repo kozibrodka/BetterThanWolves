@@ -1,38 +1,25 @@
-// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) braces deadcode
-// Source File Name:   FCTileEntityMillStone.java
-
 package net.kozibrodka.wolves.block.entity;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.block.CompanionCubeBlock;
 import net.kozibrodka.wolves.block.MillStoneBlock;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ItemListener;
-import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.recipe.MillingRecipeRegistry;
 import net.kozibrodka.wolves.utils.BlockPosition;
 import net.kozibrodka.wolves.utils.InventoryHandler;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
+import net.kozibrodka.wolves.utils.WolvesMpUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.world.World;
-import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import net.modificationstation.stationapi.api.registry.BlockRegistry;
 import net.modificationstation.stationapi.api.registry.ItemRegistry;
 import net.modificationstation.stationapi.api.util.Identifier;
-
-import java.util.List;
 
 
 public class MillStoneBlockEntity extends BlockEntity implements Inventory {
@@ -53,18 +40,22 @@ public class MillStoneBlockEntity extends BlockEntity implements Inventory {
     }
 
 
+    @Override
     public int size() {
         return 3;
     }
 
+    @Override
     public ItemStack getStack(int iSlot) {
         return millStoneContents[iSlot];
     }
 
+    @Override
     public ItemStack removeStack(int iSlot, int iAmount) {
         return InventoryHandler.decreaseStackSize(this, iSlot, iAmount);
     }
 
+    @Override
     public void setStack(int iSlot, ItemStack ItemInstance) {
         millStoneContents[iSlot] = ItemInstance;
         if (ItemInstance != null && ItemInstance.count > getMaxCountPerStack()) {
@@ -73,10 +64,12 @@ public class MillStoneBlockEntity extends BlockEntity implements Inventory {
         markDirty();
     }
 
+    @Override
     public String getName() {
         return "MillStone";
     }
 
+    @Override
     public void readNbt(NbtCompound nbttagcompound) {
         super.readNbt(nbttagcompound);
         NbtList nbttaglist = nbttagcompound.getList("Items");
@@ -95,6 +88,7 @@ public class MillStoneBlockEntity extends BlockEntity implements Inventory {
         manuallyPowered = nbttagcompound.getBoolean("manuallyPowered");
     }
 
+    @Override
     public void writeNbt(NbtCompound nbttagcompound) {
         super.writeNbt(nbttagcompound);
         NbtList nbttaglist = new NbtList();
@@ -112,10 +106,12 @@ public class MillStoneBlockEntity extends BlockEntity implements Inventory {
         nbttagcompound.putBoolean("manuallyPowered", manuallyPowered);
     }
 
+    @Override
     public int getMaxCountPerStack() {
         return 64;
     }
 
+    @Override
     public boolean canPlayerUse(PlayerEntity entityplayer) {
         if (world.getBlockEntity(x, y, z) != this) {
             return false;
@@ -146,6 +142,7 @@ public class MillStoneBlockEntity extends BlockEntity implements Inventory {
         return grindCounter > 0;
     }
 
+    @Override
     public void tick() // updateEntity
     {
         if (world.isRemote) {
@@ -176,8 +173,8 @@ public class MillStoneBlockEntity extends BlockEntity implements Inventory {
         {
             if (millStoneContents[iUnmilledItemIndex].getDamage() == 0 && world.random.nextInt(10) == 0) {
                 world.playSound((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F, "mob.wolf.hurt", 2.0F, (world.random.nextFloat() - world.random.nextFloat()) * 0.2F + 1.0F);
-                if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                    voicePacket(world, "mob.wolf.hurt", x, y, z, 2.0F, (world.random.nextFloat() - world.random.nextFloat()) * 0.2F + 1.0F);
+                if (WolvesMpUtils.isEnvServ()) {
+                    WolvesMpUtils.soundPacket(world, x, y, z, "mob.wolf.hurt", 2.0F, (world.random.nextFloat() - world.random.nextFloat()) * 0.2F + 1.0F);
                 }
             }
             if (world.random.nextInt(20) == 0) {
@@ -191,8 +188,8 @@ public class MillStoneBlockEntity extends BlockEntity implements Inventory {
         } else if (unmilledItemIdentifier == BlockRegistry.INSTANCE.getId(Block.NETHERRACK) && world.random.nextInt(10) == 0 && !isHarderThanWolvesPresent) // Random scream when there is netherrack
         {
             world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "mob.ghast.scream", 0.25F, world.random.nextFloat() * 0.4F + 0.8F);
-            if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                voicePacket(world, "mob.ghast.scream", x, y, z, 0.25F, world.random.nextFloat() * 0.4F + 0.8F);
+            if (WolvesMpUtils.isEnvServ()) {
+                WolvesMpUtils.soundPacket(world, x, y, z, "mob.ghast.scream", 0.25F, world.random.nextFloat() * 0.4F + 0.8F);
             }
         }
 
@@ -212,8 +209,8 @@ public class MillStoneBlockEntity extends BlockEntity implements Inventory {
             CompanionCubeBlock.SpawnHearts(world, x, y, z);
             if (millStoneContents[iUnmilledItemIndex].getDamage() == 0) {
                 world.playSound((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F, "mob.wolf.whine", 0.5F, 2.6F + (world.random.nextFloat() - world.random.nextFloat()) * 0.8F);
-                if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                    voicePacket(world, "mob.wolf.whine", x, y, z, 0.5F, 2.6F + (world.random.nextFloat() - world.random.nextFloat()) * 0.8F);
+                if (WolvesMpUtils.isEnvServ()) {
+                    WolvesMpUtils.soundPacket(world, x, y, z, "mob.wolf.whine", 0.5F, 2.6F + (world.random.nextFloat() - world.random.nextFloat()) * 0.8F);
                 }
             }
             removeStack(iUnmilledItemIndex, 1);
@@ -324,25 +321,15 @@ public class MillStoneBlockEntity extends BlockEntity implements Inventory {
         return false;
     }
 
+    @Override
     public void markDirty() {
         if (world == null) {
             return;
         }
         if (IsWholeCompanionCubeInInventory()) {
             world.playSound((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F, "mob.wolf.whine", 0.5F, 2.6F + (world.random.nextFloat() - world.random.nextFloat()) * 0.8F);
-            if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                voicePacket(world, "mob.wolf.whine", x, y, z, 0.5F, 2.6F + (world.random.nextFloat() - world.random.nextFloat()) * 0.8F);
-            }
-        }
-    }
-
-    @Environment(EnvType.SERVER)
-    public void voicePacket(World world, String name, int x, int y, int z, float g, float h) {
-        List list2 = world.players;
-        if (list2.size() != 0) {
-            for (int k = 0; k < list2.size(); k++) {
-                ServerPlayerEntity player1 = (ServerPlayerEntity) list2.get(k);
-                PacketHelper.sendTo(player1, new SoundPacket(name, x, y, z, g, h));
+            if (WolvesMpUtils.isEnvServ()) {
+                WolvesMpUtils.soundPacket(world, x, y, z, "mob.wolf.whine", 0.5F, 2.6F + (world.random.nextFloat() - world.random.nextFloat()) * 0.8F);
             }
         }
     }

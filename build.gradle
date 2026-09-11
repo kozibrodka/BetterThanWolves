@@ -109,6 +109,12 @@ dependencies {
 	modImplementation("net.danygames2014:WhatsThis:${project.whatsthis_version}") {
 		transitive false
 	}
+	modRuntimeOnly ("maven.modrinth:fast-stapi-intro:${project.stapi_fast_intro_version}") {
+		transitive = false
+	}
+	modImplementation("maven.modrinth:retrocommands:${project.retrocommands_version}-b1.7.3") {
+		transitive = false
+	}
     if (project.hasProperty("spawneggs_version")) {
         modImplementation("net.danygames2014:spawneggs:${project.spawneggs_version}") {
             transitive = false
@@ -126,6 +132,8 @@ dependencies {
 	}
     modRuntimeOnly("net.danygames2014:NyaLib:${project.nyalib_version}") {
     }
+
+	modImplementation(files("lib/keyf3-1.0.1.jar"))
 
 }
 

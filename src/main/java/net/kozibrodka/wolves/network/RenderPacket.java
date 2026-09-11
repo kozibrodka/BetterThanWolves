@@ -3,6 +3,7 @@ package net.kozibrodka.wolves.network;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.FabricLoader;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.NetworkHandler;
 import net.minecraft.network.packet.Packet;
@@ -72,38 +73,18 @@ public class RenderPacket extends Packet implements ManagedPacket<RenderPacket> 
 
     @Environment(EnvType.CLIENT)
     public void handleClient(NetworkHandler networkHandler) {
+        /// Breaking particles + sound
+
+
         Minecraft.INSTANCE.particleManager.addBlockBreakParticles(x, y, z, block, meta);
-//        Minecraft.class.cast(net.fabricmc.loader.api.FabricLoader.getInstance().getGameInstance()).particleManager.addTileBreakParticles(targetPos.x, targetPos.y, targetPos.z, iTargetid, iTargetMetaData);
-//        if(block == 1){ //TURNTABLE
-//            TurntableTileEntity tile = (TurntableTileEntity) minecraft.level.getTileEntity(this.x,this.y,this.z);
-//            if(tile != null) {
-//                tile.switchSetting = this.valueS;
-//            }
-//        }
-//        if(block == 2){ //HOPPER
-//            HopperTileEntity tile = (HopperTileEntity) minecraft.level.getTileEntity(this.x,this.y,this.z);
-//            if(tile != null){
-//                tile.clientFilterType = this.valueS;
-//                tile.clientOccupiedSlots = this.valueF;
-//            }
-//        }
+        Block targetBlock = Block.BLOCKS[block];
+        if(targetBlock == null){return;}
+        Minecraft.INSTANCE.player.world.playSound((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F, targetBlock.soundGroup.getSound(), (targetBlock.soundGroup.getVolume() + 1.0F) / 2.0F, targetBlock.soundGroup.getPitch() * 0.8F);
+
     }
 
     @Environment(EnvType.SERVER)
     public void handleServer(NetworkHandler networkHandler) {
-//        ServerPlayerAccessor accessor = (ServerPlayerAccessor) networkHandler;
-//        ServerPlayer player = accessor.getServerPlayer();
-//        if(block == 1){ //TURNTABLE
-//            TurntableTileEntity tile = (TurntableTileEntity) player.level.getTileEntity(this.x,this.y,this.z);
-//            int a = ((TurntableTileEntity) tile).switchSetting;
-//            PacketHelper.sendTo(player, new RenderPacket(1, this.x, this.y, this.z, a, 0));
-//        }
-//        if(block == 2){ //HOPPER
-//            HopperTileEntity tile = (HopperTileEntity) player.level.getTileEntity(this.x,this.y,this.z);
-//            int a = ((HopperTileEntity) tile).GetFilterType();
-//            int b = InventoryHandler.getOccupiedSlotCountWithinBounds(tile, 0, 17);
-//            PacketHelper.sendTo(player, new RenderPacket(2, this.x, this.y, this.z, a, b));
-//        }
 
     }
 

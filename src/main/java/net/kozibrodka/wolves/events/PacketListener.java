@@ -19,9 +19,10 @@ public class PacketListener {
         Registry.register(PacketTypeRegistry.INSTANCE, NAMESPACE.id("gui"), ScreenPacket.TYPE);
         Registry.register(PacketTypeRegistry.INSTANCE, NAMESPACE.id("render"), RenderPacket.TYPE);
         Registry.register(PacketTypeRegistry.INSTANCE, NAMESPACE.id("cement"), CementPacket.TYPE);
-        Registry.register(PacketTypeRegistry.INSTANCE, NAMESPACE.id("windmill"), InteractWindPacket.TYPE);
+        Registry.register(PacketTypeRegistry.INSTANCE, NAMESPACE.id("cementalpha"), CementAlphaPacket.TYPE);
         Registry.register(PacketTypeRegistry.INSTANCE, NAMESPACE.id("platform"), PlatformPacket.TYPE);
-        Registry.register(PacketTypeRegistry.INSTANCE, NAMESPACE.id("damage"), DamagePacket.TYPE);
+        Registry.register(PacketTypeRegistry.INSTANCE, NAMESPACE.id("rotation"), LoadRotationPacket.TYPE);
+        Registry.register(PacketTypeRegistry.INSTANCE, NAMESPACE.id("plsound"), SoundPlayerPacket.TYPE);
     }
 
 }

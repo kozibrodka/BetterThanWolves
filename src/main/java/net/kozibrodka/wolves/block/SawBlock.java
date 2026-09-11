@@ -44,41 +44,50 @@ public class SawBlock extends TemplateBlock
         setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 0.75F, 1.0F);
     }
 
+    @Override
     public int getTextureId(BlockView blockAccess, int i, int j, int k, int iSide) {
         int iFacing = getFacing(blockAccess, i, j, k);
         return iSide != iFacing ? TextureListener.saw_side : TextureListener.saw_face;
     }
 
+    @Override
     public int getTexture(int iSide) {
         return iSide != 1 ? TextureListener.saw_side : TextureListener.saw_face;
     }
 
+    @Override
     public int getTickRate() {
         return iSawTickRate;
     }
 
+    @Override
     public void onPlaced(World world, int i, int j, int k, int iFacing) {
         setFacing(world, i, j, k, UnsortedUtils.getOppositeFacing(iFacing));
     }
 
+    @Override
     public void onPlaced(World world, int i, int j, int k, LivingEntity entityLiving) {
         int iFacing = UnsortedUtils.ConvertPlacingEntityOrientationToBlockFacing(entityLiving);
         setFacing(world, i, j, k, iFacing);
     }
 
+    @Override
     public void onPlaced(World world, int i, int j, int k) {
         super.onPlaced(world, i, j, k);
         world.scheduleBlockUpdate(i, j, k, id, getTickRate());
     }
 
+    @Override
     public boolean isOpaque() {
         return false;
     }
 
+    @Override
     public boolean isFullCube() {
         return false;
     }
 
+    @Override
     public Box getCollisionShape(World world, int i, int j, int k) {
         int iFacing = getFacing(world, i, j, k);
         switch (iFacing) {
@@ -100,6 +109,7 @@ public class SawBlock extends TemplateBlock
         return Box.createCached((float) i, (float) j, (float) k, (float) i + 0.75F, (float) j + 1.0F, (float) k + 1.0F);
     }
 
+    @Override
     public void updateBoundingBox(BlockView iblockaccess, int i, int j, int k) {
         int iFacing = getFacing(iblockaccess, i, j, k);
         switch (iFacing) {
@@ -129,10 +139,12 @@ public class SawBlock extends TemplateBlock
         }
     }
 
+    @Override
     public void setupRenderBoundingBox() {
         setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 0.75F, 1.0F);
     }
 
+    @Override
     public void neighborUpdate(World world, int i, int j, int k, int iid) {
         if (iid == BlockListener.axleBlock.id || iid == BlockListener.handCrank.id) {
             world.scheduleBlockUpdate(i, j, k, id, getTickRate());
@@ -141,6 +153,7 @@ public class SawBlock extends TemplateBlock
         }
     }
 
+    @Override
     public void onTick(World world, int i, int j, int k, Random random) {
         boolean bOn = IsBlockOn(world, i, j, k);
         if (bOn) {
@@ -153,12 +166,14 @@ public class SawBlock extends TemplateBlock
         }
     }
 
+    @Override
     public void randomDisplayTick(World world, int i, int j, int k, Random random) {
         if (IsBlockOn(world, i, j, k)) {
             EmitSawParticles(world, i, j, k, random);
         }
     }
 
+    @Override
     public void onEntityCollision(World world, int i, int j, int k, Entity entity) {
         if (IsBlockOn(world, i, j, k) && (entity instanceof LivingEntity)) {
             int iFacing = getFacing(world, i, j, k);
@@ -198,10 +213,7 @@ public class SawBlock extends TemplateBlock
                 for (int iTempListIndex = 0; iTempListIndex < collisionList.size(); iTempListIndex++) {
                     LivingEntity tempTargetEntity = (LivingEntity) collisionList.get(iTempListIndex);
                     if (tempTargetEntity.damage(null, 4)) {
-                        world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "random.explode", 0.2F, 1.25F);
-                        if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                            voicePacket(world, "random.explode", i, j, k, 0.2F, 1.25F);
-                        }
+                        world.playNoteBlockActionAt(i,j,k, 0, 1); /// Explode
                         EmitBloodParticles(world, i, j, k, world.random);
                     }
                 }
@@ -210,26 +222,31 @@ public class SawBlock extends TemplateBlock
         }
     }
 
+    @Override
     public int getFacing(BlockView iBlockAccess, int i, int j, int k) {
         return iBlockAccess.getBlockMeta(i, j, k) & 7;
     }
 
+    @Override
     public void setFacing(World world, int i, int j, int k, int iFacing) {
         int iMetaData = world.getBlockMeta(i, j, k) & -8;
         iMetaData |= iFacing;
         world.setBlockMeta(i, j, k, iMetaData);
     }
 
+    @Override
     public boolean canRotate(BlockView iBlockAccess, int i, int j, int k) {
         int iFacing = getFacing(iBlockAccess, i, j, k);
         return iFacing != 0;
     }
 
+    @Override
     public boolean canTransmitRotation(BlockView iBlockAccess, int i, int j, int k) {
         int iFacing = getFacing(iBlockAccess, i, j, k);
         return iFacing != 0 && iFacing != 1;
     }
 
+    @Override
     public void rotate(World world, int i, int j, int k, boolean bReverse) {
         int iFacing = getFacing(world, i, j, k);
         int iNewFacing = UnsortedUtils.RotateFacingAroundJ(iFacing, bReverse);
@@ -312,39 +329,24 @@ public class SawBlock extends TemplateBlock
     }
 
     void EmitBloodParticles(World world, int i, int j, int k, Random random) {
-        int iFacing = getFacing(world, i, j, k);
-        BlockPosition iTargetPos = new BlockPosition(i, j, k);
-        iTargetPos.addFacingAsOffset(iFacing);
-        for (int counter = 0; counter < 10; counter++) {
-            float smokeX = (float) iTargetPos.x + random.nextFloat();
-            float smokeY = (float) iTargetPos.y + random.nextFloat();
-            float smokeZ = (float) iTargetPos.z + random.nextFloat();
-            world.addParticle("reddust", smokeX, smokeY, smokeZ, 0.0D, 0.0D, 0.0D);
-            if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                particlePacket(world, "reddust", smokeX, smokeY, smokeZ);
-            }
-        }
+        world.playNoteBlockActionAt(i,j,k, 0, 0); /// Particles
     }
 
-    @Environment(EnvType.SERVER)
-    public void voicePacket(World world, String name, int x, int y, int z, float g, float h) {
-        List list2 = world.players;
-        if (list2.size() != 0) {
-            for (int k = 0; k < list2.size(); k++) {
-                ServerPlayerEntity player1 = (ServerPlayerEntity) list2.get(k);
-                PacketHelper.sendTo(player1, new SoundPacket(name, x, y, z, g, h));
+    @Override
+    public void onBlockAction(World world, int x, int y, int z, int code, int pitch) {
+        if(pitch == 0){ /// Particles
+            BlockPosition iTargetPos = new BlockPosition(x, y, z);
+            iTargetPos.addFacingAsOffset(getFacing(world, x, y, z));
+            for (int counter = 0; counter < 10; counter++) {
+                float smokeX = (float) iTargetPos.x + world.random.nextFloat();
+                float smokeY = (float) iTargetPos.y + world.random.nextFloat();
+                float smokeZ = (float) iTargetPos.z + world.random.nextFloat();
+                world.addParticle("reddust", smokeX, smokeY, smokeZ, 0.0D, 0.0D, 0.0D);
             }
-        }
-    }
-
-    @Environment(EnvType.SERVER)
-    public void particlePacket(World world, String name, double x, double y, double z) {
-        List list2 = world.players;
-        if (list2.size() != 0) {
-            for (int k1 = 0; k1 < list2.size(); k1++) {
-                ServerPlayerEntity player1 = (ServerPlayerEntity) list2.get(k1);
-                PacketHelper.sendTo(player1, new ParticlePacket(name, x, y, z, 0, 0, 0));
-            }
+        }else if(pitch == 1){ /// Explode
+            world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.explode", 0.2F, 1.25F);
+        }else if(pitch == 2){ /// WolfHurt
+            world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "mob.wolf.hurt", 5F, (world.random.nextFloat() - world.random.nextFloat()) * 0.2F + 1.0F);
         }
     }
 
@@ -386,10 +388,7 @@ public class SawBlock extends TemplateBlock
                         BlockPosition bloodPos = new BlockPosition(i, j, k);
                         bloodPos.addFacingAsOffset(UnsortedUtils.getOppositeFacing(iSawFacing));
                         EmitBloodParticles(world, bloodPos.x, bloodPos.y, bloodPos.z, world.random);
-                        world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "mob.wolf.hurt", 5F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
-                        if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                            voicePacket(world, "mob.wolf.hurt", i, j, k, 5F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
-                        }
+                        world.playNoteBlockActionAt(i,j,k, 0, 2); /// WolfHurt
                         sawedBlock = true;
                     } else if (iSawFacing == 0 || iSawFacing == 1) {
                         UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, BlockListener.companionCube.asItem().id, 1);
@@ -410,10 +409,7 @@ public class SawBlock extends TemplateBlock
                     }
                 }
                 if (sawedBlock) {
-                    world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "random.explode", 0.2F, 1.25F);
-                    if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                        voicePacket(world, "random.explode", i, j, k, 0.2F, 1.25F);
-                    }
+                    world.playNoteBlockActionAt(i,j,k, 0, 1); /// Explode
                     EmitSawParticles(world, i, j, k, random);
                     if (bRemoveOriginalBlockIfSawed) {
                         world.setBlock(i, j, k, 0);
@@ -440,38 +436,34 @@ public class SawBlock extends TemplateBlock
         for (int iTemp = 0; iTemp < 1; iTemp++) {
             UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, ItemListener.belt.id, 0);
         }
-
+        /// When sounds are called on Block Destroyment - custom packet always used.
         world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "random.explode", 0.2F, 1.25F);
-        if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-            voicePacket(world, "random.explode", i, j, k, 0.2F, 1.25F);
+        if (WolvesMpUtils.isEnvServ()) {
+            WolvesMpUtils.soundPacket(world, i, j, k, "random.explode", 0.2F, 1.25F);
         }
         world.setBlock(i, j, k, 0);
     }
 
+    @Override
     public boolean canOutputMechanicalPower() {
         return false;
     }
 
+    @Override
     public boolean canInputMechanicalPower() {
         return true;
     }
 
     @Override
     public void powerMachine(World world, int x, int y, int z, int side) {
-        world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.explode", 0.2F, 1.25F);
-        if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-            voicePacket(world, "random.explode", x, y, z, 0.2F, 1.25F);
-        }
+        world.playNoteBlockActionAt(x,y,z, 0, 1); /// Explode
         EmitSawParticles(world, x, y, z, new Random());
         SetBlockOn(world, x, y, z, true);
     }
 
     @Override
     public void unpowerMachine(World world, int x, int y, int z, int side) {
-        world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.explode", 0.2F, 1.25F);
-        if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-            voicePacket(world, "random.explode", x, y, z, 0.2F, 1.25F);
-        }
+        world.playNoteBlockActionAt(x,y,z, 0, 1); /// Explode
         EmitSawParticles(world, x, y, z, new Random());
         SetBlockOn(world, x, y, z, false);
     }

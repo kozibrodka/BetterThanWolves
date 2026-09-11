@@ -28,6 +28,7 @@ public class HibachiBlock extends TemplateBlock {
         setTickRandomly(true);
     }
 
+    @Override
     public int getTexture(int side) {
         if (side == 1) {
             return TextureListener.hibachi_top;
@@ -35,14 +36,17 @@ public class HibachiBlock extends TemplateBlock {
         return side != 0 ? TextureListener.hibachi_side : TextureListener.hibachi_bottom;
     }
 
+    @Override
     public int getTickRate() {
         return 4;
     }
 
+    @Override
     public void onPlaced(World world, int i, int j, int k) {
         world.scheduleBlockUpdate(i, j, k, id, getTickRate());
     }
 
+    @Override
     public void onTick(World world, int i, int j, int k, Random random) {
         boolean bPowered = world.isStrongPowered(i, j, k) || world.isStrongPowered(i, j + 1, k);
         if (bPowered) {
@@ -51,10 +55,7 @@ public class HibachiBlock extends TemplateBlock {
             } else {
                 int iBlockAboveID = world.getBlockId(i, j + 1, k);
                 if (iBlockAboveID != Block.FIRE.id && iBlockAboveID != BlockListener.stokedFire.id && BBQShouldIgniteAbove(world, i, j, k)) {
-                    world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "fire.ignite", 1.0F, world.random.nextFloat() * 0.4F + 0.8F);
-                    if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                        voicePacket(world, "fire.ignite", i, j, k, 1.0F, world.random.nextFloat() * 0.4F + 0.8F);
-                    }
+                    world.playNoteBlockActionAt(i,j,k, 0, 0); /// Fire
                     world.setBlock(i, j + 1, k, FIRE.id);
                 }
             }
@@ -68,17 +69,16 @@ public class HibachiBlock extends TemplateBlock {
         }
     }
 
-    @Environment(EnvType.SERVER)
-    public void voicePacket(World world, String name, int x, int y, int z, float g, float h) {
-        List list2 = world.players;
-        if (list2.size() != 0) {
-            for (int k = 0; k < list2.size(); k++) {
-                ServerPlayerEntity player1 = (ServerPlayerEntity) list2.get(k);
-                PacketHelper.sendTo(player1, new SoundPacket(name, x, y, z, g, h));
-            }
+    @Override
+    public void onBlockAction(World world, int x, int y, int z, int code, int pitch) {
+        if(pitch == 0){ /// Fire
+            world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "fire.ignite", 1.0F, world.random.nextFloat() * 0.4F + 0.8F);
+        }else if(pitch == 1){ /// Fizz
+            world.playSound((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F, "random.fizz", 0.5F, 2.6F + (world.random.nextFloat() - world.random.nextFloat()) * 0.8F);
         }
     }
 
+    @Override
     public void neighborUpdate(World world, int i, int j, int k, int l) {
         boolean bShouldUpdate = false;
         if (l != FIRE.id) {
@@ -137,10 +137,7 @@ public class HibachiBlock extends TemplateBlock {
 
     private void BBQIgnite(World world, int i, int j, int k) {
         SetBBQLitFlag(world, i, j, k);
-        world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "fire.ignite", 1.0F, world.random.nextFloat() * 0.4F + 0.8F);
-        if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-            voicePacket(world, "fire.ignite", i, j, k, 1.0F, world.random.nextFloat() * 0.4F + 0.8F);
-        }
+        world.playNoteBlockActionAt(i,j,k, 0, 0); /// Fire
         int ignitedBlockID = HibachiIgnitionRegistry.getInstance().getIgnitedID(world.getBlockId(i, j + 1, k));
         if (ignitedBlockID != 0) {
             world.setBlock(i, j + 1, k, ignitedBlockID);
@@ -151,10 +148,7 @@ public class HibachiBlock extends TemplateBlock {
 
     private void BBQExtinguish(World world, int i, int j, int k) {
         ClearBBQLitFlag(world, i, j, k);
-        world.playSound((float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, "random.fizz", 0.5F, 2.6F + (world.random.nextFloat() - world.random.nextFloat()) * 0.8F);
-        if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-            voicePacket(world, "random.fizz", i, j, k, 0.5F, 2.6F + (world.random.nextFloat() - world.random.nextFloat()) * 0.8F);
-        }
+        world.playNoteBlockActionAt(i,j,k, 0, 1); /// Fizz
         boolean isFireAbove = world.getBlockId(i, j + 1, k) == FIRE.id || world.getBlockId(i, j + 1, k) == BlockListener.stokedFire.id;
         if (isFireAbove) {
             world.setBlock(i, j + 1, k, 0);

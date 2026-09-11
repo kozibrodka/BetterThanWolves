@@ -9,10 +9,7 @@ import net.kozibrodka.wolves.events.ConfigListener;
 import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.recipe.HopperPurifyingRecipeRegistry;
-import net.kozibrodka.wolves.utils.BlockPosition;
-import net.kozibrodka.wolves.utils.InventoryHandler;
-import net.kozibrodka.wolves.utils.ReplaceableBlockChecker;
-import net.kozibrodka.wolves.utils.UnsortedUtils;
+import net.kozibrodka.wolves.utils.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.EntityRegistry;
@@ -51,18 +48,22 @@ public class HopperBlockEntity extends BlockEntity implements Inventory {
         hopperEjectBlocked = false;
     }
 
+    @Override
     public int size() {
         return 19;
     }
 
+    @Override
     public ItemStack getStack(int slot) {
         return hopperContents[slot];
     }
 
+    @Override
     public ItemStack removeStack(int slot, int amount) {
         return InventoryHandler.decreaseStackSize(this, slot, amount);
     }
 
+    @Override
     public void setStack(int iSlot, ItemStack ItemInstance) {
         hopperContents[iSlot] = ItemInstance;
         if (ItemInstance != null && ItemInstance.count > getMaxCountPerStack()) {
@@ -72,10 +73,12 @@ public class HopperBlockEntity extends BlockEntity implements Inventory {
     }
 
 
+    @Override
     public String getName() {
         return "Hopper";
     }
 
+    @Override
     public void readNbt(NbtCompound nbttagcompound) {
         super.readNbt(nbttagcompound);
         NbtList nbttaglist = nbttagcompound.getList("Items");
@@ -96,6 +99,7 @@ public class HopperBlockEntity extends BlockEntity implements Inventory {
         }
     }
 
+    @Override
     public void writeNbt(NbtCompound nbttagcompound) {
         super.writeNbt(nbttagcompound);
         NbtList nbttaglist = new NbtList();
@@ -113,10 +117,12 @@ public class HopperBlockEntity extends BlockEntity implements Inventory {
         nbttagcompound.putInt("accumulatedHeat", accumulatedHeat);
     }
 
+    @Override
     public int getMaxCountPerStack() {
         return 64;
     }
 
+    @Override
     public boolean canPlayerUse(PlayerEntity entityplayer) {
         if (world.getBlockEntity(x, y, z) != this) {
             return false;
@@ -125,6 +131,7 @@ public class HopperBlockEntity extends BlockEntity implements Inventory {
         }
     }
 
+    @Override
     public void tick() {
         if (world.isRemote) {
             return;
@@ -205,6 +212,7 @@ public class HopperBlockEntity extends BlockEntity implements Inventory {
         return false;
     }
 
+    @Override
     public void markDirty() {
         if (world == null) {
             return;
@@ -445,8 +453,8 @@ public class HopperBlockEntity extends BlockEntity implements Inventory {
                                 if (iNumItemsStored > 0) {
                                     removeStack(itemIndex, iNumItemsStored);
                                     world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.pop", 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-                                    if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                                        voicePacket(world, "random.pop", x, y, z, 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                                    if (WolvesMpUtils.isEnvServ()) {
+                                        WolvesMpUtils.soundPacket(world, x, y, z, "random.pop", 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                                     }
                                 }
                             } else {
@@ -477,8 +485,8 @@ public class HopperBlockEntity extends BlockEntity implements Inventory {
                             if (iNumItemsStored > 0) {
                                 removeStack(itemIndex, iNumItemsStored);
                                 world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.pop", 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-                                if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                                    voicePacket(world, "random.pop", x, y, z, 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+                                if (WolvesMpUtils.isEnvServ()) {
+                                    WolvesMpUtils.soundPacket(world, x, y, z, "random.pop", 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
                                 }
                             }
                             bEjectIntoWorld = false;
@@ -510,8 +518,8 @@ public class HopperBlockEntity extends BlockEntity implements Inventory {
     private void hopperSoulOverload() {
         if (SpawnGhast()) {
             world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "mob.ghast.scream", 1.0F, world.random.nextFloat() * 0.4F + 0.8F);
-            if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                voicePacket(world, "mob.ghast.scream", x, y, z, 1.0F, world.random.nextFloat() * 0.4F + 0.8F);
+            if (WolvesMpUtils.isEnvServ()) {
+                WolvesMpUtils.soundPacket(world, x, y, z,"mob.ghast.scream", 1.0F, world.random.nextFloat() * 0.4F + 0.8F);
             }
         }
         ((HopperBlock) BlockListener.hopper).BreakHopper(world, x, y, z);
@@ -534,16 +542,5 @@ public class HopperBlockEntity extends BlockEntity implements Inventory {
         }
 
         return false;
-    }
-
-    @Environment(EnvType.SERVER)
-    public void voicePacket(World world, String name, int x, int y, int z, float g, float h) {
-        List list2 = world.players;
-        if (list2.size() != 0) {
-            for (int k = 0; k < list2.size(); k++) {
-                ServerPlayerEntity player1 = (ServerPlayerEntity) list2.get(k);
-                PacketHelper.sendTo(player1, new SoundPacket(name, x, y, z, g, h));
-            }
-        }
     }
 }

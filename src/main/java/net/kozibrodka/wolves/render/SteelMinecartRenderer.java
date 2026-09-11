@@ -55,17 +55,17 @@ public class SteelMinecartRenderer extends EntityRenderer {
         GL11.glTranslatef((float)d, (float)e, (float)f);
         GL11.glRotatef(180.0F - g, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(-var19, 0.0F, 0.0F, 1.0F);
-        float var23 = (float)minecartEntity.getMillTimeSinceHit() - h;
-//        float var23 = (float)minecartEntity.damageWobbleTicks - h;
-        float var24 = (float)minecartEntity.getMillCurrentDamage() - h;
-//        float var24 = (float)minecartEntity.damageWobbleStrength - h;
+//        float var23 = (float)minecartEntity.getMillTimeSinceHit() - h;
+        float var23 = (float)minecartEntity.damageWobbleTicks - h;
+//        float var24 = (float)minecartEntity.getMillCurrentDamage() - h;
+        float var24 = (float)minecartEntity.damageWobbleStrength - h;
         if (var24 < 0.0F) {
             var24 = 0.0F;
         }
 
         if (var23 > 0.0F) {
-            GL11.glRotatef(MathHelper.sin(var23) * var23 * var24 / 10.0F * (float)minecartEntity.getMillRockDirection(), 1.0F, 0.0F, 0.0F);
-//            GL11.glRotatef(MathHelper.sin(var23) * var23 * var24 / 10.0F * (float)minecartEntity.damageWobbleSide, 1.0F, 0.0F, 0.0F);
+//            GL11.glRotatef(MathHelper.sin(var23) * var23 * var24 / 10.0F * (float)minecartEntity.getMillRockDirection(), 1.0F, 0.0F, 0.0F);
+            GL11.glRotatef(MathHelper.sin(var23) * var23 * var24 / 10.0F * (float)minecartEntity.damageWobbleSide, 1.0F, 0.0F, 0.0F);
         }
 
         if (minecartEntity.type != 0) {

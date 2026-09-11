@@ -3,6 +3,7 @@ package net.kozibrodka.wolves.network;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.FabricLoader;
+import net.kozibrodka.wolves.utils.WolvesClientUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.NetworkHandler;
 import net.minecraft.network.packet.Packet;
@@ -40,33 +41,26 @@ public class SoundPacket extends Packet implements ManagedPacket<SoundPacket> {
     @Override
     public void read(DataInputStream stream) {
         try {
-//            this.soundToPlay = readString(stream, 16);
             this.soundToPlay = stream.readUTF();
             this.x = stream.readInt();
             this.y = stream.readInt();
             this.z = stream.readInt();
             this.g = stream.readFloat();
             this.h = stream.readFloat();
-//        System.out.println("Packet Read");
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
     public void write(DataOutputStream stream) {
-        //            stream.writeInt(this.soundToPlay);
         try {
-//            writeString(this.soundToPlay, stream);
             stream.writeUTF(this.soundToPlay);
             stream.writeInt(this.x);
             stream.writeInt(this.y);
             stream.writeInt(this.z);
             stream.writeFloat(this.g);
             stream.writeFloat(this.h);
-
-//            System.out.println("Packet Write");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -75,8 +69,6 @@ public class SoundPacket extends Packet implements ManagedPacket<SoundPacket> {
 
     @Override
     public void apply(NetworkHandler arg) {
-//        System.out.println("Packet Received = Sound : " + this.soundToPlay + "  " + this.x);
-
         switch (FabricLoader.INSTANCE.getEnvironmentType()) {
             case CLIENT -> handleClient(arg);
             case SERVER -> handleServer(arg);
@@ -85,15 +77,12 @@ public class SoundPacket extends Packet implements ManagedPacket<SoundPacket> {
 
     @Environment(EnvType.CLIENT)
     public void handleClient(NetworkHandler networkHandler) {
-//        System.out.println("Handle Client");
-//        minecraft.level.playSound((double)minecraft.player.x + 0.5D, (double)minecraft.player.y + 0.5D, (double)minecraft.player.z + 0.5D, this.soundToPlay, 1.0F, 2.0F);
+        /// Used on sounds that i cannot fir in Vanilla Packet54PlayNoteBlock (data1/2 is converted to byte on server, limit 256)
         Minecraft.INSTANCE.world.playSound((double) this.x + 0.5D, (double) this.y + 0.5D, (double) this.z + 0.5D, this.soundToPlay, this.g, this.h);
     }
 
     @Environment(EnvType.SERVER)
     public void handleServer(NetworkHandler networkHandler) {
-//        System.out.println("Handle Server HELLO");
-//        PacketHelper.send(new SoundPacket("twuj.stary"));
     }
 
     @Override

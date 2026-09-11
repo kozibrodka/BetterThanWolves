@@ -6,6 +6,7 @@
   "mixins": [
     "BirchTreeMixin",
     "BlockCactusMixin",
+    "BlockCakeMixin",
     "BlockCropsMixin",
     "BlockDetectorRailMixin",
     "BlockMushroomMixin",

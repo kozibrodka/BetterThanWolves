@@ -8,10 +8,7 @@ import net.kozibrodka.wolves.events.ConfigListener;
 import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.network.SoundPacket;
-import net.kozibrodka.wolves.utils.BlockPosition;
-import net.kozibrodka.wolves.utils.MechanicalDevice;
-import net.kozibrodka.wolves.utils.RotatableBlock;
-import net.kozibrodka.wolves.utils.UnsortedUtils;
+import net.kozibrodka.wolves.utils.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.LivingEntity;
@@ -35,6 +32,7 @@ public class GearboxBlock extends TemplateBlock implements MechanicalDevice, Rot
         setSoundGroup(WOOD_SOUND_GROUP);
     }
 
+    @Override
     public int getTextureId(BlockView blockView, int x, int y, int z, int side) {
         int iFacing = getFacing(blockView, x, y, z);
         if (side == iFacing) {
@@ -49,6 +47,7 @@ public class GearboxBlock extends TemplateBlock implements MechanicalDevice, Rot
         }
     }
 
+    @Override
     public int getTexture(int side) {
         if (side == 3) {
             return TextureListener.gearbox_front;
@@ -57,14 +56,17 @@ public class GearboxBlock extends TemplateBlock implements MechanicalDevice, Rot
         }
     }
 
+    @Override
     public int getTickRate() {
         return 10;
     }
 
+    @Override
     public void onPlaced(World world, int x, int y, int z, int facing) {
         setFacing(world, x, y, z, UnsortedUtils.getOppositeFacing(facing));
     }
 
+    @Override
     public void onPlaced(World world, int x, int y, int z, LivingEntity livingEntity) {
         int facing = UnsortedUtils.ConvertPlacingEntityOrientationToBlockFacing(livingEntity);
         if (ConfigListener.wolvesGlass.small_tweaks.faceGearBoxAwayFromPlayer) {
@@ -73,6 +75,7 @@ public class GearboxBlock extends TemplateBlock implements MechanicalDevice, Rot
         setFacing(world, x, y, z, facing);
     }
 
+    @Override
     public void onBreak(World world, int x, int y, int z) {
         if (isGearBoxOn(world, x, y, z)) {
             setGearBoxOnState(world, x, y, z, false);
@@ -94,23 +97,14 @@ public class GearboxBlock extends TemplateBlock implements MechanicalDevice, Rot
         return world.isPowered (x, y, z) || world.isPowered (x, y + 1, z);
     }
 
-    @Environment(EnvType.SERVER)
-    public void voicePacket(World world, String name, int x, int y, int z, float g, float h) {
-        List list2 = world.players;
-        if (list2.size() != 0) {
-            for (int k = 0; k < list2.size(); k++) {
-                ServerPlayerEntity player1 = (ServerPlayerEntity) list2.get(k);
-                PacketHelper.sendTo(player1, new SoundPacket(name, x, y, z, g, h));
-            }
-        }
-    }
-
+    @Override
     public void randomDisplayTick(World world, int x, int y, int z, Random random) {
         if (isGearBoxOn(world, x, y, z)) {
             emitGearBoxParticles(world, x, y, z, random);
         }
     }
 
+    @Override
     public int getFacing(BlockView blockView, int x, int y, int z) {
         return getFacingFromMeta(blockView.getBlockMeta(x, y, z));
     }
@@ -122,20 +116,24 @@ public class GearboxBlock extends TemplateBlock implements MechanicalDevice, Rot
         return meta;
     }
 
+    @Override
     public void setFacing(World world, int x, int y, int z, int facing) {
         int metadata = world.getBlockMeta(x, y, z) & 8;
         metadata |= facing;
         world.setBlockMeta(x, y, z, metadata);
     }
 
+    @Override
     public boolean canRotate(BlockView blockView, int x, int y, int z) {
         return true;
     }
 
+    @Override
     public boolean canTransmitRotation(BlockView blockView, int x, int y, int z) {
         return true;
     }
 
+    @Override
     public void rotate(World world, int x, int y, int z, boolean reverse) {
 //        System.out.println("METODA ROTATE W GEARBOX");
         int facing = getFacing(world, x, y, z);
@@ -240,17 +238,19 @@ public class GearboxBlock extends TemplateBlock implements MechanicalDevice, Rot
         }
 
         UnsortedUtils.EjectSingleItemWithRandomOffset(world, x, y, z, Item.REDSTONE.id, 0);
-        world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.explode", 0.3F, 1.25F);
-        if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-            voicePacket(world, "random.explode", x, y, z, 0.05F, 1.0F);
+        world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.explode", 0.15F, 1.25F); // 0.3F og volume
+        if (WolvesMpUtils.isEnvServ()) {
+            WolvesMpUtils.soundPacket(world, x, y, z, "random.explode", 0.15F, 1.0F);
         }
         world.setBlock(x, y, z, 0);
     }
 
+    @Override
     public boolean canOutputMechanicalPower() {
         return true;
     }
 
+    @Override
     public boolean canInputMechanicalPower() {
         return true;
     }
@@ -283,11 +283,15 @@ public class GearboxBlock extends TemplateBlock implements MechanicalDevice, Rot
         validateOutputs(world, x, y, z, false);
     }
 
-    private void handleGearBoxActivation(World world, int x, int y, int z, Random random) {
-        world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.explode", 0.1F, 1.0F);
-        if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-            voicePacket(world, "random.explode", x, y, z, 0.05F, 1.0F);
+    @Override
+    public void onBlockAction(World world, int x, int y, int z, int code, int pitch) {
+        if(pitch == 0){ /// Activate
+            world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.explode", 0.05F, 1.0F); // 0.1F og volume
         }
+    }
+
+    private void handleGearBoxActivation(World world, int x, int y, int z, Random random) {
+        world.playNoteBlockActionAt(x,y,z, 0, 0); /// Activate
         emitGearBoxParticles(world, x, y, z, random);
         setGearBoxOnState(world, x, y, z, true);
         validateOutputs(world, x, y, z, true);

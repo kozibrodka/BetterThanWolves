@@ -3,6 +3,7 @@ package net.kozibrodka.wolves.entity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
+import net.kozibrodka.wolves.events.ConfigListener;
 import net.kozibrodka.wolves.events.EntityListener;
 import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.utils.ArrowOwnerUtil;
@@ -17,6 +18,7 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.ClientWorld;
 import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.server.entity.EntitySpawnDataProvider;
 import net.modificationstation.stationapi.api.server.entity.HasTrackingParameters;
@@ -24,8 +26,9 @@ import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.util.TriState;
 
 import java.util.List;
+import java.util.Objects;
 
-@HasTrackingParameters(trackingDistance = 30, updatePeriod = 1, sendVelocity = TriState.TRUE)
+@HasTrackingParameters(trackingDistance = 240, updatePeriod = Integer.MAX_VALUE, sendVelocity = TriState.TRUE)
 public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvider {
 
     private int xTile = -1;
@@ -54,10 +57,10 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
         isServerCreated = true;
     }
 
-    public BroadheadArrowEntity(World arg, LivingEntity arg2) {
+    public BroadheadArrowEntity(World arg, PlayerEntity arg2) {
         super(arg);
         this.owner = arg2;
-        dataTracker.set(16, owner.id);
+        setOwnerId(arg2.id);
         this.spawnedByPlayer = arg2 instanceof PlayerEntity;
         this.setBoundingBoxSpacing(0.5F, 0.5F);
         this.setPositionAndAnglesKeepPrevAngles(arg2.x, arg2.y + (double) arg2.getEyeHeight(), arg2.z, arg2.yaw, arg2.pitch);
@@ -72,8 +75,19 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
         this.method_1291(this.velocityX, this.velocityY, this.velocityZ, 1.5F, 1.0F);
     }
 
+    @Override
     protected void initDataTracker() {
-        dataTracker.startTracking(16, -1);
+        dataTracker.startTracking(16, (int)0);
+    }
+
+    public int getOwnerId()
+    {
+        return dataTracker.getInt(16);
+    }
+
+    public void setOwnerId(int i)
+    {
+        dataTracker.set(16, i);
     }
 
 
@@ -104,6 +118,7 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
         this.ticksInGround = 0;
     }
 
+    @Override
     @Environment(EnvType.CLIENT)
     public void setVelocityClient(double d, double e, double f) {
         this.velocityX = d;
@@ -121,26 +136,22 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
 
     }
 
+    @Override
     public void tick() {
         super.tick();
-        //ADDED
         if(world.isRemote){
-            if (shake > 0) {
-                --this.shake;
-            }
-            int ownerID = dataTracker.getInt(16);
-            if(isServerCreated && ownerID != -1){
-                if(!ArrowOwnerUtil.isClientPlayer(ownerID)) {
+            int ownerId = getOwnerId();
+            if(isServerCreated && ownerId != 0){
+                if(!ArrowOwnerUtil.isIdPlayer(ownerId)) {
                     world.playSound(this, "random.bow", 1.0F, 1.0F / (random.nextFloat() * 0.4F + 0.8F));
                 }
+                owner = ArrowOwnerUtil.getOwnerEntity(ownerId, world);
                 isServerCreated = false;
             }
-            return;
         }
         if (dead) {
             return;
         }
-        //ADDED
         if (this.prevPitch == 0.0F && this.prevYaw == 0.0F) {
             float var1 = MathHelper.sqrt(this.velocityX * this.velocityX + this.velocityZ * this.velocityZ);
             this.prevYaw = this.yaw = (float) (Math.atan2(this.velocityX, this.velocityZ) * 180.0D / 3.1415927410125732D);
@@ -218,7 +229,6 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
                 if (var3.entity != null) {
                     if (var3.entity.damage(this.owner, 10)) {
                         this.world.playSound(this, "random.drr", 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
-                        world.broadcastEntityEvent(this, (byte)7);
                         this.markDead();
                     } else {
                         this.velocityX *= -0.10000000149011612D;
@@ -242,7 +252,6 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
                     this.y -= this.velocityY / (double) var19 * 0.05000000074505806D;
                     this.z -= this.velocityZ / (double) var19 * 0.05000000074505806D;
                     this.world.playSound(this, "random.drr", 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
-                    world.broadcastEntityEvent(this, (byte)6);
                     this.inGround = true;
                     shake = 7;
                 }
@@ -290,6 +299,7 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
         }
     }
 
+    @Override
     public void writeNbt(NbtCompound arg) {
         arg.putShort("xTile", (short) this.xTile);
         arg.putShort("yTile", (short) this.yTile);
@@ -301,6 +311,7 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
         arg.putBoolean("player", this.spawnedByPlayer);
     }
 
+    @Override
     public void readNbt(NbtCompound arg) {
         this.xTile = arg.getShort("xTile");
         this.yTile = arg.getShort("yTile");
@@ -312,11 +323,11 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
         this.spawnedByPlayer = arg.getBoolean("player");
     }
 
+    @Override
     public void onPlayerInteraction(PlayerEntity arg) {
         if (!this.world.isRemote) {
             if (this.inGround && this.spawnedByPlayer && shake <= 0 && arg.inventory.addStack(new ItemStack(ItemListener.broadHeadArrow, 1))) {
                 this.world.playSound(this, "random.pop", 0.2F, ((this.random.nextFloat() - this.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-                world.broadcastEntityEvent(this, (byte)8);
                 arg.sendPickup(this, 1);
                 this.markDead();
             }
@@ -326,26 +337,17 @@ public class BroadheadArrowEntity extends Entity implements EntitySpawnDataProvi
 
     @Override
     @Environment(EnvType.CLIENT)
-    public void processServerEntityStatus(byte status) {
-        if (status == 6) {
-            shake = 7;
-            this.world.playSound(this, "random.drr", 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
-        }  else if (status == 7) {
-            this.world.playSound(this, "random.drr", 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
-        }  else if (status == 8){
-            this.world.playSound(this, "random.pop", 0.2F, ((this.random.nextFloat() - this.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-        }  else {
-            super.processServerEntityStatus(status);
-        }
-    }
-
-    @Environment(EnvType.CLIENT)
     public float getShadowRadius() {
         return 0.0F;
     }
 
     @Override
     public Identifier getHandlerIdentifier() {
-        return Identifier.of(EntityListener.NAMESPACE, "BroadheadArrow");
+        return Identifier.of(ConfigListener.NAMESPACE, "BroadheadArrow");
+    }
+
+    @Override
+    public boolean syncTrackerAtSpawn() {
+        return true;
     }
 }

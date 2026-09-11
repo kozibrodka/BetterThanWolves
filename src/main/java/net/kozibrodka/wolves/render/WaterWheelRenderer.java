@@ -22,21 +22,21 @@ public class WaterWheelRenderer extends EntityRenderer {
         GL11.glTranslatef((float) x, (float) y, (float) z);
         bindTexture("/assets/wolves/stationapi/textures/entity/fcwaterwheelent.png");
         GL11.glScalef(1.0F, 1.0F, 1.0F);
-        float f2 = (float) fcentitywaterwheel.getWheelTimeSinceHit() - f1;
-        float f3 = (float) fcentitywaterwheel.getWheelCurrentDamage() - f1;
+        float f2 = (float) fcentitywaterwheel.iWaterWheelTimeSinceHit - f1;
+        float f3 = (float) fcentitywaterwheel.iWaterWheelCurrentDamage - f1;
         float f4 = 0.0F;
         if (f3 < 0.0F) {
             f3 = 0.0F;
         }
         if (f3 > 0.0F) {
-            f4 = ((MathHelper.sin(f2) * f2 * f3) / 40F) * (float) fcentitywaterwheel.getWheelRockDirection();
+            f4 = ((MathHelper.sin(f2) * f2 * f3) / 40F) * (float) fcentitywaterwheel.iWaterWheelRockDirection;
         }
-        if (fcentitywaterwheel.getAligned()) {
-            GL11.glRotatef(fcentitywaterwheel.getWheelRotation(), 1.0F, 0.0F, 0.0F);
+        if (fcentitywaterwheel.bWaterWheelIAligned) {
+            GL11.glRotatef(fcentitywaterwheel.fRotation, 1.0F, 0.0F, 0.0F);
             GL11.glRotatef(f4, 0.0F, 0.0F, 1.0F);
             GL11.glRotatef(90F, 0.0F, 1.0F, 0.0F);
         } else {
-            GL11.glRotatef(fcentitywaterwheel.getWheelRotation(), 0.0F, 0.0F, 1.0F);
+            GL11.glRotatef(fcentitywaterwheel.fRotation, 0.0F, 0.0F, 1.0F);
             GL11.glRotatef(f4, 1.0F, 0.0F, 0.0F);
         }
         modelWaterWheel.render(0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);

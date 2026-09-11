@@ -2,17 +2,14 @@ package net.kozibrodka.wolves.entity;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.block.AxleBlock;
 import net.kozibrodka.wolves.events.BlockListener;
-import net.kozibrodka.wolves.events.EntityListener;
+import net.kozibrodka.wolves.events.ConfigListener;
 import net.kozibrodka.wolves.events.ItemListener;
-import net.kozibrodka.wolves.network.DamagePacket;
-import net.kozibrodka.wolves.network.InteractWindPacket;
+import net.kozibrodka.wolves.network.LoadRotationPacket;
 import net.minecraft.block.Block;
 import net.minecraft.block.LiquidBlock;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
@@ -24,82 +21,95 @@ import net.modificationstation.stationapi.api.server.entity.HasTrackingParameter
 import net.modificationstation.stationapi.api.util.Identifier;
 import net.modificationstation.stationapi.api.util.TriState;
 
-@HasTrackingParameters(trackingDistance = 160, updatePeriod = 1, sendVelocity = TriState.FALSE)
+@HasTrackingParameters(trackingDistance = 240, updatePeriod = Integer.MAX_VALUE, sendVelocity = TriState.FALSE)
 public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
 {
 
     public WaterWheelEntity(World world)
     {
         super(world);
-        setProvidingPower(false);
-        setWheelRotation(0.0F);
-//        setAligned(true);
-//        iWaterWheelCurrentDamage = 0;
-//        iWaterWheelTimeSinceHit = 0;
-//        iWaterWheelRockDirection = 1;
-        setWheelRockDirection(1);
+        fRotation = 0.0F;
+        bProvidingPower = false;
+        iWaterWheelCurrentDamage = 0;
+        iWaterWheelTimeSinceHit = 0;
+        iWaterWheelRockDirection = 1;
         fWaterWheelCurrentRotationSpeed = 0.0F;
         iFullUpdateTickCount = 0;
         blocksSameBlockSpawning = true;
-//        setBoundingBoxSpacing(4.8F, 4.8F);
+        setBoundingBoxSpacing(4.8F, 4.8F);
         standingEyeHeight = height / 2.0F;
-        waterTick = 0;
     }
 
-    public WaterWheelEntity(World world, double x, double y, double z, boolean bJAligned)
+    public WaterWheelEntity(World world, double x, double y, double z, boolean flag)
     {
         this(world);
         setPosition(x, y, z);
-        setAligned(bJAligned);
+        bWaterWheelIAligned = flag;
+        AlignBoundingBoxWithAxis();
+        setAligned(bWaterWheelIAligned);
+    }
+
+    public WaterWheelEntity(World level, double x, double y, double z) {
+        this(level);
+        setPosition(x, y, z);
         AlignBoundingBoxWithAxis();
     }
 
-    public WaterWheelEntity(World level, Double aDouble, Double aDouble1, Double aDouble2) {
-        this(level); //TODO  updatePeriod = 1, possible optymalization, but impossible with hurt animation
+    @Override
+    @Environment(EnvType.CLIENT)
+    public void processServerEntityStatus(byte status) {
+        if (status >= 6 && status < 14) {
+            int dmg = status - 6;
+            iWaterWheelRockDirection = -iWaterWheelRockDirection;
+            iWaterWheelTimeSinceHit = 10;
+            scheduleVelocityUpdate();
+            iWaterWheelCurrentDamage += dmg * 5;
+        }else{
+            super.processServerEntityStatus(status);
+        }
     }
 
     private void AlignBoundingBoxWithAxis()
     {
-        if(getAligned())
+        if(bWaterWheelIAligned)
         {
-            boundingBox.set(x - 0.40000000596046448D, y - 2.4000000953674316D, z - 2.4000000953674316D, x + 0.40000000596046448D, y + 2.4000000953674316D, z + 2.4000000953674316D);
+            boundingBox.set(x - fHalfWheelDepth, y - fHalfWheelWidth, z - fHalfWheelWidth, x + fHalfWheelDepth, y + fHalfWheelWidth, z + fHalfWheelWidth);
         } else
         {
-            boundingBox.set(x - 2.4000000953674316D, y - 2.4000000953674316D, z - 0.40000000596046448D, x + 2.4000000953674316D, y + 2.4000000953674316D, z + 0.40000000596046448D);
+            boundingBox.set(x - fHalfWheelWidth, y - fHalfWheelWidth, z - fHalfWheelDepth, x + fHalfWheelWidth, y + fHalfWheelWidth, z + fHalfWheelDepth);
         }
     }
 
-    protected void initDataTracker()
-    {
-        dataTracker.startTracking(16, (byte) 0); //ALIGNED
-        dataTracker.startTracking(17, (int) 0); //WHEEL ROTATION
-        dataTracker.startTracking(18, (byte) 0); //PROVIDING POWER
-        dataTracker.startTracking(19, (byte) 0); //currentDamage
-        dataTracker.startTracking(20, (byte) 0); //timeSinceHit
-        dataTracker.startTracking(21, (byte) 0); //rockDirection
+    @Override
+    public float getEyeHeight() {
+        return -1.0F;
     }
 
+    @Override
+    protected void initDataTracker() {
+        dataTracker.startTracking(16, (byte) 0); //Facing
+        dataTracker.startTracking(17, (int) 0); //Rotation
+    }
+
+    @Override
     protected void writeNbt(NbtCompound nbttagcompound)
     {
-        nbttagcompound.putBoolean("bWaterWheelIAligned", getAligned());
-        nbttagcompound.putFloat("fRotation", getWheelRotation());
-        nbttagcompound.putBoolean("bProvidingPower", getProvidingPower());
-        nbttagcompound.putInt("currentDamage", getWheelCurrentDamage());
-        nbttagcompound.putInt("timeSinceHit", getWheelTimeSinceHit());
-        nbttagcompound.putInt("rockDirection", getWheelRockDirection());
+        nbttagcompound.putBoolean("bWaterWheelIAligned", bWaterWheelIAligned);
+        nbttagcompound.putFloat("fRotation", fRotation);
+        nbttagcompound.putBoolean("bProvidingPower", bProvidingPower);
     }
 
+    @Override
     protected void readNbt(NbtCompound nbttagcompound)
     {
-        setAligned(nbttagcompound.getBoolean("bWaterWheelIAligned"));
-        setWheelRotation(nbttagcompound.getFloat("fRotation"));
-        setProvidingPower(nbttagcompound.getBoolean("bProvidingPower"));
-        setWheelCurrentDamage(nbttagcompound.getInt("currentDamage"));
-        setWheelTimeSinceHit(nbttagcompound.getInt("timeSinceHit"));
-        setWheelRockDirection(nbttagcompound.getInt("rockDirection"));
+        bWaterWheelIAligned = nbttagcompound.getBoolean("bWaterWheelIAligned");
+        fRotation = nbttagcompound.getFloat("fRotation");
+        bProvidingPower = nbttagcompound.getBoolean("bProvidingPower");
         AlignBoundingBoxWithAxis();
+        setAligned(bWaterWheelIAligned);
     }
 
+    @Override
     protected boolean bypassesSteppingEffects()
     {
         return false;
@@ -113,82 +123,52 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
     }
 
     @Override
-    public void setPosition(double x, double y, double z) {
-        if(!receivedP) {
-            this.x = x;
-            this.y = y;
-            this.z = z;
-            if (dataTracker.entries.containsKey(16)) {
-                if (getAligned()) {
-                    boundingBox.set(x - 0.40000000596046448D, y - 2.4000000953674316D, z - 2.4000000953674316D, x + 0.40000000596046448D, y + 2.4000000953674316D, z + 2.4000000953674316D);
-                    receivedP = true;
-                } else {
-                    boundingBox.set(x - 2.4000000953674316D, y - 2.4000000953674316D, z - 0.40000000596046448D, x + 2.4000000953674316D, y + 2.4000000953674316D, z + 0.40000000596046448D);
-                    receivedP = true;
-                }
-            }
-        }
-    }
-
-    @Override
-    public Box getCollisionAgainstShape(Entity other) {
-        if (world.isRemote) {
-            return null;
-        }
-        return other == passenger ? null : other.boundingBox;
-    }
-
     public Box getBoundingBox() {
         return boundingBox;
     }
 
+    @Override
     public boolean isPushable() {
         return false;
     }
 
+    @Override
     public boolean isCollidable() {
         return !dead;
     }
 
-    public boolean damage(Entity entity, int i)
+    @Override
+    public boolean damage(Entity entity, int amount)
     {
-        if(world.isRemote || dead)
-        {
-            PacketHelper.send(new DamagePacket("water", i, this.id));
-            return true;
+        if(world.isRemote || dead){
+            return false;
         }
-        setWheelRockDirection(-getWheelRockDirection());
-        setWheelTimeSinceHit(10);
+        iWaterWheelRockDirection = -iWaterWheelRockDirection;
+        iWaterWheelTimeSinceHit = 10;
         scheduleVelocityUpdate();
-        setWheelCurrentDamage(getWheelCurrentDamage()+(i * 5));
-        if(getWheelCurrentDamage() > 40){
+        iWaterWheelCurrentDamage += amount * 5;
+        if(amount < 8 && iWaterWheelCurrentDamage <= 40){
+            world.broadcastEntityEvent(this, (byte)(amount+6));
+        }
+        if(iWaterWheelCurrentDamage > 40)
+        {
             destroyWithDrop();
         }
-//        iWaterWheelRockDirection = -iWaterWheelRockDirection;
-//        iWaterWheelTimeSinceHit = 10;
-//        scheduleVelocityUpdate();
-//        iWaterWheelCurrentDamage += i * 5;
-//        if(iWaterWheelCurrentDamage > 40)
-//        {
-//            destroyWithDrop();
-//        }
         return true;
     }
 
+    @Override
     public void animateHurt()
     {
-//        iWaterWheelRockDirection = -iWaterWheelRockDirection;
-//        iWaterWheelTimeSinceHit = 10;
-//        iWaterWheelCurrentDamage += iWaterWheelCurrentDamage * 5;
-
-        setWheelRockDirection(-getWheelRockDirection());
-        setWheelTimeSinceHit(10);
-        setWheelCurrentDamage(getWheelCurrentDamage()*5);
+        iWaterWheelRockDirection = -iWaterWheelRockDirection;
+        iWaterWheelTimeSinceHit = 10;
+        iWaterWheelCurrentDamage += iWaterWheelCurrentDamage * 5;
     }
 
+    @Override
     public void markDead()
     {
-        if(getProvidingPower())
+        if(bProvidingPower)
         {
             int iCenterI = (int)(x - 0.5D);
             int iCenterJ = (int)(y - 0.5D);
@@ -211,12 +191,52 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
         }
     }
 
+    public boolean clientAsked;
+
+    public void clientTick(){
+        if(dead) {return;}
+        iFullUpdateTickCount--;
+        if(iFullUpdateTickCount <= 0)
+        {
+            iFullUpdateTickCount = 20;
+            int iCenterI = (int)(x - 0.5D);
+            int iCenterJ = (int)(y - 0.5D);
+            int iCenterK = (int)(z - 0.5D);
+            fWaterWheelCurrentRotationSpeed = ComputeRotation(iCenterI, iCenterJ, iCenterK);
+        }
+        if(iWaterWheelTimeSinceHit > 0)
+        {
+            iWaterWheelTimeSinceHit--;
+        }
+        if(iWaterWheelCurrentDamage > 0)
+        {
+            iWaterWheelCurrentDamage--;
+        }
+        fRotation += fWaterWheelCurrentRotationSpeed;
+        if(fRotation > 360F)
+        {
+            fRotation -= 360F;
+        } else
+        if(fRotation < -360F)
+        {
+            fRotation += 360F;
+        }
+    }
+
+    @Override
     public void tick()
     {
-        if(dead || world.isRemote)
-        {
+        if(world.isRemote){
+            if(!clientAsked){
+                bWaterWheelIAligned = getAligned();
+                AlignBoundingBoxWithAxis();
+//                PacketHelper.send(new LoadRotationPacket(0, this.id)); /// Synchronizacja rotacji, powoduje przeskok przy dołączeniu, jedynie wizualna koretka nie wiem czy jest sens
+                clientAsked = true;
+            }
+            clientTick();
             return;
         }
+        if(dead) {return;}
         iFullUpdateTickCount--;
         if(iFullUpdateTickCount <= 0)
         {
@@ -230,12 +250,12 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
                 destroyWithDrop();
                 return;
             }
-            if(!validateArea(world, iCenterI, iCenterJ, iCenterK, getAligned()))
+            if(!validateArea(world, iCenterI, iCenterJ, iCenterK, bWaterWheelIAligned))
             {
                 destroyWithDrop();
                 return;
             }
-            if(!getProvidingPower() && ((AxleBlock)BlockListener.axleBlock).getPowerLevel(world, iCenterI, iCenterJ, iCenterK) > 0)
+            if(!bProvidingPower && ((AxleBlock)BlockListener.axleBlock).getPowerLevel(world, iCenterI, iCenterJ, iCenterK) > 0)
             {
                 destroyWithDrop();
                 return;
@@ -243,51 +263,43 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
             fWaterWheelCurrentRotationSpeed = ComputeRotation(iCenterI, iCenterJ, iCenterK);
             if(fWaterWheelCurrentRotationSpeed > 0.01F || fWaterWheelCurrentRotationSpeed < -0.01F)
             {
-                if(!getProvidingPower())
+                if(!bProvidingPower)
                 {
-                    setProvidingPower(true);
+                    bProvidingPower = true;
                     ((AxleBlock)BlockListener.axleBlock).setPowerLevel(world, iCenterI, iCenterJ, iCenterK, 3);
                 }
             } else
-            if (getProvidingPower()) {
-                setProvidingPower(false);
+            if (bProvidingPower) {
+                bProvidingPower = false;
                 ((AxleBlock) BlockListener.axleBlock).setPowerLevel(world, iCenterI, iCenterJ, iCenterK, 0);
             }
-
         }
-//        if(iWaterWheelTimeSinceHit > 0)
-//        {
-//            iWaterWheelTimeSinceHit--;
-//        }
-//        if(iWaterWheelCurrentDamage > 0)
-//        {
-//            iWaterWheelCurrentDamage--;
-//        }
-        if(getWheelTimeSinceHit() > 0)
+        if(iWaterWheelTimeSinceHit > 0)
         {
-            setWheelTimeSinceHit(getWheelTimeSinceHit()-1);
+            iWaterWheelTimeSinceHit--;
         }
-        if(getWheelCurrentDamage() > 0)
+        if(iWaterWheelCurrentDamage > 0)
         {
-            setWheelCurrentDamage(getWheelCurrentDamage()-1);
+            iWaterWheelCurrentDamage--;
         }
-
-        setWheelRotation(getWheelRotation()+fWaterWheelCurrentRotationSpeed);
-        if(getWheelRotation() > 360F)
+        fRotation += fWaterWheelCurrentRotationSpeed;
+        if(fRotation > 360F)
         {
-            setWheelRotation(getWheelRotation()-360F);
+            fRotation -= 360F;
         } else
-        if(getWheelRotation() < -360F)
+        if(fRotation < -360F)
         {
-            setWheelRotation(getWheelRotation()+360F);
+            fRotation += 360F;
         }
     }
 
+    @Override
     public float getShadowRadius()
     {
         return 0.0F;
     }
 
+    @Override
     public void move(double deltaX, double deltaY, double deltaZ)
     {
         if(!dead)
@@ -357,29 +369,29 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
         {
             LiquidBlock fluidBlock = (LiquidBlock)Block.BLOCKS[iFlowid];
             Vec3d flowVector = getFlowVector(fluidBlock, world, iCenterI, iFlowJ, iCenterK);
-            if(getAligned())
+            if(bWaterWheelIAligned)
             {
-                if(flowVector.z > 0.33000001311302185D)
+                if(flowVector.z > 0.33D)
                 {
-                    fRotationAmount = -0.25F;
+                    fRotationAmount = -fWheelRotationPerTick;
                 } else
-                if(flowVector.z < -0.33000001311302185D)
+                if(flowVector.z < -0.33D)
                 {
-                    fRotationAmount = 0.25F;
+                    fRotationAmount = fWheelRotationPerTick;
                 }
             } else
-            if(flowVector.x > 0.33000001311302185D)
+            if(flowVector.x > 0.33D)
             {
-                fRotationAmount = 0.25F;
+                fRotationAmount = fWheelRotationPerTick;
             } else
-            if(flowVector.x < -0.33000001311302185D)
+            if(flowVector.x < -0.33D)
             {
-                fRotationAmount = -0.25F;
+                fRotationAmount = -fWheelRotationPerTick;
             }
         }
         int iOffset;
         int kOffset;
-        if(getAligned())
+        if(bWaterWheelIAligned)
         {
             iOffset = 0;
             kOffset = 2;
@@ -391,22 +403,22 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
         iFlowid = world.getBlockId(iCenterI + iOffset, iCenterJ, iCenterK - kOffset);
         if(iFlowid == Block.FLOWING_WATER.id || iFlowid == Block.WATER.id)
         {
-            LiquidBlock fluidBlock = (LiquidBlock)Block.BLOCKS[iFlowid];
-            fRotationAmount -= 0.25F;
+//            LiquidBlock fluidBlock = (LiquidBlock)Block.BLOCKS[iFlowid];
+            fRotationAmount -= fWheelRotationPerTick;
         }
         iFlowid = world.getBlockId(iCenterI - iOffset, iCenterJ, iCenterK + kOffset);
         if(iFlowid == Block.FLOWING_WATER.id || iFlowid == Block.WATER.id)
         {
-            LiquidBlock fluidBlock = (LiquidBlock)Block.BLOCKS[iFlowid];
-            fRotationAmount += 0.25F;
+//            LiquidBlock fluidBlock = (LiquidBlock)Block.BLOCKS[iFlowid];
+            fRotationAmount += fWheelRotationPerTick;
         }
-        if(fRotationAmount > 0.25F)
+        if(fRotationAmount > fWheelRotationPerTick)
         {
-            fRotationAmount = 0.25F;
+            fRotationAmount = fWheelRotationPerTick;
         } else
-        if(fRotationAmount <= -0.25F)
+        if(fRotationAmount <= -fWheelRotationPerTick)
         {
-            fRotationAmount = -0.25F;
+            fRotationAmount = -fWheelRotationPerTick;
         }
         return fRotationAmount;
     }
@@ -516,115 +528,43 @@ public class WaterWheelEntity extends Entity implements EntitySpawnDataProvider
         return l;
     }
 
-    public boolean interact(PlayerEntity entityplayer)
-    {
-//        if(world.isRemote){
-//            System.out.println("KLIENT: " + getAligned());
-//        }else{
-//            System.out.println("SERVER: " + getAligned());
-//        }
-        return false;
-    }
+    public static final double fHalfWheelWidth = 2.4D;
+    public static final double fHalfWheelDepth = 0.4D;
+    public static final float fWheelRotationPerTick = 0.25F;
 
     public static final float fWaterWheelHeight = 4.8F;
     public static final float fWaterWheelWidth = 4.8F;
     public static final float fWaterWheelDepth = 0.8F;
     public static final int iWaterWheelMaxDamage = 40;
-    public static final float fWaterWheelRotationPerTick = 0.25F;
     public static final int iWaterWheelTicksPerFullUpdate = 20;
-//    public int iWaterWheelCurrentDamage;
-//    public int iWaterWheelTimeSinceHit;
-//    public int iWaterWheelRockDirection;
+
+    public int iWaterWheelCurrentDamage;
+    public int iWaterWheelTimeSinceHit;
+    public int iWaterWheelRockDirection;
     public float fWaterWheelCurrentRotationSpeed;
     public int iFullUpdateTickCount;
-    private float sentRotationSpeed;
-    public int waterTick;
-    public boolean typechoosen;
-    public boolean receivedP;
 
-//    public boolean bWaterWheelIAligned;
-//    public float fRotation;
-//    public boolean bProvidingPower;
+    public boolean bWaterWheelIAligned;
+    public float fRotation;
+    public boolean bProvidingPower;
+    public boolean receivedP;
 
     @Override
     public Identifier getHandlerIdentifier() {
-        return Identifier.of(EntityListener.NAMESPACE, "WaterWheel");
+        return Identifier.of(ConfigListener.NAMESPACE, "WaterWheel");
     }
 
-    //ALIGNED
-    public boolean getAligned()
-    {
-        return (dataTracker.getByte(16) & 1) != 0;
-    }
+    public boolean getAligned() {return (dataTracker.getByte(16) & 1) != 0;}
 
     public void setAligned(boolean flag)
     {
         if(flag)
         {
-            dataTracker.set(16,  (byte)1);
+            dataTracker.set(16, (byte) 1);
         } else
         {
-            dataTracker.set(16,  (byte)0);
+            dataTracker.set(16, (byte) 0);
         }
-    }
-
-    //ROTATION (FLOAT)
-    public float getWheelRotation()
-    {
-        return Float.intBitsToFloat(dataTracker.getInt(17));
-    }
-
-    public void setWheelRotation(float age)
-    {
-        dataTracker.set(17, Float.floatToRawIntBits(age));
-    }
-
-    //POWER
-    public boolean getProvidingPower()
-    {
-        return (dataTracker.getByte(18) & 1) != 0;
-    }
-
-    public void setProvidingPower(boolean flag)
-    {
-        if(flag)
-        {
-            dataTracker.set(18, (byte) 1);
-        } else
-        {
-            dataTracker.set(18, (byte) 0);
-        }
-    }
-
-    //CurrentDamage
-    public int getWheelCurrentDamage()
-    {
-        return dataTracker.getByte(19);
-    }
-
-    public void setWheelCurrentDamage(int i)
-    {
-        dataTracker.set(19, (byte) i);
-    }
-    //TimeSinceHit
-    public int getWheelTimeSinceHit()
-    {
-        return dataTracker.getByte(20);
-    }
-
-    public void setWheelTimeSinceHit(int i)
-    {
-        dataTracker.set(20, (byte) i);
-    }
-    //RockDirection
-    public int getWheelRockDirection()
-    {
-        return dataTracker.getByte(21);
-    }
-
-    public void setWheelRockDirection(int i)
-    {
-        dataTracker.set(21, (byte) i);
     }
 
     @Override

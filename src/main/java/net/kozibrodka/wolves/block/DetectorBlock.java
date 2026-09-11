@@ -109,10 +109,7 @@ public class DetectorBlock extends TemplateBlock {
             level.scheduleBlockUpdate(x, y, z, BlockListener.detectorBlock.id, getTickRate());
             return;
         }
-        level.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.click", 0.75F, 2.0F);
-        if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-            voicePacket(level, "random.click", x, y, z, 0.75F, 2.0F);
-        }
+        level.playNoteBlockActionAt(x,y,z, 0, 0); ///
         int metadata = level.getBlockMeta(x, y, z);
         metadata++;
         level.setBlock(x, y, z, this.id, metadata);
@@ -120,15 +117,9 @@ public class DetectorBlock extends TemplateBlock {
         level.scheduleBlockUpdate(x, y, z, BlockListener.detectorBlock.id, getTickRate());
     }
 
-    @Environment(EnvType.SERVER)
-    public void voicePacket(World world, String name, int x, int y, int z, float g, float h) {
-        List list2 = world.players;
-        if (list2.size() != 0) {
-            for (int k = 0; k < list2.size(); k++) {
-                ServerPlayerEntity player1 = (ServerPlayerEntity) list2.get(k);
-                PacketHelper.sendTo(player1, new SoundPacket(name, x, y, z, g, h));
-            }
-        }
+    @Override
+    public void onBlockAction(World world, int x, int y, int z, int code, int pitch) {
+        world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.click", 0.75F, 2.0F);
     }
 
     private void deactivateDetector(World level, int x, int y, int z) {

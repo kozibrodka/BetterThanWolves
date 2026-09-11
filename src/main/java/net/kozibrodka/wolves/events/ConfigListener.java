@@ -12,7 +12,5 @@ public class ConfigListener {
     @Entrypoint.Namespace
     public static Namespace NAMESPACE;
 
-    //TODO EXTRA: Saw animated, Sound volume is like oryginal? check why.
-
 }
 

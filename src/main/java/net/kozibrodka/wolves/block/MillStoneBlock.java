@@ -34,10 +34,12 @@ public class MillStoneBlock extends TemplateBlockWithEntity
         setTickRandomly(true);
     }
 
+    @Override
     public int getTickRate() {
         return iMillStoneTickRate;
     }
 
+    @Override
     public int getTexture(int side) {
         if (side == 1) {
             return TextureListener.millstone_top;
@@ -49,30 +51,22 @@ public class MillStoneBlock extends TemplateBlockWithEntity
         }
     }
 
+    @Override
     public void onPlaced(World world, int i, int j, int k) {
         super.onPlaced(world, i, j, k);
         world.scheduleBlockUpdate(i, j, k, BlockListener.millStone.id, getTickRate());
     }
 
+    @Override
     public boolean onUse(World world, int x, int y, int z, PlayerEntity playerEntity) {
         MillStoneBlockEntity millStoneBlockEntity = (MillStoneBlockEntity) world.getBlockEntity(x, y, z);
         GuiHelper.openGUI(playerEntity, Identifier.of(BlockEntityListener.NAMESPACE, "openMillStone"), millStoneBlockEntity, new MillStoneScreenHandler(playerEntity.inventory, millStoneBlockEntity));
         return true;
     }
 
+    @Override
     protected BlockEntity createBlockEntity() {
         return new MillStoneBlockEntity();
-    }
-
-    @Environment(EnvType.SERVER)
-    public void voicePacket(World world, String name, int x, int y, int z, float g, float h) {
-        List list2 = world.players;
-        if (list2.size() != 0) {
-            for (int k = 0; k < list2.size(); k++) {
-                ServerPlayerEntity player1 = (ServerPlayerEntity) list2.get(k);
-                PacketHelper.sendTo(player1, new SoundPacket(name, x, y, z, g, h));
-            }
-        }
     }
 
     @Override
@@ -115,6 +109,7 @@ public class MillStoneBlock extends TemplateBlockWithEntity
         millStoneBlockEntity.stopPoweringManually();
     }
 
+    @Override
     public void randomDisplayTick(World world, int i, int j, int k, Random random) {
         if (IsBlockOn(world, i, j, k)) {
             EmitMillingParticles(world, i, j, k, random);
@@ -124,6 +119,7 @@ public class MillStoneBlock extends TemplateBlockWithEntity
         }
     }
 
+    @Override
     public void onBreak(World world, int i, int j, int k) {
         InventoryHandler.ejectInventoryContents(world, i, j, k, (Inventory) world.getBlockEntity(i, j, k));
         super.onBreak(world, i, j, k);
@@ -150,13 +146,14 @@ public class MillStoneBlock extends TemplateBlockWithEntity
             float smokeZ = (float) k + random.nextFloat();
             world.addParticle("smoke", smokeX, smokeY, smokeZ, 0.0D, 0.0D, 0.0D);
         }
-
     }
 
+    @Override
     public boolean canOutputMechanicalPower() {
         return false;
     }
 
+    @Override
     public boolean canInputMechanicalPower() {
         return true;
     }

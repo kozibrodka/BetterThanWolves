@@ -44,22 +44,27 @@ public class VaseBlock extends TemplateBlockWithEntity
         setBoundingBox(0.1875F, 0.0F, 0.1875F, 0.8125F, 1.0F, 0.8125F);
     }
 
+    @Override
     public boolean isOpaque() {
         return false;
     }
 
+    @Override
     public boolean isFullCube() {
         return false;
     }
 
+    @Override
     public int getDroppedItemCount(Random random) {
         return 0;
     }
 
+    @Override
     public int getDroppedItemMeta(int i) {
         return i;
     }
 
+    @Override
     public int getTexture(int iSide, int iMetaData) {
         return switch (iMetaData) {
             case 0 -> TextureListener.vase_white;
@@ -82,10 +87,12 @@ public class VaseBlock extends TemplateBlockWithEntity
         };
     }
 
+    @Override
     protected BlockEntity createBlockEntity() {
         return new VaseBlockEntity();
     }
 
+    @Override
     public boolean onUse(World world, int i, int j, int k, PlayerEntity entityPlayer) {
         if (world.isRemote) {
             return true;
@@ -96,34 +103,23 @@ public class VaseBlock extends TemplateBlockWithEntity
             int iTempStackSize = playerEquippedItemInstance.count;
             if (InventoryHandler.addItemInstanceToInventory(tileEntityVase, playerEquippedItemInstance)) {
                 entityPlayer.clearStackInHand();
-                world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "random.pop", 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-                if (net.fabricmc.loader.FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                    voicePacket(world, "random.explode", i, j, k, 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-                }
+                world.playNoteBlockActionAt(i,j,k, 0, 0); ///
                 return true;
             }
             if (playerEquippedItemInstance.count < iTempStackSize) {
-                world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "random.pop", 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-                if (net.fabricmc.loader.FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                    voicePacket(world, "random.explode", i, j, k, 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-                }
+                world.playNoteBlockActionAt(i,j,k, 0, 0); ///
                 return true;
             }
         }
         return false;
     }
 
-    @Environment(EnvType.SERVER)
-    public void voicePacket(World world, String name, int x, int y, int z, float g, float h) {
-        List list2 = world.players;
-        if (list2.size() != 0) {
-            for (int k = 0; k < list2.size(); k++) {
-                ServerPlayerEntity player1 = (ServerPlayerEntity) list2.get(k);
-                PacketHelper.sendTo(player1, new SoundPacket(name, x, y, z, g, h));
-            }
-        }
+    @Override
+    public void onBlockAction(World world, int x, int y, int z, int code, int pitch) {
+        world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.pop", 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
     }
 
+    @Override
     public void onBreak(World world, int i, int j, int k) {
         VaseBlockEntity tileEntity = (VaseBlockEntity) world.getBlockEntity(i, j, k);
         if (tileEntity != null) {
@@ -132,25 +128,30 @@ public class VaseBlock extends TemplateBlockWithEntity
         super.onBreak(world, i, j, k);
     }
 
+    @Override
     public int getFacing(BlockView iBlockAccess, int i, int j, int l) {
         return 0;
     }
 
+    @Override
     public void setFacing(World world1, int l, int i1, int j1, int k1) {
     }
 
+    @Override
     public boolean canRotate(BlockView iBlockAccess, int i, int j, int l) {
         return false;
     }
 
+    @Override
     public boolean canTransmitRotation(BlockView iBlockAccess, int i, int j, int l) {
         return false;
     }
 
+    @Override
     public void rotate(World world1, int l, int i1, int j1, boolean flag) {
     }
 
-    public void BreakVase(World world, int i, int j, int k) {
+    public void BreakVase(World world, int i, int j, int k) { /// no usages, but that code is very wrong and outdated, calling it will crash client on server
         ((Minecraft) FabricLoader.getInstance().getGameInstance()).particleManager.addBlockBreakParticles(i, j, k, id, 0);
         ((Minecraft) FabricLoader.getInstance().getGameInstance()).soundManager.playSound(soundGroup.getSound(), (float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, (soundGroup.getVolume() + 1.0F) / 2.0F, soundGroup.getPitch() * 0.8F);
         world.setBlock(i, j, k, 0);

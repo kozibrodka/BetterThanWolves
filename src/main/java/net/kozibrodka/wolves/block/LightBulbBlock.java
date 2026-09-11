@@ -26,26 +26,32 @@ public class LightBulbBlock extends TemplateBlock
         setSoundGroup(GLASS_SOUND_GROUP);
     }
 
+    @Override
     public int getTexture(int i) {
         return id != BlockListener.lightBulbOn.id ? TextureListener.bulb_off : TextureListener.bulb_on;
     }
 
+    @Override
     public int getTickRate() {
         return 2;
     }
 
+    @Override
     public void onPlaced(World world, int i, int j, int k) {
         world.scheduleBlockUpdate(i, j, k, id, getTickRate());
     }
 
+    @Override
     public int getDroppedItemId(int i, Random random) {
         return BlockListener.lightBulbOff.asItem().id;
     }
 
+    @Override
     public boolean isOpaque() {
         return false;
     }
 
+    @Override
     public float getLuminance(BlockView iBlockAccess, int i, int j, int k) {
         if (id == BlockListener.lightBulbOn.id) {
             return 100F;
@@ -54,10 +60,12 @@ public class LightBulbBlock extends TemplateBlock
         }
     }
 
+    @Override
     public void neighborUpdate(World world, int i, int j, int k, int l) {
         world.scheduleBlockUpdate(i, j, k, id, getTickRate());
     }
 
+    @Override
     public void onTick(World world, int i, int j, int k, Random random) {
         boolean bPowered = world.isPowered(i, j, k);
         if (bPowered) {
@@ -69,6 +77,7 @@ public class LightBulbBlock extends TemplateBlock
         }
     }
 
+    @Override
     public boolean isPoweringSide(BlockView iBlockAccess, int i, int j, int k, int l) //isPoweringTo
     {
 //        return ModLoader.getMinecraftInstance().theWorld.isBlockGettingPowered(i, j, k);
@@ -105,21 +114,26 @@ public class LightBulbBlock extends TemplateBlock
     }
 
 
+    @Override
     public int getFacing(BlockView iBlockAccess, int i, int j, int l) {
         return 0;
     }
 
+    @Override
     public void setFacing(World world1, int l, int i1, int j1, int k1) {
     }
 
+    @Override
     public boolean canRotate(BlockView iBlockAccess, int i, int j, int l) {
         return false;
     }
 
+    @Override
     public boolean canTransmitRotation(BlockView iBlockAccess, int i, int j, int l) {
         return true;
     }
 
+    @Override
     public void rotate(World world1, int l, int i1, int j1, boolean flag) {
     }
 

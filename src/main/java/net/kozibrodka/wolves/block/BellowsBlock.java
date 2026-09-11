@@ -36,6 +36,7 @@ public class BellowsBlock extends TemplateBlock
         setSoundGroup(WOOD_SOUND_GROUP);
     }
 
+    @Override
     public int getTextureId(BlockView blockAccess, int i, int j, int k, int iSide) {
         int iFacing = getFacing(blockAccess, i, j, k);
         if (iSide == iFacing) {
@@ -47,6 +48,7 @@ public class BellowsBlock extends TemplateBlock
         return iSide != 0 ? TextureListener.bellows_side : TextureListener.bellows_top;
     }
 
+    @Override
     public int getTexture(int iSide) {
         if (iSide == 3) {
             return TextureListener.bellows_front;
@@ -57,14 +59,17 @@ public class BellowsBlock extends TemplateBlock
         return iSide != 0 ? TextureListener.bellows_side : TextureListener.bellows_top;
     }
 
+    @Override
     public void setupRenderBoundingBox() {
         setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 0.6875F, 1.0F);
     }
 
+    @Override
     public int getTickRate() {
         return m_iBellowsTickRate;
     }
 
+    @Override
     public void onPlaced(World world, int i, int j, int k, int iFacing) {
         if (iFacing < 2) {
             iFacing = 2;
@@ -72,24 +77,29 @@ public class BellowsBlock extends TemplateBlock
         setFacing(world, i, j, k, iFacing);
     }
 
+    @Override
     public void onPlaced(World world, int i, int j, int k, LivingEntity entityLiving) {
         int iFacing = UnsortedUtils.ConvertPlacingEntityOrientationToFlatBlockFacing(entityLiving);
         setFacing(world, i, j, k, iFacing);
     }
 
+    @Override
     public void onPlaced(World world, int i, int j, int k) {
         super.onPlaced(world, i, j, k);
         world.scheduleBlockUpdate(i, j, k, BlockListener.bellows.id, getTickRate());
     }
 
+    @Override
     public boolean isOpaque() {
         return false;
     }
 
+    @Override
     public boolean isFullCube() {
         return false;
     }
 
+    @Override
     public Box getCollisionShape(World world, int i, int j, int k) {
         if (IsBlockMechanicalOn(world, i, j, k)) {
             return Box.createCached((float) i, (float) j, (float) k, (float) i + 1.0F, (float) j + 0.6875F, (float) k + 1.0F);
@@ -98,6 +108,7 @@ public class BellowsBlock extends TemplateBlock
         }
     }
 
+    @Override
     public void updateBoundingBox(BlockView iBlockAccess, int i, int j, int k) {
         if (IsBlockMechanicalOn(iBlockAccess, i, j, k)) {
             setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 0.6875F, 1.0F);
@@ -106,21 +117,12 @@ public class BellowsBlock extends TemplateBlock
         }
     }
 
-    @Environment(EnvType.SERVER)
-    public void voicePacket(World world, String name, int x, int y, int z, float g, float h) {
-        List list2 = world.players;
-        if (list2.size() != 0) {
-            for (int k = 0; k < list2.size(); k++) {
-                ServerPlayerEntity player1 = (ServerPlayerEntity) list2.get(k);
-                PacketHelper.sendTo(player1, new SoundPacket(name, x, y, z, g, h));
-            }
-        }
-    }
-
+    @Override
     public int getFacing(BlockView iBlockAccess, int i, int j, int k) {
         return (iBlockAccess.getBlockMeta(i, j, k) & 3) + 2;
     }
 
+    @Override
     public void setFacing(World world, int i, int j, int k, int iFacing) {
         int iMetaData = world.getBlockMeta(i, j, k) & -4;
         if (iFacing >= 2) {
@@ -133,14 +135,17 @@ public class BellowsBlock extends TemplateBlock
     }
 
 
+    @Override
     public boolean canRotate(BlockView iBlockAccess, int i, int j, int l) {
         return true;
     }
 
+    @Override
     public boolean canTransmitRotation(BlockView iBlockAccess, int i, int j, int l) {
         return false;
     }
 
+    @Override
     public void rotate(World world, int i, int j, int k, boolean bReverse) {
         int iFacing = getFacing(world, i, j, k);
         int iNewFacing = UnsortedUtils.RotateFacingAroundJ(iFacing, bReverse);
@@ -153,21 +158,25 @@ public class BellowsBlock extends TemplateBlock
         UnsortedUtils.DestroyHorizontallyAttachedAxles(world, i, j, k);
     }
 
+    @Override
     public boolean canOutputMechanicalPower() {
         return false;
     }
 
+    @Override
     public boolean canInputMechanicalPower() {
         return true;
     }
 
     @Override
+    public void onBlockAction(World world, int x, int y, int z, int code, int pitch) {
+        world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "fire.ignite", 0.5F, world.random.nextFloat() * 0.4F + 2.0F);
+    }
+
+    @Override
     public void powerMachine(World world, int x, int y, int z, int side) {
         blow(world, x, y, z);
-        world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "fire.ignite", 0.5F, world.random.nextFloat() * 0.4F + 2.0F);
-        if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-            voicePacket(world, "fire.ignite", x, y, z, 0.5F, world.random.nextFloat() * 0.4F + 2.0F);
-        }
+        world.playNoteBlockActionAt(x,y,z, 0, 0);
         SetBlockMechanicalOn(world, x, y, z, true);
         world.setBlocksDirty(x, y, z, x, y, z);
     }
@@ -175,10 +184,7 @@ public class BellowsBlock extends TemplateBlock
     @Override
     public void unpowerMachine(World world, int x, int y, int z, int side) {
         LiftCollidingEntities(world, x, y, z);
-        world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "fire.ignite", 0.5F, world.random.nextFloat() * 0.4F + 2.0F);
-        if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-            voicePacket(world, "fire.ignite", x, y, z, 0.5F, world.random.nextFloat() * 0.4F + 2.0F);
-        }
+        world.playNoteBlockActionAt(x,y,z, 0, 0);
         SetBlockMechanicalOn(world, x, y, z, false);
         world.setBlocksDirty(x, y, z, x, y, z);
     }

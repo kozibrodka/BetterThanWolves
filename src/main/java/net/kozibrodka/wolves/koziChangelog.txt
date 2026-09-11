@@ -1,0 +1,31 @@
+
+Ciasto i full gitówa
+
+done:
+- Content Config Refactor, if feature disabled, ami not bloated.
+- btw Dispenser interraction with steelMinecart
+- rewrite WaterWheel server-sync logic, got rid of datatracking and stapi-TrackingParameters updates
+- rewrite WindMill server-sync logic, got rid of datatracking and stapi-TrackingParameters updates
+- rewrite Falling Anvil server-sync logic, got rid of stapi-TrackingParameters updates
+- rewrite Broadhead Arrow server-sync logic, got rid of stapi-TrackingParameters updates
+- rewrite Moving Anchor server-sync logic, got rid of stapi-TrackingParameters updates
+- rewrite Moving Platform server-sync logic, got rid of stapi-TrackingParameters updates
+- rewrite Steel Minecart server-sync logic, removed datatracking for hurt animation
+- added missing @Override annotations in many files
+- adjusted blockUpdate calls in some blocks, minor tweaks
+- handCrankBlock, Redundant NotifyingNeighbors calls removed
+- added Buddy Block (it was added in btw for beta 1.8.1)
+- changed refined tools entityDamage to match oryginal modloader version
+- added RefinedAxe, gave Battle Axes its actual oryginal benefit (more damage vs entities)
+- saw and dispenser Block no longer uses custom ParticlePacket, uses Vanilla onBlockAction() instead - Packet54PlayNoteBlock
+- custom RenderPacket rewrite (discpenser uses it), has to be used because Packet54PlayNoteBlock sends data1 and data2 as byte (0-256 not enought for block id)
+- removed custom SoundPacket from blocks wherever its possible to use vanilla onBlockAction() instead
+- code refactor of using custom Packets, added WolvesMpUtils and WolvesClientUtils
+- block Cake is now edited to match oryginal modloader version (BlockCakeMixin)
+
+plan - chill, only extra stuff.
+- mottock
+- lens
+
+
+

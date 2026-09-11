@@ -40,10 +40,12 @@ public class HandCrankBlock extends TemplateBlock
         setTickRandomly(true);
     }
 
+    @Override
     public int getTickRate() {
         return handCrankTickRate;
     }
 
+    @Override
     public int getTexture(int iSide) {
         if (iSide == 1) {
             return TextureListener.handcrack_top;
@@ -55,30 +57,37 @@ public class HandCrankBlock extends TemplateBlock
         }
     }
 
+    @Override
     public Box getCollisionShape(World world, int i, int j, int k) {
         return Box.createCached((float) i, (float) j, (float) k, (float) i + 1.0F, (float) j + handCrankBaseHeight, (float) k + 1.0F);
     }
 
+    @Override
     public boolean isOpaque() {
         return false;
     }
 
+    @Override
     public boolean isFullCube() {
         return false;
     }
 
+    @Override
     public void updateBoundingBox(BlockView iBlockAccess, int i, int j, int k) {
         setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
     }
 
+    @Override
     public boolean canPlaceAt(World world, int i, int j, int k) {
         return world.method_1783(i, j - 1, k);
     }
 
+    @Override
     public void onBlockBreakStart(World world, int i, int j, int k, PlayerEntity entityplayer) {
         onUse(world, i, j, k, entityplayer);
     }
 
+    @Override
     public boolean onUse(World world, int i, int j, int k, PlayerEntity entityPlayer) {
         if (world == null) {
             return true;
@@ -98,47 +107,41 @@ public class HandCrankBlock extends TemplateBlock
         return true;
     }
 
+    @Override
     public void onTick(World world, int i, int j, int k, Random random) {
         int iMetaData = world.getBlockMeta(i, j, k);
         if (iMetaData > 0) {
             if (iMetaData < 7) {
                 if (iMetaData <= 6) {
-                    world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "random.click", 1.0F, 2.0F);
-                    if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                        voicePacket(world, i, j, k, 1.0F, 2.0F);
-                    }
+                    world.playNoteBlockActionAt(i,j,k, 0, 1); ///
                 }
                 if (iMetaData <= 5) {
                     world.scheduleBlockUpdate(i, j, k, BlockListener.handCrank.id, getTickRate() + iMetaData);
                 } else {
                     world.scheduleBlockUpdate(i, j, k, BlockListener.handCrank.id, handCrankDelayBeforeReset);
                 }
-                world.setBlockMeta(i, j, k, iMetaData + 1);
+                world.setBlockMetaWithoutNotifyingNeighbors(i, j, k, iMetaData + 1);
                 world.blockUpdateEvent(i, j, k);
                 world.setBlocksDirty(i, j, k, i, j, k);
             } else {
                 world.setBlockMeta(i, j, k, 0);
                 world.blockUpdateEvent(i, j, k);
                 world.setBlocksDirty(i, j, k, i, j, k);
-                world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "random.click", 0.3F, 0.7F);
-                if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                    voicePacket(world, i, j, k, 0.3F, 0.7F);
-                }
+                world.playNoteBlockActionAt(i,j,k, 0, 0); ///
             }
         }
     }
 
-    @Environment(EnvType.SERVER)
-    public void voicePacket(World world, int x, int y, int z, float g, float h) {
-        List list2 = world.players;
-        if (list2.size() != 0) {
-            for (int k = 0; k < list2.size(); k++) {
-                ServerPlayerEntity player1 = (ServerPlayerEntity) list2.get(k);
-                PacketHelper.sendTo(player1, new SoundPacket("random.click", x, y, z, g, h));
-            }
+    @Override
+    public void onBlockAction(World world, int x, int y, int z, int code, int pitch) {
+        if(pitch == 0){ /// Ciche
+            world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.click", 0.3F, 0.7F);
+        }else if(pitch == 1){ /// Glosne
+            world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.click", 1.0F, 2.0F);
         }
     }
 
+    @Override
     public void neighborUpdate(World world, int i, int j, int k, int iid) {
         if (!world.method_1783(i, j - 1, k)) {
             dropStacks(world, i, j, k, world.getBlockMeta(i, j, k));
@@ -146,10 +149,12 @@ public class HandCrankBlock extends TemplateBlock
         }
     }
 
+    @Override
     public boolean canOutputMechanicalPower() {
         return false;
     }
 
+    @Override
     public boolean canInputMechanicalPower() {
         return false;
     }

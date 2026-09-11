@@ -1,34 +1,21 @@
-// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) braces deadcode 
-// Source File Name:   FCTileEntityPulley.java
-
 package net.kozibrodka.wolves.block.entity;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.block.AnchorBlock;
 import net.kozibrodka.wolves.block.PulleyBlock;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ItemListener;
-import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.utils.InventoryHandler;
 import net.kozibrodka.wolves.utils.ReplaceableBlockChecker;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
+import net.kozibrodka.wolves.utils.WolvesMpUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.world.World;
-import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import net.modificationstation.stationapi.api.registry.ItemRegistry;
-
-import java.util.List;
 
 
 public class PulleyBlockEntity extends BlockEntity implements Inventory {
@@ -40,22 +27,27 @@ public class PulleyBlockEntity extends BlockEntity implements Inventory {
         iUpdateRopeStateCounter = 20;
     }
 
+    @Override
     public String getName() {
         return "Pulley";
     }
 
+    @Override
     public int size() {
         return 2;
     }
 
+    @Override
     public int getMaxCountPerStack() {
         return 64;
     }
 
+    @Override
     public ItemStack getStack(int iSlot) {
         return pulleyContents[iSlot];
     }
 
+    @Override
     public void setStack(int iSlot, ItemStack ItemInstance) {
         pulleyContents[iSlot] = ItemInstance;
         if (ItemInstance != null && ItemInstance.count > getMaxCountPerStack()) {
@@ -64,10 +56,12 @@ public class PulleyBlockEntity extends BlockEntity implements Inventory {
         markDirty();
     }
 
+    @Override
     public ItemStack removeStack(int iSlot, int iAmount) {
         return InventoryHandler.decreaseStackSize(this, iSlot, iAmount);
     }
 
+    @Override
     public void readNbt(NbtCompound nbttagcompound) {
         super.readNbt(nbttagcompound);
         NbtList nbttaglist = nbttagcompound.getList("Items");
@@ -82,6 +76,7 @@ public class PulleyBlockEntity extends BlockEntity implements Inventory {
 
     }
 
+    @Override
     public void writeNbt(NbtCompound nbttagcompound) {
         super.writeNbt(nbttagcompound);
         NbtList nbttaglist = new NbtList();
@@ -97,6 +92,7 @@ public class PulleyBlockEntity extends BlockEntity implements Inventory {
         nbttagcompound.put("Items", nbttaglist);
     }
 
+    @Override
     public boolean canPlayerUse(PlayerEntity entityplayer) {
         if (world.getBlockEntity(x, y, z) != this) {
             return false;
@@ -105,6 +101,7 @@ public class PulleyBlockEntity extends BlockEntity implements Inventory {
         }
     }
 
+    @Override
     public void tick() {
         if (world.isRemote) {
             return;
@@ -189,8 +186,10 @@ public class PulleyBlockEntity extends BlockEntity implements Inventory {
                 if (world.getBlockId(x, tempj - 1, z) != BlockListener.rope.id) {
                     AddRopeToInventory();
                     Block targetBlock = BlockListener.rope;
-                    if (net.fabricmc.loader.FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                        voicePacket(world, targetBlock.soundGroup.getSound(), x, tempj, z, targetBlock.soundGroup.getVolume() / 4F, targetBlock.soundGroup.getPitch() * 0.8F);
+                    /// można wyłączyć te dźwięki przy pracy platformy (niszczenia liny)
+                    world.playSound(x, tempj, z, targetBlock.soundGroup.getSound(), targetBlock.soundGroup.getVolume() / 4F, targetBlock.soundGroup.getPitch() * 0.8F);
+                    if (WolvesMpUtils.isEnvServ()) {
+                        WolvesMpUtils.soundPacket(world, x, tempj, z, targetBlock.soundGroup.getSound(), targetBlock.soundGroup.getVolume() / 4F, targetBlock.soundGroup.getPitch() * 0.8F);
                     }
                     world.setBlock(x, tempj, z, 0);
                     return true;
@@ -213,8 +212,10 @@ public class PulleyBlockEntity extends BlockEntity implements Inventory {
                     if (world.setBlock(x, tempj, z, BlockListener.rope.id)) {
                         BlockListener.rope.onPlaced(world, x, tempj, z, 0);
                         Block targetBlock = BlockListener.rope;
-                        if (net.fabricmc.loader.FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                            voicePacket(world, targetBlock.soundGroup.getSound(), x, tempj, z, targetBlock.soundGroup.getVolume() / 4F, targetBlock.soundGroup.getPitch() * 0.8F);
+                        /// można wyłączyć te dźwięki przy pracy platformy (niszczenia liny)
+                        world.playSound(x, tempj, z, targetBlock.soundGroup.getSound(), targetBlock.soundGroup.getVolume() / 4F, targetBlock.soundGroup.getPitch() * 0.8F);
+                        if (WolvesMpUtils.isEnvServ()) {
+                            WolvesMpUtils.soundPacket(world, x, tempj, z, targetBlock.soundGroup.getSound(), targetBlock.soundGroup.getVolume() / 4F, targetBlock.soundGroup.getPitch() * 0.8F);
                         }
                         RemoveRopeFromInventory();
                         int iBlockBelowTargetID = world.getBlockId(x, tempj - 1, z);
@@ -235,24 +236,13 @@ public class PulleyBlockEntity extends BlockEntity implements Inventory {
         return false;
     }
 
-    @Environment(EnvType.SERVER)
-    public void voicePacket(World world, String name, int x, int y, int z, float g, float h) {
-        List list2 = world.players;
-        if (list2.size() != 0) {
-            for (int k = 0; k < list2.size(); k++) {
-                ServerPlayerEntity player1 = (ServerPlayerEntity) list2.get(k);
-                PacketHelper.sendTo(player1, new SoundPacket(name, x, y, z, g, h));
-            }
-        }
-    }
-
     public void AddRopeToInventory() {
         ItemStack ropeStack = new ItemStack(ItemListener.ropeItem);
         iUpdateRopeStateCounter = 20;
         if (InventoryHandler.addItemInstanceToInventory(this, ropeStack)) {
             world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.pop", 0.05F, (world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F);
-            if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                voicePacket(world, "random.pop", x, y, z, 0.05F, (world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F);
+            if (WolvesMpUtils.isEnvServ()) {
+                WolvesMpUtils.soundPacket(world, x, y, z, "random.pop", 0.05F, (world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F);
             }
         } else {
             UnsortedUtils.ejectStackWithRandomOffset(world, x, y, z, ropeStack);

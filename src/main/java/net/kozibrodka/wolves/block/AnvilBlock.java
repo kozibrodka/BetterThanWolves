@@ -1,7 +1,3 @@
-// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) braces deadcode 
-// Source File Name:   FCBlockAnvil.java
 
 package net.kozibrodka.wolves.block;
 
@@ -10,11 +6,13 @@ import net.fabricmc.api.EnvironmentInterface;
 import net.kozibrodka.wolves.container.AnvilScreenHandler;
 import net.kozibrodka.wolves.entity.FallingAnvilEntity;
 import net.kozibrodka.wolves.events.BlockEntityListener;
+import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ScreenHandlerListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.utils.CustomBlockRendering;
 import net.kozibrodka.wolves.utils.RotatableBlock;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
+import net.kozibrodka.wolves.utils.WolvesMpUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.render.block.BlockRenderManager;
@@ -42,18 +40,22 @@ public class AnvilBlock extends TemplateBlock
         setSoundGroup(METAL_SOUND_GROUP);
     }
 
+    @Override
     public int getTexture(int iSide) {
         return TextureListener.anvil;
     }
 
+    @Override
     public boolean isOpaque() {
         return false;
     }
 
+    @Override
     public boolean isFullCube() {
         return false;
     }
 
+    @Override
     public void onPlaced(World world, int i, int j, int k, int iFacing) {
         if (iFacing < 2) {
             iFacing = 2;
@@ -64,12 +66,21 @@ public class AnvilBlock extends TemplateBlock
         world.scheduleBlockUpdate(i, j, k, this.id, this.getTickRate());
     }
 
+    @Override
     public void onPlaced(World world, int i, int j, int k, LivingEntity entityLiving) {
-        world.playSound(i, j, k, "wolves:anvil_place", 1.0F, 1.2F);
         int iFacing = UnsortedUtils.ConvertPlacingEntityOrientationToFlatBlockFacing(entityLiving);
         setFacing(world, i, j, k, iFacing);
+//        if(!world.isRemote){ /// To jest niestandardowy dźwięk towarzyszący postawieniu, dlatego packet do wszystkich.
+//            if(WolvesMpUtils.isEnvServ()){
+//                WolvesMpUtils.soundPacket(world, i,j,k, "wolves:anvil_place", 1.0F, 1.2F);;
+//            }else{
+//                world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "wolves:anvil_place", 1.0F, 1.2F);
+//            }
+//        }
+        world.playSound((double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D, "wolves:anvil_place", 1.0F, 1.2F);
     }
 
+    @Override
     public boolean onUse(World world, int x, int y, int z, PlayerEntity playerEntity) {
 //        GuiHelper.openGUI(playerEntity, Identifier.of(BlockEntityListener.NAMESPACE, "openAnvil"), playerEntity.inventory, new AnvilScreenHandler(playerEntity.inventory, world, x, y, z));
         ScreenHandlerListener.anvilX = x;
@@ -79,6 +90,7 @@ public class AnvilBlock extends TemplateBlock
         return true;
     }
 
+    @Override
     public Box getCollisionShape(World world, int i, int j, int k) {
         int iFacing = getFacing(world, i, j, k);
         if (iFacing == 2 || iFacing == 3) {
@@ -88,6 +100,7 @@ public class AnvilBlock extends TemplateBlock
         }
     }
 
+    @Override
     public void updateBoundingBox(BlockView iblockaccess, int i, int j, int k) {
         int iFacing = getFacing(iblockaccess, i, j, k);
         if (iFacing == 2 || iFacing == 3) {
@@ -97,22 +110,27 @@ public class AnvilBlock extends TemplateBlock
         }
     }
 
+    @Override
     public int getFacing(BlockView iBlockAccess, int i, int j, int k) {
         return iBlockAccess.getBlockMeta(i, j, k);
     }
 
+    @Override
     public void setFacing(World world, int i, int j, int k, int iFacing) {
         world.setBlockMeta(i, j, k, iFacing);
     }
 
+    @Override
     public boolean canRotate(BlockView iBlockAccess, int i, int j, int l) {
         return true;
     }
 
+    @Override
     public boolean canTransmitRotation(BlockView iBlockAccess, int i, int j, int l) {
         return true;
     }
 
+    @Override
     public void rotate(World world, int i, int j, int k, boolean bReverse) {
         int iFacing = getFacing(world, i, j, k);
         int iNewFacing = UnsortedUtils.RotateFacingAroundJ(iFacing, bReverse);
@@ -120,7 +138,7 @@ public class AnvilBlock extends TemplateBlock
             setFacing(world, i, j, k, iNewFacing);
             world.setBlocksDirty(i, j, k, i, j, k);
             world.scheduleBlockUpdate(i, j, k, id, getTickRate());
-            world.blockUpdate(i, j, j, id);
+            world.blockUpdateEvent(i, j, k);
         }
     }
 
@@ -153,10 +171,12 @@ public class AnvilBlock extends TemplateBlock
         setBoundingBox(rotatedX1, y1, rotatedZ1, rotatedX2, y2, rotatedZ2);
     }
 
+    @Override
     public void neighborUpdate(World arg, int i, int j, int k, int l) {
         arg.scheduleBlockUpdate(i, j, k, this.id, this.getTickRate());
     }
 
+    @Override
     public void onTick(World arg, int i, int j, int k, Random random) {
         this.processFall(arg, i, j, k);
     }
@@ -199,6 +219,7 @@ public class AnvilBlock extends TemplateBlock
         }
     }
 
+    @Override
     public int getTickRate() {
         return 3;
     }

@@ -8,4 +8,7 @@ public class BetterThanWolvesConfig {
 
     @ConfigCategory(name = "§aSmall Tweaks", description = "Gameplay changes that do not affect the difficulty", multiplayerSynced = true)
     public SmallTweaksConfig small_tweaks = new SmallTweaksConfig();
+
+    @ConfigCategory(name = "§bContent", description = "Extra content thats not oryginally in BTW for b1.7.3", multiplayerSynced = true)
+    public ContentConfig content = new ContentConfig();
 }

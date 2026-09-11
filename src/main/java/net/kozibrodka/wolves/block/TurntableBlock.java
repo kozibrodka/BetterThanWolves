@@ -34,23 +34,28 @@ public class TurntableBlock extends TemplateBlockWithEntity
         );
     }
 
+    @Override
     public int getTickRate() {
         return iTurntableTickRate;
     }
 
+    @Override
     protected BlockEntity createBlockEntity() {
         return new TurntableBlockEntity();
     }
 
+    @Override
     public void onPlaced(World world, int i, int j, int k) {
         super.onPlaced(world, i, j, k);
         world.scheduleBlockUpdate(i, j, k, BlockListener.turntable.id, getTickRate());
     }
 
+    @Override
     public void neighborUpdate(World world, int i, int j, int k, int iid) {
         world.scheduleBlockUpdate(i, j, k, id, getTickRate());
     }
 
+    @Override
     public void onTick(World world, int i, int j, int k, Random random) {
         boolean bReceivingRedstonePower = world.isStrongPowered(i, j, k);
         boolean bRedstoneOn = IsBlockRedstoneOn(world, i, j, k);
@@ -60,12 +65,14 @@ public class TurntableBlock extends TemplateBlockWithEntity
     }
 
 
+    @Override
     public void randomDisplayTick(World world, int i, int j, int k, Random random) {
         if (IsBlockMechanicalOn(world, i, j, k)) {
             EmitTurntableParticles(world, i, j, k, random);
         }
     }
 
+    @Override
     public boolean onUse(World world, int i, int j, int k, PlayerEntity entityPlayer) {
         if (world == null) {
             return true;
@@ -92,21 +99,26 @@ public class TurntableBlock extends TemplateBlockWithEntity
         world.blockUpdateEvent(i, j, k);
     }
 
+    @Override
     public int getFacing(BlockView iBlockAccess, int i, int j, int l) {
         return 0;
     }
 
+    @Override
     public void setFacing(World world1, int l, int i1, int j1, int k1) {
     }
 
+    @Override
     public boolean canRotate(BlockView iBlockAccess, int i, int j, int l) {
         return false;
     }
 
+    @Override
     public boolean canTransmitRotation(BlockView iBlockAccess, int i, int j, int l) {
         return false;
     }
 
+    @Override
     public void rotate(World world1, int l, int i1, int j1, boolean flag) {
     }
 
@@ -146,10 +158,12 @@ public class TurntableBlock extends TemplateBlockWithEntity
 
     }
 
+    @Override
     public boolean canOutputMechanicalPower() {
         return false;
     }
 
+    @Override
     public boolean canInputMechanicalPower() {
         return true;
     }
@@ -182,6 +196,7 @@ public class TurntableBlock extends TemplateBlockWithEntity
     public static final BooleanProperty POWER = BooleanProperty.of("power");
     public static final BooleanProperty REDSTONE = BooleanProperty.of("redstone");
 
+    @Override
     public void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(CLICK);
         builder.add(REDSTONE);

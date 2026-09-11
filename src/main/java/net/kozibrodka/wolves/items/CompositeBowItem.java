@@ -16,6 +16,7 @@ public class CompositeBowItem extends TemplateItem {
         maxCount = 1;
     }
 
+    @Override
     public ItemStack use(ItemStack ItemInstance, World world, PlayerEntity entityplayer) {
         if (entityplayer.inventory.remove(ItemListener.broadHeadArrow.id)) {
             world.playSound(entityplayer, "random.bow", 1.0F, 1.0F / (random.nextFloat() * 0.4F + 0.8F));

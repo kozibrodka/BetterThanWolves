@@ -1,37 +1,25 @@
-// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) braces deadcode 
-// Source File Name:   FCBlockCement.java
-
 package net.kozibrodka.wolves.block;
 
 import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.fabricmc.api.EnvironmentInterface;
-import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.block.entity.CementBlockEntity;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
-import net.kozibrodka.wolves.network.CementPacket;
-import net.kozibrodka.wolves.network.SoundPacket;
+import net.kozibrodka.wolves.utils.WolvesMpUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.block.BlockRenderManager;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import net.modificationstation.stationapi.api.client.model.block.BlockWithInventoryRenderer;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
 import net.modificationstation.stationapi.api.client.texture.atlas.Atlas;
 import net.modificationstation.stationapi.api.client.texture.atlas.Atlases;
-import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockWithEntity;
 import net.modificationstation.stationapi.api.util.Identifier;
 
-import java.util.List;
 import java.util.Random;
 
 @EnvironmentInterface(value = EnvType.CLIENT, itf = BlockWithWorldRenderer.class)
@@ -50,6 +38,7 @@ public class CementBlock extends TemplateBlockWithEntity
         setTickRandomly(true);
     }
 
+    @Override
     public int getTextureId(BlockView iblockaccess, int i, int j, int k, int l) {
         if (IsCementPartiallyDry(iblockaccess, i, j, k)) {
             return TextureListener.cement_dry;
@@ -58,22 +47,27 @@ public class CementBlock extends TemplateBlockWithEntity
         }
     }
 
+    @Override
     protected BlockEntity createBlockEntity() {
         return new CementBlockEntity();
     }
 
+    @Override
     public boolean isFullCube() {
         return false;
     }
 
+    @Override
     public boolean isOpaque() {
         return false;
     }
 
+    @Override
     public boolean hasCollision(int i, boolean flag) {
         return flag && i == 0;
     }
 
+    @Override
     public boolean isSolidFace(BlockView blockView, int i, int j, int k, int l) {
         Material new_material = blockView.getMaterial(i, j, k);
         if (new_material == material) {
@@ -89,6 +83,7 @@ public class CementBlock extends TemplateBlockWithEntity
         }
     }
 
+    @Override
     public Box getCollisionShape(World world, int i, int j, int k) {
         if (world.getBlockId(i, j + 1, k) != id) {
             return Box.createCached(i, j, k, (float) (i + 1), (float) j + 0.5F, (float) (k + 1));
@@ -97,24 +92,29 @@ public class CementBlock extends TemplateBlockWithEntity
         }
     }
 
+    @Override
     public int getDroppedItemId(int i, Random random) {
         return 0;
     }
 
+    @Override
     public int getDroppedItemCount(Random random) {
         return 0;
     }
 
+    @Override
     public int getTickRate() {
         return 20;
     }
 
+    @Override
     public float getLuminance(BlockView iBlockAccess, int i, int j, int k) {
         float f = iBlockAccess.method_1782(i, j, k);
         float f1 = iBlockAccess.method_1782(i, j + 1, k);
         return f > f1 ? f : f1;
     }
 
+    @Override
     public void onPlaced(World world, int i, int j, int k) {
         super.onPlaced(world, i, j, k);
         if (world.getBlockId(i, j, k) == id) {
@@ -125,13 +125,18 @@ public class CementBlock extends TemplateBlockWithEntity
         }
     }
 
+    @Override
     public void randomDisplayTick(World world, int i, int j, int k, Random random) {
         if (!IsCementPartiallyDry(world, i, j, k) && random.nextInt(250) == 0) {
             world.playSound((float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, "mob.ghast.moan", 0.5F, 2.6F + (world.random.nextFloat() - world.random.nextFloat()) * 0.8F);
         }
     }
 
+    @Override
     public void onTick(World world, int i, int j, int k, Random random) {
+        if(world.isRemote){
+            return; ///CLIENT
+        }
         int cementDist = GetCementSpreadDist(world, i, j, k);
         boolean bOldPowerState = IsCementPowered(world, i, j, k);
         boolean bNewPowerState = world.isPowered(i, j, k);
@@ -253,10 +258,9 @@ public class CementBlock extends TemplateBlockWithEntity
         world.notifyNeighbors(i, j, k, id);
         world.setBlocksDirty(i, j, k, i, j, k);
 
-        if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-            cementPacket(world, i,j,k, 1, iSpreadDist);
-//            System.out.println("SERVER SEND: " + i +" "+ j +" "+k);
-            System.out.println(tileEntity);
+        if (WolvesMpUtils.isEnvServ()) {
+            WolvesMpUtils.cementPacket(world, i,j,k, 1, iSpreadDist); /// CEMENT PACKET
+//            WolvesMpUtils.cementAlphaPacket(world, i,j,k, tileEntity.spreadDist, tileEntity.dryTime); /// Alpha CEMENT PACKET
         }
     }
 
@@ -279,26 +283,14 @@ public class CementBlock extends TemplateBlockWithEntity
         world.notifyNeighbors(i, j, k, id);
         world.setBlocksDirty(i, j, k, i, j, k);
 
-        if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-            cementPacket(world, i,j,k, 0, iDryTime);
-//            System.out.println("SERVER SEND: " + i +" "+ j +" "+k);
-//            System.out.println(tileEntity);
+        if (WolvesMpUtils.isEnvServ()) {
+            WolvesMpUtils.cementPacket(world, i,j,k, 0, iDryTime); /// CEMENT PACKET
+//            WolvesMpUtils.cementAlphaPacket(world, i,j,k, tileEntity.spreadDist, tileEntity.dryTime); /// Alpha CEMENT PACKET
         }
     }
 
     public boolean IsCementPartiallyDry(BlockView blockAccess, int i, int j, int k) {
         return GetCementDryTime(blockAccess, i, j, k) >= 8;
-    }
-
-    @Environment(EnvType.SERVER)
-    public void cementPacket(World world, int x, int y, int z, int b, int arg) {
-        List list2 = world.players;
-        if (list2.size() != 0) {
-            for (int k = 0; k < list2.size(); k++) {
-                ServerPlayerEntity player1 = (ServerPlayerEntity) list2.get(k);
-                PacketHelper.sendTo(player1, new CementPacket(x, y, z, b, arg));
-            }
-        }
     }
 
     private int CheckNeighboursCloserToSourceForMinDryTime(World world, int i, int j, int k) {
@@ -411,6 +403,7 @@ public class CementBlock extends TemplateBlockWithEntity
     int[] tempClosestDownslopeToSideDist;
 
     //TODO: server sync works fine as long as there is not TRILION packets, example put cement on top of mountain,
+    /// Working better after client doesnt run Tick()
 
     @Override
     public boolean renderWorld(BlockRenderManager tileRenderer, BlockView tileView, int x, int y, int z) {

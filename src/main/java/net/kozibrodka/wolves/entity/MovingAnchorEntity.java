@@ -29,7 +29,7 @@ import net.modificationstation.stationapi.api.util.TriState;
 
 import java.util.List;
 
-@HasTrackingParameters(trackingDistance = 160, updatePeriod = 1, sendVelocity = TriState.TRUE)
+@HasTrackingParameters(trackingDistance = 240, updatePeriod = Integer.MAX_VALUE, sendVelocity = TriState.TRUE)
 public class MovingAnchorEntity extends Entity implements EntitySpawnDataProvider {
 
     public MovingAnchorEntity(World world) {
@@ -50,9 +50,9 @@ public class MovingAnchorEntity extends Entity implements EntitySpawnDataProvide
         associatedPulleyPos.y = pulleyPos.y;
         associatedPulleyPos.z = pulleyPos.z;
         if (iMovementDirection > 0) {
-            velocityY = 0.05000000074505806D;
+            velocityY = 0.05D;
         } else {
-            velocityY = -0.05000000074505806D;
+            velocityY = -0.05D;
         }
         setPosition(x, y, z);
         lastTickX = prevX = x;
@@ -60,25 +60,30 @@ public class MovingAnchorEntity extends Entity implements EntitySpawnDataProvide
         lastTickZ = prevZ = z;
     }
 
-    public MovingAnchorEntity(World level, Double aDouble, Double aDouble1, Double aDouble2) {
+    public MovingAnchorEntity(World level, double x, double y, double z) {
         this(level);
+        setPosition(x, y, z);
     }
 
+    @Override
     protected void initDataTracker() {
     }
 
+    @Override
     protected void writeNbt(NbtCompound nbttagcompound) {
         nbttagcompound.putInt("associatedPulleyPosI", associatedPulleyPos.x);
         nbttagcompound.putInt("associatedPulleyPosJ", associatedPulleyPos.y);
         nbttagcompound.putInt("associatedPulleyPosK", associatedPulleyPos.z);
     }
 
+    @Override
     protected void readNbt(NbtCompound nbttagcompound) {
         associatedPulleyPos.x = nbttagcompound.getInt("associatedPulleyPosI");
         associatedPulleyPos.y = nbttagcompound.getInt("associatedPulleyPosJ");
         associatedPulleyPos.z = nbttagcompound.getInt("associatedPulleyPosK");
     }
 
+    @Override
     protected boolean bypassesSteppingEffects() {
         return false;
     }
@@ -86,11 +91,8 @@ public class MovingAnchorEntity extends Entity implements EntitySpawnDataProvide
     @Environment(EnvType.CLIENT)
     @Override
     public void setPositionAndAnglesAvoidEntities(double x, double y, double z, float pitch, float yaw, int interpolationSteps) {
-        if(!receivedP) {
-            this.setPosition(x, y, z);
-            this.setRotation(pitch, yaw);
-            receivedP = true;
-        }
+        this.setPosition(x, y, z);
+        this.setRotation(pitch, yaw);
     }
 
     @Override
@@ -98,43 +100,28 @@ public class MovingAnchorEntity extends Entity implements EntitySpawnDataProvide
         return other.boundingBox;
     }
 
+    @Override
     public Box getBoundingBox() {
         return boundingBox;
     }
 
+    @Override
     public boolean isPushable() {
         return false;
     }
 
+    @Override
     public boolean isCollidable() {
         return !dead;
     }
 
+    @Override
     public float getShadowRadius() {
         return 0.0F;
     }
 
     public void remoteTick(){
-        PulleyBlockEntity tileEntityPulley = null;
-        int oldJ = MathHelper.floor(y - (double) standingEyeHeight);
-        int i = MathHelper.floor(x);
-        int k = MathHelper.floor(z);
-        int associatedPulleyid = world.getBlockId(associatedPulleyPos.x, associatedPulleyPos.y, associatedPulleyPos.z);
-        int iBlockAboveID = world.getBlockId(i, oldJ + 1, k);
-        int i2BlockAboveID = world.getBlockId(i, oldJ + 2, k);
-        if (associatedPulleyid == BlockListener.pulley.id && (iBlockAboveID == BlockListener.pulley.id || iBlockAboveID == BlockListener.rope.id || i2BlockAboveID == BlockListener.pulley.id || i2BlockAboveID == BlockListener.rope.id)) {
-            tileEntityPulley = (PulleyBlockEntity) world.getBlockEntity(associatedPulleyPos.x, associatedPulleyPos.y, associatedPulleyPos.z);
-            if (velocityY > 0.0D) {
-                if (tileEntityPulley.isLowering()) {
-                    velocityY = -velocityY;
-                }
-            } else if (tileEntityPulley.IsRaising()) {
-                velocityY = -velocityY;
-            }
-        }
         MoveEntityInternal(velocityX, velocityY, velocityZ);
-        double newPosY = y;
-        int newJ = MathHelper.floor(newPosY - (double) standingEyeHeight);
         List list = world.getEntities(this, boundingBox.expand(0.0D, 0.14999999999999999D, 0.0D));
         if (list != null && list.size() > 0) {
             for (int j1 = 0; j1 < list.size(); j1++) {
@@ -151,11 +138,27 @@ public class MovingAnchorEntity extends Entity implements EntitySpawnDataProvide
         }
     }
 
+    @Override
+    @Environment(EnvType.CLIENT)
+    public void processServerEntityStatus(byte status) {
+        if (status == 6) {
+            velocityY = 0.05D;
+        }  else if(status == 7){
+            velocityY = -0.05D;
+        }else {
+            super.processServerEntityStatus(status);
+        }
+    }
+
+    protected double prevVelocityY;
+
+    @Override
     public void tick() {
         if (dead || world.isRemote) {
             remoteTick();
             return;
         }
+        prevVelocityY = velocityY;
         PulleyBlockEntity tileEntityPulley = null;
         int oldJ = MathHelper.floor(y - (double) standingEyeHeight);
         int i = MathHelper.floor(x);
@@ -173,6 +176,17 @@ public class MovingAnchorEntity extends Entity implements EntitySpawnDataProvide
                 velocityY = -velocityY;
             }
         }
+
+        if(prevVelocityY != velocityY){
+            if(velocityY>0){
+                world.broadcastEntityEvent(this, (byte)6);
+            }
+            if(velocityY<0){
+                world.broadcastEntityEvent(this, (byte)7);
+            }
+        }
+
+
         MoveEntityInternal(velocityX, velocityY, velocityZ);
         double newPosY = y;
         int newJ = MathHelper.floor(newPosY - (double) standingEyeHeight);
@@ -250,6 +264,7 @@ public class MovingAnchorEntity extends Entity implements EntitySpawnDataProvide
         }
     }
 
+    @Override
     public void move(double deltaX, double deltaY, double deltaZ) {
         DestroyAnchorWithDrop();
     }

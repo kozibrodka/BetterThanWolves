@@ -5,44 +5,43 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.entity.WaterWheelEntity;
 import net.kozibrodka.wolves.entity.WindMillEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.NetworkHandler;
 import net.minecraft.network.packet.Packet;
+import net.minecraft.world.ClientWorld;
 import net.minecraft.world.ServerWorld;
 import net.modificationstation.stationapi.api.entity.player.PlayerHelper;
 import net.modificationstation.stationapi.api.network.packet.ManagedPacket;
+import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import net.modificationstation.stationapi.api.network.packet.PacketType;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.Objects;
 
-public class DamagePacket extends Packet implements ManagedPacket<DamagePacket> {
+public class LoadRotationPacket extends Packet implements ManagedPacket<LoadRotationPacket> {
 
-    public static final PacketType<DamagePacket> TYPE = PacketType.builder(true, true, DamagePacket::new).build();
+    public static final PacketType<LoadRotationPacket> TYPE = PacketType.builder(true, true, LoadRotationPacket::new).build();
 
-    private int damage;
-    private int entityId;
-    private String entityName;
+    private float rotation;
+    private int id;
 
-    public DamagePacket() {
+    public LoadRotationPacket() {
     }
 
-    public DamagePacket(String name, int dmg, int id) {
-        this.entityName = name;
-        this.damage = dmg;
-        this.entityId = id;
+    public LoadRotationPacket(float rot, int code) {
+        this.rotation = rot;
+        this.id = code;
     }
 
     @Override
     public void read(DataInputStream stream) {
         try {
-            this.entityName = stream.readUTF();
-            this.damage = stream.readInt();
-            this.entityId = stream.readInt();
+            this.rotation = stream.readFloat();
+            this.id = stream.readInt();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -51,9 +50,8 @@ public class DamagePacket extends Packet implements ManagedPacket<DamagePacket> 
     @Override
     public void write(DataOutputStream stream) {
         try {
-            stream.writeUTF(this.entityName);
-            stream.writeInt(this.damage);
-            stream.writeInt(this.entityId);
+            stream.writeFloat(this.rotation);
+            stream.writeInt(this.id);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -69,7 +67,17 @@ public class DamagePacket extends Packet implements ManagedPacket<DamagePacket> 
 
     @Environment(EnvType.CLIENT)
     public void handleClient(NetworkHandler networkHandler) {
-
+        ClientPlayerEntity player = (ClientPlayerEntity) PlayerHelper.getPlayerFromPacketHandler(networkHandler);
+        if(player == null){
+            return;
+        }
+        Entity entity = ((ClientWorld)player.world).getEntity(id);
+        if(entity instanceof WaterWheelEntity water){
+            water.fRotation = this.rotation;
+        }
+        if(entity instanceof WindMillEntity wind){
+            wind.fRotation = this.rotation;
+        }
     }
 
     @Environment(EnvType.SERVER)
@@ -78,17 +86,12 @@ public class DamagePacket extends Packet implements ManagedPacket<DamagePacket> 
         if(player == null){
             return;
         }
-        if(Objects.equals(entityName, "water")){
-            WaterWheelEntity entity1 = (WaterWheelEntity) ((ServerWorld)player.world).getEntity(this.entityId);
-            if(entity1 != null){
-                entity1.damage(player, damage);
-            }
+        Entity entity = ((ServerWorld)player.world).getEntity(id);
+        if(entity instanceof WaterWheelEntity water){
+            PacketHelper.sendTo(player, new LoadRotationPacket(water.fRotation, water.id));
         }
-        if(Objects.equals(entityName, "wind")){
-            WindMillEntity entity1 = (WindMillEntity) ((ServerWorld)player.world).getEntity(this.entityId);
-            if(entity1 != null){
-                entity1.damage(player, damage);
-            }
+        if(entity instanceof WindMillEntity wind){
+            PacketHelper.sendTo(player, new LoadRotationPacket(wind.fRotation, wind.id));
         }
     }
 
@@ -98,7 +101,7 @@ public class DamagePacket extends Packet implements ManagedPacket<DamagePacket> 
     }
 
     @Override
-    public @NotNull PacketType<DamagePacket> getType() {
+    public @NotNull PacketType<LoadRotationPacket> getType() {
         return TYPE;
     }
 }

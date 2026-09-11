@@ -18,6 +18,7 @@ import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.utils.BlockPosition;
 import net.kozibrodka.wolves.utils.CustomBlockRendering;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
+import net.kozibrodka.wolves.utils.WolvesMpUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.render.block.BlockRenderManager;
@@ -169,8 +170,8 @@ public class AnchorBlock extends TemplateBlock implements BlockWithWorldRenderer
                 addRopeToPlayerInventory(world, i, j, k, entityPlayer);
                 Block targetBlock = BlockListener.rope;
                 world.playSound((float) i + 0.5F, (float) j + 0.5F, (float) k + 0.5F, targetBlock.soundGroup.getSound(), (targetBlock.soundGroup.getVolume() + 1.0F) / 5.0F, targetBlock.soundGroup.getPitch() * 0.8F);
-                if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                    voicePacket(world, targetBlock.soundGroup.getSound(), i, j, k, (targetBlock.soundGroup.getVolume() + 1.0F) / 5.0F, targetBlock.soundGroup.getPitch() * 0.8F);
+                if(WolvesMpUtils.isEnvServ()){
+                    WolvesMpUtils.soundPacket(world, i, j, k, targetBlock.soundGroup.getSound(), (targetBlock.soundGroup.getVolume() + 1.0F) / 5.0F, targetBlock.soundGroup.getPitch() * 0.8F);
                 }
                 world.setBlock(i, offsetY, k, 0);
                 break;
@@ -179,23 +180,12 @@ public class AnchorBlock extends TemplateBlock implements BlockWithWorldRenderer
         } while (true);
     }
 
-    @Environment(EnvType.SERVER)
-    public void voicePacket(World world, String name, int x, int y, int z, float g, float h) {
-        List list2 = world.players;
-        if (list2.size() != 0) {
-            for (int k = 0; k < list2.size(); k++) {
-                ServerPlayerEntity player1 = (ServerPlayerEntity) list2.get(k);
-                PacketHelper.sendTo(player1, new SoundPacket(name, x, y, z, g, h));
-            }
-        }
-    }
-
     private void addRopeToPlayerInventory(World world, int i, int j, int k, PlayerEntity entityPlayer) {
         ItemStack ropeStack = new ItemStack(ItemListener.ropeItem);
         if (entityPlayer.inventory.addStack(ropeStack)) {
             world.playSound(entityPlayer, "random.pop", 0.2F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-            if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                voicePacket(world, "random.pop", i, j, k, 0.2F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+            if(WolvesMpUtils.isEnvServ()){
+                WolvesMpUtils.playerSoundPacket(world, "random.pop", entityPlayer.id, 0.2F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
             }
         } else {
             UnsortedUtils.ejectStackWithRandomOffset(world, i, j, k, ropeStack);

@@ -1,5 +1,6 @@
 package net.kozibrodka.wolves.compat.ami;
 
+import net.fabricmc.loader.api.FabricLoader;
 import net.glasslauncher.mods.alwaysmoreitems.api.*;
 import net.kozibrodka.wolves.compat.ami.anvil.AnvilShapedRecipeCategory;
 import net.kozibrodka.wolves.compat.ami.anvil.AnvilShapedRecipeHandler;
@@ -97,6 +98,54 @@ public class AMICompat implements ModPluginProvider {
 
     @Override
     public void updateBlacklist(AMIHelpers amiHelpers) {
+        amiHelpers.getItemBlacklist().addItemToBlacklist(new ItemStack(ItemListener.nothing));
+        amiHelpers.getItemBlacklist().addItemToBlacklist(new ItemStack(BlockListener.stoneSlabBlock));
 
+        if(ConfigListener.wolvesGlass.content.verticalSlabs){ /// New Vert Slabs active
+            amiHelpers.getItemBlacklist().addItemToBlacklist(new ItemStack(BlockListener.omniSlab));
+            amiHelpers.getItemBlacklist().addItemToBlacklist(new ItemStack(BlockListener.omniSlab,1,1));
+        }else{                                                /// Omni slabs active
+            amiHelpers.getItemBlacklist().addItemToBlacklist(new ItemStack(BlockListener.panelCobblestone));
+            amiHelpers.getItemBlacklist().addItemToBlacklist(new ItemStack(BlockListener.panelStone));
+            amiHelpers.getItemBlacklist().addItemToBlacklist(new ItemStack(BlockListener.panelMossy));
+            amiHelpers.getItemBlacklist().addItemToBlacklist(new ItemStack(BlockListener.panelBricks));
+            amiHelpers.getItemBlacklist().addItemToBlacklist(new ItemStack(BlockListener.panelWooden));
+            amiHelpers.getItemBlacklist().addItemToBlacklist(new ItemStack(BlockListener.panelSandstone));
+            amiHelpers.getItemBlacklist().addItemToBlacklist(new ItemStack(BlockListener.panelStoneS));
+        }
+
+        if(!ConfigListener.wolvesGlass.content.cosmetic_blocks){
+            amiHelpers.getItemBlacklist().addItemToBlacklist(new ItemStack(BlockListener.blockOfSteel));
+            amiHelpers.getItemBlacklist().addItemToBlacklist(new ItemStack(BlockListener.blockOfGrates));
+            amiHelpers.getItemBlacklist().addItemToBlacklist(new ItemStack(BlockListener.blockOfWicker));
+        }
+
+        if(!ConfigListener.wolvesGlass.difficulty.complexSoulFiltering){
+            amiHelpers.getItemBlacklist().addItemToBlacklist(new ItemStack(ItemListener.soulFilter));
+            amiHelpers.getItemBlacklist().addItemToBlacklist(new ItemStack(ItemListener.wickerSheet));
+            amiHelpers.getItemBlacklist().addItemToBlacklist(new ItemStack(ItemListener.wickerWeaving));
+        }
+
+        if(!ConfigListener.wolvesGlass.content.steelminecart){
+            amiHelpers.getItemBlacklist().addItemToBlacklist(new ItemStack(ItemListener.steelMinecart));
+        }
+
+        if (!ConfigListener.wolvesGlass.content.machine_blocks) {
+            amiHelpers.getItemBlacklist().addItemToBlacklist(new ItemStack(BlockListener.dropper));
+            amiHelpers.getItemBlacklist().addItemToBlacklist(new ItemStack(BlockListener.conveyor));
+            amiHelpers.getItemBlacklist().addItemToBlacklist(new ItemStack(BlockListener.conveyorExtender));
+        }
+
+        if (!ConfigListener.wolvesGlass.content.autoanvil_blocks) {
+            amiHelpers.getItemBlacklist().addItemToBlacklist(new ItemStack(BlockListener.automaticAnvil));
+            amiHelpers.getItemBlacklist().addItemToBlacklist(new ItemStack(BlockListener.anvilFrame));
+            amiHelpers.getItemBlacklist().addItemToBlacklist(new ItemStack(BlockListener.machinePowerInput));
+            amiHelpers.getItemBlacklist().addItemToBlacklist(new ItemStack(BlockListener.inputBus));
+            amiHelpers.getItemBlacklist().addItemToBlacklist(new ItemStack(BlockListener.outputBus));
+        }
+
+        if(!FabricLoader.getInstance().isModLoaded("nfc")){
+            amiHelpers.getItemBlacklist().addItemToBlacklist(new ItemStack(BlockListener.converter));
+        }
     }
 }

@@ -28,6 +28,7 @@ public class CementPacket extends Packet implements ManagedPacket<CementPacket> 
     public CementPacket() {
     }
 
+    /// Rzekomo można jakoś opóźnić Packet, może warto pokombinować.
     public CementPacket(int posX, int posY, int posZ, int which, int value) {
         this.x = posX;
         this.y = posY;
@@ -73,7 +74,6 @@ public class CementPacket extends Packet implements ManagedPacket<CementPacket> 
     @Environment(EnvType.CLIENT)
     public void handleClient(NetworkHandler networkHandler) {
         CementBlockEntity tileEntity = (CementBlockEntity) Minecraft.INSTANCE.world.getBlockEntity(this.x, this.y, this.z);
-//        System.out.println("coordscemenet:" + this.x +  this.y + this.z);
         if(tileEntity != null) {
             if (this.dryorspread == 0) {
                 tileEntity.dryTime = this.argument1;
@@ -82,21 +82,6 @@ public class CementPacket extends Packet implements ManagedPacket<CementPacket> 
                 tileEntity.spreadDist = this.argument1;
             }
         }
-
-//            if (this.dryorspread == 0){
-//                try {
-//                    tileEntity.dryTime = this.argument1;
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//            if (this.dryorspread == 1){
-//                try {
-//                    tileEntity.spreadDist = this.argument1;
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
     }
 
     @Environment(EnvType.SERVER)

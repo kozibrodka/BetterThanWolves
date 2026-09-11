@@ -16,6 +16,7 @@ public class WaterWheelItem extends TemplateItem {
         maxCount = 1;
     }
 
+    @Override
     public boolean useOnBlock(ItemStack itemStack, PlayerEntity playerEntity, World world, int x, int y, int z, int l) {
         int targetId = world.getBlockId(x, y, z);
         if (targetId == BlockListener.axleBlock.id && !world.isRemote) {

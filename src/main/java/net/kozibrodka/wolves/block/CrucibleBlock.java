@@ -60,14 +60,17 @@ public class CrucibleBlock extends TemplateBlockWithEntity
         );
     }
 
+    @Override
     public boolean isOpaque() {
         return false;
     }
 
+    @Override
     public boolean isFullCube() {
         return false;
     }
 
+    @Override
     public int getTexture(int i) {
         if (i == 0) {
             return TextureListener.crucible_bottom;
@@ -75,16 +78,19 @@ public class CrucibleBlock extends TemplateBlockWithEntity
         return i != 1 ? TextureListener.crucible_side : TextureListener.crucible_top;
     }
 
+    @Override
     public boolean onUse(World world, int x, int y, int z, PlayerEntity playerEntity) {
         CrucibleBlockEntity crucibleBlockEntity = (CrucibleBlockEntity) world.getBlockEntity(x, y, z);
         GuiHelper.openGUI(playerEntity, Identifier.of(BlockEntityListener.NAMESPACE, "openCrucible"), crucibleBlockEntity, new CrucibleScreenHandler(playerEntity.inventory, crucibleBlockEntity));
         return true;
     }
 
+    @Override
     protected BlockEntity createBlockEntity() {
         return new CrucibleBlockEntity();
     }
 
+    @Override
     public void onBreak(World world, int i, int j, int k) {
         if (!SETTING_TILE) {
             InventoryHandler.ejectInventoryContents(world, i, j, k, (Inventory) world.getBlockEntity(i, j, k));
@@ -92,10 +98,12 @@ public class CrucibleBlock extends TemplateBlockWithEntity
         super.onBreak(world, i, j, k);
     }
 
+    @Override
     public Box getCollisionShape(World world, int i, int j, int k) {
         return Box.createCached(i, j, k, i + 1, (double) j + 0.99000000953674316D, (double) k + 1.0D);
     }
 
+    @Override
     public void onEntityCollision(World world, int x, int y, int z, Entity entity) {
         BlockState currentState = world.getBlockState(x, y, z);
         Direction currentDirection = currentState.get(ROTATION);
@@ -112,10 +120,7 @@ public class CrucibleBlock extends TemplateBlockWithEntity
                     continue;
                 }
                 if (InventoryHandler.addItemInstanceToInventory(tileEntityCrucible, targetEntityItem.stack)) {
-                    world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.pop", 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-                    if (FabricLoader.INSTANCE.getEnvironmentType() == EnvType.SERVER) {
-                        voicePacket(world, "random.pop", x, y, z, 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
-                    }
+                    world.playNoteBlockActionAt(x,y,z, 0, 0); ///
                     targetEntityItem.markDead();
                     continue;
                 }
@@ -133,32 +138,31 @@ public class CrucibleBlock extends TemplateBlockWithEntity
         }
     }
 
-    @Environment(EnvType.SERVER)
-    public void voicePacket(World world, String name, int x, int y, int z, float g, float h) {
-        List list2 = world.players;
-        if (list2.size() != 0) {
-            for (int k = 0; k < list2.size(); k++) {
-                ServerPlayerEntity player1 = (ServerPlayerEntity) list2.get(k);
-                PacketHelper.sendTo(player1, new SoundPacket(name, x, y, z, g, h));
-            }
-        }
+    @Override
+    public void onBlockAction(World world, int x, int y, int z, int code, int pitch) {
+        world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.pop", 0.25F, ((world.random.nextFloat() - world.random.nextFloat()) * 0.7F + 1.0F) * 2.0F);
     }
 
+    @Override
     public int getFacing(BlockView iBlockAccess, int i, int j, int l) {
         return 0;
     }
 
+    @Override
     public void setFacing(World world1, int l, int i1, int j1, int k1) {
     }
 
+    @Override
     public boolean canRotate(BlockView iBlockAccess, int i, int j, int l) {
         return false;
     }
 
+    @Override
     public boolean canTransmitRotation(BlockView iBlockAccess, int i, int j, int l) {
         return false;
     }
 
+    @Override
     public void rotate(World world1, int l, int i1, int j1, boolean flag) {
     }
 
@@ -268,6 +272,7 @@ public class CrucibleBlock extends TemplateBlockWithEntity
     public static final IntProperty FULL = IntProperty.of("full", 0, 27);
     public static final DirectionProperty ROTATION = DirectionProperty.of("rotation", Direction.UP, Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST);
 
+    @Override
     public void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(LAVA);
         builder.add(FULL);
