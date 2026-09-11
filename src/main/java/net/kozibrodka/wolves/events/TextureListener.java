@@ -210,7 +210,7 @@ public class TextureListener {
         ItemListener.refinedBattleAxe.setTexture(Identifier.of(NAMESPACE, "item/fcRefinedBattleAxe"));
         ItemListener.refinedSword.setTexture(Identifier.of(NAMESPACE, "item/fcRefinedSword"));
         ItemListener.refinedAxe.setTexture(Identifier.of(NAMESPACE, "item/fcRefinedAxe"));
-//        ItemListener.refinedMattock.setTexture(Identifier.of(NAMESPACE, "item/fcRefinedMattock"));
+        ItemListener.refinedMattock.setTexture(Identifier.of(NAMESPACE, "item/fcRefinedMattock"));
         ItemListener.groundNetherrack.setTexture(Identifier.of(NAMESPACE, "item/fcGroundNetherrack"));
         ItemListener.hellfireDust.setTexture(Identifier.of(NAMESPACE, "item/fcHellfireDust"));
         ItemListener.concentratedHellfire.setTexture(Identifier.of(NAMESPACE, "item/fcConcentratedHellfire"));

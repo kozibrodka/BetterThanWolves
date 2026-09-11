@@ -118,8 +118,7 @@ public class ItemListener {
         refinedBattleAxe = new RefinedBattleAxeItem(NAMESPACE.id("refinedBattleAxe"), soulforgedSteelMaterial).setTranslationKey(NAMESPACE, "refined_battle_axe");
         refinedSword = new TemplateSwordItem(NAMESPACE.id("refinedSword"), soulforgedSteelMaterial).setTranslationKey(NAMESPACE, "refined_sword");
         refinedAxe = new RefinedAxeItem(NAMESPACE.id("refinedAxe"), soulforgedSteelMaterial).setTranslationKey(NAMESPACE, "refined_axe");
-//        refinedMattock = new RefinedMattockItem(NAMESPACE.id("refinedMattock"), soulforgedSteelMaterial).setTranslationKey(NAMESPACE, "refined_mattock");
-//        refinedMattock = new RefinedMattockItem(NAMESPACE.id("refinedMattock"), ToolMaterial.DIAMOND).setTranslationKey(NAMESPACE, "refined_mattock");
+        refinedMattock = new RefinedMattockItem(NAMESPACE.id("refinedMattock"), soulforgedSteelMaterial).setTranslationKey(NAMESPACE, "refined_mattock");
         groundNetherrack = new TemplateItem(NAMESPACE.id("groundNetherrack")).setTranslationKey(NAMESPACE, "ground_netherrack");
         hellfireDust = new TemplateItem(NAMESPACE.id("hellfireDust")).setTranslationKey(NAMESPACE, "hellfire_dust");
         concentratedHellfire = new TemplateItem(NAMESPACE.id("concentratedHellfire")).setTranslationKey(NAMESPACE, "concentrated_hellfire");

@@ -22,9 +22,9 @@ done:
 - removed custom SoundPacket from blocks wherever its possible to use vanilla onBlockAction() instead
 - code refactor of using custom Packets, added WolvesMpUtils and WolvesClientUtils
 - block Cake is now edited to match oryginal modloader version (BlockCakeMixin)
+- added Refined Mattock
 
 plan - chill, only extra stuff.
-- mottock
 - lens
 
 

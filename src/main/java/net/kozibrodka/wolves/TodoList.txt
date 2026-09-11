@@ -39,7 +39,7 @@ Possbile extra features (oryginal BTW)"" //TODO
 - BOAT ENFORCED WITH STEEL - doesnt break from collision
 - steel frame Painting - with those cool x32 textures.
 - (DONE) Buddy Block
-- Mattock tool
+- (DONE) Mattock tool
 - Lens Block, soczewka z lampą
 - /// old idea | Backport cool stuff from 1.8.1 - 1.2.5 version maybe  - Buddy Block? transmitter block? - https://www.youtube.com/watch?v=IGBo0P3ZKts&list=PLC10F5BB68A5B956E&index=18
 
