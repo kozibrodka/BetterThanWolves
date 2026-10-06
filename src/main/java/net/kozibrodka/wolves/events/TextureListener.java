@@ -126,6 +126,7 @@ public class TextureListener {
         saw_side = registerBlockTexture("block/fcBlockSaw_side");
         saw_saw = registerBlockTexture("block/fcBlockSaw_saw");
         saw_face = registerBlockTexture("block/fcBlockSaw_face");
+        saw_animated = registerBlockTexture("block/saw_animated");
         rail_wood = registerBlockTexture("block/fcRailDetector_wood");
         rail_obsidian = registerBlockTexture("block/fcRailDetector_obsidian");
         detector_on = registerBlockTexture("block/fcBlockDetector_on");
@@ -159,6 +160,7 @@ public class TextureListener {
         lens_back = registerBlockTexture("block/fcBlockLens_back");
         lens_side = registerBlockTexture("block/fcBlockLens_side");
         lens_front = registerBlockTexture("block/fcBlockLens_front");
+
         BlockListener.blockOfGrates.specifyTextures(getBlockTexture("item/fcGrate"));
         BlockListener.blockOfSteel.specifyTextures(getBlockTexture("block/steel"));
         BlockListener.automaticAnvil.specifyTextures(getBlockTexture(autoAnvil + "controller"), getBlockTexture(autoAnvil + "side"), getBlockTexture(autoAnvil + "side"));
@@ -345,6 +347,7 @@ public class TextureListener {
     public static int saw_face;
     public static int saw_side;
     public static int saw_saw;
+    public static int saw_animated;
     public static int rail_wood;
     public static int rail_obsidian;
     public static int detector_on;

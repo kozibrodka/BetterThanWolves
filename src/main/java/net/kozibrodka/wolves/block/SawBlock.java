@@ -47,12 +47,12 @@ public class SawBlock extends TemplateBlock
     @Override
     public int getTextureId(BlockView blockAccess, int i, int j, int k, int iSide) {
         int iFacing = getFacing(blockAccess, i, j, k);
-        return iSide != iFacing ? TextureListener.saw_side : TextureListener.saw_face;
+        return iSide != iFacing ? 4 : TextureListener.saw_face; //TextureListener.saw_side - vanilla Planks
     }
 
     @Override
     public int getTexture(int iSide) {
-        return iSide != 1 ? TextureListener.saw_side : TextureListener.saw_face;
+        return iSide != 1 ? 4 : TextureListener.saw_face; //TextureListener.saw_side - vanilla Planks
     }
 
     @Override
@@ -544,7 +544,11 @@ public class SawBlock extends TemplateBlock
                 this.setBoundingBox(1.0F - f2, 0.5F - f1, 0.5F - f, 1.0F, 0.5F + f1, 0.5F + f);
                 break;
         }
-        CustomBlockRendering.renderStandardBlockWithTexture(tileRenderer, this, x, y, z, TextureListener.saw_saw);
+        int sawTexture = TextureListener.saw_saw;
+        if(IsBlockOn(tileView, x, y, z)){
+            sawTexture = TextureListener.saw_animated;
+        }
+        CustomBlockRendering.renderStandardBlockWithTexture(tileRenderer, this, x, y, z, sawTexture);
         return true;
     }
 

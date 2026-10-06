@@ -33,7 +33,7 @@ Game mechanics:
 - (DONE) Fix Hopper soulfiltering - bring back oryginal design.
 
 Possbile extra features (oryginal BTW)"" //TODO
-- Animated saw
+- (DONE) Animated saw
 - (DONE) Omni Slab into Vertical Slabs
 - (DONE) Minecart from regorfed Steel
 - BOAT ENFORCED WITH STEEL - doesnt break from collision

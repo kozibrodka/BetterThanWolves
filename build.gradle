@@ -124,6 +124,9 @@ dependencies {
 	dependencies {
 		modImplementation("net.danygames2014:UniWrench:${project.uniwrench_version}")
 	}
+//	modImplementation("maven.modrinth:betterf3-stationapi:${project.betterf3_version}-b1.7.3") {
+//		transitive = false
+//	}
 
 
     // Crossover content

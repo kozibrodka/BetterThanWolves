@@ -1,0 +1,45 @@
+{
+	"format_version": "26.3",
+	"credit": "Made with Blockbench",
+	"display": {
+		"ground": {
+			"rotation": [ 90, 0, 0 ],
+			"translation": [ 0, 0, 0],
+			"scale":[ 0.25, 0.25, 0.25 ]
+		}
+	},
+	"textures": {
+		"0": "wolves:block/fcBlockSaw_face",
+		"1": "wolves:block/fcBlockSaw_saw",
+		"2": "block/oak_planks",
+		"particle": "block/oak_planks"
+	},
+	"elements": [
+		{
+			"name": "baza",
+			"from": [0, 0, 0],
+			"to": [16, 12, 16],
+			"faces": {
+				"north": {"uv": [0, 4, 16, 16], "texture": "#2"},
+				"east": {"uv": [0, 4, 16, 16], "texture": "#2"},
+				"south": {"uv": [0, 0, 16, 12], "texture": "#2"},
+				"west": {"uv": [0, 4, 16, 16], "texture": "#2"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#2"}
+			}
+		},
+		{
+			"name": "pila",
+			"from": [3, 12, 8],
+			"to": [13, 16, 8],
+			"faces": {
+				"north": {"uv": [3, 0, 13, 4], "texture": "#1"},
+				"east": {"uv": [3, 0, 3, 4], "texture": "#missing"},
+				"south": {"uv": [3, 0, 13, 4], "texture": "#1"},
+				"west": {"uv": [0, 0, 0, 4], "texture": "#missing"},
+				"up": {"uv": [0, 0, 10, 0], "texture": "#missing"},
+				"down": {"uv": [0, 3, 10, 3], "texture": "#missing"}
+			}
+		}
+	]
+}
