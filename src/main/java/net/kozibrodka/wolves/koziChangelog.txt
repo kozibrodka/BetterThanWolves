@@ -23,6 +23,7 @@ done:
 - code refactor of using custom Packets, added WolvesMpUtils and WolvesClientUtils
 - block Cake is now edited to match oryginal modloader version (BlockCakeMixin)
 - added Refined Mattock
+- saw's blade has animated texture when powered
 
 plan - chill, only extra stuff.
 - lens

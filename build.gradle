@@ -94,8 +94,8 @@ dependencies {
     }
 
 	// Optional, but convenient mods for mod creators and users alike.
-	modImplementation("net.glasslauncher.mods:ModMenu:${project.modmenu_version}") {
-		transitive false
+	modImplementation("net.danygames2014:modmenu:${project.modmenu_version}") {
+		transitive = false
 	}
 	modImplementation("net.glasslauncher.mods:glass-networking:${project.glassnetworking_version}") {
 		transitive false
@@ -129,14 +129,14 @@ dependencies {
 //	}
 
 
-    // Crossover content
-	modImplementation("maven.modrinth:new-frontier-craft:${project.nfc_version}") {
+    // Crossover content //modCompileOnly - modImplementation
+	modCompileOnly("maven.modrinth:new-frontier-craft:${project.nfc_version}") {
 		transitive false
 	}
     modRuntimeOnly("net.danygames2014:NyaLib:${project.nyalib_version}") {
     }
 
-	modImplementation(files("lib/keyf3-1.0.1.jar"))
+//	modImplementation(files("lib/keyf3-1.0.1.jar"))
 
 }
 

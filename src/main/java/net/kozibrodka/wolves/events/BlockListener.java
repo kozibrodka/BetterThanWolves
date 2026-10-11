@@ -83,6 +83,7 @@ public class BlockListener {
     public static Block panelStone;
     public static Block buddyBlock;
     public static Block lens;
+    public static Block beamLight;
 
     // Crossover content
     public static LazyBlockTemplate converter;
@@ -134,7 +135,8 @@ public class BlockListener {
         unfiredPottery = new UnfiredPotteryBlock(NAMESPACE.id("unfiredPottery")).setTranslationKey(NAMESPACE, "unfired_pottery");
         crucible = new CrucibleBlock(NAMESPACE.id("crucible")).setTranslationKey(NAMESPACE, "crucible");
         planter = new PlanterBlock(NAMESPACE.id("planter")).setTranslationKey(NAMESPACE, "planter");
-//        lens = new LensBlock(NAMESPACE.id("lens")).setTranslationKey(NAMESPACE, "lens");
+        lens = new LensBlock(NAMESPACE.id("lens")).setTranslationKey(NAMESPACE, "lens");
+        beamLight = new BeamOfLightBlock(NAMESPACE.id("beamLight")).setTranslationKey(NAMESPACE, "beamLight");
         vase = new VaseBlock(NAMESPACE.id("vase")).setTranslationKey(NAMESPACE, "vase");
         blockOfGrates = new LazyTransparentBlockTemplate(NAMESPACE.id("block_of_grates"), Material.WOOD, 1.5F, Block.WOOD_SOUND_GROUP);
         blockOfSteel = new LazyBlockTemplate(NAMESPACE.id("block_of_steel"), Material.METAL, 2.5F, Block.METAL_SOUND_GROUP);

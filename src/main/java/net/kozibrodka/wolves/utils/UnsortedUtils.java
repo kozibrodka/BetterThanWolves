@@ -15,6 +15,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.modificationstation.stationapi.api.util.math.Direction;
 
 import java.util.List;
 
@@ -106,6 +107,57 @@ public class UnsortedUtils {
         }
         return iFacing;
     }
+
+    public static Direction convertPlacingOrientationToGeographicalFacing(LivingEntity entityLiving) {
+        float pitch = entityLiving.pitch;
+        if (pitch > 60F) {
+            return Direction.UP;
+        }
+        if (pitch < -60F) {
+            return Direction.DOWN;
+        } else {
+            return convertPlacingOrientationToFlatGeographicalFacing(entityLiving);
+        }
+    }
+
+    public static Direction convertPlacingOrientationToFlatGeographicalFacing(LivingEntity entityLiving) {
+        float pitch = entityLiving.pitch;
+        int l = MathHelper.floor((double) ((entityLiving.yaw * 4F) / 360F) + 0.5D) & 3;
+        Direction iFacing;
+        if (l == 0) {
+            iFacing = Direction.NORTH;
+        } else if (l == 1) {
+            iFacing = Direction.EAST;
+        } else if (l == 2) {
+            iFacing = Direction.SOUTH;
+        } else {
+            iFacing = Direction.WEST;
+        }
+        return iFacing;
+    }
+
+    public static int convertDirectionToMeta(Direction direction){
+        return switch (direction){
+            case DOWN -> 0;
+            case UP -> 1;
+            case NORTH -> 2;
+            case SOUTH -> 3;
+            case WEST -> 4;
+            case EAST -> 5;
+        };
+    }
+
+    public static Direction convertMetaToDirection(int meta){
+        return switch (meta){
+            case 1 -> Direction.UP;
+            case 2 -> Direction.NORTH;
+            case 3 -> Direction.SOUTH;
+            case 4 -> Direction.WEST;
+            case 5 -> Direction.EAST;
+            default -> Direction.DOWN;
+        };
+    }
+
 
     public static int ConvertPlacingEntityOrientationToBlockFlatFacing(LivingEntity entityLiving) {
         int l = MathHelper.floor((double) ((entityLiving.yaw * 4F) / 360F) + 0.5D) & 3;

@@ -160,6 +160,7 @@ public class TextureListener {
         lens_back = registerBlockTexture("block/fcBlockLens_back");
         lens_side = registerBlockTexture("block/fcBlockLens_side");
         lens_front = registerBlockTexture("block/fcBlockLens_front");
+        beam_25 = registerBlockTexture("block/fcBeamT50");
 
         BlockListener.blockOfGrates.specifyTextures(getBlockTexture("item/fcGrate"));
         BlockListener.blockOfSteel.specifyTextures(getBlockTexture("block/steel"));
@@ -381,4 +382,5 @@ public class TextureListener {
     public static int lens_back;
     public static int lens_side;
     public static int lens_front;
+    public static int beam_25;
 }

@@ -31,6 +31,7 @@
     "wolves:panel_mossy",
     "wolves:panel_stone",
     "wolves:converter",
-    "wolves:buddyBlock"
+    "wolves:buddyBlock",
+    "wolves:lens"
   ]
 }

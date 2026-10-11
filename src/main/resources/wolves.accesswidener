@@ -22,3 +22,4 @@ accessible field net/minecraft/entity/vehicle/MinecartEntity clientPitch D
 accessible field net/minecraft/entity/vehicle/MinecartEntity clientYaw D
 accessible field net/minecraft/entity/vehicle/MinecartEntity yawFlipped Z
 accessible field net/minecraft/entity/vehicle/MinecartEntity ADJACENT_RAIL_POSITIONS_BY_SHAPE [[[I
+accessible field net/minecraft/client/render/block/BlockRenderManager skipFaceCulling Z

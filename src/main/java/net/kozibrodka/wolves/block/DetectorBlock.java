@@ -148,7 +148,8 @@ public class DetectorBlock extends TemplateBlock {
     @Override
     public void onPlaced(World level, int x, int y, int z) {
         super.onPlaced(level, x, y, z);
-        level.scheduleBlockUpdate(x, y, z, BlockListener.detectorBlock.id, getTickRate());
+        if (isObstructed(level, x, y, z)) activateDetector(level, x, y, z); // check on placement, to insta activate
+        else level.scheduleBlockUpdate(x, y, z, this.id, getTickRate());
     }
 
     @Override
