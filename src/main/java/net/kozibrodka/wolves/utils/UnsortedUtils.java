@@ -16,12 +16,13 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.modificationstation.stationapi.api.util.math.Direction;
+import net.modificationstation.stationapi.api.util.math.Vec3i;
 
 import java.util.List;
 
 /**
- * This is a TERRIBLE and really inefficient way of sorting utils.  - nothing wrong with this file.
- * TODO: Relocate methods into appropriate utils or discard them entirely.
+ * This is a TERRIBLE and really inefficient way of sorting utils. .
+ * TODO: Relocate methods into appropriate utils .
  */
 public class UnsortedUtils {
 
@@ -45,6 +46,18 @@ public class UnsortedUtils {
             }
         }
         return iFacing;
+    }
+
+    public static Vec3i getVector(int iFacing){
+        return switch (iFacing){
+            case 0 -> new Vec3i(0, -1, 0);
+            case 1 -> new Vec3i(0, 1, 0);
+            case 2 -> new Vec3i(0, 0, -1);
+            case 3 -> new Vec3i(0, 0, 1);
+            case 4 -> new Vec3i(-1, 0, 0);
+            case 5 -> new Vec3i(1, 0, 0);
+            default -> new Vec3i(0, 0, 0);
+        };
     }
 
     public static void ejectStackWithRandomOffset(World world, int i, int j, int k, ItemStack stack) {

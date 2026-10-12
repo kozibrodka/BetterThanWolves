@@ -14,10 +14,10 @@ import net.modificationstation.stationapi.api.util.Identifier;
 
 @EnvironmentInterface(value = EnvType.CLIENT, itf = BlockWithWorldRenderer.class)
 @EnvironmentInterface(value = EnvType.CLIENT, itf = BlockWithInventoryRenderer.class)
-public class LazyTransparentBlockTemplate extends LazyBlockTemplate implements BlockWithWorldRenderer, BlockWithInventoryRenderer {
+public class GratesBlock extends LazyBlockTemplate implements BlockWithWorldRenderer, BlockWithInventoryRenderer {
 
 
-    public LazyTransparentBlockTemplate(Identifier identifier, Material material, float hardness, BlockSoundGroup blockSounds) {
+    public GratesBlock(Identifier identifier, Material material, float hardness, BlockSoundGroup blockSounds) {
         super(identifier, material, hardness, blockSounds);
     }
 

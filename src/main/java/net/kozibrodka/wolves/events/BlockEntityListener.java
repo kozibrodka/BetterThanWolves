@@ -1,18 +1,6 @@
 package net.kozibrodka.wolves.events;
 
-import net.kozibrodka.wolves.block.entity.AutomaticAnvilBlockEntity;
-import net.kozibrodka.wolves.block.entity.BlockDispenserBlockEntity;
-import net.kozibrodka.wolves.block.entity.CauldronBlockEntity;
-import net.kozibrodka.wolves.block.entity.CementBlockEntity;
-import net.kozibrodka.wolves.block.entity.CrucibleBlockEntity;
-import net.kozibrodka.wolves.block.entity.DropperBlockEntity;
-import net.kozibrodka.wolves.block.entity.HopperBlockEntity;
-import net.kozibrodka.wolves.block.entity.MachineBusBlockEntity;
-import net.kozibrodka.wolves.block.entity.MillStoneBlockEntity;
-import net.kozibrodka.wolves.block.entity.PulleyBlockEntity;
-import net.kozibrodka.wolves.block.entity.TurntableBlockEntity;
-import net.kozibrodka.wolves.block.entity.UnfiredPotteryBlockEntity;
-import net.kozibrodka.wolves.block.entity.VaseBlockEntity;
+import net.kozibrodka.wolves.block.entity.*;
 import net.mine_diver.unsafeevents.listener.EventListener;
 import net.modificationstation.stationapi.api.event.block.entity.BlockEntityRegisterEvent;
 import net.modificationstation.stationapi.api.mod.entrypoint.Entrypoint;
@@ -37,5 +25,6 @@ public class BlockEntityListener {
         event.register(NAMESPACE.id("Dropper").toString(), DropperBlockEntity.class);
         event.register(NAMESPACE.id("AutomaticAnvil").toString(), AutomaticAnvilBlockEntity.class);
         event.register(NAMESPACE.id("MachineBus").toString(), MachineBusBlockEntity.class);
+        event.register(NAMESPACE.id("TileLens").toString(), LensBlockEntity.class);
     }
 }

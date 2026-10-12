@@ -245,7 +245,8 @@ public class AnvilBlock extends TemplateBlock
         tileRenderer.renderBlock(this, x, y, z);
         SetBlockBoundsRotatedAboutJToFacing(0.0F, 0.875F, 0.4375F, 0.125F, 1.0F, 0.5625F, l);
         tileRenderer.renderBlock(this, x, y, z);
-        setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+//        setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F); //TODO - czy jest więcej takich miejsc, gdzie na ślepo 1x1 cube jest ustawiany?
+        updateBoundingBox(tileView, x, y, z);
         return true;
     }
 

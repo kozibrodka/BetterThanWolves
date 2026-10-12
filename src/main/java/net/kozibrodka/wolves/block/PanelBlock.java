@@ -32,88 +32,102 @@ public class PanelBlock extends TemplateBlock {
         this.setOpacity(2);
     }
 
+    @Override
     public void updateBoundingBox(BlockView arg, int i, int j, int k) {
-        int var7 = arg.getBlockMeta(i, j, k);
-        if (var7 == 0) {
+        int meta = arg.getBlockMeta(i, j, k);
+        if (meta == 0) {
             this.setBoundingBox(0.5F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-        } else if (var7 == 1) {
+        } else if (meta == 1) {
             this.setBoundingBox(0.0F, 0.0F, 0.0F, 0.5F, 1.0F, 1.0F);
-        } else if (var7 == 2) {
+        } else if (meta == 2) {
             this.setBoundingBox(0.0F, 0.0F, 0.5F, 1.0F, 1.0F, 1.0F);
-        } else if (var7 == 3) {
+        } else if (meta == 3) {
             this.setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 0.5F);
-        } else if (var7 == 4) {
+        } else if (meta == 4) {
             this.setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         }
     }
 
+    @Override
     public Box getCollisionShape(World arg, int i, int j, int k) {
         return super.getCollisionShape(arg, i, j, k);
     }
 
+    @Override
     public boolean isOpaque() {
         return false;
     }
 
+    @Override
     public boolean isFullCube() {
         return false;
     }
 
+    @Override
     @Environment(EnvType.CLIENT)
     public boolean isSideVisible(BlockView arg, int i, int j, int k, int l) {
         return super.isSideVisible(arg, i, j, k, l);
     }
 
+    @Override
     public void addIntersectingBoundingBox(World arg, int i, int j, int k, Box arg2, ArrayList arrayList) {
-        int var7 = arg.getBlockMeta(i, j, k);
-        if (var7 == 0) {
+        int meta = arg.getBlockMeta(i, j, k);
+        if (meta == 0) {
             this.setBoundingBox(0.5F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
             super.addIntersectingBoundingBox(arg, i, j, k, arg2, arrayList);
-        } else if (var7 == 1) {
+        } else if (meta == 1) {
             this.setBoundingBox(0.0F, 0.0F, 0.0F, 0.5F, 1.0F, 1.0F);
             super.addIntersectingBoundingBox(arg, i, j, k, arg2, arrayList);
-        } else if (var7 == 2) {
+        } else if (meta == 2) {
             this.setBoundingBox(0.0F, 0.0F, 0.5F, 1.0F, 1.0F, 1.0F);
             super.addIntersectingBoundingBox(arg, i, j, k, arg2, arrayList);
-        } else if (var7 == 3) {
+        } else if (meta == 3) {
             this.setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 0.5F);
             super.addIntersectingBoundingBox(arg, i, j, k, arg2, arrayList);
-        } else if(var7 == 4)  {
+        } else if(meta == 4)  {
             this.setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
             super.addIntersectingBoundingBox(arg, i, j, k, arg2, arrayList);
         }
     }
 
+    @Override
     public void setupRenderBoundingBox() {
         setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 0.5F);
     }
 
+    @Override
     @Environment(EnvType.CLIENT)
     public float getLuminance(BlockView arg, int i, int j, int k) {
         return this.template.getLuminance(arg, i, j, k);
     }
 
+    @Override
     public float getBlastResistance(Entity arg) {
         return this.template.getBlastResistance(arg);
     }
 
+    @Override
     @Environment(EnvType.CLIENT)
     public int getRenderLayer() {
         return this.template.getRenderLayer();
     }
 
+    @Override
     public int getDroppedItemMeta(int iMetaData) {
         return 0;
     }
 
+    @Override
     public int getTexture(int i, int j) {
         return this.template.getTexture(i, j);
     }
 
+    @Override
     public int getTexture(int i) {
         return this.template.getTexture(i);
     }
 
+    @Override
     public void dropStacks(World world, int x, int y, int z, int meta, float luck) {
         if (!world.isRemote) {
             int var7 = 0;
@@ -135,21 +149,25 @@ public class PanelBlock extends TemplateBlock {
         }
     }
 
+    @Override
     @Environment(EnvType.CLIENT)
     public int getTextureId(BlockView arg, int i, int j, int k, int l) {
         return this.template.getTextureId(arg, i, j, k, l);
     }
 
+    @Override
     public int getTickRate() {
         return this.template.getTickRate();
     }
 
 
+    @Override
     public boolean canPlaceAt(World world, int x, int y, int z, int side) {
         int var5 = world.getBlockId(x, y, z);
         return var5 == 0 || BLOCKS[var5].material.isReplaceable();
     }
 
+    @Override
     public void onPlaced(World arg, int i, int j, int k, LivingEntity arg2) {
         int var6 = MathHelper.floor((double) (arg2.yaw * 4.0F / 360.0F) + 0.5D) & 3;
         if (var6 == 0) {
@@ -170,6 +188,7 @@ public class PanelBlock extends TemplateBlock {
 
     }
 
+    @Override
     public void onPlaced(World world, int x, int y, int z, int direction) {
         if (direction == 2) {
             int a = world.getBlockId(x,y,z+1);

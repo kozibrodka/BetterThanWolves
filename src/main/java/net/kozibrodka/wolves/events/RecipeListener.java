@@ -412,7 +412,13 @@ public class RecipeListener {
                     "I", "C", 'I', ItemListener.steel, 'C', BlockListener.corner
             });
         }
-        addAnvilRecipe(new ItemStack(BlockListener.buddyBlock, 1), new Object[]{"##X", "#Y#", "X##", '#', ItemListener.steel, 'X', new ItemStack(Item.DYE,1,4), 'Y', Block.LIT_REDSTONE_TORCH}); /// OG - 'X', mod_FCBetterThanWolves.fcPolishedLapis + harder 5x5 recipe
+        addAnvilRecipe(new ItemStack(BlockListener.buddyBlock, 1), new Object[]{
+                "##X", "#Y#", "X##", '#', ItemListener.steel, 'X', new ItemStack(Item.DYE,1,4), 'Y', Block.LIT_REDSTONE_TORCH
+        }); /// OG - 'X', mod_FCBetterThanWolves.fcPolishedLapis + harder 5x5 recipe
+
+        addAnvilRecipe(new ItemStack(BlockListener.lens, 1), new Object[]{
+                "#X#", "# #", "#Y#", '#', Item.GOLD_INGOT, 'X', Item.DIAMOND, 'Y', Block.GLASS
+        });
 
     }
 

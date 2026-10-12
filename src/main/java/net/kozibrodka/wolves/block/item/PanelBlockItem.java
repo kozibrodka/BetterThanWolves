@@ -7,8 +7,15 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.modificationstation.stationapi.api.StationAPI;
+import net.modificationstation.stationapi.api.event.block.IsBlockReplaceableEvent;
+import net.modificationstation.stationapi.api.item.ItemPlacementContext;
 import net.modificationstation.stationapi.api.template.item.TemplateBlockItem;
+import net.modificationstation.stationapi.api.util.math.Direction;
 
 public class PanelBlockItem extends TemplateBlockItem {
     public PanelBlockItem(int i) {
@@ -17,6 +24,7 @@ public class PanelBlockItem extends TemplateBlockItem {
         this.setHasSubtypes(false);
     }
 
+    @Override
     public boolean useOnBlock(ItemStack stack, PlayerEntity user, World world, int x, int y, int z, int side) {
         if (world.getBlockId(x, y, z) == Block.SNOW.id) {
             side = 0;
@@ -49,9 +57,9 @@ public class PanelBlockItem extends TemplateBlockItem {
         int squeezedId = world.getBlockId(x,y,z);
         if (stack.count == 0) {
             return false;
-        } else if (y == 127 && Block.BLOCKS[this.getBlock().id].material.isSolid()) {
+        } else if (y == world.getTopY()-1 && Block.BLOCKS[this.getBlock().id].material.isSolid()) {
             return false;
-        } else if (world.canPlace(this.getBlock().id, x, y, z, false, side) && !isPlacementDouble) {
+        } else if (stationapi_canReplace(this.getBlock().id, stack, user, world, x, y, z, side) && !isPlacementDouble) {
             Block var8 = Block.BLOCKS[this.getBlock().id];
             if (world.setBlock(x, y, z, this.getBlock().id, this.getPlacementMetadata(stack.getDamage()))) {
                 Block.BLOCKS[this.getBlock().id].onPlaced(world, x, y, z, user);
@@ -132,5 +140,11 @@ public class PanelBlockItem extends TemplateBlockItem {
             }
         }
         return false;
+    }
+
+    private boolean stationapi_canReplace(int blockID, ItemStack itemStack, PlayerEntity player, World world, int x, int y, int z, int side) {
+        Direction direction = Direction.byId(side);
+        Box box = Block.BLOCKS[blockID].getCollisionShape(world, x, y, z);
+        return (box == null || world.canSpawnEntity(box)) && ((IsBlockReplaceableEvent) StationAPI.EVENT_BUS.post(IsBlockReplaceableEvent.builder().context(new ItemPlacementContext(player, itemStack, new HitResult(x - direction.getOffsetX(), y - direction.getOffsetY(), z - direction.getOffsetZ(), side, Vec3d.createCached((double)x, (double)y, (double)z)))).build())).context.canPlace() && Block.BLOCKS[blockID].canPlaceAt(world, x, y, z, side);
     }
 }
