@@ -41,7 +41,7 @@ public class PulleyBlock extends TemplateBlockWithEntity
         if (iSide == 0) {
             return TextureListener.pulley_bottom;
         }
-        return iSide != 1 ? TextureListener.pulley_side : TextureListener.pulley_top;
+        return iSide != 1 ? TextureListener.pulley_side : 25; //TextureListener.pulley_top
     }
 
     @Override

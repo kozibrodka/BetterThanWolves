@@ -40,11 +40,9 @@ Possbile extra features (oryginal BTW)"" //TODO
 - steel frame Painting - with those cool x32 textures.
 - (DONE) Buddy Block
 - (DONE) Mattock tool
-- Lens Block, soczewka z lampą
+- (DONE) Lens Block, soczewka z lampą - dodać turnTable behaviour.
 - Zobacz jak działa blockDispenser odnośnie Farmingu (sadzonki, bone-meal, nasiona)
-- Użycie tekstur Vanilla tam gdzie 1:1 mamy odpowiednik w resources - aplikacja texturepacków lepsza
-- /// old idea | Backport cool stuff from 1.8.1 - 1.2.5 version maybe  - Buddy Block? transmitter block? - https://www.youtube.com/watch?v=IGBo0P3ZKts&list=PLC10F5BB68A5B956E&index=18
-
+- (DONE) Użycie tekstur Vanilla tam gdzie 1:1 mamy odpowiednik w resources - aplikacja texturepacków lepsza
 
 Configurable content (Move some content to separate add-on):
 - Creeper oyster shearing

@@ -43,7 +43,7 @@ public class GearboxBlock extends TemplateBlock implements MechanicalDevice, Rot
         if (blockView.getBlockId(sideBlockPos.x, sideBlockPos.y, sideBlockPos.z) == BlockListener.axleBlock.id && ((AxleBlock) BlockListener.axleBlock).isAxleOrientedTowardsFacing(blockView, sideBlockPos.x, sideBlockPos.y, sideBlockPos.z, side)) {
             return TextureListener.gearbox_output;
         } else {
-            return TextureListener.gearbox_side;
+            return 4; //TextureListener.gearbox_side
         }
     }
 
@@ -52,7 +52,7 @@ public class GearboxBlock extends TemplateBlock implements MechanicalDevice, Rot
         if (side == 3) {
             return TextureListener.gearbox_front;
         } else {
-            return TextureListener.gearbox_side;
+            return 4; //TextureListener.gearbox_side
         }
     }
 

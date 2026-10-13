@@ -46,11 +46,11 @@ public class DetectorBlock extends TemplateBlock {
                 return TextureListener.detector_off;
             }
         } else if (l == 1) {
-            return TextureListener.detector_top;
+            return 62; // TextureListener.detector_top
         } else if (l == 0) {
             return TextureListener.detector_bottom;
         } else {
-            return TextureListener.detector_side;
+            return 45; // TextureListener.detector_side
         }
     }
 
@@ -59,11 +59,11 @@ public class DetectorBlock extends TemplateBlock {
         if (i == 3) {
             return TextureListener.detector_off;
         } else if (i == 1) {
-            return TextureListener.detector_top;
+            return 62;
         } else if (i == 0) {
             return TextureListener.detector_bottom;
         } else {
-            return TextureListener.detector_side;
+            return 45; // TextureListener.detector_side
         }
     }
 

@@ -4,8 +4,8 @@
   "textures": {
     "0": "wolves:block/fcBlockTurntable_down",
     "1": "wolves:block/fcBlockTurntable_side",
-    "2": "wolves:block/fcBlockTurntable_button",
-    "3": "wolves:block/fcBlockTurntable_top",
+    "2": "block/oak_planks",
+    "3": "block/piston_top",
     "particle": "wolves:block/fcBlockTurntable_side"
   },
   "elements": [

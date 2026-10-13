@@ -165,7 +165,7 @@ public class PlanterBlock extends TemplateBlock
         tileRenderer.renderBlock(this, x, y, z);
         if (DoesPlanterContainSoil(tileView, x, y, z)) {
             this.setBoundingBox(0.125F, 0.9F, 0.125F, 0.875F, 1.0F, 0.875F);
-            CustomBlockRendering.renderStandardBlockWithTexture(tileRenderer, this, x, y, z, TextureListener.planter_soil);
+            CustomBlockRendering.renderStandardBlockWithTexture(tileRenderer, this, x, y, z, 86); //TextureListener.planter_soil
         }
         setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         return true;
@@ -193,7 +193,7 @@ public class PlanterBlock extends TemplateBlock
         CustomBlockRendering.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.planter);
         if (meta > 0) {
             this.setBoundingBox(0.125F, 0.9F, 0.125F, 0.875F, 1.0F, 0.875F);
-            CustomBlockRendering.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.planter_soil);
+            CustomBlockRendering.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, 86);
         }
         setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
     }

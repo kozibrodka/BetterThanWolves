@@ -1,37 +1,26 @@
 package net.kozibrodka.wolves.block;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.api.EnvironmentInterface;
-import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.events.TextureListener;
-import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.utils.BlockPosition;
-import net.kozibrodka.wolves.utils.CustomBlockRendering;
 import net.kozibrodka.wolves.utils.MechanicalDevice;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import net.modificationstation.stationapi.api.client.model.block.BlockWithInventoryRenderer;
-import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import net.modificationstation.stationapi.api.template.block.TemplateBlock;
 import net.modificationstation.stationapi.api.util.Identifier;
 
-import java.util.List;
 import java.util.Random;
 
-@EnvironmentInterface(value = EnvType.CLIENT, itf = BlockWithInventoryRenderer.class)
+//@EnvironmentInterface(value = EnvType.CLIENT, itf = BlockWithInventoryRenderer.class)
 public class HandCrankBlock extends TemplateBlock
-        implements MechanicalDevice, BlockWithInventoryRenderer {
+        implements MechanicalDevice {
 
     public HandCrankBlock(Identifier iid) {
         super(iid, Material.PISTON_BREAKABLE);
@@ -51,7 +40,7 @@ public class HandCrankBlock extends TemplateBlock
             return TextureListener.handcrack_top;
         }
         if (iSide == 0) {
-            return TextureListener.handcrack_bottom;
+            return 62; // TextureListener.handcrack_bottom
         } else {
             return TextureListener.handcrack_side;
         }
@@ -203,17 +192,17 @@ public class HandCrankBlock extends TemplateBlock
     private static final int handCrankDelayBeforeReset = 15;
     public static float handCrankBaseHeight = 0.25F;
 
-    @Override
-    public void renderInventory(BlockRenderManager tileRenderer, int meta) {
-        float f = 0.5F;
-        float f1 = 0.5F;
-        float f2 = handCrankBaseHeight;
-        this.setBoundingBox(0.5F - f1, 0.0F, 0.5F - f, 0.5F + f1, f2, 0.5F + f);
-        CustomBlockRendering.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
-        f = 0.0625F;
-        f1 = 0.0625F;
-        f2 = 1.0F;
-        this.setBoundingBox(0.5F - f1, 0.0F, 0.5F - f, 0.5F + f1, f2, 0.5F + f);
-        CustomBlockRendering.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.handcrack_lever);
-    }
+//    @Override
+//    public void renderInventory(BlockRenderManager tileRenderer, int meta) {
+//        float f = 0.5F;
+//        float f1 = 0.5F;
+//        float f2 = handCrankBaseHeight;
+//        this.setBoundingBox(0.5F - f1, 0.0F, 0.5F - f, 0.5F + f1, f2, 0.5F + f);
+//        CustomBlockRendering.RenderInvBlockWithMetaData(tileRenderer, this, -0.5F, -0.5F, -0.5F, 0);
+//        f = 0.0625F;
+//        f1 = 0.0625F;
+//        f2 = 1.0F;
+//        this.setBoundingBox(0.5F - f1, 0.001F, 0.5F - f, 0.5F + f1, f2, 0.5F + f);
+//        CustomBlockRendering.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.handcrack_lever);
+//    }
 }

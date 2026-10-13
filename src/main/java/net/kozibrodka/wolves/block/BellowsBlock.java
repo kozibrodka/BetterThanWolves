@@ -43,9 +43,9 @@ public class BellowsBlock extends TemplateBlock
             return TextureListener.bellows_front;
         }
         if (iSide == 1) {
-            return TextureListener.bellows_top;
+            return 25; //TextureListener.bellows_top
         }
-        return iSide != 0 ? TextureListener.bellows_side : TextureListener.bellows_top;
+        return iSide != 0 ? TextureListener.bellows_side : 25;
     }
 
     @Override
@@ -54,9 +54,9 @@ public class BellowsBlock extends TemplateBlock
             return TextureListener.bellows_front;
         }
         if (iSide == 1) {
-            return TextureListener.bellows_top;
+            return 25;
         }
-        return iSide != 0 ? TextureListener.bellows_side : TextureListener.bellows_top;
+        return iSide != 0 ? TextureListener.bellows_side : 25;
     }
 
     @Override

@@ -100,6 +100,7 @@ public class AMICompat implements ModPluginProvider {
     public void updateBlacklist(AMIHelpers amiHelpers) {
         amiHelpers.getItemBlacklist().addItemToBlacklist(new ItemStack(ItemListener.nothing));
         amiHelpers.getItemBlacklist().addItemToBlacklist(new ItemStack(BlockListener.stoneSlabBlock));
+        amiHelpers.getItemBlacklist().addItemToBlacklist(new ItemStack(BlockListener.beamLight));
 
         if(ConfigListener.wolvesGlass.content.verticalSlabs){ /// New Vert Slabs active
             amiHelpers.getItemBlacklist().addItemToBlacklist(new ItemStack(BlockListener.omniSlab));

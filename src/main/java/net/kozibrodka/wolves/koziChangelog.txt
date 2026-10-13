@@ -24,9 +24,9 @@ done:
 - block Cake is now edited to match oryginal modloader version (BlockCakeMixin)
 - added Refined Mattock
 - saw's blade has animated texture when powered
+- using vanilla intID texture instead of duplicates of it in resources
+- added Lens Block (from newer btw)
 
-plan - chill, only extra stuff.
-- lens
 
 
 

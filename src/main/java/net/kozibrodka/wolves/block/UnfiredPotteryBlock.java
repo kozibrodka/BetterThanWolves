@@ -37,7 +37,7 @@ public class UnfiredPotteryBlock extends TemplateBlockWithEntity
 
     @Override
     public int getTexture(int iSide) {
-        return TextureListener.unfiredpottery;
+        return 72; //TextureListener.unfiredpottery
     }
 
     @Override
@@ -168,9 +168,9 @@ public class UnfiredPotteryBlock extends TemplateBlockWithEntity
     public boolean renderWorld(BlockRenderManager tileRenderer, BlockView tileView, int x, int y, int z) {
         updateBoundingBox(tileView, x, y, z);
         UnfiredPotteryBlockEntity fctileentityunfiredpottery = (UnfiredPotteryBlockEntity) tileView.getBlockEntity(x, y, z);
-        int l = TextureListener.unfiredpottery;
+        int l = 72; //TextureListener.unfiredpottery
         if (fctileentityunfiredpottery != null && fctileentityunfiredpottery.IsCooking()) {
-            l = TextureListener.unfiredpottery_cook;
+            l = 19; // TextureListener.unfiredpottery_cook
         }
         int i1 = tileView.getBlockMeta(x, y, z);
         switch (i1) {
@@ -271,66 +271,66 @@ public class UnfiredPotteryBlock extends TemplateBlockWithEntity
                 break;
 
             default:
-                CustomBlockRendering.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+                CustomBlockRendering.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, 72);
                 break;
         }
     }
 
     public void RenderUnfiredCrucibleInvBlock(BlockRenderManager renderblocks, Block block, int i) {
         this.setBoundingBox(0.0625F, 0.0F, 0.0625F, 0.1875F, 1.0F, 0.8125F);
-        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, 72);
         this.setBoundingBox(0.0625F, 0.0F, 0.8125F, 0.8125F, 1.0F, 0.9375F);
-        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, 72);
         this.setBoundingBox(0.8125F, 0.0F, 0.1875F, 0.9375F, 1.0F, 0.9375F);
-        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, 72);
         this.setBoundingBox(0.1875F, 0.0F, 0.0625F, 0.9375F, 1.0F, 0.1875F);
-        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, 72);
         this.setBoundingBox(0.1875F, 0.0F, 0.1875F, 0.8125F, 0.125F, 0.8125F);
-        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, 72);
         this.setBoundingBox(0.0F, 0.125F, 0.0F, 0.125F, 0.875F, 0.875F);
-        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, 72);
         this.setBoundingBox(0.0F, 0.125F, 0.875F, 0.875F, 0.875F, 1.0F);
-        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, 72);
         this.setBoundingBox(0.875F, 0.125F, 0.125F, 1.0F, 0.875F, 1.0F);
-        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, 72);
         this.setBoundingBox(0.125F, 0.125F, 0.0F, 1.0F, 0.875F, 0.125F);
-        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, 72);
         this.setupRenderBoundingBox();
     }
 
     public void RenderUnfiredPotInvBlock(BlockRenderManager renderblocks, Block block, int i) {
         this.setBoundingBox(0.125F, 0.0F, 0.125F, 0.25F, 0.6875F, 0.75F);
-        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, 72);
         this.setBoundingBox(0.125F, 0.0F, 0.75F, 0.75F, 0.6875F, 0.875F);
-        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, 72);
         this.setBoundingBox(0.75F, 0.0F, 0.25F, 0.875F, 0.6875F, 0.875F);
-        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, 72);
         this.setBoundingBox(0.25F, 0.0F, 0.125F, 0.875F, 0.6875F, 0.25F);
-        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, 72);
         this.setBoundingBox(0.25F, 0.0F, 0.25F, 0.75F, 0.125F, 0.75F);
-        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, 72);
         this.setBoundingBox(0.0F, 0.6875F, 0.0F, 0.125F, 1.0F, 0.875F);
-        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, 72);
         this.setBoundingBox(0.0F, 0.6875F, 0.875F, 0.875F, 1.0F, 1.0F);
-        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, 72);
         this.setBoundingBox(0.875F, 0.6875F, 0.125F, 1.0F, 1.0F, 1.0F);
-        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, 72);
         this.setBoundingBox(0.125F, 0.6875F, 0.0F, 1.0F, 1.0F, 0.125F);
-        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, 72);
         this.setupRenderBoundingBox();
     }
 
     public void RenderUnfiredVaseInvBlock(BlockRenderManager renderblocks, Block block, int i) {
         this.setBoundingBox(0.25F, 0.0F, 0.25F, 0.75F, 0.0625F, 0.75F);
-        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, 72);
         this.setBoundingBox(0.1875F, 0.0625F, 0.1875F, 0.8125F, 0.4375F, 0.8125F);
-        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, 72);
         this.setBoundingBox(0.25F, 0.4375F, 0.25F, 0.75F, 0.5F, 0.75F);
-        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, 72);
         this.setBoundingBox(0.375F, 0.5F, 0.375F, 0.625F, 0.9375F, 0.625F);
-        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, 72);
         this.setBoundingBox(0.3125F, 0.9375F, 0.3125F, 0.6875F, 1.0F, 0.6875F);
-        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, TextureListener.unfiredpottery);
+        CustomBlockRendering.RenderInvBlockWithTexture(renderblocks, this, -0.5F, -0.5F, -0.5F, 72);
         this.setupRenderBoundingBox();
     }
 }

@@ -92,7 +92,7 @@ public class CompanionCubeBlock extends TemplateBlock
         } else if (iSide == iFacing) {
             return TextureListener.companion_face;
         }
-        return TextureListener.companion_side;
+        return 64; //TextureListener.companion_side
     }
 
     @Override
@@ -100,7 +100,7 @@ public class CompanionCubeBlock extends TemplateBlock
         if (i == 3) {
             return TextureListener.companion_face;
         } else {
-            return TextureListener.companion_side;
+            return 64;
         }
     }
 
@@ -113,7 +113,7 @@ public class CompanionCubeBlock extends TemplateBlock
         } else if (iSide == 3) {
             return TextureListener.companion_face;
         }
-        return TextureListener.companion_side;
+        return 64;
     }
 
     @Override

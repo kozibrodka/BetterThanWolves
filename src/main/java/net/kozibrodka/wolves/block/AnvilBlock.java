@@ -14,6 +14,7 @@ import net.kozibrodka.wolves.utils.RotatableBlock;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.kozibrodka.wolves.utils.WolvesMpUtils;
 import net.minecraft.block.Block;
+import net.minecraft.block.SandBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.entity.LivingEntity;
@@ -182,7 +183,7 @@ public class AnvilBlock extends TemplateBlock
     }
 
     private void processFall(World arg, int i, int j, int k) {
-        if (canFallThrough(arg, i, j - 1, k) && j >= 0) {
+        if (SandBlock.canFallThrough(arg, i, j - 1, k) && j >= 0) {
             int facing = arg.getBlockMeta(i, j, k);
             byte var8 = 32;
             if (!fallInstantly && arg.isRegionLoaded(i - var8, j - var8, k - var8, i + var8, j + var8, k + var8)) {
@@ -191,7 +192,7 @@ public class AnvilBlock extends TemplateBlock
             } else {
                 arg.setBlock(i, j, k, 0);
 
-                while (canFallThrough(arg, i, j - 1, k) && j > 0) {
+                while (SandBlock.canFallThrough(arg, i, j - 1, k) && j > 0) {
                     --j;
                 }
 

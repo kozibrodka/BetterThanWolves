@@ -12,6 +12,7 @@ public class StoneSlabBlock extends TemplateBlock {
         setSoundGroup(STONE_SOUND_GROUP);
     }
 
+    @Override
     public int getTexture(int side, int meta) {
         return side <= 1 ? 6 : 5;
     }

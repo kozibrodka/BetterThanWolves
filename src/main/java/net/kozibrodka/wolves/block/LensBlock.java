@@ -13,49 +13,28 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.modificationstation.stationapi.api.block.BlockState;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithWorldRenderer;
-import net.modificationstation.stationapi.api.state.StateManager;
-import net.modificationstation.stationapi.api.state.property.BooleanProperty;
 import net.modificationstation.stationapi.api.state.property.Properties;
-import net.modificationstation.stationapi.api.template.block.TemplateBlock;
 import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockWithEntity;
 import net.modificationstation.stationapi.api.util.Identifier;
-import net.modificationstation.stationapi.api.util.Util;
-import net.modificationstation.stationapi.api.util.math.Direction;
-import net.modificationstation.stationapi.api.world.BlockStateView;
 
 import java.util.Random;
 
 import static net.kozibrodka.wolves.block.BeamOfLightBlock.MAX_DISTANCE;
 
 @EnvironmentInterface(value = EnvType.CLIENT, itf = BlockWithWorldRenderer.class)
-public class LensBlock extends TemplateBlock implements BlockWithWorldRenderer {
-    public static final int m_iLensMaxRange = 128;
+public class LensBlock extends TemplateBlockWithEntity implements BlockWithWorldRenderer {
 
     public LensBlock(Identifier identifier) {
         super(identifier, Material.METAL);
         this.setHardness(3.5F);
         this.setSoundGroup(STONE_SOUND_GROUP);
         this.setTickRandomly(false); /// OG=true
-//        setDefaultState(getDefaultState()
-//                .with(Properties.FACING, Direction.UP)
-//                .with(LIT, false)
-//        );
     }
-
     //TODO dac rotacje turntable interface.
-
-//    @Override
-//    public void appendProperties(StateManager.Builder<Block, BlockState> builder){
-//        builder.add(Properties.FACING);
-//        builder.add(LIT);
-//    }
-
-//    private static final BooleanProperty LIT = BooleanProperty.of("lit");
 
     @Override
     public int getTickRate() {
@@ -65,12 +44,12 @@ public class LensBlock extends TemplateBlock implements BlockWithWorldRenderer {
     @Override
     public int getTextureId(BlockView iblockaccess, int i, int j, int k, int l) {
         int iFacing = this.GetMetaFacing(iblockaccess, i, j, k);
-        return l == iFacing ? TextureListener.lens_front : (l == UnsortedUtils.getOppositeFacing(iFacing) ? TextureListener.lens_back : TextureListener.lens_side);
+        return l == iFacing ? TextureListener.lens_front : (l == UnsortedUtils.getOppositeFacing(iFacing) ? TextureListener.lens_back : 23);
     }
 
     @Override
     public int getTexture(int i) {
-        return i == 3 ? TextureListener.lens_front : (i == 2 ? TextureListener.lens_back : TextureListener.lens_side);
+        return i == 3 ? TextureListener.lens_front : (i == 2 ? TextureListener.lens_back : 23); //TextureListener.lens_side
     }
 
 
@@ -81,10 +60,10 @@ public class LensBlock extends TemplateBlock implements BlockWithWorldRenderer {
         /// Gdybym zrezignował z tileEntity, tutaj musiałbym Forcować Zapalenie Beama jeżeli blok przedemną to nie jest Beam (to się odpala przy przesunięciu przez pistona)
     }
 
-//    @Override
-//    protected BlockEntity createBlockEntity() {
-//        return new LensBlockEntity();
-//    }
+    @Override
+    protected BlockEntity createBlockEntity() {
+        return new LensBlockEntity();
+    }
 
     @Override
     public void onPlaced(World world, int i, int j, int k, LivingEntity entityLiving) {
@@ -98,7 +77,7 @@ public class LensBlock extends TemplateBlock implements BlockWithWorldRenderer {
 
     @Override
     public void neighborUpdate(World world, int i, int j, int k, int id) {
-        System.out.println("updated by:  " + Block.BLOCKS[id].getTranslatedName());
+//        System.out.println("updated by:  " + Block.BLOCKS[id].getTranslatedName());
         world.scheduleBlockUpdate(i, j, k, this.id, 10); /// 1 - OG
     }
 
@@ -120,14 +99,7 @@ public class LensBlock extends TemplateBlock implements BlockWithWorldRenderer {
         boolean bShouldBeOn1 = iSourceLightValue1 >= 13; /// 8 to mało.   12 w deszczu, 14 przy pochodni. Raczej sensownie od 13 aktywować.
         boolean bCanBeOn2 = world.getBlockId(dirPos.x, dirPos.y, dirPos.z) == 0 || world.getBlockId(dirPos.x, dirPos.y, dirPos.z) == BlockListener.beamLight.id;
 
-
-        System.out.println("ŚWIATŁO: " + iSourceLightValue1 + "   " + Block.BLOCKS[world.getBlockId(lightSourcePos.x, lightSourcePos.y, lightSourcePos.z)].getTranslatedName());
-//        System.out.println("ID PRZED: " + Block.BLOCKS[world.getBlockId(dirPos.x, dirPos.y, dirPos.z)].getTranslatedName());
-
-//        if(this.IsLit(world, i, j, k) != (bShouldBeOn1 && bCanBeOn2)) {
-//            this.SetLit(world, i, j, k, bShouldBeOn1, false);
-//        }
-
+//        System.out.println("ŚWIATŁO: " + iSourceLightValue1 + "   " + Block.BLOCKS[world.getBlockId(lightSourcePos.x, lightSourcePos.y, lightSourcePos.z)].getTranslatedName());
         this.SetLit(world, i, j, k, bShouldBeOn1 && bCanBeOn2, false);
     }
 
@@ -141,14 +113,12 @@ public class LensBlock extends TemplateBlock implements BlockWithWorldRenderer {
         return (iblockaccess.getBlockMeta(i, j, k) & -2) >> 1;
     }
 
-
     /// META-DATA FACING
     public void SetFacing(World world, int i, int j, int k, int iFacing) {
         int iMetaData = world.getBlockMeta(i, j, k);
         iMetaData = iMetaData & 1 | iFacing << 1;
         world.setBlockMeta(i, j, k, iMetaData);
     }
-
 
     public boolean IsLit(BlockView iblockaccess, int i, int j, int k) {
 //        BlockState blockState = ((BlockStateView)iblockaccess).getBlockState(i, j, k);

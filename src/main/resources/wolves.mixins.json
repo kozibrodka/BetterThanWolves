@@ -12,6 +12,7 @@
     "BlockMushroomMixin",
     "BlockPlantMixin",
     "BlockRailMixin",
+    "BlockSandMixin",
     "BlockSugarCaneMixin",
     "HempSeedDrop",
     "ItemSeedsMixin",
