@@ -228,7 +228,7 @@ public class RecipeListener {
             CraftingRegistry.addShapelessRecipe(new ItemStack(BlockListener.vase, 1, 12), new ItemStack(Block.LOG), new ItemStack(BlockListener.vase, 1, 0));
         } else {
             CraftingRegistry.addShapelessRecipe(new ItemStack(Block.WOOL, 1, 12), new ItemStack(ItemListener.dung), new ItemStack(Block.WOOL, 1, 0));
-            CraftingRegistry.addShapelessRecipe(new ItemStack(BlockListener.vase, 1, 8), new ItemStack(ItemListener.dung), new ItemStack(BlockListener.vase, 1, 0));
+            CraftingRegistry.addShapelessRecipe(new ItemStack(BlockListener.vase, 1, 12), new ItemStack(ItemListener.dung), new ItemStack(BlockListener.vase, 1, 0));
         }
     }
 
@@ -403,17 +403,25 @@ public class RecipeListener {
             });
         }
         if (ConfigListener.wolvesGlass.content.machine_blocks) {
-            addAnvilRecipe(new ItemStack(BlockListener.dropper, 1), new Object[]{
-                    "S   S", "S   S", "GAHAG", "SRPRS", "SSISS", 'S',
-                    ItemListener.steel, 'G', BlockListener.gearBox, 'A', BlockListener.axleBlock,
-                    'H', BlockListener.hopper, 'R', Item.REDSTONE, 'P', Block.STONE_PRESSURE_PLATE, 'I', Item.IRON_DOOR
-            });
+            if(ConfigListener.wolvesGlass.difficulty.difficultSoulforgedSteelRecipes){
+                addAnvilRecipe(new ItemStack(BlockListener.dropper, 1), new Object[]{
+                        "S   S", "S   S", "GAHAG", "SRPRS", "SSISS", 'S',
+                        ItemListener.steel, 'G', BlockListener.gearBox, 'A', BlockListener.axleBlock,
+                        'H', BlockListener.hopper, 'R', Item.REDSTONE, 'P', Block.STONE_PRESSURE_PLATE, 'I', Item.IRON_DOOR
+                });
+            }else{
+                addAnvilRecipe(new ItemStack(BlockListener.dropper, 1), new Object[]{
+                        "SGS", "RPR", "SIS", 'S',
+                        ItemListener.steel, 'G', ItemListener.gear, 'A', BlockListener.axleBlock,
+                        'H', BlockListener.hopper, 'R', Item.REDSTONE, 'P', Block.STONE_PRESSURE_PLATE, 'I', Item.IRON_DOOR
+                });
+            }
             addAnvilRecipe(new ItemStack(ItemListener.weight, 12), new Object[]{
                     "I", "C", 'I', ItemListener.steel, 'C', BlockListener.corner
             });
         }
         addAnvilRecipe(new ItemStack(BlockListener.buddyBlock, 1), new Object[]{
-                "##X", "#Y#", "X##", '#', ItemListener.steel, 'X', new ItemStack(Item.DYE,1,4), 'Y', Block.LIT_REDSTONE_TORCH
+                "#SX", "SYS", "XS#", '#', ItemListener.steel, 'X', new ItemStack(Item.DYE,1,4), 'Y', Block.LIT_REDSTONE_TORCH, 'S', new ItemStack(Block.SLAB, 1, 0)
         }); /// OG - 'X', mod_FCBetterThanWolves.fcPolishedLapis + harder 5x5 recipe
 
         addAnvilRecipe(new ItemStack(BlockListener.lens, 1), new Object[]{

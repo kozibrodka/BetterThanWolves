@@ -246,8 +246,7 @@ public class AnvilBlock extends TemplateBlock
         tileRenderer.renderBlock(this, x, y, z);
         SetBlockBoundsRotatedAboutJToFacing(0.0F, 0.875F, 0.4375F, 0.125F, 1.0F, 0.5625F, l);
         tileRenderer.renderBlock(this, x, y, z);
-//        setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F); //TODO - czy jest więcej takich miejsc, gdzie na ślepo 1x1 cube jest ustawiany?
-        updateBoundingBox(tileView, x, y, z);
+//        setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F); /// bez sensu na ślepo ustawione na full ?
         return true;
     }
 
@@ -270,7 +269,7 @@ public class AnvilBlock extends TemplateBlock
         CustomBlockRendering.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.anvil);
         setBoundingBox(0.0F, 0.875F, 0.4375F, 0.125F, 1.0F, 0.5625F);
         CustomBlockRendering.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.anvil);
-        setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+//        setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F); /// bez sensu na ślepo ustawione na full ?
     }
 
     public static final float m_fAnvilBaseHeight = 0.125F;

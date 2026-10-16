@@ -19,7 +19,7 @@ public class LensBlockEntity extends BlockEntity {
         /// interwał sprawdzania. - POGODA / PORA DNIA
         if(ticks % lens_HZ == 0){
             if(world.getBlockId(x, y, z) == BlockListener.lens.id) {
-                ((LensBlock) (Block.BLOCKS[BlockListener.lens.id])).checkIfShouldBeLit(world, x, y, z);
+                ((LensBlock) (Block.BLOCKS[BlockListener.lens.id])).checkIfShouldBeLit(world, x, y, z, false);
             }
         }
         ticks++;

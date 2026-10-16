@@ -144,6 +144,7 @@ public class DropperBlockEntity extends BlockEntity implements Inventory {
         }
     }
 
+    @Override
     public void readNbt(NbtCompound nbtCompound) {
         super.readNbt(nbtCompound);
         NbtList nbtList = nbtCompound.getList("Items");
@@ -158,6 +159,7 @@ public class DropperBlockEntity extends BlockEntity implements Inventory {
         dropDone = nbtCompound.getBoolean("DropDone");
     }
 
+    @Override
     public void writeNbt(NbtCompound nbtCompound) {
         super.writeNbt(nbtCompound);
         NbtList nbtList = new NbtList();

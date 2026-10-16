@@ -4,18 +4,16 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.api.EnvironmentInterface;
 import net.kozibrodka.wolves.events.BlockListener;
+import net.kozibrodka.wolves.events.ConfigListener;
 import net.kozibrodka.wolves.events.TextureListener;
-import net.kozibrodka.wolves.utils.CustomBlockRendering;
+import net.kozibrodka.wolves.utils.ITorchBox;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.Block;
+import net.minecraft.block.TorchBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.block.BlockRenderManager;
-import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.stat.Stats;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.BlockView;
@@ -33,7 +31,6 @@ import net.modificationstation.stationapi.api.world.BlockStateView;
 import java.util.Random;
 
 @EnvironmentInterface(value = EnvType.CLIENT, itf = BlockWithWorldRenderer.class)
-//@EnvironmentInterface(value = EnvType.CLIENT, itf = BlockWithInventoryRenderer.class)
 public class BeamOfLightBlock extends TemplateBlock implements BlockWithWorldRenderer {
     public BeamOfLightBlock(Identifier identifier) {
         super(identifier, Material.AIR);
@@ -95,17 +92,7 @@ public class BeamOfLightBlock extends TemplateBlock implements BlockWithWorldRen
 
     @Override
     public void afterBreak(World world, PlayerEntity playerEntity, int x, int y, int z, int meta) {
-        //todo
-        int var7 = Item.SNOWBALL.id;
-        float var8 = 0.7F;
-        double var9 = (double)(world.random.nextFloat() * var8) + (double)(1.0F - var8) * (double)0.5F;
-        double var11 = (double)(world.random.nextFloat() * var8) + (double)(1.0F - var8) * (double)0.5F;
-        double var13 = (double)(world.random.nextFloat() * var8) + (double)(1.0F - var8) * (double)0.5F;
-        ItemEntity var15 = new ItemEntity(world, (double)x + var9, (double)y + var11, (double)z + var13, new ItemStack(var7, 1, 0));
-        var15.pickupDelay = 10;
-        world.spawnEntity(var15);
-        world.setBlock(x, y, z, 0);
-        playerEntity.increaseStat(Stats.MINE_BLOCK[this.id], 1);
+        /// no-drop
     }
 
     @Override
@@ -199,8 +186,8 @@ public class BeamOfLightBlock extends TemplateBlock implements BlockWithWorldRen
 
     @Override
     public boolean renderWorld(BlockRenderManager tileRenderer, BlockView blockView, int x, int y, int z) {
-        if(dev_beam_render){
-            renderFullBeam(tileRenderer, blockView, x, y, z);
+        if(ConfigListener.wolvesGlass.small_tweaks.render_beam){
+            return renderFullBeam(tileRenderer, blockView, x, y, z);
         }
 
         BlockState blockState = ((BlockStateView)blockView).getBlockState(x,y,z);
@@ -212,20 +199,23 @@ public class BeamOfLightBlock extends TemplateBlock implements BlockWithWorldRen
         BlockPos reflPos = new BlockPos(x, y, z).add(geoDir.getVector());
         Block blockR0 = Block.BLOCKS[blockView.getBlockId(reflPos.x, reflPos.y, reflPos.z)];
         boolean flagF = blockR0.isFullCube();
+        boolean flagF2 = false;
 
-//        if(!flagF){
-//            /// dodatkowa logika odnośnie kolejnych bloków?
-//        }
+        if(!flagF){
+            blockR0.updateBoundingBox(blockView, reflPos.x, reflPos.y, reflPos.z);
+            if(blockR0 instanceof TorchBlock){
+                ((ITorchBox)blockR0).updateBoundingBoxForBeamRender(blockView, reflPos.x, reflPos.y, reflPos.z);
+            }
+            BlockPos reflPos2 = reflPos.add(geoDir.getVector());
+            Block blockR2 = Block.BLOCKS[blockView.getBlockId(reflPos2.x, reflPos2.y, reflPos2.z)];
+            if(blockR2.isFullCube()){flagF2=true;}
+            /// dodatkowa logika odnośnie kolejnych bloków?
+        }
 
         int texID = TextureListener.beam_25;
         Tessellator tessellator = Tessellator.INSTANCE;
         tessellator.color(1.0F, 1.0F, 1.0F); ///jasność zawsze full
 
-//        /// DEBUG
-//        flagF = true;
-
-        //TODO błąd związany z boundingBox i metatada, dany konkretny BlockID aktualnie przyjmuje tylko JEDEN kształt - ostatnio zaktualizowany.
-        //TODO na ten moment wyłączam redner dla nieFull bloków.
 
         // PODŁOGA
         if(geoDir == Direction.DOWN) {
@@ -233,8 +223,26 @@ public class BeamOfLightBlock extends TemplateBlock implements BlockWithWorldRen
                 this.setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 0.001F, 1.0F);
                 tileRenderer.renderTopFace(this, x, y , z, texID);
             }else{
-//                this.setBoundingBox((float) blockR0.minX, 0.0F, (float) blockR0.minZ, (float) blockR0.maxX, 0.001F, (float) blockR0.maxZ);
-//                tileRenderer.renderTopFace(this, x, y - (1 - blockR0.maxY), z, texID);
+                this.setBoundingBox((float) blockR0.minX, 0.0F, (float) blockR0.minZ, (float) blockR0.maxX, 0.001F, (float) blockR0.maxZ);
+                tileRenderer.renderTopFace(this, x, y - (1 - blockR0.maxY), z, texID);
+                if(flagF2){
+                    if(blockR0.minX > 0.0D){
+                        this.setBoundingBox(0.0F, 0.0F, (float) blockR0.minZ, (float) blockR0.minX, 0.001F, (float) blockR0.maxZ);
+                        tileRenderer.renderTopFace(this, x, y - 1.0D, z, texID);
+                    }
+                    if(blockR0.maxX < 1.0D){
+                        this.setBoundingBox((float) blockR0.maxX, 0.0F, (float) blockR0.minZ, 1.0F, 0.001F, (float) blockR0.maxZ);
+                        tileRenderer.renderTopFace(this, x, y - 1.0D, z, texID);
+                    }
+                    if(blockR0.minZ > 0.0D){
+                        this.setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 0.001F, (float) blockR0.minZ);
+                        tileRenderer.renderTopFace(this, x, y - 1.0D, z, texID);
+                    }
+                    if(blockR0.maxZ < 1.0D){
+                        this.setBoundingBox(0.0F, 0.0F,(float)  blockR0.maxZ, 1.0F, 0.001F, 1.0F);
+                        tileRenderer.renderTopFace(this, x, y - 1.0D, z, texID);
+                    }
+                }
             }
         } else
         // SUFIT
@@ -243,19 +251,56 @@ public class BeamOfLightBlock extends TemplateBlock implements BlockWithWorldRen
                 this.setBoundingBox(0.0F, 0.999F, 0.0F, 1.0F, 1.0F, 1.0F);
                 tileRenderer.renderBottomFace(this, x, y, z, texID);
             }else{
-//                this.setBoundingBox((float) blockR0.minX, 0.999F, (float) blockR0.minZ, (float) blockR0.maxX, 1.0F, (float) blockR0.maxZ);
-//                tileRenderer.renderBottomFace(this, x, y + blockR0.minY, z, texID);
+                this.setBoundingBox((float) blockR0.minX, 0.999F, (float) blockR0.minZ, (float) blockR0.maxX, 1.0F, (float) blockR0.maxZ);
+                tileRenderer.renderBottomFace(this, x, y + blockR0.minY, z, texID);
+                if(flagF2){
+                    if(blockR0.minX > 0.0D){
+                        this.setBoundingBox(0.0F, 0.999F, (float) blockR0.minZ, (float) blockR0.minX, 1.0F, (float) blockR0.maxZ);
+                        tileRenderer.renderBottomFace(this, x, y + 1.0D, z, texID);
+                    }
+                    if(blockR0.maxX < 1.0D){
+                        this.setBoundingBox((float) blockR0.maxX, 0.999F, (float) blockR0.minZ, 1.0F, 1.0F, (float) blockR0.maxZ);
+                        tileRenderer.renderBottomFace(this, x, y + 1.0D, z, texID);
+                    }
+                    if(blockR0.minZ > 0.0D){
+                        this.setBoundingBox(0.0F, 0.999F, 0.0F, 1.0F, 1.0F, (float) blockR0.minZ);
+                        tileRenderer.renderBottomFace(this, x, y + 1.0D, z, texID);
+                    }
+                    if(blockR0.maxZ < 1.0D){
+                        this.setBoundingBox(0.0F, 0.999F,(float)  blockR0.maxZ, 1.0F, 1.0F, 1.0F);
+                        tileRenderer.renderBottomFace(this, x, y + 1.0D, z, texID);
+                    }
+                }
             }
         } else
 
         // EAST
         if(geoDir == Direction.EAST) {
-            if(flagF) {
+            if(flagF) { /// Full Block Render
                 this.setBoundingBox(0.999F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
                 tileRenderer.renderNorthFace(this, x, y, z, texID);
-            }else{
-//                this.setBoundingBox(0.999F, (float) blockR0.minY, (float) blockR0.minZ, 1.0F, (float) blockR0.maxY, (float) blockR0.maxZ);
-//                tileRenderer.renderNorthFace(this, x + blockR0.minX, y, z, texID);
+            }else{ /// Non - Full Block Render
+                this.setBoundingBox(0.999F, (float) blockR0.minY, (float) blockR0.minZ, 1.0F, (float) blockR0.maxY, (float) blockR0.maxZ);
+                tileRenderer.renderNorthFace(this, x + blockR0.minX, y, z, texID);
+                if(flagF2){ /// Block Behind Render
+                    /// todo można ten render puścić nawet na niepełnym bloku, dodając ograniczenia boxa BlockR2. Math.min()  Math.max() wiele
+                    if(blockR0.minY > 0.0D){
+                        this.setBoundingBox(0.999F, 0.0F, (float) blockR0.minZ, 1.0F, (float) blockR0.minY, (float) blockR0.maxZ);
+                        tileRenderer.renderNorthFace(this, x + 1.0D, y, z, texID);
+                    }
+                    if(blockR0.maxY < 1.0D){
+                        this.setBoundingBox(0.999F, (float) blockR0.maxY, (float) blockR0.minZ, 1.0F, 1.0F, (float) blockR0.maxZ);
+                        tileRenderer.renderNorthFace(this, x + 1.0D, y, z, texID);
+                    }
+                    if(blockR0.minZ > 0.0D){
+                        this.setBoundingBox(0.999F, 0.0F, 0.0F, 1.0F, 1.0F, (float) blockR0.minZ);
+                        tileRenderer.renderNorthFace(this, x + 1.0D, y, z, texID);
+                    }
+                    if(blockR0.maxZ < 1.0D){
+                        this.setBoundingBox(0.999F, 0.0F, (float) blockR0.maxZ, 1.0F, 1.0F, 1.0F);
+                        tileRenderer.renderNorthFace(this, x + 1.0D, y, z, texID);
+                    }
+                }
             }
         } else
 
@@ -265,8 +310,26 @@ public class BeamOfLightBlock extends TemplateBlock implements BlockWithWorldRen
                 this.setBoundingBox(0.0F, 0.0F, 0.0F, 0.001F, 1.0F, 1.0F);
                 tileRenderer.renderSouthFace(this, x, y, z, texID);
             }else{
-//                this.setBoundingBox(0.0F, (float) blockR0.minY, (float) blockR0.minZ, 0.001F, (float) blockR0.maxY, (float) blockR0.maxZ);
-//                tileRenderer.renderSouthFace(this, x - (1 - blockR0.maxX), y, z, texID);
+                this.setBoundingBox(0.0F, (float) blockR0.minY, (float) blockR0.minZ, 0.001F, (float) blockR0.maxY, (float) blockR0.maxZ);
+                tileRenderer.renderSouthFace(this, x - (1 - blockR0.maxX), y, z, texID);
+                if(flagF2){
+                    if(blockR0.minY > 0.0D){
+                        this.setBoundingBox(0.0F, 0.0F, (float) blockR0.minZ, 0.001F, (float) blockR0.minY, (float) blockR0.maxZ);
+                        tileRenderer.renderSouthFace(this, x - 0.999D, y, z, texID);
+                    }
+                    if(blockR0.maxY < 1.0D){
+                        this.setBoundingBox(0.0F, (float) blockR0.maxY, (float) blockR0.minZ, 0.001F, 1.0F, (float) blockR0.maxZ);
+                        tileRenderer.renderSouthFace(this, x - 0.999D, y, z, texID);
+                    }
+                    if(blockR0.minZ > 0.0D){
+                        this.setBoundingBox(0.0F, 0.0F, 0.0F, 0.001F, 1.0F, (float) blockR0.minZ);
+                        tileRenderer.renderSouthFace(this, x - 0.999D, y, z, texID);
+                    }
+                    if(blockR0.maxZ < 1.0D){
+                        this.setBoundingBox(0.0F, 0.0F, (float) blockR0.maxZ, 0.001F, 1.0F, 1.0F);
+                        tileRenderer.renderSouthFace(this, x - 0.999D, y, z, texID);
+                    }
+                }
             }
         } else
 
@@ -276,8 +339,26 @@ public class BeamOfLightBlock extends TemplateBlock implements BlockWithWorldRen
                 this.setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 0.001F);
                 tileRenderer.renderWestFace(this, x, y, z, texID);
             }else{
-//                this.setBoundingBox((float) blockR0.minX, (float) blockR0.minY, 0.0F, (float) blockR0.maxX, (float) blockR0.maxY, 0.001F);
-//                tileRenderer.renderEastFace(this, x, y, z - (1 - blockR0.maxZ), texID);
+                this.setBoundingBox((float) blockR0.minX, (float) blockR0.minY, 0.0F, (float) blockR0.maxX, (float) blockR0.maxY, 0.001F);
+                tileRenderer.renderWestFace(this, x, y, z - (1 - blockR0.maxZ), texID);
+                if(flagF2){
+                    if(blockR0.minY > 0.0D){
+                        this.setBoundingBox((float) blockR0.minX, 0.0F, 0.0F, (float) blockR0.maxX, (float) blockR0.minY, 0.001F);
+                        tileRenderer.renderWestFace(this, x, y, z - 0.999D, texID);
+                    }
+                    if(blockR0.maxY < 1.0D){
+                        this.setBoundingBox((float) blockR0.minX, (float) blockR0.maxY, 0.0F, (float) blockR0.maxX, 1.0F, 0.001F);
+                        tileRenderer.renderWestFace(this, x, y, z - 0.999D, texID);
+                    }
+                    if(blockR0.minX > 0.0D){
+                        this.setBoundingBox(0.0F, 0.0F, 0.0F, (float) blockR0.minX, 1.0F, 0.001F);
+                        tileRenderer.renderWestFace(this, x, y, z - 0.999D, texID);
+                    }
+                    if(blockR0.maxX < 1.0D){
+                        this.setBoundingBox((float) blockR0.maxX, 0.0F, 0.0F, 1.0F, 1.0F, 0.001F);
+                        tileRenderer.renderWestFace(this, x, y, z - 0.999D, texID);
+                    }
+                }
             }
         } else
 
@@ -287,22 +368,30 @@ public class BeamOfLightBlock extends TemplateBlock implements BlockWithWorldRen
                 this.setBoundingBox(0.0F, 0.0F, 0.999F, 1.0F, 1.0F, 1.0F);
                 tileRenderer.renderEastFace(this, x, y, z, texID);
             }else{
-//                this.setBoundingBox((float) blockR0.minX, (float) blockR0.minY, 0.999F, (float) blockR0.maxX, (float) blockR0.maxY, 1.0F);
-//                tileRenderer.renderEastFace(this, x, y, z + blockR0.minZ, texID);
+                this.setBoundingBox((float) blockR0.minX, (float) blockR0.minY, 0.999F, (float) blockR0.maxX, (float) blockR0.maxY, 1.0F);
+                tileRenderer.renderEastFace(this, x, y, z + blockR0.minZ, texID);
+                if(flagF2){
+                    if(blockR0.minY > 0.0D){
+                        this.setBoundingBox((float) blockR0.minX, 0.0F, 0.999F, (float) blockR0.maxX, (float) blockR0.minY, 1.0F);
+                        tileRenderer.renderEastFace(this, x, y, z + 1.0D, texID);
+                    }
+                    if(blockR0.maxY < 1.0D){
+                        this.setBoundingBox((float) blockR0.minX, (float) blockR0.maxY, 0.999F, (float) blockR0.maxX, 1.0F, 1.0F);
+                        tileRenderer.renderEastFace(this, x, y, z + 1.0D, texID);
+                    }
+                    if(blockR0.minX > 0.0D){
+                        this.setBoundingBox(0.0F, 0.0F, 0.999F, (float) blockR0.minX, 1.0F, 1.0F);
+                        tileRenderer.renderEastFace(this, x, y, z + 1.0D, texID);
+                    }
+                    if(blockR0.maxX < 1.0D){
+                        this.setBoundingBox((float) blockR0.maxX, 0.0F, 0.999F, 1.0F, 1.0F, 1.0F);
+                        tileRenderer.renderEastFace(this, x, y, z + 1.0D, texID);
+                    }
+                }
             }
         }
-
-        // Resetowanie głównego Boxa kolizji/wyboru dla bloku
-//        setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         return true;
     }
-
-
-//    @Override
-//    public void renderInventory(BlockRenderManager tileRenderer, int i) {
-//        setBoundingBox(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-//        CustomBlockRendering.RenderInvBlockWithTexture(tileRenderer, this, -0.5F, -0.5F, -0.5F, TextureListener.beam_25);
-//    }
 
     @Override
     public void setupRenderBoundingBox() { /// Iventory Render Box

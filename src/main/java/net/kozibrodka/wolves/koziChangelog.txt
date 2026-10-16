@@ -26,6 +26,8 @@ done:
 - saw's blade has animated texture when powered
 - using vanilla intID texture instead of duplicates of it in resources
 - added Lens Block (from newer btw)
+- fixed HandCrank item rendering
+- added regular (non-difficultSoulforgedSteelRecipes) dropper recipe
 
 
 

@@ -6,6 +6,7 @@ import net.kozibrodka.wolves.block.entity.LensBlockEntity;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.utils.BlockPosition;
+import net.kozibrodka.wolves.utils.RotatableBlock;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
@@ -26,15 +27,14 @@ import java.util.Random;
 import static net.kozibrodka.wolves.block.BeamOfLightBlock.MAX_DISTANCE;
 
 @EnvironmentInterface(value = EnvType.CLIENT, itf = BlockWithWorldRenderer.class)
-public class LensBlock extends TemplateBlockWithEntity implements BlockWithWorldRenderer {
+public class LensBlock extends TemplateBlockWithEntity implements BlockWithWorldRenderer, RotatableBlock {
 
     public LensBlock(Identifier identifier) {
         super(identifier, Material.METAL);
         this.setHardness(3.5F);
         this.setSoundGroup(STONE_SOUND_GROUP);
-        this.setTickRandomly(false); /// OG=true
+        this.setTickRandomly(false);
     }
-    //TODO dac rotacje turntable interface.
 
     @Override
     public int getTickRate() {
@@ -83,11 +83,11 @@ public class LensBlock extends TemplateBlockWithEntity implements BlockWithWorld
 
     @Override
     public void onTick(World world, int i, int j, int k, Random random) {
-        checkIfShouldBeLit(world, i, j, k);
+        checkIfShouldBeLit(world, i, j, k, false);
 //        world.scheduleBlockUpdate(i, j, k, this.id, this.getTickRate()); /// niepotrzebna metoda przy logice z TileEntity, służy do zapętlenia tickowania od pierwszego randomTick lub neighbor. "alternatywa" dla braku TileEnt - wtedy można przesuwać pistonem!
     }
 
-    public void checkIfShouldBeLit(World world, int i, int j, int k){
+    public void checkIfShouldBeLit(World world, int i, int j, int k, boolean forceUpdate){
         int iFacing = this.GetMetaFacing(world, i, j, k);
         BlockPosition lightSourcePos = new BlockPosition(i, j, k);
         BlockPosition dirPos = new BlockPosition(i, j, k);
@@ -100,7 +100,7 @@ public class LensBlock extends TemplateBlockWithEntity implements BlockWithWorld
         boolean bCanBeOn2 = world.getBlockId(dirPos.x, dirPos.y, dirPos.z) == 0 || world.getBlockId(dirPos.x, dirPos.y, dirPos.z) == BlockListener.beamLight.id;
 
 //        System.out.println("ŚWIATŁO: " + iSourceLightValue1 + "   " + Block.BLOCKS[world.getBlockId(lightSourcePos.x, lightSourcePos.y, lightSourcePos.z)].getTranslatedName());
-        this.SetLit(world, i, j, k, bShouldBeOn1 && bCanBeOn2, false);
+        this.SetLit(world, i, j, k, bShouldBeOn1 && bCanBeOn2, forceUpdate);
     }
 
 
@@ -175,7 +175,7 @@ public class LensBlock extends TemplateBlockWithEntity implements BlockWithWorld
     private void RemoveBeamMeta(World world, int i, int j, int k, int iFacing) {
         BlockPosition pos = new BlockPosition(i, j, k);
         pos.addFacingAsOffset(iFacing);
-        if(world.getBlockId(pos.x, pos.y, pos.z) == BlockListener.beamLight.id){ //todo sprawdź direction dodatkowo?
+        if(world.getBlockId(pos.x, pos.y, pos.z) == BlockListener.beamLight.id){ //todo sprawdź direction dodatkowo? - chyba nie
             world.setBlock(pos.x, pos.y, pos.z, 0);
         }
     }
@@ -292,6 +292,41 @@ public class LensBlock extends TemplateBlockWithEntity implements BlockWithWorld
         }
 
         return flag;
+    }
+
+    /// ROTATION
+
+    @Override
+    public int getFacing(BlockView iblockaccess, int i, int j, int k) {
+         return GetMetaFacing(iblockaccess, i, j, k);
+    }
+
+    @Override
+    public void setFacing(World world, int i, int j, int k, int l) {
+        SetFacing(world, i, j, k, l);
+    }
+
+    @Override
+    public boolean canRotate(BlockView iblockaccess, int i, int j, int k) {
+        return true;
+    }
+
+    @Override
+    public boolean canTransmitRotation(BlockView iblockaccess, int i, int j, int k) {
+        int iFacing = GetMetaFacing(iblockaccess, i, j, k);
+        return iFacing != 0 && iFacing != 1;
+    }
+
+    @Override
+    public void rotate(World world, int i, int j, int k, boolean flag) {
+        int iFacing = getFacing(world, i, j, k);
+        int iNewFacing = UnsortedUtils.RotateFacingAroundJ(iFacing, flag);
+        if (iNewFacing != iFacing) {
+            setFacing(world, i, j, k, iNewFacing);
+            world.setBlocksDirty(i, j, k, i, j, k);
+            world.blockUpdate(i, j, k, i);
+            checkIfShouldBeLit(world, i, j, k, true);
+        }
     }
 
 

@@ -4,7 +4,7 @@ import net.glasslauncher.mods.gcapi3.api.ConfigEntry;
 
 public class ContentConfig {
 
-    @ConfigEntry(name = "Vertical slabs instead of OmniSlab (game restart required!)", description = "Better designed vertical slab replaces cursed omnislabs", requiresRestart = true)
+    @ConfigEntry(name = "Vertical slabs instead of OmniSlab", description = "Better designed vertical slab replaces cursed omnislabs", requiresRestart = true)
     public Boolean verticalSlabs = true;
 
     @ConfigEntry(name = "Full Cosmetic Blocks", description = "block of wicker, grates, steel", requiresRestart = true)

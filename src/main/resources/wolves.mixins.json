@@ -27,6 +27,7 @@
     "ServerPlayerEntityMixin"
   ],
   "client": [
+    "BlockTorchMixin"
   ],
   "injectors": {
     "defaultRequire": 1

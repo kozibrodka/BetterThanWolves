@@ -50,6 +50,7 @@ public class DropperBlock extends TemplateBlockWithEntity implements MechanicalD
         return false;
     }
 
+    @Override
     public boolean onUse(World world, int x, int y, int z, PlayerEntity playerEntity) {
         DropperBlockEntity dropperBlockEntity = (DropperBlockEntity) world.getBlockEntity(x, y, z);
         GuiHelper.openGUI(playerEntity, Identifier.of(BlockEntityListener.NAMESPACE, "openDropper"), dropperBlockEntity, new DropperScreenHandler(playerEntity.inventory, dropperBlockEntity));
@@ -63,6 +64,7 @@ public class DropperBlock extends TemplateBlockWithEntity implements MechanicalD
         return world.getBlockMeta(x, y, z) > 0;
     }
 
+    @Override
     public void onBreak(World world, int x, int y, int z) {
         InventoryHandler.ejectInventoryContents(world, x, y, z, (Inventory) world.getBlockEntity(x, y, z));
         super.onBreak(world, x, y, z);
