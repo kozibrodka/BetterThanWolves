@@ -4,7 +4,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.sound.BlockSoundGroup;
 import net.modificationstation.stationapi.api.template.block.TemplateBlock;
 import net.modificationstation.stationapi.api.util.Identifier;
-
+//todo rename
 public class LazyBlockTemplate extends TemplateBlock {
 
     int topTexture;

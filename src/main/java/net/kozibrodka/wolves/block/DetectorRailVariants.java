@@ -15,33 +15,55 @@ public class DetectorRailVariants extends TemplateDetectorRailBlock implements B
         /* implements ITextureProvider */ //MAYBE FOR FAKE LATER
 {
 
-    public DetectorRailVariants(Identifier iid, int iTextureID) {
+    public DetectorRailVariants(Identifier iid, int iTextureID, boolean isWooden) {
         super(iid, iTextureID);
+        this.wooden = isWooden;
         setHardness(0.7F);
         setSoundGroup(METAL_SOUND_GROUP);
     }
 
-    public int getTexture(int i, int j) {
-        if (this.id == BlockListener.detectorRailWood.id) {
-            return TextureListener.rail_wood;
+    protected boolean wooden;
+
+    @Override
+    public int getTexture(int i, int meta) {
+        if (wooden) {
+            if((meta & 8) == 0){
+                return TextureListener.rail_wood;
+            } else{
+                return TextureListener.rail_wood_on;
+            }
         } else {
-            return TextureListener.rail_obsidian;
+            if((meta & 8) == 0){
+                return TextureListener.rail_obsidian;
+            } else{
+                return TextureListener.rail_obsidian_on;
+            }
         }
     }
 
+    @Override
     public int getTexture(int i) {
-        if (this.id == BlockListener.detectorRailWood.id) {
+        if (wooden) {
             return TextureListener.rail_wood;
         } else {
             return TextureListener.rail_obsidian;
         }
     }
 
-    public int getTextureId(BlockView iblockaccess, int i, int j, int k, int l) {
-        if (this.id == BlockListener.detectorRailWood.id) {
-            return TextureListener.rail_wood;
+    @Override
+    public int getTextureId(BlockView iblockaccess, int i, int j, int k, int meta) {
+        if (wooden) {
+            if((meta & 8) == 0){
+                return TextureListener.rail_wood;
+            } else{
+                return TextureListener.rail_wood_on;
+            }
         } else {
-            return TextureListener.rail_obsidian;
+            if((meta & 8) == 0){
+                return TextureListener.rail_obsidian;
+            } else{
+                return TextureListener.rail_obsidian_on;
+            }
         }
     }
 

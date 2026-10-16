@@ -29,6 +29,7 @@ done:
 - fixed HandCrank item rendering
 - added regular (non-difficultSoulforgedSteelRecipes) dropper recipe
 - block dispenser can dye sheep with dye items
+- textures for activated Detector Rail variants and Axle_end
 
 
 

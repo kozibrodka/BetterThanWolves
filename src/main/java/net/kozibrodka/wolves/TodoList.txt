@@ -24,7 +24,7 @@ Game mechanics:
 - (DONE) anvil too high on spawn + lamp server isPoweringSide dimension
 - (DONE) Fix Hibachi + Lamps behabiour.
 - (DONE) MinecartSteel spawn on server, minecart speed, animation?
-- Pressure plate sound multiplayer (all plates including vanilla are soundless)
+- Pressure plate sound multiplayer (all plates including vanilla are soundless) - kozi release Tweaks
 - (DONE) WaterWheel and windmill dmg by hand on server + animation
 - (DONE) Cake screaming, missing from oryginal
 - Anvil Block new SoundGroup instead of world.playsound on Placed
@@ -41,8 +41,12 @@ Possbile extra features (oryginal BTW)"" //TODO
 - (DONE) Buddy Block
 - (DONE) Mattock tool
 - (DONE) Lens Block, soczewka z lampą - dodać turnTable behaviour.
-- Zobacz jak działa blockDispenser odnośnie Farmingu (sadzonki, bone-meal, nasiona)
+- (DONE) Zobacz jak działa blockDispenser odnośnie Farmingu (sadzonki, bone-meal, nasiona)
 - (DONE) Użycie tekstur Vanilla tam gdzie 1:1 mamy odpowiednik w resources - aplikacja texturepacków lepsza
+- Block Shearer with steel shears inside.
+- Pulley More Slots (4x) + Steel-Rope = Faster movement?
+- (DONE) Rail Textures of ON
+- (DONE) Axle END texture
 
 Configurable content (Move some content to separate add-on):
 - Creeper oyster shearing

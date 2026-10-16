@@ -2,8 +2,8 @@
   "credit": "Made with Blockbench",
   "parent": "block/block",
   "textures": {
-    "0": "wolves:block/fcBlockHopper_ladder",
-    "particle": "wolves:block/fcBlockHopper_ladder"
+    "0": "block/ladder",
+    "particle": "block/ladder"
   },
   "elements": [
     {

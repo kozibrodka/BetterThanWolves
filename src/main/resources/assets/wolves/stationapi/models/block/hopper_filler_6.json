@@ -2,8 +2,8 @@
   "credit": "Made with Blockbench",
   "parent": "block/block",
   "textures": {
-    "0": "wolves:block/fcBlockHopper_soulsand",
-    "particle": "wolves:block/fcBlockHopper_soulsand"
+    "0": "block/soul_sand",
+    "particle": "block/soul_sand"
   },
   "elements": [
     {

@@ -2,8 +2,8 @@
   "credit": "Made with Blockbench",
   "parent": "block/block",
   "textures": {
-    "0": "wolves:block/fcBlockHopper_trapdoor",
-    "particle": "wolves:block/fcBlockHopper_trapdoor"
+    "0": "block/oak_trapdoor",
+    "particle": "block/oak_trapdoor"
   },
   "elements": [
     {

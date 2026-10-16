@@ -107,8 +107,8 @@ public class BlockListener {
         corner = new CornerBlock(NAMESPACE.id("corner")).setTranslationKey(NAMESPACE, "corner");
         blockDispenser = new BlockDispenserBlock(NAMESPACE.id("blockDispenser")).setTranslationKey(NAMESPACE, "block_dispenser").setHardness(3.5F).setSoundGroup(Block.DEFAULT_SOUND_GROUP);
         cauldron = new CauldronBlock(NAMESPACE.id("cauldron")).setTranslationKey(NAMESPACE, "cauldron").setHardness(3.5F).setResistance(10F).setSoundGroup(Block.METAL_SOUND_GROUP);
-        detectorRailWood = new DetectorRailVariants(NAMESPACE.id("detectorRailWood"), 22).setTranslationKey(NAMESPACE, "detector_rail_wood");
-        detectorRailObsidian = new DetectorRailVariants(NAMESPACE.id("detectorRailObsidian"), 23).setTranslationKey(NAMESPACE, "detector_rail_obsidian");
+        detectorRailWood = new DetectorRailVariants(NAMESPACE.id("detectorRailWood"), 22, true).setTranslationKey(NAMESPACE, "detector_rail_wood");
+        detectorRailObsidian = new DetectorRailVariants(NAMESPACE.id("detectorRailObsidian"), 23, false).setTranslationKey(NAMESPACE, "detector_rail_obsidian");
         companionCube = new CompanionCubeBlock(NAMESPACE.id("companionCube")).setTranslationKey(NAMESPACE, "companion_cube").setHardness(0.4F).setSoundGroup(Block.WOOL_SOUND_GROUP);
         detectorBlock = new DetectorBlock(NAMESPACE.id("detector_block"), Material.PISTON_BREAKABLE).setTranslationKey(NAMESPACE, "detector_block");
         buddyBlock = new BuddyBlock(NAMESPACE.id("buddyBlock")).setTranslationKey(NAMESPACE, "buddyBlock");

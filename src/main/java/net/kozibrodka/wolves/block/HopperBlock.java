@@ -89,7 +89,7 @@ public class HopperBlock extends TemplateBlockWithEntity
         if (iSide == 0) {
             return TextureListener.hopper_bottom;
         }
-        return iSide != 1 ? TextureListener.hopper_side : TextureListener.hopper_top;
+        return iSide != 1 ? 4 : TextureListener.hopper_top; //TextureListener.hopper_side
     }
 
     @Override
