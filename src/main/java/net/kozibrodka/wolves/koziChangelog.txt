@@ -28,6 +28,7 @@ done:
 - added Lens Block (from newer btw)
 - fixed HandCrank item rendering
 - added regular (non-difficultSoulforgedSteelRecipes) dropper recipe
+- block dispenser can dye sheep with dye items
 
 
 

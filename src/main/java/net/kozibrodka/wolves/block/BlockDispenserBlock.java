@@ -1,8 +1,5 @@
 package net.kozibrodka.wolves.block;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.fabricmc.loader.api.FabricLoader;
 import net.kozibrodka.wolves.block.entity.BlockDispenserBlockEntity;
 import net.kozibrodka.wolves.container.BlockDispenserScreenHandler;
 import net.kozibrodka.wolves.entity.BroadheadArrowEntity;
@@ -11,37 +8,30 @@ import net.kozibrodka.wolves.events.BlockEntityListener;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.events.TextureListener;
-import net.kozibrodka.wolves.network.ParticlePacket;
-import net.kozibrodka.wolves.network.RenderPacket;
-import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.utils.*;
 import net.minecraft.block.Block;
+import net.minecraft.block.WoolBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.DispenserBlockEntity;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.ChickenEntity;
+import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.entity.projectile.thrown.EggEntity;
 import net.minecraft.entity.projectile.thrown.SnowballEntity;
 import net.minecraft.entity.vehicle.BoatEntity;
 import net.minecraft.entity.vehicle.MinecartEntity;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.SeedsItem;
+import net.minecraft.item.*;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.gui.screen.container.GuiHelper;
-import net.modificationstation.stationapi.api.network.packet.PacketHelper;
 import net.modificationstation.stationapi.api.template.block.TemplateBlockWithEntity;
 import net.modificationstation.stationapi.api.util.Identifier;
 
@@ -244,6 +234,24 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity implements Rota
         } else {
             return false;
         }
+    }
+
+    private boolean checkForSheepToColor(World world, int metaColor, int targeti, int targetj, int targetk){
+        List<SheepEntity> list = null;
+        list = world.collectEntitiesByClass(SheepEntity.class, Box.createCached(targeti, targetj, targetk, targeti + 1, targetj + 1, targetk + 1));
+        if (list != null && !list.isEmpty()) {
+            for (SheepEntity oSheep : list) {
+                if (oSheep.dead) {
+                    continue;
+                }
+                    int var4 = WoolBlock.getBlockMeta(metaColor);
+                    if (!oSheep.isSheared() && oSheep.getColor() != var4) {
+                        oSheep.setColor(var4);
+                        return true;
+                    }
+            }
+        }
+        return false;
     }
 
     private boolean ConsumeEntityAtTargetLoc(World world, int i, int j, int k, int targeti, int targetj, int targetk) {
@@ -486,6 +494,12 @@ public class BlockDispenserBlock extends TemplateBlockWithEntity implements Rota
                         InventoryHandler.addSingleItemToInventory(tileEntityBlockDispenser, dispensedItemStack.itemId, 0);
                     } else {
                         world.playNoteBlockActionAt(i,j,k, 0, 4); /// Wheat
+                        bSuccessfullyDispensed = true;
+                    }
+                } else if(dispensedItemStack.getItem() instanceof DyeItem){
+                    if (!checkForSheepToColor(world, dispensedItemStack.getDamage(), targetPos.x, targetPos.y, targetPos.z)){
+                        SpitOutItem(world, i, j, k, dispensedItemStack, random);
+                        world.playNoteBlockActionAt(i,j,k, 0, 1); /// Click 1
                         bSuccessfullyDispensed = true;
                     }
                 } else {
