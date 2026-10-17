@@ -284,6 +284,18 @@ public class RecipeListener {
             addAnvilRecipe(new ItemStack(ItemListener.refinedBattleAxe, 1), new Object[]{
                     "#####", "# X #", "  X  ", "  X  ", "  X  ", '#', ItemListener.steel, 'X', ItemListener.haft
             });
+            addAnvilRecipe(new ItemStack(ItemListener.refinedMattock, 1), new Object[]{
+                    "#####", "# X  ", "  X  ", "  X  ", "  X  ", '#', ItemListener.steel, 'X', ItemListener.haft
+            });
+            addAnvilRecipe(new ItemStack(ItemListener.refinedMattock, 1), new Object[]{
+                    "#####", "  X #", "  X  ", "  X  ", "  X  ", '#', ItemListener.steel, 'X', ItemListener.haft
+            });
+            addAnvilRecipe(new ItemStack(ItemListener.refinedAxe, 1), new Object[]{
+                    "###  ", "# X  ", "# X  ", "  X  ", "  X  ", '#', ItemListener.steel, 'X', ItemListener.haft
+            });
+            addAnvilRecipe(new ItemStack(ItemListener.refinedAxe, 1), new Object[]{
+                    "  ###", "  X #", "  X #", "  X  ", "  X  ", '#', ItemListener.steel, 'X', ItemListener.haft
+            });
             addAnvilRecipe(new ItemStack(ItemListener.refinedSword, 1), new Object[]{
                     "  #  ", "  #  ", "  #  ", " ### ", "  X  ", '#', ItemListener.steel, 'X', ItemListener.haft
             });
@@ -670,17 +682,19 @@ public class RecipeListener {
             addCrucibleRecipe(new ItemStack(ItemListener.steel, 18), new ItemStack[]{new ItemStack(ItemListener.helmetSteel, 1, -1)});
             addCrucibleRecipe(new ItemStack(ItemListener.steel, 12), new ItemStack[]{new ItemStack(ItemListener.bootsSteel, 1, -1)});
             addCrucibleRecipe(new ItemStack(ItemListener.steel, 5), new ItemStack[]{new ItemStack(ItemListener.refinedPickAxe, 1, -1)});
+            addCrucibleRecipe(new ItemStack(ItemListener.steel, 5), new ItemStack[]{new ItemStack(ItemListener.refinedAxe, 1, -1)});
             addCrucibleRecipe(new ItemStack(ItemListener.steel, 7), new ItemStack[]{new ItemStack(ItemListener.refinedBattleAxe, 1, -1)});
             addCrucibleRecipe(new ItemStack(ItemListener.steel, 6), new ItemStack[]{new ItemStack(ItemListener.refinedSword, 1, -1)});
+            addCrucibleRecipe(new ItemStack(ItemListener.steel, 6), new ItemStack[]{new ItemStack(ItemListener.refinedMattock, 1, -1)});
             addCrucibleRecipe(new ItemStack(ItemListener.steel, 3), new ItemStack[]{new ItemStack(ItemListener.refinedHoe, 1, -1)});
             addCrucibleRecipe(new ItemStack(ItemListener.steel, 6), new ItemStack[]{new ItemStack(ItemListener.refinedShovel, 1, -1)});
             addCrucibleRecipe(new ItemStack(ItemListener.steel, 3), new ItemStack[]{new ItemStack(ItemListener.armourPlateSteel)});
         } else {
             addCrucibleRecipe(new ItemStack(ItemListener.steel, 8), new ItemStack[]{new ItemStack(ItemListener.chestPlateSteel, 1, -1)});
-            addCrucibleRecipe(new ItemStack(ItemListener.steel, 7), new ItemStack[]{new ItemStack(BlockListener.anvil)});
             addCrucibleRecipe(new ItemStack(ItemListener.steel, 7), new ItemStack[]{new ItemStack(ItemListener.leggingsSteel, 1, -1)});
             addCrucibleRecipe(new ItemStack(ItemListener.steel, 6), new ItemStack[]{new ItemStack(ItemListener.helmetSteel, 1, -1)});
             addCrucibleRecipe(new ItemStack(ItemListener.steel, 5), new ItemStack[]{new ItemStack(ItemListener.refinedBattleAxe, 1, -1)});
+            addCrucibleRecipe(new ItemStack(ItemListener.steel, 4), new ItemStack[]{new ItemStack(ItemListener.refinedMattock, 1, -1)});
             addCrucibleRecipe(new ItemStack(ItemListener.steel, 3), new ItemStack[]{new ItemStack(ItemListener.refinedAxe, 1, -1)});
             addCrucibleRecipe(new ItemStack(ItemListener.steel, 4), new ItemStack[]{new ItemStack(ItemListener.bootsSteel, 1, -1)});
             addCrucibleRecipe(new ItemStack(ItemListener.steel, 3), new ItemStack[]{new ItemStack(ItemListener.refinedPickAxe, 1, -1)});
