@@ -18,11 +18,13 @@ public class HopperScreen extends HandledScreen {
         associatedTileEntityHopper = hopperBlockEntity;
     }
 
+    @Override
     protected void drawForeground() {
         textRenderer.draw("Hopper", 70, 6, 0x404040);
         textRenderer.draw("Inventory", 8, (backgroundHeight - 96) + 2, 0x404040);
     }
 
+    @Override
     protected void drawBackground(float f) {
         int i = minecraft.textureManager.getTextureId("/assets/wolves/stationapi/textures/gui/fchopper.png");
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

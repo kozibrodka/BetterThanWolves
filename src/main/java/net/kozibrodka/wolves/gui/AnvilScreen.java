@@ -17,18 +17,21 @@ public class AnvilScreen extends HandledScreen {
         backgroundHeight = 202;
     }
 
+    @Override
     public void removed() {
         super.removed();
         handler.onClosed(minecraft.player);
     }
 
+    @Override
     protected void drawForeground() {
         textRenderer.draw("Anvil", 29, 6, 0x404040);
         textRenderer.draw("Inventory", 8, (backgroundHeight - 96) + 2, 0x404040);
     }
 
+    @Override
     protected void drawBackground(float f) {
-        int i = minecraft.textureManager.getTextureId("/assets/wolves/stationapi/gui/inventory/anvil.png");
+        int i = minecraft.textureManager.getTextureId("/assets/wolves/stationapi/textures/gui/anvil.png");
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         minecraft.textureManager.bindTexture(i);
         int j = (width - backgroundWidth) / 2;
