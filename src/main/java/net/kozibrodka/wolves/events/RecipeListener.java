@@ -789,7 +789,7 @@ public class RecipeListener {
     }
 
     public static TagKey<Item> getObsidianTagKey() {
-        return TagKey.of(ItemRegistry.KEY, Identifier.of("c:glass_blocks"));
+        return TagKey.of(ItemRegistry.KEY, Identifier.of("c:obsidians"));
     }
 
     public static TagKey<Item> getStickTagKey() {

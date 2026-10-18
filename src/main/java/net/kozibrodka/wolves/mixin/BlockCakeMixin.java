@@ -133,7 +133,7 @@ public class BlockCakeMixin extends Block {
         {
             l |= 8;
         }
-        world.setBlockMeta(i, j, k, l);
+        world.setBlockMetaWithoutNotifyingNeighbors(i, j, k, l);
     }
 
     @Unique

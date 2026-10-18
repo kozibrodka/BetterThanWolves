@@ -65,7 +65,7 @@ public class BuddyBlock extends TemplateBlock implements RotatableBlock {
     }
 
     @Override
-    public void neighborUpdate(World world, int i, int j, int k, int iNeighborBlockID) {
+    public void neighborUpdate(World world, int i, int j, int k, int iNeighborBlockID) { /// Future Registry for ignored blocks or Tag?
         if(!this.IsRedstoneOn(world, i, j, k) && iNeighborBlockID != Block.REDSTONE_WIRE.id && iNeighborBlockID != Block.POWERED_REPEATER.id && iNeighborBlockID != Block.REPEATER.id && iNeighborBlockID != Block.LIT_REDSTONE_TORCH.id && iNeighborBlockID != Block.REDSTONE_TORCH.id && iNeighborBlockID != this.id) {
             world.scheduleBlockUpdate(i, j, k, this.id, 1);
         }

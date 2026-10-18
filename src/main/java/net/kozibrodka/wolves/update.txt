@@ -1,0 +1,15 @@
+
+
+- Added Buddy Block (backport)
+- Added Lens Block (backport/rewrite)
+- added Refined Axe and Refined Mattock, gave Battle Axes its actual oryginal benefit (more damage vs entities)
+- Saw's Blade has animated texture when powered
+- Rewrite server-sync logic for entities, better optymalization
+- Config Refactor
+- Block Dispenser interraction with steelMinecart
+- Block Dispenser can color sheep when spitting out dyes
+- added textures for activated Detector Rails and Axle end
+- added regular (non-Difficult Steel Recipe) dropper crafting recipe
+- fixed refined tools vs-entity damage values
+- fixed Block Cake missing oryginal functionality
+- fixed HandCrank item rendering
