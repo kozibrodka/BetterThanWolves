@@ -13,6 +13,9 @@ public class ModelPredicateProviderListener {
 
     @EventListener
     public void registerBlockModelPredicateProviders(BlockModelPredicateProviderRegistryEvent event){
-        event.registry.register(BlockListener.axleBlock, Identifier.of(NAMESPACE, "axle_state"), new AxleBlockModelPredicateProvider());
+        /// Redundant now
+        /// Using build-in "meta" predicate, because otherwise Axle being pushed by piston doesnt render correctly.
+        /// custom blockModelPredicate is not needed when its dependant on meta like that.
+//        event.registry.register(BlockListener.axleBlock, Identifier.of(NAMESPACE, "axle_state"), new AxleBlockModelPredicateProvider());
     }
 }

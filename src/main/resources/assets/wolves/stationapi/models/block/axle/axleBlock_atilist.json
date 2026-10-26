@@ -1,0 +1,31 @@
+{
+	"textures": {
+		"particle": "wolves:block/fcBlockAxle_side"
+	},
+	"overrides": [
+		{
+			"predicate": {"wolves:axle_state": 0},
+			"model": "wolves:block/axle/axleBlockYAxisOff"
+		},
+		{
+			"predicate": {"wolves:axle_state": 1},
+			"model": "wolves:block/axle/axleBlockZAxisOff"
+		},
+		{
+			"predicate": {"wolves:axle_state": 2},
+			"model": "wolves:block/axle/axleBlockXAxisOff"
+		},
+		{
+			"predicate": {"wolves:axle_state": 3},
+			"model": "wolves:block/axle/axleBlockYAxisOn"
+		},
+		{
+			"predicate": {"wolves:axle_state": 4},
+			"model": "wolves:block/axle/axleBlockZAxisOn"
+		},
+		{
+			"predicate": {"wolves:axle_state": 5},
+			"model": "wolves:block/axle/axleBlockXAxisOn"
+		}
+	]
+}
