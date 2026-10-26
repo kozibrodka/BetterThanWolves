@@ -10,7 +10,7 @@ import net.modificationstation.stationapi.api.util.Identifier;
 
 import java.util.Random;
 
-public class MachinePowerInputBlock extends LazyBlockTemplate implements MechanicalDevice {
+public class MachinePowerInputBlock extends TexturedBlockTemplate implements MechanicalDevice {
     public MachinePowerInputBlock(Identifier identifier, Material material, float hardness, BlockSoundGroup blockSounds) {
         super(identifier, material, hardness, blockSounds);
     }

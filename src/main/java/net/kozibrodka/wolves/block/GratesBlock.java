@@ -14,7 +14,7 @@ import net.modificationstation.stationapi.api.util.Identifier;
 
 @EnvironmentInterface(value = EnvType.CLIENT, itf = BlockWithWorldRenderer.class)
 @EnvironmentInterface(value = EnvType.CLIENT, itf = BlockWithInventoryRenderer.class)
-public class GratesBlock extends LazyBlockTemplate implements BlockWithWorldRenderer, BlockWithInventoryRenderer {
+public class GratesBlock extends TexturedBlockTemplate implements BlockWithWorldRenderer, BlockWithInventoryRenderer {
 
 
     public GratesBlock(Identifier identifier, Material material, float hardness, BlockSoundGroup blockSounds) {

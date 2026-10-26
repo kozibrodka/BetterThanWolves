@@ -47,6 +47,7 @@ Possbile extra features (oryginal BTW)"" //TODO
 - Pulley More Slots (4x) + Steel-Rope = Faster movement?
 - (DONE) Rail Textures of ON
 - (DONE) Axle END texture
+- Buff Steel Minecart jeszcze jakoś - żeby tą dużą prędkość utrzymywał może
 
 Configurable content (Move some content to separate add-on):
 - Creeper oyster shearing

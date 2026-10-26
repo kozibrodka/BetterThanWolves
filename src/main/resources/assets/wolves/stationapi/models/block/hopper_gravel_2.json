@@ -2,8 +2,8 @@
   "credit": "Made with Blockbench",
   "parent": "block/block",
   "textures": {
-    "0": "wolves:block/fcBlockFiller",
-    "particle": "wolves:block/fcBlockFiller"
+    "0": "block/gravel",
+    "particle": "block/gravel"
   },
   "elements": [
     {

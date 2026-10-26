@@ -1,6 +1,3 @@
-
-Ciasto i full gitówa
-
 done:
 - Content Config Refactor, if feature disabled, ami not bloated.
 - btw Dispenser interraction with steelMinecart
@@ -30,6 +27,19 @@ done:
 - added regular (non-difficultSoulforgedSteelRecipes) dropper recipe
 - block dispenser can dye sheep with dye items
 - textures for activated Detector Rail variants and Axle end
+----------------------------------------- after 3.0.0 ------------------
+- fixed Obsidian Pressure Plate crafting recipe
+- fixed BlockCake causing Buddy Block to spam output
+- fixed Hopper dropping wrong slab blockItem on explosion
+- fixed Hopper gravel texture
+
+
+
+
+
+TODO
+
+- Bellow handcrank interaction
 
 
 

@@ -62,13 +62,13 @@ public class BlockListener {
 
     // New blocks
     public static TemplateBlock blockOfWicker;
-    public static LazyBlockTemplate blockOfGrates;
-    public static LazyBlockTemplate blockOfSteel;
+    public static TexturedBlockTemplate blockOfGrates;
+    public static TexturedBlockTemplate blockOfSteel;
     public static Block dropper;
     public static ConveyorBlock conveyor;
     public static ConveyorExtenderBlock conveyorExtender;
     public static AutomaticAnvilBlock automaticAnvil;
-    public static LazyBlockTemplate anvilFrame;
+    public static TexturedBlockTemplate anvilFrame;
     public static MachinePowerInputBlock machinePowerInput;
     public static MachineBusBlock inputBus;
     public static MachineBusBlock outputBus;
@@ -85,7 +85,7 @@ public class BlockListener {
     public static Block beamLight;
 
     // Crossover content
-    public static LazyBlockTemplate converter;
+    public static TexturedBlockTemplate converter;
 
     @Entrypoint.Namespace
     public static Namespace NAMESPACE;
@@ -138,19 +138,19 @@ public class BlockListener {
         beamLight = new BeamOfLightBlock(NAMESPACE.id("beamLight")).setTranslationKey(NAMESPACE, "beamLight");
         vase = new VaseBlock(NAMESPACE.id("vase")).setTranslationKey(NAMESPACE, "vase");
         blockOfGrates = new GratesBlock(NAMESPACE.id("block_of_grates"), Material.WOOD, 1.5F, Block.WOOD_SOUND_GROUP);
-        blockOfSteel = new LazyBlockTemplate(NAMESPACE.id("block_of_steel"), Material.METAL, 2.5F, Block.METAL_SOUND_GROUP);
+        blockOfSteel = new TexturedBlockTemplate(NAMESPACE.id("block_of_steel"), Material.METAL, 2.5F, Block.METAL_SOUND_GROUP);
         dropper = new DropperBlock(NAMESPACE.id("dropper"), Material.PISTON_BREAKABLE).setHardness(2.5F).setSoundGroup(Block.METAL_SOUND_GROUP);
         conveyor = new ConveyorBlock(Identifier.of(NAMESPACE, "conveyor"), Material.WOOD, 1.5F, Block.WOOD_SOUND_GROUP);
         conveyorExtender= new ConveyorExtenderBlock(Identifier.of(NAMESPACE, "conveyor_extender"), Material.WOOD, 1.5F, Block.WOOD_SOUND_GROUP);
         automaticAnvil = new AutomaticAnvilBlock(Identifier.of(NAMESPACE, "automatic_anvil"), Material.METAL, 2.5F, Block.METAL_SOUND_GROUP);
-        anvilFrame = new LazyBlockTemplate(Identifier.of(NAMESPACE, "anvil_frame"), Material.METAL, 2.5F, Block.METAL_SOUND_GROUP);
+        anvilFrame = new TexturedBlockTemplate(Identifier.of(NAMESPACE, "anvil_frame"), Material.METAL, 2.5F, Block.METAL_SOUND_GROUP);
         machinePowerInput = new MachinePowerInputBlock(Identifier.of(NAMESPACE,  "machine_power_input"), Material.METAL, 2.5F, Block.METAL_SOUND_GROUP);
         inputBus = new MachineBusBlock(Identifier.of(NAMESPACE, "input_bus"), Material.METAL, 2.5F, Block.METAL_SOUND_GROUP);
         outputBus = new MachineBusBlock(Identifier.of(NAMESPACE, "output_bus"), Material.METAL, 2.5F, Block.METAL_SOUND_GROUP);
         if (isNewFrontierCraftPresent) {
             converter = NFCBlocks.getConverterBlock(NAMESPACE);
         } else { // Load a dummy version of the block to keep tool tags and other things intact
-            converter = new LazyBlockTemplate(Identifier.of(NAMESPACE, "converter"), Material.METAL, 1.5F, Block.METAL_SOUND_GROUP);
+            converter = new TexturedBlockTemplate(Identifier.of(NAMESPACE, "converter"), Material.METAL, 1.5F, Block.METAL_SOUND_GROUP);
         }
 
 

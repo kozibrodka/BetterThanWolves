@@ -13,7 +13,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.util.Identifier;
 
-public class ConveyorBlock extends LazyBlockTemplate implements MechanicalDevice, Conveyor {
+public class ConveyorBlock extends TexturedBlockTemplate implements MechanicalDevice, Conveyor {
     private static final double ACCELERATION = 1.1;
     private static final double MAXIMUM_VELOCITY = 1.5;
     private static final double DECELERATION = 0.75;

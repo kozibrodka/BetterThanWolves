@@ -37,6 +37,7 @@ public class SteelMinecartEntity extends MinecartEntity implements EntitySpawnDa
         this.setPosition(x, y + (double)this.standingEyeHeight, z);
     }
 
+    /// Szybsza wersja waganika niż iron. W piekle boost nie działa
 
     @Override
     @Environment(EnvType.CLIENT)
@@ -66,33 +67,31 @@ public class SteelMinecartEntity extends MinecartEntity implements EntitySpawnDa
         if (BetterThanWolves.isNewFrontierCraftPresent) {
             handleSteering();
         }
-
+        /// Hurt Animation
         if (this.damageWobbleTicks > 0) {
             --this.damageWobbleTicks;
         }
-
         if (this.damageWobbleStrength > 0) {
             --this.damageWobbleStrength;
         }
-
-        if (this.world.isRemote && this.clientInterpolationSteps > 0) {
+        if (this.world.isRemote && this.clientInterpolationSteps > 0) {  /// Client Position Interpolation
             if (this.clientInterpolationSteps > 0) {
-                double var46 = this.x + (this.clientX - this.x) / (double)this.clientInterpolationSteps;
-                double var47 = this.y + (this.clientY - this.y) / (double)this.clientInterpolationSteps;
-                double var5 = this.z + (this.clientZ - this.z) / (double)this.clientInterpolationSteps;
+                double lerpX = this.x + (this.clientX - this.x) / (double)this.clientInterpolationSteps;
+                double lerpY = this.y + (this.clientY - this.y) / (double)this.clientInterpolationSteps;
+                double lerpZ = this.z + (this.clientZ - this.z) / (double)this.clientInterpolationSteps;
 
-                double var48;
-                for(var48 = this.clientPitch - (double)this.yaw; var48 < (double)-180.0F; var48 += 360.0F) {
+                double lerpYaw;
+                for(lerpYaw = this.clientPitch - (double)this.yaw; lerpYaw < (double)-180.0F; lerpYaw += 360.0F) {
                 }
 
-                while(var48 >= (double)180.0F) {
-                    var48 -= 360.0F;
+                while(lerpYaw >= (double)180.0F) {
+                    lerpYaw -= 360.0F;
                 }
 
-                this.yaw = (float)((double)this.yaw + var48 / (double)this.clientInterpolationSteps);
+                this.yaw = (float)((double)this.yaw + lerpYaw / (double)this.clientInterpolationSteps);
                 this.pitch = (float)((double)this.pitch + (this.clientYaw - (double)this.pitch) / (double)this.clientInterpolationSteps);
                 --this.clientInterpolationSteps;
-                this.setPosition(var46, var47, var5);
+                this.setPosition(lerpX, lerpY, lerpZ);
                 this.setRotation(this.yaw, this.pitch);
             } else {
                 this.setPosition(this.x, this.y, this.z);
@@ -104,55 +103,82 @@ public class SteelMinecartEntity extends MinecartEntity implements EntitySpawnDa
             this.prevY = this.y;
             this.prevZ = this.z;
             this.velocityY -= 0.04F;
-            int var1 = MathHelper.floor(this.x);
-            int var2 = MathHelper.floor(this.y);
-            int var3 = MathHelper.floor(this.z);
-            if (RailBlock.isRail(this.world, var1, var2 - 1, var3)) {
-                --var2;
+            int floorX = MathHelper.floor(this.x);
+            int floorY = MathHelper.floor(this.y);
+            int floorZ = MathHelper.floor(this.z);
+            if (RailBlock.isRail(this.world, floorX, floorY - 1, floorZ)) {
+                --floorY;
             }
-            double var4 = changeSpeedLimit(0.5); /// Zwiększenie Max prędkości, 0.5D to najwięcej bez zatrzymywania się wózka na podjazach chyba.
+            double maxSpeedLimit = changeSpeedLimit(0.5); /// Zwiększenie Max prędkości, > 0.5D zatrzymania podjazd, >0.65D wypadanie na zakręcie
             if (world.dimension.isNether) {
-                var4 = 0.4;
+                maxSpeedLimit = 0.4;
             }
             boolean var6 = false;
-            double var7 = 0.0078125F;
-            int var9 = this.world.getBlockId(var1, var2, var3);
-            if (RailBlock.isRail(var9)) {
+            double gravitySpeedUP = 0.0078125F; /// Spowolnienie GRAWITACYJNE, og = 0.0078125F
+            double gravitySpeedDOWN = 0.0078125F; /// Przyspieszenie GRAWITACYJNE, og = 0.0078125F
+            int floorID = this.world.getBlockId(floorX, floorY, floorZ);
+            if (RailBlock.isRail(floorID)) {
                 Vec3d var10 = this.snapPositionToRail(this.x, this.y, this.z);
-                int var11 = this.world.getBlockMeta(var1, var2, var3);
-                this.y = var2;
-                boolean var12 = false;
-                boolean var13 = false;
-                if (var9 == Block.POWERED_RAIL.id) {
-                    var12 = (var11 & 8) != 0;
-                    var13 = !var12;
+                int floorMETA = this.world.getBlockMeta(floorX, floorY, floorZ);
+                this.y = floorY;
+                boolean goldRail_ON = false;
+                boolean goldRail_OFF = false;
+                if (floorID == Block.POWERED_RAIL.id) {
+                    goldRail_ON = (floorMETA & 8) != 0;
+                    goldRail_OFF = !goldRail_ON;
                 }
 
-                if (((RailBlock)Block.BLOCKS[var9]).isAlwaysStraight()) {
-                    var11 &= 7;
+                if (((RailBlock)Block.BLOCKS[floorID]).isAlwaysStraight()) {
+                    floorMETA &= 7;
                 }
 
-                if (var11 >= 2 && var11 <= 5) {
-                    this.y = var2 + 1;
+                if (floorMETA >= 2 && floorMETA <= 5) {
+                    this.y = floorY + 1;
                 }
-
-                if (var11 == 2) {
-                    this.velocityX -= var7;
+                /// Gwawitacja, najechanie na POCHYŁE wariacje torów
+//                if (floorMETA == 2) {
+//                    this.velocityX -= gravitySpeedUP;
+//                }
+//                if (floorMETA == 3) {
+//                    this.velocityX += gravitySpeedUP;
+//                }
+//                if (floorMETA == 4) {
+//                    this.velocityZ += gravitySpeedUP;
+//                }
+//                if (floorMETA == 5) {
+//                    this.velocityZ -= gravitySpeedUP;
+//                }
+                /// Grawitacja, najechanie na POCHYŁE wariacje torów
+                if (floorMETA == 2) {
+                    if (this.velocityX > 0) {
+                        this.velocityX -= gravitySpeedUP;
+                    } else {
+                        this.velocityX -= gravitySpeedDOWN;
+                    }
                 }
-
-                if (var11 == 3) {
-                    this.velocityX += var7;
+                if (floorMETA == 3) {
+                    if (this.velocityX < 0) {
+                        this.velocityX += gravitySpeedUP;
+                    } else {
+                        this.velocityX += gravitySpeedDOWN;
+                    }
                 }
-
-                if (var11 == 4) {
-                    this.velocityZ += var7;
+                if (floorMETA == 4) {
+                    if (this.velocityZ < 0) {
+                        this.velocityZ += gravitySpeedUP;
+                    } else {
+                        this.velocityZ += gravitySpeedDOWN;
+                    }
                 }
-
-                if (var11 == 5) {
-                    this.velocityZ -= var7;
+                if (floorMETA == 5) {
+                    if (this.velocityZ > 0) {
+                        this.velocityZ -= gravitySpeedUP;
+                    } else {
+                        this.velocityZ -= gravitySpeedDOWN;
+                    }
                 }
-
-                int[][] var14 = ADJACENT_RAIL_POSITIONS_BY_SHAPE[var11];
+                /// ---
+                int[][] var14 = ADJACENT_RAIL_POSITIONS_BY_SHAPE[floorMETA];
                 double var15 = var14[1][0] - var14[0][0];
                 double var17 = var14[1][2] - var14[0][2];
                 double var19 = Math.sqrt(var15 * var15 + var17 * var17);
@@ -161,13 +187,19 @@ public class SteelMinecartEntity extends MinecartEntity implements EntitySpawnDa
                     var15 = -var15;
                     var17 = -var17;
                 }
-
+                /// EXPERIMENTAL - Minecart Momentum Fix - nie działa
+//                double var23;
+//                this.velocityX = var21 * var15 / (var19 * var19);
+//                this.velocityZ = var21 * var17 / (var19 * var19);
+                /// stary kod
                 double var23 = Math.sqrt(this.velocityX * this.velocityX + this.velocityZ * this.velocityZ);
                 this.velocityX = var23 * var15 / var19;
                 this.velocityZ = var23 * var17 / var19;
-                if (var13) {
+                /// ---
+                if (goldRail_OFF) {
                     double var25 = Math.sqrt(this.velocityX * this.velocityX + this.velocityZ * this.velocityZ);
-                    if (var25 < 0.03) {
+                    /// Spowolnienie Wyłączonym Redstone_Gold_Rail
+                    if (var25 < 0.03) { /// jedzie wolno, to zatrzymuje go do zera.
                         this.velocityX *= 0.0F;
                         this.velocityY *= 0.0F;
                         this.velocityZ *= 0.0F;
@@ -179,18 +211,18 @@ public class SteelMinecartEntity extends MinecartEntity implements EntitySpawnDa
                 }
 
                 double var57 = 0.0F;
-                double var27 = (double)var1 + (double)0.5F + (double)var14[0][0] * (double)0.5F;
-                double var29 = (double)var3 + (double)0.5F + (double)var14[0][2] * (double)0.5F;
-                double var31 = (double)var1 + (double)0.5F + (double)var14[1][0] * (double)0.5F;
-                double var33 = (double)var3 + (double)0.5F + (double)var14[1][2] * (double)0.5F;
+                double var27 = (double)floorX + (double)0.5F + (double)var14[0][0] * (double)0.5F;
+                double var29 = (double)floorZ + (double)0.5F + (double)var14[0][2] * (double)0.5F;
+                double var31 = (double)floorX + (double)0.5F + (double)var14[1][0] * (double)0.5F;
+                double var33 = (double)floorZ + (double)0.5F + (double)var14[1][2] * (double)0.5F;
                 var15 = var31 - var27;
                 var17 = var33 - var29;
                 if (var15 == (double)0.0F) {
-                    this.x = (double)var1 + (double)0.5F;
-                    var57 = this.z - (double)var3;
+                    this.x = (double)floorX + (double)0.5F;
+                    var57 = this.z - (double)floorZ;
                 } else if (var17 == (double)0.0F) {
-                    this.z = (double)var3 + (double)0.5F;
-                    var57 = this.x - (double)var1;
+                    this.z = (double)floorZ + (double)0.5F;
+                    var57 = this.x - (double)floorX;
                 } else {
                     double var35 = this.x - var27;
                     double var37 = this.z - var29;
@@ -201,40 +233,82 @@ public class SteelMinecartEntity extends MinecartEntity implements EntitySpawnDa
                 this.x = var27 + var15 * var57;
                 this.z = var29 + var17 * var57;
                 this.setPosition(this.x, this.y + (double)this.standingEyeHeight, this.z);
-                double var59 = this.velocityX;
-                double var60 = this.velocityZ;
+                double newVelX = this.velocityX;
+                double newVelZ = this.velocityZ;
                 if (this.passenger != null) {
-                    var59 *= 0.75F;
-                    var60 *= 0.75F;
+                    newVelX *= 0.75F;
+                    newVelZ *= 0.75F;
                 }
-
-                if (var59 < -var4) {
-                    var59 = -var4;
+                /// Aplikowanie Limitów prędkości.
+                if (newVelX < -maxSpeedLimit) {
+                    newVelX = -maxSpeedLimit;
                 }
-
-                if (var59 > var4) {
-                    var59 = var4;
+                if (newVelX > maxSpeedLimit) {
+                    newVelX = maxSpeedLimit;
                 }
-
-                if (var60 < -var4) {
-                    var60 = -var4;
+                if (newVelZ < -maxSpeedLimit) {
+                    newVelZ = -maxSpeedLimit;
                 }
-
-                if (var60 > var4) {
-                    var60 = var4;
+                if (newVelZ > maxSpeedLimit) {
+                    newVelZ = maxSpeedLimit;
                 }
+                /// ---
+                /// MOVE - SUBTICKING
+//                this.move(newVelX, 0.0F, newVelZ);
 
-                this.move(var59, 0.0F, var60);
-                if (var14[0][1] != 0 && MathHelper.floor(this.x) - var1 == var14[0][0] && MathHelper.floor(this.z) - var3 == var14[0][2]) {
+//                /// Aplikowanie ruchu metodą SUB-TICKINGU (Jak w nowym MC)
+//                double totalX = newVelX;
+//                double totalZ = newVelZ;
+//                double totalMotion = Math.sqrt(totalX * totalX + totalZ * totalZ);
+//
+//                // Ustalamy bezpieczny krok ruchu (max 0.3 bloku na jedno przesunięcie)
+//                double maxStep = 0.3D;
+//
+//                if (totalMotion > maxStep) {
+//                    // Obliczamy ile mikro-kroków musimy wykonać w tym jednym ticku
+//                    int steps = (int) Math.ceil(totalMotion / maxStep);
+//                    double stepX = totalX / steps;
+//                    double stepZ = totalZ / steps;
+//
+//                    for (int i = 0; i < steps; i++) {
+//                        // Wykonujemy mały, bezpieczny krok ruchu
+//                        this.move(stepX, 0.0F, stepZ);
+//
+//                        // Po każdym mikro-kroku natychmiastowo dociągamy pozycję do toru,
+//                        // aby gra w następnym mikro-kroku wiedziała gdzie dokładnie skręcić.
+//                        int currentX = MathHelper.floor(this.x);
+//                        int currentZ = MathHelper.floor(this.z);
+//
+//                            // Ten kawałek kodu dociąga wózek do linii szyn w locie
+//                            double trainX = (double)currentX + 0.5D;
+//                            double trainZ = (double)currentZ + 0.5D;
+//                            this.x = trainX + (this.x - trainX) * 0.4D; // delikatne dociąganie (0.4D)
+//                            this.z = trainZ + (this.z - trainZ) * 0.4D;
+//                    }
+//                } else {
+//                    // Prędkość jest mała (< 0.3D), wykonujemy standardowy, pojedynczy ruch
+//                    this.move(newVelX, 0.0F, newVelZ);
+//                }
+
+                /// --- ///
+                if (var14[0][1] != 0 && MathHelper.floor(this.x) - floorX == var14[0][0] && MathHelper.floor(this.z) - floorZ == var14[0][2]) {
                     this.setPosition(this.x, this.y + (double)var14[0][1], this.z);
-                } else if (var14[1][1] != 0 && MathHelper.floor(this.x) - var1 == var14[1][0] && MathHelper.floor(this.z) - var3 == var14[1][2]) {
+                } else if (var14[1][1] != 0 && MathHelper.floor(this.x) - floorX == var14[1][0] && MathHelper.floor(this.z) - floorZ == var14[1][2]) {
                     this.setPosition(this.x, this.y + (double)var14[1][1], this.z);
                 }
 
                 if (this.passenger != null) {
-                    this.velocityX *= 0.997F;
-                    this.velocityY *= 0.0F;
-                    this.velocityZ *= 0.997F;
+                    boolean DEV_DISABLE = true;
+                    /// Aplikacja spowolnienia Oporem Tarcia i Powietrza - na prostym poziomym podłożu
+                    if (world.dimension.isNether || DEV_DISABLE) { /// nether = og steel minecart speed
+                        this.velocityX *= 0.997F;
+                        this.velocityY *= 0.0F;
+                        this.velocityZ *= 0.997F;
+                    }else{
+                        this.velocityX *= 0.999F;
+                        this.velocityY *= 0.0F;
+                        this.velocityZ *= 0.999F;
+                    }
                 } else {
                     if (this.type == 2) {
                         double var61 = MathHelper.sqrt(this.pushX * this.pushX + this.pushZ * this.pushZ);
@@ -274,10 +348,10 @@ public class SteelMinecartEntity extends MinecartEntity implements EntitySpawnDa
 
                 int var63 = MathHelper.floor(this.x);
                 int var64 = MathHelper.floor(this.z);
-                if (var63 != var1 || var64 != var3) {
+                if (var63 != floorX || var64 != floorZ) {
                     var23 = Math.sqrt(this.velocityX * this.velocityX + this.velocityZ * this.velocityZ);
-                    this.velocityX = var23 * (double)(var63 - var1);
-                    this.velocityZ = var23 * (double)(var64 - var3);
+                    this.velocityX = var23 * (double)(var63 - floorX);
+                    this.velocityZ = var23 * (double)(var64 - floorZ);
                 }
 
                 if (this.type == 2) {
@@ -295,43 +369,42 @@ public class SteelMinecartEntity extends MinecartEntity implements EntitySpawnDa
                     }
                 }
 
-                if (var12) {
+                if (goldRail_ON) {
                     double var65 = Math.sqrt(this.velocityX * this.velocityX + this.velocityZ * this.velocityZ);
+                    double movingSpeedBoost = 0.06D; /// GOLD_RAIL Przyspieszenie JADĄCEGO wózka, og = 0.06D
+                    double startingSpeedBoost = 0.02D; /// GOLD_RAIL Przyspieszenie STOJĄCEGO wózka, START z miejsca, og = 0.02D
                     if (var65 > 0.01) {
-                        double var44 = 0.06;
-                        this.velocityX += this.velocityX / var65 * var44;
-                        this.velocityZ += this.velocityZ / var65 * var44;
-                    } else if (var11 == 1) {
-                        if (this.world.shouldSuffocate(var1 - 1, var2, var3)) {
-                            this.velocityX = 0.02;
-                        } else if (this.world.shouldSuffocate(var1 + 1, var2, var3)) {
-                            this.velocityX = -0.02;
+                        this.velocityX += this.velocityX / var65 * movingSpeedBoost;
+                        this.velocityZ += this.velocityZ / var65 * movingSpeedBoost;
+                    } else if (floorMETA == 1) {
+                        if (this.world.shouldSuffocate(floorX - 1, floorY, floorZ)) {
+                            this.velocityX = startingSpeedBoost;
+                        } else if (this.world.shouldSuffocate(floorX + 1, floorY, floorZ)) {
+                            this.velocityX = -startingSpeedBoost;
                         }
-                    } else if (var11 == 0) {
-                        if (this.world.shouldSuffocate(var1, var2, var3 - 1)) {
-                            this.velocityZ = 0.02;
-                        } else if (this.world.shouldSuffocate(var1, var2, var3 + 1)) {
-                            this.velocityZ = -0.02;
+                    } else if (floorMETA == 0) {
+                        if (this.world.shouldSuffocate(floorX, floorY, floorZ - 1)) {
+                            this.velocityZ = startingSpeedBoost;
+                        } else if (this.world.shouldSuffocate(floorX, floorY, floorZ + 1)) {
+                            this.velocityZ = -startingSpeedBoost;
                         }
                     }
                 }
-            } else {
-                if (this.velocityX < -var4) {
-                    this.velocityX = -var4;
+            } else { /// wózek nie jest na torach
+                /// Aplikowanie Limitów prędkości.
+                if (this.velocityX < -maxSpeedLimit) {
+                    this.velocityX = -maxSpeedLimit;
                 }
-
-                if (this.velocityX > var4) {
-                    this.velocityX = var4;
+                if (this.velocityX > maxSpeedLimit) {
+                    this.velocityX = maxSpeedLimit;
                 }
-
-                if (this.velocityZ < -var4) {
-                    this.velocityZ = -var4;
+                if (this.velocityZ < -maxSpeedLimit) {
+                    this.velocityZ = -maxSpeedLimit;
                 }
-
-                if (this.velocityZ > var4) {
-                    this.velocityZ = var4;
+                if (this.velocityZ > maxSpeedLimit) {
+                    this.velocityZ = maxSpeedLimit;
                 }
-
+                /// ---
                 if (this.onGround) {
                     this.velocityX *= getGroundSlidingFactor();
                     this.velocityY *= 0.5F;
@@ -371,9 +444,9 @@ public class SteelMinecartEntity extends MinecartEntity implements EntitySpawnDa
 
             this.setRotation(this.yaw, this.pitch);
             List var16 = this.world.getEntities(this, this.boundingBox.expand(0.2F, 0.0F, 0.2F));
-            if (var16 != null && var16.size() > 0) {
-                for(int var54 = 0; var54 < var16.size(); ++var54) {
-                    Entity var18 = (Entity)var16.get(var54);
+            if (var16 != null && !var16.isEmpty()) {
+                for (Object o : var16) {
+                    Entity var18 = (Entity) o;
                     if (var18 != this.passenger && var18.isPushable() && var18 instanceof MinecartEntity) {
                         var18.onCollision(this);
                     }

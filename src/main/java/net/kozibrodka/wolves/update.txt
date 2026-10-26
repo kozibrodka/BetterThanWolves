@@ -1,15 +1,7 @@
 
 
-- Added Buddy Block (backport)
-- Added Lens Block (backport/rewrite)
-- added Refined Axe and Refined Mattock, gave Battle Axes its actual oryginal benefit (more damage vs entities)
-- Saw's Blade has animated texture when powered
-- Rewrite server-sync logic for entities, better optymalization
-- Config Refactor
-- Block Dispenser interraction with steelMinecart
-- Block Dispenser can color sheep when spitting out dyes
-- added textures for activated Detector Rails and Axle end
-- added regular (non-Difficult Steel Recipe) dropper crafting recipe
-- fixed refined tools vs-entity damage values
-- fixed Block Cake missing oryginal functionality
-- fixed HandCrank item rendering
+
+
+- Axle problem z renderem przy pistonie, ponieważ call w AxleBlockModelPredicateProvider, prawdopodobnie dostarcza dane PistonHeada i niewłaściwa meta leci
+- ten call leci może i dobrze, ale powinien od razu wziąść od Pistona z danych przetrzymywanych (pistonTileEntity) state i meta, bo jak tak manualnie potem on sprawdza blockPos.... to czerpie dane z pistona, czyli wyjdzie że blok się nie zgadza i zwróci zero - w przypadku Axle...
+znajdź gdzie to jest "call"  odpalany

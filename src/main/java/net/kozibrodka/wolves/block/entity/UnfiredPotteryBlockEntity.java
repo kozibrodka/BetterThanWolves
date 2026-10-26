@@ -19,18 +19,21 @@ public class UnfiredPotteryBlockEntity extends BlockEntity {
         m_iStateUpdateTickCount = 0;
     }
 
+    @Override
     public void readNbt(NbtCompound nbttagcompound) {
         super.readNbt(nbttagcompound);
         m_iCookStateCount = nbttagcompound.getInt("m_iCookStateUpdateCount");
         m_iStateUpdateTickCount = nbttagcompound.getInt("m_iStateUpdateTickCount");
     }
 
+    @Override
     public void writeNbt(NbtCompound nbttagcompound) {
         super.writeNbt(nbttagcompound);
         nbttagcompound.putInt("m_iCookStateUpdateCount", m_iCookStateCount);
         nbttagcompound.putInt("m_iStateUpdateTickCount", m_iStateUpdateTickCount);
     }
 
+    @Override
     public void tick() {
         if (world.isRemote) {
             return;

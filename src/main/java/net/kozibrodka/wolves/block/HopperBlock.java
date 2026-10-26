@@ -7,10 +7,7 @@ import net.fabricmc.loader.FabricLoader;
 import net.kozibrodka.wolves.api.AffectedByBellows;
 import net.kozibrodka.wolves.block.entity.HopperBlockEntity;
 import net.kozibrodka.wolves.container.HopperScreenHandler;
-import net.kozibrodka.wolves.events.BlockEntityListener;
-import net.kozibrodka.wolves.events.BlockListener;
-import net.kozibrodka.wolves.events.ItemListener;
-import net.kozibrodka.wolves.events.TextureListener;
+import net.kozibrodka.wolves.events.*;
 import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.utils.*;
 import net.minecraft.block.Block;
@@ -344,8 +341,14 @@ public class HopperBlock extends TemplateBlockWithEntity
     }
 
     public void BreakHopper(World world, int i, int j, int k) {
+        int slabID = BlockListener.omniSlab.asItem().id;
+        int slabMETA = 1;
+        if(ConfigListener.wolvesGlass.content.verticalSlabs){
+            slabID = BlockListener.panelWooden.asItem().id;
+            slabMETA = 0;
+        }
         for (int iTemp = 0; iTemp < 2; iTemp++) {
-            UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, BlockListener.omniSlab.asItem().id, 1);
+            UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, slabID, slabMETA);
         }
         for (int iTemp = 0; iTemp < 1; iTemp++) {
             UnsortedUtils.EjectSingleItemWithRandomOffset(world, i, j, k, ItemListener.gear.id, 0);

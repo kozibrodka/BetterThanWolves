@@ -9,7 +9,7 @@ import java.util.Random;
 /**
  * Collision block for windmills and waterwheels. Creates an obstruction block when broken.
  */
-public class CollisionBlock extends LazyBlockTemplate {
+public class CollisionBlock extends TexturedBlockTemplate {
     public CollisionBlock(Identifier identifier, Material material, float hardness, BlockSoundGroup blockSounds) {
         super(identifier, material, hardness, blockSounds);
     }

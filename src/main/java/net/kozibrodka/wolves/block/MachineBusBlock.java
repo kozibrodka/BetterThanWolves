@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.gui.screen.container.GuiHelper;
 import net.modificationstation.stationapi.api.util.Identifier;
 
-public class MachineBusBlock extends LazyBlockWithEntityTemplate {
+public class MachineBusBlock extends TexturedBlockWithEntityTemplate {
     public MachineBusBlock(Identifier identifier, Material material, float hardness, BlockSoundGroup blockSounds) {
         super(identifier, material, hardness, blockSounds);
     }

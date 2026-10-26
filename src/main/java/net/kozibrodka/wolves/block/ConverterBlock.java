@@ -7,7 +7,7 @@ import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.util.Identifier;
 import net.newfrontiercraft.nfc.api.TorqueGenerator;
 
-public class ConverterBlock extends LazyBlockTemplate implements MechanicalDevice, TorqueGenerator {
+public class ConverterBlock extends TexturedBlockTemplate implements MechanicalDevice, TorqueGenerator {
     public ConverterBlock(Identifier identifier, Material material, float hardness, BlockSoundGroup blockSounds) {
         super(identifier, material, hardness, blockSounds);
     }

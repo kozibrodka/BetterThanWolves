@@ -9,7 +9,7 @@ import java.util.Random;
 /**
  * This block will cause waterwheels and windmills to become obstructed and self-destroy.
  */
-public class ObstructionBlock extends LazyBlockTemplate {
+public class ObstructionBlock extends TexturedBlockTemplate {
     public ObstructionBlock(Identifier identifier, Material material, float hardness, BlockSoundGroup blockSounds) {
         super(identifier, material, hardness, blockSounds);
     }

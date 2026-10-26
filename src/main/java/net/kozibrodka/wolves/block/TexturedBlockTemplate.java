@@ -1,17 +1,17 @@
 package net.kozibrodka.wolves.block;
 
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.material.Material;
 import net.minecraft.sound.BlockSoundGroup;
-import net.modificationstation.stationapi.api.template.block.TemplateBlockWithEntity;
+import net.modificationstation.stationapi.api.template.block.TemplateBlock;
 import net.modificationstation.stationapi.api.util.Identifier;
 
-public class LazyBlockWithEntityTemplate extends TemplateBlockWithEntity {
-    protected int topTexture;
-    protected int sideTexture;
-    protected int bottomTexture;
+public class TexturedBlockTemplate extends TemplateBlock {
 
-    protected LazyBlockWithEntityTemplate(Identifier identifier, Material material, float hardness, BlockSoundGroup blockSounds) {
+    int topTexture;
+    int sideTexture;
+    int bottomTexture;
+
+    public TexturedBlockTemplate(Identifier identifier, Material material, float hardness, BlockSoundGroup blockSounds) {
         super(identifier, material);
         setTranslationKey(identifier.namespace, identifier.path);
         setHardness(hardness);
@@ -19,8 +19,8 @@ public class LazyBlockWithEntityTemplate extends TemplateBlockWithEntity {
     }
 
     @Override
-    public LazyBlockWithEntityTemplate setHardness(float Hardness) {
-        return (LazyBlockWithEntityTemplate) super.setHardness(Hardness);
+    public TexturedBlockTemplate setHardness(float Hardness) {
+        return (TexturedBlockTemplate) super.setHardness(Hardness);
     }
 
     public void specifyTextures(int topTexture, int sideTexture, int bottomTexture) {
@@ -36,14 +36,9 @@ public class LazyBlockWithEntityTemplate extends TemplateBlockWithEntity {
     }
 
     @Override
-    public int getTexture(int side, int meta) {
-        if (side == 0) return bottomTexture;
-        if (side == 1) return topTexture;
+    public int getTexture(int i, int j) {
+        if (i == 0) return bottomTexture;
+        if (i == 1) return topTexture;
         return sideTexture;
-    }
-
-    @Override
-    protected BlockEntity createBlockEntity() {
-        return null;
     }
 }

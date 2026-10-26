@@ -79,9 +79,9 @@ public class HibachiBlock extends TemplateBlock {
     }
 
     @Override
-    public void neighborUpdate(World world, int i, int j, int k, int l) {
+    public void neighborUpdate(World world, int i, int j, int k, int blockID) {
         boolean bShouldUpdate = false;
-        if (l != FIRE.id) {
+        if (blockID != FIRE.id) {
             boolean bPowered = world.isStrongPowered(i, j, k) || world.isStrongPowered(i, j + 1, k);
             if (IsBBQLit(world, i, j, k) != bPowered) {
                 bShouldUpdate = true;

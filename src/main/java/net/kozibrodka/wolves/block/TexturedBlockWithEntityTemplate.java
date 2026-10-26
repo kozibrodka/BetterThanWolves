@@ -1,17 +1,17 @@
 package net.kozibrodka.wolves.block;
 
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.material.Material;
 import net.minecraft.sound.BlockSoundGroup;
-import net.modificationstation.stationapi.api.template.block.TemplateBlock;
+import net.modificationstation.stationapi.api.template.block.TemplateBlockWithEntity;
 import net.modificationstation.stationapi.api.util.Identifier;
-//todo rename
-public class LazyBlockTemplate extends TemplateBlock {
 
-    int topTexture;
-    int sideTexture;
-    int bottomTexture;
+public class TexturedBlockWithEntityTemplate extends TemplateBlockWithEntity {
+    protected int topTexture;
+    protected int sideTexture;
+    protected int bottomTexture;
 
-    public LazyBlockTemplate(Identifier identifier, Material material, float hardness, BlockSoundGroup blockSounds) {
+    protected TexturedBlockWithEntityTemplate(Identifier identifier, Material material, float hardness, BlockSoundGroup blockSounds) {
         super(identifier, material);
         setTranslationKey(identifier.namespace, identifier.path);
         setHardness(hardness);
@@ -19,8 +19,8 @@ public class LazyBlockTemplate extends TemplateBlock {
     }
 
     @Override
-    public LazyBlockTemplate setHardness(float Hardness) {
-        return (LazyBlockTemplate) super.setHardness(Hardness);
+    public TexturedBlockWithEntityTemplate setHardness(float Hardness) {
+        return (TexturedBlockWithEntityTemplate) super.setHardness(Hardness);
     }
 
     public void specifyTextures(int topTexture, int sideTexture, int bottomTexture) {
@@ -36,9 +36,14 @@ public class LazyBlockTemplate extends TemplateBlock {
     }
 
     @Override
-    public int getTexture(int i, int j) {
-        if (i == 0) return bottomTexture;
-        if (i == 1) return topTexture;
+    public int getTexture(int side, int meta) {
+        if (side == 0) return bottomTexture;
+        if (side == 1) return topTexture;
         return sideTexture;
+    }
+
+    @Override
+    protected BlockEntity createBlockEntity() {
+        return null;
     }
 }

@@ -15,7 +15,7 @@ import net.modificationstation.stationapi.api.util.Identifier;
 
 import java.util.Random;
 
-public class ConveyorExtenderBlock extends LazyBlockTemplate implements Conveyor {
+public class ConveyorExtenderBlock extends TexturedBlockTemplate implements Conveyor {
     private static final double ACCELERATION = 1.1;
     private static final double MAXIMUM_VELOCITY = 1.5;
     private static final double DECELERATION = 0.75;
