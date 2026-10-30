@@ -25,6 +25,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.BlockView;
+import net.minecraft.world.ServerWorld;
 import net.minecraft.world.World;
 import net.modificationstation.stationapi.api.block.BlockState;
 import net.modificationstation.stationapi.api.client.model.block.BlockWithInventoryRenderer;
@@ -41,7 +42,7 @@ import java.util.Random;
 
 @EnvironmentInterface(value = EnvType.CLIENT, itf = BlockWithInventoryRenderer.class)
 public class HopperBlock extends TemplateBlockWithEntity
-        implements MechanicalDevice, RotatableBlock, BlockWithInventoryRenderer, AffectedByBellows {
+        implements MechanicalDevice, RotatableBlock, BlockWithInventoryRenderer, AffectedByBellows, ManualDevice {
     public HopperBlock(Identifier iid) {
         super(iid, Material.WOOD);
         setHardness(2.0F);
@@ -237,8 +238,13 @@ public class HopperBlock extends TemplateBlockWithEntity
 
     @Environment(EnvType.SERVER)
     public boolean powerServer(BlockView iBlockAccess, int i, int j, int k, int l) {
-        World level = ((MinecraftServer) net.fabricmc.loader.api.FabricLoader.getInstance().getGameInstance()).getWorld(0);
-        return IsRedstoneOutputOn(level, i, j, k);
+//        World level = ((MinecraftServer) net.fabricmc.loader.api.FabricLoader.getInstance().getGameInstance()).getWorld(0);
+//        return IsRedstoneOutputOn(level, i, j, k);
+        if(iBlockAccess instanceof ServerWorld world1){
+            return IsRedstoneOutputOn(world1, i, j, k);
+        }else{
+            return false;
+        }
     }
 
     @Override
@@ -519,5 +525,33 @@ public class HopperBlock extends TemplateBlockWithEntity
         builder.add(POWER);
         builder.add(FULL);
         builder.add(FILTER);
+    }
+
+    @Override
+    public void powerManually(World world, int x, int y, int z) {
+        if(!IsBlockOn(world, x, y, z)){
+            powerMachine(world, x, y, z, 0);
+        }
+    }
+
+    @Override
+    public void stopPoweringManually(World world, int x, int y, int z) {
+        if(!isMechanicallyPoweredByAxle(world, x, y, z)){
+            unpowerMachine(world, x, y, z, 0);
+        }
+    }
+
+    private boolean isMechanicallyPoweredByAxle(World world, int i, int j, int k){
+        for (int facing = 2; facing < 6; facing++) {
+            BlockPosition axlePos2 = new BlockPosition(i, j, k);
+            axlePos2.addFacingAsOffset(facing);
+            Block block0 = Block.BLOCKS[world.getBlockId(axlePos2.x, axlePos2.y, axlePos2.z)];
+            if(block0 instanceof AxleBlock axleBlock){
+                boolean power = axleBlock.getPowerLevel(world, axlePos2.x, axlePos2.y, axlePos2.z) > 0;
+                boolean aligned = axleBlock.isAxleOrientedTowardsFacing(world, axlePos2.x, axlePos2.y, axlePos2.z, facing);
+                if(power && aligned) return true;
+            }
+        }
+        return false;
     }
 }

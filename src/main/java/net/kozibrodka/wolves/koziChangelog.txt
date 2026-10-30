@@ -30,16 +30,22 @@ done:
 ----------------------------------------- after 3.0.0 ------------------
 - fixed Obsidian Pressure Plate crafting recipe
 - fixed BlockCake causing Buddy Block to spam output
+----------------------------------------- after 3.0.1 ------------------
 - fixed Hopper dropping wrong slab blockItem on explosion
 - fixed Hopper gravel texture
+- fixed AxleBlock not being rendered correctly while being pushed/pulled by Piston
+- fixed Hopper powerServer() method call
+- rewrote handCrank - MillStone interraction
+- fixed handCrank not interractiong with: Bellows, Pulley, Hopper
 
 
 
 
 
-TODO
+TODO na teraz
 
-- Bellow handcrank interaction
+- Steel Minecart szybszy
+- Anvil SoundGroup
 
 
 

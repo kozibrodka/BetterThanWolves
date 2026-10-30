@@ -253,7 +253,7 @@ public class SteelMinecartEntity extends MinecartEntity implements EntitySpawnDa
                     newVelZ = maxSpeedLimit;
                 }
                 /// ---
-                /// MOVE - SUBTICKING
+                /// MOVE - SUBTICKING - nie działa
 //                this.move(newVelX, 0.0F, newVelZ);
 
 //                /// Aplikowanie ruchu metodą SUB-TICKINGU (Jak w nowym MC)

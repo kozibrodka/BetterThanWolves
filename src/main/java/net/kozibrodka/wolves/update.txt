@@ -1,7 +1,0 @@
-
-
-
-
-- Axle problem z renderem przy pistonie, ponieważ call w AxleBlockModelPredicateProvider, prawdopodobnie dostarcza dane PistonHeada i niewłaściwa meta leci
-- ten call leci może i dobrze, ale powinien od razu wziąść od Pistona z danych przetrzymywanych (pistonTileEntity) state i meta, bo jak tak manualnie potem on sprawdza blockPos.... to czerpie dane z pistona, czyli wyjdzie że blok się nie zgadza i zwróci zero - w przypadku Axle...
-znajdź gdzie to jest "call"  odpalany

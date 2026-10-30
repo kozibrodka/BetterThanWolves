@@ -7,15 +7,13 @@ import net.kozibrodka.wolves.api.AffectedByBellows;
 import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.network.SoundPacket;
-import net.kozibrodka.wolves.utils.BlockPosition;
-import net.kozibrodka.wolves.utils.MechanicalDevice;
-import net.kozibrodka.wolves.utils.RotatableBlock;
-import net.kozibrodka.wolves.utils.UnsortedUtils;
+import net.kozibrodka.wolves.utils.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.BlockView;
@@ -28,7 +26,7 @@ import java.util.List;
 import java.util.Random;
 
 public class BellowsBlock extends TemplateBlock
-        implements MechanicalDevice, RotatableBlock {
+        implements MechanicalDevice, RotatableBlock, ManualDevice {
 
     public BellowsBlock(Identifier iid) {
         super(iid, Material.WOOD);
@@ -174,6 +172,20 @@ public class BellowsBlock extends TemplateBlock
     }
 
     @Override
+    public void powerManually(World world, int x, int y, int z) {
+        if(!IsBlockMechanicalOn(world, x, y, z)){
+            powerMachine(world, x, y, z, 0);
+        }
+    }
+
+    @Override
+    public void stopPoweringManually(World world, int x, int y, int z) {
+        if(!isMechanicallyPoweredByAxle(world, x, y, z)){
+            unpowerMachine(world, x, y, z, 0);
+        }
+    }
+
+    @Override
     public void powerMachine(World world, int x, int y, int z, int side) {
         blow(world, x, y, z);
         world.playNoteBlockActionAt(x,y,z, 0, 0);
@@ -305,5 +317,21 @@ public class BellowsBlock extends TemplateBlock
         }
     }
 
+    private boolean isMechanicallyPoweredByAxle(World world, int i, int j, int k){
+        int iFacing = getFacing(world, i, j, k);
+        int axleSide = UnsortedUtils.getOppositeFacing(iFacing);
+        BlockPosition axlePos = new BlockPosition(i, j, k);
+        axlePos.addFacingAsOffset(axleSide);
+        int blockID = world.getBlockId(axlePos.x, axlePos.y, axlePos.z);
+        if(blockID == BlockListener.axleBlock.id) {
+            boolean aligned = ((AxleBlock)Block.BLOCKS[blockID]).isAxleOrientedTowardsFacing(world, axlePos.x, axlePos.y, axlePos.z, iFacing);
+            int power =  ((AxleBlock)Block.BLOCKS[blockID]).getPowerLevel(world, axlePos.x, axlePos.y, axlePos.z);
+
+            return aligned && power > 0;
+        }
+        return false;
+    }
+
     private static final int m_iBellowsTickRate = 10;
+
 }

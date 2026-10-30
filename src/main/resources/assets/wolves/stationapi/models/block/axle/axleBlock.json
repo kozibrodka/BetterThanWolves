@@ -8,7 +8,7 @@
 			"model": "wolves:block/axle/axleBlockYAxisOff"
 		},
 		{
-			"predicate": {"meta": 3},
+			"predicate": {"meta": 1},
 			"model": "wolves:block/axle/axleBlockYAxisOn"
 		},
 		{
@@ -16,7 +16,7 @@
 			"model": "wolves:block/axle/axleBlockZAxisOff"
 		},
 		{
-			"predicate": {"meta": 7},
+			"predicate": {"meta": 5},
 			"model": "wolves:block/axle/axleBlockZAxisOn"
 		},
 		{
@@ -24,7 +24,7 @@
 			"model": "wolves:block/axle/axleBlockXAxisOff"
 		},
 		{
-			"predicate": {"meta": 11},
+			"predicate": {"meta": 9},
 			"model": "wolves:block/axle/axleBlockXAxisOn"
 		}
 	]

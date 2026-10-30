@@ -9,6 +9,7 @@ import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.network.SoundPacket;
 import net.kozibrodka.wolves.utils.InventoryHandler;
+import net.kozibrodka.wolves.utils.ManualDevice;
 import net.kozibrodka.wolves.utils.MechanicalDevice;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.material.Material;
@@ -25,7 +26,7 @@ import java.util.List;
 import java.util.Random;
 
 public class MillStoneBlock extends TemplateBlockWithEntity
-        implements MechanicalDevice {
+        implements MechanicalDevice, ManualDevice {
 
     public MillStoneBlock(Identifier iid) {
         super(iid, Material.STONE);
@@ -70,25 +71,7 @@ public class MillStoneBlock extends TemplateBlockWithEntity
     }
 
     @Override
-    public void neighborUpdate(World world, int x, int y, int z, int id) {
-        if (isPoweredHandCrank(world, x + 1, y, z)) {
-            powerManually(world, x, y, z);
-        } else if (isPoweredHandCrank(world, x - 1, y, z)) {
-            powerManually(world, x, y, z);
-        } else if (isPoweredHandCrank(world, x, y, z + 1)) {
-            powerManually(world, x, y, z);
-        } else if (isPoweredHandCrank(world, x, y, z - 1)) {
-            powerManually(world, x, y, z);
-        } else {
-            stopPoweringManually(world, x, y, z);
-        }
-    }
-
-    private boolean isPoweredHandCrank(World world, int x, int y, int z) {
-        return world.getBlockId(x, y, z) == BlockListener.handCrank.id && world.getBlockMeta(x, y, z) > 0;
-    }
-
-    private void powerManually(World world, int x, int y, int z) {
+    public void powerManually(World world, int x, int y, int z) {
         MillStoneBlockEntity millStoneBlockEntity = (MillStoneBlockEntity) world.getBlockEntity(x, y, z);
         if (millStoneBlockEntity == null) {
             return;
@@ -98,20 +81,28 @@ public class MillStoneBlock extends TemplateBlockWithEntity
         if (random.nextInt(5) == 0) {
             world.playSound((double) x + 0.5D, (double) y + 0.5D, (double) z + 0.5D, "random.explode", 0.1F + random.nextFloat() * 0.1F, 1.25F + random.nextFloat() * 0.1F);
         }
-        millStoneBlockEntity.powerManually();
+        if(world.getBlockMeta(x, y, z) == 0) {
+            world.setBlockMetaWithoutNotifyingNeighbors(x, y, z, 1);
+            world.blockUpdateEvent(x, y, z);
+            millStoneBlockEntity.powerManually();
+        }
     }
 
-    private void stopPoweringManually(World world, int x, int y, int z) {
+    @Override
+    public void stopPoweringManually(World world, int x, int y, int z) {
         MillStoneBlockEntity millStoneBlockEntity = (MillStoneBlockEntity) world.getBlockEntity(x, y, z);
         if (millStoneBlockEntity == null) {
             return;
         }
         millStoneBlockEntity.stopPoweringManually();
+        if(world.getBlockMeta(x, y, z) == 1){
+            SetBlockOn(world, x, y, z, false);
+        }
     }
 
     @Override
     public void randomDisplayTick(World world, int i, int j, int k, Random random) {
-        if (IsBlockOn(world, i, j, k)) {
+        if (IsBlockOnParticles(world, i, j, k)) {
             EmitMillingParticles(world, i, j, k, random);
             if (random.nextInt(5) == 0) {
                 world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "random.explode", 0.1F + random.nextFloat() * 0.1F, 1.25F + random.nextFloat() * 0.1F);
@@ -126,12 +117,16 @@ public class MillStoneBlock extends TemplateBlockWithEntity
     }
 
     public boolean IsBlockOn(World world, int i, int j, int k) {
+        return world.getBlockMeta(i, j, k) > 1;
+    }
+
+    public boolean IsBlockOnParticles(World world, int i, int j, int k) {
         return world.getBlockMeta(i, j, k) > 0;
     }
 
     public void SetBlockOn(World world, int i, int j, int k, boolean bOn) {
         if (bOn) {
-            world.setBlockMeta(i, j, k, 1);
+            world.setBlockMeta(i, j, k, 2);
             world.blockUpdateEvent(i, j, k);
         } else {
             world.setBlockMeta(i, j, k, 0);

@@ -8,10 +8,8 @@ import net.kozibrodka.wolves.container.PulleyScreenHandler;
 import net.kozibrodka.wolves.events.BlockEntityListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.network.SoundPacket;
-import net.kozibrodka.wolves.utils.InventoryHandler;
-import net.kozibrodka.wolves.utils.MechanicalDevice;
-import net.kozibrodka.wolves.utils.RotatableBlock;
-import net.kozibrodka.wolves.utils.UnsortedUtils;
+import net.kozibrodka.wolves.utils.*;
+import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
@@ -28,7 +26,7 @@ import java.util.List;
 import java.util.Random;
 
 public class PulleyBlock extends TemplateBlockWithEntity
-        implements MechanicalDevice, RotatableBlock {
+        implements MechanicalDevice, RotatableBlock, ManualDevice {
 
     public PulleyBlock(Identifier iid) {
         super(iid, Material.WOOD);
@@ -201,6 +199,34 @@ public class PulleyBlock extends TemplateBlockWithEntity
             world.addParticle("smoke", smokeX, smokeY, smokeZ, 0.0D, 0.0D, 0.0D);
         }
 
+    }
+
+    @Override
+    public void powerManually(World world, int x, int y, int z) {
+        if(!IsBlockOn(world, x, y, z)){
+            powerMachine(world, x, y, z, 0);
+        }
+    }
+
+    @Override
+    public void stopPoweringManually(World world, int x, int y, int z) {
+        if(!isMechanicallyPoweredByAxle(world, x, y, z)){
+            unpowerMachine(world, x, y, z, 0);
+        }
+    }
+
+    private boolean isMechanicallyPoweredByAxle(World world, int i, int j, int k){
+        for (int facing = 2; facing < 6; facing++) {
+            BlockPosition axlePos2 = new BlockPosition(i, j, k);
+            axlePos2.addFacingAsOffset(facing);
+            Block block0 = Block.BLOCKS[world.getBlockId(axlePos2.x, axlePos2.y, axlePos2.z)];
+            if(block0 instanceof AxleBlock axleBlock){
+                boolean power = axleBlock.getPowerLevel(world, axlePos2.x, axlePos2.y, axlePos2.z) > 0;
+                boolean aligned = axleBlock.isAxleOrientedTowardsFacing(world, axlePos2.x, axlePos2.y, axlePos2.z, facing);
+                if(power && aligned) return true;
+            }
+        }
+        return false;
     }
 
     private final int iPulleyTopIndex = 62;

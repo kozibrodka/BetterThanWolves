@@ -4,6 +4,7 @@ import net.kozibrodka.wolves.events.BlockListener;
 import net.kozibrodka.wolves.events.ItemListener;
 import net.kozibrodka.wolves.events.TextureListener;
 import net.kozibrodka.wolves.utils.BlockPosition;
+import net.kozibrodka.wolves.utils.ManualDevice;
 import net.kozibrodka.wolves.utils.MechanicalDevice;
 import net.kozibrodka.wolves.utils.UnsortedUtils;
 import net.minecraft.block.Block;
@@ -87,13 +88,33 @@ public class HandCrankBlock extends TemplateBlock
                 world.setBlockMeta(i, j, k, 1);
                 world.setBlocksDirty(i, j, k, i, j, k);
                 world.playSound((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D, "random.click", 1.0F, 2.0F);
-                world.notifyNeighbors(i, j, k, BlockListener.handCrank.id);
                 world.scheduleBlockUpdate(i, j, k, BlockListener.handCrank.id, getTickRate());
+                manuallyCheckNeighbors(world, i, j, k, true);
             } else {
                 BreakCrankWithDrop(world, i, j, k);
             }
         }
         return true;
+    }
+
+    @Override
+    public void onBreak(World world, int x, int y, int z) {
+        super.onBreak(world, x, y, z);
+        manuallyCheckNeighbors(world, x, y, z, false);
+    }
+
+    private void manuallyCheckNeighbors(World world, int i, int j, int k, boolean isOn){
+        checkForManuals(world, i + 1, j, k, isOn);
+        checkForManuals(world, i - 1, j, k, isOn);
+        checkForManuals(world, i, j, k + 1, isOn);
+        checkForManuals(world, i, j, k - 1, isOn);
+    }
+
+    private void checkForManuals(World world, int x, int y, int z, boolean isOn){
+        Block newBlock = Block.BLOCKS[world.getBlockId(x, y, z)];
+        if(newBlock instanceof ManualDevice manualBlock){
+            if (isOn) manualBlock.powerManually(world, x, y, z); else manualBlock.stopPoweringManually(world, x, y, z);
+        }
     }
 
     @Override
@@ -117,6 +138,7 @@ public class HandCrankBlock extends TemplateBlock
                 world.blockUpdateEvent(i, j, k);
                 world.setBlocksDirty(i, j, k, i, j, k);
                 world.playNoteBlockActionAt(i,j,k, 0, 0); ///
+                manuallyCheckNeighbors(world, i, j, k, false);
             }
         }
     }
